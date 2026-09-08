@@ -4,7 +4,6 @@ I need a project that has enough work for 6 Software Developers.
 
 Darrin, Loens, Sonya, Lihn, Myriam, and Kabanga
 
-I am Darrin. 
 
 ### Development Environment
 
@@ -21,11 +20,13 @@ What are some tasks that we would have to develop such an app?
 This is going to be a webapp.
 
 
+# Game Idea: Sniping 
 
+We can take pictures of our friends without them noticing and tag them in the pictures. 
+Its fun because we can embarrass them!.
+You can only snipe people that are friended. 
 
-## Game Idea: Sniping 
-
-We can take pictures of our friends without them noticing.
+# Game Idea: Snippets (Name In Progress)
 
 
 ### Okay AI, Is This Project Big Enough For The 6 Of Us?
