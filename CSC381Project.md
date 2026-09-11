@@ -2,7 +2,7 @@
 
 I need a project that has enough work for 6 Software Developers.
 
-Darrin, Loens, Sonya, Lihn, Myriam, and Kabanga
+Darrin, Loens, Sonya, Lihn, Merieme, and Kabanga
 
 
 ### Development Environment
