@@ -1,0 +1,7 @@
+# GitHub integration Working directory: .
+# Local project identifier; the dashboard integration selects the hosted project.
+project_id = "ssu-starter-app-v2"
+
+# Required baseline rows are part of the initial migration; there is no demo seed file.
+[db.seed]
+enabled = false
