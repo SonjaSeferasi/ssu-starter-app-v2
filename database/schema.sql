@@ -374,8 +374,10 @@ CREATE TABLE post_comments (
 CREATE TABLE post_reports (
     report_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     post_id BIGINT NOT NULL REFERENCES posts(post_id) ON DELETE CASCADE,
-    reporter_id BIGINT NOT NULL REFERENCES students(student_id)
+    reporter_id BIGINT NOT NULL REFERENCES students(student_id),
+    UNIQUE (post_id, reporter_id)
 );
+
 
 -- Table: events
 -- Reviewed by: KB (Kabanga Mbangu) - proposed; review pending
