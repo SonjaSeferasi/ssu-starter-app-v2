@@ -21,18 +21,38 @@ psql -v ON_ERROR_STOP=1 -d socialu_schema_test -f database/schema.sql
 
 Use an empty development database owned by the testing role. Rerunning erases the dedicated `socialu` schema and its data. The transaction rolls back the build if any statement fails. No database extensions or Supabase `auth.users` table are required. Application integration must explicitly use the `socialu` schema and map the existing authentication provider before deployment.
 
-## Review assignment
+## Table responsibility and pending reviews
 
-Exactly one proposed reviewer appears per table, with their full name. These are assignments, **not completed-review attestations**. All six people must perform the review and update their own comment labels before submission. Feature owners and proposed peer reviewers are different; all tables were drafted with AI assistance for team review.
+Assignments follow the feature owners in SRS section 2.2 and its functional-area guide. The named person is responsible for the table within their feature and is the proposed reviewer of this AI-prepared draft. The previous cross-feature review rotation has been removed. Every table still lists exactly one name, and no human review is recorded as completed.
 
-| Proposed reviewer | Tables assigned |
-| --- | ---: |
-| LN (Linh Nguyen) | 12 |
-| LP (Loens Paul) | 7 |
-| MS (Merieme Sakhsoukhi) | 2 |
-| KB (Kabanga Mbangu) | 15 |
-| DP (Darrin Phimphisane) | 15 |
-| SS (Sonja Seferasi) | 8 |
+The assignment also requires someone other than the table author to check it. If the named feature owner authors or substantially revises a table, another teammate must perform that independent check before the final Reviewed by comment is completed. Feature ownership does not change when a peer performs a review.
+
+| Responsible member / proposed reviewer | Tables | SRS ownership | Assigned scope |
+| --- | ---: | --- | --- |
+| LN (Linh Nguyen) | 12 | UR-100 to UR-123 | Accounts, authentication, profiles, friendships, blocking, profile tag relationships and personal sent-message hiding; provisional coordination of the two shared upload tables. |
+| LP (Loens Paul) | 9 | UR-200 to UR-213 | Private/group chat, membership, invitations, message requests, messages, reads, hidden group history and reactions. |
+| MS (Merieme Sakhsoukhi) | 6 | UR-301 to UR-315 | Feeds, posts, photographs, likes, comments, reports and friend/feed interaction notifications. |
+| KB (Kabanga Mbangu) | 2 | UR-400 to UR-405 | Events, invitations and RSVPs; Trending uses shared post/like data and the existing trending_candidates view. |
+| DP (Darrin Phimphisane) | 15 | UR-500 to UR-529 | DormSpace, catalog, ownership, purchases, visits, guestbook, Snipes and shared points. |
+| SS (Sonja Seferasi) | 15 | UR-600 to UR-627 | Navigation/display preferences, Game Room, avatar appearance, participation/streaks, Game 1 and optional Wordle. |
+| Total | 59 | | |
+
+Shared storage: upload_policies and media_assets serve LN profile photographs, LP chat media, MS post photos, DP Snipes and SS avatar faces. The SRS does not assign an exclusive owner for these shared tables. LN remains the provisional coordinator for these two tables; the count above includes them. Each feature owner remains responsible for their own upload rules.
+
+Detailed requirement ownership resolves two cross-feature cases: hidden_messages follows LN SRS-119.10 through SRS-119.13, and post_tags follows LN SRS-112.4 and SRS-113.13. These tables support Chat and Feed/Profile respectively, but their cited storage requirements are in LN's section. LP integrates personal hiding into Chat; MS coordinates feed tagging with LN after the open tagging-consent policy is agreed. No SRS authors or requirement identifiers were reassigned.
+
+Shared dependencies do not transfer feature ownership: MS maintains posts/post_likes, while KB owns Trending behavior and the trending_candidates view. MS coordinates notifications with LN for friendship notices. DP owns catalog_items and owned_items, which SS consumes for the avatar closet. SS owns the single participation record; DP consumes it for rewards. Do not duplicate these tables just to assign one copy to each feature.
+
+### Exact table assignments
+
+- **Linh Nguyen (LN):** `university`, `university_domains`, `students`, `authentication_challenges`, `login_sessions`, `upload_policies`, `media_assets`, `student_profiles`, `friend_requests`, `student_blocks`, `hidden_messages`, `post_tags`.
+- **Loens Paul (LP):** `conversations`, `group_memberships`, `group_invitations`, `message_requests`, `messages`, `message_reads`, `hidden_conversations`, `reaction_options`, `message_reactions`.
+- **Merieme Sakhsoukhi (MS):** `posts`, `post_photos`, `post_likes`, `post_comments`, `post_reports`, `notifications`.
+- **Kabanga Mbangu (KB):** `events`, `event_invitations`.
+- **Darrin Phimphisane (DP):** `catalog_items`, `owned_items`, `room_surfaces`, `reserved_room_cells`, `item_footprints`, `compatible_item_overlaps`, `dorms`, `dorm_placements`, `guestbook_notes`, `counted_dorm_visits`, `snipe_requests`, `snipe_tags`, `snipe_reports`, `reward_rules`, `point_transactions`.
+- **Sonja Seferasi (SS):** `student_preferences`, `activities`, `default_faces`, `avatar_photo_faces`, `student_avatars`, `game_levels`, `wordle_words`, `wordle_puzzles`, `wordle_guesses`, `participation_settings`, `participation_events`, `streak_instances`, `participation_days`, `reminder_dismissals`, `level_completions`.
+
+The owner should also inspect the related views, functions and triggers; reviewing only CREATE TABLE declarations is insufficient.
 
 ## Decisions still required before the team freezes the SRS/schema
 
@@ -434,6 +454,6 @@ student_id/category/points_change/recorded_at record a balance change; transacti
 - **74 checks passed**, with 0 failures: fresh/repeated builds, populated reset, representative valid workflows and rejected invalid data.
 - The test database is isolated and temporary. No live app database was changed. This is a real PostgreSQL engine compiled to WebAssembly through PGlite, not a native PostgreSQL service test. The team should also run the two commands above on its chosen native PostgreSQL environment before submission.
 - Multi-session race/load testing, authenticated API authorization, real image/game proof validation and end-to-end UI/NFR verification are not asserted complete.
-- Table references were checked against all 938 records in the reviewed SRS. The CSV distinguishes direct storage, shared dependencies, conditional features and requirements with no new storage. The dictionary accounts for every table and explains its columns; human peer review remains required.
+- The original execution validation used the 938-record SRS baseline. The later document-only alignment expanded the traceability CSV to 946 records; it did not rerun database tests. The CSV distinguishes direct storage, shared dependencies, conditional features and requirements with no new storage. The dictionary accounts for every table and explains its columns; human peer review remains required.
 
 Technical references used while checking the SQL: [PostgreSQL constraints](https://www.postgresql.org/docs/18/ddl-constraints.html), [PGlite PostgreSQL runtime](https://pglite.dev/docs/about), and [PGlite batch execution](https://pglite.dev/docs/).

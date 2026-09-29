@@ -1,7 +1,8 @@
 -- SocialU | CSC 351 Database Schema Script | 25 September 2026
 -- Baseline: documentation/SocialU_SRS_Editable.docx and documentation/user_requirements.md.
--- REVIEW DRAFT: one proposed reviewer per table; no human review is asserted completed.
+-- REVIEW DRAFT: names follow SRS feature ownership; each named review is proposed and pending.
 -- Each reviewer must actually review and replace "proposed; review pending" before submission.
+-- Shared upload coordination and the independent peer-review requirement are explained in schema_review.md.
 -- Run: psql -v ON_ERROR_STOP=1 -d YOUR_EMPTY_DEVELOPMENT_DATABASE -f database/schema.sql
 -- DESTRUCTIVE DEVELOPMENT RESET: rerunning removes socialu, its data, and dependent objects.
 -- This is a schema build, not a migration of supabase/schema.sql or the deployed application.
@@ -20,7 +21,7 @@ REVOKE ALL ON SCHEMA socialu FROM PUBLIC;
 SET LOCAL search_path = socialu, pg_catalog;
 
 -- Table: university
--- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
+-- Reviewed by: LN (Linh Nguyen) - proposed; review pending
 -- Supports: SRS-101.3, SRS-113.4, SRS-106.4
 -- Purpose: Stores the one university served by the semester release.
 CREATE TABLE university (
@@ -29,7 +30,7 @@ CREATE TABLE university (
 );
 
 -- Table: university_domains
--- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
+-- Reviewed by: LN (Linh Nguyen) - proposed; review pending
 -- Supports: SRS-100.5, SRS-106.4
 -- Purpose: Stores approved email domains belonging to the launch university.
 CREATE TABLE university_domains (
@@ -38,7 +39,7 @@ CREATE TABLE university_domains (
 );
 
 -- Table: students
--- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
+-- Reviewed by: LN (Linh Nguyen) - proposed; review pending
 -- Supports: SRS-100.1, SRS-100.2, SRS-100.3, SRS-100.4, SRS-100.5, SRS-100.6, SRS-100.9, SRS-100.10, SRS-103.5, SRS-103.6, SRS-106.8, SRS-106.9, SRS-123.6, SRS-123.9, SRS-NFR-14
 -- Purpose: Stores each student identity, credential digest, and account access state once.
 CREATE TABLE students (
@@ -56,7 +57,7 @@ CREATE TABLE students (
 );
 
 -- Table: authentication_challenges
--- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
+-- Reviewed by: LN (Linh Nguyen) - proposed; review pending
 -- Supports: SRS-101.1, SRS-101.4, SRS-101.6, SRS-102.1, SRS-102.4, SRS-102.5, SRS-104.2, SRS-104.3, SRS-106.6, SRS-106.7
 -- Purpose: Stores digests and validity times of email verification and password reset codes.
 CREATE TABLE authentication_challenges (
@@ -78,7 +79,7 @@ CREATE TABLE authentication_challenges (
 );
 
 -- Table: login_sessions
--- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
+-- Reviewed by: LN (Linh Nguyen) - proposed; review pending
 -- Supports: SRS-103.12, SRS-104.12, SRS-105.14, SRS-105.15, SRS-107.2, SRS-107.3, SRS-107.4, SRS-107.5, SRS-107.6, SRS-107.8, SRS-108.5, SRS-NFR-22
 -- Purpose: Stores login history and revocable sign-in sessions without an inactivity expiry.
 CREATE TABLE login_sessions (
@@ -118,7 +119,7 @@ CREATE TABLE media_assets (
 );
 
 -- Table: student_profiles
--- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
+-- Reviewed by: LN (Linh Nguyen) - proposed; review pending
 -- Supports: SRS-109.2, SRS-109.5, SRS-109.6, SRS-109.7, SRS-109.8, SRS-109.9, SRS-110.5, SRS-110.6, SRS-113.2, SRS-113.3, SRS-113.5, SRS-113.6, SRS-113.7
 -- Purpose: Stores a student profile separately from private authentication information.
 CREATE TABLE student_profiles (
@@ -135,7 +136,7 @@ CREATE TABLE student_profiles (
 );
 
 -- Table: friend_requests
--- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
+-- Reviewed by: LN (Linh Nguyen) - proposed; review pending
 -- Supports: SRS-114.2, SRS-114.3, SRS-115.9, SRS-116.2, SRS-117.1, SRS-119.7, SRS-120.4, SRS-121.6, SRS-507.4
 -- Purpose: Stores friend request outcomes and accepted friendship periods without a duplicate friendship table.
 CREATE TABLE friend_requests (
@@ -153,7 +154,7 @@ CREATE TABLE friend_requests (
 );
 
 -- Table: student_blocks
--- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
+-- Reviewed by: LN (Linh Nguyen) - proposed; review pending
 -- Supports: SRS-121.4, SRS-121.8, SRS-121.9, SRS-121.10, SRS-121.11, SRS-122.9
 -- Purpose: Stores directional student blocks used by profile, feed, friendship, and messaging access checks.
 CREATE TABLE student_blocks (
@@ -164,7 +165,7 @@ CREATE TABLE student_blocks (
 );
 
 -- Table: student_preferences
--- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
+-- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
 -- Supports: SRS-601.1, SRS-601.4, SRS-601.7, SRS-627.2, SRS-627.4, SRS-627.9, SRS-NFR-62
 -- Purpose: Stores account-wide navigation position and interface appearance preferences.
 CREATE TABLE student_preferences (
@@ -174,7 +175,7 @@ CREATE TABLE student_preferences (
 );
 
 -- Table: conversations
--- Reviewed by: LN (Linh Nguyen) - proposed; review pending
+-- Reviewed by: LP (Loens Paul) - proposed; review pending
 -- Supports: SRS-200.3, SRS-200.4, SRS-200.5, SRS-200.6, SRS-202.1, SRS-202.2, SRS-203.3, SRS-NFR-36
 -- Purpose: Stores private conversation pairs and group identities in a shared conversation namespace.
 CREATE TABLE conversations (
@@ -190,7 +191,7 @@ CREATE TABLE conversations (
 );
 
 -- Table: group_memberships
--- Reviewed by: LN (Linh Nguyen) - proposed; review pending
+-- Reviewed by: LP (Loens Paul) - proposed; review pending
 -- Supports: SRS-202.3, SRS-203.4, SRS-204.2, SRS-204.3, SRS-205.12, SRS-205.13, SRS-207.5, SRS-208.2, SRS-213.5, SRS-NFR-34, SRS-NFR-35
 -- Purpose: Stores group membership periods and roles, preserving former members historical access boundaries.
 CREATE TABLE group_memberships (
@@ -204,7 +205,7 @@ CREATE TABLE group_memberships (
 );
 
 -- Table: group_invitations
--- Reviewed by: LN (Linh Nguyen) - proposed; review pending
+-- Reviewed by: LP (Loens Paul) - proposed; review pending
 -- Supports: SRS-205.1, SRS-205.3, SRS-205.5, SRS-205.6, SRS-205.8
 -- Purpose: Stores pending and answered invitations to join group conversations.
 CREATE TABLE group_invitations (
@@ -217,7 +218,7 @@ CREATE TABLE group_invitations (
 );
 
 -- Table: message_requests
--- Reviewed by: LN (Linh Nguyen) - proposed; review pending
+-- Reviewed by: LP (Loens Paul) - proposed; review pending
 -- Supports: SRS-200.7, SRS-200.8, SRS-200.9, SRS-200.11, SRS-200.12, SRS-200.14, SRS-200.17, SRS-200.18, SRS-NFR-26
 -- Purpose: Stores non-friend messaging introductions and accepted or declined consent.
 CREATE TABLE message_requests (
@@ -234,7 +235,7 @@ CREATE TABLE message_requests (
 );
 
 -- Table: messages
--- Reviewed by: LN (Linh Nguyen) - proposed; review pending
+-- Reviewed by: LP (Loens Paul) - proposed; review pending
 -- Supports: SRS-201.1, SRS-201.6, SRS-201.8, SRS-201.14, SRS-201.17, SRS-209.4, SRS-211.3, SRS-211.4, SRS-211.5, SRS-200.14, SRS-NFR-26
 -- Purpose: Stores message content and same-conversation replies, with one link for a delivered request introduction.
 CREATE TABLE messages (
@@ -262,7 +263,7 @@ CREATE TABLE messages (
 );
 
 -- Table: message_reads
--- Reviewed by: LN (Linh Nguyen) - proposed; review pending
+-- Reviewed by: LP (Loens Paul) - proposed; review pending
 -- Supports: SRS-211.6, SRS-211.7, SRS-211.8, SRS-212.1, SRS-212.5, SRS-603.1
 -- Purpose: Stores which messages each recipient has read; absent rows indicate unread messages.
 CREATE TABLE message_reads (
@@ -281,7 +282,7 @@ CREATE TABLE hidden_messages (
 );
 
 -- Table: hidden_conversations
--- Reviewed by: LN (Linh Nguyen) - proposed; review pending
+-- Reviewed by: LP (Loens Paul) - proposed; review pending
 -- Supports: SRS-207.6, SRS-207.7
 -- Purpose: Stores group conversation history hidden by a former member only in that members view.
 CREATE TABLE hidden_conversations (
@@ -291,7 +292,7 @@ CREATE TABLE hidden_conversations (
 );
 
 -- Table: reaction_options
--- Reviewed by: LN (Linh Nguyen) - proposed; review pending
+-- Reviewed by: LP (Loens Paul) - proposed; review pending
 -- Supports: SRS-210.2, SRS-210.3
 -- Purpose: Stores the team-approved fixed reaction emoji set without inventing that set.
 CREATE TABLE reaction_options (
@@ -299,7 +300,7 @@ CREATE TABLE reaction_options (
 );
 
 -- Table: message_reactions
--- Reviewed by: LN (Linh Nguyen) - proposed; review pending
+-- Reviewed by: LP (Loens Paul) - proposed; review pending
 -- Supports: SRS-210.3, SRS-210.4, SRS-210.5, SRS-210.6
 -- Purpose: Stores at most one approved emoji reaction per student on each group message.
 CREATE TABLE message_reactions (
@@ -310,7 +311,7 @@ CREATE TABLE message_reactions (
 );
 
 -- Table: posts
--- Reviewed by: LP (Loens Paul) - proposed; review pending
+-- Reviewed by: MS (Merieme Sakhsoukhi) - proposed; review pending
 -- Supports: SRS-303.2, SRS-303.3, SRS-305.3, SRS-306.2, SRS-306.4, SRS-307.3, SRS-315.1, SRS-315.2, SRS-315.3, SRS-405.1
 -- Purpose: Stores published campus or friends-only posts; drafts and Snipes are excluded.
 CREATE TABLE posts (
@@ -324,7 +325,7 @@ CREATE TABLE posts (
 );
 
 -- Table: post_photos
--- Reviewed by: LP (Loens Paul) - proposed; review pending
+-- Reviewed by: MS (Merieme Sakhsoukhi) - proposed; review pending
 -- Supports: SRS-304.1, SRS-304.3, SRS-304.4, SRS-306.3, SRS-NFR-41
 -- Purpose: Relates one or more accepted photographs to a published post.
 CREATE TABLE post_photos (
@@ -334,7 +335,7 @@ CREATE TABLE post_photos (
 );
 
 -- Table: post_tags
--- Reviewed by: LP (Loens Paul) - proposed; review pending
+-- Reviewed by: LN (Linh Nguyen) - proposed; review pending
 -- Supports: SRS-112.4, SRS-113.13
 -- Purpose: Relates students to feed posts in which they are tagged for the profile Tagged category.
 CREATE TABLE post_tags (
@@ -344,7 +345,7 @@ CREATE TABLE post_tags (
 );
 
 -- Table: post_likes
--- Reviewed by: LP (Loens Paul) - proposed; review pending
+-- Reviewed by: MS (Merieme Sakhsoukhi) - proposed; review pending
 -- Supports: SRS-308.2, SRS-308.3, SRS-309.1, SRS-405.2, SRS-405.3, SRS-405.4
 -- Purpose: Stores one active like per student and post, with the latest like time for Trending.
 CREATE TABLE post_likes (
@@ -355,7 +356,7 @@ CREATE TABLE post_likes (
 );
 
 -- Table: post_comments
--- Reviewed by: LP (Loens Paul) - proposed; review pending
+-- Reviewed by: MS (Merieme Sakhsoukhi) - proposed; review pending
 -- Supports: SRS-310.1, SRS-310.2, SRS-310.3, SRS-311.4, SRS-311.5
 -- Purpose: Stores comment text, authorship, and submission time for each post comment.
 CREATE TABLE post_comments (
@@ -367,7 +368,7 @@ CREATE TABLE post_comments (
 );
 
 -- Table: post_reports
--- Reviewed by: LP (Loens Paul) - proposed; review pending
+-- Reviewed by: MS (Merieme Sakhsoukhi) - proposed; review pending
 -- Supports: SRS-314.1, SRS-314.2, SRS-314.3, SRS-314.5, SRS-NFR-43
 -- Purpose: Stores accepted content reports privately until the reported post is deleted.
 CREATE TABLE post_reports (
@@ -377,7 +378,7 @@ CREATE TABLE post_reports (
 );
 
 -- Table: events
--- Reviewed by: MS (Merieme Sakhsoukhi) - proposed; review pending
+-- Reviewed by: KB (Kabanga Mbangu) - proposed; review pending
 -- Supports: SRS-400.1, SRS-400.2, SRS-400.3, SRS-400.4, SRS-400.5, SRS-400.6, SRS-404.7, SRS-404.9, SRS-NFR-45
 -- Purpose: Stores each published campus event and its current cancellation state.
 CREATE TABLE events (
@@ -391,7 +392,7 @@ CREATE TABLE events (
 );
 
 -- Table: event_invitations
--- Reviewed by: MS (Merieme Sakhsoukhi) - proposed; review pending
+-- Reviewed by: KB (Kabanga Mbangu) - proposed; review pending
 -- Supports: SRS-402.1, SRS-402.3, SRS-402.5, SRS-403.2, SRS-403.3, SRS-403.4, SRS-403.5, SRS-404.11
 -- Purpose: Stores each invited student and their current event RSVP without requiring a friendship.
 CREATE TABLE event_invitations (
@@ -402,7 +403,7 @@ CREATE TABLE event_invitations (
 );
 
 -- Table: notifications
--- Reviewed by: LP (Loens Paul) - proposed; review pending
+-- Reviewed by: MS (Merieme Sakhsoukhi) - proposed; review pending
 -- Supports: SRS-114.7, SRS-116.4, SRS-116.5, SRS-312.1, SRS-312.2, SRS-312.3, SRS-312.4, SRS-313.1, SRS-313.2, SRS-313.3, SRS-NFR-42
 -- Purpose: Stores friend and feed interaction notices with real foreign-key targets and times for grouping.
 CREATE TABLE notifications (
@@ -420,7 +421,7 @@ CREATE TABLE notifications (
 );
 
 -- Table: activities
--- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
+-- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
 -- Supports: SRS-607.1, SRS-607.2, SRS-615.1, SRS-623.1
 -- Purpose: Stores the included Game Room activities, descriptions, and instructions.
 CREATE TABLE activities (
@@ -432,7 +433,7 @@ CREATE TABLE activities (
 );
 
 -- Table: catalog_items
--- Reviewed by: KB (Kabanga Mbangu) - proposed; review pending
+-- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
 -- Supports: SRS-503.1, SRS-522.2, SRS-522.7, SRS-529.1, SRS-529.5, SRS-529.7, SRS-608.1
 -- Purpose: Stores shared outfit and DormSpace catalog definitions and current offers.
 CREATE TABLE catalog_items (
@@ -451,7 +452,7 @@ CREATE TABLE catalog_items (
 );
 
 -- Table: owned_items
--- Reviewed by: KB (Kabanga Mbangu) - proposed; review pending
+-- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
 -- Supports: SRS-503.1, SRS-503.4, SRS-505.6, SRS-522.6, SRS-523.1, SRS-524.2, SRS-608.1
 -- Purpose: Stores one ownership record per student and catalog item shared by the closet and dorm.
 CREATE TABLE owned_items (
@@ -462,7 +463,7 @@ CREATE TABLE owned_items (
 );
 
 -- Table: default_faces
--- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
+-- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
 -- Supports: SRS-607.4, SRS-608.4, SRS-608.5
 -- Purpose: Stores provided default avatar faces and the initial default selection.
 CREATE TABLE default_faces (
@@ -472,7 +473,7 @@ CREATE TABLE default_faces (
 );
 
 -- Table: avatar_photo_faces
--- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
+-- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
 -- Supports: SRS-609.6, SRS-609.7, SRS-609.8, SRS-609.14, SRS-610.1
 -- Purpose: Stores successfully saved photographic faces and normalized crop coordinates.
 CREATE TABLE avatar_photo_faces (
@@ -489,7 +490,7 @@ CREATE TABLE avatar_photo_faces (
 );
 
 -- Table: student_avatars
--- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
+-- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
 -- Supports: SRS-608.3, SRS-608.5, SRS-610.1, SRS-610.2, SRS-504.1, SRS-NFR-62
 -- Purpose: Stores the one saved avatar face and owned complete outfit used across SocialU.
 CREATE TABLE student_avatars (
@@ -503,7 +504,7 @@ CREATE TABLE student_avatars (
 );
 
 -- Table: room_surfaces
--- Reviewed by: KB (Kabanga Mbangu) - proposed; review pending
+-- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
 -- Supports: SRS-500.2, SRS-500.8, SRS-529.7
 -- Purpose: Stores the fixed room grid dimensions for permitted furniture and decoration surfaces.
 CREATE TABLE room_surfaces (
@@ -513,7 +514,7 @@ CREATE TABLE room_surfaces (
 );
 
 -- Table: reserved_room_cells
--- Reviewed by: KB (Kabanga Mbangu) - proposed; review pending
+-- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
 -- Supports: SRS-500.9
 -- Purpose: Stores entrance and exit grid cells that must remain free of placed items.
 CREATE TABLE reserved_room_cells (
@@ -524,7 +525,7 @@ CREATE TABLE reserved_room_cells (
 );
 
 -- Table: item_footprints
--- Reviewed by: KB (Kabanga Mbangu) - proposed; review pending
+-- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
 -- Supports: SRS-500.2, SRS-500.7, SRS-500.8, SRS-529.7
 -- Purpose: Stores each decoration footprint and its one permitted fixed-orientation surface.
 CREATE TABLE item_footprints (
@@ -536,7 +537,7 @@ CREATE TABLE item_footprints (
 );
 
 -- Table: compatible_item_overlaps
--- Reviewed by: KB (Kabanga Mbangu) - proposed; review pending
+-- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
 -- Supports: SRS-500.10, SRS-529.7
 -- Purpose: Stores the explicit catalog item pairs permitted to overlap in a dorm.
 CREATE TABLE compatible_item_overlaps (
@@ -547,7 +548,7 @@ CREATE TABLE compatible_item_overlaps (
 );
 
 -- Table: dorms
--- Reviewed by: KB (Kabanga Mbangu) - proposed; review pending
+-- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
 -- Supports: SRS-500.13, SRS-500.14, SRS-505.1, SRS-505.5, SRS-505.8, SRS-508.3, SRS-508.4
 -- Purpose: Stores each owners current dorm appearance, welcome message, and save version.
 CREATE TABLE dorms (
@@ -561,7 +562,7 @@ CREATE TABLE dorms (
 );
 
 -- Table: dorm_placements
--- Reviewed by: KB (Kabanga Mbangu) - proposed; review pending
+-- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
 -- Supports: SRS-500.2, SRS-500.3, SRS-500.4, SRS-500.5, SRS-500.6, SRS-505.2
 -- Purpose: Stores each owned items single placement in its owners current dorm.
 CREATE TABLE dorm_placements (
@@ -574,7 +575,7 @@ CREATE TABLE dorm_placements (
 );
 
 -- Table: guestbook_notes
--- Reviewed by: KB (Kabanga Mbangu) - proposed; review pending
+-- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
 -- Supports: SRS-508.9, SRS-508.10, SRS-508.11, SRS-508.13, SRS-508.16, SRS-508.18, SRS-508.20
 -- Purpose: Stores visitor notes with stable authorship and original creation times.
 CREATE TABLE guestbook_notes (
@@ -587,7 +588,7 @@ CREATE TABLE guestbook_notes (
 );
 
 -- Table: counted_dorm_visits
--- Reviewed by: KB (Kabanga Mbangu) - proposed; review pending
+-- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
 -- Supports: SRS-509.2, SRS-509.3, SRS-509.6, SRS-509.7, SRS-509.8, SRS-509.9
 -- Purpose: Stores only counted visits so cumulative counts can be derived without duplicating them.
 CREATE TABLE counted_dorm_visits (
@@ -599,7 +600,7 @@ CREATE TABLE counted_dorm_visits (
 );
 
 -- Table: game_levels
--- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
+-- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
 -- Supports: SRS-616.1, SRS-617.1, SRS-618.1, SRS-618.4
 -- Purpose: Stores included Game 1 level numbers and authored course asset references.
 CREATE TABLE game_levels (
@@ -608,7 +609,7 @@ CREATE TABLE game_levels (
 );
 
 -- Table: wordle_words
--- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
+-- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
 -- Supports: SRS-624.1, SRS-624.6
 -- Purpose: Stores the approved five-letter English guess dictionary for optional Wordle.
 CREATE TABLE wordle_words (
@@ -616,7 +617,7 @@ CREATE TABLE wordle_words (
 );
 
 -- Table: wordle_puzzles
--- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
+-- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
 -- Supports: SRS-624.1, SRS-624.12, SRS-625.2
 -- Purpose: Stores the one Wordle answer assigned to each America/New_York calendar date.
 CREATE TABLE wordle_puzzles (
@@ -625,7 +626,7 @@ CREATE TABLE wordle_puzzles (
 );
 
 -- Table: wordle_guesses
--- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
+-- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
 -- Supports: SRS-624.6, SRS-624.8, SRS-624.9, SRS-624.11, SRS-625.3, SRS-626.1, SRS-NFR-62
 -- Purpose: Stores accepted daily guesses; results and letter feedback are derived from them.
 CREATE TABLE wordle_guesses (
@@ -643,7 +644,7 @@ CREATE TABLE wordle_guesses (
 );
 
 -- Table: participation_settings
--- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
+-- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
 -- Supports: SRS-613.4, SRS-613.10, SRS-613.11
 -- Purpose: Stores the immutable initial participation time zone for each participating account.
 CREATE TABLE participation_settings (
@@ -652,7 +653,7 @@ CREATE TABLE participation_settings (
 );
 
 -- Table: participation_events
--- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
+-- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
 -- Supports: SRS-613.1, SRS-613.2, SRS-613.13, SRS-526.1, SRS-526.3
 -- Purpose: Stores authenticated qualifying activity identities shared by streak and reward processing.
 CREATE TABLE participation_events (
@@ -670,7 +671,7 @@ CREATE TABLE participation_events (
 );
 
 -- Table: streak_instances
--- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
+-- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
 -- Supports: SRS-613.9, SRS-613.13, SRS-526.18, SRS-526.20
 -- Purpose: Identifies each distinct shared streak from its first qualifying date to its reset.
 CREATE TABLE streak_instances (
@@ -684,7 +685,7 @@ CREATE TABLE streak_instances (
 );
 
 -- Table: participation_days
--- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
+-- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
 -- Supports: SRS-612.4, SRS-613.3, SRS-613.5, SRS-613.6, SRS-613.7, SRS-613.8, SRS-613.9, SRS-613.12, SRS-613.13
 -- Purpose: Stores shared daily participation outcomes without a second rewards streak.
 CREATE TABLE participation_days (
@@ -701,7 +702,7 @@ CREATE TABLE participation_days (
 );
 
 -- Table: reminder_dismissals
--- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
+-- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
 -- Supports: SRS-614.1, SRS-614.3, SRS-614.5
 -- Purpose: Stores participation reminder dismissals for the remainder of each participation day.
 CREATE TABLE reminder_dismissals (
@@ -711,7 +712,7 @@ CREATE TABLE reminder_dismissals (
 );
 
 -- Table: level_completions
--- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
+-- Reviewed by: SS (Sonja Seferasi) - proposed; review pending
 -- Supports: SRS-619.3, SRS-619.4, SRS-619.9, SRS-618.6, SRS-520.4, SRS-528.6
 -- Purpose: Stores confirmed successful Game 1 attempts and their collected-coin results.
 CREATE TABLE level_completions (
@@ -721,7 +722,7 @@ CREATE TABLE level_completions (
 );
 
 -- Table: snipe_requests
--- Reviewed by: KB (Kabanga Mbangu) - proposed; review pending
+-- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
 -- Supports: SRS-510.2, SRS-510.9, SRS-510.10, SRS-510.11, SRS-510.12, SRS-512.4, SRS-512.9, SRS-512.11, SRS-514.5, SRS-514.7
 -- Purpose: Stores immutable Snipe submission identity, its original conversation, and approval lifecycle.
 CREATE TABLE snipe_requests (
@@ -744,7 +745,7 @@ CREATE TABLE snipe_requests (
 );
 
 -- Table: snipe_tags
--- Reviewed by: KB (Kabanga Mbangu) - proposed; review pending
+-- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
 -- Supports: SRS-510.5, SRS-510.6, SRS-511.2, SRS-511.3, SRS-511.4, SRS-511.9, SRS-511.11, SRS-513.1, SRS-513.6, SRS-525.2
 -- Purpose: Stores each originally tagged student and their separate identity and sharing answers.
 CREATE TABLE snipe_tags (
@@ -758,7 +759,7 @@ CREATE TABLE snipe_tags (
 );
 
 -- Table: snipe_reports
--- Reviewed by: KB (Kabanga Mbangu) - proposed; review pending
+-- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
 -- Supports: SRS-514.8, SRS-514.10, SRS-514.12, SRS-514.13
 -- Purpose: Stores group Snipe reports and their administrator review outcomes.
 CREATE TABLE snipe_reports (
@@ -772,7 +773,7 @@ CREATE TABLE snipe_reports (
 );
 
 -- Table: reward_rules
--- Reviewed by: KB (Kabanga Mbangu) - proposed; review pending
+-- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
 -- Supports: SRS-520.3, SRS-523.8, SRS-525.2, SRS-526.5, SRS-526.17, SRS-528.1, SRS-528.5, SRS-528.6
 -- Purpose: Stores approved reward amounts and eligibility explanations without guessing undecided rates.
 CREATE TABLE reward_rules (
@@ -787,7 +788,7 @@ CREATE TABLE reward_rules (
 );
 
 -- Table: point_transactions
--- Reviewed by: KB (Kabanga Mbangu) - proposed; review pending
+-- Reviewed by: DP (Darrin Phimphisane) - proposed; review pending
 -- Supports: SRS-520.1, SRS-523.1, SRS-523.3, SRS-523.4, SRS-523.5, SRS-523.7, SRS-525.1, SRS-526.6, SRS-526.18, SRS-527.2, SRS-527.3, SRS-527.5, SRS-NFR-49, SRS-NFR-50
 -- Purpose: Stores the immutable shared points ledger with typed sources and unique retry identities.
 CREATE TABLE point_transactions (
