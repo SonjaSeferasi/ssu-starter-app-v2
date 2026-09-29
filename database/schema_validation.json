@@ -1,0 +1,304 @@
+{
+  "engine": "PostgreSQL 18.3 (PGlite 0.5.8) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+  "passed": 74,
+  "failed": [],
+  "scope": "isolated PostgreSQL via PGlite; native deployment and concurrent sessions not tested",
+  "checks": [
+    {
+      "name": "all 59 tables have primary keys",
+      "passed": true
+    },
+    {
+      "name": "required student name",
+      "passed": true
+    },
+    {
+      "name": "case-insensitive duplicate email",
+      "passed": true
+    },
+    {
+      "name": "unsupported university domain",
+      "passed": true
+    },
+    {
+      "name": "profile required fields",
+      "passed": true
+    },
+    {
+      "name": "class-year enum",
+      "passed": true
+    },
+    {
+      "name": "theme enum",
+      "passed": true
+    },
+    {
+      "name": "dangling student foreign key",
+      "passed": true
+    },
+    {
+      "name": "ten MB profile limit",
+      "passed": true
+    },
+    {
+      "name": "unsupported avatar file format",
+      "passed": true
+    },
+    {
+      "name": "15 MB chat upload accepted",
+      "passed": true
+    },
+    {
+      "name": "wrong photo workflow",
+      "passed": true
+    },
+    {
+      "name": "another students profile photo",
+      "passed": true
+    },
+    {
+      "name": "self friend request",
+      "passed": true
+    },
+    {
+      "name": "duplicate unordered friendship",
+      "passed": true
+    },
+    {
+      "name": "duplicate private conversation",
+      "passed": true
+    },
+    {
+      "name": "block ends friendship and removes guestbook notes",
+      "passed": true
+    },
+    {
+      "name": "unfriend requires fresh accepted messaging request",
+      "passed": true
+    },
+    {
+      "name": "group cannot commit without owner",
+      "passed": true
+    },
+    {
+      "name": "only one group administrator",
+      "passed": true
+    },
+    {
+      "name": "private pair cannot have group members",
+      "passed": true
+    },
+    {
+      "name": "invalid group invitation by regular member",
+      "passed": true
+    },
+    {
+      "name": "group ownership transfers atomically",
+      "passed": true
+    },
+    {
+      "name": "text message 500-character maximum",
+      "passed": true
+    },
+    {
+      "name": "outsider cannot send private message",
+      "passed": true
+    },
+    {
+      "name": "private message read state",
+      "passed": true
+    },
+    {
+      "name": "cross-conversation reply is rejected",
+      "passed": true
+    },
+    {
+      "name": "blank post with no photos",
+      "passed": true
+    },
+    {
+      "name": "photo-only post commits with its attachment",
+      "passed": true
+    },
+    {
+      "name": "one active like per account per post",
+      "passed": true
+    },
+    {
+      "name": "old post qualifies through a recent like",
+      "passed": true
+    },
+    {
+      "name": "likes older than 168 hours do not rank",
+      "passed": true
+    },
+    {
+      "name": "fifth accepted report removes the post",
+      "passed": true
+    },
+    {
+      "name": "nonfriend event invitation and decline are stored",
+      "passed": true
+    },
+    {
+      "name": "event status limited to active or cancelled",
+      "passed": true
+    },
+    {
+      "name": "RSVP change after event begins",
+      "passed": true
+    },
+    {
+      "name": "unowned item cannot be placed",
+      "passed": true
+    },
+    {
+      "name": "out-of-bounds placement",
+      "passed": true
+    },
+    {
+      "name": "reserved entrance placement",
+      "passed": true
+    },
+    {
+      "name": "incompatible overlap",
+      "passed": true
+    },
+    {
+      "name": "explicit compatible overlap allowed",
+      "passed": true
+    },
+    {
+      "name": "guestbook rejects blank notes",
+      "passed": true
+    },
+    {
+      "name": "visit counts at most once within 24 hours",
+      "passed": true
+    },
+    {
+      "name": "counted visits survive unfriending",
+      "passed": true
+    },
+    {
+      "name": "furniture cannot be an avatar outfit",
+      "passed": true
+    },
+    {
+      "name": "crop must stay inside photograph",
+      "passed": true
+    },
+    {
+      "name": "invalid participation time zone",
+      "passed": true
+    },
+    {
+      "name": "initial participation time zone is immutable",
+      "passed": true
+    },
+    {
+      "name": "one participation outcome per day",
+      "passed": true
+    },
+    {
+      "name": "participation must match event date",
+      "passed": true
+    },
+    {
+      "name": "level three locked without level two completion",
+      "passed": true
+    },
+    {
+      "name": "next level unlocks after saved completion",
+      "passed": true
+    },
+    {
+      "name": "six-guess maximum",
+      "passed": true
+    },
+    {
+      "name": "completed Wordle puzzle rejects further guesses",
+      "passed": true
+    },
+    {
+      "name": "Wordle accepted guess cannot be edited",
+      "passed": true
+    },
+    {
+      "name": "repeated-letter Wordle feedback is correct",
+      "passed": true
+    },
+    {
+      "name": "daily participation cannot be rewarded twice",
+      "passed": true
+    },
+    {
+      "name": "cannot buy beyond available points",
+      "passed": true
+    },
+    {
+      "name": "already owned item cannot be repurchased",
+      "passed": true
+    },
+    {
+      "name": "changed price requires confirmation",
+      "passed": true
+    },
+    {
+      "name": "purchase grants ownership and debits one ledger atomically",
+      "passed": true
+    },
+    {
+      "name": "reward amount comes from stored rule",
+      "passed": true
+    },
+    {
+      "name": "ledger history cannot be edited",
+      "passed": true
+    },
+    {
+      "name": "ledger history cannot be deleted",
+      "passed": true
+    },
+    {
+      "name": "Snipe submission has sealed immutable tags",
+      "passed": true
+    },
+    {
+      "name": "accepted Snipe consent publishes automatically and commits",
+      "passed": true
+    },
+    {
+      "name": "negative sharing answer rejects the whole request",
+      "passed": true
+    },
+    {
+      "name": "published sharing withdrawal removes the Snipe",
+      "passed": true
+    },
+    {
+      "name": "Snipe publication and reward preserve removal history",
+      "passed": true
+    },
+    {
+      "name": "Snipe without tags cannot commit",
+      "passed": true
+    },
+    {
+      "name": "Snipe cannot publish without sharing consent",
+      "passed": true
+    },
+    {
+      "name": "Snipe duplicate pair is rejected inside cooldown",
+      "passed": true
+    },
+    {
+      "name": "unapproved tag list cannot change after submission",
+      "passed": true
+    },
+    {
+      "name": "re-run after populated cross-feature fixtures resets cleanly",
+      "passed": true
+    }
+  ]
+}
