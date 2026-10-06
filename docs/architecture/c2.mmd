@@ -1,0 +1,112 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 26px
+    lineColor: '#395664'
+    edgeLabelBackground: '#ffffff'
+    primaryTextColor: '#163743'
+  flowchart:
+    htmlLabels: true
+    curve: linear
+    nodeSpacing: 60
+    rankSpacing: 90
+    padding: 24
+---
+%% C2 - Container Diagram | SocialU | Planned semester architecture
+%% Authors: left blank for the team to assign.
+%% This diagram follows the professor's Container View structure.
+%% C1 SocialU is opened into Web App and Backend API; Supabase and Resend stay external.
+%% Backend API is exactly the container expanded by docs/architecture/c3.mmd.
+%% The browser client and server API share one Next.js project, not separate microservices.
+%% Web App means the React browser runtime, with pages/assets served by Next.js.
+%% The server hosting provider is not selected; no Vercel or other host is invented.
+%% Supabase is the hosted-cloud provider, grouping Database, Auth, Storage and Realtime.
+%% The manually arranged c2.svg/c2.png and this Mermaid source use the same eight nodes
+%% and nine relationships. Mermaid may arrange the same model differently.
+%% Single arrows show uses/dependencies; responses are implicit. The double arrow
+%% denotes the persistent bidirectional WebSocket connection (subscriptions / updates).
+%% Student is the single top-level user class, matching C1 and the approved URD.
+%% Web App owns screens, navigation, avatar preview and browser gameplay movement,
+%% jumping, collisions, pause and unsaved attempt state (UR-600 to UR-627).
+%% Backend API owns account/authorization rules, feature operations and confirmed saves.
+%% C3 provides the eleven internal API components; they are intentionally not shown here.
+%% Durable data includes the single SS participation record consumed by DP points,
+%% never a second independent reward streak (SRS-613.13; UR-526).
+%% Database contains 59 tables in the socialu schema; no schema change is proposed.
+%% Source schema SHA-256: cfadaa90ee900e61591aec091f0f707acc9a47610d0cccaa6502608e7cc58d65.
+%% Database calls use Supabase REST/RPC over HTTPS; SQL transactions run in PostgreSQL.
+%% Storage contains private photographs. The API checks owner, audience, membership
+%% and Snipe consent/removal before allowing media access; this is planned behavior.
+%% Supabase Auth is already used by the starter. Mapping the provider to students,
+%% authentication_challenges and login_sessions in the new schema remains open.
+%% The Web App calls the API with HTTPS JSON and an access token for protected requests;
+%% it is not granted unrestricted database access by this proposed architecture.
+%% User-requested revision: show WebSocket transport for the existing chat feature.
+%% Proposed transport: Supabase Realtime Broadcast, not a new standalone socket server.
+%% Supports UR-201 (message delivery/display), UR-202 to UR-208 (group chat), and
+%% UR-213 (privacy), especially SRS-213.6 (former members receive no new messages).
+%% Browser chat sends still go through Backend API HTTPS operations. Only committed,
+%% authorized chat updates are published through the Realtime HTTPS Broadcast API.
+%% The Web App subscribes using WSS (secure WebSocket), with an authenticated token.
+%% Use private recipient channels; the server rechecks current membership/visibility
+%% when selecting recipients for each publication, including blocks and Snipe consent.
+%% Joining a conversation channel once must not grant indefinite future access.
+%% Live events do not replace durable message history; the API reloads permitted
+%% history after reconnecting. No typing indicators or presence feature is invented.
+%% Realtime identity mapping and private-channel authorization remain to implement;
+%% this drawing is not evidence of configured policies or functioning live chat.
+%% No changes to database/schema.sql are made by this transport design.
+%% C3 keeps the same eleven components; its Chat & Snipes component will need the
+%% corresponding Realtime publish dependency added during the next C3 review.
+%% Transport reference: https://supabase.com/docs/guides/realtime/broadcast
+%% Authorization reference: https://supabase.com/docs/guides/realtime/authorization
+%% Resend is proposed, not configured. SocialU owns verification validity/account rules;
+%% Resend delivers verification, password-reset and security emails (SRS-101.2,
+%% SRS-102.2, SRS-103.7, SRS-104.2, SRS-105.16, SRS-106.6).
+%% Game 1 has three required levels; the fourth and Wordle are optional.
+%% Wordle exposes only today. Snipes remain in their original conversation.
+%% Events and Trending share one page. Drafts and university transfers are deferred.
+%% No instructor, LLM provider, socket server, scheduler, native app or payment service
+%% is added from the professor's example; none is an agreed SocialU C1 dependency.
+%% Sources: documentation/SocialU_SRS_Editable.md, documentation/user_requirements.md,
+%% database/schema.sql and database/schema_review.md.
+flowchart LR
+    Student["Student<br/>[Person]<br/>Student at the<br/>launch university."]
+
+    subgraph SocialU["SocialU [software system]"]
+        direction LR
+        WebApp["Web App<br/>[Next.js / React / TypeScript]<br/>Runs in the student browser.<br/>Screens and live chat;<br/>avatar and gameplay;<br/>client attempt / pause state."]
+        BackendAPI["Backend API<br/>[Next.js Route Handlers / TypeScript]<br/>Runs on the application server.<br/>Account and access rules;<br/>chat and other features;<br/>authorize and save."]
+    end
+
+    subgraph Supabase["Supabase [hosted cloud; external system]"]
+        direction TB
+        Realtime["Supabase Realtime<br/>[WebSocket; proposed]<br/>Private / group chat updates."]
+        Database[("Supabase Database<br/>[PostgreSQL]<br/>59 tables in socialu;<br/>SQL transactions.")]
+        Auth["Supabase Auth<br/>[External service]<br/>Identity / sessions;<br/>accounts and tokens."]
+        Storage["Supabase Storage<br/>[External service]<br/>Private photographs."]
+    end
+
+    Resend["Resend<br/>[External system; proposed]<br/>Delivers account emails."]
+
+    Student -->|"Uses<br/>SocialU"| WebApp
+    WebApp -->|"Calls API<br/>HTTPS / JSON + access token"| BackendAPI
+    WebApp <-->|"Live private / group chat<br/>WSS / WebSocket"| Realtime
+    BackendAPI -->|"Publishes chat updates<br/>HTTPS / Broadcast"| Realtime
+    BackendAPI -->|"Reads / writes<br/>HTTPS · REST/RPC"| Database
+    BackendAPI -->|"Identity / sessions<br/>HTTPS / Auth API"| Auth
+    BackendAPI -->|"Private photographs<br/>HTTPS / Storage API"| Storage
+    BackendAPI -->|"Requests account emails<br/>HTTPS / email API"| Resend
+    Resend -->|"Delivers account emails"| Student
+
+    classDef person fill:#173f52,stroke:#173f52,color:#ffffff,stroke-width:2px;
+    classDef container fill:#e3f0e8,stroke:#31735b,color:#163743,stroke-width:3px;
+    classDef external fill:#f0f3f5,stroke:#6e7f89,color:#163743,stroke-width:2px,stroke-dasharray:8 5;
+    class Student person;
+    class WebApp,BackendAPI container;
+    class Database,Auth,Storage,Realtime,Resend external;
+    style SocialU fill:#ffffff,stroke:#31735b,stroke-width:3px
+    style Supabase fill:#ffffff,stroke:#6e7f89,stroke-width:2px,stroke-dasharray:8 5
+    linkStyle default stroke:#395664,stroke-width:2.5px;

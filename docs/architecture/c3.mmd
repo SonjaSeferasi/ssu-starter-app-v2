@@ -1,0 +1,110 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 22px
+    lineColor: "#395664"
+  flowchart:
+    htmlLabels: true
+    curve: linear
+    nodeSpacing: 32
+    rankSpacing: 70
+---
+%% C3 - Component Diagram | SocialU | Planned semester architecture
+%% Authors: left blank as requested.
+%% Scope: one Backend API container; Next.js Route Handlers / TypeScript.
+%% All green boxes are code components in one API deployment, not microservices.
+%% Web App is outside this zoom. It owns screens, navigation, platform physics, movement, pause and unsaved attempt state.
+%% Features is a visual grouping, not an extra runtime/container/component.
+%% Access -> Features applies to every enclosed feature; Features -> DataMedia applies to every enclosed feature.
+%% The manually arranged SVG/PNG and this Mermaid source share the same component and relationship model.
+%% Cross-feature collaboration does not reassign SRS feature ownership.
+%% Chat integrates LP message/membership rules and DP Snipe consent; the two policies remain separate.
+%% Feed owns MS post data, audiences, interactions and notifications. Events owns KB event/RSVP and Trending policy; both use the same post/like store.
+%% Profiles contributes friendship notifications; Feed provides retrieval/grouping of the shared notification records.
+%% Game Room consumes DP owned outfits. DormSpace consumes DP owned items. Points grants ownership atomically in the shared database.
+%% Games -> Participation means a Game 1 attempt start or accepted Wordle guess, never opening a menu or an invalid guess.
+%% Dorm -> Participation means a successful DormSpace opening; a counted visit is a separate proof for DP reward processing.
+%% Chat -> Points means an approved/published Snipe with validated reaction proof under the DP reward rules; pending/rejected photos do not earn an award.
+%% Games -> Points means accepted completed-level/coin proof; replay eligibility and amounts remain open SRS decisions.
+%% Participation -> Points uses SRS-613.13 committed state and stable activity/date/streak identifiers, not a second streak.
+%% DataMedia calls database transactions/RPC functions for atomic multi-row writes, uniqueness and idempotent reward/purchase processing.
+%% The API authenticates the actor and authorizes each domain operation; DataMedia does not grant a browser unrestricted database access.
+%% Private photograph access follows owner, conversation membership, audience and Snipe consent/removal checks.
+%% Expiry and elapsed-day checks are performed when accessed; a production scheduling mechanism remains an implementation choice.
+%% Resend is proposed, not configured. It delivers emails; SocialU owns account-specific verification policies.
+%% Supabase Auth appears because the starter already uses it. Mapping it to the SRS-specific students/challenges/sessions schema remains open; this is not evidence those policies are implemented.
+%% Wordle is conditional. Background removal is conditional and is not drawn as an agreed external AI service.
+%% No native app, socket server, leaderboard, multi-university transfer, historical Wordle statistics or drafts are added.
+%% Sources: documentation/SocialU_SRS_Editable.md and database/schema.sql.
+%% Schema SHA-256: cfadaa90ee900e61591aec091f0f707acc9a47610d0cccaa6502608e7cc58d65.
+%% Access: UR-100 to UR-108; cross-cutting actor/permission checks
+%% Profiles: UR-109 to UR-123
+%% Feed: UR-301 to UR-315; MS posts, audiences, likes/comments/reports and notifications
+%% Events: UR-400 to UR-405; KB events/RSVPs and Trending; reads the same MS post/like data
+%% Avatar: UR-600 to UR-611 except deferred UR-606; UR-627; navigation is client UI, only stored preferences/entry-point data handled here
+%% Chat: UR-200 to UR-213; UR-510 to UR-514; LP Chat / DP Snipe policies stay distinct
+%% Games: UR-615 to UR-626; Wordle UR-623 to UR-626 conditional; browser owns physics/pause/transient attempt state
+%% Dorm: UR-500 to UR-509 except retired UR-506
+%% Points: UR-520 to UR-529; consumes shared participation, never recalculates a second streak
+%% Participation: UR-612 to UR-614; SRS-613.13 shared state
+%% DataMedia: All durable schema dependencies; upload validation, transactions and recipient/owner-filtered media access
+flowchart LR
+    WebApp["Web App<br/>[Next.js / React]<br/>Screens & controls;<br/>HTTPS requests."]
+    SupabaseAuth["Supabase<br/>Auth<br/>[External service]<br/>Identity / sessions."]
+    Resend["Resend<br/>[External system]<br/>Account emails."]
+    Database["Supabase<br/>Database<br/>[PostgreSQL]<br/>59 tables; rules;<br/>SQL transactions."]
+    Storage["Supabase<br/>Storage<br/>[External service]<br/>Private photographs."]
+    subgraph Backend["Backend API - Next.js Route Handlers / TypeScript"]
+        direction LR
+        Access["Accounts &<br/>API Access<br/>[Component]<br/>Account rules;<br/>session checks;<br/>access control;<br/>feature routing."]
+        subgraph Features["Feature components - TypeScript"]
+            direction TB
+            subgraph Row1[" "]
+                direction LR
+                Profiles["Profiles &<br/>Friendships<br/>[Component]<br/>Profiles / privacy."]
+                Feed["Campus Feed<br/>[Component]<br/>Posts; notifications."]
+                Events["Events &<br/>Trending<br/>[Component]<br/>Invites / ranking."]
+            end
+            subgraph Row2[" "]
+                direction LR
+                Avatar["Game Room &<br/>Avatar<br/>[Component]<br/>Face / outfit / theme."]
+                Chat["Chat & Snipes<br/>[Component]<br/>Member access;<br/>Snipe consent."]
+                Games["Games<br/>[Component]<br/>Game 1 / Wordle*<br/>Saves / guesses."]
+            end
+            subgraph Row3[" "]
+                direction LR
+                Dorm["DormSpace<br/>[Component]<br/>Layout / visits."]
+                Points["Points &<br/>Catalog<br/>[Component]<br/>Ledger / purchases."]
+                Participation["Participation<br/>[Component]<br/>Shared streak;<br/>days & reminders."]
+            end
+        end
+        DataMedia["Data &<br/>Media Access<br/>[Component]<br/>Transactions;<br/>private photos."]
+    end
+    WebApp -->|"HTTPS JSON"| Access
+    Access -->|"Dispatches"| Features
+    Access -->|"Identity / session APIs"| SupabaseAuth
+    Access -->|"Requests account emails"| Resend
+    Features -->|"Reads / writes"| DataMedia
+    Access -->|"Stores account state"| DataMedia
+    DataMedia -->|"REST / RPC"| Database
+    DataMedia -->|"Storage API"| Storage
+    Chat -->|"Snipe proof"| Points
+    Games -->|"Start / guess"| Participation
+    Games -->|"Level proof"| Points
+    Dorm -->|"Counted visit"| Points
+    Dorm -->|"Successful opening"| Participation
+    Participation -->|"Qualifying activity"| Points
+    classDef component fill:#e3f0e8,stroke:#31735b,color:#163743,stroke-width:2px;
+    classDef external fill:#f0f3f5,stroke:#6e7f89,color:#163743,stroke-width:2px,stroke-dasharray:7 4;
+    classDef container fill:#173f52,stroke:#173f52,color:#ffffff,stroke-width:2px;
+    class Access,Profiles,Feed,Events,Avatar,Chat,Games,Dorm,Points,Participation,DataMedia component;
+    class SupabaseAuth,Resend,Database,Storage external;
+    class WebApp container;
+    style Backend fill:#ffffff,stroke:#31735b,stroke-width:3px
+    style Features fill:#f8fbf9,stroke:#b1c8ba,stroke-width:1.5px
+    style Row1 fill:transparent,stroke:transparent
+    style Row2 fill:transparent,stroke:transparent
+    style Row3 fill:transparent,stroke:transparent
+    linkStyle default stroke:#395664,stroke-width:2px;
