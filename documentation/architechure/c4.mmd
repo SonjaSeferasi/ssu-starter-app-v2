@@ -1,0 +1,66 @@
+---
+title: C4 - Code Diagram - SocialU Profile Management Sequence
+config:
+  theme: base
+  themeVariables:
+    fontFamily: Arial
+    fontSize: 22px
+    actorBkg: '#fff4d0'
+    actorBorder: '#383838'
+    actorTextColor: '#222222'
+    noteBkgColor: '#fff0b5'
+    noteBorderColor: '#666666'
+    signalColor: '#383838'
+    signalTextColor: '#222222'
+  sequence:
+    mirrorActors: false
+    wrap: true
+---
+%% Authors: [Your name]
+%% Scope: SocialU / Backend API / Profile Management.
+%% Scenario: authenticated student has no profile, creates one, then edits it.
+%% Creation and editing show the successful path after the same authentication checks.
+sequenceDiagram
+    actor Student
+    participant Page as Profile Page<br/>app/profile/page.tsx
+    participant API as Profile API Route<br/>app/api/profile/route.ts
+    participant SDK as Supabase SDK<br/>@supabase/supabase-js
+
+    Note over API,SDK: Every request runs getToken(request), getAuthenticatedUser(token), getSupabaseClient(), then auth.getUser(token). Missing/invalid token: 401. Missing configuration: 500.
+
+    rect rgb(250, 250, 250)
+        Note over Student,SDK: 1 - Load profile
+        Student->>Page: Open Profile
+        Page->>API: fetchProfile(): GET /api/profile with bearer token
+        API->>SDK: auth.getUser(token)
+        SDK-->>API: validated user
+        API->>SDK: from('myapp_profile').select(...).eq('id', user.id).maybeSingle()
+        SDK-->>API: profile or null
+        API-->>Page: 200 {profile}
+        Page-->>Student: Show profile or create form
+        Note right of SDK: No profile yet? GET returns 200 {profile: null}. Query failure: 500.
+    end
+
+    rect rgb(255, 252, 242)
+        Note over Student,SDK: 2 - Create profile when none exists
+        Student->>Page: Submit username and biography
+        Page->>API: handleCreate(): POST /api/profile with bearer token
+        Note over API,SDK: Repeat token validation before writing.
+        API->>SDK: from('myapp_profile').insert({id: user.id, username, biography}).select(...).single()
+        SDK-->>API: created profile
+        API-->>Page: 201 {profile}
+        Page-->>Student: Display saved profile
+        Note right of SDK: username is required. User ID comes from the validated token. Validation or database failure: 400.
+    end
+
+    rect rgb(250, 250, 250)
+        Note over Student,SDK: 3 - Edit biography
+        Student->>Page: Edit biography, then Save
+        Page->>API: handleSave(): PATCH /api/profile with bearer token
+        Note over API,SDK: Repeat token validation before writing.
+        API->>SDK: from('myapp_profile').update({biography}).eq('id', user.id).select(...).single()
+        SDK-->>API: updated profile
+        API-->>Page: 200 {profile}
+        Page-->>Student: Display new biography
+        Note right of SDK: biography must be supplied. Update only the row for user.id. Validation or database failure: 400.
+    end
