@@ -1,96 +1,58 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-
-const mockProfile = { id: 'user-123', username: 'testuser', biography: 'Hello!' };
-
-const mockBuilder: any = {
-  select: vi.fn().mockReturnThis(),
-  eq: vi.fn().mockReturnThis(),
-  update: vi.fn().mockReturnThis(),
-  insert: vi.fn().mockReturnThis(),
-  maybeSingle: vi.fn(async () => ({ data: mockProfile, error: null })),
-  single: vi.fn(async () => ({ data: mockProfile, error: null })),
-};
-
-vi.mock('../../lib/supabase', () => ({
-  getSupabaseClient: vi.fn(() => ({
-    auth: {
-      getUser: vi.fn(async (token: string) => {
-        if (token === 'valid-token') {
-          return { data: { user: { id: 'user-123' } }, error: null };
-        }
-        return { data: { user: null }, error: { message: 'Invalid token' } };
-      }),
-    },
-    from: vi.fn(() => mockBuilder),
-  })),
-}));
-
-import { GET, POST, PATCH } from '../../app/api/profile/route';
-
-function req(method: string, body?: object, token = 'valid-token') {
-  return new Request(`http://localhost/api/profile`, {
-    method,
-    headers: {
-      'content-type': 'application/json',
-      ...(token ? { authorization: `Bearer ${token}` } : {}),
-    },
-    body: body ? JSON.stringify(body) : undefined,
-  });
+const { getClient, getUser, rpc, signIn, signUp } = vi.hoisted(() => ({ getClient: vi.fn(), getUser: vi.fn(), rpc: vi.fn(), signIn: vi.fn(), signUp: vi.fn() }));
+vi.mock('../../lib/supabase', () => ({ getSupabaseClient: getClient }));
+const user = { id: 'provider-identity', email: 'student@salemstate.edu', email_confirmed_at: '2026-10-08T12:00:00Z', user_metadata: { full_name: 'Student Name', username: 'student' } };
+const profile = { id: '42', username: 'student', biography: 'Hello', avatar_url: null };
+function req(method: string, body?: unknown, token = 'valid-token') {
+  return new Request('http://localhost/api/test', { method, headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: 'Bearer ' + token } : {}) }, body: body === undefined ? undefined : JSON.stringify(body) });
 }
-
-describe('Profile API routes', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-    mockBuilder.select.mockReturnThis();
-    mockBuilder.eq.mockReturnThis();
-    mockBuilder.update.mockReturnThis();
-    mockBuilder.insert.mockReturnThis();
-    mockBuilder.maybeSingle.mockResolvedValue({ data: mockProfile, error: null });
-    mockBuilder.single.mockResolvedValue({ data: mockProfile, error: null });
+beforeEach(() => {
+  vi.resetAllMocks();
+  vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'test-server-key');
+  getClient.mockReturnValue({ auth: { getUser, signInWithPassword: signIn, signUp }, rpc });
+  getUser.mockResolvedValue({ data: { user }, error: null });
+  rpc.mockResolvedValue({ data: profile, error: null });
+  signIn.mockResolvedValue({ data: { user, session: { access_token: 'test-token' } }, error: null });
+  signUp.mockResolvedValue({ data: { user, session: null }, error: null });
+});
+import { GET, POST, PATCH } from '../../app/api/profile/route';
+describe('SocialU profile access', () => {
+  it('reads the profile using the verified provider ID', async () => {
+    expect((await GET(req('GET'))).status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_account', { p_action: 'read', p_auth_id: user.id });
   });
-
-  it('GET returns profile for authenticated user', async () => {
-    const response = await GET(req('GET'));
-    expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ profile: mockProfile });
+  it('does not query data without a token', async () => {
+    expect((await GET(req('GET', undefined, ''))).status).toBe(401); expect(rpc).not.toHaveBeenCalled();
   });
-
-  it('GET returns 401 without token', async () => {
-    const response = await GET(new Request('http://localhost/api/profile'));
-    expect(response.status).toBe(401);
+  it('rejects expired tokens', async () => {
+    getUser.mockResolvedValue({ data: { user: null }, error: {} });
+    expect((await GET(req('GET'))).status).toBe(401); expect(rpc).not.toHaveBeenCalled();
   });
-
-  it('GET returns 401 for invalid token', async () => {
-    const response = await GET(req('GET', undefined, 'bad-token'));
-    expect(response.status).toBe(401);
+  it('rejects unverified users', async () => {
+    getUser.mockResolvedValue({ data: { user: { ...user, email_confirmed_at: null } }, error: null });
+    expect((await GET(req('GET'))).status).toBe(403); expect(rpc).not.toHaveBeenCalled();
   });
-
-  it('GET returns null profile when none exists', async () => {
-    mockBuilder.maybeSingle.mockResolvedValue({ data: null, error: null });
-    const response = await GET(req('GET'));
-    expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ profile: null });
+  it('provides setup defaults only after identity verification', async () => {
+    rpc.mockResolvedValue({ data: null, error: null });
+    expect(await (await GET(req('GET'))).json()).toEqual({ profile: null, defaults: { fullName: 'Student Name', username: 'student' } });
   });
-
-  it('POST creates a new profile', async () => {
-    const response = await POST(req('POST', { username: 'testuser', biography: 'Hello!' }));
-    expect(response.status).toBe(201);
-    expect(await response.json()).toEqual({ profile: mockProfile });
+  it('ignores caller-supplied student and auth IDs on profile creation', async () => {
+    const res = await POST(req('POST', { fullName: 'Student Name', username: 'student', biography: 'Hello', student_id: '999', auth_user_id: 'victim' }));
+    expect(res.status).toBe(201);
+    expect(rpc).toHaveBeenCalledWith('socialu_account', { p_action: 'onboard', p_auth_id: user.id, p_full_name: 'Student Name', p_username: 'student', p_bio: 'Hello' });
   });
-
-  it('POST returns 400 when username is missing', async () => {
-    const response = await POST(req('POST', { biography: 'Hello!' }));
-    expect(response.status).toBe(400);
+  it('requires the full name for onboarding', async () => {
+    expect((await POST(req('POST', { username: 'student' }))).status).toBe(400); expect(rpc).not.toHaveBeenCalled();
   });
-
-  it('PATCH updates biography', async () => {
-    const response = await PATCH(req('PATCH', { biography: 'Updated bio' }));
-    expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ profile: mockProfile });
+  it('restricts edits to the authenticated student', async () => {
+    expect((await PATCH(req('PATCH', { biography: 'Updated', id: 'victim' }))).status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_account', { p_action: 'update_bio', p_auth_id: user.id, p_bio: 'Updated' });
   });
-
-  it('PATCH returns 400 when biography field is absent', async () => {
-    const response = await PATCH(req('PATCH', {}));
-    expect(response.status).toBe(400);
+  it('rejects oversized biographies', async () => {
+    expect((await PATCH(req('PATCH', { biography: 'x'.repeat(251) }))).status).toBe(400); expect(rpc).not.toHaveBeenCalled();
+  });
+  it('does not fall back to anonymous database access', async () => {
+    vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', '');
+    expect((await GET(req('GET'))).status).toBe(503); expect(rpc).not.toHaveBeenCalled();
   });
 });

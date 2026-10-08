@@ -16,6 +16,7 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false);
 
   const [creating, setCreating] = useState(false);
+  const [fullName, setFullName] = useState('');
   const [newUsername, setNewUsername] = useState('');
   const [newBiography, setNewBiography] = useState('');
 
@@ -31,6 +32,7 @@ export default function ProfilePage() {
 
   async function fetchProfile(accessToken: string) {
     setLoading(true);
+    try {
     const res = await fetch('/api/profile', {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
@@ -39,26 +41,33 @@ export default function ProfilePage() {
     if (!res.ok) { setError(data.error || 'Failed to load profile.'); return; }
     setProfile(data.profile);
     if (data.profile) setBiography(data.profile.biography);
+    else { setFullName(data.defaults?.fullName || ''); setNewUsername(data.defaults?.username || ''); }
+    } catch { setError('Unable to load your profile. Please try again.'); }
+    finally { setLoading(false); }
   }
 
   async function handleCreate(event: React.FormEvent) {
     event.preventDefault();
     if (!token) return;
     setCreating(true);
+    try {
     const res = await fetch('/api/profile', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ username: newUsername, biography: newBiography }),
+      body: JSON.stringify({ fullName, username: newUsername, biography: newBiography }),
     });
     const data = await res.json();
     setCreating(false);
-    if (res.ok) { setProfile(data.profile); setBiography(data.profile.biography); }
+    if (res.ok) { setProfile(data.profile); setBiography(data.profile.biography); window.dispatchEvent(new Event('socialu-session-changed')); }
     else setError(data.error || 'Failed to create profile.');
+    } catch { setError('Unable to create your profile. Please try again.'); }
+    finally { setCreating(false); }
   }
 
   async function handleSave() {
     if (!token) return;
     setSaving(true);
+    try {
     const res = await fetch('/api/profile', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
@@ -68,6 +77,8 @@ export default function ProfilePage() {
     setSaving(false);
     if (res.ok) { setProfile(data.profile); setEditing(false); }
     else setError(data.error || 'Failed to save.');
+    } catch { setError('Unable to save your profile. Please try again.'); }
+    finally { setSaving(false); }
   }
 
   async function handleAvatarChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -122,6 +133,7 @@ export default function ProfilePage() {
           <>
             <h1 className="mt-4 text-3xl font-semibold">Create your profile</h1>
             <form onSubmit={handleCreate} className="mt-6 space-y-4">
+              <label className="block text-sm">Full name<input required autoComplete="name" value={fullName} onChange={e => setFullName(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition focus:border-emerald-400" /></label>
               <label className="block text-sm text-slate-200">
                 Username
                 <input
@@ -135,7 +147,7 @@ export default function ProfilePage() {
               </label>
               <label className="block text-sm text-slate-200">
                 Biography
-                <textarea
+                <textarea maxLength={250}
                   value={newBiography}
                   onChange={(e) => setNewBiography(e.target.value)}
                   rows={3}
@@ -157,9 +169,9 @@ export default function ProfilePage() {
             <div className="mt-6 flex flex-col items-center gap-3">
               <button
                 onClick={() => fileInputRef.current?.click()}
-                disabled={uploading}
+                disabled={true}
                 className="group relative h-24 w-24 overflow-hidden rounded-full border-2 border-slate-700 bg-slate-800 transition hover:border-emerald-400 disabled:opacity-70"
-                title="Change profile photo"
+                title="Profile photo uploads are not connected yet"
               >
                 {profile.avatar_url ? (
                   <img src={profile.avatar_url} alt="Avatar" className="h-full w-full object-cover" />
@@ -186,7 +198,7 @@ export default function ProfilePage() {
               <p className="text-xs uppercase tracking-widest text-slate-400">Biography</p>
               {editing ? (
                 <div className="mt-2 space-y-3">
-                  <textarea
+                  <textarea maxLength={250}
                     value={biography}
                     onChange={(e) => setBiography(e.target.value)}
                     rows={4}
