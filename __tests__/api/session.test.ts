@@ -15,23 +15,25 @@ beforeEach(() => {
   signIn.mockResolvedValue({ data: { user, session: { access_token: 'test-token' } }, error: null });
   signUp.mockResolvedValue({ data: { user, session: null }, error: null });
 });
-import { POST } from '../../app/api/profile/avatar/route';
-describe('Photo upload integration boundary', () => {
-  it('rejects missing tokens', async () => { expect((await POST(req('POST', {}, ''))).status).toBe(401); });
-  it('rejects an unverified account', async () => {
-    getUser.mockResolvedValue({ data: { user: { ...user, email_confirmed_at: null } }, error: null });
-    expect((await POST(req('POST', {}))).status).toBe(403);
+import { GET } from '../../app/api/auth/session/route';
+describe('SocialU session eligibility', () => {
+  it('requires both a verified provider account and a SocialU profile', async () => {
+    const res = await GET(req('GET'));
+    expect(res.status).toBe(200); expect(await res.json()).toEqual({ authenticated: true, needsProfile: false });
+    expect(res.headers.get('Cache-Control')).toBe('no-store');
   });
-  it('checks SocialU eligibility before accepting upload work', async () => {
-    rpc.mockResolvedValue({ data: null, error: { code: '42501' } });
-    expect((await POST(req('POST', {}))).status).toBe(403);
-  });
-  it('requires a linked profile', async () => {
+  it('returns onboarding status for a missing student profile', async () => {
     rpc.mockResolvedValue({ data: null, error: null });
-    expect((await POST(req('POST', {}))).status).toBe(409);
+    const res = await GET(req('GET'));
+    expect(res.status).toBe(409); expect(await res.json()).toEqual({ authenticated: false, needsProfile: true });
   });
-  it('does not send files to the obsolete public avatar pipeline', async () => {
-    const res = await POST(req('POST', {}));
-    expect(res.status).toBe(501); expect(await res.json()).toEqual({ error: 'Profile photo uploads are not connected yet.' });
+  it('denies inactive or re-verification-required accounts', async () => {
+    rpc.mockResolvedValue({ data: null, error: { code: '42501' } });
+    expect((await GET(req('GET'))).status).toBe(403);
+  });
+  it('rejects absent tokens', async () => { expect((await GET(req('GET', undefined, ''))).status).toBe(401); });
+  it('handles provider failures', async () => {
+    getUser.mockRejectedValue(new Error('secret')); const res = await GET(req('GET'));
+    expect(res.status).toBe(503); expect(await res.text()).not.toContain('secret');
   });
 });
