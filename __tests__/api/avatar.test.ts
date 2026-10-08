@@ -2,14 +2,14 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mockProfile = { id: 'user-123', username: 'testuser', biography: 'Hello!', avatar_url: 'https://example.com/avatars/user-123.jpg' };
 
-const mockBuilder = {
+const mockBuilder: any = {
   update: vi.fn().mockReturnThis(),
   eq: vi.fn().mockReturnThis(),
   select: vi.fn().mockReturnThis(),
   single: vi.fn(async () => ({ data: mockProfile, error: null })),
 };
 
-const mockStorage = {
+const mockStorage: any = {
   upload: vi.fn(async () => ({ error: null })),
   getPublicUrl: vi.fn(() => ({ data: { publicUrl: 'https://example.com/avatars/user-123.jpg' } })),
 };

@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mockProfile = { id: 'user-123', username: 'testuser', biography: 'Hello!' };
 
-const mockBuilder = {
+const mockBuilder: any = {
   select: vi.fn().mockReturnThis(),
   eq: vi.fn().mockReturnThis(),
   update: vi.fn().mockReturnThis(),
