@@ -16,6 +16,7 @@ export default function LoginPage() {
     setLoading(true);
     setMessage('');
 
+    try {
     const response = await fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -26,11 +27,14 @@ export default function LoginPage() {
     setLoading(false);
     if (response.ok) {
       const accessToken = data?.session?.session?.access_token;
-      if (accessToken) localStorage.setItem('access_token', accessToken);
-      router.push('/profile');
+      if (!accessToken) throw new Error('Missing session');
+      localStorage.setItem('access_token', accessToken);
+      router.push(data.needsProfile ? '/profile' : '/');
     } else {
       setMessage(data.error || 'Login failed.');
     }
+    } catch { setMessage('Unable to sign in. Please try again.'); }
+    finally { setLoading(false); }
   }
 
   return (
@@ -38,25 +42,25 @@ export default function LoginPage() {
       <section className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900/90 p-8 shadow-2xl shadow-black/30">
         <p className="text-sm uppercase tracking-[0.25em] text-emerald-300">Student Login</p>
         <h1 className="mt-4 text-3xl font-semibold">Welcome back</h1>
-        <p className="mt-2 text-slate-300">Use this page to test the login API route in the browser.</p>
+        <p className="mt-2 text-slate-300">Sign in with your Salem State account.</p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <label className="block text-sm text-slate-200">
-            Email
+            University email or username
             <input
-              type="email"
+              type="text" autoComplete="username"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               required
               className="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none ring-0 transition focus:border-emerald-400"
-              placeholder="student@example.com"
+              placeholder="student@salemstate.edu"
             />
           </label>
 
           <label className="block text-sm text-slate-200">
             Password
             <input
-              type="password"
+              type="password" autoComplete="current-password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               required
