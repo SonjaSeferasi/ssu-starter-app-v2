@@ -1,9 +1,9 @@
-export type FeedTab = 'campus' | 'friends';
+export type FeedTab = 'for-you' | 'friends';
 
 export function FeedSwitcher({ active, onChange }: { active: FeedTab; onChange: (tab: FeedTab) => void }) {
   const tabs: { id: FeedTab; label: string }[] = [
-    { id: 'campus', label: 'Campus Feed' },
-    { id: 'friends', label: 'Friends Feed' },
+    { id: 'for-you', label: 'For you' },
+    { id: 'friends', label: 'Friends' },
   ];
 
   return (

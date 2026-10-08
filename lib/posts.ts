@@ -1,33 +1,17 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { resolveMediaUrl } from './media';
 
-/** Shared select shape for SRS-301/302/305: everything a feed post card needs. */
-export const POST_CARD_SELECT = `
-  post_id,
-  author_id,
-  text_content,
-  visibility,
-  published_at,
-  edited_at,
-  students (
-    full_name,
-    student_profiles ( display_name, media_assets ( storage_key ) )
-  ),
-  post_photos ( media_assets ( storage_key ) )
-`;
-
-type RawFeedPost = {
+/** Row shape returned by the socialu_campus_feed/socialu_friends_feed/socialu_create_post RPCs. */
+export type RawFeedRow = {
   post_id: number;
   author_id: number;
   text_content: string | null;
   visibility: 'public' | 'friends_only';
   published_at: string;
   edited_at: string | null;
-  students: {
-    full_name: string;
-    student_profiles: { display_name: string | null; media_assets: { storage_key: string } | null } | null;
-  } | null;
-  post_photos: { media_assets: { storage_key: string } | null }[] | null;
+  author_name: string;
+  author_photo_key: string | null;
+  photo_keys: string[];
 };
 
 export type FeedPost = {
@@ -42,18 +26,16 @@ export type FeedPost = {
   photos: string[];
 };
 
-export async function shapeFeedPosts(supabase: SupabaseClient<any, any, any>, rows: RawFeedPost[]): Promise<FeedPost[]> {
+export async function shapeFeedPosts(supabase: SupabaseClient<any, any, any>, rows: RawFeedRow[]): Promise<FeedPost[]> {
   return Promise.all(
     rows.map(async (row) => {
-      const profile = row.students?.student_profiles ?? null;
-      const authorPhotoUrl = await resolveMediaUrl(supabase, profile?.media_assets?.storage_key);
-      const photoKeys = (row.post_photos ?? []).map((p) => p.media_assets?.storage_key).filter(Boolean) as string[];
-      const photos = await Promise.all(photoKeys.map((key) => resolveMediaUrl(supabase, key)));
+      const authorPhotoUrl = await resolveMediaUrl(supabase, row.author_photo_key);
+      const photos = await Promise.all((row.photo_keys ?? []).map((key) => resolveMediaUrl(supabase, key)));
 
       return {
         postId: row.post_id,
         authorId: row.author_id,
-        authorName: profile?.display_name || row.students?.full_name || 'Unknown student',
+        authorName: row.author_name,
         authorPhotoUrl,
         textContent: row.text_content,
         visibility: row.visibility,

@@ -2,12 +2,13 @@
 
 import Link from 'next/link';
 import { useNavigationSession } from '../components/navigation/social-shell';
-import { SectionContent, SessionNotice } from '../components/navigation/section-page';
+import { SessionNotice } from '../components/navigation/section-page';
+import { FeedPage } from '../components/feed/FeedPage';
 import styles from '../components/navigation/social-shell.module.css';
 
 export default function Home() {
   const session = useNavigationSession();
-  if (session === 'signed-in') return <SectionContent title="Home" description="Your campus. Your people. All in one place." pending="The Campus feed will appear here when the feed feature is ready." />;
+  if (session === 'signed-in') return <FeedPage />;
   if (session !== 'signed-out') return <SessionNotice state={session} />;
   return (
     <main className={styles.standalone}>
