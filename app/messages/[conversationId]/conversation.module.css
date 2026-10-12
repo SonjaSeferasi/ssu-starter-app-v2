@@ -1,0 +1,34 @@
+/* SRS-201.1: Messages layout from documentation/UI design (Messages screen), using the shell palette. */
+.page { display: grid; grid-template-columns: minmax(240px, 300px) minmax(0, 1fr); gap: 16px; max-width: 1280px; min-height: calc(100dvh - 76px); margin: 0 auto; padding: clamp(16px, 2.5vw, 28px); }
+.listPanel, .conversation { border: 1px solid #d3e2da; border-radius: 16px; background: #f8fbf8; }
+.listPanel { padding: 24px 12px; }
+.heading { margin: 0 12px 20px; color: #102c30; font-size: 28px; font-weight: 700; letter-spacing: -.6px; }
+.tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: 10px; background: #e6efe9; }
+.tab { min-height: 40px; border: 0; border-radius: 8px; background: transparent; color: #536963; font: inherit; font-size: 15px; cursor: pointer; }
+.tab[aria-pressed='true'] { background: #c0ddcb; color: #102c30; font-weight: 700; }
+.tab:focus-visible, .send:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+.emptyList { margin: 24px 12px; color: #536963; font-size: 14px; line-height: 1.6; }
+.conversation { display: flex; flex-direction: column; min-height: 520px; overflow: hidden; }
+.header { display: flex; align-items: center; gap: 14px; padding: 18px 24px; border-bottom: 1px solid #d3e2da; }
+.avatar { display: grid; place-items: center; flex-shrink: 0; width: 52px; height: 52px; border-radius: 50%; background: #c0ddcb; color: #28634e; }
+.title { margin: 0; color: #102c30; font-size: 20px; font-weight: 700; }
+.subtitle { display: flex; align-items: center; gap: 8px; margin: 4px 0 0; color: #536963; font-size: 14px; }
+.dot, .dotLive { width: 8px; height: 8px; border-radius: 50%; background: #9fb3aa; }
+.dotLive { background: #39775e; }
+.messages { flex: 1; display: flex; flex-direction: column; gap: 14px; margin: 0; padding: 24px; overflow-y: auto; list-style: none; }
+.emptyMessages { margin: auto; color: #536963; font-size: 15px; text-align: center; }
+.message { display: flex; }
+.bubble { max-width: min(560px, 85%); margin: 0; padding: 12px 16px; border-radius: 14px; background: #e6efe9; color: #102c30; font-size: 16px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+.composer { display: flex; align-items: center; gap: 12px; margin: 0 16px 16px; padding: 8px 8px 8px 18px; border: 1px solid #d3e2da; border-radius: 14px; background: #ffffff; }
+.composer:focus-within { border-color: #39775e; box-shadow: 0 0 0 2px #c0ddcb; }
+.input { flex: 1; min-width: 0; min-height: 44px; border: 0; background: transparent; color: #102c30; font: inherit; font-size: 16px; outline: none; }
+.input::placeholder { color: #7d918a; }
+.send { display: grid; place-items: center; flex-shrink: 0; width: 52px; height: 48px; border: 0; border-radius: 12px; background: #39775e; color: #ffffff; cursor: pointer; }
+.send:hover:not(:disabled) { background: #2f6650; }
+.send:disabled { opacity: .5; cursor: not-allowed; }
+.error { margin: -6px 20px 16px; color: #a32d2d; font-size: 14px; }
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 900px) {
+  .page { grid-template-columns: 1fr; padding: 16px; }
+  .listPanel { display: none; }
+}
