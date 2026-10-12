@@ -5,7 +5,8 @@ import { useParams } from 'next/navigation';
 import { SessionNotice } from '../../../components/navigation/section-page';
 import { useNavigationSession } from '../../../components/navigation/social-shell';
 import { subscribeToChat, type ChatLiveStatus, type ChatMessageEvent } from '../../../lib/realtime-client';
-import styles from './conversation.module.css';
+import { ConversationListPanel } from '../conversation-list';
+import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
   connecting: 'Connecting to live updates…',
@@ -24,7 +25,6 @@ export default function ConversationPage() {
 // Showing this session's sent and live messages confirms the send; loading history is SRS-201.2.
 function Conversation() {
   const { conversationId } = useParams<{ conversationId: string }>();
-  const [tab, setTab] = useState<'dms' | 'groups'>('dms');
   const [text, setText] = useState('');
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
@@ -63,15 +63,8 @@ function Conversation() {
   }
 
   return (
-    <main className={styles.page}>
-      <section className={styles.listPanel} aria-label="Conversations">
-        <h1 className={styles.heading}>Messages</h1>
-        <div className={styles.tabs}>
-          <button type="button" className={styles.tab} aria-pressed={tab === 'dms'} onClick={() => setTab('dms')}>DMs</button>
-          <button type="button" className={styles.tab} aria-pressed={tab === 'groups'} onClick={() => setTab('groups')}>Groups</button>
-        </div>
-        <p className={styles.emptyList}>{tab === 'dms' ? 'Your direct messages will appear here.' : 'Your group chats will appear here.'}</p>
-      </section>
+    <main className={`${styles.page} ${styles.withConversation}`}>
+      <ConversationListPanel />
 
       <section className={styles.conversation} aria-label="Conversation">
         <header className={styles.header}>

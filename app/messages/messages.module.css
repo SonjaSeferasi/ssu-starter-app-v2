@@ -1,4 +1,4 @@
-/* SRS-201.1: Messages layout from documentation/UI design (Messages screen), using the shell palette. */
+/* SRS-201.1: Messages layout from documentation/UI design (Messages screen), shared by /messages and /messages/[conversationId]. */
 .page { display: grid; grid-template-columns: minmax(240px, 300px) minmax(0, 1fr); gap: 16px; max-width: 1280px; min-height: calc(100dvh - 76px); margin: 0 auto; padding: clamp(16px, 2.5vw, 28px); }
 .listPanel, .conversation { border: 1px solid #d3e2da; border-radius: 16px; background: #f8fbf8; }
 .listPanel { padding: 24px 12px; }
@@ -28,7 +28,11 @@
 .send:disabled { opacity: .5; cursor: not-allowed; }
 .error { margin: -6px 20px 16px; color: #a32d2d; font-size: 14px; }
 .srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.emptyConversation { align-items: center; justify-content: center; gap: 12px; padding: 32px; text-align: center; }
+.emptyTitle { margin: 4px 0 0; color: #102c30; font-size: 22px; font-weight: 700; }
+.emptyText { max-width: 360px; margin: 0; color: #536963; font-size: 15px; line-height: 1.6; }
+/* Phones: the list page shows the list; a conversation page shows the conversation. */
 @media (max-width: 900px) {
   .page { grid-template-columns: 1fr; padding: 16px; }
-  .listPanel { display: none; }
+  .withConversation .listPanel, .emptyConversation { display: none; }
 }

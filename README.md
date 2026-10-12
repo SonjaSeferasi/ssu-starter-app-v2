@@ -56,9 +56,10 @@ shell. This is display/session integration, not the pending verified-student
 integration with the new `socialu` database schema. Each feature API must retain
 its own authentication and authorization checks.
 
-Home, Messages, Game Room, and Events and Trending currently contain clearly
+Home, Game Room, and Events and Trending currently contain clearly
 labeled placeholder content; their route integration is ready, but their feature
 implementation and end-to-end acceptance remain dependent on the feature owners.
+Messages now uses the chat layout (see SocialU chat below).
 Profile continues to use the existing authenticated profile implementation.
 
 To review the design without an account, run `npm run dev` and open
@@ -98,7 +99,7 @@ SRS-201.1 (LP): a conversation participant sends a text message, and every curre
 
 - **Migration** `supabase/migrations/20261012120000_chat_send_text_message.sql` (additive; apply once after `20261008000100`). It adds `public.socialu_send_message(p_auth_id, p_conversation_id, p_text)`, executable only by the server's service role like `socialu_account`. It resolves the verified, active student, runs the shared participant check (`socialu.is_current_participant`), accepts 1–500 characters, applies the private-messaging rule (`socialu.can_send_private`: current friends or accepted request, no block), saves the message, and broadcasts it with `realtime.send` to each current participant's private topic `student:<auth user id>`. It also adds one SELECT policy on `realtime.messages` so a signed-in student can receive broadcasts only on their own topic. There is no INSERT policy, so browsers cannot broadcast.
 - **API** `POST /api/conversations/[id]/messages` with body `{ "text": "..." }`. The sender always comes from the bearer token; sender IDs in the body are ignored. Missing and forbidden conversations both return 404 `Conversation not available.` (`lib/chat-access.ts` maps database errors).
-- **Page** `/messages/[conversationId]` follows the Messages UI design: Messages column (the conversation list is SRS-212.4), conversation header with live status, and the message box with the send button. It shows messages sent or received while the page is open; loading saved history is SRS-201.2.
+- **Pages** follow the Messages UI design and share the Messages column (`app/messages/conversation-list.tsx`; the conversation list itself is SRS-212.4). `/messages` shows the column and a "Choose a conversation" panel. `/messages/[conversationId]` adds the conversation header with live status and the message box with the send button. It shows messages sent or received while the page is open; loading saved history is SRS-201.2. Until SRS-200.1/212.4 add ways to open a conversation, open one by its ID.
 - **Browser variables.** Realtime runs in the browser, which can only read `NEXT_PUBLIC_` values. `next.config.js` reuses the existing `SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_ANON_KEY`, so no `.env.local` changes are needed. Only these public values are exposed; never add `SUPABASE_SERVICE_ROLE_KEY` there.
 - **Testing.** `npm test` covers the route (`__tests__/api/messages.test.ts`). For the end-to-end check, use two verified Salem State students who are current friends, a private conversation between them, and a third student outside it; open `/messages/<conversation id>` in two browser windows and send a message.
 
