@@ -18,6 +18,9 @@
 .messages { flex: 1; display: flex; flex-direction: column; gap: 14px; margin: 0; padding: 24px; overflow-y: auto; list-style: none; }
 .emptyMessages { margin: auto; color: #536963; font-size: 15px; text-align: center; }
 .message { display: flex; }
+/* Temporary (until SRS-201.2 / SRS-211.x): the signed-in student's own messages on the right, in green. */
+.messageOwn { justify-content: flex-end; }
+.bubbleOwn { background: #39775e; color: #ffffff; }
 .bubble { max-width: min(560px, 85%); margin: 0; padding: 12px 16px; border-radius: 14px; background: #e6efe9; color: #102c30; font-size: 16px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
 .composer { display: flex; align-items: center; gap: 12px; margin: 0 16px 16px; padding: 8px 8px 8px 18px; border: 1px solid #d3e2da; border-radius: 14px; background: #ffffff; }
 .composer:focus-within { border-color: #39775e; box-shadow: 0 0 0 2px #c0ddcb; }

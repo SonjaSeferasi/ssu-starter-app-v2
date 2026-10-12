@@ -30,6 +30,17 @@ function Conversation() {
   const [error, setError] = useState('');
   const [live, setLive] = useState<ChatLiveStatus>('connecting');
   const [messages, setMessages] = useState<ChatMessageEvent[]>([]);
+  // Temporary (until SRS-201.2 / SRS-211.x): the signed-in student's ID puts their own messages on the right.
+  const [myStudentId, setMyStudentId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch('/api/profile', { headers: { Authorization: `Bearer ${localStorage.getItem('access_token') ?? ''}` }, cache: 'no-store', signal: controller.signal })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => { if (data?.profile?.id) setMyStudentId(String(data.profile.id)); })
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
 
   // Keep only this conversation's messages; the ID check stops the send reply and live event both showing.
   function addMessage(message: ChatMessageEvent) {
@@ -54,6 +65,7 @@ function Conversation() {
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error || 'Your message could not be sent. Please try again.');
       addMessage(data.message);
+      setMyStudentId((current) => current ?? data.message.sender_id);
       setText('');
     } catch (err) {
       setError(err instanceof Error && !(err instanceof TypeError) ? err.message : 'Your message could not be sent. Please try again.');
@@ -80,7 +92,16 @@ function Conversation() {
         <ol className={styles.messages} aria-live="polite">
           {messages.length === 0
             ? <li className={styles.emptyMessages}>Send a message to start the conversation.</li>
-            : messages.map((message) => <li key={message.id} className={styles.message}><p className={styles.bubble}>{message.text}</p></li>)}
+            : messages.map((message) => {
+              const mine = message.sender_id === myStudentId;
+              return (
+                <li key={message.id} className={mine ? `${styles.message} ${styles.messageOwn}` : styles.message}>
+                  <p className={mine ? `${styles.bubble} ${styles.bubbleOwn}` : styles.bubble}>
+                    <span className={styles.srOnly}>{mine ? 'You: ' : 'Them: '}</span>{message.text}
+                  </p>
+                </li>
+              );
+            })}
         </ol>
 
         <form className={styles.composer} onSubmit={send}>
