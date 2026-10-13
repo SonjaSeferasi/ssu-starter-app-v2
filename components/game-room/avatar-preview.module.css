@@ -3,9 +3,6 @@
   width: 100%;
   max-width: 220px;
   aspect-ratio: 2 / 3;
-  background-image: url('/avatars/student-realistic-v1.png');
-  background-size: 300% 300%;
-  background-repeat: no-repeat;
   filter: drop-shadow(0 6px 3px #18362f12);
   flex-shrink: 0;
 }

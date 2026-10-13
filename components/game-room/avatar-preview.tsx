@@ -1,6 +1,7 @@
 import type { AvatarAppearance, DefaultFace, Outfit } from '../../lib/game-room';
 import { sampleFaceStyles } from '../../lib/game-room';
 import styles from './avatar-preview.module.css';
+import { CustomAvatar } from './custom-avatar';
 
 // Development samples use a transparent 3x3 sheet: outfits across, faces down.
 // Unknown catalog keys retain the generic placeholder until approved assets exist.
@@ -10,11 +11,7 @@ export function AvatarPreview({ appearance, outfits, faces, small = false, portr
   const outfitColumn = ['sample-campus', 'sample-study', 'sample-weekend'].indexOf(outfit?.assetKey || '');
   const faceStyle = sampleFaceStyles[face?.assetKey || ''];
   if (outfitColumn !== -1 && faceStyle) {
-    return <div role="img" aria-label={`${faceStyle.group === 'female' ? 'Female' : 'Male'} avatar: ${faceStyle.label}, ${outfit?.name}`}
-      className={`${styles.realisticAvatar} ${small ? styles.thumbnail : ''} ${portrait ? styles.portrait : ''}`}
-      style={{ backgroundImage: `url('${faceStyle.sheet}')`, backgroundPosition: portrait
-        ? `${((outfitColumn * (1024 / 3) + 75) / (1024 - 210)) * 100}% ${((faceStyle.row * 512) / (1536 - 210)) * 100}%`
-        : `${outfitColumn * 50}% ${faceStyle.row * 50}%` }} />;
+    return <CustomAvatar appearance={appearance!} assetKey={face!.assetKey} outfit={outfit} column={outfitColumn} small={small} portrait={portrait} />;
   }
   const color = outfit?.assetKey === 'sample-study' ? '#9a7554' : outfit?.assetKey === 'sample-weekend' ? '#458674' : '#23394b';
   const curls = face?.assetKey === 'sample-curls';
