@@ -4,6 +4,9 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 export default function RegisterPage() {
+  const [fullName, setFullName] = useState('');
+  const [username, setUsername] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -14,15 +17,18 @@ export default function RegisterPage() {
     setLoading(true);
     setMessage('');
 
+    try {
     const response = await fetch('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ fullName, username, email, password, confirmPassword }),
     });
 
     const data = await response.json();
     setLoading(false);
-    setMessage(response.ok ? 'Registration request sent successfully.' : data.error || 'Registration failed.');
+    setMessage(response.ok ? data.message : data.error || 'Registration failed.');
+    } catch { setMessage('Unable to register. Please try again.'); }
+    finally { setLoading(false); }
   }
 
   return (
@@ -30,9 +36,11 @@ export default function RegisterPage() {
       <section className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900/90 p-8 shadow-2xl shadow-black/30">
         <p className="text-sm uppercase tracking-[0.25em] text-emerald-300">Student Register</p>
         <h1 className="mt-4 text-3xl font-semibold">Create your account</h1>
-        <p className="mt-2 text-slate-300">Use this page to test the register API route in the browser.</p>
+        <p className="mt-2 text-slate-300">Use your salemstate.edu email. Verify your email before signing in.</p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+          <label className="block text-sm">Full name<input required autoComplete="name" value={fullName} onChange={e => setFullName(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition focus:border-emerald-400" /></label>
+          <label className="block text-sm">Username<input required autoComplete="username" value={username} onChange={e => setUsername(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition focus:border-emerald-400" /></label>
           <label className="block text-sm text-slate-200">
             Email
             <input
@@ -41,7 +49,7 @@ export default function RegisterPage() {
               onChange={(event) => setEmail(event.target.value)}
               required
               className="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none ring-0 transition focus:border-emerald-400"
-              placeholder="student@example.com"
+              placeholder="student@salemstate.edu"
             />
           </label>
 
@@ -57,6 +65,8 @@ export default function RegisterPage() {
             />
           </label>
 
+          <p className="text-sm text-slate-300">Use at least 8 characters with uppercase, lowercase, a number, and a special character.</p>
+          <label className="block text-sm">Confirm password<input required type="password" autoComplete="new-password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition focus:border-emerald-400" /></label>
           <button
             type="submit"
             disabled={loading}

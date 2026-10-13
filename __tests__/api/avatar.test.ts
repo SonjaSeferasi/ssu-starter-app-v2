@@ -1,97 +1,37 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-
-const mockProfile = { id: 'user-123', username: 'testuser', biography: 'Hello!', avatar_url: 'https://example.com/avatars/user-123.jpg' };
-
-const mockBuilder = {
-  update: vi.fn().mockReturnThis(),
-  eq: vi.fn().mockReturnThis(),
-  select: vi.fn().mockReturnThis(),
-  single: vi.fn(async () => ({ data: mockProfile, error: null })),
-};
-
-const mockStorage = {
-  upload: vi.fn(async () => ({ error: null })),
-  getPublicUrl: vi.fn(() => ({ data: { publicUrl: 'https://example.com/avatars/user-123.jpg' } })),
-};
-
-vi.mock('../../lib/supabase', () => ({
-  getSupabaseClient: vi.fn(() => ({
-    auth: {
-      getUser: vi.fn(async (token: string) => {
-        if (token === 'valid-token') {
-          return { data: { user: { id: 'user-123' } }, error: null };
-        }
-        return { data: { user: null }, error: { message: 'Invalid token' } };
-      }),
-    },
-    from: vi.fn(() => mockBuilder),
-    storage: {
-      from: vi.fn(() => mockStorage),
-    },
-  })),
-}));
-
-import { POST } from '../../app/api/profile/avatar/route';
-
-function makeRequest(file?: Blob, token = 'valid-token') {
-  const formData = new FormData();
-  if (file) formData.append('image', file, 'avatar.jpg');
-  return new Request('http://localhost/api/profile/avatar', {
-    method: 'POST',
-    headers: token ? { authorization: `Bearer ${token}` } : {},
-    body: formData,
-  });
+const { getClient, getUser, rpc, signIn, signUp } = vi.hoisted(() => ({ getClient: vi.fn(), getUser: vi.fn(), rpc: vi.fn(), signIn: vi.fn(), signUp: vi.fn() }));
+vi.mock('../../lib/supabase', () => ({ getSupabaseClient: getClient }));
+const user = { id: 'provider-identity', email: 'student@salemstate.edu', email_confirmed_at: '2026-10-08T12:00:00Z', user_metadata: { full_name: 'Student Name', username: 'student' } };
+const profile = { id: '42', username: 'student', biography: 'Hello', avatar_url: null };
+function req(method: string, body?: unknown, token = 'valid-token') {
+  return new Request('http://localhost/api/test', { method, headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: 'Bearer ' + token } : {}) }, body: body === undefined ? undefined : JSON.stringify(body) });
 }
-
-describe('Avatar upload route', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-    mockBuilder.update.mockReturnThis();
-    mockBuilder.eq.mockReturnThis();
-    mockBuilder.select.mockReturnThis();
-    mockBuilder.single.mockResolvedValue({ data: mockProfile, error: null });
-    mockStorage.upload.mockResolvedValue({ error: null });
-    mockStorage.getPublicUrl.mockReturnValue({ data: { publicUrl: 'https://example.com/avatars/user-123.jpg' } });
+beforeEach(() => {
+  vi.resetAllMocks();
+  vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'test-server-key');
+  getClient.mockReturnValue({ auth: { getUser, signInWithPassword: signIn, signUp }, rpc });
+  getUser.mockResolvedValue({ data: { user }, error: null });
+  rpc.mockResolvedValue({ data: profile, error: null });
+  signIn.mockResolvedValue({ data: { user, session: { access_token: 'test-token' } }, error: null });
+  signUp.mockResolvedValue({ data: { user, session: null }, error: null });
+});
+import { POST } from '../../app/api/profile/avatar/route';
+describe('Photo upload integration boundary', () => {
+  it('rejects missing tokens', async () => { expect((await POST(req('POST', {}, ''))).status).toBe(401); });
+  it('rejects an unverified account', async () => {
+    getUser.mockResolvedValue({ data: { user: { ...user, email_confirmed_at: null } }, error: null });
+    expect((await POST(req('POST', {}))).status).toBe(403);
   });
-
-  it('uploads an image and returns updated profile', async () => {
-    const file = new Blob(['fake-image'], { type: 'image/jpeg' });
-    const response = await POST(makeRequest(file));
-    expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ profile: mockProfile });
+  it('checks SocialU eligibility before accepting upload work', async () => {
+    rpc.mockResolvedValue({ data: null, error: { code: '42501' } });
+    expect((await POST(req('POST', {}))).status).toBe(403);
   });
-
-  it('returns 401 without a token', async () => {
-    const file = new Blob(['fake-image'], { type: 'image/jpeg' });
-    const response = await POST(makeRequest(file, ''));
-    expect(response.status).toBe(401);
+  it('requires a linked profile', async () => {
+    rpc.mockResolvedValue({ data: null, error: null });
+    expect((await POST(req('POST', {}))).status).toBe(409);
   });
-
-  it('returns 401 for an invalid token', async () => {
-    const file = new Blob(['fake-image'], { type: 'image/jpeg' });
-    const response = await POST(makeRequest(file, 'bad-token'));
-    expect(response.status).toBe(401);
-  });
-
-  it('returns 400 when no image is provided', async () => {
-    const response = await POST(makeRequest(undefined));
-    expect(response.status).toBe(400);
-    expect(await response.json()).toEqual({ error: 'image file is required.' });
-  });
-
-  it('returns 400 when storage upload fails', async () => {
-    mockStorage.upload.mockResolvedValue({ error: { message: 'Bucket not found' } });
-    const file = new Blob(['fake-image'], { type: 'image/jpeg' });
-    const response = await POST(makeRequest(file));
-    expect(response.status).toBe(400);
-    expect(await response.json()).toEqual({ error: 'Bucket not found' });
-  });
-
-  it('returns 400 when profile update fails', async () => {
-    mockBuilder.single.mockResolvedValue({ data: null, error: { message: 'Profile not found' } });
-    const file = new Blob(['fake-image'], { type: 'image/jpeg' });
-    const response = await POST(makeRequest(file));
-    expect(response.status).toBe(400);
-    expect(await response.json()).toEqual({ error: 'Profile not found' });
+  it('does not send files to the obsolete public avatar pipeline', async () => {
+    const res = await POST(req('POST', {}));
+    expect(res.status).toBe(501); expect(await res.json()).toEqual({ error: 'Profile photo uploads are not connected yet.' });
   });
 });
