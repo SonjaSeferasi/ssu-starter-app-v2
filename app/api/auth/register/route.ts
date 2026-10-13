@@ -1,9 +1,10 @@
 import { AccountError, accountOperation, accountResponse, authClient, jsonBody, textField } from '../../../../lib/socialu-account';
+import { authGuard, universityEmail } from '../../../../lib/auth-flows';
 
 export async function POST(request: Request) {
   try {
     const body = await jsonBody(request);
-    const email = textField(body.email).toLowerCase();
+    const email = universityEmail(body.email);
     const fullName = textField(body.fullName);
     const username = textField(body.username);
     const password = typeof body.password === 'string' ? body.password : '';
@@ -13,6 +14,7 @@ export async function POST(request: Request) {
       throw new AccountError('Use at least 8 characters with uppercase, lowercase, a number, and a special character.', 400);
     }
     await accountOperation('check_registration', { p_identifier: email, p_full_name: fullName, p_username: username });
+    await authGuard('send', email, 'signup');
     const { error } = await authClient().auth.signUp({ email, password, options: { data: { full_name: fullName, username } } });
     if (error) throw new AccountError('Registration could not be completed. Check your details or try again later.', 400);
     return Response.json({ message: 'Check your university email to verify your account, then sign in.' }, { status: 201, headers: { 'Cache-Control': 'no-store' } });

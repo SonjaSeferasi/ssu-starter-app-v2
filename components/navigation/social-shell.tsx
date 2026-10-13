@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { isStandalonePage } from '../../lib/navigation';
 import { NavigationFrame } from './social-navigation';
+import { accessToken } from '../../lib/account/session';
 
 type SessionState = 'loading' | 'signed-in' | 'signed-out' | 'unavailable';
 const SessionContext = createContext<SessionState>('loading');
@@ -25,7 +26,7 @@ export function SocialShell({ children }: { children: React.ReactNode }) {
       controller = request;
       try {
         // Consume the starter login's token; do not introduce a second login flow.
-        const token = localStorage.getItem('access_token');
+        const token = await accessToken();
         if (!token) { setSession('signed-out'); return; }
         const response = await fetch('/api/auth/session', {
           headers: { Authorization: `Bearer ${token}` },
