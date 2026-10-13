@@ -1,5 +1,7 @@
 'use client';
 
+import { storedAccessToken } from '../../lib/account/session';
+
 import { useEffect, useState } from 'react';
 import { FeedSwitcher, type FeedTab } from './FeedSwitcher';
 import { PostComposer } from './PostComposer';
@@ -29,7 +31,7 @@ export function FeedPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const stored = localStorage.getItem('access_token') || '';
+    const stored = storedAccessToken() || '';
     setToken(stored);
     if (!stored) return;
     fetch('/api/profile', { headers: { Authorization: `Bearer ${stored}` } })

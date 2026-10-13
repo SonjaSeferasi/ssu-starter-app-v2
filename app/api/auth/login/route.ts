@@ -1,4 +1,5 @@
 import { AccountError, accountOperation, accountResponse, authClient, jsonBody, textField } from '../../../../lib/socialu-account';
+import { authGuard } from '../../../../lib/auth-flows';
 
 export async function POST(request: Request) {
   try {
@@ -12,10 +13,28 @@ export async function POST(request: Request) {
       if (!resolved?.email) throw new AccountError('Incorrect email or password.', 401);
       email = resolved.email;
     }
+    // Use the same failure tracking whether the user types an email or a username.
+    if (!/^[^\s@]+@salemstate\.edu$/.test(email)) throw new AccountError('Incorrect email or password.', 401);
+    const status = await authGuard('status', email);
+    async function requireVerification() {
+      try {
+        await authGuard('send', email, 'reverification');
+        await authClient().auth.signInWithOtp({ email, options: { shouldCreateUser: false } });
+      } catch (error) {
+        if (!(error instanceof AccountError) || error.status !== 429) throw error;
+      }
+      return Response.json({ error: 'Verify your university email before trying to sign in again.', verificationRequired: true, email }, { status: 403, headers: { 'Cache-Control': 'no-store' } });
+    }
+    if (status?.verification_required) return requireVerification();
     const { data, error } = await authClient().auth.signInWithPassword({ email, password });
-    if (error || !data.user || !data.session) throw new AccountError('Incorrect email or password.', 401);
+    if (error || !data.user || !data.session) {
+      const failed = await authGuard('failure', email);
+      if (failed?.verification_required) return requireVerification();
+      throw new AccountError('Incorrect email or password.', 401);
+    }
     if (!data.user.email_confirmed_at) throw new AccountError('Verify your university email before signing in.', 403);
     const profile = await accountOperation('read', { p_auth_id: data.user.id });
+    await authGuard('success', email);
     // No token is returned until verified identity, domain and account state pass.
     return Response.json({ session: data, needsProfile: !profile }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) { return accountResponse(error); }

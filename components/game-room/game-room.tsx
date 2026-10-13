@@ -1,5 +1,7 @@
 'use client';
 
+import { storedAccessToken } from '../../lib/account/session';
+
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import type { AvatarAppearance, GameRoomData } from '../../lib/game-room';
@@ -15,7 +17,7 @@ class GameRoomRequestError extends Error {
 }
 
 async function roomRequest(method = 'GET', body?: AvatarAppearance, signal?: AbortSignal): Promise<GameRoomData> {
-  const response = await fetch('/api/game-room', { method, headers: { Authorization: `Bearer ${localStorage.getItem('access_token') || ''}`, 'Content-Type': 'application/json' }, cache: 'no-store', body: body ? JSON.stringify(body) : undefined, signal });
+  const response = await fetch('/api/game-room', { method, headers: { Authorization: `Bearer ${storedAccessToken() || ''}`, 'Content-Type': 'application/json' }, cache: 'no-store', body: body ? JSON.stringify(body) : undefined, signal });
   const data = await response.json();
   if (!response.ok) throw new GameRoomRequestError(data.error || 'The Game Room could not be loaded.', data.code);
   return data;

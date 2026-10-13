@@ -1,9 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { getClient, getUser, rpc, storageUpload, storageSignedUrl } = vi.hoisted(() => ({
+const { getClient, getUser, rpc, sessionGuard, storageUpload, storageSignedUrl } = vi.hoisted(() => ({
   getClient: vi.fn(),
   getUser: vi.fn(),
   rpc: vi.fn(),
+  sessionGuard: vi.fn(),
   storageUpload: vi.fn(),
   storageSignedUrl: vi.fn(),
 }));
@@ -11,12 +12,13 @@ const { getClient, getUser, rpc, storageUpload, storageSignedUrl } = vi.hoisted(
 vi.mock('../../lib/supabase', () => ({ getSupabaseClient: getClient }));
 
 const user = { id: 'auth-uuid-1', email: 'student@salemstate.edu', email_confirmed_at: '2026-10-08T12:00:00Z' };
+const verifiedToken = 'header.' + Buffer.from(JSON.stringify({ iat: 1791849600, session_id: '11111111-1111-4111-8111-111111111111' })).toString('base64url') + '.signature';
 
 function req(url: string, init: RequestInit & { token?: string } = {}) {
   const { token, headers, ...rest } = init;
   return new Request(`http://localhost${url}`, {
     ...rest,
-    headers: { ...(headers as Record<string, string>), ...(token !== undefined ? { Authorization: `Bearer ${token}` } : {}) },
+    headers: { ...(headers as Record<string, string>), ...(token !== undefined ? { Authorization: `Bearer ${token === 'valid' ? verifiedToken : token}` } : {}) },
   });
 }
 
@@ -38,10 +40,11 @@ beforeEach(() => {
   vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'test-server-key');
   getClient.mockReturnValue({
     auth: { getUser },
-    rpc,
+    rpc: (fn: string, args: unknown) => fn === 'socialu_session_guard' ? sessionGuard(args) : rpc(fn, args),
     storage: { from: vi.fn(() => ({ upload: storageUpload, createSignedUrl: storageSignedUrl })) },
   });
   getUser.mockResolvedValue({ data: { user }, error: null });
+  sessionGuard.mockResolvedValue({ data: true, error: null });
   storageUpload.mockResolvedValue({ error: null });
   storageSignedUrl.mockImplementation(async (key: string) => ({ data: { signedUrl: `https://signed.example/${key}` }, error: null }));
 });
@@ -52,6 +55,13 @@ import { POST as createPost } from '../../app/api/posts/route';
 import { POST as attachPhotos } from '../../app/api/posts/[postId]/photos/route';
 
 describe('Campus Feed (SRS-301)', () => {
+  it('does not return feed data after a password security action revokes the session', async () => {
+    sessionGuard.mockResolvedValue({ data: false, error: null });
+    const response = await campusFeed(req('/api/posts/feed/campus', { token: 'valid' }));
+    expect(response.status).toBe(401);
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
   it('rejects an unauthenticated request', async () => {
     const response = await campusFeed(req('/api/posts/feed/campus'));
     expect(response.status).toBe(401);

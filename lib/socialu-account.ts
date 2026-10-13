@@ -36,7 +36,24 @@ export async function verifiedUser(request: Request) {
   const { data, error } = await authClient().auth.getUser(token);
   if (error || !data.user) throw new AccountError('Your sign-in has expired. Please sign in again.', 401);
   if (!data.user.email_confirmed_at) throw new AccountError('Verify your university email before signing in.', 403);
+  // Supabase signOut revokes refresh tokens; an issued access token can otherwise
+  // remain valid until expiry. Check app revocation as well, using verified claims.
+  await checkAppSession(token, data.user.id);
   return data.user;
+}
+
+export async function checkAppSession(token: string, userId: string) {
+  let claims;
+  try {
+    claims = JSON.parse(Buffer.from(token.split('.')[1], 'base64url').toString());
+    if (typeof claims.iat !== 'number' || !claims.session_id) throw new Error();
+  } catch { throw new AccountError('Your sign-in has expired. Please sign in again.', 401); }
+  const { data, error } = await accountClient().rpc('socialu_session_guard', {
+    p_action: 'check', p_auth_id: userId, p_session: claims.session_id,
+    p_issued_at: new Date(claims.iat * 1000).toISOString(),
+  });
+  if (error) throw new AccountError('Session security is not configured on the server.', 503);
+  if (data !== true) throw new AccountError('Your session was ended by a security action. Please sign in again.', 401);
 }
 
 export function accountResponse(error: unknown) {

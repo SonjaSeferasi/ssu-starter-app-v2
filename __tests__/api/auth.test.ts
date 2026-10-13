@@ -3,7 +3,7 @@ const { getClient, getUser, rpc, signIn, signUp } = vi.hoisted(() => ({ getClien
 vi.mock('../../lib/supabase', () => ({ getSupabaseClient: getClient }));
 const user = { id: 'provider-identity', email: 'student@salemstate.edu', email_confirmed_at: '2026-10-08T12:00:00Z', user_metadata: { full_name: 'Student Name', username: 'student' } };
 const profile = { id: '42', username: 'student', biography: 'Hello', avatar_url: null };
-function req(method: string, body?: unknown, token = 'valid-token') {
+function req(method: string, body?: unknown, token = 'header.' + Buffer.from(JSON.stringify({ iat: 1791849600, session_id: '11111111-1111-4111-8111-111111111111' })).toString('base64url') + '.signature') {
   return new Request('http://localhost/api/test', { method, headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: 'Bearer ' + token } : {}) }, body: body === undefined ? undefined : JSON.stringify(body) });
 }
 beforeEach(() => {
@@ -11,7 +11,7 @@ beforeEach(() => {
   vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'test-server-key');
   getClient.mockReturnValue({ auth: { getUser, signInWithPassword: signIn, signUp }, rpc });
   getUser.mockResolvedValue({ data: { user }, error: null });
-  rpc.mockResolvedValue({ data: profile, error: null });
+  rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : fn === 'socialu_auth_guard' ? { data: {}, error: null } : { data: profile, error: null });
   signIn.mockResolvedValue({ data: { user, session: { access_token: 'test-token' } }, error: null });
   signUp.mockResolvedValue({ data: { user, session: null }, error: null });
 });
@@ -25,7 +25,7 @@ describe('SocialU login and registration', () => {
     expect((await res.json()).needsProfile).toBe(false);
   });
   it('directs an existing provider account to profile setup', async () => {
-    rpc.mockResolvedValue({ data: null, error: null });
+    rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : fn === 'socialu_auth_guard' ? { data: {}, error: null } : { data: null, error: null });
     const res = await login(req('POST', { email: user.email, password: 'Secret123!' }));
     expect((await res.json()).needsProfile).toBe(true);
   });
@@ -39,10 +39,10 @@ describe('SocialU login and registration', () => {
     const res = await login(req('POST', { email: user.email, password: 'wrong' }));
     expect(res.status).toBe(401);
     expect(await res.json()).toEqual({ error: 'Incorrect email or password.' });
-    expect(rpc).not.toHaveBeenCalled();
+    expect(rpc.mock.calls.filter(([fn]) => !['socialu_session_guard', 'socialu_auth_guard'].includes(fn))).toHaveLength(0);
   });
   it('does not return a token when the student is blocked or the domain is rejected', async () => {
-    rpc.mockResolvedValue({ data: null, error: { code: '42501' } });
+    rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : fn === 'socialu_auth_guard' ? { data: {}, error: null } : { data: null, error: { code: '42501' } });
     const res = await login(req('POST', { email: user.email, password: 'Secret123!' }));
     expect(res.status).toBe(403);
     expect(await res.text()).not.toContain('test-token');
@@ -50,7 +50,7 @@ describe('SocialU login and registration', () => {
   it('rejects an unverified provider account', async () => {
     signIn.mockResolvedValue({ data: { user: { ...user, email_confirmed_at: null }, session: { access_token: 'private' } }, error: null });
     expect((await login(req('POST', { email: user.email, password: 'Secret123!' }))).status).toBe(403);
-    expect(rpc).not.toHaveBeenCalled();
+    expect(rpc.mock.calls.filter(([fn]) => !['socialu_session_guard', 'socialu_auth_guard'].includes(fn))).toHaveLength(0);
   });
   it('rejects malformed JSON', async () => {
     expect((await login(new Request('http://localhost/api/auth/login', { method: 'POST', body: '{' }))).status).toBe(400);
@@ -66,18 +66,39 @@ describe('SocialU login and registration', () => {
     expect((await register(req('POST', { ...registration, ...invalid }))).status).toBe(400);
     expect(signUp).not.toHaveBeenCalled();
   });
+  it.each([
+    { fullName: undefined }, { fullName: '   ' },
+    { username: undefined }, { username: '   ' },
+    { email: undefined }, { email: '' }, { email: '   ' },
+    { email: 'student@gmail.com' },
+    { email: 'student@salemstate.edu.attacker.test' },
+    { email: 'student@sub.salemstate.edu' },
+  ])('SRS-100.1/.2/.4/.5 reject direct invalid registration requests %j before signup', async invalid => {
+    expect((await register(req('POST', { ...registration, ...invalid }))).status).toBe(400);
+    expect(signUp).not.toHaveBeenCalled();
+  });
+  it('SRS-100.1/.2/.4/.5 trim required fields and normalize the approved email domain', async () => {
+    const response = await register(req('POST', {
+      ...registration, fullName: ' Student Name ', username: ' student ', email: ' STUDENT@SALEMSTATE.EDU ',
+    }));
+    expect(response.status).toBe(201);
+    expect(signUp).toHaveBeenCalledWith({
+      email: 'student@salemstate.edu', password: 'Secret123!',
+      options: { data: { full_name: 'Student Name', username: 'student' } },
+    });
+  });
   it('rejects duplicate SocialU identities before signup', async () => {
-    rpc.mockResolvedValue({ data: null, error: { code: '23505' } });
+    rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : fn === 'socialu_auth_guard' ? { data: {}, error: null } : { data: null, error: { code: '23505' } });
     expect((await register(req('POST', registration))).status).toBe(409);
     expect(signUp).not.toHaveBeenCalled();
   });
   it('distinguishes a network failure from a missing migration', async () => {
-    rpc.mockResolvedValue({ data: null, error: { code: '', message: 'TypeError: fetch failed' } });
+    rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : fn === 'socialu_auth_guard' ? { data: {}, error: null } : { data: null, error: { code: '', message: 'TypeError: fetch failed' } });
     const res = await login(req('POST', { email: user.email, password: 'Secret123!' }));
     expect(res.status).toBe(503); expect((await res.json()).error).toContain('network connection');
   });
   it('reports missing migration without exposing internal errors', async () => {
-    rpc.mockResolvedValue({ data: null, error: { code: 'PGRST202', message: 'private detail' } });
+    rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : fn === 'socialu_auth_guard' ? { data: {}, error: null } : { data: null, error: { code: 'PGRST202', message: 'private detail' } });
     const res = await login(req('POST', { email: user.email, password: 'Secret123!' }));
     expect(res.status).toBe(503); expect(await res.text()).not.toContain('private detail');
   });

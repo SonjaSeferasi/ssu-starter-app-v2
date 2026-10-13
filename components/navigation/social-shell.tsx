@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { isGamePage, isStandalonePage } from '../../lib/navigation';
 import { NavigationFrame } from './social-navigation';
+import { accessToken, storedAccessToken } from '../../lib/account/session';
 import type { NavigationPosition } from '../../lib/game-room';
 
 type SessionState = 'loading' | 'signed-in' | 'signed-out' | 'unavailable';
@@ -25,7 +26,7 @@ export function SocialShell({ children }: { children: React.ReactNode }) {
   async function savePosition(selected: NavigationPosition) {
     setPosition(selected); setPendingPosition(selected); setSaving(true); setPreferenceError(''); setPreferenceLoadFailed(false);
     try {
-      const token = localStorage.getItem('access_token');
+      const token = storedAccessToken();
       const response = await fetch('/api/preferences', { method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token || ''}` }, body: JSON.stringify({ position: selected }) });
       if (!response.ok) throw new Error();
     } catch { setPreferenceError('Your placement is not confirmed saved.'); }
@@ -36,7 +37,7 @@ export function SocialShell({ children }: { children: React.ReactNode }) {
     if (session !== 'signed-in' || standalone) return;
     const controller = new AbortController();
     setPosition('side'); setSaving(true); setPreferenceError(''); setPreferenceLoadFailed(false);
-    void fetch('/api/preferences', { headers: { Authorization: `Bearer ${localStorage.getItem('access_token') || ''}` }, cache: 'no-store', signal: controller.signal })
+    void fetch('/api/preferences', { headers: { Authorization: `Bearer ${storedAccessToken() || ''}` }, cache: 'no-store', signal: controller.signal })
       .then(async response => { if (!response.ok) throw new Error(); return response.json(); })
       .then(data => { if (!controller.signal.aborted && (data.position === 'side' || data.position === 'bottom')) { setPosition(data.position); setPreferenceError(''); } })
       .catch(() => { if (!controller.signal.aborted) { setPreferenceError('Your saved placement could not be loaded.'); setPreferenceLoadFailed(true); } })
@@ -55,7 +56,7 @@ export function SocialShell({ children }: { children: React.ReactNode }) {
       controller = request;
       try {
         // Consume the starter login's token; do not introduce a second login flow.
-        const token = localStorage.getItem('access_token');
+        const token = await accessToken();
         if (!token) { setSession('signed-out'); return; }
         const response = await fetch('/api/auth/session', {
           headers: { Authorization: `Bearer ${token}` },

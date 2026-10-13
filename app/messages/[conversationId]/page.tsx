@@ -1,5 +1,7 @@
 'use client';
 
+import { storedAccessToken } from '../../../lib/account/session';
+
 import { type FormEvent, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { SessionNotice } from '../../../components/navigation/section-page';
@@ -35,7 +37,7 @@ function Conversation() {
 
   useEffect(() => {
     const controller = new AbortController();
-    fetch('/api/profile', { headers: { Authorization: `Bearer ${localStorage.getItem('access_token') ?? ''}` }, cache: 'no-store', signal: controller.signal })
+    fetch('/api/profile', { headers: { Authorization: `Bearer ${storedAccessToken() ?? ''}` }, cache: 'no-store', signal: controller.signal })
       .then((response) => (response.ok ? response.json() : null))
       .then((data) => { if (data?.profile?.id) setMyStudentId(String(data.profile.id)); })
       .catch(() => {});
@@ -59,7 +61,7 @@ function Conversation() {
       // No sender ID is sent: the server reads the sender from the token.
       const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/messages`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('access_token') ?? ''}` },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${storedAccessToken() ?? ''}` },
         body: JSON.stringify({ text }),
       });
       const data = await response.json().catch(() => ({}));

@@ -22,6 +22,6 @@ export function isGamePage(pathname: string) {
 }
 
 export function isStandalonePage(pathname: string) {
-  return isGamePage(pathname) || ['/login', '/register', '/dev/navigation', '/dev/game-room']
+  return isGamePage(pathname) || ['/login', '/register', '/verify-email', '/forgot-password', '/reset-password', '/account/security', '/dev/navigation', '/dev/game-room']
     .some((path) => pathname === path || pathname.startsWith(`${path}/`));
 }
