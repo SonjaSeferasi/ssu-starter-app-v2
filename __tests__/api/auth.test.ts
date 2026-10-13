@@ -87,6 +87,19 @@ describe('SocialU login and registration', () => {
       options: { data: { full_name: 'Student Name', username: 'student' } },
     });
   });
+  it.each([undefined, '', '   ', '\t\n', 123])('SRS-100.1 identifies a missing full name before database or signup work: %j', async fullName => {
+    const response = await register(req('POST', { ...registration, fullName }));
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ error: 'Enter your full name.' });
+    expect(rpc).not.toHaveBeenCalled();
+    expect(signUp).not.toHaveBeenCalled();
+  });
+  it('SRS-100.1 preserves a supplied name in the database check and signup metadata', async () => {
+    const fullName = '  Linh Nguyễn O’Connor  ';
+    expect((await register(req('POST', { ...registration, fullName }))).status).toBe(201);
+    expect(rpc).toHaveBeenCalledWith('socialu_account', expect.objectContaining({ p_action: 'check_registration', p_full_name: 'Linh Nguyễn O’Connor' }));
+    expect(signUp).toHaveBeenCalledWith(expect.objectContaining({ options: { data: { full_name: 'Linh Nguyễn O’Connor', username: 'student' } } }));
+  });
   it('rejects duplicate SocialU identities before signup', async () => {
     rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : fn === 'socialu_auth_guard' ? { data: {}, error: null } : { data: null, error: { code: '23505' } });
     expect((await register(req('POST', registration))).status).toBe(409);

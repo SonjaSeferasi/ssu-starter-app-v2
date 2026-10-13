@@ -92,6 +92,7 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
     if (busy) return;
     setBusy(true); setError(''); setMessage('');
     try {
+      if (screen === 'register' && !name.trim()) throw new Error('Enter your full name.');
       if (screen !== 'login' && screen !== 'change-password' && !/^[^\s@]+@salemstate\.edu$/i.test(email)) throw new Error('Use your Salem State university email (@salemstate.edu).');
       if (isCode && !/^\d{6}$/.test(code)) throw new Error('Enter the six-digit code from your email.');
       if (newPassword) {
