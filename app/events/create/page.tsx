@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { storedAccessToken } from '../../../lib/account/session';
 
 type EventForm = {
   title: string;
@@ -28,7 +29,7 @@ export default function CreateEventPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const token = window.localStorage.getItem('access_token');
+    const token = storedAccessToken();
     setAccessToken(token);
     setLoading(false);
   }, []);
@@ -180,7 +181,7 @@ export default function CreateEventPage() {
         </form>
 
         <p className="mt-8 text-sm text-slate-300">
-          Back to <Link href="/" className="text-emerald-300 hover:underline">home</Link>
+          Back to <Link href="/events" className="text-emerald-300 hover:underline">Events and Trending</Link>
         </p>
       </section>
     </main>
