@@ -1,9 +1,5 @@
-import { getSupabaseClient } from '../../../lib/supabase';
-
-function getToken(request: Request): string | null {
-  const auth = request.headers.get('Authorization');
-  return auth?.startsWith('Bearer ') ? auth.slice(7) : null;
-}
+import { AccountError, accountClient, accountResponse, jsonBody, verifiedUser } from '../../../lib/socialu-account';
+export const dynamic = 'force-dynamic';
 
 function validateEvent(body: Record<string, unknown>) {
   const title = typeof body.title === 'string' ? body.title.trim() : '';
@@ -21,53 +17,28 @@ function validateEvent(body: Record<string, unknown>) {
   const startsAt = new Date(`${date}T${time}:00`);
   if (Number.isNaN(startsAt.getTime())) return { error: 'date and time must be valid.' };
 
-  return {
-    event: {
-      title,
-      description,
-      location,
-      starts_at: startsAt.toISOString(),
-      status: 'active',
-    },
-  };
+  return { event: { title, description, location, starts_at: startsAt.toISOString() } };
 }
 
+// SRS-400.6: the creator always comes from the verified token; any creator ID in the body is ignored.
+// Events live in the socialu schema, which is outside the Data API, so the insert goes through a server-only function.
 export async function POST(request: Request) {
-  const token = getToken(request);
-  if (!token) return Response.json({ error: 'Unauthorized' }, { status: 401 });
-
-  const supabase = getSupabaseClient();
-  if (!supabase) return Response.json({ error: 'Supabase credentials are not configured.' }, { status: 500 });
-
-  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-  if (authError || !user) return Response.json({ error: 'Invalid or expired token.' }, { status: 401 });
-
-  const { data: student, error: studentError } = await supabase
-    .from('students')
-    .select('student_id')
-    .eq('university_email', user.email)
-    .single();
-
-  if (studentError || !student) {
-    return Response.json({ error: 'No student account was found for this user.' }, { status: 404 });
-  }
-
-  let body: Record<string, unknown>;
   try {
-    body = await request.json();
-  } catch {
-    return Response.json({ error: 'Request body must be valid JSON.' }, { status: 400 });
-  }
+    const user = await verifiedUser(request);
+    const body = await jsonBody(request);
+    const validation = validateEvent(body);
+    if ('error' in validation) throw new AccountError(validation.error!, 400);
 
-  const validation = validateEvent(body);
-  if ('error' in validation) return Response.json({ error: validation.error }, { status: 400 });
-
-  const { data, error } = await supabase
-    .from('events')
-    .insert({ ...validation.event, creator_id: student.student_id })
-    .select('*')
-    .single();
-
-  if (error) return Response.json({ error: error.message }, { status: 400 });
-  return Response.json({ event: data }, { status: 201 });
+    const { title, description, location, starts_at } = validation.event;
+    const { data, error } = await accountClient().rpc('socialu_create_event', {
+      p_auth_id: user.id, p_title: title, p_description: description, p_location: location, p_starts_at: starts_at,
+    });
+    if (error) {
+      if (!error.code && /fetch failed/i.test(error.message)) throw new AccountError('The server cannot reach Supabase. Check the server network connection and try again.', 503);
+      if (error.code === '42501') throw new AccountError('A verified, active university account is required. Finish setting up your profile, then try again.', 403);
+      if (error.code === '22023') throw new AccountError('Title, description, location, date, and time are required.', 400);
+      throw new AccountError('Events are unavailable. Check that the event migration has been applied.', 503);
+    }
+    return Response.json({ event: data }, { status: 201, headers: { 'Cache-Control': 'no-store' } });
+  } catch (error) { return accountResponse(error); }
 }
