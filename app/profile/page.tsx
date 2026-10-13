@@ -1,13 +1,15 @@
 'use client';
 
-import { storedAccessToken } from '../../lib/account/session';
+import { accessToken, clearSession, storedAccessToken } from '../../lib/account/session';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 type Profile = { id: string; username: string; biography: string; avatar_url: string | null };
 
 export default function ProfilePage() {
+  const router = useRouter();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -23,6 +25,7 @@ export default function ProfilePage() {
   const [newBiography, setNewBiography] = useState('');
 
   const [uploading, setUploading] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -81,6 +84,19 @@ export default function ProfilePage() {
     else setError(data.error || 'Failed to save.');
     } catch { setError('Unable to save your profile. Please try again.'); }
     finally { setSaving(false); }
+  }
+
+  async function handleLogout() {
+    setLoggingOut(true);
+    try {
+      const current = await accessToken();
+      if (current) await fetch('/api/auth/logout', { method: 'POST', headers: { Authorization: `Bearer ${current}` } });
+    } catch {
+      // Still sign out on this device even if the server request fails.
+    } finally {
+      clearSession();
+      router.push('/login');
+    }
   }
 
   async function handleAvatarChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -237,9 +253,18 @@ export default function ProfilePage() {
           </>
         )}
 
-        <p className="mt-8 text-sm text-slate-300">
-          Back to <Link href="/" className="text-emerald-300 hover:underline">home</Link>
-        </p>
+        <div className="mt-8 flex items-center justify-between gap-4">
+          <p className="text-sm text-slate-300">
+            Back to <Link href="/" className="text-emerald-300 hover:underline">home</Link>
+          </p>
+          <button
+            onClick={handleLogout}
+            disabled={loggingOut}
+            className="rounded-full border border-red-800 bg-red-900/30 px-4 py-2 text-sm text-red-200 hover:border-red-500 hover:text-red-100 disabled:opacity-70"
+          >
+            {loggingOut ? 'Logging out…' : 'Log out'}
+          </button>
+        </div>
       </section>
     </main>
   );
