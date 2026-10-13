@@ -28,7 +28,7 @@ NEXT_PUBLIC_SUPABASE_URL="https://your-project-id.supabase.co"
 
 ### 3. Run the schema script
 
-In your Supabase project, open the **SQL Editor** and run the contents of [`supabase/schema.sql`](supabase/schema.sql). This creates the `myapp_profile` table used by the profile page.
+`supabase/schema.sql` now builds the team's full `socialu` application schema (see `database/schema_review.md`). The legacy `myapp_profile` table used by `/login`, `/register`, and `/profile` lives separately in [`supabase/legacy_myapp_profile.sql`](supabase/legacy_myapp_profile.sql) — open the Supabase **SQL Editor** and run that file if you need those pages to work.
 
 ### 4. Create the avatars storage bucket
 

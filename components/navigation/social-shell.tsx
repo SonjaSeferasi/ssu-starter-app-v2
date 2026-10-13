@@ -2,8 +2,10 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { isStandalonePage } from '../../lib/navigation';
+import { isGamePage, isStandalonePage } from '../../lib/navigation';
 import { NavigationFrame } from './social-navigation';
+import { accessToken, storedAccessToken } from '../../lib/account/session';
+import type { NavigationPosition } from '../../lib/game-room';
 
 type SessionState = 'loading' | 'signed-in' | 'signed-out' | 'unavailable';
 const SessionContext = createContext<SessionState>('loading');
@@ -13,9 +15,38 @@ export function SocialShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [session, setSession] = useState<SessionState>('loading');
   const standalone = isStandalonePage(pathname);
+  const gamePage = isGamePage(pathname);
+  const [position, setPosition] = useState<NavigationPosition>('side');
+  const [saving, setSaving] = useState(false);
+  const [preferenceError, setPreferenceError] = useState('');
+  const [pendingPosition, setPendingPosition] = useState<NavigationPosition>('side');
+  const [preferenceLoadFailed, setPreferenceLoadFailed] = useState(false);
+  const [preferenceReload, setPreferenceReload] = useState(0);
+
+  async function savePosition(selected: NavigationPosition) {
+    setPosition(selected); setPendingPosition(selected); setSaving(true); setPreferenceError(''); setPreferenceLoadFailed(false);
+    try {
+      const token = storedAccessToken();
+      const response = await fetch('/api/preferences', { method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token || ''}` }, body: JSON.stringify({ position: selected }) });
+      if (!response.ok) throw new Error();
+    } catch { setPreferenceError('Your placement is not confirmed saved.'); }
+    finally { setSaving(false); }
+  }
 
   useEffect(() => {
-    if (standalone) return;
+    if (session !== 'signed-in' || standalone) return;
+    const controller = new AbortController();
+    setPosition('side'); setSaving(true); setPreferenceError(''); setPreferenceLoadFailed(false);
+    void fetch('/api/preferences', { headers: { Authorization: `Bearer ${storedAccessToken() || ''}` }, cache: 'no-store', signal: controller.signal })
+      .then(async response => { if (!response.ok) throw new Error(); return response.json(); })
+      .then(data => { if (!controller.signal.aborted && (data.position === 'side' || data.position === 'bottom')) { setPosition(data.position); setPreferenceError(''); } })
+      .catch(() => { if (!controller.signal.aborted) { setPreferenceError('Your saved placement could not be loaded.'); setPreferenceLoadFailed(true); } })
+      .finally(() => { if (!controller.signal.aborted) setSaving(false); });
+    return () => controller.abort();
+  }, [session, standalone, preferenceReload]);
+
+  useEffect(() => {
+    if (standalone && !gamePage) return;
     let controller: AbortController | undefined;
     let disposed = false;
 
@@ -25,7 +56,7 @@ export function SocialShell({ children }: { children: React.ReactNode }) {
       controller = request;
       try {
         // Consume the starter login's token; do not introduce a second login flow.
-        const token = localStorage.getItem('access_token');
+        const token = await accessToken();
         if (!token) { setSession('signed-out'); return; }
         const response = await fetch('/api/auth/session', {
           headers: { Authorization: `Bearer ${token}` },
@@ -54,12 +85,12 @@ export function SocialShell({ children }: { children: React.ReactNode }) {
       window.removeEventListener('focus', onFocus);
       window.removeEventListener('socialu-session-changed', onFocus);
     };
-  }, [standalone]);
+  }, [standalone, gamePage]);
 
   return (
     <SessionContext.Provider value={session}>
       {!standalone && session === 'signed-in'
-        ? <NavigationFrame pathname={pathname}>{children}</NavigationFrame>
+        ? <NavigationFrame pathname={pathname} position={position} onPositionChange={selected => void savePosition(selected)} saving={saving} preferenceError={preferenceError} onRetry={() => preferenceLoadFailed ? setPreferenceReload(value => value+1) : void savePosition(pendingPosition)}>{children}</NavigationFrame>
         : children}
     </SessionContext.Provider>
   );

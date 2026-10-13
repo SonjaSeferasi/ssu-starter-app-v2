@@ -1,3 +1,4 @@
+import { storedAccessToken } from './account/session';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 // SRS-201.1 (#298): browser side of Supabase Realtime. Uses only the public URL and anon key;
@@ -27,7 +28,7 @@ function tokenUserId(token: string) {
 export function subscribeToChat(onMessage: (message: ChatMessageEvent) => void, onStatus: (status: ChatLiveStatus) => void) {
   const supabase = browserClient();
   if (!supabase) { onStatus('unavailable'); return () => {}; }
-  const token = localStorage.getItem('access_token');
+  const token = storedAccessToken();
   const userId = token ? tokenUserId(token) : null;
   if (!token || !userId) { onStatus('signed-out'); return () => {}; }
 
