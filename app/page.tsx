@@ -19,7 +19,6 @@ export default function Home() {
         <div className={styles.welcomeActions}>
           <Link href="/login" className={styles.action}>Log in</Link>
           <Link href="/register" className={`${styles.action} ${styles.secondaryAction}`}>Create account</Link>
-          <Link href="/preview" className={`${styles.action} ${styles.secondaryAction}`}>Preview account pages</Link>
         </div>
       </section>
     </main>

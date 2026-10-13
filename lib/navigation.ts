@@ -17,6 +17,6 @@ export function isCurrentDestination(pathname: string, href: string) {
 }
 
 export function isStandalonePage(pathname: string) {
-  return ['/login', '/register', '/verify-email', '/forgot-password', '/reset-password', '/account/security', '/preview', '/game-1', '/wordle', '/game-room/game-1', '/game-room/wordle', '/dev/navigation']
+  return ['/login', '/register', '/verify-email', '/forgot-password', '/reset-password', '/account/security', '/game-1', '/wordle', '/game-room/game-1', '/game-room/wordle', '/dev/navigation']
     .some((path) => pathname === path || pathname.startsWith(`${path}/`));
 }

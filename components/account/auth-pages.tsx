@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
-import { Check, CheckCircle2, GraduationCap, KeyRound, LockKeyhole, Mail, ShieldCheck, UserRound } from 'lucide-react';
+import { Check, LockKeyhole, Mail, ShieldCheck, UserRound } from 'lucide-react';
 import { passwordError } from '../../lib/account/validation';
 import { accessToken, clearSession, saveSession } from '../../lib/account/session';
 import styles from './account.module.css';
@@ -32,7 +32,7 @@ async function post(endpoint: string, payload: Record<string, unknown>, token?: 
   return { response, data: await response.json() };
 }
 
-export default function AuthPages({ screen, preview = false }: { screen: AuthScreen; preview?: boolean }) {
+export default function AuthPages({ screen }: { screen: AuthScreen }) {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -48,22 +48,21 @@ export default function AuthPages({ screen, preview = false }: { screen: AuthScr
   const [message, setMessage] = useState('');
   const [cooldown, setCooldown] = useState(0);
   const [verifiedReset, setVerifiedReset] = useState(false);
-  const [complete, setComplete] = useState(false);
-  const href = (target: AuthScreen) => preview ? `/preview/${target}` : target === 'change-password' ? '/account/security' : `/${target}`;
+  const href = (target: AuthScreen) => target === 'change-password' ? '/account/security' : `/${target}`;
   const isCode = screen === 'verify-email' || screen === 'reset-password' && !verifiedReset;
   const newPassword = screen === 'register' || screen === 'change-password' || screen === 'reset-password' && verifiedReset;
   const content = copy[screen];
 
   useEffect(() => {
-    setPassword(''); setConfirmation(''); setCurrent(''); setCode(''); setError(''); setMessage(''); setVerifiedReset(false); setComplete(false);
+    setPassword(''); setConfirmation(''); setCurrent(''); setCode(''); setError(''); setMessage(''); setVerifiedReset(false);
     const params = new URLSearchParams(window.location.search);
     setEmail(params.get('email') || '');
     setPurpose(screen === 'reset-password' ? 'recovery' : params.get('purpose') === 'reverification' ? 'reverification' : 'signup');
-    const sentAt = Number(sessionStorage.getItem(`${preview ? 'preview:' : ''}socialu:code-sent`) || 0);
+    const sentAt = Number(sessionStorage.getItem('socialu:code-sent') || 0);
     setCooldown(Math.max(0, Math.ceil((sentAt + 30_000 - Date.now()) / 1000)));
     if (params.get('reset') === 'done') setMessage('Password reset. Sign in with your new password.');
     if (params.get('verified') === 'done') setMessage('Email verified. Sign in with your password to continue.');
-  }, [screen, preview]);
+  }, [screen]);
 
   useEffect(() => {
     if (!cooldown) return;
@@ -72,7 +71,7 @@ export default function AuthPages({ screen, preview = false }: { screen: AuthScr
   }, [cooldown]);
 
   function sent() {
-    sessionStorage.setItem(`${preview ? 'preview:' : ''}socialu:code-sent`, String(Date.now()));
+    sessionStorage.setItem('socialu:code-sent', String(Date.now()));
     setCooldown(30);
   }
 
@@ -81,7 +80,6 @@ export default function AuthPages({ screen, preview = false }: { screen: AuthScr
     setBusy(true); setError(''); setMessage('');
     try {
       if (!/^[^\s@]+@salemstate\.edu$/i.test(email)) throw new Error('Enter your Salem State university email first.');
-      if (preview) { sent(); setMessage('Preview code: 123456. No real email was sent.'); return; }
       const { response, data } = await post('resend', { email, purpose });
       if (!response.ok) throw new Error(data.error || 'Unable to resend your code.');
       sent(); setMessage(data.message);
@@ -99,17 +97,6 @@ export default function AuthPages({ screen, preview = false }: { screen: AuthScr
       if (newPassword) {
         const invalid = passwordError(password, confirmation, screen === 'change-password' ? current : undefined);
         if (invalid) throw new Error(invalid);
-      }
-      if (preview) {
-        if (isCode && code !== '123456') throw new Error('Use the preview code 123456, or request a replacement code.');
-        if (screen === 'register' || screen === 'forgot-password') {
-          sent(); router.push(href(screen === 'register' ? 'verify-email' : 'reset-password') + `?email=${encodeURIComponent(email)}`);
-        } else if (screen === 'reset-password' && !verifiedReset) { setVerifiedReset(true); setCode(''); }
-        else if (screen === 'reset-password') router.push(href('login') + '?reset=done');
-        else if (screen === 'change-password') { setPassword(''); setConfirmation(''); setCurrent(''); setMessage('Preview: password changed. No real account was changed.'); }
-        else if (purpose === 'reverification') router.push(href('login') + '?verified=done');
-        else setComplete(true);
-        return;
       }
       let endpoint: string = screen;
       let payload: Record<string, unknown> = { email, password, confirmPassword: confirmation };
@@ -150,14 +137,11 @@ export default function AuthPages({ screen, preview = false }: { screen: AuthScr
   const passwordField = (label: string, value: string, update: (value: string) => void, autoComplete: string) => <Field label={label} icon={<LockKeyhole />} key={label}><input type="password" value={value} onChange={event => update(event.target.value)} autoComplete={autoComplete} placeholder="••••••••••" required maxLength={256} /></Field>;
 
   return <div className={styles.workspace}>
-    {preview && <div className={styles.previewBar}>Interactive preview · No real emails or account changes <Link href="/preview">All account pages</Link></div>}
     <main className={styles.scene}>
       <section className={styles.panel} aria-label={content.title}>
-        <Brand href={preview ? '/preview' : '/'} />
+        <Brand href="/" />
         <h1 className={styles.tagline}>{isCode && screen === 'reset-password' ? 'Verify it’s you.' : content.title}</h1>
         <p className={styles.description}>{isCode ? <>Enter the six-digit code sent to {email ? <strong>{email}</strong> : 'your university email'}.</> : content.description}</p>
-        {complete ? <div className={styles.success}><CheckCircle2 size={42} /><h2>Welcome to SocialU.</h2><p>Your {screen === 'login' ? 'sign-in' : 'verification'} preview is complete. A real account would continue to your campus home.</p><Link href="/preview">Explore the other pages</Link></div> : <>
-          {preview && isCode && <div className={styles.notice}>Preview verification code: <strong>123456</strong>.</div>}
           {error && <div className={`${styles.notice} ${styles.error}`} role="alert">{error}</div>}
           {message && <div className={styles.notice} role="status">{message}</div>}
           <form onSubmit={submit} className={styles.form} aria-busy={busy}>
@@ -176,25 +160,8 @@ export default function AuthPages({ screen, preview = false }: { screen: AuthScr
             {isCode && <p className={styles.hint} style={{ textAlign: 'center' }}>Didn’t receive a code? <button type="button" className={styles.textButton} onClick={resend} disabled={busy || cooldown > 0}>{cooldown ? `Resend in ${cooldown}s` : 'Resend code'}</button></p>}
           </form>
           <p className={styles.footer}>{screen === 'login' ? <>New to SocialU? <Link href={href('register')}>Create account</Link></> : screen === 'register' ? <>Already have an account? <Link href={href('login')}>Sign in</Link></> : <Link href={href('login')}>Back to sign in</Link>}</p>
-        </>}
       </section>
       <p className={styles.campusFooter}>Salem State University &nbsp; | &nbsp; A more connected campus</p>
     </main>
   </div>;
-}
-
-export function AuthPreviewIndex() {
-  const pages: { screen: AuthScreen; srs: string; title: string; description: string }[] = [
-    { screen: 'register', srs: '100', title: 'Create account', description: 'Register with your university email and choose a password.' },
-    { screen: 'verify-email', srs: '101–102', title: 'Verify & resend', description: 'Enter a six-digit code or request a replacement.' },
-    { screen: 'login', srs: '103', title: 'Sign in', description: 'Use your university email or username to reconnect.' },
-    { screen: 'forgot-password', srs: '104 · Step 1', title: 'Forgot password', description: 'Request a password-reset code by email.' },
-    { screen: 'reset-password', srs: '104 · Steps 2–3', title: 'Reset password', description: 'Verify your code, then save a new password.' },
-    { screen: 'change-password', srs: '105', title: 'Change password', description: 'Confirm your current password and set a new one.' },
-  ];
-  return <div className={styles.workspace}><main className={styles.previewIndex}>
-    <Brand href="/preview" /><h1>Your account pages.</h1><p>A more connected campus, from the very first sign-in. Explore your SRS 100–105 pages below.</p>
-    <div className={styles.notice}><strong>Interactive preview.</strong> No real emails are sent or accounts changed. Use <strong>123456</strong> for verification codes.</div>
-    <div className={styles.previewGrid}>{pages.map(page => <Link className={styles.previewCard} href={`/preview/${page.screen}`} key={page.screen}><GraduationCap size={25} /><small>SRS {page.srs}</small><h2>{page.title}</h2><p>{page.description}</p></Link>)}</div>
-  </main></div>;
 }
