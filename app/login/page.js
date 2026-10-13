@@ -40,7 +40,7 @@ export default function LoginPage() {
       const otherStorage = remember ? sessionStorage : localStorage;
       storage.setItem('access_token', accessToken);
       otherStorage.removeItem('access_token');
-      router.push('/profile');
+      router.push(data.needsProfile ? '/profile' : '/');
     } catch {
       setMessage('Unable to sign in. Please try again.');
     } finally {
@@ -57,7 +57,7 @@ export default function LoginPage() {
       e('span', { className: 'text-xs text-muted-foreground' }, label),
       e('input', {
         type: inputType,
-        name: inputType,
+        name: inputType === 'password' ? 'password' : 'identifier',
         autoComplete: inputType === 'password' ? 'current-password' : 'username',
         required: true,
         value,
@@ -87,7 +87,7 @@ export default function LoginPage() {
     e('p', { className: 'mt-3 text-center text-xl font-semibold text-foreground' }, 'Your campus. Your people.'),
     e('p', { className: 'mt-6 text-center text-sm text-muted-foreground' }, 'Verify your student status with your university email.'),
     e('form', { className: 'mt-8 space-y-4', onSubmit: handleSubmit, 'aria-busy': loading },
-      field(Mail, 'University email', 'email', 'you@westbridge.edu', email, setEmail),
+      field(Mail, 'University email or username', 'text', 'you@salemstate.edu', email, setEmail),
       field(Lock, 'Password', 'password', '••••••••••', password, setPassword),
       e('div', { className: 'flex flex-wrap items-center justify-between gap-3 pt-1' },
         e('label', { className: 'flex cursor-pointer items-center gap-2 text-sm text-foreground' },
@@ -119,6 +119,6 @@ export default function LoginPage() {
       e(Link, { href: '/register', className: 'font-medium text-foreground underline-offset-4 hover:underline' }, 'Create account'))
   ),
   e('p', { className: 'relative mt-8 text-center text-xs text-foreground' },
-    'Westbridge University\u00a0\u00a0|\u00a0\u00a0A more connected campus')
+    'Salem State University\u00a0\u00a0|\u00a0\u00a0A more connected campus')
   );
 }

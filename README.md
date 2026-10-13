@@ -28,7 +28,7 @@ NEXT_PUBLIC_SUPABASE_URL="https://your-project-id.supabase.co"
 
 ### 3. Run the schema script
 
-In your Supabase project, open the **SQL Editor** and run the contents of [`supabase/schema.sql`](supabase/schema.sql). This creates the `myapp_profile` table and an Auth trigger that saves the username when an account is created. It also enables row-level security and restricts direct table access to the server service-role client. Run the updated script even if the table already exists.
+In your Supabase project, open the **SQL Editor** and run the contents of [`supabase/schema.sql`](supabase/schema.sql). This creates the `myapp_profile` table used by the profile page.
 
 ### 4. Create the avatars storage bucket
 
@@ -42,25 +42,65 @@ npm run dev     # http://localhost:3000
 npm test        # run all tests
 ```
 
-## SocialU account setup
+## SocialU navigation (UR-600)
 
-Registration at `/register` collects a username, email, and password. Supabase Auth
-manages the password; PostgreSQL `public.myapp_profile` stores the username and
-profile fields. Login continues to use email and password.
+SRS-600.1–600.3 share the navigation in `components/navigation`. The mint palette,
+left sidebar, and outlined icons follow the pictures in `documentation/UI design`.
+There are five destinations: Home (`/`), Messages (`/messages`), Game Room
+(`/game-room`), Events and Trending (`/events`), and the current student's Profile
+(`/profile`). The current section is indicated visually and with `aria-current`.
 
-1. Create your Supabase project and fill in `.env.local` using `.env.example`.
-   The dashboard's `/new/...` URL is not the project API URL. Use your project's
-   `https://<project-ref>.supabase.co` URL. The profile API requires the server-only
-   service-role key; never prefix that key with `NEXT_PUBLIC_` or commit it.
-2. Run `supabase/schema.sql` in the Supabase SQL Editor before signing up.
-3. Set Authentication URL Configuration's Site URL to `http://localhost:3000`
-   (or your actual development port). Leave email confirmation enabled to verify
-   email ownership. Confirmation does not itself establish university enrollment.
-4. Restart `npm run dev`, create an account at `/register`, confirm the email,
-   and sign in at `/login`.
-5. Check Authentication → Users for the account and Table Editor → myapp_profile
-   for the saved username. No plaintext password is stored in the profile table.
+The shared shell verifies the starter login's existing `access_token` through
+`GET /api/auth/session`. Login, registration, Game 1 and Wordle routes omit the
+shell. This is display/session integration, not the pending verified-student
+integration with the new `socialu` database schema. Each feature API must retain
+its own authentication and authorization checks.
 
-The usernames are display names, not unique login identifiers. Existing accounts
-without a profile can create one on `/profile`. The SQL script needs a live-project
-smoke test after configuration; local API tests use mocked Supabase responses.
+Home, Game Room, and Events and Trending currently contain clearly
+labeled placeholder content; their route integration is ready, but their feature
+implementation and end-to-end acceptance remain dependent on the feature owners.
+Messages now uses the chat layout (see SocialU chat below).
+Profile continues to use the existing authenticated profile implementation.
+
+To review the design without an account, run `npm run dev` and open
+`http://localhost:3000/dev/navigation`. This static preview contains no account
+data and returns 404 in production. Its links lead to the real application routes.
+To check the real flow, log in, use each destination, verify only the current item
+is selected, and confirm Profile shows your own account. Check the sidebar at both
+desktop and phone widths and use Tab to verify keyboard focus.
+
+Preferences, unread badges, Create actions, avatar editing, and game content are
+separate SRS requirements. The mockups' sample users, scores, and leaderboard are
+not added by this navigation implementation.
+
+## SocialU account integration (UR-100 / UR-103)
+
+The account bridge is in `supabase/migrations/20261008000100_link_supabase_accounts.sql`. Apply it once after the 59-table initial migration; never rerun the reset schema to install this integration. It adds a unique `students.auth_user_id` foreign key to Supabase Auth and permits a null local password digest only when a provider identity exists. No passwords are copied and no students are attached by matching email alone. The original assignment schema remains unchanged; the migration is the Supabase-specific deployment adapter.
+
+Requirement traces: SRS-100.1/.2/.3/.4/.5/.9/.10 require name, username, university email uniqueness and verification; SRS-103.1/.3/.8 govern identity and account access; SRS-110.5 supports profile bio updates. Sonja confirmed `salemstate.edu` as the initial domain on 2026-10-08. The migration seeds Salem State University and that domain without replacing existing rows.
+
+Only the Next.js server's `SUPABASE_SERVICE_ROLE_KEY` can execute `public.socialu_account`. It checks Supabase's confirmed email and SocialU's active/re-verification state. Browser roles cannot execute it, and raw `socialu` tables are not exposed through the Data API. Request bodies never select the acting student; the API uses `auth.getUser(token)` to derive the identity. Do not expose the service key in a NEXT_PUBLIC variable.
+
+Existing confirmed Salem State accounts sign in with email/password, complete missing name/username once on Profile, and then use their linked SocialU profile. Subsequent sign-ins can also use that username. Biography edits update `socialu.student_profiles.bio`. Navigation requires the linked, eligible account. Account setup is distinct from the full SRS-109 profile-setup workflow; `setup_completed` stays false until its required fields are implemented.
+
+Registration now uses normal Supabase signup instead of admin auto-confirmation. Keep Confirm email enabled. The current hosted project has no custom SMTP configured, so new-student email delivery still needs SMTP/Resend setup and an end-to-end check. The default provider confirmation link is an interim integration: UR-101/102 six-digit codes, exact expiry/resend/grace behavior, UR-103 failed-attempt counting and re-verification delivery, Remember Me/refresh/revocation, and password recovery are not completed by this bridge. Auth access tokens retain the starter app's browser storage behavior and expire; this is not a claim of production-ready authentication. Username collisions between pending signups are caught when onboarding commits.
+
+The obsolete profile-photo upload is disabled and returns 501 after account checks; it must be connected to SocialU private media storage before re-enabling the control. Existing Gmail test accounts remain in Supabase Auth but cannot access SocialU under the approved university domain policy.
+
+Validation: `npm test`; `npx tsc --noEmit --incremental false`. The separate `supabase/account-integration-check.sql` exercises migration/onboarding/idempotency/bio/account checks and permission isolation inside BEGIN/ROLLBACK. It requires a confirmed Salem State Auth account and is for a pre-migration check only. It persists no test profile or schema changes.
+
+Hosted migration history was empty during inspection even though all 59 tables existed. Do not run an automatic initial migration/reset against this database; reconcile that pre-existing baseline separately before enabling automatic database deployments.
+
+The account integration migration was applied with Sonja's approval on 2026-10-08 and recorded as version `20261008000100`. Live checks confirmed 59 SocialU tables, the account-link column, `salemstate.edu`, backend function access, and denial for both browser roles. The application remains on port 3000; restart `npm run dev` there to replace the old running starter code. A real successful login still requires verification from that user-run server. The temporary tool-started preview was stopped; its outbound Supabase connection was blocked by the tool environment's network permissions.
+
+## SocialU chat: send a text message (UR-201)
+
+SRS-201.1 (LP): a conversation participant sends a text message, and every current participant receives it live through Supabase Realtime. No custom socket server is used, so `npm run dev` and `npm start` are unchanged.
+
+- **Migration** `supabase/migrations/20261012120000_chat_send_text_message.sql` (additive; apply once after `20261008000100`). It adds `public.socialu_send_message(p_auth_id, p_conversation_id, p_text)`, executable only by the server's service role like `socialu_account`. It resolves the verified, active student, runs the shared participant check (`socialu.is_current_participant`), accepts 1–500 characters, applies the private-messaging rule (`socialu.can_send_private`: current friends or accepted request, no block), saves the message, and broadcasts it with `realtime.send` to each current participant's private topic `student:<auth user id>`. It also adds one SELECT policy on `realtime.messages` so a signed-in student can receive broadcasts only on their own topic. There is no INSERT policy, so browsers cannot broadcast.
+- **API** `POST /api/conversations/[id]/messages` with body `{ "text": "..." }`. The sender always comes from the bearer token; sender IDs in the body are ignored. Missing and forbidden conversations both return 404 `Conversation not available.` (`lib/chat-access.ts` maps database errors).
+- **Pages** follow the Messages UI design and share the Messages column (`app/messages/conversation-list.tsx`; the conversation list itself is SRS-212.4). `/messages` shows the column and a "Choose a conversation" panel. `/messages/[conversationId]` adds the conversation header with live status and the message box with the send button. It shows messages sent or received while the page is open; loading saved history is SRS-201.2. Until SRS-200.1/212.4 add ways to open a conversation, open one by its ID.
+- **Browser variables.** Realtime runs in the browser, which can only read `NEXT_PUBLIC_` values. `next.config.js` reuses the existing `SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_ANON_KEY`, so no `.env.local` changes are needed. Only these public values are exposed; never add `SUPABASE_SERVICE_ROLE_KEY` there.
+- **Testing.** `npm test` covers the route (`__tests__/api/messages.test.ts`). For the end-to-end check, use two verified Salem State students who are current friends, a private conversation between them, and a third student outside it; open `/messages/<conversation id>` in two browser windows and send a message.
+
+Status: applied to the hosted database on 2026-10-12 and recorded as version `20261012120000` after a rolled-back dry run. It was applied as one all-or-nothing statement from a single-line copy of this file (comments removed; same SQL). Checks confirmed the function, service-role-only execution (browser roles denied), the one `realtime.messages` policy, 59 unchanged SocialU tables, and the migration history entry.

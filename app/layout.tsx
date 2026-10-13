@@ -1,14 +1,15 @@
 import './globals.css';
+import { SocialShell } from '../components/navigation/social-shell';
 
 export const metadata = {
-  title: 'SSU Starter App',
-  description: 'Next.js + Tailwind + Supabase starter for students',
+  title: 'SocialU',
+  description: 'Your campus. Your people.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body><SocialShell>{children}</SocialShell></body>
     </html>
   );
 }
