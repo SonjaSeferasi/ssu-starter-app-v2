@@ -1,0 +1,70 @@
+.page { max-width: 1320px; margin: 0 auto; padding: clamp(24px, 4vw, 48px); color: #18362f; }
+.pageHeader { margin-bottom: 28px; }
+.eyebrow { color: #4c7a64; font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; margin: 0 0 10px; }
+.pageHeader h1 { font-size: clamp(30px, 3.5vw, 42px); font-weight: 750; letter-spacing: -1.3px; line-height: 1.15; margin: 0 0 10px; }
+.pageHeader > p:last-child { color: #637c71; font-size: 15px; margin: 0; line-height: 1.6; }
+.roomGrid { display: grid; grid-template-columns: minmax(270px, .85fr) minmax(380px, 1.35fr); gap: 24px; align-items: start; }
+.avatarPanel { padding: 24px; background: #f8fcf8; border: 1px solid #d7e5da; border-radius: 18px; box-shadow: 0 8px 24px #325e3d05; }
+.panelHeading { display: flex; gap: 12px; align-items: center; }
+.panelHeading h2, .participation h2, .activities h2 { font-size: 17px; font-weight: 700; margin: 0 0 6px; line-height: 1.4; }
+.panelHeading p, .participation p { font-size: 12px; color: #637c71; margin: 0; line-height: 1.5; }
+.smallIcon { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; font-size: 23px; background: #e7f2e9; color: #458568; }
+.avatarStage { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 385px; padding: 28px 12px 18px; isolation: isolate; }
+.avatarStage > svg { position: relative; max-width: 240px; filter: drop-shadow(0 8px 3px #18362f08); }
+.avatarHalo { position: absolute; top: 72px; width: 215px; height: 215px; border-radius: 50%; background: #eaf3e7; z-index: -1; }
+.avatarLabel { font-size: 11px; color: #688070; letter-spacing: .03em; margin-top: 18px; }
+.editActions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.editActions button { min-height: 46px; border: 1px solid #cbded0; border-radius: 8px; background: #eef6ee; color: #284b3e; font-size: 19px; display: flex; align-items: center; justify-content: center; gap: 9px; cursor: pointer; }
+.editActions button span { font-size: 13px; font-weight: 600; }
+.editActions button[aria-pressed='true'] { background: #bfddc7; border-color: #6d9b7d; }
+.editor { border-top: 1px solid #d7e5da; margin-top: 20px; padding-top: 18px; }
+.editor h3 { font-size: 13px; font-weight: 700; margin: 0 0 14px; }
+.faceGroups { display: flex; gap: 8px; margin-bottom: 14px; }
+.faceGroups button { flex: 1; min-height: 38px; padding: 8px; border: 1px solid #cbded0; border-radius: 7px; background: transparent; color: #284b3e; font-size: 12px; cursor: pointer; }
+.faceGroups button[aria-pressed='true'] { background: #bfddc7; border-color: #6d9b7d; font-weight: 600; }
+.options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.option { position: relative; min-width: 0; padding: 8px 3px; border: 1px solid #d7e5da; border-radius: 8px; background: white; cursor: pointer; color: #284b3e; }
+.option > span { display: block; font-size: 11px; }
+.option[aria-pressed='true'] { border: 2px solid #39775e; background: #edf7ee; }
+.option .selectedMark { position: absolute; top: 4px; right: 6px; color: #39775e; font-weight: bold; }
+.option:disabled { opacity: .6; cursor: wait; }
+.editorNote, .saveStatus { color: #687a70; font-size: 12px; line-height: 1.6; margin-top: 12px; }
+.saveStatus:empty { display: none; }
+.saveStatus button { margin-left: 8px; padding: 3px 10px; border: 1px solid #719e82; border-radius: 5px; color: #284b3e; background: transparent; cursor: pointer; }
+.activityColumn { display: grid; gap: 22px; }
+.participation { display: flex; align-items: flex-start; gap: 14px; padding: 22px; border: 1px solid #d5e4d8; background: #e2f0e4; border-radius: 14px; }
+.streakIcon { font-size: 28px; color: #458568; }
+.participation .pendingStatus { margin-top: 12px; font-size: 11px; }
+.activities { padding: 24px; border: 1px solid #d7e5da; background: #f8fcf8; border-radius: 18px; }
+.activityHeading { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 16px; }
+.activityHeading > span { color: #688070; font-size: 11px; white-space: nowrap; }
+.activityCard { display: flex; gap: 16px; align-items: center; padding: 18px 0; border-top: 1px solid #e0ebe0; flex-wrap: wrap; }
+.activityImage { width: 116px; flex-shrink: 0; border-radius: 9px; overflow: hidden; }
+.activityImage svg { display: block; width: 100%; }
+.activityCopy { flex: 1; min-width: 160px; }
+.activityCopy h3 { font-size: 16px; font-weight: 700; margin: 0 0 6px; }
+.activityCopy p { font-size: 12px; line-height: 1.6; color: #687a70; margin: 0 0 10px; max-width: 350px; }
+.activityMeta { color: #4f7963; font-size: 10px; }
+.activityAction { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.activityAction button { min-height: 36px; min-width: 70px; padding: 6px 12px; border: 1px solid #b3d2bd; background: #d4e7d9; color: #4d6c58; border-radius: 6px; font-size: 12px; }
+.activityAction button span { margin-left: 6px; }
+.activityAction > span { font-size: 9px; color: #687a70; }
+.optionalBadge { background: #eceee4; padding: 3px 6px; font-size: 9px; border-radius: 4px; color: #737a65; font-weight: 500; vertical-align: middle; }
+.optionalActivity { opacity: .8; }
+.roomFootnote { font-size: 12px; line-height: 1.7; color: #687a70; margin: 0; padding: 0 3px; }
+.previewNotice { font-size: 12px; color: #4f7963; padding: 12px 16px; border: 1px dashed #a8c6b1; border-radius: 8px; margin-bottom: 22px; background: #f5faf3; }
+.notice { padding: 32px; border: 1px solid #d7e5da; background: #f8fcf8; border-radius: 16px; line-height: 1.6; }
+.notice h2 { font-size: 20px; font-weight: bold; margin: 0 0 8px; }
+.primaryButton { margin-top: 16px; padding: 10px 20px; min-height: 44px; background: #bfddc7; border: 1px solid #a2c7ae; color: #284b3e; border-radius: 8px; cursor: pointer; font-weight: 600; }
+.page button:focus-visible { outline: 3px solid #28634e; outline-offset: 3px; }
+@media (max-width: 1150px) { .roomGrid { grid-template-columns: minmax(240px, .8fr) minmax(310px, 1fr); gap: 16px; } .avatarPanel, .activities { padding: 18px; } .activityCard { gap: 12px; } .activityImage { width: 90px; } .activityAction { margin-left: 102px; } }
+@media (max-width: 960px) { .roomGrid { grid-template-columns: 1fr; } .avatarStage { min-height: 340px; } .avatarPanel { max-width: 100%; } .options { max-width: 340px; } }
+@media (max-width: 600px) { .page { padding: 26px 16px; } .pageHeader > p:last-child { font-size: 13px; } .avatarPanel, .activities, .participation { padding: 16px; } .panelHeading h2, .participation h2, .activities h2 { font-size: 15px; } .activityHeading { display: block; } .activityCopy { min-width: 130px; } .activityImage { width: 76px; } .activityCopy h3 { font-size: 14px; } .activityAction { margin-left: 88px; } .avatarStage { padding-left: 0; padding-right: 0; } }
+
+.previewNotice p { margin: 0; line-height: 1.6; }
+.previewNotice .primaryButton { font-size: 12px; margin-top: 10px; }
+
+.activityAction a { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; min-width: 78px; padding: 8px 14px; border: 1px solid #619276; border-radius: 6px; background: #bfddc7; color: #18362f; font-size: 13px; font-weight: 600; text-decoration: none; }
+.activityAction a:hover { background: #a9d0b5; }
+.activityAction a:focus-visible { outline: 3px solid #28634e; outline-offset: 3px; }
+.activityAction > span { max-width: 130px; text-align: center; }

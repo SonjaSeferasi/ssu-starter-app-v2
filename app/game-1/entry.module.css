@@ -1,0 +1,12 @@
+.page { min-height: 100dvh; padding: clamp(20px, 4vw, 52px); background: #edf5ef; color: #18362f; }
+.back { display: inline-flex; min-height: 44px; align-items: center; margin-bottom: 20px; color: #244d3d; font-weight: 600; text-decoration: none; }
+.card { max-width: 760px; margin: 0 auto; padding: clamp(24px, 5vw, 48px); border: 1px solid #cbded0; border-radius: 20px; background: #f8fcf8; }
+.art { width: min(100%, 330px); margin: 0 auto 26px; border-radius: 12px; overflow: hidden; }
+.art svg { display: block; width: 100%; }
+.eyebrow { margin: 0 0 8px; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #36634c; }
+.card h1 { font-size: clamp(30px, 5vw, 44px); margin: 0 0 14px; line-height: 1.2; }
+.card p { line-height: 1.65; }
+.status { padding: 18px; margin-top: 24px; border: 1px solid #cbded0; border-radius: 10px; background: #e5f1e7; }
+.status p { margin: 5px 0 0; }
+.return { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; margin-top: 24px; padding: 10px 20px; border-radius: 8px; background: #bfddc7; color: #18362f; font-weight: 600; text-decoration: none; }
+.back:focus-visible, .return:focus-visible { outline: 3px solid #28634e; outline-offset: 4px; }
