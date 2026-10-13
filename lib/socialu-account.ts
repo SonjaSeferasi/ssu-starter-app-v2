@@ -1,7 +1,7 @@
 import { getSupabaseClient } from './supabase';
 
 export class AccountError extends Error {
-  constructor(message: string, public status: number) { super(message); }
+  constructor(message: string, public status: number, public code?: string) { super(message); }
 }
 
 export function authClient() {
@@ -58,7 +58,7 @@ export async function checkAppSession(token: string, userId: string) {
 
 export function accountResponse(error: unknown) {
   const known = error instanceof AccountError;
-  return Response.json({ error: known ? error.message : 'The request could not be completed. Please try again.' },
+  return Response.json({ error: known ? error.message : 'The request could not be completed. Please try again.', ...(known && error.code ? { code: error.code } : {}) },
     { status: known ? error.status : 503, headers: { 'Cache-Control': 'no-store' } });
 }
 
