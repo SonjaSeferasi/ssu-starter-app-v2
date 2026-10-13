@@ -1,7 +1,10 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { isCurrentDestination, navigationDestinations } from '../../lib/navigation';
 import styles from './social-shell.module.css';
+import type { NavigationPosition } from '../../lib/game-room';
 
 type IconName = (typeof navigationDestinations)[number]['icon'] | 'profile' | 'search';
 
@@ -20,7 +23,10 @@ function NavigationIcon({ name }: { name: IconName }) {
   );
 }
 
-export function SocialNavigation({ pathname }: { pathname: string }) {
+type PlacementProps = { position?: NavigationPosition; onPositionChange?: (position: NavigationPosition) => void; saving?: boolean; preferenceError?: string; onRetry?: () => void };
+
+export function SocialNavigation({ pathname, position = 'side', onPositionChange, saving, preferenceError, onRetry }: { pathname: string } & PlacementProps) {
+  const [preferencesOpen, setPreferencesOpen] = useState(false);
   return (
     <nav className={styles.navigation} aria-label="Main navigation">
       <ul className={styles.destinationList}>
@@ -39,6 +45,20 @@ export function SocialNavigation({ pathname }: { pathname: string }) {
           </li>
         ))}
       </ul>
+      <div className={styles.preferences}>
+        <button className={styles.preferenceToggle} onClick={() => setPreferencesOpen(!preferencesOpen)} aria-expanded={preferencesOpen} aria-controls="navigation-preferences">
+          <span aria-hidden="true">⚙</span> Preferences
+        </button>
+        {preferencesOpen && <section id="navigation-preferences" className={styles.preferencePanel} aria-label="Navigation preferences">
+          <p>Navigation placement</p>
+          <div className={styles.placementChoices}>
+            {(['side', 'bottom'] as const).map(choice => <button key={choice} aria-pressed={position === choice} disabled={saving || !onPositionChange} onClick={() => onPositionChange?.(choice)}>{choice === 'side' ? 'Side' : 'Bottom'}</button>)}
+          </div>
+          {saving && <p role="status">Saving preference…</p>}
+          {preferenceError && <p role="alert">{preferenceError} <button onClick={onRetry} disabled={saving}>Retry</button></p>}
+          <button className={styles.closePreferences} onClick={() => setPreferencesOpen(false)}>Close</button>
+        </section>}
+      </div>
       <div className={styles.sidebarCard} aria-disabled="true">
         <p className={styles.sidebarCardTitle}>🏆 Weekly Leaderboard</p>
         <p className={styles.sidebarCardBody}>Coming soon — part of the points system.</p>
@@ -49,9 +69,9 @@ export function SocialNavigation({ pathname }: { pathname: string }) {
 }
 
 // Also used by the development-only preview; no session or private data lives here.
-export function NavigationFrame({ pathname, children }: { pathname: string; children: React.ReactNode }) {
+export function NavigationFrame({ pathname, children, position = 'side', ...preferences }: { pathname: string; children: React.ReactNode } & PlacementProps) {
   return (
-    <div className={styles.shell}>
+    <div className={styles.shell} data-navigation={position}>
       <a className={styles.skipLink} href="#socialu-content">Skip to content</a>
       <header className={styles.header}>
         <Link href="/" className={styles.brand} aria-label="SocialU home">Social<span>U</span></Link>
@@ -67,7 +87,7 @@ export function NavigationFrame({ pathname, children }: { pathname: string; chil
           </Link>
         </div>
       </header>
-      <SocialNavigation pathname={pathname} />
+      <SocialNavigation pathname={pathname} position={position} {...preferences} />
       <div id="socialu-content" tabIndex={-1} className={styles.content}>{children}</div>
     </div>
   );

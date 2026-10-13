@@ -16,7 +16,12 @@ export function isCurrentDestination(pathname: string, href: string) {
   return pathname === href || (href !== '/' && pathname.startsWith(`${href}/`));
 }
 
+export function isGamePage(pathname: string) {
+  return ['/game-1', '/wordle', '/game-room/game-1', '/game-room/wordle']
+    .some((path) => pathname === path || pathname.startsWith(`${path}/`));
+}
+
 export function isStandalonePage(pathname: string) {
-  return ['/login', '/register', '/game-1', '/wordle', '/game-room/game-1', '/game-room/wordle', '/dev/navigation']
+  return isGamePage(pathname) || ['/login', '/register', '/dev/navigation', '/dev/game-room']
     .some((path) => pathname === path || pathname.startsWith(`${path}/`));
 }
