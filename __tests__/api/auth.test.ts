@@ -66,6 +66,27 @@ describe('SocialU login and registration', () => {
     expect((await register(req('POST', { ...registration, ...invalid }))).status).toBe(400);
     expect(signUp).not.toHaveBeenCalled();
   });
+  it.each([
+    { fullName: undefined }, { fullName: '   ' },
+    { username: undefined }, { username: '   ' },
+    { email: undefined }, { email: '' }, { email: '   ' },
+    { email: 'student@gmail.com' },
+    { email: 'student@salemstate.edu.attacker.test' },
+    { email: 'student@sub.salemstate.edu' },
+  ])('SRS-100.1/.2/.4/.5 reject direct invalid registration requests %j before signup', async invalid => {
+    expect((await register(req('POST', { ...registration, ...invalid }))).status).toBe(400);
+    expect(signUp).not.toHaveBeenCalled();
+  });
+  it('SRS-100.1/.2/.4/.5 trim required fields and normalize the approved email domain', async () => {
+    const response = await register(req('POST', {
+      ...registration, fullName: ' Student Name ', username: ' student ', email: ' STUDENT@SALEMSTATE.EDU ',
+    }));
+    expect(response.status).toBe(201);
+    expect(signUp).toHaveBeenCalledWith({
+      email: 'student@salemstate.edu', password: 'Secret123!',
+      options: { data: { full_name: 'Student Name', username: 'student' } },
+    });
+  });
   it('rejects duplicate SocialU identities before signup', async () => {
     rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : fn === 'socialu_auth_guard' ? { data: {}, error: null } : { data: null, error: { code: '23505' } });
     expect((await register(req('POST', registration))).status).toBe(409);
