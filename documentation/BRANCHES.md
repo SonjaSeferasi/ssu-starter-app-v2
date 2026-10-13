@@ -1,34 +1,18 @@
 # Linh’s SRS branches
 
-Use one branch per SRS group. For example, SRS-100.1 through SRS-100.10 belong on `linh/srs-100-registration`. Branches begin at the current main baseline; their existence does not mean every requirement is implemented.
+Organize related requirements together because they share forms, session handling, validation, and database operations. Include the specific SRS requirement in commit messages.
 
-`linh/integration-pages` combines the latest main pages with the local campus login design. `linh/backup-local-pages-20261012` preserves the local work before integration. The 257 identical per-requirement branches were replaced by the 24 groups below on October 12, 2026. Teammates’ branches were left unchanged. A local recovery bundle was saved at `/tmp/socialu-before-branch-cleanup.bundle`.
-
-| SRS group | Part | Branch |
+| Branch | Requirements | Purpose |
 | --- | --- | --- |
-| 100 | Create an Account with School Email Verification | `linh/srs-100-registration` |
-| 101 | Verify My University Email | `linh/srs-101-email-verification` |
-| 102 | Resend a Verification Code | `linh/srs-102-resend-verification` |
-| 103 | Log In to My Account | `linh/srs-103-login` |
-| 104 | Reset a Forgotten Password | `linh/srs-104-password-reset` |
-| 105 | Change My Password | `linh/srs-105-password-change` |
-| 106 | Update My University Email | `linh/srs-106-university-email` |
-| 107 | Review Recent Login Activity | `linh/srs-107-login-activity` |
-| 108 | Confirm Before Logging Out | `linh/srs-108-logout` |
-| 109 | Add Profile Information | `linh/srs-109-profile-information` |
-| 110 | Edit My Profile | `linh/srs-110-edit-profile` |
-| 111 | View My Activity Summary | `linh/srs-111-activity-summary` |
-| 112 | Filter My Profile Content | `linh/srs-112-profile-filters` |
-| 113 | View Another Student's Profile | `linh/srs-113-view-student-profile` |
-| 114 | Send a Friend Request | `linh/srs-114-send-friend-request` |
-| 115 | View Pending Friend Requests | `linh/srs-115-pending-friend-requests` |
-| 116 | Accept a Friend Request | `linh/srs-116-accept-friend-request` |
-| 117 | Decline a Friend Request | `linh/srs-117-decline-friend-request` |
-| 118 | Search My Friends List | `linh/srs-118-friends-search` |
-| 119 | Open messaging from a profile. | `linh/srs-119-profile-messaging` |
-| 120 | Remove a Friend | `linh/srs-120-remove-friend` |
-| 121 | Block Another Student | `linh/srs-121-block-student` |
-| 122 | Manage Blocked Students | `linh/srs-122-blocked-students` |
-| 123 | Deactivate My Account | `linh/srs-123-deactivate-account` |
+| `linh/srs-100-105-authentication` | SRS 100–105 | Registration, verification, resend codes, login, password reset, password change |
+| `linh/srs-106-108-123-account-settings` | SRS 106–108 and 123 | University email changes, login activity, logout, account deactivation |
+| `linh/srs-109-113-profile` | SRS 109–113 | Profile setup, editing, activity summary, content filters, viewing student profiles |
+| `linh/srs-114-122-friendships` | SRS 114–122 | Friend requests, friends search, profile messaging entry, removal, blocking and unblocking |
 
-Before starting work, fetch origin and switch to the relevant branch. Keep changes scoped to that group, test them, and open a pull request to main.
+The authentication branch contains the current account-page work. The other three branches begin at the current main baseline for future work; creating them does not mean those requirements are implemented. Live authentication still requires Supabase credentials, the account migrations, and hosted email configuration.
+
+The older per-requirement branches and `linh/srs-100-105-account-pages` are consolidated into the four groups above. `linh/socialu-work` is retained as an older reference. Main and teammates’ branches are not changed by this organization.
+
+Before consolidation, a local recovery bundle was saved at `/tmp/socialu-before-srs-grouping.bundle`. Keep future recovery bundles somewhere durable if long-term recovery is needed.
+
+Work on the relevant branch, commit with a requirement reference (for example, `SRS-103: update login form`), and push that branch. Merge to main only through the team’s review process.
