@@ -23,7 +23,9 @@ const validBody = {
   time: '10:00',
 };
 
-function createRequest(body: object, token = 'valid-token') {
+const validToken = 'header.' + Buffer.from(JSON.stringify({ iat: 1791849600, session_id: '11111111-1111-4111-8111-111111111111' })).toString('base64url') + '.signature';
+
+function createRequest(body: object, token = validToken) {
   return new Request('http://localhost/api/events', {
     method: 'POST',
     headers: {
@@ -39,10 +41,10 @@ describe('Event creation API', () => {
     vi.resetAllMocks();
     vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'test-server-key');
     getClient.mockReturnValue({ auth: { getUser }, rpc });
-    getUser.mockImplementation(async (token: string) => token === 'valid-token'
+    getUser.mockImplementation(async (token: string) => token === validToken
       ? { data: { user }, error: null }
       : { data: { user: null }, error: { message: 'Invalid token' } });
-    rpc.mockResolvedValue({ data: saved, error: null });
+    rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : { data: saved, error: null });
   });
 
   it('creates an event with the required information', async () => {
@@ -61,8 +63,9 @@ describe('Event creation API', () => {
 
   it('ignores creator IDs supplied by the browser', async () => {
     await POST(createRequest({ ...validBody, creator_id: 999, p_auth_id: 'victim' }));
-    expect(rpc.mock.calls[0][1].p_auth_id).toBe(user.id);
-    expect(rpc.mock.calls[0][1]).not.toHaveProperty('creator_id');
+    const args = rpc.mock.calls.find(([fn]) => fn === 'socialu_create_event')![1];
+    expect(args.p_auth_id).toBe(user.id);
+    expect(args).not.toHaveProperty('creator_id');
   });
 
   it('rejects an event without required fields', async () => {
@@ -70,7 +73,7 @@ describe('Event creation API', () => {
 
     expect(response.status).toBe(400);
     expect(await response.json()).toEqual({ error: 'description is required.' });
-    expect(rpc).not.toHaveBeenCalled();
+    expect(rpc).not.toHaveBeenCalledWith('socialu_create_event', expect.anything());
   });
 
   it('rejects requests without a valid access token', async () => {
@@ -80,7 +83,7 @@ describe('Event creation API', () => {
   });
 
   it('explains when the signed-in user has no active student account', async () => {
-    rpc.mockResolvedValue({ data: null, error: { code: '42501', message: 'A verified, active university account is required.' } });
+    rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : { data: null, error: { code: '42501', message: 'A verified, active university account is required.' } });
     const response = await POST(createRequest(validBody));
 
     expect(response.status).toBe(403);
