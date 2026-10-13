@@ -1,0 +1,13 @@
+.realisticAvatar {
+  position: relative;
+  width: 100%;
+  max-width: 220px;
+  aspect-ratio: 2 / 3;
+  background-image: url('/avatars/student-realistic-v1.png');
+  background-size: 300% 300%;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 6px 3px #18362f12);
+  flex-shrink: 0;
+}
+.thumbnail { max-width: 66.6667px; margin: 0 auto; filter: none; }
+.portrait { max-width: 82px; aspect-ratio: 1; background-size: 487.619% 731.429%; }
