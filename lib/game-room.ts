@@ -60,6 +60,6 @@ export function validAppearance(value: unknown): value is AvatarAppearance {
 // pages stay unavailable instead of advertising a link to a nonexistent route.
 export const activityEntrypoints: Record<Activity['code'], { href: string | null; action: string; unavailable: string }> = {
   game1: { href: '/game-1', action: 'Play', unavailable: '' },
-  dormspace: { href: null, action: 'Open', unavailable: 'DormSpace is not connected yet' },
+  dormspace: { href: '/game-room/dormspace', action: 'Open', unavailable: '' },
   wordle: { href: null, action: 'Play', unavailable: 'Wordle is not connected yet' },
 };
