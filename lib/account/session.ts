@@ -1,6 +1,10 @@
 export type StoredSession = { access_token: string; refresh_token?: string; expires_at?: number };
 const SESSION_KEY = 'socialu_session';
 
+export function storedAccessToken(): string | null {
+  return sessionStorage.getItem('access_token') || localStorage.getItem('access_token');
+}
+
 export function saveSession(session: StoredSession, remember: boolean) {
   const storage = remember ? localStorage : sessionStorage;
   const other = remember ? sessionStorage : localStorage;

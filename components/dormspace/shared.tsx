@@ -1,5 +1,7 @@
 'use client';
 
+import { storedAccessToken } from '../../lib/account/session';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './dormspace.module.css';
 
@@ -7,7 +9,7 @@ export type ApiResult<T> = { ok: true; status: number; data: T } | { ok: false; 
 
 export async function dormApi<T>(path: string, init: RequestInit = {}): Promise<ApiResult<T>> {
   try {
-    const token = localStorage.getItem('access_token') ?? '';
+    const token = storedAccessToken() ?? '';
     const response = await fetch(path, {
       ...init, cache: 'no-store',
       headers: { ...(init.body ? { 'Content-Type': 'application/json' } : {}), Authorization: `Bearer ${token}`, ...init.headers },

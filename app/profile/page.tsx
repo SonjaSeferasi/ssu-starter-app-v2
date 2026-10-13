@@ -1,5 +1,7 @@
 'use client';
 
+import { storedAccessToken } from '../../lib/account/session';
+
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
@@ -24,7 +26,7 @@ export default function ProfilePage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const stored = sessionStorage.getItem('access_token') || localStorage.getItem('access_token');
+    const stored = storedAccessToken();
     setToken(stored);
     if (!stored) { setLoading(false); return; }
     fetchProfile(stored);
