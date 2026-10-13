@@ -1,5 +1,25 @@
 export type NavigationPosition = 'side' | 'bottom';
-export type AvatarAppearance = { outfitId: string; faceId: string | null };
+export const faceDetails = [
+  { id: 'natural', name: 'Natural' }, { id: 'round-glasses', name: 'Round glasses' },
+  { id: 'square-glasses', name: 'Square glasses' }, { id: 'freckles', name: 'Freckles' },
+  { id: 'glasses-freckles', name: 'Glasses & freckles' },
+] as const;
+export const shirtColors = [
+  { id: 'navy', name: 'Navy', hex: '#263b65' }, { id: 'green', name: 'Forest green', hex: '#397359' },
+  { id: 'burgundy', name: 'Burgundy', hex: '#984654' }, { id: 'cream', name: 'Cream', hex: '#e8d5b5' },
+  { id: 'purple', name: 'Purple', hex: '#8563af' }, { id: 'black', name: 'Black', hex: '#333740' },
+] as const;
+export const pantsColors = [
+  { id: 'denim', name: 'Denim blue', hex: '#678aae' }, { id: 'black', name: 'Black', hex: '#353943' },
+  { id: 'slate', name: 'Slate', hex: '#727e8b' }, { id: 'khaki', name: 'Khaki', hex: '#b39d76' },
+  { id: 'olive', name: 'Olive', hex: '#7b8960' }, { id: 'burgundy', name: 'Burgundy', hex: '#984654' },
+] as const;
+export type AvatarAppearance = {
+  outfitId: string; faceId: string | null;
+  faceStyle?: (typeof faceDetails)[number]['id'];
+  shirtColor?: (typeof shirtColors)[number]['id'];
+  pantsColor?: (typeof pantsColors)[number]['id'];
+};
 export type Outfit = { id: string; name: string; assetKey: string };
 export type DefaultFace = { id: string; assetKey: string; initial: boolean };
 export type Activity = { code: 'game1' | 'dormspace' | 'wordle'; name: string; description: string; included: boolean };
@@ -53,7 +73,9 @@ export function validAppearance(value: unknown): value is AvatarAppearance {
   if (!value || typeof value !== 'object') return false;
   const data = value as Record<string, unknown>;
   const validId = (id: unknown) => typeof id === 'string' && /^[1-9]\d{0,18}$/.test(id) && BigInt(id) <= 9223372036854775807n;
-  return validId(data.outfitId) && (data.faceId === null || validId(data.faceId));
+  const allowed = (key: string, options: readonly { id: string }[]) => data[key] === undefined || options.some(option => option.id === data[key]);
+  return validId(data.outfitId) && (data.faceId === null || validId(data.faceId))
+    && allowed('faceStyle', faceDetails) && allowed('shirtColor', shirtColors) && allowed('pantsColor', pantsColors);
 }
 
 // GitHub #41-44: presentation and entry integration only. Missing feature-owner

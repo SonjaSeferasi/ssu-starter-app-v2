@@ -58,3 +58,31 @@ describe('Game Room account boundary', () => {
     expect(rpc).toHaveBeenCalledWith('socialu_game_room', { p_action: 'save_preferences', p_auth_id: user.id, p_position: 'bottom' });
   });
 });
+
+describe('Independent avatar customization', () => {
+  const selection = { outfitId: '1', faceId: '2', faceStyle: 'freckles', shirtColor: 'purple', pantsColor: 'khaki' };
+  it('sends all selected details through the verified account bridge', async () => {
+    expect((await PUT(req('PUT', { ...selection, student_id: 'someone-else' }))).status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_avatar_customization', { p_auth_id: user.id, p_appearance: selection });
+  });
+  it.each([{ ...selection, shirtColor: 'pink' }, { ...selection, pantsColor: null }, { ...selection, faceStyle: [] }])('rejects unsupported customization %j', async selection => {
+    expect((await PUT(req('PUT', selection))).status).toBe(400);
+    expect(rpc).not.toHaveBeenCalled();
+  });
+  it('loads legacy avatars while the new migration is pending', async () => {
+    rpc.mockImplementation(async (name: string) => name === 'socialu_avatar_customization' ? { data: null, error: { code: 'PGRST202' } }
+      : name === 'socialu_session_guard' ? { data: true, error: null }
+      : name === 'socialu_account' ? { data: { id: '42' }, error: null }
+      : { data: { appearance: { outfitId: '1', faceId: '2' } }, error: null });
+    expect((await GET(req('GET'))).status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_game_room', { p_action: 'read', p_auth_id: user.id });
+  });
+  it('never claims a customized avatar is saved without its database migration', async () => {
+    rpc.mockImplementation(async (name: string) => name === 'socialu_avatar_customization' ? { data: null, error: { code: 'PGRST202' } }
+      : name === 'socialu_session_guard' ? { data: true, error: null } : { data: { id: '42' }, error: null });
+    const response = await PUT(req('PUT', selection));
+    expect(response.status).toBe(503);
+    expect((await response.json()).code).toBe('AVATAR_CUSTOMIZATION_SETUP_REQUIRED');
+    expect(rpc).not.toHaveBeenCalledWith('socialu_game_room', expect.anything());
+  });
+});
