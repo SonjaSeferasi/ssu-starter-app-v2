@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import {
   Camera, Clock, GraduationCap, Grid3x3, Images, Landmark, Lock, MessageCircle, Pencil, SquareUser, UserCheck, UserPlus, UserRound, X,
@@ -8,7 +9,7 @@ import {
 import type { StudentProfile } from '../../lib/profile';
 import type { FeedPost } from '../feed/types';
 import { timeAgo } from '../feed/time';
-import { accessToken, storedAccessToken } from '../../lib/account/session';
+import { accessToken, clearSession, storedAccessToken } from '../../lib/account/session';
 import { SessionNotice } from '../navigation/section-page';
 import { useNavigationSession } from '../navigation/social-shell';
 import styles from './profile.module.css';
@@ -42,8 +43,29 @@ function count(value: number, one: string, many: string) {
   return <><strong>{value.toLocaleString()}</strong> {value === 1 ? one : many}</>;
 }
 
+// Preserve the group’s profile logout action when replacing the profile layout.
+export function ProfileLogout() {
+  const router = useRouter();
+  const [loggingOut, setLoggingOut] = useState(false);
+  async function logout() {
+    setLoggingOut(true);
+    try {
+      const token = await accessToken();
+      if (token) await fetch('/api/auth/logout', { method: 'POST', headers: { Authorization: `Bearer ${token}` } });
+    } catch {
+      // Still sign out on this device if the server request fails.
+    } finally {
+      clearSession();
+      router.push('/login');
+    }
+  }
+  return <button type="button" className={`${styles.button} ${styles.secondary}`} onClick={logout} disabled={loggingOut}>
+    {loggingOut ? 'Logging out…' : 'Log out'}
+  </button>;
+}
+
 function ProfileActions({ profile }: { profile: StudentProfile }) {
-  if (profile.is_own) return <div className={styles.actions}><Link href="/profile/edit" className={styles.button}><Pencil />Edit profile</Link></div>;
+  if (profile.is_own) return <div className={styles.actions}><Link href="/profile/edit" className={styles.button}><Pencil />Edit profile</Link><ProfileLogout /></div>;
   // SRS-113.16-113.18. Sending a friend request belongs to SRS-114 and is not connected yet.
   const friendLabel = profile.is_friend ? 'Friends' : profile.friend_request === 'sent' ? 'Requested' : profile.friend_request === 'received' ? 'Respond to request' : 'Add Friend';
   return <div className={styles.actions}>

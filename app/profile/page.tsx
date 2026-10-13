@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, type FormEvent } from 'react';
 import { SessionNotice } from '../../components/navigation/section-page';
-import { ProfileView, profileFetch, useProfileGate } from '../../components/profile/profile-view';
+import { ProfileView, ProfileLogout, profileFetch, useProfileGate } from '../../components/profile/profile-view';
 import styles from '../../components/profile/profile.module.css';
 
 // A verified student without a SocialU profile row creates one first (name and username),
@@ -47,7 +47,7 @@ function CreateProfile({ defaults }: { defaults: { fullName: string; username: s
         <input value={username} onChange={event => setUsername(event.target.value)} required maxLength={50} autoComplete="username"
           pattern="[A-Za-z0-9_.]+" title="Use letters, numbers, periods, and underscores." />
       </label>
-      <div className={styles.formActions}><button type="submit" className={styles.button} disabled={saving}>{saving ? 'Creating…' : 'Continue'}</button></div>
+      <div className={styles.formActions}><ProfileLogout /><button type="submit" className={styles.button} disabled={saving}>{saving ? 'Creating…' : 'Continue'}</button></div>
     </form>
   </main>;
 }
