@@ -17,24 +17,29 @@ export default function LoginPage() {
     setMessage('');
 
     try {
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
+      // The route accepts a university email or a socialu.students username.
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: email.trim(), password }),
+      });
 
-    const data = await response.json();
-    setLoading(false);
-    if (response.ok) {
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        setMessage(data.error || 'Login failed.');
+        return;
+      }
+
       const accessToken = data?.session?.session?.access_token;
       if (!accessToken) throw new Error('Missing session');
       localStorage.setItem('access_token', accessToken);
+      // needsProfile: signed in with Supabase Auth but no linked socialu.students row yet.
       router.push(data.needsProfile ? '/profile' : '/');
-    } else {
-      setMessage(data.error || 'Login failed.');
+    } catch {
+      setMessage('Unable to sign in. Please try again.');
+    } finally {
+      setLoading(false);
     }
-    } catch { setMessage('Unable to sign in. Please try again.'); }
-    finally { setLoading(false); }
   }
 
   return (

@@ -6,3 +6,7 @@ coverage
 
 # Word lock files
 /documentation/~$*.docx
+
+# Supabase CLI local state (contains local secrets)
+supabase/.branches
+supabase/.temp
