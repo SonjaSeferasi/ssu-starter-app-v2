@@ -2,7 +2,7 @@
 
 Use one branch per SRS group. For example, SRS-100.1 through SRS-100.10 belong on `linh/srs-100-registration`. Branches begin at the current main baseline; their existence does not mean every requirement is implemented.
 
-`linh/integration-pages` combines the latest main pages with the local campus login design. `linh/backup-local-pages-20261012` preserves the local work before integration. The older per-requirement branches are retained for reference.
+`linh/integration-pages` combines the latest main pages with the local campus login design. `linh/backup-local-pages-20261012` preserves the local work before integration. The 257 identical per-requirement branches were replaced by the 24 groups below on October 12, 2026. Teammates’ branches were left unchanged. A local recovery bundle was saved at `/tmp/socialu-before-branch-cleanup.bundle`.
 
 | SRS group | Part | Branch |
 | --- | --- | --- |
