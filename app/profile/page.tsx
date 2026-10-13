@@ -23,7 +23,7 @@ export default function ProfilePage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem('access_token');
+    const stored = sessionStorage.getItem('access_token') || localStorage.getItem('access_token');
     setToken(stored);
     if (!stored) { setLoading(false); return; }
     fetchProfile(stored);
