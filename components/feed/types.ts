@@ -15,4 +15,16 @@ export type FeedPost = {
   photos: FeedPhoto[];
   likeCount: number;
   isLikedByViewer: boolean;
+  commentCount: number;
+};
+
+export type Comment = {
+  commentId: number;
+  postId: number;
+  authorId: number;
+  authorName: string;
+  authorPhotoUrl: string | null;
+  textContent: string;
+  createdAt: string;
+  editedAt: string | null;
 };

@@ -35,6 +35,7 @@ const rawRow = (overrides: Partial<Record<string, unknown>> = {}) => ({
   photos: [],
   like_count: 0,
   is_liked_by_viewer: false,
+  comment_count: 0,
   ...overrides,
 });
 
@@ -93,6 +94,7 @@ describe('Campus Feed (SRS-301)', () => {
           photos: [],
           likeCount: 0,
           isLikedByViewer: false,
+          commentCount: 0,
         },
       ],
     });
