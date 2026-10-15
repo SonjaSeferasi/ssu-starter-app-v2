@@ -32,7 +32,7 @@ GRANT EXECUTE ON FUNCTION public.socialu_require_student(UUID) TO service_role;
 
 -- SRS-301.1-301.3: every published Public post (single-university release, so
 -- SRS-301.2's "same university" scoping is automatically satisfied).
-CREATE FUNCTION public.socialu_campus_feed(p_auth_id UUID) RETURNS JSONB
+CREATE OR REPLACE FUNCTION public.socialu_campus_feed(p_auth_id UUID) RETURNS JSONB
 LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$
 DECLARE result JSONB;
 BEGIN
@@ -42,9 +42,9 @@ BEGIN
     SELECT p.post_id, p.author_id, p.text_content, p.visibility, p.published_at, p.edited_at,
       coalesce(sp.display_name, s.full_name) AS author_name,
       am.storage_key AS author_photo_key,
-      coalesce((SELECT jsonb_agg(pm.storage_key) FROM socialu.post_photos pp
-                JOIN socialu.media_assets pm ON pm.asset_id = pp.asset_id
-                WHERE pp.post_id = p.post_id), '[]'::jsonb) AS photo_keys
+      coalesce((SELECT jsonb_agg(jsonb_build_object('asset_id', pm.asset_id, 'storage_key', pm.storage_key))
+                FROM socialu.post_photos pp JOIN socialu.media_assets pm ON pm.asset_id = pp.asset_id
+                WHERE pp.post_id = p.post_id), '[]'::jsonb) AS photos
     FROM socialu.posts p
     JOIN socialu.students s ON s.student_id = p.author_id
     LEFT JOIN socialu.student_profiles sp ON sp.student_id = s.student_id
@@ -58,7 +58,7 @@ REVOKE ALL ON FUNCTION public.socialu_campus_feed(UUID) FROM PUBLIC, anon, authe
 GRANT EXECUTE ON FUNCTION public.socialu_campus_feed(UUID) TO service_role;
 
 -- SRS-302.1-302.3: Friends Only posts from the caller's accepted friends.
-CREATE FUNCTION public.socialu_friends_feed(p_auth_id UUID) RETURNS JSONB
+CREATE OR REPLACE FUNCTION public.socialu_friends_feed(p_auth_id UUID) RETURNS JSONB
 LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$
 DECLARE me BIGINT; result JSONB;
 BEGIN
@@ -68,9 +68,9 @@ BEGIN
     SELECT p.post_id, p.author_id, p.text_content, p.visibility, p.published_at, p.edited_at,
       coalesce(sp.display_name, s.full_name) AS author_name,
       am.storage_key AS author_photo_key,
-      coalesce((SELECT jsonb_agg(pm.storage_key) FROM socialu.post_photos pp
-                JOIN socialu.media_assets pm ON pm.asset_id = pp.asset_id
-                WHERE pp.post_id = p.post_id), '[]'::jsonb) AS photo_keys
+      coalesce((SELECT jsonb_agg(jsonb_build_object('asset_id', pm.asset_id, 'storage_key', pm.storage_key))
+                FROM socialu.post_photos pp JOIN socialu.media_assets pm ON pm.asset_id = pp.asset_id
+                WHERE pp.post_id = p.post_id), '[]'::jsonb) AS photos
     FROM socialu.posts p
     JOIN socialu.students s ON s.student_id = p.author_id
     LEFT JOIN socialu.student_profiles sp ON sp.student_id = s.student_id
@@ -104,7 +104,7 @@ BEGIN
       new_post.published_at, new_post.edited_at,
       coalesce(sp.display_name, s.full_name) AS author_name,
       am.storage_key AS author_photo_key,
-      '[]'::jsonb AS photo_keys
+      '[]'::jsonb AS photos
     FROM socialu.students s
     LEFT JOIN socialu.student_profiles sp ON sp.student_id = s.student_id
     LEFT JOIN socialu.media_assets am ON am.asset_id = sp.photo_id

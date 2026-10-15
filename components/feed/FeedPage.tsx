@@ -25,6 +25,7 @@ async function fetchFeed(tab: FeedTab, accessToken: string): Promise<FeedPost[]>
 export function FeedPage() {
   const [token, setToken] = useState('');
   const [authorInitial, setAuthorInitial] = useState('');
+  const [currentStudentId, setCurrentStudentId] = useState<number | null>(null);
   const [tab, setTab] = useState<FeedTab>('for-you');
   const [posts, setPosts] = useState<FeedPost[]>([]);
   const [loading, setLoading] = useState(true);
@@ -36,9 +37,17 @@ export function FeedPage() {
     if (!stored) return;
     fetch('/api/profile', { headers: { Authorization: `Bearer ${stored}` } })
       .then((res) => res.json())
-      .then((body) => setAuthorInitial(body.profile?.username?.[0]?.toUpperCase() ?? ''))
+      .then((body) => {
+        setAuthorInitial(body.profile?.username?.[0]?.toUpperCase() ?? '');
+        const id = Number(body.profile?.id);
+        setCurrentStudentId(Number.isInteger(id) ? id : null);
+      })
       .catch(() => {});
   }, []);
+
+  function handlePostUpdated(updated: FeedPost) {
+    setPosts((prev) => prev.map((p) => (p.postId === updated.postId ? updated : p)));
+  }
 
   useEffect(() => {
     if (token) loadFeed(token);
@@ -75,7 +84,13 @@ export function FeedPage() {
           ) : (
             <div className="space-y-4">
               {posts.map((post) => (
-                <PostCard key={`${post.postId}-${post.visibility}`} post={post} />
+                <PostCard
+                  key={`${post.postId}-${post.visibility}`}
+                  post={post}
+                  accessToken={token}
+                  isOwnPost={currentStudentId !== null && currentStudentId === post.authorId}
+                  onUpdated={handlePostUpdated}
+                />
               ))}
             </div>
           )}
