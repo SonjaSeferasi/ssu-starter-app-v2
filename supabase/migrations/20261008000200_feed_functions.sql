@@ -34,9 +34,9 @@ GRANT EXECUTE ON FUNCTION public.socialu_require_student(UUID) TO service_role;
 -- SRS-301.2's "same university" scoping is automatically satisfied).
 CREATE OR REPLACE FUNCTION public.socialu_campus_feed(p_auth_id UUID) RETURNS JSONB
 LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$
-DECLARE result JSONB;
+DECLARE me BIGINT; result JSONB;
 BEGIN
-  PERFORM public.socialu_require_student(p_auth_id);
+  me := public.socialu_require_student(p_auth_id);
   SELECT coalesce(jsonb_agg(to_jsonb(feed) ORDER BY feed.published_at DESC), '[]'::jsonb) INTO result
   FROM (
     SELECT p.post_id, p.author_id, p.text_content, p.visibility, p.published_at, p.edited_at,
@@ -44,7 +44,9 @@ BEGIN
       am.storage_key AS author_photo_key,
       coalesce((SELECT jsonb_agg(jsonb_build_object('asset_id', pm.asset_id, 'storage_key', pm.storage_key))
                 FROM socialu.post_photos pp JOIN socialu.media_assets pm ON pm.asset_id = pp.asset_id
-                WHERE pp.post_id = p.post_id), '[]'::jsonb) AS photos
+                WHERE pp.post_id = p.post_id), '[]'::jsonb) AS photos,
+      (SELECT count(*) FROM socialu.post_likes pl WHERE pl.post_id = p.post_id) AS like_count,
+      EXISTS (SELECT 1 FROM socialu.post_likes pl WHERE pl.post_id = p.post_id AND pl.student_id = me) AS is_liked_by_viewer
     FROM socialu.posts p
     JOIN socialu.students s ON s.student_id = p.author_id
     LEFT JOIN socialu.student_profiles sp ON sp.student_id = s.student_id
@@ -70,7 +72,9 @@ BEGIN
       am.storage_key AS author_photo_key,
       coalesce((SELECT jsonb_agg(jsonb_build_object('asset_id', pm.asset_id, 'storage_key', pm.storage_key))
                 FROM socialu.post_photos pp JOIN socialu.media_assets pm ON pm.asset_id = pp.asset_id
-                WHERE pp.post_id = p.post_id), '[]'::jsonb) AS photos
+                WHERE pp.post_id = p.post_id), '[]'::jsonb) AS photos,
+      (SELECT count(*) FROM socialu.post_likes pl WHERE pl.post_id = p.post_id) AS like_count,
+      EXISTS (SELECT 1 FROM socialu.post_likes pl WHERE pl.post_id = p.post_id AND pl.student_id = me) AS is_liked_by_viewer
     FROM socialu.posts p
     JOIN socialu.students s ON s.student_id = p.author_id
     LEFT JOIN socialu.student_profiles sp ON sp.student_id = s.student_id
@@ -104,7 +108,9 @@ BEGIN
       new_post.published_at, new_post.edited_at,
       coalesce(sp.display_name, s.full_name) AS author_name,
       am.storage_key AS author_photo_key,
-      '[]'::jsonb AS photos
+      '[]'::jsonb AS photos,
+      0 AS like_count,
+      FALSE AS is_liked_by_viewer
     FROM socialu.students s
     LEFT JOIN socialu.student_profiles sp ON sp.student_id = s.student_id
     LEFT JOIN socialu.media_assets am ON am.asset_id = sp.photo_id
