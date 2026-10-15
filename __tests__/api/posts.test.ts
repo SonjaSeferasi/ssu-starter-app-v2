@@ -54,7 +54,7 @@ beforeEach(() => {
 import { GET as campusFeed } from '../../app/api/posts/feed/campus/route';
 import { GET as friendsFeed } from '../../app/api/posts/feed/friends/route';
 import { POST as createPost } from '../../app/api/posts/route';
-import { PATCH as updatePost } from '../../app/api/posts/[postId]/route';
+import { PATCH as updatePost, DELETE as deletePost } from '../../app/api/posts/[postId]/route';
 import { POST as attachPhotos } from '../../app/api/posts/[postId]/photos/route';
 import { DELETE as removePhoto } from '../../app/api/posts/[postId]/photos/[assetId]/route';
 
@@ -305,6 +305,65 @@ describe('Remove a post photo (SRS-306.3/306.5)', () => {
   it('returns 404 when the photo is not on this post', async () => {
     rpc.mockResolvedValue({ data: null, error: { code: 'P0002', message: 'Photo not found on this post.' } });
     const response = await removePhoto(removeReq('valid'), { params: Promise.resolve({ postId: '1', assetId: '7' }) });
+    expect(response.status).toBe(404);
+  });
+});
+
+describe('Delete Post (SRS-307.1/307.3/307.5)', () => {
+  function deleteReq(token: string | undefined) {
+    return req('/api/posts/1', { method: 'DELETE', token });
+  }
+
+  it('rejects an unauthenticated request (SRS-307.5: direct API call without a session)', async () => {
+    const response = await deletePost(req('/api/posts/1', { method: 'DELETE' }), { params: Promise.resolve({ postId: '1' }) });
+    expect(response.status).toBe(401);
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
+  it('rejects an invalid post id without calling the database', async () => {
+    const response = await deletePost(deleteReq('valid'), { params: Promise.resolve({ postId: 'nope' }) });
+    expect(response.status).toBe(400);
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
+  it('author deletes their own Public post', async () => {
+    rpc.mockResolvedValue({ data: [], error: null });
+    const response = await deletePost(deleteReq('valid'), { params: Promise.resolve({ postId: '1' }) });
+    expect(response.status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_delete_post', { p_auth_id: user.id, p_post_id: 1 });
+    expect(await response.json()).toEqual({ deleted: true });
+  });
+
+  it('author deletes their own Friends Only post, same endpoint and rule', async () => {
+    rpc.mockResolvedValue({ data: [], error: null });
+    const response = await deletePost(deleteReq('valid'), { params: Promise.resolve({ postId: '2' }) });
+    expect(response.status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_delete_post', { p_auth_id: user.id, p_post_id: 2 });
+  });
+
+  it('deletes any freed photo files from Storage', async () => {
+    rpc.mockResolvedValue({ data: ['post_photo/1/a.jpg', 'post_photo/1/b.jpg'], error: null });
+    const response = await deletePost(deleteReq('valid'), { params: Promise.resolve({ postId: '1' }) });
+    expect(response.status).toBe(200);
+    expect(storageRemove).toHaveBeenCalledWith(['post_photo/1/a.jpg', 'post_photo/1/b.jpg']);
+  });
+
+  it('does not call Storage when the post had no photos', async () => {
+    rpc.mockResolvedValue({ data: [], error: null });
+    await deletePost(deleteReq('valid'), { params: Promise.resolve({ postId: '1' }) });
+    expect(storageRemove).not.toHaveBeenCalled();
+  });
+
+  it("student B cannot delete student A's post (SRS-307.5)", async () => {
+    rpc.mockResolvedValue({ data: null, error: { code: '42501', message: 'Only the post author can delete this post.' } });
+    const response = await deletePost(deleteReq('valid'), { params: Promise.resolve({ postId: '1' }) });
+    expect(response.status).toBe(403);
+    expect(storageRemove).not.toHaveBeenCalled();
+  });
+
+  it('returns 404 for a post that does not exist', async () => {
+    rpc.mockResolvedValue({ data: null, error: { code: 'P0002', message: 'Post not found.' } });
+    const response = await deletePost(deleteReq('valid'), { params: Promise.resolve({ postId: '999' }) });
     expect(response.status).toBe(404);
   });
 });

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { PostAuthor } from './PostAuthor';
 import { PostMedia } from './PostMedia';
 import { EditPostModal } from './EditPostModal';
+import { DeletePostModal } from './DeletePostModal';
 import type { FeedPost } from './types';
 
 export function PostCard({
@@ -11,14 +12,17 @@ export function PostCard({
   accessToken,
   isOwnPost,
   onUpdated,
+  onDeleted,
 }: {
   post: FeedPost;
   accessToken: string;
   isOwnPost: boolean;
   onUpdated: (updated: FeedPost) => void;
+  onDeleted: (postId: number) => void;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [editing, setEditing] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   return (
     <article className="relative rounded-3xl border border-stone-200 bg-white p-5 shadow-sm">
@@ -31,7 +35,7 @@ export function PostCard({
           visibility={post.visibility}
         />
 
-        {/* SRS-306.1: the Edit Post action is only ever shown to the post's own author. */}
+        {/* SRS-306.1/307.1: Edit Post and Delete Post are only ever shown to the post's own author. */}
         {isOwnPost ? (
           <div className="relative">
             <button
@@ -56,6 +60,16 @@ export function PostCard({
                     className="block w-full px-4 py-2 text-left text-sm text-stone-700 hover:bg-stone-50"
                   >
                     Edit Post
+                  </button>
+                  <button
+                    role="menuitem"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      setDeleting(true);
+                    }}
+                    className="block w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+                  >
+                    Delete Post
                   </button>
                 </div>
               </>
@@ -85,6 +99,18 @@ export function PostCard({
           onSaved={(updated) => {
             setEditing(false);
             onUpdated(updated);
+          }}
+        />
+      ) : null}
+
+      {deleting ? (
+        <DeletePostModal
+          postId={post.postId}
+          accessToken={accessToken}
+          onClose={() => setDeleting(false)}
+          onDeleted={() => {
+            setDeleting(false);
+            onDeleted(post.postId);
           }}
         />
       ) : null}

@@ -45,8 +45,19 @@ export function FeedPage() {
       .catch(() => {});
   }, []);
 
+  const [deletedNotice, setDeletedNotice] = useState(false);
+
   function handlePostUpdated(updated: FeedPost) {
     setPosts((prev) => prev.map((p) => (p.postId === updated.postId ? updated : p)));
+  }
+
+  // SRS-307.3: remove the post from this feed immediately. It also
+  // disappears from other views (e.g. the author's profile) on their own
+  // next load, since those fetch fresh from the same now-deleted row.
+  function handlePostDeleted(postId: number) {
+    setPosts((prev) => prev.filter((p) => p.postId !== postId));
+    setDeletedNotice(true);
+    setTimeout(() => setDeletedNotice(false), 4000);
   }
 
   useEffect(() => {
@@ -75,6 +86,10 @@ export function FeedPage() {
 
           <FeedSwitcher active={tab} onChange={setTab} />
 
+          {deletedNotice ? (
+            <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">Post deleted successfully.</div>
+          ) : null}
+
           {loading ? (
             <LoadingFeedState />
           ) : error ? (
@@ -90,6 +105,7 @@ export function FeedPage() {
                   accessToken={token}
                   isOwnPost={currentStudentId !== null && currentStudentId === post.authorId}
                   onUpdated={handlePostUpdated}
+                  onDeleted={handlePostDeleted}
                 />
               ))}
             </div>

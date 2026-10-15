@@ -25,3 +25,25 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ po
     return accountResponse(error);
   }
 }
+
+// SRS-307.1/307.3/307.5 — delete a post the caller authored. Ownership and
+// the actual row removal (with its cascades) live in socialu_delete_post
+// (supabase/migrations/20261015120100_delete_post.sql); this just also
+// clears any now-orphaned photo files from Storage, since SQL can't do that.
+export async function DELETE(request: Request, { params }: { params: Promise<{ postId: string }> }) {
+  try {
+    const user = await verifiedUser(request);
+    const { postId: postIdParam } = await params;
+    const postId = Number(postIdParam);
+    if (!Number.isInteger(postId)) throw new AccountError('Invalid post id.', 400);
+
+    const freedKeys = await feedRpc<string[]>('socialu_delete_post', { p_auth_id: user.id, p_post_id: postId });
+    if (freedKeys.length > 0) {
+      await accountClient().storage.from('media').remove(freedKeys);
+    }
+
+    return Response.json({ deleted: true }, { status: 200 });
+  } catch (error) {
+    return accountResponse(error);
+  }
+}
