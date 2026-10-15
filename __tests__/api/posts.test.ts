@@ -33,6 +33,8 @@ const rawRow = (overrides: Partial<Record<string, unknown>> = {}) => ({
   author_name: 'Maya Chen',
   author_photo_key: null,
   photos: [],
+  like_count: 0,
+  is_liked_by_viewer: false,
   ...overrides,
 });
 
@@ -57,6 +59,7 @@ import { POST as createPost } from '../../app/api/posts/route';
 import { PATCH as updatePost, DELETE as deletePost } from '../../app/api/posts/[postId]/route';
 import { POST as attachPhotos } from '../../app/api/posts/[postId]/photos/route';
 import { DELETE as removePhoto } from '../../app/api/posts/[postId]/photos/[assetId]/route';
+import { POST as likePost } from '../../app/api/posts/[postId]/likes/route';
 
 describe('Campus Feed (SRS-301)', () => {
   it('does not return feed data after a password security action revokes the session', async () => {
@@ -88,6 +91,8 @@ describe('Campus Feed (SRS-301)', () => {
           publishedAt: '2026-10-08T12:00:00Z',
           editedAt: null,
           photos: [],
+          likeCount: 0,
+          isLikedByViewer: false,
         },
       ],
     });
@@ -365,5 +370,66 @@ describe('Delete Post (SRS-307.1/307.3/307.5)', () => {
     rpc.mockResolvedValue({ data: null, error: { code: 'P0002', message: 'Post not found.' } });
     const response = await deletePost(deleteReq('valid'), { params: Promise.resolve({ postId: '999' }) });
     expect(response.status).toBe(404);
+  });
+});
+
+describe('Like Post (SRS-308.1/308.2/308.3)', () => {
+  function likeReq(token: string | undefined, postId = '1') {
+    return req(`/api/posts/${postId}/likes`, { method: 'POST', token });
+  }
+
+  it('rejects an unauthenticated request', async () => {
+    const response = await likePost(req('/api/posts/1/likes', { method: 'POST' }), { params: Promise.resolve({ postId: '1' }) });
+    expect(response.status).toBe(401);
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
+  it('rejects an invalid post id without calling the database', async () => {
+    const response = await likePost(likeReq('valid', 'nope'), { params: Promise.resolve({ postId: 'nope' }) });
+    expect(response.status).toBe(400);
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
+  it('an authenticated student likes a Public post', async () => {
+    rpc.mockResolvedValue({ data: { like_count: 1, is_liked_by_viewer: true }, error: null });
+    const response = await likePost(likeReq('valid'), { params: Promise.resolve({ postId: '1' }) });
+    expect(response.status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_like_post', { p_auth_id: user.id, p_post_id: 1 });
+    expect(await response.json()).toEqual({ likeCount: 1, isLikedByViewer: true });
+  });
+
+  it('an accepted friend likes a Friends Only post (same RPC enforces it)', async () => {
+    rpc.mockResolvedValue({ data: { like_count: 3, is_liked_by_viewer: true }, error: null });
+    const response = await likePost(likeReq('valid'), { params: Promise.resolve({ postId: '1' }) });
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ likeCount: 3, isLikedByViewer: true });
+  });
+
+  it('a student not authorized to view a Friends Only post cannot like it', async () => {
+    rpc.mockResolvedValue({ data: null, error: { code: '42501', message: 'You are not authorized to view this post.' } });
+    const response = await likePost(likeReq('valid'), { params: Promise.resolve({ postId: '1' }) });
+    expect(response.status).toBe(403);
+  });
+
+  it('returns 404 for a post that does not exist', async () => {
+    rpc.mockResolvedValue({ data: null, error: { code: 'P0002', message: 'Post not found.' } });
+    const response = await likePost(likeReq('valid', '999'), { params: Promise.resolve({ postId: '999' }) });
+    expect(response.status).toBe(404);
+  });
+
+  it('liking an already-liked post is idempotent, not an error (duplicate-like prevention)', async () => {
+    // socialu_like_post's ON CONFLICT DO NOTHING means a second like call
+    // from the same student just returns the same unchanged count.
+    rpc.mockResolvedValue({ data: { like_count: 1, is_liked_by_viewer: true }, error: null });
+    const first = await likePost(likeReq('valid'), { params: Promise.resolve({ postId: '1' }) });
+    const second = await likePost(likeReq('valid'), { params: Promise.resolve({ postId: '1' }) });
+    expect(await first.json()).toEqual({ likeCount: 1, isLikedByViewer: true });
+    expect(await second.json()).toEqual({ likeCount: 1, isLikedByViewer: true });
+  });
+
+  it('surfaces a 503 when the database operation fails unexpectedly', async () => {
+    rpc.mockResolvedValue({ data: null, error: { code: 'XX000', message: 'unexpected' } });
+    const response = await likePost(likeReq('valid'), { params: Promise.resolve({ postId: '1' }) });
+    expect(response.status).toBe(503);
   });
 });
