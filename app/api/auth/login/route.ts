@@ -33,7 +33,24 @@ export async function POST(request: Request) {
       throw new AccountError('Incorrect email or password.', 401);
     }
     if (!data.user.email_confirmed_at) throw new AccountError('Verify your university email before signing in.', 403);
-    const profile = await accountOperation('read', { p_auth_id: data.user.id });
+    let profile = await accountOperation('read', { p_auth_id: data.user.id });
+    // The email link may verify Auth without completing our profile callback.
+    // Recover from the authenticated account's metadata, never login form fields.
+    if (!profile) {
+      const fullName = textField(data.user.user_metadata?.full_name);
+      const username = textField(data.user.user_metadata?.username);
+      if (fullName && username) {
+        try {
+          profile = await accountOperation('onboard', {
+            p_auth_id: data.user.id, p_full_name: fullName, p_username: username, p_bio: '',
+          });
+        } catch (error) {
+          // Let the student correct missing/invalid details or a claimed username.
+          // Security and storage failures must still prevent a successful login.
+          if (!(error instanceof AccountError) || ![400, 409].includes(error.status)) throw error;
+        }
+      }
+    }
     await authGuard('success', email);
     // No token is returned until verified identity, domain and account state pass.
     return Response.json({ session: data, needsProfile: !profile }, { headers: { 'Cache-Control': 'no-store' } });
