@@ -31,7 +31,7 @@ export function UpcomingEventsPanel() {
       {events === null ? (
         <p className="mt-1.5 text-xs leading-relaxed text-stone-500">Loading upcoming events…</p>
       ) : events.length === 0 ? (
-        <p className="mt-1.5 text-xs leading-relaxed text-stone-500">No upcoming events yet — create one for your campus.</p>
+        <p className="mt-1.5 text-xs leading-relaxed text-stone-500">No active events are available.</p>
       ) : (
         <ul className="mt-2 space-y-2">
           {events.map((event) => (
