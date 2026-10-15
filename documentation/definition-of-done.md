@@ -1,6 +1,6 @@
-# SocialU Definition of Done — proposed for team adoption
+# SocialU Definition of Done
 
-Prepared for CSC 351 Sprint 1. This proposal does not claim prior team agreement.
+Prepared for CSC 351 Sprint 1. Linh Nguyen confirmed on October 15, 2026 that the team agreed to this Definition of Done. This records that confirmation; it does not backdate team adoption.
 
 An SRS item may be marked Done when all of these are true:
 

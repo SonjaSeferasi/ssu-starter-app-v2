@@ -28,4 +28,4 @@ A direct request to the running registration API with a whitespace-only full nam
 - Merged focused SRS-100.1 pull request link.
 - Attend the sprint demo and demonstrate from the integrated checked-in code.
 
-The board screenshot and the course requirement for status changes throughout the week cannot be substituted by this application screenshot. The issue history records a format correction on October 13; no earlier history was fabricated. The repository Definition of Done is a proposal pending team adoption.
+The board screenshot and the course requirement for status changes throughout the week cannot be substituted by this application screenshot. The issue history records a format correction on October 13; no earlier history was fabricated. Linh Nguyen confirmed the team’s agreement to the repository Definition of Done on October 15, 2026.
