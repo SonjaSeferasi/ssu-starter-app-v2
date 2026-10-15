@@ -1,5 +1,9 @@
 // Layout placeholders for teammates' not-yet-built features (visual only —
 // no fake data, no backend calls). MS is building Campus/Friends Feed + posts.
+// The Events card after them is live: it loads real events and links to Events and Trending.
+import React from 'react';
+import { UpcomingEventsPanel } from './UpcomingEventsPanel';
+
 const PANELS = [
   { icon: '👥', title: 'Group chats', body: "Coming soon — Loens's private messaging and group chats." },
   { icon: '🔥', title: 'Trending on campus', body: "Coming soon — Kabanga's trending posts and discovery." },
@@ -17,6 +21,7 @@ export function ComingSoonPanels() {
           <p className="mt-1.5 text-xs leading-relaxed text-stone-500">{panel.body}</p>
         </div>
       ))}
+      <UpcomingEventsPanel />
     </aside>
   );
 }
