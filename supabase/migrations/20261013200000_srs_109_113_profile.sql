@@ -84,9 +84,9 @@ BEGIN
     SELECT p.post_id, p.author_id, p.text_content, p.visibility, p.published_at, p.edited_at,
       coalesce(sp.display_name, s.full_name) AS author_name,
       am.storage_key AS author_photo_key,
-      coalesce((SELECT jsonb_agg(pm.storage_key) FROM socialu.post_photos pp
-                JOIN socialu.media_assets pm ON pm.asset_id = pp.asset_id
-                WHERE pp.post_id = p.post_id), '[]'::jsonb) AS photo_keys
+      coalesce((SELECT jsonb_agg(jsonb_build_object('asset_id', pm.asset_id, 'storage_key', pm.storage_key))
+                FROM socialu.post_photos pp JOIN socialu.media_assets pm ON pm.asset_id = pp.asset_id
+                WHERE pp.post_id = p.post_id), '[]'::jsonb) AS photos
     FROM socialu.posts p
     JOIN socialu.students s ON s.student_id = p.author_id
     LEFT JOIN socialu.student_profiles sp ON sp.student_id = s.student_id

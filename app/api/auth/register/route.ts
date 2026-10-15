@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     }
     await accountOperation('check_registration', { p_identifier: email, p_full_name: fullName, p_username: username });
     await authGuard('send', email, 'signup');
-    const { error } = await authClient().auth.signUp({ email, password, options: { data: { full_name: fullName, username } } });
+    const { error } = await authClient().auth.signUp({ email, password, options: { data: { full_name: fullName, username }, emailRedirectTo: new URL('/verify-email?purpose=signup', request.url).href } });
     if (error?.code === 'user_already_exists') throw new AccountError('This university email is already registered. Sign in instead.', 409);
     if (error) throw new AccountError('Registration could not be completed. Check your details or try again later.', 400);
     return Response.json({ message: 'Check your university email to verify your account, then sign in.' }, { status: 201, headers: { 'Cache-Control': 'no-store' } });

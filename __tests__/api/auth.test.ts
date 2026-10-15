@@ -59,7 +59,7 @@ describe('SocialU login and registration', () => {
   it('uses normal signup and does not auto-confirm email', async () => {
     const res = await register(req('POST', registration));
     expect(res.status).toBe(201);
-    expect(signUp).toHaveBeenCalledWith({ email: user.email, password: 'Secret123!', options: { data: { full_name: 'Student Name', username: 'student' } } });
+    expect(signUp).toHaveBeenCalledWith({ email: user.email, password: 'Secret123!', options: { data: { full_name: 'Student Name', username: 'student' }, emailRedirectTo: 'http://localhost/verify-email?purpose=signup' } });
     expect(await res.text()).not.toContain('access_token');
   });
   it.each([{ fullName: '' }, { username: '' }, { confirmPassword: 'different' }, { password: 'weak', confirmPassword: 'weak' }])('rejects invalid registration %j', async invalid => {
@@ -84,7 +84,7 @@ describe('SocialU login and registration', () => {
     expect(response.status).toBe(201);
     expect(signUp).toHaveBeenCalledWith({
       email: 'student@salemstate.edu', password: 'Secret123!',
-      options: { data: { full_name: 'Student Name', username: 'student' } },
+      options: { data: { full_name: 'Student Name', username: 'student' }, emailRedirectTo: 'http://localhost/verify-email?purpose=signup' },
     });
   });
   it.each([undefined, '', '   ', '\t\n', 123])('SRS-100.1 identifies a missing full name before database or signup work: %j', async fullName => {
@@ -98,7 +98,7 @@ describe('SocialU login and registration', () => {
     const fullName = '  Linh Nguyễn O’Connor  ';
     expect((await register(req('POST', { ...registration, fullName }))).status).toBe(201);
     expect(rpc).toHaveBeenCalledWith('socialu_account', expect.objectContaining({ p_action: 'check_registration', p_full_name: 'Linh Nguyễn O’Connor' }));
-    expect(signUp).toHaveBeenCalledWith(expect.objectContaining({ options: { data: { full_name: 'Linh Nguyễn O’Connor', username: 'student' } } }));
+    expect(signUp).toHaveBeenCalledWith(expect.objectContaining({ options: { data: { full_name: 'Linh Nguyễn O’Connor', username: 'student' }, emailRedirectTo: 'http://localhost/verify-email?purpose=signup' } }));
   });
   it('rejects duplicate SocialU identities before signup', async () => {
     rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : fn === 'socialu_auth_guard' ? { data: {}, error: null } : { data: null, error: { code: '23505' } });

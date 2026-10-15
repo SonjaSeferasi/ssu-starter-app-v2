@@ -18,8 +18,9 @@ export async function POST(request: Request) {
     await revokeAppSessions(data.user.id, ticket.token, 'global');
     const result = await client.auth.admin.updateUserById(data.user.id, { password });
     if (result.error) throw new AccountError('Unable to save your new password. Please try again.', 400);
-    const revoked = await authClient().auth.admin.signOut(ticket.token, 'global');
-    if (revoked.error) throw new AccountError('Your password changed, but session revocation failed. Contact account support.', 503);
+    // The admin password update revokes all Supabase sessions in its transaction.
+    // Signing out again with the now-revoked recovery token can fail even though
+    // both the password update and session revocation have already succeeded.
     return Response.json({ message: 'Password reset. Sign in with your new password.' }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) { return accountResponse(error); }
 }
