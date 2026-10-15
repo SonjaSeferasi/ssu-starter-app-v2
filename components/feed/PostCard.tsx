@@ -6,24 +6,30 @@ import { PostMedia } from './PostMedia';
 import { EditPostModal } from './EditPostModal';
 import { DeletePostModal } from './DeletePostModal';
 import { LikeButton } from './LikeButton';
+import { CommentSection } from './CommentSection';
 import type { FeedPost } from './types';
 
 export function PostCard({
   post,
   accessToken,
   isOwnPost,
+  authorInitial,
+  currentStudentId,
   onUpdated,
   onDeleted,
 }: {
   post: FeedPost;
   accessToken: string;
   isOwnPost: boolean;
+  authorInitial: string;
+  currentStudentId: number | null;
   onUpdated: (updated: FeedPost) => void;
   onDeleted: (postId: number) => void;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [commentsOpen, setCommentsOpen] = useState(false);
 
   return (
     <article className="relative rounded-3xl border border-stone-200 bg-white p-5 shadow-sm">
@@ -82,15 +88,33 @@ export function PostCard({
       {post.textContent ? <p className="mt-3 whitespace-pre-wrap text-[15px] text-stone-800">{post.textContent}</p> : null}
       <PostMedia photos={post.photos} />
 
-      {/* Comment/Share/Save are still visual prep only — SRS-310+ isn't built yet. */}
+      {/* Share/Save are still visual prep only — not built yet. */}
       <div className="mt-4 flex items-center justify-between border-t border-stone-100 pt-3 text-stone-400">
         <div className="flex items-center gap-5">
           <LikeButton post={post} accessToken={accessToken} onUpdated={onUpdated} />
-          <span className="flex items-center gap-1.5 text-sm">💬 Comment</span>
+          <button
+            type="button"
+            onClick={() => setCommentsOpen((v) => !v)}
+            aria-expanded={commentsOpen}
+            className="flex items-center gap-1.5 text-sm text-stone-400 transition hover:text-stone-600"
+          >
+            <span aria-hidden="true">💬</span>
+            <span>{post.commentCount}</span>
+          </button>
           <span className="flex items-center gap-1.5 text-sm">↗ Share</span>
         </div>
         <span className="text-sm">🔖</span>
       </div>
+
+      {commentsOpen ? (
+        <CommentSection
+          postId={post.postId}
+          accessToken={accessToken}
+          authorInitial={authorInitial}
+          currentStudentId={currentStudentId}
+          onCountChange={(count) => onUpdated({ ...post, commentCount: count })}
+        />
+      ) : null}
 
       {editing ? (
         <EditPostModal

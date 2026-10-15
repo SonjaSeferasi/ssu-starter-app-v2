@@ -14,6 +14,7 @@ export type RawFeedRow = {
   photos: { asset_id: number; storage_key: string }[];
   like_count: number;
   is_liked_by_viewer: boolean;
+  comment_count: number;
 };
 
 export type FeedPhoto = {
@@ -33,6 +34,7 @@ export type FeedPost = {
   photos: FeedPhoto[];
   likeCount: number;
   isLikedByViewer: boolean;
+  commentCount: number;
 };
 
 export async function shapeFeedPosts(supabase: SupabaseClient<any, any, any>, rows: RawFeedRow[]): Promise<FeedPost[]> {
@@ -58,6 +60,7 @@ export async function shapeFeedPosts(supabase: SupabaseClient<any, any, any>, ro
         photos: photosWithNulls.filter((p): p is FeedPhoto => p !== null),
         likeCount: row.like_count,
         isLikedByViewer: row.is_liked_by_viewer,
+        commentCount: row.comment_count,
       };
     })
   );
