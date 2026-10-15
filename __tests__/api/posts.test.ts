@@ -59,7 +59,7 @@ import { POST as createPost } from '../../app/api/posts/route';
 import { PATCH as updatePost, DELETE as deletePost } from '../../app/api/posts/[postId]/route';
 import { POST as attachPhotos } from '../../app/api/posts/[postId]/photos/route';
 import { DELETE as removePhoto } from '../../app/api/posts/[postId]/photos/[assetId]/route';
-import { POST as likePost } from '../../app/api/posts/[postId]/likes/route';
+import { POST as likePost, DELETE as unlikePost } from '../../app/api/posts/[postId]/likes/route';
 
 describe('Campus Feed (SRS-301)', () => {
   it('does not return feed data after a password security action revokes the session', async () => {
@@ -431,5 +431,94 @@ describe('Like Post (SRS-308.1/308.2/308.3)', () => {
     rpc.mockResolvedValue({ data: null, error: { code: 'XX000', message: 'unexpected' } });
     const response = await likePost(likeReq('valid'), { params: Promise.resolve({ postId: '1' }) });
     expect(response.status).toBe(503);
+  });
+});
+
+describe('Remove a Like / Unlike Post (SRS-309.1/309.2)', () => {
+  function unlikeReq(token: string | undefined, postId = '1') {
+    return req(`/api/posts/${postId}/likes`, { method: 'DELETE', token });
+  }
+
+  it('rejects an unauthenticated request', async () => {
+    const response = await unlikePost(req('/api/posts/1/likes', { method: 'DELETE' }), { params: Promise.resolve({ postId: '1' }) });
+    expect(response.status).toBe(401);
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
+  it('rejects an invalid post id without calling the database', async () => {
+    const response = await unlikePost(unlikeReq('valid', 'nope'), { params: Promise.resolve({ postId: 'nope' }) });
+    expect(response.status).toBe(400);
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
+  it('an authenticated student removes their like from a Public post', async () => {
+    rpc.mockResolvedValue({ data: { like_count: 4, is_liked_by_viewer: false }, error: null });
+    const response = await unlikePost(unlikeReq('valid'), { params: Promise.resolve({ postId: '1' }) });
+    expect(response.status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_unlike_post', { p_auth_id: user.id, p_post_id: 1 });
+    expect(await response.json()).toEqual({ likeCount: 4, isLikedByViewer: false });
+  });
+
+  it('the like count decreases by exactly one', async () => {
+    // A post with 5 likes drops to 4 once the caller's own like is removed --
+    // the DELETE is scoped to the caller's student id, so it cannot touch anyone else's row.
+    rpc.mockResolvedValue({ data: { like_count: 4, is_liked_by_viewer: false }, error: null });
+    const response = await unlikePost(unlikeReq('valid'), { params: Promise.resolve({ postId: '1' }) });
+    expect((await response.json()).likeCount).toBe(4);
+  });
+
+  it('repeated Unlike requests do not reduce the count further (idempotent, not an error)', async () => {
+    // socialu_unlike_post's DELETE matches zero rows on a second call -- the
+    // count it returns stays whatever it already was, same as SRS-308's
+    // ON CONFLICT DO NOTHING mirrored in the other direction.
+    rpc.mockResolvedValue({ data: { like_count: 4, is_liked_by_viewer: false }, error: null });
+    const first = await unlikePost(unlikeReq('valid'), { params: Promise.resolve({ postId: '1' }) });
+    const second = await unlikePost(unlikeReq('valid'), { params: Promise.resolve({ postId: '1' }) });
+    expect(await first.json()).toEqual({ likeCount: 4, isLikedByViewer: false });
+    expect(await second.json()).toEqual({ likeCount: 4, isLikedByViewer: false });
+  });
+
+  it('a student can like a post again after unliking it', async () => {
+    rpc.mockResolvedValueOnce({ data: { like_count: 4, is_liked_by_viewer: false }, error: null });
+    const unliked = await unlikePost(unlikeReq('valid'), { params: Promise.resolve({ postId: '1' }) });
+    expect(await unliked.json()).toEqual({ likeCount: 4, isLikedByViewer: false });
+
+    rpc.mockResolvedValueOnce({ data: { like_count: 5, is_liked_by_viewer: true }, error: null });
+    const liked = await likePost(req('/api/posts/1/likes', { method: 'POST', token: 'valid' }), { params: Promise.resolve({ postId: '1' }) });
+    expect(await liked.json()).toEqual({ likeCount: 5, isLikedByViewer: true });
+  });
+
+  it("cannot remove another student's like (DELETE is scoped to the caller's own row)", async () => {
+    // socialu_unlike_post always deletes WHERE student_id = (the authenticated
+    // caller's resolved id) -- there is no student_id parameter a client could
+    // supply to target someone else's like, so this is enforced by the RPC's
+    // signature itself, not by application-level filtering we could get wrong.
+    // Here that means: another student's like survives, reflected by the
+    // count only dropping by the caller's own removal, never more.
+    rpc.mockResolvedValue({ data: { like_count: 1, is_liked_by_viewer: false }, error: null });
+    const response = await unlikePost(unlikeReq('valid'), { params: Promise.resolve({ postId: '1' }) });
+    const body = await response.json();
+    expect(body.likeCount).toBe(1); // one like (the other student's) remains
+    expect(rpc).toHaveBeenCalledWith('socialu_unlike_post', { p_auth_id: user.id, p_post_id: 1 });
+  });
+
+  it('a student not authorized to view a Friends Only post cannot unlike it', async () => {
+    rpc.mockResolvedValue({ data: null, error: { code: '42501', message: 'You are not authorized to view this post.' } });
+    const response = await unlikePost(unlikeReq('valid'), { params: Promise.resolve({ postId: '1' }) });
+    expect(response.status).toBe(403);
+  });
+
+  it('returns 404 for a post that does not exist', async () => {
+    rpc.mockResolvedValue({ data: null, error: { code: 'P0002', message: 'Post not found.' } });
+    const response = await unlikePost(unlikeReq('valid', '999'), { params: Promise.resolve({ postId: '999' }) });
+    expect(response.status).toBe(404);
+  });
+
+  it('surfaces a 503 when the database operation fails unexpectedly, without corrupting the response shape', async () => {
+    rpc.mockResolvedValue({ data: null, error: { code: 'XX000', message: 'unexpected' } });
+    const response = await unlikePost(unlikeReq('valid'), { params: Promise.resolve({ postId: '1' }) });
+    expect(response.status).toBe(503);
+    const body = await response.json();
+    expect(typeof body.error).toBe('string');
   });
 });
