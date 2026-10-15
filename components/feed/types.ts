@@ -13,4 +13,6 @@ export type FeedPost = {
   publishedAt: string;
   editedAt: string | null;
   photos: FeedPhoto[];
+  likeCount: number;
+  isLikedByViewer: boolean;
 };
