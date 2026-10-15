@@ -9,12 +9,6 @@ export function universityEmail(value: unknown) {
   return email;
 }
 
-export function verificationCode(value: unknown) {
-  const code = textField(value);
-  if (!/^\d{6}$/.test(code)) throw new AccountError('Enter the six-digit code from your email.', 400);
-  return code;
-}
-
 export async function authGuard(action: 'status' | 'failure' | 'success' | 'verified' | 'send', email: string, purpose = 'signup') {
   const client = authClient();
   const { data, error } = await client.rpc('socialu_auth_guard', { p_action: action, p_email: email, p_purpose: purpose });
@@ -30,6 +24,20 @@ function recoveryKey() {
 }
 
 // The recovery provider token is encrypted, not returned as an app login session.
+// Email links return a session in the URL; only trust one minted by that kind of email, recently.
+export async function emailLinkUser(token: unknown, methods: string[]) {
+  const invalid = new AccountError('This email link is invalid or has expired. Request a new one.', 400);
+  if (typeof token !== 'string' || !token || token.length > 16000) throw invalid;
+  const { data, error } = await authClient().auth.getUser(token);
+  if (error || !data.user?.email || !data.user.email_confirmed_at) throw invalid;
+  let amr: { method?: string; timestamp?: number }[] = [];
+  try { amr = JSON.parse(Buffer.from(token.split('.')[1], 'base64url').toString()).amr ?? []; } catch { throw invalid; }
+  // getUser has already validated the signature, so these claims are trustworthy.
+  const fresh = amr.some(entry => methods.includes(entry.method ?? '') && typeof entry.timestamp === 'number' && Date.now() - entry.timestamp * 1000 < 15 * 60_000);
+  if (!fresh) throw invalid;
+  return { user: data.user, email: universityEmail(data.user.email) };
+}
+
 export function recoveryTicket(token: string, userId: string) {
   const iv = randomBytes(12);
   const cipher = createCipheriv('aes-256-gcm', recoveryKey(), iv);

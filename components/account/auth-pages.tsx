@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
-import { Check, LockKeyhole, Mail, ShieldCheck, UserRound } from 'lucide-react';
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react';
+import { Check, LockKeyhole, Mail, UserRound } from 'lucide-react';
 import { passwordError } from '../../lib/account/validation';
 import { accessToken, clearSession, saveSession } from '../../lib/account/session';
 import styles from './account.module.css';
@@ -13,8 +13,8 @@ type Purpose = 'signup' | 'recovery' | 'reverification';
 const copy: Record<AuthScreen, { title: string; description: string; action: string }> = {
   login: { title: 'Your campus. Your people.', description: 'Verify your student status with your university email.', action: 'Sign in' },
   register: { title: 'Your campus. Your people.', description: 'Join your campus community with your university email.', action: 'Create account' },
-  'verify-email': { title: 'Verify your university email.', description: 'Enter the six-digit code sent to your university email.', action: 'Verify email' },
-  'forgot-password': { title: 'Forgot your password?', description: 'Enter your university email to receive a password-reset code.', action: 'Send reset code' },
+  'verify-email': { title: 'Verify your university email.', description: 'Click the verification link sent to your university email.', action: 'Verify email' },
+  'forgot-password': { title: 'Forgot your password?', description: 'Enter your university email to receive a password-reset link.', action: 'Send reset link' },
   'reset-password': { title: 'Choose a new password.', description: 'Give your account a fresh start with a strong new password.', action: 'Reset password' },
   'change-password': { title: 'Change your password.', description: 'Confirm your current password, then choose a new one.', action: 'Save new password' },
 };
@@ -23,8 +23,8 @@ function Brand({ href }: { href: string }) {
   return <Link href={href} className={styles.brand} aria-label="SocialU">Social<span>U</span></Link>;
 }
 
-function Field({ label, icon, children, code = false }: { label: string; icon: ReactNode; children: ReactNode; code?: boolean }) {
-  return <label className={`${styles.field} ${code ? styles.code : ''}`}>{icon}<span className={styles.fieldBody}><span>{label}</span>{children}</span></label>;
+function Field({ label, icon, children }: { label: string; icon: ReactNode; children: ReactNode }) {
+  return <label className={styles.field}>{icon}<span className={styles.fieldBody}><span>{label}</span>{children}</span></label>;
 }
 
 async function post(endpoint: string, payload: Record<string, unknown>, token?: string | null) {
@@ -40,7 +40,6 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
   const [password, setPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
   const [current, setCurrent] = useState('');
-  const [code, setCode] = useState('');
   const [purpose, setPurpose] = useState<Purpose>('signup');
   const [remember, setRemember] = useState(true);
   const [busy, setBusy] = useState(false);
@@ -48,20 +47,68 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
   const [message, setMessage] = useState('');
   const [cooldown, setCooldown] = useState(0);
   const [verifiedReset, setVerifiedReset] = useState(false);
+  const initializedScreen = useRef<AuthScreen | null>(null);
   const href = (target: AuthScreen) => target === 'change-password' ? '/account/security' : `/${target}`;
-  const isCode = screen === 'verify-email' || screen === 'reset-password' && !verifiedReset;
+  // Verification happens by clicking the emailed link; these screens wait for it.
+  const waitingForLink = screen === 'verify-email' || screen === 'reset-password' && !verifiedReset;
   const newPassword = screen === 'register' || screen === 'change-password' || screen === 'reset-password' && verifiedReset;
   const content = copy[screen];
 
   useEffect(() => {
-    setPassword(''); setConfirmation(''); setCurrent(''); setCode(''); setError(''); setMessage(''); setVerifiedReset(false);
+    // Development Strict Mode replays effects; consume a one-time link only once.
+    if (initializedScreen.current === screen) return;
+    initializedScreen.current = screen;
+    setPassword(''); setConfirmation(''); setCurrent(''); setError(''); setMessage(''); setVerifiedReset(false);
     const params = new URLSearchParams(window.location.search);
     setEmail(params.get('email') || '');
-    setPurpose(screen === 'reset-password' ? 'recovery' : params.get('purpose') === 'reverification' ? 'reverification' : 'signup');
+    const linkPurpose: Purpose = screen === 'reset-password' ? 'recovery' : params.get('purpose') === 'reverification' ? 'reverification' : 'signup';
+    setPurpose(linkPurpose);
     const sentAt = Number(sessionStorage.getItem('socialu:code-sent') || 0);
     setCooldown(Math.max(0, Math.ceil((sentAt + 30_000 - Date.now()) / 1000)));
     if (params.get('reset') === 'done') setMessage('Password reset. Sign in with your new password.');
     if (params.get('verified') === 'done') setMessage('Email verified. Sign in with your password to continue.');
+    if (screen === 'forgot-password' && params.get('reason') === 'sign-in-link') {
+      setMessage('That email contains a sign-in link, not a password-reset link. Enter your university email below to request a new password-reset email.');
+    }
+    const tokenHash = params.get('token_hash');
+    const fragment = new URLSearchParams(window.location.hash.slice(1));
+    const recoveryAccessToken = fragment.get('type') === 'recovery' ? fragment.get('access_token') : null;
+    if (screen === 'verify-email' && (fragment.has('error') || fragment.has('error_code'))) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      setError('This verification link is invalid or has expired. Request a new one.');
+      return;
+    }
+    const linkAccessToken = fragment.get('access_token');
+    const linkType = { signup: 'signup', magiclink: 'reverification' }[fragment.get('type') ?? ''];
+    if (screen === 'verify-email' && linkAccessToken && linkType === linkPurpose) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      setBusy(true);
+      post('verify', { linkAccessToken, purpose: linkPurpose }).then(({ response, data }) => {
+        if (!response.ok) throw new Error(data.error || 'This email link is invalid or has expired. Request a new one.');
+        if (linkPurpose === 'reverification') { router.push(href('login') + '?verified=done'); return; }
+        // The confirmation link already signed the new student in.
+        const expiresAt = Number(fragment.get('expires_at'));
+        saveSession({ access_token: linkAccessToken, refresh_token: fragment.get('refresh_token') ?? undefined, ...(expiresAt ? { expires_at: expiresAt } : {}) }, true);
+        router.push('/');
+      }).catch(error => setError(error instanceof Error ? error.message : 'Unable to verify your email link.'))
+        .finally(() => setBusy(false));
+      return;
+    }
+    if (screen !== 'reset-password') return;
+    if (fragment.has('error') || fragment.has('error_code')) {
+      window.history.replaceState(null, '', window.location.pathname);
+      setError('This reset link is invalid or has expired. Request a new one.');
+      return;
+    }
+    if (!recoveryAccessToken && !(tokenHash && params.get('type') === 'recovery')) return;
+    // Drop the one-time token from the address bar before verifying it.
+    window.history.replaceState(null, '', window.location.pathname);
+    setBusy(true);
+    post('verify', { ...(recoveryAccessToken ? { recoveryAccessToken } : { tokenHash }), purpose: 'recovery' }).then(({ response, data }) => {
+      if (!response.ok) throw new Error(data.error || 'This reset link is invalid or has expired. Request a new one.');
+      sessionStorage.setItem('socialu:recovery-ticket', data.ticket); setEmail(data.email); setVerifiedReset(true);
+    }).catch(error => setError(error instanceof Error ? error.message : 'Unable to verify your reset link.'))
+      .finally(() => setBusy(false));
   }, [screen]);
 
   useEffect(() => {
@@ -81,7 +128,7 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
     try {
       if (!/^[^\s@]+@salemstate\.edu$/i.test(email)) throw new Error('Enter your Salem State university email first.');
       const { response, data } = await post('resend', { email, purpose });
-      if (!response.ok) throw new Error(data.error || 'Unable to resend your code.');
+      if (!response.ok) throw new Error(data.error || 'Unable to resend your email.');
       sent(); setMessage(data.message);
     } catch (error) { setError(error instanceof Error ? error.message : 'Unable to resend. Please try again.'); }
     finally { setBusy(false); }
@@ -93,7 +140,6 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
     setBusy(true); setError(''); setMessage('');
     try {
       if (screen !== 'login' && screen !== 'change-password' && !/^[^\s@]+@salemstate\.edu$/i.test(email)) throw new Error('Use your Salem State university email (@salemstate.edu).');
-      if (isCode && !/^\d{6}$/.test(code)) throw new Error('Enter the six-digit code from your email.');
       if (newPassword) {
         const invalid = passwordError(password, confirmation, screen === 'change-password' ? current : undefined);
         if (invalid) throw new Error(invalid);
@@ -103,7 +149,6 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
       let token: string | null = null;
       if (screen === 'register') payload = { ...payload, fullName: name.trim(), username: username.trim() };
       if (screen === 'login') payload = { identifier: email.trim(), password };
-      if (isCode) { endpoint = 'verify'; payload = { email, code, purpose }; }
       if (screen === 'reset-password' && verifiedReset) payload.ticket = sessionStorage.getItem('socialu:recovery-ticket');
       if (screen === 'change-password') {
         token = await accessToken();
@@ -117,17 +162,14 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
       }
       if (screen === 'register' || screen === 'forgot-password') {
         sent(); router.push(href(screen === 'register' ? 'verify-email' : 'reset-password') + `?email=${encodeURIComponent(email)}`);
-      } else if (screen === 'reset-password' && !verifiedReset) {
-        sessionStorage.setItem('socialu:recovery-ticket', data.ticket); setVerifiedReset(true); setCode('');
       } else if (screen === 'reset-password') {
         sessionStorage.removeItem('socialu:recovery-ticket'); clearSession(); router.push(href('login') + '?reset=done');
       } else if (screen === 'change-password') {
         setPassword(''); setConfirmation(''); setCurrent(''); setMessage(data.message);
-      } else if (screen === 'verify-email' && purpose === 'reverification') router.push(href('login') + '?verified=done');
-      else {
-        const session = screen === 'login' ? data.session?.session : data.session;
+      } else {
+        const session = data.session?.session;
         if (!session?.access_token) throw new Error('No session was returned. Please sign in again.');
-        saveSession(session, screen === 'login' && remember);
+        saveSession(session, remember);
         router.push(data.needsProfile ? '/profile' : '/');
       }
     } catch (error) { setError(error instanceof Error ? error.message : 'Unable to connect. Please try again.'); }
@@ -140,25 +182,27 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
     <main className={styles.scene}>
       <section className={styles.panel} aria-label={content.title}>
         <Brand href="/" />
-        <h1 className={styles.tagline}>{isCode && screen === 'reset-password' ? 'Verify it’s you.' : content.title}</h1>
-        <p className={styles.description}>{isCode ? <>Enter the six-digit code sent to {email ? <strong>{email}</strong> : 'your university email'}.</> : content.description}</p>
+        <h1 className={styles.tagline}>{waitingForLink ? 'Check your email.' : content.title}</h1>
+        <p className={styles.description}>{waitingForLink ? <>Open the newest {screen === 'reset-password' ? 'password-reset' : 'verification'} email{email ? <> sent to <strong>{email}</strong></> : ''} and click its link.</> : content.description}</p>
           {error && <div className={`${styles.notice} ${styles.error}`} role="alert">{error}</div>}
           {message && <div className={styles.notice} role="status">{message}</div>}
-          <form onSubmit={submit} className={styles.form} aria-busy={busy}>
+          {waitingForLink ? <div className={styles.form} aria-busy={busy}>
+            {busy ? <p className={styles.hint} role="status">Checking your email link…</p> : <>
+              <Field label="University email" icon={<Mail />}><input value={email} onChange={event => setEmail(event.target.value)} type="email" placeholder="you@salemstate.edu" autoComplete="email" maxLength={254} /></Field>
+              <button type="button" className={styles.button} onClick={resend} disabled={cooldown > 0}>{cooldown ? `Resend in ${cooldown}s` : 'Resend email'}</button>
+            </>}
+          </div> : <form onSubmit={submit} className={styles.form} aria-busy={busy}>
             {screen === 'register' && <>
               <Field label="Full name" icon={<UserRound />}><input value={name} onChange={event => setName(event.target.value)} placeholder="Your full name" autoComplete="name" required maxLength={100} /></Field>
               <Field label="Username" icon={<UserRound />}><input value={username} onChange={event => setUsername(event.target.value)} placeholder="Choose a username" autoComplete="username" required maxLength={50} pattern="[A-Za-z0-9_.]+" title="Use letters, numbers, periods, and underscores." /></Field>
             </>}
-            {(screen === 'login' || screen === 'register' || screen === 'forgot-password' || isCode) && <Field label="University email" icon={<Mail />}><input value={email} onChange={event => setEmail(event.target.value)} type={screen === 'login' ? 'text' : 'email'} placeholder="you@salemstate.edu" autoComplete={screen === 'login' ? 'username' : 'email'} aria-label={screen === 'login' ? 'University email or username' : undefined} required maxLength={254} /></Field>}
-            {isCode && <Field label="Verification code" icon={<ShieldCheck />} code><input value={code} onChange={event => setCode(event.target.value.replace(/\D/g, '').slice(0, 6))} type="text" inputMode="numeric" pattern="[0-9]{6}" maxLength={6} autoComplete="one-time-code" placeholder="000000" required /></Field>}
+            {(screen === 'login' || screen === 'register' || screen === 'forgot-password') && <Field label="University email" icon={<Mail />}><input value={email} onChange={event => setEmail(event.target.value)} type={screen === 'login' ? 'text' : 'email'} placeholder="you@salemstate.edu" autoComplete={screen === 'login' ? 'username' : 'email'} aria-label={screen === 'login' ? 'University email or username' : undefined} required maxLength={254} /></Field>}
             {screen === 'change-password' && passwordField('Current password', current, setCurrent, 'current-password')}
             {(screen === 'login' || newPassword) && passwordField(screen === 'login' ? 'Password' : 'New password', password, setPassword, screen === 'login' ? 'current-password' : 'new-password')}
             {newPassword && <>{passwordField('Confirm password', confirmation, setConfirmation, 'new-password')}<p className={styles.hint}>Use 8+ characters with uppercase and lowercase letters, a number, and a special character.</p></>}
             {screen === 'login' && <div className={styles.options}><label className={styles.remember}><input type="checkbox" checked={remember} onChange={event => setRemember(event.target.checked)} /><span className={styles.check} aria-hidden="true">{remember && <Check size={17} strokeWidth={2.2} />}</span>Remember me</label><Link href={href('forgot-password')}>Forgot password?</Link></div>}
-            {isCode && <p className={styles.hint}>Your code is valid for 15 minutes.</p>}
-            <button type="submit" className={styles.button} disabled={busy}>{busy ? 'Please wait…' : isCode ? 'Verify code' : content.action}</button>
-            {isCode && <p className={styles.hint} style={{ textAlign: 'center' }}>Didn’t receive a code? <button type="button" className={styles.textButton} onClick={resend} disabled={busy || cooldown > 0}>{cooldown ? `Resend in ${cooldown}s` : 'Resend code'}</button></p>}
-          </form>
+            <button type="submit" className={styles.button} disabled={busy}>{busy ? 'Please wait…' : content.action}</button>
+          </form>}
           <p className={styles.footer}>{screen === 'login' ? <>New to SocialU? <Link href={href('register')}>Create account</Link></> : screen === 'register' ? <>Already have an account? <Link href={href('login')}>Sign in</Link></> : <Link href={href('login')}>Back to sign in</Link>}</p>
       </section>
       <p className={styles.campusFooter}>Salem State University &nbsp; | &nbsp; A more connected campus</p>
