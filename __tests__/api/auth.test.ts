@@ -23,6 +23,34 @@ describe('SocialU login and registration', () => {
     expect(res.status).toBe(200);
     expect(rpc).toHaveBeenCalledWith('socialu_account', { p_action: 'read', p_auth_id: user.id });
     expect((await res.json()).needsProfile).toBe(false);
+    expect(rpc).not.toHaveBeenCalledWith('socialu_account', expect.objectContaining({ p_action: 'onboard' }));
+  });
+  it('saves a missing profile from verified signup metadata on email login', async () => {
+    rpc.mockImplementation(async (fn, args) => ({ data: fn === 'socialu_account' ? args.p_action === 'read' ? null : profile : {}, error: null }));
+    const res = await login(req('POST', { email: user.email, password: 'Secret123!', username: 'forged', fullName: 'Forged' }));
+    expect(res.status).toBe(200);
+    expect((await res.json()).needsProfile).toBe(false);
+    expect(rpc).toHaveBeenCalledWith('socialu_account', { p_action: 'onboard', p_auth_id: user.id, p_full_name: 'Student Name', p_username: 'student', p_bio: '' });
+  });
+  it('allows manual setup when signup metadata is missing', async () => {
+    signIn.mockResolvedValue({ data: { user: { ...user, user_metadata: {} }, session: { access_token: 'test-token' } }, error: null });
+    rpc.mockImplementation(async (fn) => ({ data: fn === 'socialu_account' ? null : {}, error: null }));
+    const res = await login(req('POST', { email: user.email, password: 'Secret123!' }));
+    expect(res.status).toBe(200);
+    expect((await res.json()).needsProfile).toBe(true);
+    expect(rpc).not.toHaveBeenCalledWith('socialu_account', expect.objectContaining({ p_action: 'onboard' }));
+  });
+  it.each(['23505', '22023'])('allows profile correction after onboarding error %s', async code => {
+    rpc.mockImplementation(async (fn, args) => ({ data: fn === 'socialu_account' ? null : {}, error: args.p_action === 'onboard' ? { code } : null }));
+    const res = await login(req('POST', { email: user.email, password: 'Secret123!' }));
+    expect(res.status).toBe(200);
+    expect((await res.json()).needsProfile).toBe(true);
+  });
+  it.each([['42501', 403], ['PGRST202', 503]])('does not hide onboarding failure %s', async (code, status) => {
+    rpc.mockImplementation(async (fn, args) => ({ data: fn === 'socialu_account' ? null : {}, error: args.p_action === 'onboard' ? { code } : null }));
+    const res = await login(req('POST', { email: user.email, password: 'Secret123!' }));
+    expect(res.status).toBe(status);
+    expect(await res.text()).not.toContain('test-token');
   });
   it('directs an existing provider account to profile setup', async () => {
     rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : fn === 'socialu_auth_guard' ? { data: {}, error: null } : { data: null, error: null });
