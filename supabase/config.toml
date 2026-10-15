@@ -30,4 +30,4 @@ content_path = "./supabase/templates/magic_link.html"
 [auth.email.notification.password_changed]
 enabled = true
 subject = "SocialU — your password was changed"
-content_path = "./supabase/templates/password_changed.html"
+content_path = "./templates/password_changed.html"

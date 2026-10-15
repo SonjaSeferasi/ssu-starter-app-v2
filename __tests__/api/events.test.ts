@@ -123,6 +123,16 @@ describe('Event discovery API', () => {
     expect(rpc).toHaveBeenCalledWith('socialu_list_events', { p_auth_id: user.id });
   });
 
+  it('returns the latest saved event information on every request', async () => {
+    const first = await GET(listRequest());
+    expect(first.headers.get('Cache-Control')).toBe('no-store');
+    expect((await first.json()).events[0].location).toBe('North Hall');
+
+    const updated = [{ ...listed[0], location: 'South Lawn' }];
+    rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : { data: updated, error: null });
+    expect((await (await GET(listRequest())).json()).events[0].location).toBe('South Lawn');
+  });
+
   it('returns an empty list when there are no events', async () => {
     rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : { data: [], error: null });
     expect(await (await GET(listRequest())).json()).toEqual({ events: [] });
