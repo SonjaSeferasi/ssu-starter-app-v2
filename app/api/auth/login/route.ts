@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     async function requireVerification() {
       try {
         await authGuard('send', email, 'reverification');
-        await authClient().auth.signInWithOtp({ email, options: { shouldCreateUser: false } });
+        await authClient().auth.signInWithOtp({ email, options: { shouldCreateUser: false, emailRedirectTo: new URL('/verify-email?purpose=reverification', request.url).href } });
       } catch (error) {
         if (!(error instanceof AccountError) || error.status !== 429) throw error;
       }

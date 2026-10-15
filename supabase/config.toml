@@ -13,7 +13,7 @@ enable_signup = true
 enable_confirmations = true
 max_frequency = "30s"
 otp_length = 6
-otp_expiry = 900
+otp_expiry = 86400
 
 [auth.email.template.confirmation]
 subject = "SocialU — verify your Salem State university email"
