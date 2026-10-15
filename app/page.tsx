@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect } from 'react';
 import { useNavigationSession } from '../components/navigation/social-shell';
 import { SessionNotice } from '../components/navigation/section-page';
 import { FeedPage } from '../components/feed/FeedPage';
@@ -8,6 +9,13 @@ import styles from '../components/navigation/social-shell.module.css';
 
 export default function Home() {
   const session = useNavigationSession();
+  useEffect(() => {
+    // Email links fall back to the Site URL when their redirect is not allow-listed in Supabase.
+    const fragment = new URLSearchParams(window.location.hash.slice(1));
+    if (!fragment.get('access_token')) return;
+    const target = { recovery: '/reset-password', magiclink: '/verify-email?purpose=reverification', signup: '/verify-email?purpose=signup' }[fragment.get('type') ?? ''];
+    window.location.replace(target ? target + window.location.hash : '/');
+  }, []);
   if (session === 'signed-in') return <FeedPage />;
   if (session !== 'signed-out') return <SessionNotice state={session} />;
   return (
