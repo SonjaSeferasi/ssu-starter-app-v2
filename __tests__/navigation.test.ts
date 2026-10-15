@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 const { renderToStaticMarkup } = createRequire(import.meta.url)('react-dom/server') as { renderToStaticMarkup(node: ReactNode): string };
 import { describe, expect, it } from 'vitest';
 import { SocialNavigation, NavigationFrame } from '../components/navigation/social-navigation';
+import { SectionContent } from '../components/navigation/section-page';
 import { isCurrentDestination, isStandalonePage } from '../lib/navigation';
 
 describe('UR-600 navigation', () => {
@@ -60,6 +61,16 @@ describe('UR-600 navigation', () => {
     ('excludes shared navigation on %s', (pathname) => {
       expect(isStandalonePage(pathname)).toBe(true);
     });
+
+  it('keeps Events and Trending selected on the create-event page', () => {
+    expect(isCurrentDestination('/events/create', '/events')).toBe(true);
+  });
+
+  it('links the Events and Trending page to event creation', () => {
+    const html = renderToStaticMarkup(createElement(SectionContent, { title: 'Events and Trending', description: '', pending: '', action: { href: '/events/create', label: 'Create an event' } }));
+    expect(html).toContain('href="/events/create"');
+    expect(html).toContain('Create an event');
+  });
 
   it.each(['/', '/game-room', '/profile', '/messages', '/events'])
     ('allows shared navigation on %s', (pathname) => {

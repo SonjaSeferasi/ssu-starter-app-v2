@@ -5,7 +5,7 @@
 -- Error codes returned to the API (mapped in app/api/events/route.ts):
 --   42501 verified, active account required
 
-CREATE FUNCTION public.socialu_list_events(p_auth_id UUID)
+CREATE OR REPLACE FUNCTION public.socialu_list_events(p_auth_id UUID)
 RETURNS JSONB LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = '' AS $$
 DECLARE
   s socialu.students%ROWTYPE;
