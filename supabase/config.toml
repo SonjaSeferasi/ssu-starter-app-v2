@@ -17,15 +17,15 @@ otp_expiry = 86400
 
 [auth.email.template.confirmation]
 subject = "SocialU — verify your Salem State university email"
-content_path = "./templates/confirmation.html"
+content_path = "./supabase/templates/confirmation.html"
 
 [auth.email.template.recovery]
 subject = "SocialU — your password-reset code"
-content_path = "./templates/recovery.html"
+content_path = "./supabase/templates/recovery.html"
 
 [auth.email.template.magic_link]
 subject = "SocialU — verify your Salem State university email"
-content_path = "./templates/magic_link.html"
+content_path = "./supabase/templates/magic_link.html"
 
 [auth.email.notification.password_changed]
 enabled = true
