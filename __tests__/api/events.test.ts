@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const { getClient, getUser, rpc } = vi.hoisted(() => ({ getClient: vi.fn(), getUser: vi.fn(), rpc: vi.fn() }));
 vi.mock('../../lib/supabase', () => ({ getSupabaseClient: getClient }));
 
-import { POST } from '../../app/api/events/route';
+import { GET, POST } from '../../app/api/events/route';
 
 const user = { id: 'supabase-user-1', email: 'student@salemstate.edu', email_confirmed_at: '2026-10-08T12:00:00Z' };
 const saved = {
@@ -88,5 +88,49 @@ describe('Event creation API', () => {
 
     expect(response.status).toBe(403);
     expect((await response.json()).error).toMatch(/verified, active university account/);
+  });
+
+  it('keeps the time the student picked in their own time zone', async () => {
+    // 10:00 in New York during daylight time (UTC-4) is 14:00 UTC.
+    await POST(createRequest({ ...validBody, timezoneOffset: 240 }));
+    const args = rpc.mock.calls.find(([fn]) => fn === 'socialu_create_event')![1];
+    expect(args.p_starts_at).toBe('2026-10-09T14:00:00.000Z');
+  });
+});
+
+describe('Event discovery API', () => {
+  const listed = [{ ...saved, creator_username: 'organizer' }];
+
+  beforeEach(() => {
+    vi.resetAllMocks();
+    vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'test-server-key');
+    getClient.mockReturnValue({ auth: { getUser }, rpc });
+    getUser.mockImplementation(async (token: string) => token === validToken
+      ? { data: { user }, error: null }
+      : { data: { user: null }, error: { message: 'Invalid token' } });
+    rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : { data: listed, error: null });
+  });
+
+  function listRequest(token = validToken) {
+    return new Request('http://localhost/api/events', { headers: token ? { authorization: `Bearer ${token}` } : {} });
+  }
+
+  it('lists campus events for a signed-in student', async () => {
+    const response = await GET(listRequest());
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ events: listed });
+    expect(rpc).toHaveBeenCalledWith('socialu_list_events', { p_auth_id: user.id });
+  });
+
+  it('returns an empty list when there are no events', async () => {
+    rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : { data: [], error: null });
+    expect(await (await GET(listRequest())).json()).toEqual({ events: [] });
+  });
+
+  it('requires sign-in', async () => {
+    expect((await GET(listRequest(''))).status).toBe(401);
+    expect((await GET(listRequest('bad-token'))).status).toBe(401);
+    expect(rpc).not.toHaveBeenCalled();
   });
 });

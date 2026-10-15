@@ -5,7 +5,7 @@
 -- Error codes returned to the API (mapped in app/api/events/route.ts):
 --   42501 verified, active account required       22023 event details are missing or invalid
 
-CREATE FUNCTION public.socialu_create_event(
+CREATE OR REPLACE FUNCTION public.socialu_create_event(
   p_auth_id UUID, p_title TEXT, p_description TEXT, p_location TEXT, p_starts_at TIMESTAMPTZ
 ) RETURNS JSONB LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$
 DECLARE
