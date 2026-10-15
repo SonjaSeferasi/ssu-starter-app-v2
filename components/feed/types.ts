@@ -1,3 +1,8 @@
+export type FeedPhoto = {
+  assetId: number;
+  url: string;
+};
+
 export type FeedPost = {
   postId: number;
   authorId: number;
@@ -7,5 +12,5 @@ export type FeedPost = {
   visibility: 'public' | 'friends_only';
   publishedAt: string;
   editedAt: string | null;
-  photos: string[];
+  photos: FeedPhoto[];
 };

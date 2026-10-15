@@ -85,7 +85,7 @@ function PostViewer({ post, onClose }: { post: FeedPost; onClose: () => void }) 
   const hasPhotos = post.photos.length > 0;
   return <div className={styles.backdrop} onClick={onClose}>
     <div className={`${styles.viewer} ${hasPhotos ? '' : styles.viewerTextOnly}`} role="dialog" aria-modal="true" aria-label={`Post by ${post.authorName}`} onClick={event => event.stopPropagation()}>
-      {hasPhotos && <div className={styles.viewerMedia}>{post.photos.map((url, index) => <img key={url} src={url} alt={`Photo ${index + 1} of ${post.photos.length}`} />)}</div>}
+      {hasPhotos && <div className={styles.viewerMedia}>{post.photos.map((photo, index) => <img key={photo.assetId} src={photo.url} alt={`Photo ${index + 1} of ${post.photos.length}`} />)}</div>}
       <div className={styles.viewerBody}>
         <div className={styles.viewerAuthor}>
           <Avatar url={post.authorPhotoUrl} name={post.authorName} />
@@ -134,7 +134,7 @@ function PostGrid({ username, category, own }: { username: string; category: Cat
     <div className={styles.grid}>
       {posts.map(post => <button type="button" key={post.postId} className={styles.tile} onClick={() => setOpen(post)}
         aria-label={`Open post from ${timeAgo(post.publishedAt)}${post.textContent ? `: ${post.textContent.slice(0, 60)}` : ''}`}>
-        {post.photos[0] ? <img src={post.photos[0]} alt="" /> : <div className={styles.tileTextBg}><p className={styles.tileText}>{post.textContent}</p></div>}
+        {post.photos[0] ? <img src={post.photos[0].url} alt="" /> : <div className={styles.tileTextBg}><p className={styles.tileText}>{post.textContent}</p></div>}
         {post.photos.length > 1 && <span className={styles.tileIcon} aria-hidden="true"><Images /></span>}
         {post.visibility === 'friends_only' && post.photos.length <= 1 && <span className={styles.tileIcon} title="Friends only" aria-hidden="true"><Lock /></span>}
       </button>)}
