@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { SavePostButton } from '../profile/social-actions';
 import { PostAuthor } from './PostAuthor';
 import { PostMedia } from './PostMedia';
 import { EditPostModal } from './EditPostModal';
@@ -88,7 +89,7 @@ export function PostCard({
           <span className="flex items-center gap-1.5 text-sm">💬 Comment</span>
           <span className="flex items-center gap-1.5 text-sm">↗ Share</span>
         </div>
-        <span className="text-sm">🔖</span>
+        <SavePostButton postId={post.postId} />
       </div>
 
       {editing ? (

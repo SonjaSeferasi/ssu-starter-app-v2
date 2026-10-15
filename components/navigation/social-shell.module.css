@@ -95,3 +95,20 @@
   .shell[data-navigation='bottom'] .preferenceToggle { max-width: 65px; }
   .shell[data-navigation='bottom'] .preferencePanel { left: auto; bottom: 78px; }
 }
+
+/* Profile pages use the full mobile canvas, keeping campus destinations reachable. */
+.shell[data-profile='true'] { background: #fbfefc; }
+@media (max-width: 640px) {
+  .shell[data-profile='true'] .content { margin-left: 0; padding-bottom: 0; }
+  .shell[data-profile='true'] .navigation { position: static; width: 100%; display: flex; padding: 4px 8px; border-right: 0; border-bottom: 1px solid var(--line); overflow-x: auto; gap: 4px; }
+  .shell[data-profile='true'] .destinationList { display: flex; flex: 1; justify-content: space-around; gap: 4px; }
+  .shell[data-profile='true'] .destination { min-height: 44px; max-width: none; padding: 5px; gap: 3px; font-size: 9px; }
+  .shell[data-profile='true'] .destination svg { width: 18px; height: 18px; }
+  .shell[data-profile='true'] .destinationSoon, .shell[data-profile='true'] .soonTag, .shell[data-profile='true'] .sidebarCard, .shell[data-profile='true'] .sidebarNote { display: none; }
+  .shell[data-profile='true'] .preferences { margin: 0; }
+  .shell[data-profile='true'] .preferenceToggle { font-size: 9px; min-height: 44px; }
+  .shell[data-profile='true'] .preferenceToggle span { font-size: 18px; }
+  .shell[data-profile='true'] .preferencePanel { position: fixed; top: 120px; bottom: auto; left: auto; right: 16px; }
+  .shell[data-profile='true'] .header { position: static; min-height: 56px; padding: 8px 16px; }
+  .shell[data-profile='true'] .brand { font-size: 25px; }
+}
