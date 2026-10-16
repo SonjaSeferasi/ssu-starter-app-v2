@@ -1,12 +1,12 @@
 -- Profile collections and following. Additive; never resets existing student data.
-CREATE TABLE socialu.student_follows (
+CREATE TABLE IF NOT EXISTS socialu.student_follows (
   follower_id BIGINT NOT NULL REFERENCES socialu.students(student_id) ON DELETE CASCADE,
   followed_id BIGINT NOT NULL REFERENCES socialu.students(student_id) ON DELETE CASCADE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   PRIMARY KEY (follower_id, followed_id), CHECK (follower_id <> followed_id)
 );
-CREATE INDEX student_follows_target ON socialu.student_follows(followed_id);
-CREATE TABLE socialu.saved_posts (
+CREATE INDEX IF NOT EXISTS student_follows_target ON socialu.student_follows(followed_id);
+CREATE TABLE IF NOT EXISTS socialu.saved_posts (
   student_id BIGINT NOT NULL REFERENCES socialu.students(student_id) ON DELETE CASCADE,
   post_id BIGINT NOT NULL REFERENCES socialu.posts(post_id) ON DELETE CASCADE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(), PRIMARY KEY(student_id, post_id)
@@ -16,7 +16,7 @@ ALTER TABLE socialu.saved_posts ENABLE ROW LEVEL SECURITY;
 REVOKE ALL ON socialu.student_follows, socialu.saved_posts FROM anon, authenticated;
 
 -- Following never grants friends-only post access. Recheck visibility on every read.
-CREATE FUNCTION public.socialu_profile_visible_post(p_me BIGINT, p_post BIGINT) RETURNS BOOLEAN
+CREATE OR REPLACE FUNCTION public.socialu_profile_visible_post(p_me BIGINT, p_post BIGINT) RETURNS BOOLEAN
 LANGUAGE sql STABLE SECURITY DEFINER SET search_path = '' AS $$
   SELECT EXISTS (SELECT 1 FROM socialu.posts p JOIN socialu.students s ON s.student_id = p.author_id
     WHERE p.post_id = p_post AND s.is_active
@@ -25,7 +25,7 @@ LANGUAGE sql STABLE SECURITY DEFINER SET search_path = '' AS $$
 $$;
 REVOKE ALL ON FUNCTION public.socialu_profile_visible_post(BIGINT, BIGINT) FROM PUBLIC, anon, authenticated;
 
-CREATE FUNCTION public.socialu_profile_social(
+CREATE OR REPLACE FUNCTION public.socialu_profile_social(
   p_auth_id UUID, p_action TEXT, p_username TEXT DEFAULT NULL,
   p_post_id BIGINT DEFAULT NULL
 ) RETURNS JSONB LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$

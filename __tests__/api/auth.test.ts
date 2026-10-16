@@ -144,3 +144,24 @@ describe('SocialU login and registration', () => {
     expect(res.status).toBe(503); expect(await res.text()).not.toContain('private detail');
   });
 });
+
+describe('Deactivated account login', () => {
+  it('requires explicit reactivation without returning a session', async () => {
+    rpc.mockImplementation(async (fn: string) => ({ data: fn === 'socialu_account_lifecycle' ? { is_active: false } : {}, error: null }));
+    const response = await login(req('POST', { email: user.email, password: 'Secret123!' }));
+    expect(response.status).toBe(403);
+    expect(await response.json()).toMatchObject({ code: 'ACCOUNT_INACTIVE' });
+    expect(rpc).not.toHaveBeenCalledWith('socialu_account_lifecycle', expect.objectContaining({ p_action:'reactivate' }));
+  });
+  it('reactivates after a correct password and explicit confirmation', async () => {
+    rpc.mockImplementation(async (fn: string, args: any) => ({data: fn === 'socialu_account_lifecycle' ? {is_active:args.p_action !== 'status'} : fn === 'socialu_account' ? profile : {},error:null}));
+    const response = await login(req('POST', {email:user.email,password:'Secret123!',reactivate:true}));
+    expect(response.status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_account_lifecycle',{p_auth_id:user.id,p_action:'reactivate'});
+  });
+  it('never reactivates with the wrong password', async () => {
+    signIn.mockResolvedValue({data:{},error:{message:'bad password'}});
+    expect((await login(req('POST',{email:user.email,password:'bad',reactivate:true}))).status).toBe(401);
+    expect(rpc).not.toHaveBeenCalledWith('socialu_account_lifecycle',expect.anything());
+  });
+});

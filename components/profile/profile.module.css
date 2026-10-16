@@ -203,3 +203,19 @@
   .skeleton { animation: none; }
   .tile img { transition: none; }
 }
+
+.header .username { margin: 16px 0 8px; font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+
+.settingsPanel { max-width: 680px; margin: 28px auto 0; padding: clamp(20px, 4vw, 36px); border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+.settingsLinks { display: grid; margin-top: 28px; }
+.settingsRow { display: flex; align-items: center; gap: 16px; padding: 22px 0; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; }
+.settingsRow > svg { width: 22px; height: 22px; flex-shrink: 0; color: var(--accent); }
+.settingsRow > svg:last-child { margin-left: auto; width: 18px; }
+.settingsRow span { min-width: 0; }
+.settingsRow strong { display: block; font-size: 15px; font-weight: 600; }
+.settingsRow small { display: block; margin-top: 6px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+.settingsRow:hover { color: var(--accent); background: #f5faf6; }
+.settingsRow:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.settingsLogout { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding-top: 26px; }
+.settingsLogout h2 { margin: 0; font-size: 15px; font-weight: 600; }
+.settingsLogout .hint { margin-top: 6px; }

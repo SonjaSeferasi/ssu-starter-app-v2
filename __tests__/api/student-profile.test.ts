@@ -22,9 +22,9 @@ function save(fields: Record<string, string | File>) {
   for (const [key, value] of Object.entries(fields)) form.set(key, value);
   return new Request('http://localhost/api/profile/details', { method: 'PUT', headers: { Authorization: `Bearer ${token}` }, body: form });
 }
-const valid = { displayName: '', major: 'Biology', classYear: 'Senior', bio: 'Hello campus' };
+const valid = { fullName: 'Alex Kim', displayName: '', major: 'Biology', classYear: 'Senior', bio: 'Hello campus' };
 const photo = (name: string, type: string, size = 1000) => new File([new Uint8Array(size)], name, { type });
-const profileCalls = () => rpc.mock.calls.filter(([fn]) => fn.startsWith('socialu_profile') || fn === 'socialu_save_profile');
+const profileCalls = () => rpc.mock.calls.filter(([fn]) => fn.startsWith('socialu_profile') || fn === 'socialu_save_profile_details');
 
 beforeEach(() => {
   vi.resetAllMocks();
@@ -83,7 +83,6 @@ describe('Save profile (SRS-109, SRS-110)', () => {
   it.each([
     [{ ...valid, major: ' ' }, 'Enter your major.'],
     [{ ...valid, classYear: 'Fifth year' }, 'Choose Freshman, Sophomore, Junior, Senior, or Graduate.'],
-    [{ ...valid, bio: '' }, 'Write a short bio.'],
     [{ ...valid, bio: 'x'.repeat(251) }, 'Your bio can be at most 250 characters.'],
   ])('rejects a missing or invalid required field', async (fields, message) => {
     const res = await PUT(save(fields));
@@ -103,28 +102,72 @@ describe('Save profile (SRS-109, SRS-110)', () => {
   });
   it('accepts a HEIC photo even when the browser sends no MIME type', async () => {
     expect((await PUT(save({ ...valid, photo: photo('face.HEIC', '') }))).status).toBe(200);
-    expect(rpc).toHaveBeenCalledWith('socialu_save_profile', expect.objectContaining({ p_photo_mime: 'image/heic', p_photo_bytes: 1000 }));
+    expect(rpc).toHaveBeenCalledWith('socialu_save_profile_details', expect.objectContaining({ p_photo_mime: 'image/heic', p_photo_bytes: 1000 }));
   });
   it('uploads the photo and saves every field for the verified student', async () => {
     const res = await PUT(save({ ...valid, photo: photo('face.jpg', 'image/jpeg') }));
     expect(res.status).toBe(200);
     const key = upload.mock.calls[0][0] as string;
     expect(key).toMatch(new RegExp(`^profile/${user.id}/.+\\.jpg$`));
-    expect(rpc).toHaveBeenCalledWith('socialu_save_profile', {
-      p_auth_id: user.id, p_display_name: '', p_major: 'Biology', p_class_year: 'Senior', p_bio: 'Hello campus',
+    expect(rpc).toHaveBeenCalledWith('socialu_save_profile_details', {
+      p_auth_id: user.id, p_full_name: 'Alex Kim', p_display_name: '', p_major: 'Biology', p_class_year: 'Senior', p_bio: 'Hello campus',
       p_photo_key: key, p_photo_mime: 'image/jpeg', p_photo_bytes: 1000,
     });
   });
   it('keeps the current photo when no new photo is chosen', async () => {
     await PUT(save(valid));
     expect(upload).not.toHaveBeenCalled();
-    expect(rpc).toHaveBeenCalledWith('socialu_save_profile', expect.objectContaining({ p_photo_key: null }));
+    expect(rpc).toHaveBeenCalledWith('socialu_save_profile_details', expect.objectContaining({ p_photo_key: null }));
   });
   it('removes the uploaded photo when the database rejects the save', async () => {
     profileResult = { data: null, error: { code: '22023', message: 'You can change your display name again on October 20.' } };
     const res = await PUT(save({ ...valid, displayName: 'New', photo: photo('face.png', 'image/png') }));
     expect(res.status).toBe(400);
     expect((await res.json()).error).toBe('You can change your display name again on October 20.');
+    expect(remove).toHaveBeenCalledWith([upload.mock.calls[0][0]]);
+  });
+});
+
+
+describe('Real name editing', () => {
+  it.each(['', '   ', 'x'.repeat(101)])('rejects an invalid full name before upload', async fullName => {
+    const response = await PUT(save({ ...valid, fullName, photo: photo('face.jpg', 'image/jpeg') }));
+    expect(response.status).toBe(400);
+    expect(upload).not.toHaveBeenCalled();
+    expect(profileCalls()).toHaveLength(0);
+  });
+  it('trims the real name and uses the authenticated identity', async () => {
+    const response = await PUT(save({ ...valid, fullName: '  Alex Nguyen  ', student_id: 'someone-else', auth_user_id: 'forged' }));
+    expect(response.status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_save_profile_details', expect.objectContaining({ p_full_name: 'Alex Nguyen', p_auth_id: user.id }));
+  });
+});
+
+
+describe('Optional profile bio', () => {
+  it.each(['', '   '])('saves a blank bio', async bio => {
+    const response = await PUT(save({ ...valid, bio }));
+    expect(response.status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_save_profile_details', expect.objectContaining({ p_bio: '' }));
+  });
+});
+
+
+describe('Editable username', () => {
+  it('saves the trimmed username with the authenticated student and all profile fields', async () => {
+    const res = await PUT(save({ ...valid, username: '  linh.nguyen  ', p_auth_id: 'forged' }));
+    expect(res.status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_save_profile_identity', expect.objectContaining({p_auth_id:user.id,p_username:'linh.nguyen',p_full_name:'Alex Kim'}));
+  });
+  it.each(['', '@linh', 'two names', 'a'.repeat(51), '../name'])('rejects invalid username %s before upload', async username => {
+    expect((await PUT(save({...valid,username,photo:photo('face.jpg','image/jpeg')}))).status).toBe(400);
+    expect(upload).not.toHaveBeenCalled();
+  });
+  it('returns a useful conflict and cleans up uploaded photos for a duplicate username', async () => {
+    profileResult={data:null,error:{code:'23505',message:'private database constraint'}};
+    const res=await PUT(save({...valid,username:'taken',photo:photo('face.jpg','image/jpeg')}));
+    expect(res.status).toBe(409);
+    expect((await res.json()).error).toBe('That username is already taken. Choose another username.');
     expect(remove).toHaveBeenCalledWith([upload.mock.calls[0][0]]);
   });
 });

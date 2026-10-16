@@ -4,7 +4,7 @@ import {
 } from '../../../../lib/profile';
 
 // SRS-109.2-109.9, SRS-110.1-110.7: Save Changes for profile setup and editing.
-// multipart/form-data: displayName, major, classYear, bio, and an optional photo file.
+// multipart/form-data: fullName, displayName, major, classYear, bio, and an optional photo file.
 export async function PUT(request: Request) {
   let uploadedKey: string | null = null;
   try {
@@ -12,6 +12,10 @@ export async function PUT(request: Request) {
     let form: FormData;
     try { form = await request.formData(); } catch { throw new AccountError('Send the profile form as form data.', 400); }
     const text = (key: string) => { const value = form.get(key); return typeof value === 'string' ? value.trim() : ''; };
+    const username = form.has('username') ? text('username') : null;
+    if (username !== null && !/^[A-Za-z0-9_.-]{1,50}$/.test(username)) throw new AccountError('Use 1–50 letters, numbers, periods, underscores, or hyphens for your username (without @).', 400);
+    const fullName = text('fullName');
+    if (!fullName || fullName.length > 100) throw new AccountError('Enter your full name (1–100 characters).', 400);
     const displayName = text('displayName');
     const major = text('major');
     const classYear = text('classYear');
@@ -20,7 +24,6 @@ export async function PUT(request: Request) {
     if (!major) throw new AccountError('Enter your major.', 400);
     if (major.length > MAJOR_LIMIT) throw new AccountError(`Your major can be at most ${MAJOR_LIMIT} characters.`, 400);
     if (!(CLASS_YEARS as readonly string[]).includes(classYear)) throw new AccountError('Choose Freshman, Sophomore, Junior, Senior, or Graduate.', 400);
-    if (!bio) throw new AccountError('Write a short bio.', 400);
     if (bio.length > BIO_LIMIT) throw new AccountError(`Your bio can be at most ${BIO_LIMIT} characters.`, 400);
 
     const photo = form.get('photo');
@@ -34,8 +37,9 @@ export async function PUT(request: Request) {
       photoType = type; photoBytes = photo.size;
     }
 
-    const raw = await profileRpc<RawProfile>('socialu_save_profile', {
-      p_auth_id: user.id, p_display_name: displayName, p_major: major, p_class_year: classYear, p_bio: bio,
+    const raw = await profileRpc<RawProfile>(username === null ? 'socialu_save_profile_details' : 'socialu_save_profile_identity', {
+      ...(username === null ? {} : { p_username: username }),
+      p_auth_id: user.id, p_full_name: fullName, p_display_name: displayName, p_major: major, p_class_year: classYear, p_bio: bio,
       p_photo_key: uploadedKey, p_photo_mime: photoType, p_photo_bytes: photoBytes,
     });
     uploadedKey = null;

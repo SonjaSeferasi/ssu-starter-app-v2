@@ -43,6 +43,8 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
   const [purpose, setPurpose] = useState<Purpose>('signup');
   const [remember, setRemember] = useState(true);
   const [busy, setBusy] = useState(false);
+  const [needsReactivation, setNeedsReactivation] = useState(false);
+  const [confirmReactivation, setConfirmReactivation] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [cooldown, setCooldown] = useState(0);
@@ -65,6 +67,7 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
     setPurpose(linkPurpose);
     const sentAt = Number(sessionStorage.getItem('socialu:code-sent') || 0);
     setCooldown(Math.max(0, Math.ceil((sentAt + 30_000 - Date.now()) / 1000)));
+    if (params.get('deactivated') === 'done') setMessage('Your account is deactivated. Your data is kept. Sign in when you are ready to reactivate it.');
     if (params.get('reset') === 'done') setMessage('Password reset. Sign in with your new password.');
     if (params.get('verified') === 'done') setMessage('Email verified. Sign in with your password to continue.');
     if (screen === 'forgot-password' && params.get('reason') === 'sign-in-link') {
@@ -149,7 +152,7 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
       let payload: Record<string, unknown> = { email, password, confirmPassword: confirmation };
       let token: string | null = null;
       if (screen === 'register') payload = { ...payload, fullName: name.trim(), username: username.trim() };
-      if (screen === 'login') payload = { identifier: email.trim(), password };
+      if (screen === 'login') payload = { identifier: email.trim(), password, reactivate: needsReactivation && confirmReactivation };
       if (screen === 'reset-password' && verifiedReset) payload.ticket = sessionStorage.getItem('socialu:recovery-ticket');
       if (screen === 'change-password') {
         token = await accessToken();
@@ -157,6 +160,7 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
         payload.currentPassword = current;
       }
       const { response, data } = await post(endpoint, payload, token);
+      if (screen === 'login' && data.code === 'ACCOUNT_INACTIVE') setNeedsReactivation(true);
       if (!response.ok) {
         if (data.verificationRequired) { sent(); router.push(href('verify-email') + `?purpose=reverification&email=${encodeURIComponent(data.email)}`); return; }
         throw new Error(data.error || 'Unable to complete your request.');
@@ -189,7 +193,7 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
           {message && <div className={styles.notice} role="status">{message}</div>}
           {waitingForLink ? <div className={styles.form} aria-busy={busy}>
             {busy ? <p className={styles.hint} role="status">Checking your email link…</p> : <>
-              <Field label="University email" icon={<Mail />}><input value={email} onChange={event => setEmail(event.target.value)} type="email" placeholder="you@salemstate.edu" autoComplete="email" maxLength={254} /></Field>
+              <Field label="University email" icon={<Mail />}><input value={email} onChange={event => { setEmail(event.target.value); setNeedsReactivation(false); setConfirmReactivation(false); }} type="email" placeholder="you@salemstate.edu" autoComplete="email" maxLength={254} /></Field>
               <button type="button" className={styles.button} onClick={resend} disabled={cooldown > 0}>{cooldown ? `Resend in ${cooldown}s` : 'Resend email'}</button>
             </>}
           </div> : <form onSubmit={submit} className={styles.form} aria-busy={busy}>
@@ -197,12 +201,13 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
               <Field label="Full name" icon={<UserRound />}><input value={name} onChange={event => setName(event.target.value)} placeholder="Your full name" autoComplete="name" required maxLength={100} /></Field>
               <Field label="Username" icon={<UserRound />}><input value={username} onChange={event => setUsername(event.target.value)} placeholder="Choose a username" autoComplete="username" required maxLength={50} pattern="[A-Za-z0-9_.]+" title="Use letters, numbers, periods, and underscores." /></Field>
             </>}
-            {(screen === 'login' || screen === 'register' || screen === 'forgot-password') && <Field label="University email" icon={<Mail />}><input value={email} onChange={event => setEmail(event.target.value)} type={screen === 'login' ? 'text' : 'email'} placeholder="you@salemstate.edu" autoComplete={screen === 'login' ? 'username' : 'email'} aria-label={screen === 'login' ? 'University email or username' : undefined} required maxLength={254} /></Field>}
+            {(screen === 'login' || screen === 'register' || screen === 'forgot-password') && <Field label="University email" icon={<Mail />}><input value={email} onChange={event => { setEmail(event.target.value); setNeedsReactivation(false); setConfirmReactivation(false); }} type={screen === 'login' ? 'text' : 'email'} placeholder="you@salemstate.edu" autoComplete={screen === 'login' ? 'username' : 'email'} aria-label={screen === 'login' ? 'University email or username' : undefined} required maxLength={254} /></Field>}
             {screen === 'change-password' && passwordField('Current password', current, setCurrent, 'current-password')}
             {(screen === 'login' || newPassword) && passwordField(screen === 'login' ? 'Password' : 'New password', password, setPassword, screen === 'login' ? 'current-password' : 'new-password')}
             {newPassword && <>{passwordField('Confirm password', confirmation, setConfirmation, 'new-password')}<p className={styles.hint}>Use 8+ characters with uppercase and lowercase letters, a number, and a special character.</p></>}
             {screen === 'login' && <div className={styles.options}><label className={styles.remember}><input type="checkbox" checked={remember} onChange={event => setRemember(event.target.checked)} /><span className={styles.check} aria-hidden="true">{remember && <Check size={17} strokeWidth={2.2} />}</span>Remember me</label><Link href={href('forgot-password')}>Forgot password?</Link></div>}
-            <button type="submit" className={styles.button} disabled={busy}>{busy ? 'Please wait…' : content.action}</button>
+            {screen === 'login' && needsReactivation && <label className={styles.hint}><input type="checkbox" checked={confirmReactivation} onChange={event => setConfirmReactivation(event.target.checked)} /> I want to reactivate my account and restore my profile.</label>}
+            <button type="submit" className={styles.button} disabled={busy || (screen === 'login' && needsReactivation && !confirmReactivation)}>{busy ? 'Please wait…' : screen === 'login' && needsReactivation ? 'Reactivate and sign in' : content.action}</button>
           </form>}
           <p className={styles.footer}>{screen === 'login' ? <>New to SocialU? <Link href={href('register')}>Create account</Link></> : screen === 'register' ? <>Already have an account? <Link href={href('login')}>Sign in</Link></> : <Link href={href('login')}>Back to sign in</Link>}</p>
       </section>

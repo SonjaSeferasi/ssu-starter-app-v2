@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { storedAccessToken } from '../../../lib/account/session';
 
 import { type FormEvent, useEffect, useState } from 'react';
@@ -28,6 +29,13 @@ export default function ConversationPage() {
 function Conversation() {
   const { conversationId } = useParams<{ conversationId: string }>();
   const [text, setText] = useState('');
+  const [peer, setPeer] = useState<{name:string;username:string}|null>(null);
+  useEffect(() => {
+    const controller = new AbortController(); setPeer(null);
+    fetch(`/api/conversations/${encodeURIComponent(conversationId)}/peer`, {headers:{Authorization:`Bearer ${storedAccessToken() ?? ''}`},cache:'no-store',signal:controller.signal})
+      .then(response => response.ok ? response.json() : null).then(data => { if (!controller.signal.aborted && data?.peer) setPeer(data.peer); }).catch(() => {});
+    return () => controller.abort();
+  }, [conversationId]);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
   const [live, setLive] = useState<ChatLiveStatus>('connecting');
@@ -86,7 +94,7 @@ function Conversation() {
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z" /></svg>
           </span>
           <div>
-            <h2 className={styles.title}>Conversation</h2>
+            <h2 className={styles.title}>{peer ? <Link href={`/students/${encodeURIComponent(peer.username)}`}>{peer.name}</Link> : 'Conversation'}</h2>
             <p className={styles.subtitle}><span className={live === 'live' ? styles.dotLive : styles.dot} />{liveLabels[live]}</p>
           </div>
         </header>

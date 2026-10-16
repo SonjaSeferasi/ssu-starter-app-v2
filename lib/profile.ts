@@ -40,6 +40,7 @@ export async function profileRpc<T>(fn: string, args: Record<string, unknown>): 
     if (!error.code && /fetch failed/i.test(error.message)) {
       throw new AccountError('The server cannot reach Supabase. Check the server network connection and try again.', 503);
     }
+    if (error.code === '23505') throw new AccountError('That username is already taken. Choose another username.', 409);
     if (error.code === '42501') throw new AccountError('A verified, active university account is required.', 403);
     if (error.code === 'P0002') throw new AccountError(error.message, 404);
     if (error.code === '22023' || error.code === '22001') throw new AccountError(error.message, 400);

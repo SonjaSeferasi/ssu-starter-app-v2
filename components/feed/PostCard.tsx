@@ -30,6 +30,7 @@ export function PostCard({
       <div className="flex items-start justify-between">
         <PostAuthor
           name={post.authorName}
+          profileHref={isOwnPost ? '/profile' : post.authorUsername ? `/students/${encodeURIComponent(post.authorUsername)}` : undefined}
           photoUrl={post.authorPhotoUrl}
           publishedAt={post.publishedAt}
           editedAt={post.editedAt}

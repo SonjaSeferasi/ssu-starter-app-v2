@@ -1,4 +1,5 @@
 import { AccountError, accountOperation, accountResponse, authClient, jsonBody, textField } from '../../../../lib/socialu-account';
+import { friendshipRpc } from '../../../../lib/friendships';
 import { authGuard } from '../../../../lib/auth-flows';
 
 export async function POST(request: Request) {
@@ -33,6 +34,11 @@ export async function POST(request: Request) {
       throw new AccountError('Incorrect email or password.', 401);
     }
     if (!data.user.email_confirmed_at) throw new AccountError('Verify your university email before signing in.', 403);
+    const accountState = await friendshipRpc<{ is_active: boolean } | null>('socialu_account_lifecycle', { p_auth_id: data.user.id, p_action: 'status' });
+    if (accountState?.is_active === false) {
+      if (body.reactivate !== true) throw new AccountError('Your account is deactivated. Confirm reactivation to sign in and restore your profile.', 403, 'ACCOUNT_INACTIVE');
+      await friendshipRpc('socialu_account_lifecycle', { p_auth_id: data.user.id, p_action: 'reactivate' });
+    }
     let profile = await accountOperation('read', { p_auth_id: data.user.id });
     // The email link may verify Auth without completing our profile callback.
     // Recover from the authenticated account's metadata, never login form fields.

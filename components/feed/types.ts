@@ -7,6 +7,7 @@ export type FeedPost = {
   postId: number;
   authorId: number;
   authorName: string;
+  authorUsername?: string | null;
   authorPhotoUrl: string | null;
   textContent: string | null;
   visibility: 'public' | 'friends_only';

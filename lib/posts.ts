@@ -10,6 +10,7 @@ export type RawFeedRow = {
   published_at: string;
   edited_at: string | null;
   author_name: string;
+  author_username?: string | null;
   author_photo_key: string | null;
   photos: { asset_id: number; storage_key: string }[];
 };
@@ -23,6 +24,7 @@ export type FeedPost = {
   postId: number;
   authorId: number;
   authorName: string;
+  authorUsername?: string | null;
   authorPhotoUrl: string | null;
   textContent: string | null;
   visibility: 'public' | 'friends_only';
@@ -46,6 +48,7 @@ export async function shapeFeedPosts(supabase: SupabaseClient<any, any, any>, ro
         postId: row.post_id,
         authorId: row.author_id,
         authorName: row.author_name,
+        authorUsername: row.author_username ?? null,
         authorPhotoUrl,
         textContent: row.text_content,
         visibility: row.visibility,

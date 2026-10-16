@@ -13,6 +13,7 @@ import { accessToken, clearSession, storedAccessToken } from '../../lib/account/
 import { SessionNotice } from '../navigation/section-page';
 import { useNavigationSession } from '../navigation/social-shell';
 import styles from './profile.module.css';
+import { FriendActions } from '../friends/friend-actions';
 import { SavePostButton, ShareProfile, socialRequest, type SocialSummary } from './social-actions';
 
 type Category = 'posts' | 'saved' | 'tagged';
@@ -76,11 +77,11 @@ function ProfileActions({ profile, social, onFollow }: { profile: StudentProfile
     finally { setBusy(false); }
   }
   return <div className={styles.actions}>
-    {profile.is_own ? <Link href="/profile/edit" className={styles.button}>Edit profile</Link> : <>
+    {profile.is_own ? <><Link href="/profile/edit" className={styles.button}>Edit profile</Link><Link href="/friends" className={`${styles.button} ${styles.secondary}`}>Friends</Link></> : <>
       <button type="button" className={styles.button} disabled={busy || !social} aria-pressed={social?.following ?? false} onClick={follow}>
         {social?.following ? <UserCheck /> : <UserPlus />}{busy ? 'Updating…' : social?.following ? 'Following' : 'Follow'}
       </button>
-      <Link href="/messages" className={`${styles.button} ${styles.secondary}`}><MessageCircle />Message</Link>
+      <FriendActions username={profile.username} inProfile />
     </>}
     <ShareProfile username={profile.username} />
     {error && <p role="alert" className={styles.actionError}>{error}</p>}
@@ -180,6 +181,17 @@ function ProfileContent({ username }: { username?: string }) {
   const [contentCount, setContentCount] = useState<number | null>(null);
 
   useEffect(() => {
+    const refresh = () => setSocialRetry(value => value + 1);
+    window.addEventListener('socialu-connections-changed', refresh);
+    window.addEventListener('focus', refresh);
+    return () => {
+      window.removeEventListener('socialu-connections-changed', refresh);
+      window.removeEventListener('focus', refresh);
+    };
+  }, []);
+
+
+  useEffect(() => {
     let active = true;
     setSocial(null); setSocialError('');
     socialRequest(`?username=${encodeURIComponent(username ?? '')}`).then(data => { if (active) setSocial(data); })
@@ -210,23 +222,24 @@ function ProfileContent({ username }: { username?: string }) {
 
   return <main className={`${styles.page} ${styles.profilePage}`}>
     <div className={styles.campusBar}><span>Your campus. Your people.</span><span className={styles.verified}><i />Campus verified <GraduationCap /></span></div>
-    <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/profile">My profile</Link><span>/</span><span>{profile.username}</span></nav>
+    <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/profile">My profile</Link><span>/</span><span>{profile.name}</span></nav>
     <section className={styles.header} aria-label={`${profile.name}'s profile`}>
       <div className={styles.avatarWrap}>
         <Avatar url={profile.photo_url} name={profile.name} />
         <span className={styles.avatarBadge} title="Verified university account"><Check size={14} /><span className={styles.srOnly}>Verified university account</span></span>
       </div>
       <div className={styles.info}>
-        <div className={styles.nameRow}><h1 className={styles.name}>{profile.username}</h1>
-          {profile.is_own && <Link href="/account/security" className={styles.settings} aria-label="Account settings"><Settings size={17} /></Link>}
+        <div className={styles.nameRow}><h1 className={styles.name}>{profile.name}</h1>
+          {profile.is_own && <Link href="/profile/settings" className={styles.settings} aria-label="Profile settings"><Settings size={17} /></Link>}
         </div>
         <ul className={styles.stats}>
           <li>{count(profile.post_count, 'post', 'posts')}</li>
+          {profile.is_own && <li><Link href="/friends">{count(profile.friend_count, 'friend', 'friends')}</Link></li>}
           <li><strong>{social ? social.follower_count.toLocaleString() : '—'}</strong> followers</li>
           <li><strong>{social ? social.following_count.toLocaleString() : '—'}</strong> following</li>
         </ul>
-        <h2 className={styles.displayName}>{profile.name}</h2>
-        {profile.bio ? <p className={styles.bio}>{profile.bio}</p> : profile.is_own && <p className={styles.hint}>A little about you goes a long way. Add your bio.</p>}
+        <p className={styles.username}>@{profile.username}</p>
+        {profile.bio && <p className={styles.bio}>{profile.bio}</p>}
         {profile.major && <p className={styles.major}>{profile.major}</p>}
         <p className={styles.meta}>
           {profile.university && <span><GraduationCap />{profile.university}</span>}
@@ -238,7 +251,7 @@ function ProfileContent({ username }: { username?: string }) {
     {socialError && <p className={`${styles.notice} ${styles.error}`} role="alert">{socialError} <button onClick={() => setSocialRetry(value => value + 1)}>Retry</button></p>}
 
     {profile.is_own && !profile.setup_completed && <div className={styles.setupBanner} role="status">
-      <p><strong>Finish setting up your profile.</strong> Add a profile photo, your major, class year, and a short bio.</p>
+      <p><strong>Finish setting up your profile.</strong> Add a profile photo, your major, and class year.</p>
       <Link href="/profile/edit" className={styles.button}>Complete profile</Link>
     </div>}
 
@@ -258,7 +271,6 @@ function ProfileContent({ username }: { username?: string }) {
       <Link className={styles.dockButton} href="/profile/edit"><Settings />Edit</Link>
       <ShareProfile username={profile.username} compact />
     </nav>}
-    {profile.is_own && <div className={styles.logoutRow}><ProfileLogout /></div>}
 
   </main>;
 }
