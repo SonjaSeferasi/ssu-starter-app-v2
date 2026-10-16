@@ -104,6 +104,8 @@ export function FeedPage() {
                   post={post}
                   accessToken={token}
                   isOwnPost={currentStudentId !== null && currentStudentId === post.authorId}
+                  authorInitial={authorInitial}
+                  currentStudentId={currentStudentId}
                   onUpdated={handlePostUpdated}
                   onDeleted={handlePostDeleted}
                 />
