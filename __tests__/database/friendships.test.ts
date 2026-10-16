@@ -9,7 +9,7 @@ await db.exec(`CREATE ROLE anon;CREATE ROLE authenticated;CREATE ROLE service_ro
 CREATE SCHEMA auth;CREATE TABLE auth.users(id uuid PRIMARY KEY,email text,email_confirmed_at timestamptz);CREATE TABLE auth.sessions(id uuid PRIMARY KEY,user_id uuid,created_at timestamptz);`);
 await db.exec(readFileSync(root+'/supabase/schema.sql','utf8'));
 try {
-for(const file of ['20261008000100_link_supabase_accounts.sql','20261008000200_feed_functions.sql','20261008000300_fix_deferred_post_trigger.sql','20261012230000_srs_100_105_auth.sql','20261013200000_srs_109_113_profile.sql','20261015180000_profile_social.sql','20261015190000_profile_full_name.sql','20261016000100_optional_profile_bio.sql','20261016010000_friendships.sql','20261016020000_feed_profile_links.sql','20261016030000_edit_profile_username.sql','20261016040000_friend_accept_mutual_follow.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
+for(const file of ['20261008000100_link_supabase_accounts.sql','20261008000200_feed_functions.sql','20261008000300_fix_deferred_post_trigger.sql','20261012230000_srs_100_105_auth.sql','20261013200000_srs_109_113_profile.sql','20261015180000_profile_social.sql','20261015190000_profile_full_name.sql','20261016000100_like_post.sql','20261016001000_optional_profile_bio.sql','20261016010000_friendships.sql','20261016020000_feed_profile_links.sql','20261016030000_edit_profile_username.sql','20261016040000_friend_accept_mutual_follow.sql','20261017000100_unlike_post.sql','20261018000100_post_comments.sql','20261018010000_integrate_profile_feed.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
 const uid=(n:number)=>`00000000-0000-0000-0000-00000000000${n}`;
 for (let n=1;n<=3;n++) {
  await db.query<any>('INSERT INTO auth.users VALUES($1,$2,now())',[uid(n),`s${n}@salemstate.edu`]);
@@ -26,6 +26,12 @@ const life=async(n:number,action:string)=>(await db.query<any>('SELECT public.so
 await db.query('SELECT public.socialu_create_post($1,$2,$3)',[uid(2),'Campus hello','public']);
 const campus=async()=>(await db.query<any>('SELECT public.socialu_campus_feed($1) AS posts',[uid(1)])).rows[0].posts;
 assert.equal((await campus())[0].author_username,'student2');
+const feedPost=(await campus())[0].post_id;
+await db.query('INSERT INTO socialu.post_likes(post_id,student_id) VALUES($1,1)',[feedPost]);
+await db.query("INSERT INTO socialu.post_comments(post_id,author_id,text_content) VALUES($1,1,'Nice post')",[feedPost]);
+const integrated=(await campus())[0];
+assert.equal(integrated.like_count,1);assert.equal(integrated.is_liked_by_viewer,true);assert.equal(integrated.comment_count,1);
+
 assert.equal((await call(1,'friends')).length,0);
 let rel=await call(1,'send','student2'); assert.equal(rel.state,'sent');const firstId=rel.request_id;
 assert.equal((await call(1,'send','student2')).request_id,firstId);

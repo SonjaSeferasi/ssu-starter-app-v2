@@ -90,7 +90,7 @@ export function PostCard({
       {post.textContent ? <p className="mt-3 whitespace-pre-wrap text-[15px] text-stone-800">{post.textContent}</p> : null}
       <PostMedia photos={post.photos} />
 
-      {/* Share/Save are still visual prep only — not built yet. */}
+      {/* Share remains visual prep; likes, comments and saving use their APIs. */}
       <div className="mt-4 flex items-center justify-between border-t border-stone-100 pt-3 text-stone-400">
         <div className="flex items-center gap-5">
           <LikeButton post={post} accessToken={accessToken} onUpdated={onUpdated} />
