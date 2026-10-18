@@ -1,0 +1,80 @@
+[
+  {
+    "n": 362,
+    "title": "Task 607.1-3 — Verify account-loaded activity cards and attach evidence",
+    "parent": 41,
+    "note": "## Task acceptance — 13 October 2026\n\nImplementation reviewed in merged PRs #305/#336 and current main at 3727169. The normal signed-in Game Room loaded saved account data, not a temporary fallback; it displayed Game 1 and DormSpace names, configured descriptions and opening controls. Excluded Wordle was absent. The 18 Game Room API tests pass; these test handlers use mocks and are not misreported as hosted SQL tests.\n\nTask-specific source/test locations are listed in the body. The parent #41 now contains the integrated acceptance review and running-application screenshot evidence. This task is being closed for that scoped implementation/verification; no additional teammate feature is claimed.\n\nThis is a retrospective task breakdown of already submitted work. The closure records today's audit, not an invented earlier task history."
+  },
+  {
+    "n": 361,
+    "title": "Task 607.1-2 — Render included activity cards with names descriptions and controls",
+    "parent": 41,
+    "note": "## Task acceptance — 13 October 2026\n\nImplementation reviewed in merged PRs #305/#336 and current main at 3727169. The normal signed-in Game Room loaded saved account data, not a temporary fallback; it displayed Game 1 and DormSpace names, configured descriptions and opening controls. Excluded Wordle was absent. The 18 Game Room API tests pass; these test handlers use mocks and are not misreported as hosted SQL tests.\n\nTask-specific source/test locations are listed in the body. The parent #41 now contains the integrated acceptance review and running-application screenshot evidence. This task is being closed for that scoped implementation/verification; no additional teammate feature is claimed.\n\nThis is a retrospective task breakdown of already submitted work. The closure records today's audit, not an invented earlier task history."
+  },
+  {
+    "n": 360,
+    "title": "Task 607.1-1 — Return included activity configuration through the account API",
+    "parent": 41,
+    "note": "## Task acceptance — 13 October 2026\n\nImplementation reviewed in merged PRs #305/#336 and current main at 3727169. The normal signed-in Game Room loaded saved account data, not a temporary fallback; it displayed Game 1 and DormSpace names, configured descriptions and opening controls. Excluded Wordle was absent. The 18 Game Room API tests pass; these test handlers use mocks and are not misreported as hosted SQL tests.\n\nTask-specific source/test locations are listed in the body. The parent #41 now contains the integrated acceptance review and running-application screenshot evidence. This task is being closed for that scoped implementation/verification; no additional teammate feature is claimed.\n\nThis is a retrospective task breakdown of already submitted work. The closure records today's audit, not an invented earlier task history."
+  },
+  {
+    "n": 359,
+    "title": "Task 600.3-3 — Test exclusive selection and capture section-switch evidence",
+    "parent": 40,
+    "note": "## Task acceptance — 13 October 2026\n\nImplementation reviewed in merged PRs #305/#336 and current main at 3727169. The signed-in browser showed exactly one current link on Home, then Events and Trending, then the header Profile action. Game Room selection returned after Game 1. The current navigation test file passes (25 tests).\n\nTask-specific source/test locations are listed in the body. The parent #40 now contains the integrated acceptance review and running-application screenshot evidence. This task is being closed for that scoped implementation/verification; no additional teammate feature is claimed.\n\nThis is a retrospective task breakdown of already submitted work. The closure records today's audit, not an invented earlier task history."
+  },
+  {
+    "n": 358,
+    "title": "Task 600.3-2 — Apply one visual and accessible selection indicator",
+    "parent": 40,
+    "note": "## Task acceptance — 13 October 2026\n\nImplementation reviewed in merged PRs #305/#336 and current main at 3727169. The signed-in browser showed exactly one current link on Home, then Events and Trending, then the header Profile action. Game Room selection returned after Game 1. The current navigation test file passes (25 tests).\n\nTask-specific source/test locations are listed in the body. The parent #40 now contains the integrated acceptance review and running-application screenshot evidence. This task is being closed for that scoped implementation/verification; no additional teammate feature is claimed.\n\nThis is a retrospective task breakdown of already submitted work. The closure records today's audit, not an invented earlier task history."
+  },
+  {
+    "n": 357,
+    "title": "Task 600.2-2 — Open the signed-in student's own profile",
+    "parent": 39,
+    "note": "## Task acceptance — 13 October 2026\n\nImplementation reviewed in merged PRs #305/#336 and current main at 3727169. The five actual controls opened /, /messages, /game-room, /events and the signed-in student's /profile. The Profile view showed its own Edit profile action. Events/Trending internals remain unfinished separately; the destination route itself opens.\n\nTask-specific source/test locations are listed in the body. The parent #39 now contains the integrated acceptance review and running-application screenshot evidence. This task is being closed for that scoped implementation/verification; no additional teammate feature is claimed.\n\nThis is a retrospective task breakdown of already submitted work. The closure records today's audit, not an invented earlier task history."
+  },
+  {
+    "n": 356,
+    "title": "Task 600.1-3 — Verify signed-in navigation and attach application evidence",
+    "parent": 38,
+    "note": "## Task acceptance — 13 October 2026\n\nImplementation reviewed in merged PRs #305/#336 and current main at 3727169. The signed-in Game Room displayed all five required destinations across its sidebar/header; Game 1 hid the shared shell and return restored it. Navigation and session tests pass. The exact layout/naming (Campus Feed and header Profile) is disclosed on the parent rather than omitted.\n\nTask-specific source/test locations are listed in the body. The parent #38 now contains the integrated acceptance review and running-application screenshot evidence. This task is being closed for that scoped implementation/verification; no additional teammate feature is claimed.\n\nThis is a retrospective task breakdown of already submitted work. The closure records today's audit, not an invented earlier task history."
+  },
+  {
+    "n": 350,
+    "title": "Task 600.3-1 — Derive the current section from the route",
+    "parent": 40,
+    "note": "## Task acceptance — 13 October 2026\n\nImplementation reviewed in merged PRs #305/#336 and current main at 3727169. The signed-in browser showed exactly one current link on Home, then Events and Trending, then the header Profile action. Game Room selection returned after Game 1. The current navigation test file passes (25 tests).\n\nTask-specific source/test locations are listed in the body. The parent #40 now contains the integrated acceptance review and running-application screenshot evidence. This task is being closed for that scoped implementation/verification; no additional teammate feature is claimed.\n\nThis is a retrospective task breakdown of already submitted work. The closure records today's audit, not an invented earlier task history."
+  },
+  {
+    "n": 349,
+    "title": "Task 600.2-3 — Verify all five navigation destinations in the running app",
+    "parent": 39,
+    "note": "## Task acceptance — 13 October 2026\n\nImplementation reviewed in merged PRs #305/#336 and current main at 3727169. The five actual controls opened /, /messages, /game-room, /events and the signed-in student's /profile. The Profile view showed its own Edit profile action. Events/Trending internals remain unfinished separately; the destination route itself opens.\n\nTask-specific source/test locations are listed in the body. The parent #39 now contains the integrated acceptance review and running-application screenshot evidence. This task is being closed for that scoped implementation/verification; no additional teammate feature is claimed.\n\nThis is a retrospective task breakdown of already submitted work. The closure records today's audit, not an invented earlier task history."
+  },
+  {
+    "n": 348,
+    "title": "Task 600.2-1 — Connect the four section links to their supplied routes",
+    "parent": 39,
+    "note": "## Task acceptance — 13 October 2026\n\nImplementation reviewed in merged PRs #305/#336 and current main at 3727169. The five actual controls opened /, /messages, /game-room, /events and the signed-in student's /profile. The Profile view showed its own Edit profile action. Events/Trending internals remain unfinished separately; the destination route itself opens.\n\nTask-specific source/test locations are listed in the body. The parent #39 now contains the integrated acceptance review and running-application screenshot evidence. This task is being closed for that scoped implementation/verification; no additional teammate feature is claimed.\n\nThis is a retrospective task breakdown of already submitted work. The closure records today's audit, not an invented earlier task history."
+  },
+  {
+    "n": 347,
+    "title": "Task 600.1-2 — Display the five required navigation destinations",
+    "parent": 38,
+    "note": "## Task acceptance — 13 October 2026\n\nImplementation reviewed in merged PRs #305/#336 and current main at 3727169. The signed-in Game Room displayed all five required destinations across its sidebar/header; Game 1 hid the shared shell and return restored it. Navigation and session tests pass. The exact layout/naming (Campus Feed and header Profile) is disclosed on the parent rather than omitted.\n\nTask-specific source/test locations are listed in the body. The parent #38 now contains the integrated acceptance review and running-application screenshot evidence. This task is being closed for that scoped implementation/verification; no additional teammate feature is claimed.\n\nThis is a retrospective task breakdown of already submitted work. The closure records today's audit, not an invented earlier task history."
+  },
+  {
+    "n": 346,
+    "title": "Task 600.1-1 — Integrate the existing account-backed session gate",
+    "parent": 38,
+    "note": "## Task acceptance — 13 October 2026\n\nImplementation reviewed in merged PRs #305/#336 and current main at 3727169. The signed-in Game Room displayed all five required destinations across its sidebar/header; Game 1 hid the shared shell and return restored it. Navigation and session tests pass. The exact layout/naming (Campus Feed and header Profile) is disclosed on the parent rather than omitted.\n\nTask-specific source/test locations are listed in the body. The parent #38 now contains the integrated acceptance review and running-application screenshot evidence. This task is being closed for that scoped implementation/verification; no additional teammate feature is claimed.\n\nThis is a retrospective task breakdown of already submitted work. The closure records today's audit, not an invented earlier task history."
+  },
+  {
+    "n": 345,
+    "title": "Task 607.2-3 — Verify activity entry and return in the signed-in application",
+    "parent": 42,
+    "note": "## Task acceptance — 13 October 2026\n\nImplementation reviewed in merged PRs #305/#336 and current main at 3727169. Game 1's signed-in entry menu and DP's working DormHall view opened from the Game Room; return controls worked. No avatar editor was opened or required. Code inspection confirms no customized-avatar prerequisite. A new empty-avatar account was not created. Game 1 gameplay is still unavailable; this accepts entry integration only.\n\nTask-specific source/test locations are listed in the body. The parent #42 now contains the integrated acceptance review and running-application screenshot evidence. This task is being closed for that scoped implementation/verification; no additional teammate feature is claimed.\n\nThis is a retrospective task breakdown of already submitted work. The closure records today's audit, not an invented earlier task history."
+  }
+]
