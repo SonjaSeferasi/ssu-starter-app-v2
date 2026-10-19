@@ -128,3 +128,15 @@ The Messages column lists the signed-in student's conversations so they can retu
 - **Testing.** `__tests__/api/conversations.test.ts` covers the route. `__tests__/database/chat.test.ts` checks names, order, member counts, outsiders, a DM without messages, and that blocked DMs are hidden.
 
 Status: applied to the hosted database on 2026-10-19 and recorded as version `20261019150000`, after a rolled-back dry run. Called as `service_role`, it returned the expected DMs for loens1 and test1, rejected an unknown account (42501), and denied both browser roles.
+
+### Create a group chat (SRS-202.1, SRS-203.1)
+
+A signed-in student creates a group from **New group** on the Groups tab. The group is saved on its own, before any invitation and without other members (SRS-202.2, SRS-202.4). The creator becomes its first member (SRS-202.3) and its owner (SRS-203.1), and the new group opens right away.
+
+- **Migration** `supabase/migrations/20261019170000_chat_create_group.sql` (#454, #459). It adds the server-only `public.socialu_create_group(p_auth_id)`, which saves the group conversation and the creator's `owner` membership in one all-or-nothing step. It then runs `SET CONSTRAINTS ALL IMMEDIATE`, so the "exactly one current owner" check (SRS-203.4) reports any problem from inside the function.
+- **Migration** `supabase/migrations/20261019170100_chat_conversation_role.sql` (#460). It replaces `public.socialu_conversation_messages` so the history call also returns `kind`, the student's current group `role`, and the `member_count`. The message rules and grants are unchanged.
+- **API** `POST /api/conversations` with `{ "kind": "group" }` returns `201 { conversation: { id, kind, role, member_count } }`. The creator always comes from the bearer token; owner or member IDs in the body are ignored, and any other body returns 400.
+- **Page.** The New group button (#456) is disabled while creating, so a double-click can't make two groups, and it shows a clear message on failure. Group conversations show "Group chat", an **Owner** badge for the owner, and the member count; DMs keep the friend's name. Invitations, administrators, and leaving are later SRS items (SRS-204 to SRS-208).
+- **Testing.** `__tests__/api/conversations.test.ts` covers the create route. `__tests__/database/chat.test.ts` checks that the creator is the only member and the only owner, that two groups stay separate, that a member sees `member`, that outsiders are denied, that the first message sends, and that browser roles are denied.
+
+Status: applied to the hosted database on 2026-10-19 and recorded as versions `20261019170000` and `20261019170100`, after a rolled-back dry run. Called as `service_role`, creating a group for loens1 returned owner with 1 member and the group opened as `group / owner / 1` (rolled back). An existing DM still returned `private` with its messages.
