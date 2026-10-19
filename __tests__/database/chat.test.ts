@@ -15,7 +15,7 @@ CREATE FUNCTION realtime.topic() RETURNS text LANGUAGE sql AS 'SELECT NULL::text
 CREATE FUNCTION realtime.send(payload jsonb,event text,topic text,private boolean) RETURNS void LANGUAGE sql AS 'INSERT INTO realtime.sent VALUES($3,$2,$1)';`);
 await db.exec(readFileSync(root+'/supabase/schema.sql','utf8'));
 try {
-for(const file of ['20261008000100_link_supabase_accounts.sql','20261008000200_feed_functions.sql','20261008000300_fix_deferred_post_trigger.sql','20261012120000_chat_send_text_message.sql','20261012230000_srs_100_105_auth.sql','20261013200000_srs_109_113_profile.sql','20261015180000_profile_social.sql','20261015190000_profile_full_name.sql','20261016000100_like_post.sql','20261016001000_optional_profile_bio.sql','20261016010000_friendships.sql','20261016020000_feed_profile_links.sql','20261016030000_edit_profile_username.sql','20261016040000_friend_accept_mutual_follow.sql','20261017000100_unlike_post.sql','20261018000100_post_comments.sql','20261018010000_integrate_profile_feed.sql','20261019120000_chat_conversation_messages.sql','20261019120100_chat_group_structure_check_as_owner.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
+for(const file of ['20261008000100_link_supabase_accounts.sql','20261008000200_feed_functions.sql','20261008000300_fix_deferred_post_trigger.sql','20261012120000_chat_send_text_message.sql','20261012230000_srs_100_105_auth.sql','20261013200000_srs_109_113_profile.sql','20261015180000_profile_social.sql','20261015190000_profile_full_name.sql','20261016000100_like_post.sql','20261016001000_optional_profile_bio.sql','20261016010000_friendships.sql','20261016020000_feed_profile_links.sql','20261016030000_edit_profile_username.sql','20261016040000_friend_accept_mutual_follow.sql','20261017000100_unlike_post.sql','20261018000100_post_comments.sql','20261018010000_integrate_profile_feed.sql','20261019120000_chat_conversation_messages.sql','20261019120100_chat_group_structure_check_as_owner.sql','20261019150000_chat_conversation_list.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
 const uid=(n:number)=>`00000000-0000-0000-0000-00000000000${n}`;
 for (let n=1;n<=4;n++) {
  await db.query('INSERT INTO auth.users VALUES($1,$2,now())',[uid(n),`s${n}@salemstate.edu`]);
@@ -65,10 +65,29 @@ assert.deepEqual(await texts(1,gid),['Before','After']);
 assert.deepEqual(await texts(4,gid),['After']);
 await assert.rejects(history(3,gid),code('SC404'));
 
-// Browser roles cannot call the server-only function.
+// #457: the Messages list shows DMs by the friend's name and groups with member counts, newest activity first.
+const conversations=async(n:number)=>(await db.query<any>('SELECT public.socialu_conversation_list($1) AS l',[uid(n)])).rows[0].l;
+const mine=await conversations(1);
+assert.equal(mine.student_id,'1');
+assert.deepEqual(mine.conversations.map((c:any)=>[c.id,c.kind]),[[gid,'group'],[cid,'private']]);
+assert.deepEqual(mine.conversations[1],{id:cid,kind:'private',name:'Student 2',username:'student2',member_count:null,last_message:{text:'Message 50',sender_id:'1',sent_at:recent[49].sent_at}});
+assert.equal(mine.conversations[0].name,null); assert.equal(mine.conversations[0].member_count,2); assert.equal(mine.conversations[0].last_message.text,'After');
+assert.deepEqual((await conversations(4)).conversations.map((c:any)=>c.id),[gid]);
+assert.deepEqual((await conversations(3)).conversations,[]);
+// A new DM without messages is listed too.
+await friends(4,'accept','student3',(await friends(3,'send','student4')).request_id);
+const fresh=(await friends(3,'message','student4')).conversation_id;
+assert.deepEqual((await conversations(3)).conversations,[{id:fresh,kind:'private',name:'Student 4',username:'student4',member_count:null,last_message:null}]);
+// DMs with a blocked student are hidden for both students, like the conversation header.
+await friends(2,'block','student1');
+assert.deepEqual((await conversations(1)).conversations.map((c:any)=>c.id),[gid]);
+assert.deepEqual((await conversations(2)).conversations,[]);
+
+// Browser roles cannot call the server-only functions.
 for (const role of ['anon','authenticated']) {
  await db.exec(`SET ROLE ${role}`);
  await assert.rejects(history(1,cid));
+ await assert.rejects(conversations(1));
  await db.exec('RESET ROLE');
 }
 } finally { await db.close(); }

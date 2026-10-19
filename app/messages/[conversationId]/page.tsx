@@ -8,7 +8,7 @@ import { useParams } from 'next/navigation';
 import { SessionNotice } from '../../../components/navigation/section-page';
 import { useNavigationSession } from '../../../components/navigation/social-shell';
 import { subscribeToChat, type ChatLiveStatus, type ChatMessageEvent } from '../../../lib/realtime-client';
-import { ConversationListPanel } from '../conversation-list';
+import { CHAT_ACTIVITY_EVENT, ConversationListPanel } from '../conversation-list';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -83,6 +83,8 @@ function Conversation() {
 
   // #319: keep only this conversation's messages; merging by ID stops the send reply and live event both showing.
   function addMessage(message: ChatMessageEvent) {
+    // Any sent or received message (in any conversation) refreshes the list's order and previews (#457).
+    window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT));
     if (message.conversation_id !== conversationId) return;
     setMessages((current) => mergeMessages(current, [message]));
   }
