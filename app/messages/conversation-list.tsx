@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { accessToken } from '../../lib/account/session';
 import styles from './messages.module.css';
@@ -28,12 +28,15 @@ function shortTime(value: string) {
 // The Messages column from the UI design, shared by /messages and each conversation page.
 // SRS-202.1 (#457): the student's DMs (by friend's name) and groups, newest activity first; selecting one opens it.
 export function ConversationListPanel() {
+  const router = useRouter();
   const params = useParams<{ conversationId?: string }>();
   const openId = params?.conversationId;
   const [tab, setTab] = useState<'dms' | 'groups'>('dms');
   const [list, setList] = useState<{ me: string; conversations: ConversationSummary[] } | null>(null);
   const [failed, setFailed] = useState(false);
   const [refresh, setRefresh] = useState(0);
+  const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState('');
 
   useEffect(() => {
     const again = () => setRefresh((count) => count + 1);
@@ -63,6 +66,29 @@ export function ConversationListPanel() {
   const openKind = list?.conversations.find((conversation) => conversation.id === openId)?.kind;
   useEffect(() => { if (openKind) setTab(openKind === 'group' ? 'groups' : 'dms'); }, [openKind]);
 
+  // SRS-202.1 (#456): create a group (the creator becomes its owner) and open it right away.
+  async function newGroup() {
+    if (creating) return;
+    setCreating(true);
+    setCreateError('');
+    try {
+      const token = await accessToken();
+      const response = await fetch('/api/conversations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token ?? ''}` },
+        body: JSON.stringify({ kind: 'group' }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data.conversation?.id) throw new Error(data.error || 'The group could not be created. Please try again.');
+      window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT));
+      router.push(`/messages/${encodeURIComponent(data.conversation.id)}`);
+    } catch (err) {
+      setCreateError(err instanceof Error && !(err instanceof TypeError) ? err.message : 'The group could not be created. Please try again.');
+    } finally {
+      setCreating(false);
+    }
+  }
+
   const shown = list?.conversations.filter((conversation) => (tab === 'dms' ? conversation.kind === 'private' : conversation.kind === 'group')) ?? [];
 
   return (
@@ -72,13 +98,22 @@ export function ConversationListPanel() {
         <button type="button" className={styles.tab} aria-pressed={tab === 'dms'} onClick={() => setTab('dms')}>DMs</button>
         <button type="button" className={styles.tab} aria-pressed={tab === 'groups'} onClick={() => setTab('groups')}>Groups</button>
       </div>
+      {tab === 'groups' && (
+        <>
+          <button type="button" className={styles.newGroup} onClick={newGroup} disabled={creating}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 5v14" /><path d="M5 12h14" /></svg>
+            {creating ? 'Creating group…' : 'New group'}
+          </button>
+          {createError && <p className={styles.listError} role="alert">{createError}</p>}
+        </>
+      )}
       {!list ? (
         <p className={styles.emptyList} role={failed ? 'alert' : undefined}>
           {failed ? <>Conversations could not be loaded. <button type="button" className={styles.retry} onClick={() => setRefresh((count) => count + 1)}>Try again</button></> : 'Loading conversations…'}
         </p>
       ) : shown.length === 0 ? (
         <p className={styles.emptyList}>
-          {tab === 'dms' ? 'No direct messages yet. Choose Message on a friend’s profile or on the Friends page to start one.' : 'No group chats yet.'}
+          {tab === 'dms' ? 'No direct messages yet. Choose Message on a friend’s profile or on the Friends page to start one.' : 'No group chats yet. Choose New group to create one.'}
         </p>
       ) : (
         <ul className={styles.conversationList}>

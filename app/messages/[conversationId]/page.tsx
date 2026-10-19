@@ -54,6 +54,8 @@ function Conversation() {
   const [history, setHistory] = useState<'loading' | 'loaded' | 'failed'>('loading');
   const [historyError, setHistoryError] = useState('');
   const [reload, setReload] = useState(0);
+  // #460: the conversation kind, the student's group role, and the member count come with the history.
+  const [info, setInfo] = useState<{ kind: 'private' | 'group'; role: string | null; memberCount: number | null } | null>(null);
 
   // #318: load the saved messages when the conversation opens, when Try again is pressed, and
   // every time live updates (re)connect, so messages sent while the page was offline still appear.
@@ -69,6 +71,7 @@ function Conversation() {
         const data = await response.json().catch(() => ({}));
         if (!response.ok) throw new Error(data.error || 'Messages could not be loaded.');
         setMyStudentId(String(data.student_id));
+        if (data.kind) setInfo({ kind: data.kind, role: data.role ?? null, memberCount: data.member_count ?? null });
         setMessages((current) => mergeMessages(current, data.messages ?? []));
         setHistory('loaded');
         setHistoryError('');
@@ -166,8 +169,15 @@ function Conversation() {
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z" /></svg>
           </span>
           <div>
-            <h2 className={styles.title}>{peer ? <Link href={`/students/${encodeURIComponent(peer.username)}`}>{peer.name}</Link> : 'Conversation'}</h2>
-            <p className={styles.subtitle}><span className={live === 'live' ? styles.dotLive : styles.dot} />{liveLabels[live]}</p>
+            <h2 className={styles.title}>
+              {info?.kind === 'group'
+                ? <>Group chat{info.role === 'owner' && <span className={styles.roleBadge}>Owner</span>}</>
+                : peer ? <Link href={`/students/${encodeURIComponent(peer.username)}`}>{peer.name}</Link> : 'Conversation'}
+            </h2>
+            <p className={styles.subtitle}>
+              {info?.kind === 'group' && info.memberCount !== null && <>{info.memberCount} member{info.memberCount === 1 ? '' : 's'} ·</>}
+              <span className={live === 'live' ? styles.dotLive : styles.dot} />{liveLabels[live]}
+            </p>
           </div>
         </header>
 
