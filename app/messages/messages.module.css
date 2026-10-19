@@ -22,6 +22,10 @@
 .itemLine { display: flex; align-items: baseline; gap: 8px; color: #536963; font-size: 14px; }
 .itemPreview { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .itemTime { flex-shrink: 0; margin-left: auto; font-size: 12px; }
+/* SRS-212.4 (#329): unread conversations show a dot and a bold name and preview; tabs show a dot too. */
+.unreadDot { flex-shrink: 0; width: 10px; height: 10px; border-radius: 50%; background: #39775e; }
+.itemUnread .itemName, .itemUnread .itemPreview { color: #102c30; font-weight: 700; }
+.tabDot { display: inline-block; width: 8px; height: 8px; margin-left: 6px; border-radius: 50%; background: #39775e; vertical-align: middle; }
 /* SRS-202.1 (#456): create a group from the Groups tab. */
 .newGroup { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 44px; margin: 12px 0 0; padding: 10px 16px; border: 0; border-radius: 10px; background: #c0ddcb; color: #102c30; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; }
 .newGroup:hover:not(:disabled) { background: #b0d3be; }
