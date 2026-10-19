@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { storedAccessToken } from '../../../lib/account/session';
+import { accessToken, storedAccessToken } from '../../../lib/account/session';
 
 import { type FormEvent, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
@@ -21,11 +21,20 @@ const liveLabels: Record<ChatLiveStatus, string> = {
 
 export default function ConversationPage() {
   const session = useNavigationSession();
-  return session === 'signed-in' ? <Conversation /> : <SessionNotice state={session} />;
+  const { conversationId } = useParams<{ conversationId: string }>();
+  // The key starts each conversation with empty state when moving from one chat to another.
+  return session === 'signed-in' ? <Conversation key={conversationId} /> : <SessionNotice state={session} />;
+}
+
+// Saved history and live events can overlap; keep one copy of each message, oldest first.
+function mergeMessages(current: ChatMessageEvent[], incoming: ChatMessageEvent[]) {
+  const byId = new Map(current.map((message) => [message.id, message]));
+  for (const message of incoming) byId.set(message.id, message);
+  return [...byId.values()].sort((a, b) => Date.parse(a.sent_at) - Date.parse(b.sent_at) || Number(a.id) - Number(b.id));
 }
 
 // SRS-201.1 (#302): send a text message in a conversation, laid out like the Messages UI design.
-// Showing this session's sent and live messages confirms the send; loading history is SRS-201.2.
+// SRS-201.2 (#318, #319): show the saved messages on open, then new messages live.
 function Conversation() {
   const { conversationId } = useParams<{ conversationId: string }>();
   const [text, setText] = useState('');
@@ -40,25 +49,50 @@ function Conversation() {
   const [error, setError] = useState('');
   const [live, setLive] = useState<ChatLiveStatus>('connecting');
   const [messages, setMessages] = useState<ChatMessageEvent[]>([]);
-  // Temporary (until SRS-201.2 / SRS-211.x): the signed-in student's ID puts their own messages on the right.
+  // The signed-in student's ID (returned with the history) puts their own messages on the right.
   const [myStudentId, setMyStudentId] = useState<string | null>(null);
+  const [history, setHistory] = useState<'loading' | 'loaded' | 'failed'>('loading');
+  const [historyError, setHistoryError] = useState('');
+  const [reload, setReload] = useState(0);
 
+  // #318: load the saved messages when the conversation opens, when Try again is pressed, and
+  // every time live updates (re)connect, so messages sent while the page was offline still appear.
   useEffect(() => {
     const controller = new AbortController();
-    fetch('/api/profile', { headers: { Authorization: `Bearer ${storedAccessToken() ?? ''}` }, cache: 'no-store', signal: controller.signal })
-      .then((response) => (response.ok ? response.json() : null))
-      .then((data) => { if (data?.profile?.id) setMyStudentId(String(data.profile.id)); })
-      .catch(() => {});
+    setHistory((current) => (current === 'loaded' ? current : 'loading'));
+    (async () => {
+      try {
+        const token = await accessToken();
+        const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/messages`, {
+          headers: { Authorization: `Bearer ${token ?? ''}` }, cache: 'no-store', signal: controller.signal,
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || 'Messages could not be loaded.');
+        setMyStudentId(String(data.student_id));
+        setMessages((current) => mergeMessages(current, data.messages ?? []));
+        setHistory('loaded');
+        setHistoryError('');
+      } catch (err) {
+        if (controller.signal.aborted) return;
+        setHistory('failed');
+        setHistoryError(err instanceof Error && !(err instanceof TypeError) ? err.message : 'Messages could not be loaded.');
+      }
+    })();
     return () => controller.abort();
-  }, []);
+  }, [conversationId, reload]);
 
-  // Keep only this conversation's messages; the ID check stops the send reply and live event both showing.
+  // #319: keep only this conversation's messages; merging by ID stops the send reply and live event both showing.
   function addMessage(message: ChatMessageEvent) {
     if (message.conversation_id !== conversationId) return;
-    setMessages((current) => current.some((m) => m.id === message.id) ? current : [...current, message]);
+    setMessages((current) => mergeMessages(current, [message]));
   }
 
-  useEffect(() => subscribeToChat(addMessage, setLive), [conversationId]);
+  function liveStatus(status: ChatLiveStatus) {
+    setLive(status);
+    if (status === 'live') setReload((count) => count + 1);
+  }
+
+  useEffect(() => subscribeToChat(addMessage, liveStatus), [conversationId]);
 
   async function send(event: FormEvent) {
     event.preventDefault();
@@ -101,7 +135,7 @@ function Conversation() {
 
         <ol className={styles.messages} aria-live="polite">
           {messages.length === 0
-            ? <li className={styles.emptyMessages}>Send a message to start the conversation.</li>
+            ? <li className={styles.emptyMessages}>{history === 'loading' ? 'Loading messages…' : history === 'loaded' ? 'Send a message to start the conversation.' : 'No messages to show yet.'}</li>
             : messages.map((message) => {
               const mine = message.sender_id === myStudentId;
               return (
@@ -113,6 +147,12 @@ function Conversation() {
               );
             })}
         </ol>
+
+        {history === 'failed' && (
+          <p className={styles.error} role="alert">
+            {historyError} <button type="button" className={styles.retry} onClick={() => setReload((count) => count + 1)}>Try again</button>
+          </p>
+        )}
 
         <form className={styles.composer} onSubmit={send}>
           <label htmlFor="message-text" className={styles.srOnly}>Message</label>
