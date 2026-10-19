@@ -62,3 +62,44 @@ describe('SRS-201.1 send a text message', () => {
     expect((await POST(req({ text: 'Hello' }), ctx())).status).toBe(503); expect(rpc.mock.calls.filter(([fn]) => !['socialu_session_guard', 'socialu_auth_guard'].includes(fn))).toHaveLength(0);
   });
 });
+
+import { GET } from '../../app/api/conversations/[id]/messages/route';
+const history = { student_id: '42', messages: [saved, { ...saved, id: '92', sender_id: '43', text: 'Hi', sent_at: '2026-10-12T15:01:00Z' }] };
+const guards = (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : fn === 'socialu_auth_guard' ? { data: {}, error: null } : null;
+const getReq = (token = req({}).headers.get('Authorization')?.slice(7) ?? '') => new Request('http://localhost/api/conversations/7/messages', { headers: token ? { Authorization: 'Bearer ' + token } : {} });
+const chatCalls = () => rpc.mock.calls.filter(([fn]) => !['socialu_session_guard', 'socialu_auth_guard'].includes(fn));
+describe('SRS-201.2 retrieve saved text messages', () => {
+  beforeEach(() => rpc.mockImplementation(async (fn: string) => guards(fn) ?? { data: history, error: null }));
+  it('returns the saved messages and the signed-in student ID to a participant', async () => {
+    const res = await GET(getReq(), ctx());
+    expect(res.status).toBe(200);
+    expect(res.headers.get('Cache-Control')).toBe('no-store');
+    expect(await res.json()).toEqual(history);
+    expect(rpc).toHaveBeenCalledWith('socialu_conversation_messages', { p_auth_id: user.id, p_conversation_id: '7' });
+  });
+  it('requires sign-in before touching the database', async () => {
+    expect((await GET(getReq(''), ctx())).status).toBe(401); expect(chatCalls()).toHaveLength(0);
+  });
+  it('rejects unverified accounts', async () => {
+    getUser.mockResolvedValue({ data: { user: { ...user, email_confirmed_at: null } }, error: null });
+    expect((await GET(getReq(), ctx())).status).toBe(403); expect(chatCalls()).toHaveLength(0);
+  });
+  it('treats an invalid conversation ID as not available', async () => {
+    const res = await GET(getReq(), ctx('7 OR 1=1'));
+    expect(res.status).toBe(404); expect(await res.json()).toEqual({ error: 'Conversation not available.' }); expect(chatCalls()).toHaveLength(0);
+  });
+  it('gives non-participants the same answer as a missing conversation', async () => {
+    rpc.mockImplementation(async (fn: string) => guards(fn) ?? { data: null, error: { code: 'SC404', message: 'Conversation not available.' } });
+    const res = await GET(getReq(), ctx());
+    expect(res.status).toBe(404); expect(await res.json()).toEqual({ error: 'Conversation not available.' });
+  });
+  it('handles a retrieval failure without returning messages', async () => {
+    rpc.mockImplementation(async (fn: string) => guards(fn) ?? { data: null, error: { code: 'XX000', message: 'read failed' } });
+    const res = await GET(getReq(), ctx());
+    expect(res.status).toBe(503); expect(await res.json()).not.toHaveProperty('messages');
+  });
+  it('does not fall back to anonymous database access', async () => {
+    vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', '');
+    expect((await GET(getReq(), ctx())).status).toBe(503); expect(chatCalls()).toHaveLength(0);
+  });
+});
