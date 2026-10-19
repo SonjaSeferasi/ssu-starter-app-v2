@@ -9,9 +9,10 @@ const db=new PGlite();
 // Minimal stand-ins for Supabase's auth and realtime schemas; realtime.send records what would be broadcast.
 await db.exec(`CREATE ROLE anon;CREATE ROLE authenticated;CREATE ROLE service_role;
 CREATE SCHEMA auth;CREATE TABLE auth.users(id uuid PRIMARY KEY,email text,email_confirmed_at timestamptz);CREATE TABLE auth.sessions(id uuid PRIMARY KEY,user_id uuid,created_at timestamptz);
-CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql AS 'SELECT NULL::uuid';
+CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql AS $$SELECT nullif(current_setting('test.uid', true), '')::uuid$$;
 CREATE SCHEMA realtime;CREATE TABLE realtime.messages(extension text,topic text);CREATE TABLE realtime.sent(topic text,event text,payload jsonb);
-CREATE FUNCTION realtime.topic() RETURNS text LANGUAGE sql AS 'SELECT NULL::text';
+CREATE FUNCTION realtime.topic() RETURNS text LANGUAGE sql AS $$SELECT nullif(current_setting('test.topic', true), '')$$;
+ALTER TABLE realtime.messages ENABLE ROW LEVEL SECURITY;GRANT USAGE ON SCHEMA realtime, auth TO authenticated;GRANT SELECT, INSERT ON realtime.messages TO authenticated;
 CREATE FUNCTION realtime.send(payload jsonb,event text,topic text,private boolean) RETURNS void LANGUAGE sql AS 'INSERT INTO realtime.sent VALUES($3,$2,$1)';`);
 await db.exec(readFileSync(root+'/supabase/schema.sql','utf8'));
 try {
@@ -41,6 +42,27 @@ assert.deepEqual((await db.query<any>("SELECT payload FROM realtime.sent WHERE t
 
 // Outsiders, missing conversations and unknown accounts get nothing.
 await assert.rejects(history(3,cid),code('SC404'));
+// SRS-213.1 (#325): the outsider cannot send either, nothing is saved, and no live message ever reaches them.
+const saved=async()=>(await db.query<any>('SELECT count(*)::int AS n FROM socialu.messages WHERE conversation_id=$1',[cid])).rows[0].n;
+const before=await saved();
+await assert.rejects(send(3,cid,'let me in'),code('SC404'));
+assert.equal(await saved(),before);
+assert.equal((await db.query<any>('SELECT count(*)::int AS n FROM realtime.sent WHERE topic=$1',['student:'+uid(3)])).rows[0].n,0);
+// The Realtime policy lets a signed-in student listen only on their own channel, and browsers cannot broadcast.
+await db.exec("INSERT INTO realtime.messages(extension,topic) VALUES('broadcast','student-channel')");
+const canListen=async(as:number,channelOf:number)=>{
+ await db.query("SELECT set_config('test.uid',$1,false), set_config('test.topic',$2,false)",[uid(as),'student:'+uid(channelOf)]);
+ await db.exec('SET ROLE authenticated');
+ try { return (await db.query<any>('SELECT count(*)::int AS n FROM realtime.messages')).rows[0].n>0; } finally { await db.exec('RESET ROLE'); }
+};
+assert.equal(await canListen(2,2),true);
+assert.equal(await canListen(3,3),true);
+assert.equal(await canListen(3,2),false);
+assert.equal(await canListen(3,1),false);
+await db.exec('SET ROLE authenticated');
+await assert.rejects(db.exec("INSERT INTO realtime.messages(extension,topic) VALUES('broadcast','student:x')"));
+await db.exec('RESET ROLE');
+await db.query("SELECT set_config('test.uid','',false), set_config('test.topic','',false)");
 await assert.rejects(history(1,'999999'),code('SC404'));
 await assert.rejects(history('10000000-0000-0000-0000-000000000009',cid),code('42501'));
 
