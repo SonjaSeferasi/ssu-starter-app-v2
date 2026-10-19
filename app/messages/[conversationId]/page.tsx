@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { accessToken, storedAccessToken } from '../../../lib/account/session';
 
-import { type FormEvent, useEffect, useState } from 'react';
+import { type FormEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { SessionNotice } from '../../../components/navigation/section-page';
 import { useNavigationSession } from '../../../components/navigation/social-shell';
@@ -94,6 +94,42 @@ function Conversation() {
 
   useEffect(() => subscribeToChat(addMessage, liveStatus), [conversationId]);
 
+  // Show the latest message: on open, after the student's own message, and for new messages while they
+  // are already at the bottom. If they scrolled up to read, keep their place and offer a button instead.
+  const [atLatest, setAtLatest] = useState(true);
+  const [unseen, setUnseen] = useState(0);
+  const atLatestRef = useRef(true);
+  const shownCount = useRef(0);
+  const opened = useRef(false);
+
+  function scrollToLatest(behavior: ScrollBehavior = 'smooth') {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior });
+    setUnseen(0);
+  }
+
+  useEffect(() => {
+    const onScroll = () => {
+      const at = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 120;
+      atLatestRef.current = at;
+      setAtLatest(at);
+      if (at) setUnseen(0);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); };
+  }, []);
+
+  useLayoutEffect(() => {
+    const added = messages.length - shownCount.current;
+    shownCount.current = messages.length;
+    if (added <= 0) return;
+    const mine = messages[messages.length - 1].sender_id === myStudentId;
+    if (!opened.current) { opened.current = true; scrollToLatest('auto'); }
+    else if (mine || atLatestRef.current) scrollToLatest();
+    else setUnseen((count) => count + added);
+  }, [messages, myStudentId]);
+
   async function send(event: FormEvent) {
     event.preventDefault();
     if (!text.trim() || sending) return;
@@ -148,21 +184,28 @@ function Conversation() {
             })}
         </ol>
 
-        {history === 'failed' && (
-          <p className={styles.error} role="alert">
-            {historyError} <button type="button" className={styles.retry} onClick={() => setReload((count) => count + 1)}>Try again</button>
-          </p>
-        )}
-
-        <form className={styles.composer} onSubmit={send}>
-          <label htmlFor="message-text" className={styles.srOnly}>Message</label>
-          <input id="message-text" className={styles.input} value={text} onChange={(event) => setText(event.target.value)}
-            placeholder="Message…" maxLength={500} autoComplete="off" disabled={sending} />
-          <button type="submit" className={styles.send} disabled={sending || !text.trim()} aria-label="Send message">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 2 11 13" /><path d="M22 2 15 22l-4-9-9-4 20-7Z" /></svg>
-          </button>
-        </form>
-        {error && <p className={styles.error} role="alert">{error}</p>}
+        <div className={styles.footer}>
+          {!atLatest && (
+            <button type="button" className={styles.jump} onClick={() => scrollToLatest()}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 5v14" /><path d="m19 12-7 7-7-7" /></svg>
+              {unseen > 0 ? `${unseen} new message${unseen === 1 ? '' : 's'}` : 'Jump to latest'}
+            </button>
+          )}
+          {history === 'failed' && (
+            <p className={`${styles.error} ${styles.errorAbove}`} role="alert">
+              {historyError} <button type="button" className={styles.retry} onClick={() => setReload((count) => count + 1)}>Try again</button>
+            </p>
+          )}
+          <form className={styles.composer} onSubmit={send}>
+            <label htmlFor="message-text" className={styles.srOnly}>Message</label>
+            <input id="message-text" className={styles.input} value={text} onChange={(event) => setText(event.target.value)}
+              placeholder="Message…" maxLength={500} autoComplete="off" disabled={sending} />
+            <button type="submit" className={styles.send} disabled={sending || !text.trim()} aria-label="Send message">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 2 11 13" /><path d="M22 2 15 22l-4-9-9-4 20-7Z" /></svg>
+            </button>
+          </form>
+          {error && <p className={styles.error} role="alert">{error}</p>}
+        </div>
       </section>
     </main>
   );
