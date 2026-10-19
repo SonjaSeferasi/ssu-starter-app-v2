@@ -8,8 +8,10 @@
 .tab[aria-pressed='true'] { background: #c0ddcb; color: #102c30; font-weight: 700; }
 .tab:focus-visible, .send:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
 .emptyList { margin: 24px 12px; color: #536963; font-size: 14px; line-height: 1.6; }
-.conversation { display: flex; flex-direction: column; min-height: 520px; overflow: hidden; }
-.header { display: flex; align-items: center; gap: 14px; padding: 18px 24px; border-bottom: 1px solid #d3e2da; }
+.conversation { display: flex; flex-direction: column; min-height: 520px; overflow: clip; }
+/* The conversation header stays visible under the app's top bar while the conversation scrolls.
+   (overflow: clip on .conversation keeps the rounded corners without blocking sticky.) */
+.header { position: sticky; top: var(--header-height, 76px); z-index: 1; display: flex; align-items: center; gap: 14px; padding: 18px 24px; border-bottom: 1px solid #d3e2da; border-radius: 16px 16px 0 0; background: #f8fbf8; }
 .avatar { display: grid; place-items: center; flex-shrink: 0; width: 52px; height: 52px; border-radius: 50%; background: #c0ddcb; color: #28634e; }
 .title { margin: 0; color: #102c30; font-size: 20px; font-weight: 700; }
 .subtitle { display: flex; align-items: center; gap: 8px; margin: 4px 0 0; color: #536963; font-size: 14px; }
