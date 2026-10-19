@@ -51,7 +51,8 @@ function Conversation() {
   const [messages, setMessages] = useState<ChatMessageEvent[]>([]);
   // The signed-in student's ID (returned with the history) puts their own messages on the right.
   const [myStudentId, setMyStudentId] = useState<string | null>(null);
-  const [history, setHistory] = useState<'loading' | 'loaded' | 'failed'>('loading');
+  // 'denied' (SRS-213.1, #324): the conversation is missing or the student is not a participant; both look the same.
+  const [history, setHistory] = useState<'loading' | 'loaded' | 'failed' | 'denied'>('loading');
   const [historyError, setHistoryError] = useState('');
   const [reload, setReload] = useState(0);
   // #460: the conversation kind, the student's group role, and the member count come with the history.
@@ -69,6 +70,7 @@ function Conversation() {
           headers: { Authorization: `Bearer ${token ?? ''}` }, cache: 'no-store', signal: controller.signal,
         });
         const data = await response.json().catch(() => ({}));
+        if (response.status === 404) { setHistory('denied'); return; }
         if (!response.ok) throw new Error(data.error || 'Messages could not be loaded.');
         setMyStudentId(String(data.student_id));
         if (data.kind) setInfo({ kind: data.kind, role: data.role ?? null, memberCount: data.member_count ?? null });
@@ -148,6 +150,7 @@ function Conversation() {
         body: JSON.stringify({ text }),
       });
       const data = await response.json().catch(() => ({}));
+      if (response.status === 404) { setHistory('denied'); return; }
       if (!response.ok) throw new Error(data.error || 'Your message could not be sent. Please try again.');
       addMessage(data.message);
       setMyStudentId((current) => current ?? data.message.sender_id);
@@ -157,6 +160,23 @@ function Conversation() {
     } finally {
       setSending(false);
     }
+  }
+
+  // SRS-213.1 (#324): outsiders see the same clear message as for a missing conversation, with no message box.
+  if (history === 'denied') {
+    return (
+      <main className={`${styles.page} ${styles.withConversation}`}>
+        <ConversationListPanel />
+        <section className={`${styles.conversation} ${styles.unavailable}`} aria-label="Conversation">
+          <span className={styles.avatar} aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+          </span>
+          <h2 className={styles.emptyTitle}>This conversation isn’t available</h2>
+          <p className={styles.emptyText}>It may not exist, or you may not be one of its participants.</p>
+          <Link href="/messages" className={styles.backLink}>Back to Messages</Link>
+        </section>
+      </main>
+    );
   }
 
   return (

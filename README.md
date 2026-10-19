@@ -140,3 +140,22 @@ A signed-in student creates a group from **New group** on the Groups tab. The gr
 - **Testing.** `__tests__/api/conversations.test.ts` covers the create route. `__tests__/database/chat.test.ts` checks that the creator is the only member and the only owner, that two groups stay separate, that a member sees `member`, that outsiders are denied, that the first message sends, and that browser roles are denied.
 
 Status: applied to the hosted database on 2026-10-19 and recorded as versions `20261019170000` and `20261019170100`, after a rolled-back dry run. Called as `service_role`, creating a group for loens1 returned owner with 1 member and the group opened as `group / owner / 1` (rolled back). An existing DM still returned `private` with its messages.
+
+### Private-conversation access (SRS-213.1)
+
+SRS-213.1 (LP): only a private conversation's two participants can access it. Missing and forbidden conversations give the same answer, so outsiders cannot tell whether a conversation exists.
+
+| Access point | Protection |
+| --- | --- |
+| Send: `POST /api/conversations/[id]/messages` | `public.socialu_send_message` runs `socialu.is_current_participant` (and the `validate_message` trigger checks again); outsiders get 404 `Conversation not available.` |
+| History: `GET /api/conversations/[id]/messages` | `public.socialu_conversation_messages` runs the same participant check; outsiders get the same 404 |
+| List: `GET /api/conversations` | `public.socialu_conversation_list` returns only conversations the student is in |
+| Header name: `GET /api/conversations/[id]/peer` | `public.socialu_friend_conversation` requires the student to be one of the pair (404 otherwise) |
+| Friends Message button: `POST /api/friends` (`message`) | Returns the conversation only for a current friend pair |
+| Live messages (Supabase Realtime) | Each student listens only on `student:<auth uid>`. The `realtime.messages` SELECT policy rejects any other topic, and with no INSERT policy browsers cannot broadcast. `socialu_send_message` broadcasts only to the conversation's participants. |
+| Conversation IDs | Validated as positive integers (`lib/chat-access.ts`); anything else gets the same 404 |
+
+All of these database functions are server-only (`service_role`), and the `socialu` schema is not exposed through the Data API.
+
+- **Page (#324).** If a conversation is missing or the student is not a participant, `/messages/[id]` shows "This conversation isn't available" with a link back to Messages, instead of the message box. A send that returns 404 shows the same screen.
+- **Testing (#325).** `__tests__/database/chat.test.ts` uses three students and checks that the outsider cannot read history, send (nothing is saved), see the conversation in their list, or receive its live broadcasts. It also checks the real `realtime.messages` policy: a student can listen only on their own channel, and browsers cannot insert broadcasts. The route tests cover the 404s. In the running app, signing in as a third student and opening another pair's conversation (for example loens1 opening `/messages/1`) shows the not-available screen.
