@@ -31,6 +31,12 @@ const code=(expected:string)=>(error:any)=>error.code===expected;
 // Students 1 and 2 are friends with a private conversation; student 3 is outside it.
 await friends(2,'accept','student1',(await friends(1,'send','student2')).request_id);
 const cid=(await friends(1,'message','student2')).conversation_id;
+// SRS-200.1 (#312, #313, #315): choosing a current friend opens their private conversation, reusing it.
+assert.deepEqual((await db.query<any>('SELECT kind,created_by::int AS c,private_student_low::int AS lo,private_student_high::int AS hi FROM socialu.conversations WHERE conversation_id=$1',[cid])).rows[0],{kind:'private',c:1,lo:1,hi:2});
+assert.equal((await friends(1,'message','student2')).conversation_id,cid);
+assert.equal((await friends(2,'message','student1')).conversation_id,cid);
+assert.equal((await db.query<any>('SELECT count(*)::int AS n FROM socialu.conversations WHERE private_student_low=1 AND private_student_high=2')).rows[0].n,1);
+await assert.rejects(friends(1,'message','student3'),code('42501'));
 const dm={kind:'private',role:null,member_count:null};
 assert.deepEqual(await history(1,cid),{student_id:'1',...dm,messages:[]});
 
@@ -131,6 +137,8 @@ const fresh=(await friends(3,'message','student4')).conversation_id;
 assert.deepEqual((await conversations(3)).conversations,[{id:fresh,kind:'private',name:'Student 4',username:'student4',member_count:null,unread:false,last_message:null}]);
 // DMs with a blocked student are hidden for both students, like the conversation header.
 await friends(2,'block','student1');
+await assert.rejects(friends(1,'message','student2'));
+await assert.rejects(friends(2,'message','student1'));
 assert.deepEqual((await conversations(1)).conversations.map((c:any)=>c.id),[gid]);
 assert.deepEqual((await conversations(2)).conversations,[]);
 

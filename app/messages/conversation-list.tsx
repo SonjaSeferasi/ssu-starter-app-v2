@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { accessToken } from '../../lib/account/session';
+import { FriendPicker } from './friend-picker';
 import styles from './messages.module.css';
 
 export type ConversationSummary = {
@@ -39,6 +40,8 @@ export function ConversationListPanel() {
   const [refresh, setRefresh] = useState(0);
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState('');
+  // SRS-200.1 (#314): choosing a friend to message replaces the DM list while open.
+  const [picking, setPicking] = useState(false);
 
   useEffect(() => {
     const again = () => setRefresh((count) => count + 1);
@@ -101,13 +104,19 @@ export function ConversationListPanel() {
     <section className={styles.listPanel} aria-label="Conversations">
       <h1 className={styles.heading}>Messages</h1>
       <div className={styles.tabs}>
-        <button type="button" className={styles.tab} aria-pressed={tab === 'dms'} onClick={() => setTab('dms')}>
+        <button type="button" className={styles.tab} aria-pressed={tab === 'dms'} onClick={() => { setTab('dms'); setPicking(false); }}>
           DMs{unreadIn('private') && <><span className={styles.tabDot} aria-hidden="true" /><span className={styles.srOnly}> (unread)</span></>}
         </button>
-        <button type="button" className={styles.tab} aria-pressed={tab === 'groups'} onClick={() => setTab('groups')}>
+        <button type="button" className={styles.tab} aria-pressed={tab === 'groups'} onClick={() => { setTab('groups'); setPicking(false); }}>
           Groups{unreadIn('group') && <><span className={styles.tabDot} aria-hidden="true" /><span className={styles.srOnly}> (unread)</span></>}
         </button>
       </div>
+      {tab === 'dms' && !picking && (
+        <button type="button" className={styles.newGroup} onClick={() => setPicking(true)}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 5v14" /><path d="M5 12h14" /></svg>
+          New message
+        </button>
+      )}
       {tab === 'groups' && (
         <>
           <button type="button" className={styles.newGroup} onClick={newGroup} disabled={creating}>
@@ -117,13 +126,15 @@ export function ConversationListPanel() {
           {createError && <p className={styles.listError} role="alert">{createError}</p>}
         </>
       )}
-      {!list ? (
+      {tab === 'dms' && picking ? (
+        <FriendPicker onClose={() => setPicking(false)} onOpened={() => { setPicking(false); window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT)); }} />
+      ) : !list ? (
         <p className={styles.emptyList} role={failed ? 'alert' : undefined}>
           {failed ? <>Conversations could not be loaded. <button type="button" className={styles.retry} onClick={() => setRefresh((count) => count + 1)}>Try again</button></> : 'Loading conversations…'}
         </p>
       ) : shown.length === 0 ? (
         <p className={styles.emptyList}>
-          {tab === 'dms' ? 'No direct messages yet. Choose Message on a friend’s profile or on the Friends page to start one.' : 'No group chats yet. Choose New group to create one.'}
+          {tab === 'dms' ? 'No direct messages yet. Choose New message to start one with a friend.' : 'No group chats yet. Choose New group to create one.'}
         </p>
       ) : (
         <ul className={styles.conversationList}>
