@@ -2,6 +2,10 @@
 .page { display: grid; grid-template-columns: minmax(240px, 300px) minmax(0, 1fr); gap: 16px; max-width: 1280px; min-height: calc(100dvh - 76px); margin: 0 auto; padding: clamp(16px, 2.5vw, 28px); }
 .listPanel, .conversation { border: 1px solid #d3e2da; border-radius: 16px; background: #f8fbf8; }
 .listPanel { padding: 24px 12px; }
+/* The Messages list stays pinned beside the conversation and scrolls on its own: the heading, tabs and New group
+   button stay put while only the conversations scroll, separately from the chat history (wide screens). */
+.listPanel { position: sticky; top: calc(var(--header-height, 76px) + clamp(16px, 2.5vw, 28px)); align-self: start; display: flex; flex-direction: column; height: calc(100dvh - var(--header-height, 76px) - 2 * clamp(16px, 2.5vw, 28px)); min-height: 360px; }
+:global([data-navigation='bottom']) .listPanel { height: calc(100dvh - var(--header-height, 76px) - 2 * clamp(16px, 2.5vw, 28px) - 85px); }
 .heading { margin: 0 12px 20px; color: #102c30; font-size: 28px; font-weight: 700; letter-spacing: -.6px; }
 .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: 10px; background: #e6efe9; }
 .tab { min-height: 40px; border: 0; border-radius: 8px; background: transparent; color: #536963; font: inherit; font-size: 15px; cursor: pointer; }
@@ -9,7 +13,7 @@
 .tab:focus-visible, .send:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
 .emptyList { margin: 24px 12px; color: #536963; font-size: 14px; line-height: 1.6; }
 /* SRS-202.1 (#457): the student's conversations, newest activity first, as in the Messages UI design. */
-.conversationList { margin: 12px 0 0; padding: 0; list-style: none; }
+.conversationList { flex: 1; min-height: 0; margin: 12px 0 0; padding: 2px; overflow-y: auto; overscroll-behavior: contain; list-style: none; }
 .conversationList li + li { border-top: 1px solid #e3ece6; }
 .conversationItem { display: flex; align-items: center; gap: 12px; margin: 4px 0; padding: 10px 12px; border-radius: 12px; color: #102c30; text-decoration: none; }
 .conversationItem:hover { background: #e6efe9; }
@@ -81,6 +85,9 @@
 @media (max-width: 900px) {
   .page { grid-template-columns: 1fr; padding: 16px; }
   .withConversation .listPanel, .emptyConversation { display: none; }
+  /* Phones show the list and the conversation on separate pages, so the list scrolls with the page. */
+  .listPanel, :global([data-navigation='bottom']) .listPanel { position: static; height: auto; min-height: 0; }
+  .conversationList { overflow: visible; }
 }
 @media (max-width: 700px) {
   :global([data-navigation='bottom']) .footer { bottom: 73px; }
