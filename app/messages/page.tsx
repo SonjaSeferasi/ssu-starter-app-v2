@@ -2,12 +2,19 @@
 
 import { SessionNotice } from '../../components/navigation/section-page';
 import { useNavigationSession } from '../../components/navigation/social-shell';
-import { ConversationListPanel } from './conversation-list';
+import { useEffect } from 'react';
+import { subscribeToChat } from '../../lib/realtime-client';
+import { CHAT_ACTIVITY_EVENT, ConversationListPanel } from './conversation-list';
 import styles from './messages.module.css';
 
 // Messages home in the UI design's chat layout. Choosing a conversation opens /messages/[conversationId].
 export default function MessagesPage() {
   const session = useNavigationSession();
+  // SRS-212.4 (#329): a new live message refreshes the list so its unread dot appears without a reload.
+  useEffect(() => {
+    if (session !== 'signed-in') return;
+    return subscribeToChat(() => window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT)), () => {});
+  }, [session]);
   if (session !== 'signed-in') return <SessionNotice state={session} />;
   return (
     <main className={styles.page}>

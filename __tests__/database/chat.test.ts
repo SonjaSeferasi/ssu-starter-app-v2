@@ -16,7 +16,7 @@ ALTER TABLE realtime.messages ENABLE ROW LEVEL SECURITY;GRANT USAGE ON SCHEMA re
 CREATE FUNCTION realtime.send(payload jsonb,event text,topic text,private boolean) RETURNS void LANGUAGE sql AS 'INSERT INTO realtime.sent VALUES($3,$2,$1)';`);
 await db.exec(readFileSync(root+'/supabase/schema.sql','utf8'));
 try {
-for(const file of ['20261008000100_link_supabase_accounts.sql','20261008000200_feed_functions.sql','20261008000300_fix_deferred_post_trigger.sql','20261012120000_chat_send_text_message.sql','20261012230000_srs_100_105_auth.sql','20261013200000_srs_109_113_profile.sql','20261015180000_profile_social.sql','20261015190000_profile_full_name.sql','20261016000100_like_post.sql','20261016001000_optional_profile_bio.sql','20261016010000_friendships.sql','20261016020000_feed_profile_links.sql','20261016030000_edit_profile_username.sql','20261016040000_friend_accept_mutual_follow.sql','20261017000100_unlike_post.sql','20261018000100_post_comments.sql','20261018010000_integrate_profile_feed.sql','20261019120000_chat_conversation_messages.sql','20261019120100_chat_group_structure_check_as_owner.sql','20261019150000_chat_conversation_list.sql','20261019170000_chat_create_group.sql','20261019170100_chat_conversation_role.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
+for(const file of ['20261008000100_link_supabase_accounts.sql','20261008000200_feed_functions.sql','20261008000300_fix_deferred_post_trigger.sql','20261012120000_chat_send_text_message.sql','20261012230000_srs_100_105_auth.sql','20261013200000_srs_109_113_profile.sql','20261015180000_profile_social.sql','20261015190000_profile_full_name.sql','20261016000100_like_post.sql','20261016001000_optional_profile_bio.sql','20261016010000_friendships.sql','20261016020000_feed_profile_links.sql','20261016030000_edit_profile_username.sql','20261016040000_friend_accept_mutual_follow.sql','20261017000100_unlike_post.sql','20261018000100_post_comments.sql','20261018010000_integrate_profile_feed.sql','20261019120000_chat_conversation_messages.sql','20261019120100_chat_group_structure_check_as_owner.sql','20261019150000_chat_conversation_list.sql','20261019170000_chat_create_group.sql','20261019170100_chat_conversation_role.sql','20261019190000_chat_unread_status.sql','20261019190100_chat_mark_read.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
 const uid=(n:number)=>`00000000-0000-0000-0000-00000000000${n}`;
 for (let n=1;n<=4;n++) {
  await db.query('INSERT INTO auth.users VALUES($1,$2,now())',[uid(n),`s${n}@salemstate.edu`]);
@@ -97,14 +97,38 @@ const conversations=async(n:number)=>(await db.query<any>('SELECT public.socialu
 const mine=await conversations(1);
 assert.equal(mine.student_id,'1');
 assert.deepEqual(mine.conversations.map((c:any)=>[c.id,c.kind]),[[gid,'group'],[cid,'private']]);
-assert.deepEqual(mine.conversations[1],{id:cid,kind:'private',name:'Student 2',username:'student2',member_count:null,last_message:{text:'Message 50',sender_id:'1',sent_at:recent[49].sent_at}});
+assert.deepEqual(mine.conversations[1],{id:cid,kind:'private',name:'Student 2',username:'student2',member_count:null,unread:true,last_message:{text:'Message 50',sender_id:'1',sent_at:recent[49].sent_at}});
 assert.equal(mine.conversations[0].name,null); assert.equal(mine.conversations[0].member_count,2); assert.equal(mine.conversations[0].last_message.text,'After');
 assert.deepEqual((await conversations(4)).conversations.map((c:any)=>c.id),[gid]);
 assert.deepEqual((await conversations(3)).conversations,[]);
+// SRS-212.4 / SRS-212.5: unread state is kept per student and clears when the conversation is opened.
+const markRead=async(n:number,c:string)=>(await db.query<any>('SELECT public.socialu_mark_conversation_read($1,$2) AS r',[uid(n),c])).rows[0].r;
+const unreadOf=async(n:number,c:string)=>(await conversations(n)).conversations.find((x:any)=>x.id===c)?.unread;
+assert.equal(await unreadOf(1,cid),true);
+assert.equal(await unreadOf(2,cid),true);
+assert.ok((await markRead(1,cid)).marked>0);
+assert.equal(await unreadOf(1,cid),false);
+assert.equal(await unreadOf(2,cid),true);
+assert.equal((await markRead(1,cid)).marked,0);
+assert.equal((await db.query<any>('SELECT count(*)::int AS n FROM socialu.message_reads r JOIN socialu.messages m USING(message_id) WHERE r.student_id=1 AND m.sender_id=1')).rows[0].n,0);
+await send(1,cid,'Still here');
+assert.equal(await unreadOf(1,cid),false);
+await send(2,cid,'Are you there?');
+assert.equal(await unreadOf(1,cid),true);
+assert.equal((await markRead(1,cid)).marked,1);
+assert.equal(await unreadOf(1,cid),false);
+// Group members only count (and mark) messages from their membership period.
+assert.equal(await unreadOf(4,gid),true);
+assert.equal((await markRead(4,gid)).marked,1);
+assert.deepEqual((await db.query<any>('SELECT m.text_content AS t FROM socialu.message_reads r JOIN socialu.messages m USING(message_id) WHERE r.student_id=4')).rows,[{t:'After'}]);
+assert.equal(await unreadOf(4,gid),false);
+// Outsiders cannot mark someone else's conversation.
+await assert.rejects(markRead(3,cid),code('SC404'));
+await assert.rejects(markRead(3,gid),code('SC404'));
 // A new DM without messages is listed too.
 await friends(4,'accept','student3',(await friends(3,'send','student4')).request_id);
 const fresh=(await friends(3,'message','student4')).conversation_id;
-assert.deepEqual((await conversations(3)).conversations,[{id:fresh,kind:'private',name:'Student 4',username:'student4',member_count:null,last_message:null}]);
+assert.deepEqual((await conversations(3)).conversations,[{id:fresh,kind:'private',name:'Student 4',username:'student4',member_count:null,unread:false,last_message:null}]);
 // DMs with a blocked student are hidden for both students, like the conversation header.
 await friends(2,'block','student1');
 assert.deepEqual((await conversations(1)).conversations.map((c:any)=>c.id),[gid]);
@@ -132,6 +156,7 @@ for (const role of ['anon','authenticated']) {
  await assert.rejects(history(1,cid));
  await assert.rejects(conversations(1));
  await assert.rejects(create(1));
+ await assert.rejects(markRead(1,cid));
  await db.exec('RESET ROLE');
 }
 } finally { await db.close(); }

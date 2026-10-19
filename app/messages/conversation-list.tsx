@@ -12,6 +12,8 @@ export type ConversationSummary = {
   name: string | null;
   username: string | null;
   member_count: number | null;
+  // SRS-212.4 (#328): true when another participant's message is still unread for this student.
+  unread?: boolean;
   last_message: { text: string; sender_id: string; sent_at: string } | null;
 };
 
@@ -89,14 +91,22 @@ export function ConversationListPanel() {
     }
   }
 
+  // SRS-212.4 (#329): the open conversation is being read, so it never shows as unread here.
+  const unreadIn = (kind: ConversationSummary['kind']) =>
+    Boolean(list?.conversations.some((conversation) => conversation.kind === kind && conversation.unread && conversation.id !== openId));
+
   const shown = list?.conversations.filter((conversation) => (tab === 'dms' ? conversation.kind === 'private' : conversation.kind === 'group')) ?? [];
 
   return (
     <section className={styles.listPanel} aria-label="Conversations">
       <h1 className={styles.heading}>Messages</h1>
       <div className={styles.tabs}>
-        <button type="button" className={styles.tab} aria-pressed={tab === 'dms'} onClick={() => setTab('dms')}>DMs</button>
-        <button type="button" className={styles.tab} aria-pressed={tab === 'groups'} onClick={() => setTab('groups')}>Groups</button>
+        <button type="button" className={styles.tab} aria-pressed={tab === 'dms'} onClick={() => setTab('dms')}>
+          DMs{unreadIn('private') && <><span className={styles.tabDot} aria-hidden="true" /><span className={styles.srOnly}> (unread)</span></>}
+        </button>
+        <button type="button" className={styles.tab} aria-pressed={tab === 'groups'} onClick={() => setTab('groups')}>
+          Groups{unreadIn('group') && <><span className={styles.tabDot} aria-hidden="true" /><span className={styles.srOnly}> (unread)</span></>}
+        </button>
       </div>
       {tab === 'groups' && (
         <>
@@ -120,6 +130,7 @@ export function ConversationListPanel() {
           {shown.map((conversation) => {
             const name = conversation.kind === 'private' ? conversation.name ?? 'Student' : 'Group chat';
             const last = conversation.last_message;
+            const unread = Boolean(conversation.unread) && conversation.id !== openId;
             const preview = last
               ? `${last.sender_id === list.me ? 'You: ' : ''}${last.text}`
               : conversation.kind === 'group'
@@ -127,7 +138,7 @@ export function ConversationListPanel() {
                 : 'No messages yet';
             return (
               <li key={conversation.id}>
-                <Link href={`/messages/${encodeURIComponent(conversation.id)}`} className={styles.conversationItem}
+                <Link href={`/messages/${encodeURIComponent(conversation.id)}`} className={unread ? `${styles.conversationItem} ${styles.itemUnread}` : styles.conversationItem}
                   aria-current={conversation.id === openId ? 'page' : undefined}>
                   <span className={styles.itemAvatar} aria-hidden="true">
                     {conversation.kind === 'private' ? name.trim().charAt(0).toUpperCase() : (
@@ -139,6 +150,7 @@ export function ConversationListPanel() {
                     <span className={styles.itemLine}>
                       <span className={styles.itemPreview}>{preview}</span>
                       {last && <time className={styles.itemTime} dateTime={last.sent_at}>{shortTime(last.sent_at)}</time>}
+                      {unread && <span className={styles.unreadDot}><span className={styles.srOnly}>Unread messages</span></span>}
                     </span>
                   </span>
                 </Link>

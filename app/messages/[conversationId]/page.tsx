@@ -58,6 +58,37 @@ function Conversation() {
   // #460: the conversation kind, the student's group role, and the member count come with the history.
   const [info, setInfo] = useState<{ kind: 'private' | 'group'; role: string | null; memberCount: number | null } | null>(null);
 
+  // SRS-212.5: mark the messages shown here as read, again when a message arrives while the student is looking
+  // at this conversation, and when they come back to the tab. Nothing is marked while the page is hidden.
+  const meRef = useRef<string | null>(null);
+  const shownRef = useRef(false);
+  const marking = useRef(false);
+  const markAgain = useRef(false);
+  async function markRead() {
+    if (!shownRef.current || document.visibilityState !== 'visible') return;
+    if (marking.current) { markAgain.current = true; return; }
+    marking.current = true;
+    try {
+      do {
+        markAgain.current = false;
+        const token = await accessToken();
+        const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/read`, { method: 'POST', headers: { Authorization: `Bearer ${token ?? ''}` } });
+        // The list refreshes so this conversation's unread dot clears (SRS-212.4).
+        if (response.ok) window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT));
+      } while (markAgain.current);
+    } catch {
+      // Not marked this time; it is tried again on the next message, visit, or return to the tab.
+    } finally {
+      marking.current = false;
+    }
+  }
+
+  useEffect(() => {
+    const onVisible = () => { if (document.visibilityState === 'visible') void markRead(); };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => document.removeEventListener('visibilitychange', onVisible);
+  }, [conversationId]);
+
   // #318: load the saved messages when the conversation opens, when Try again is pressed, and
   // every time live updates (re)connect, so messages sent while the page was offline still appear.
   useEffect(() => {
@@ -73,9 +104,12 @@ function Conversation() {
         if (response.status === 404) { setHistory('denied'); return; }
         if (!response.ok) throw new Error(data.error || 'Messages could not be loaded.');
         setMyStudentId(String(data.student_id));
+        meRef.current = String(data.student_id);
         if (data.kind) setInfo({ kind: data.kind, role: data.role ?? null, memberCount: data.member_count ?? null });
         setMessages((current) => mergeMessages(current, data.messages ?? []));
         setHistory('loaded');
+        shownRef.current = true;
+        void markRead();
         setHistoryError('');
       } catch (err) {
         if (controller.signal.aborted) return;
@@ -92,6 +126,7 @@ function Conversation() {
     window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT));
     if (message.conversation_id !== conversationId) return;
     setMessages((current) => mergeMessages(current, [message]));
+    if (message.sender_id !== meRef.current) void markRead();
   }
 
   function liveStatus(status: ChatLiveStatus) {
