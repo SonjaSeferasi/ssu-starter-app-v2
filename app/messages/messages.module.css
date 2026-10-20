@@ -36,6 +36,11 @@
 .newGroup:disabled { opacity: .6; cursor: progress; }
 .newGroup:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
 .listError { margin: 10px 4px 0; color: #a32d2d; font-size: 14px; }
+/* Groups tab: a clear red notice that group invitations (SRS-205) are not available yet. */
+.notice { display: flex; align-items: flex-start; gap: 10px; margin: 12px 0 0; padding: 12px 14px; border: 2px solid #c62828; border-radius: 12px; background: #fdecea; color: #8e1b1b; }
+.notice svg { flex-shrink: 0; margin-top: 1px; }
+.noticeTitle { margin: 0; font-size: 15px; font-weight: 800; }
+.noticeText { margin: 4px 0 0; font-size: 13px; line-height: 1.5; }
 /* SRS-202.1 (#456): the confirmation step shown before a group is created. */
 .stepTitle { margin: 4px 4px 8px; color: #102c30; font-size: 18px; font-weight: 700; }
 .stepText { margin: 0 4px; color: #536963; font-size: 14px; line-height: 1.6; }

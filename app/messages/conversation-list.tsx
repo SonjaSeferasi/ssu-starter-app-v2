@@ -120,6 +120,16 @@ export function ConversationListPanel() {
           New message
         </button>
       )}
+      {tab === 'groups' && (
+        // Group invitations (SRS-205) are not built yet, so students are told before they create a group.
+        <div className={styles.notice} role="note">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M12 8v4" /><path d="M12 16h.01" /></svg>
+          <div>
+            <p className={styles.noticeTitle}>You can’t invite people to groups yet</p>
+            <p className={styles.noticeText}>Group invitations are coming in a later update. For now, you’ll be the only member of any group you create.</p>
+          </div>
+        </div>
+      )}
       {tab === 'groups' && !confirmingGroup && (
         <button type="button" className={styles.newGroup} onClick={() => { setCreateError(''); setConfirmingGroup(true); }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 5v14" /><path d="M5 12h14" /></svg>
