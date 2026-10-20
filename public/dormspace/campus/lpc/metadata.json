@@ -1,0 +1,228 @@
+{
+  "head-male": {
+    "male": [
+      {
+        "stem": "head/heads/human/male/",
+        "z": 100
+      }
+    ],
+    "female": [
+      {
+        "stem": "head/heads/human/male/",
+        "z": 100
+      }
+    ]
+  },
+  "head-female": {
+    "male": [
+      {
+        "stem": "head/heads/human/female/",
+        "z": 100
+      }
+    ],
+    "female": [
+      {
+        "stem": "head/heads/human/female/",
+        "z": 100
+      }
+    ]
+  },
+  "short-waves": {
+    "male": [
+      {
+        "stem": "hair/bedhead/adult/",
+        "z": 120
+      }
+    ],
+    "female": [
+      {
+        "stem": "hair/bedhead/adult/",
+        "z": 120
+      }
+    ]
+  },
+  "full-curls": {
+    "male": [
+      {
+        "stem": "hair/curly_short/adult/",
+        "z": 120
+      }
+    ],
+    "female": [
+      {
+        "stem": "hair/curly_short/adult/",
+        "z": 120
+      }
+    ]
+  },
+  "crew-cut": {
+    "male": [
+      {
+        "stem": "hair/buzzcut/adult/",
+        "z": 120
+      }
+    ],
+    "female": [
+      {
+        "stem": "hair/buzzcut/adult/",
+        "z": 120
+      }
+    ]
+  },
+  "side-part": {
+    "male": [
+      {
+        "stem": "hair/parted/adult/",
+        "z": 120
+      }
+    ],
+    "female": [
+      {
+        "stem": "hair/parted/adult/",
+        "z": 120
+      }
+    ]
+  },
+  "locs": {
+    "male": [
+      {
+        "stem": "hair/dreadlocks_short/adult/",
+        "z": 120
+      }
+    ],
+    "female": [
+      {
+        "stem": "hair/dreadlocks_short/adult/",
+        "z": 120
+      }
+    ]
+  },
+  "long-waves": {
+    "male": [
+      {
+        "stem": "hair/wavy/adult/fg/",
+        "z": 120
+      },
+      {
+        "stem": "hair/wavy/adult/bg/",
+        "z": 9
+      }
+    ],
+    "female": [
+      {
+        "stem": "hair/wavy/adult/fg/",
+        "z": 120
+      },
+      {
+        "stem": "hair/wavy/adult/bg/",
+        "z": 9
+      }
+    ]
+  },
+  "ponytail": {
+    "male": [
+      {
+        "stem": "hair/high_ponytail/adult/fg/",
+        "z": 120
+      },
+      {
+        "stem": "hair/high_ponytail/adult/bg/",
+        "z": 9
+      }
+    ],
+    "female": [
+      {
+        "stem": "hair/high_ponytail/adult/fg/",
+        "z": 120
+      },
+      {
+        "stem": "hair/high_ponytail/adult/bg/",
+        "z": 9
+      }
+    ]
+  },
+  "curly-bob": {
+    "male": [
+      {
+        "stem": "hair/curly_short2/adult/",
+        "z": 120
+      }
+    ],
+    "female": [
+      {
+        "stem": "hair/curly_short2/adult/",
+        "z": 120
+      }
+    ]
+  },
+  "shirt-1": {
+    "male": [
+      {
+        "stem": "torso/clothes/longsleeve/longsleeve/male/",
+        "z": 35
+      }
+    ],
+    "female": [
+      {
+        "stem": "torso/clothes/longsleeve/longsleeve/female/",
+        "z": 35
+      }
+    ]
+  },
+  "shirt-2": {
+    "male": [
+      {
+        "stem": "torso/clothes/longsleeve/longsleeve2/male/",
+        "z": 35
+      }
+    ],
+    "female": [
+      {
+        "stem": "torso/clothes/longsleeve/longsleeve2/female/",
+        "z": 35
+      }
+    ]
+  },
+  "pants": {
+    "male": [
+      {
+        "stem": "legs/pants2/male/",
+        "z": 20
+      }
+    ],
+    "female": [
+      {
+        "stem": "legs/pants2/thin/",
+        "z": 20
+      }
+    ]
+  },
+  "glasses-round": {
+    "male": [
+      {
+        "stem": "facial/glasses/round/adult/",
+        "z": 115
+      }
+    ],
+    "female": [
+      {
+        "stem": "facial/glasses/round/adult/",
+        "z": 115
+      }
+    ]
+  },
+  "glasses-square": {
+    "male": [
+      {
+        "stem": "facial/glasses/nerd/adult/",
+        "z": 115
+      }
+    ],
+    "female": [
+      {
+        "stem": "facial/glasses/nerd/adult/",
+        "z": 115
+      }
+    ]
+  }
+}

@@ -5,63 +5,12 @@ import styles from './dormspace.module.css';
 
 // DormSpace pixel art: 24 art-pixels per room cell. Sprites are painted onto a small pixel canvas,
 // compacted into horizontal runs and rendered as crisp SVG, so they scale without blurring.
-type Px = [number, number, number, number, string];
-export type Art = { w: number; h: number; px: Px[] };
-export const CELL_PX = 24;
-
-// Warm farmhouse palette: dark-brown outlines, saturated colors, stepped highlights and shadows.
-const P = {
-  out: '#2e1708', woodD: '#6b3518', wood: '#9c5424', woodM: '#bd6f30', woodL: '#de9a4f', woodH: '#f2c27a',
-  cream: '#f6ecd2', creamS: '#dccaa0', creamD: '#bfa977', white: '#fffaf0',
-  blueD: '#24457a', blue: '#3a6cb4', blueL: '#5d93dc', blueH: '#8ab8f0',
-  red: '#b83a2e', redL: '#e0593f', redD: '#7e2219', gold: '#f5c542', goldD: '#b8862a', goldL: '#fde58a',
-  green: '#3f8f3a', greenL: '#6cc04a', greenD: '#2a5f2a',
-  sky: '#7ec8f2', skyD: '#5fb0e8', skyL: '#c4ecff', cloud: '#ffffff', screen: '#2e3440',
-  metal: '#7d8a99', metalL: '#b7c3d0', metalD: '#4b5563', grey: '#9b958c', greyL: '#c2bcb1', greyD: '#625d55',
-};
-
-// ---------------------------------------------------------------- painter
-class Canvas {
-  readonly px: (string | null)[];
-  constructor(readonly w: number, readonly h: number) { this.px = Array(w * h).fill(null); }
-  set(x: number, y: number, c: string | null) { if (x >= 0 && y >= 0 && x < this.w && y < this.h) this.px[y * this.w + x] = c; return this; }
-  get(x: number, y: number) { return x >= 0 && y >= 0 && x < this.w && y < this.h ? this.px[y * this.w + x] : null; }
-  rect(x: number, y: number, w: number, h: number, c: string) { for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) this.set(x + i, y + j, c); return this; }
-  // Outlined box with a light top/left edge and a dark bottom/right edge.
-  box(x: number, y: number, w: number, h: number, fill: string, light?: string, dark?: string, outline = P.out) {
-    this.rect(x, y, w, h, outline).rect(x + 1, y + 1, w - 2, h - 2, fill);
-    if (light) this.rect(x + 1, y + 1, w - 2, 1, light).rect(x + 1, y + 1, 1, h - 2, light);
-    if (dark) this.rect(x + 1, y + h - 2, w - 2, 1, dark).rect(x + w - 2, y + 1, 1, h - 2, dark);
-    return this;
-  }
-  // Paint text rows; each character maps through the palette ('.' and unknown characters are skipped).
-  rows(x0: number, y0: number, rows: string[], palette: Record<string, string>) {
-    rows.forEach((row, j) => [...row].forEach((ch, i) => { if (palette[ch]) this.set(x0 + i, y0 + j, palette[ch]); }));
-    return this;
-  }
-  art(): Art {
-    const px: Px[] = [];
-    for (let y = 0; y < this.h; y++) {
-      for (let x = 0; x < this.w;) {
-        const c = this.get(x, y);
-        let run = 1;
-        while (c && this.get(x + run, y) === c) run++;
-        if (c) px.push([x, y, run, 1, c]);
-        x += run;
-      }
-    }
-    return { w: this.w, h: this.h, px };
-  }
-}
-function rng(seed: number) {
-  return () => { seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t ^= t + Math.imul(t ^ (t >>> 7), 61 | t); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
-}
-// Short darker streaks give wood its grain.
-function grain(c: Canvas, x: number, y: number, w: number, h: number, color: string, seed: number, count: number) {
-  const r = rng(seed);
-  for (let i = 0; i < count; i++) c.rect(x + Math.floor(r() * (w - 4)), y + Math.floor(r() * h), 2 + Math.floor(r() * 4), 1, color);
-}
-const mirror = (half: string) => half + [...half].reverse().join('');
+import { Canvas, CELL_PX, grain, paint, P, rng, turnFlat, type Art, type Px } from './pixel-painter';
+import { furnitureView } from './furniture-views';
+import { pixelAvatarSprites, type PixelAvatarSprites } from './avatar-pieces';
+import { defaultPixelLook, pixelLookKey, pixelLookLabel, type PixelAvatarLook } from '../../lib/dormspace-avatar';
+import type { Rotation } from '../../lib/dormspace-rules';
+export { CELL_PX, type Art } from './pixel-painter';
 
 function svg({ w, h, px }: Art) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" shape-rendering="crispEdges">${
@@ -69,13 +18,18 @@ function svg({ w, h, px }: Art) {
 }
 const uri = (art: Art) => `url("data:image/svg+xml,${encodeURIComponent(svg(art))}")`;
 
+// Each sprite is encoded once and drawn as a single image. Rendering hundreds of <rect> elements per
+// sprite made React rebuild thousands of nodes on every walking step.
+const sources = new WeakMap<Art, string>();
+function source(art: Art) {
+  let src = sources.get(art);
+  if (!src) { src = `data:image/svg+xml,${encodeURIComponent(svg(art))}`; sources.set(art, src); }
+  return src;
+}
+
 export function PixelArt({ art, className, label, style }: { art: Art; className?: string; label?: string; style?: React.CSSProperties }) {
-  return (
-    <svg viewBox={`0 0 ${art.w} ${art.h}`} shapeRendering="crispEdges" preserveAspectRatio="none" style={style}
-      className={className} role={label ? 'img' : undefined} aria-label={label} aria-hidden={label ? undefined : true}>
-      {art.px.map(([x, y, w, h, fill], i) => <rect key={i} x={x} y={y} width={w} height={h} fill={fill} />)}
-    </svg>
-  );
+  // Explicit dimensions keep auto-height sitting poses and inventory thumbnails in proportion.
+  return <img src={source(art)} width={art.w} height={art.h} alt={label ?? ''} aria-hidden={label ? undefined : true} draggable={false} className={className} style={style} />;
 }
 
 // ---------------------------------------------------------------- furniture (3/4 view)
@@ -161,23 +115,151 @@ const chair: Art = (() => {
   return c.art();
 })();
 
-const windowArt: Art = (() => {
+const sofa: Art = (() => {
+  const c = new Canvas(72, 64);
+  for (const x of [7, 60]) c.box(x, 55, 5, 9, P.woodD, P.wood, P.out);
+  c.box(5, 9, 62, 34, P.blue, P.blueL, P.blueD);
+  c.box(9, 12, 26, 25, P.blueL, P.blueH, P.blue);
+  c.box(36, 12, 26, 25, P.blueL, P.blueH, P.blue);
+  c.box(5, 34, 62, 23, P.blue, P.blueL, P.blueD);
+  for (const x of [9, 36]) c.box(x, 35, 26, 12, P.blueL, P.blueH, P.blueD);
+  c.box(1, 27, 10, 27, P.blue, P.blueH, P.blueD).box(61, 27, 10, 27, P.blue, P.blueH, P.blueD);
+  c.rect(12, 49, 48, 2, P.blueD).rect(13, 52, 46, 1, P.blueL);
+  c.box(12, 22, 12, 13, P.gold, P.goldL, P.goldD).rect(17, 25, 2, 7, P.cream);
+  c.box(49, 22, 11, 13, P.cream, P.white, P.creamD).rect(51, 27, 7, 2, P.red);
+  return c.art();
+})();
+
+const armchair: Art = (() => {
+  const c = new Canvas(48, 46);
+  for (const x of [7, 36]) c.box(x, 39, 5, 7, P.woodD, P.wood, P.out);
+  c.box(7, 1, 34, 29, P.greenD, P.greenL, P.greenD);
+  c.box(11, 4, 26, 22, P.green, P.greenL, P.greenD);
+  c.rect(22, 12, 3, 2, P.greenD).rect(23, 12, 1, 1, P.greenL);
+  c.box(7, 25, 34, 16, P.green, P.greenL, P.greenD);
+  c.box(11, 25, 26, 9, P.greenL, '#9bd56f', P.green);
+  c.box(2, 19, 10, 20, P.green, P.greenL, P.greenD).box(36, 19, 10, 20, P.green, P.greenL, P.greenD);
+  c.rect(13, 36, 22, 1, P.greenD);
+  return c.art();
+})();
+
+const bookshelf: Art = (() => {
+  const c = new Canvas(48, 64);
+  c.box(2, 1, 44, 61, P.wood, P.woodH, P.woodD);
+  c.rect(6, 6, 36, 51, P.woodD);
+  for (const y of [6, 24, 42]) {
+    let x = 8;
+    for (const [i, color] of [P.red, P.blue, P.green, P.gold, P.cream].entries()) {
+      const top = y + 2 + i % 3;
+      c.box(x, top, 5, y + 16 - top, color, undefined, P.out);
+      c.rect(x + 1, top + 3, 3, 1, P.creamS);
+      x += 6;
+    }
+    c.box(5, y + 16, 38, 3, P.woodM, P.woodL, P.woodD);
+  }
+  c.box(0, 0, 48, 5, P.woodM, P.woodH, P.woodD);
+  grain(c, 7, 2, 35, 1, P.wood, 43, 4);
+  for (const x of [3, 39]) c.rect(x, 61, 6, 3, P.out);
+  return c.art();
+})();
+
+const wardrobe: Art = (() => {
+  const c = new Canvas(48, 70);
+  c.box(2, 3, 44, 63, P.wood, P.woodL, P.woodD);
+  for (const x of [5, 25]) {
+    c.box(x, 8, 18, 42, P.woodM, P.woodL, P.woodD);
+    c.box(x + 3, 11, 12, 35, P.wood, P.woodL, P.woodD);
+    grain(c, x + 4, 13, 10, 31, P.woodD, x, 6);
+  }
+  for (const x of [19, 26]) c.box(x, 29, 3, 5, P.gold, P.goldL, P.goldD);
+  c.box(5, 52, 38, 11, P.woodM, P.woodL, P.woodD).box(20, 55, 8, 3, P.gold, P.goldL, P.goldD);
+  c.box(0, 0, 48, 6, P.woodM, P.woodH, P.woodD);
+  for (const x of [4, 38]) c.box(x, 65, 6, 5, P.woodD, P.wood, P.out);
+  return c.art();
+})();
+
+const coffeeTable: Art = (() => {
+  const c = new Canvas(48, 30);
+  for (const x of [5, 38]) c.box(x, 17, 5, 13, P.woodD, P.woodM, P.out);
+  c.box(4, 22, 40, 4, P.wood, P.woodL, P.woodD);
+  c.box(0, 5, 48, 15, P.woodM, P.woodH, P.woodD);
+  grain(c, 3, 8, 42, 8, P.wood, 52, 7);
+  c.box(8, 3, 13, 8, P.blue, P.blueL, P.blueD).rect(9, 9, 11, 1, P.cream);
+  c.box(30, 2, 8, 9, P.cream, P.white, P.creamD).rect(38, 4, 3, 5, P.out).rect(38, 5, 2, 3, P.woodM);
+  c.rect(32, 3, 4, 2, P.woodD);
+  return c.art();
+})();
+
+const nightstand: Art = (() => {
+  const c = new Canvas(24, 40);
+  for (const x of [2, 17]) c.box(x, 33, 5, 7, P.woodD, P.woodM, P.out);
+  c.box(1, 14, 22, 21, P.wood, P.woodL, P.woodD);
+  c.box(3, 18, 18, 13, P.woodM, P.woodL, P.woodD).box(10, 22, 4, 3, P.gold, P.goldL, P.goldD);
+  c.box(0, 12, 24, 5, P.woodM, P.woodH, P.woodD);
+  c.box(5, 0, 14, 8, P.gold, P.goldL, P.goldD);
+  c.rect(11, 8, 2, 4, P.metalD).box(8, 11, 8, 3, P.metal, P.metalL, P.metalD);
+  return c.art();
+})();
+
+const plant: Art = (() => {
+  const c = new Canvas(24, 44);
+  c.rect(11, 7, 3, 23, P.greenD).rect(12, 9, 1, 20, P.greenL);
+  for (const [x, y, w, h] of [[2, 15, 10, 6], [13, 10, 10, 6], [4, 4, 8, 7], [12, 0, 7, 9], [14, 21, 8, 5], [1, 24, 10, 5]]) {
+    c.box(x, y, w, h, P.green, P.greenL, P.greenD, P.greenD);
+  }
+  c.box(3, 29, 18, 5, '#c0643a', '#e99a67', '#8f4424');
+  c.box(5, 34, 14, 10, '#c0643a', '#e08a5a', '#8f4424');
+  c.rect(8, 35, 2, 7, '#e99a67').rect(6, 42, 12, 1, '#8f4424');
+  return c.art();
+})();
+
+const rug: Art = (() => {
+  const c = new Canvas(72, 48);
+  for (let x = 5; x < 68; x += 3) c.rect(x, 0, 1, 48, P.creamD);
+  c.box(2, 3, 68, 42, P.redD, P.red, P.redD, P.creamD);
+  c.box(5, 6, 62, 36, P.cream, P.white, P.creamS, P.goldD);
+  c.box(8, 9, 56, 30, P.blueD, P.blue, P.blueD, P.red);
+  for (let y = 12; y <= 33; y += 7) for (let x = 11; x <= 60; x += 7) c.set(x, y, P.gold);
+  for (let y = -10; y <= 10; y++) {
+    const half = 10 - Math.abs(y);
+    c.rect(35 - half, 24 + y, 1 + half * 2, 1, P.cream);
+    if (half > 3) c.rect(38 - half, 24 + y, half * 2 - 5, 1, P.red);
+  }
+  c.rect(34, 22, 3, 5, P.gold).rect(33, 23, 5, 3, P.gold);
+  return c.art();
+})();
+
+function makeWindow(night: boolean): Art {
   // 4 x 4 cells: four-pane window with curtains, a rod and a sill with a potted plant.
   const c = new Canvas(96, 96);
   // view: sky bands, clouds and rolling hills
   const glass = { x: 14, y: 14, w: 68, h: 62 };
-  ['#4f9fe0', '#5fb0e8', '#6fbcee', '#7ec8f2', '#94d4f4', '#a9def6'].forEach((band, i) => c.rect(glass.x, glass.y + i * 7, glass.w, 7, band));
-  c.rect(glass.x, glass.y + 42, glass.w, 20, '#a9def6');
-  c.rect(22, 22, 12, 4, P.cloud).rect(25, 20, 7, 2, P.cloud).rect(56, 30, 14, 4, P.cloud).rect(59, 28, 8, 2, P.cloud).rect(54, 33, 3, 1, '#e3f4fd');
+  const bands = night ? ['#142047', '#192953', '#20345f', '#273e68', '#304973', '#38527d']
+    : ['#4f9fe0', '#5fb0e8', '#6fbcee', '#7ec8f2', '#94d4f4', '#a9def6'];
+  bands.forEach((band, i) => c.rect(glass.x, glass.y + i * 7, glass.w, 7, band));
+  c.rect(glass.x, glass.y + 42, glass.w, 20, night ? '#38527d' : '#a9def6');
+  if (night) {
+    for (const [x, y] of [[22, 22], [35, 29], [26, 37], [54, 36], [74, 21], [77, 39], [39, 19]]) {
+      c.set(x, y, '#fff6cf').set(x + 1, y, '#bfcff4');
+    }
+    c.rect(59, 21, 10, 12, '#fff3bc').rect(57, 23, 14, 8, '#fff3bc')
+      .rect(64, 20, 8, 10, '#192953').rect(67, 26, 5, 5, '#20345f');
+  } else {
+    c.rect(22, 22, 12, 4, P.cloud).rect(25, 20, 7, 2, P.cloud).rect(56, 30, 14, 4, P.cloud).rect(59, 28, 8, 2, P.cloud).rect(54, 33, 3, 1, '#e3f4fd');
+  }
   for (let x = glass.x; x < glass.x + glass.w; x++) {
     const far = 56 + Math.round(3 * Math.sin(x / 7));
     const near = 64 + Math.round(3 * Math.sin(x / 5 + 2));
-    c.rect(x, far, 1, 76 - far, '#5aa86a').rect(x, near, 1, 76 - near, '#4c9a3c').set(x, near, '#7fd65a').set(x, far, '#86c98e');
+    c.rect(x, far, 1, 76 - far, night ? '#243b48' : '#5aa86a').rect(x, near, 1, 76 - near, night ? '#172e32' : '#4c9a3c')
+      .set(x, near, night ? '#38544c' : '#7fd65a').set(x, far, night ? '#4b6470' : '#86c98e');
   }
   // panes, mullions and frame
   c.rect(46, 14, 4, 62, P.wood).rect(46, 14, 1, 62, P.woodL).rect(49, 14, 1, 62, P.woodD);
   c.rect(14, 43, 68, 4, P.wood).rect(14, 43, 68, 1, P.woodL).rect(14, 46, 68, 1, P.woodD);
-  for (const [x, y] of [[16, 16], [52, 16], [16, 49], [52, 49]]) c.rect(x, y, 6, 1, P.skyL).rect(x, y, 1, 5, P.skyL).rect(x + 2, y + 2, 2, 1, P.skyL);
+  for (const [x, y] of [[16, 16], [52, 16], [16, 49], [52, 49]]) {
+    const shine = night ? '#7383aa' : P.skyL;
+    c.rect(x, y, 6, 1, shine).rect(x, y, 1, 5, shine).rect(x + 2, y + 2, 2, 1, shine);
+  }
   c.rect(8, 8, 80, 6, P.out).rect(8, 76, 80, 4, P.out).rect(8, 8, 6, 72, P.out).rect(82, 8, 6, 72, P.out);
   c.rect(9, 9, 78, 4, P.wood).rect(9, 9, 78, 1, P.woodL).rect(9, 9, 4, 70, P.wood).rect(9, 9, 1, 70, P.woodL).rect(83, 9, 4, 70, P.woodD);
   // sill
@@ -204,8 +286,14 @@ const windowArt: Art = (() => {
     c.rect(side === 0 ? 1 : 79, 84, 16, 2, P.out);
   }
   return c.art();
-})();
-export const itemArt: Record<string, Art> = { bed, window: windowArt, desk, chair };
+}
+const windowArt = makeWindow(false);
+export const nightWindowArt = makeWindow(true);
+export const itemArt: Record<string, Art> = {
+  bed, window: windowArt, desk, chair,
+  'dorm-sofa': sofa, 'dorm-armchair': armchair, 'dorm-bookshelf': bookshelf, 'dorm-wardrobe': wardrobe,
+  'dorm-coffee-table': coffeeTable, 'dorm-nightstand': nightstand, 'dorm-plant': plant, 'dorm-rug': rug,
+};
 
 // ---------------------------------------------------------------- DormHall doors (24 x 42)
 function doorArt(body: string, light: string, dark: string, extra?: (c: Canvas) => void): Art {
@@ -251,117 +339,56 @@ export const exitArt: Art = (() => {
   return c.art();
 })();
 
-// ---------------------------------------------------------------- player avatar (24 x 44)
-// Default student avatar: long strawberry-auburn hair with a bow, green eyes with lashes, and a
-// pink puff-sleeve dress with a white collar and sash, white socks and Mary Jane shoes.
-// Palette: k outline · h/H/j hair · p/q bow · s/S skin · r blush · w/e/E eyes · m lips ·
-// d/D/f dress · c collar · a sash.
-const AV: Record<string, string> = {
-  k: P.out, h: '#c4572a', H: '#ee8a4a', j: '#8a3418', p: '#ff7aa8', q: '#c94680',
-  s: '#f8d3ac', S: '#e0a87c', r: '#f49aa0', w: '#ffffff', e: '#4a9a5a', E: '#1b2f1f', m: '#d8546a',
-  d: '#f39ac0', D: '#cf6f9b', f: '#ffc6dd', c: '#fffaf0', a: '#fff7e0',
-};
-const SOCK = '#ffffff';
-const SOCK_SHADE = '#e3dbe8';
-const SHOE = '#7e2c3a';
-const SHOE_LIGHT = '#b04a5a';
-// Front and back views are symmetric: author the left 12 columns and mirror them.
-const FRONT_HEAD = [
-  '........kkkk', '......kkhhHH', '.....khhHHHH', '....khhHHHhh', '...khhHHhhhh', '...khhhhhhhh', '..khhhhhhhhh',
-  '..khhhjhhhhh', '..khhjhhhhjh', '.khhhjsshjss', '.khhhsssssss', '.khhsskkksss', '.khhssswesss', '.khhssseesss',
-  '.khhrrsEEsss', '.khhhSsssssm', '.khhhhkSssss', '.khhhhhkSSss', '.khhhhhhkkSs',
-];
-const BACK_HEAD = [
-  '........kkkk', '......kkhhHH', '.....khhHHHH', '....khhHHHhh', '...khhHHhhhh', '...khhhhhhhh', '..khhhhhhhhh',
-  '..khhhhjhhhj', '..khhhhjhhhj', '.khhhhjhhhjh', '.khhhhjhhhjh', '.khhhhjhhhjh', '.khhhhjhhhjh', '.khhhhjhhhjh',
-  '.khhhhjhhhjh', '.khhhhjhhhjh', '.khhhhjhhhjh', '.khhhhjhhhjh', '.khhhhjhhhjh',
-];
-const FRONT_BODY = [
-  '.khhhhhkkccc', '.khhhkfffkcd', '.khhkffddkdd', '.kjhkfdDDkdd', '..kjkdDDkfdd', '..kjkksSkddd', '...kkksSkddd',
-  '....ksSkaaaa', '....ksSkdddd', '....ksskdddd', '...kkkdddDdd', '..kddddddDdd', '..kDDDDDDDDD',
-];
-const BACK_BODY = [
-  '.khhhhjhhhjh', '.khhhkfffkhh', '.khhkffddkhh', '.kjhkfdDDkjh', '..kjkdDDkjjh', '..kjkksSkkjj', '...kkksSkddd',
-  '....ksSkaaaa', '....ksSkdddd', '....ksskdddd', '...kkkdddDdd', '..kddddddDdd', '..kDDDDDDDDD',
-];
-// The right-facing profile is asymmetric and authored at full width; left is its mirror image.
-const SIDE = [
-  '..........kkkkkk........',
-  '........kkhhHHHhkk......',
-  '.......khhHHHHhhhhk.....',
-  '......khhHHhhhhhhhhk....',
-  '.....khhHhhhhhhhhhhhk...',
-  '.....khhhhhhhhhhhhhhk...',
-  '....khhhjhhhhhhhhhhhhk..',
-  '....khhhjhhhhhhhhhhhsk..',
-  '....khhhjhhhhhhhjssssk..',
-  '....khhhjhhhhhhjsssssk..',
-  '....khhhjhhhhhhSssssssk.',
-  '....khhhjhhhhhhSssskksk.',
-  '....khhhjhhhhhhSssswesk.',
-  '....khhhjhhhhhhSssseEsk.',
-  '....khhhjhhhhhSsrrsssSk.',
-  '....khhhjhhhhhhSsssmsk..',
-  '....khhhjhhhhhhkSsssk...',
-  '....khhhjhhhhhhhkSSk....',
-  '....kjhhjhhhhhhhkSk.....',
-  '....kjhhhhhhhkkcck......',
-  '....kjhhhhhhkdfccdk.....',
-  '.....kjhhhhhkdfddddk....',
-  '.....kjjhhhhkdfkkkdk....',
-  '......kjjhhkdkfffkdk....',
-  '.......kjjkddkfDfkdk....',
-  '........kjkddksSkddk....',
-  '.........kkddksSkddk....',
-  '..........kaaksSkaak....',
-  '..........kddksskddk....',
-  '.........kdddkkkdddk....',
-  '........kdddDddddDdk....',
-  '.......kdddDdddddDdk....',
-  '.......kDDDDDDDDDDDk....',
-];
-const BOW = ['.k...k.', 'kpk.kpk', 'kppqppk', 'kpk.kpk', '.k...k.'];
-
-function leg(c: Canvas, x: number, top: number, bottom: number) {
-  c.rect(x, top, 5, bottom - top, P.out).rect(x + 1, top, 3, bottom - top, AV.s).rect(x + 3, top, 1, bottom - top, AV.S);
-  c.rect(x + 1, bottom - 3, 3, 3, SOCK).rect(x + 3, bottom - 3, 1, 3, SOCK_SHADE);
-  c.rect(x - 1, bottom, 7, 4, P.out).rect(x, bottom, 5, 3, SHOE).rect(x, bottom, 5, 1, SHOE_LIGHT);
-}
-function legsFront(c: Canvas, frame: 0 | 1) {
-  // While walking, the left foot lifts two pixels on the second frame.
-  leg(c, 7, 32, frame === 1 ? 37 : 39);
-  leg(c, 12, 32, 39);
-}
-function legsSide(c: Canvas, frame: 0 | 1) {
-  // Standing: legs together. Stepping: the back leg lifts behind while the front leg strides.
-  if (frame === 0) leg(c, 12, 33, 39);
-  else { leg(c, 9, 33, 38); leg(c, 14, 33, 39); }
-}
-function avatarArt(direction: Direction, frame: 0 | 1): Art {
-  const c = new Canvas(24, 44);
-  if (direction === 'down' || direction === 'up') {
-    legsFront(c, frame);
-    c.rows(0, 0, (direction === 'down' ? FRONT_HEAD : BACK_HEAD).map(mirror), AV);
-    c.rows(0, 19, (direction === 'down' ? FRONT_BODY : BACK_BODY).map(mirror), AV);
-    c.rows(14, 1, BOW, AV);
-    if (direction === 'down') c.set(8, 3, AV.H).set(9, 4, AV.H); // hair shine is lit from one side
-  } else {
-    legsSide(c, frame);
-    c.rows(0, 0, SIDE, AV);
-    c.rows(6, 1, BOW, AV);
+// ---------------------------------------------------------------- saved Game Room avatar and furniture poses
+const actionSprites = new WeakMap<PixelAvatarSprites, Map<string, { frames: [Art, Art]; sheet: Art }>>();
+export function furnitureSprites(key: string, rotation: Rotation = 0, look: PixelAvatarLook = defaultPixelLook) {
+  const base = itemArt[key];
+  if (!base) return null;
+  const view = furnitureView(key, base, rotation);
+  if (!view.seat && !view.sleep) return { idle: view.art, action: null };
+  const avatar = pixelAvatarSprites(look);
+  let poses = actionSprites.get(avatar);
+  if (!poses) { poses = new Map(); actionSprites.set(avatar, poses); }
+  const cacheKey = `${key}:${rotation}`;
+  let action = poses.get(cacheKey);
+  if (!action) {
+    const frames = ([0, 1] as const).map((frame) => {
+      const c = paint(new Canvas(view.art.w, view.art.h), view.art);
+      if (view.seat) paint(c, avatar.sit[view.seat.facing][frame], view.seat.x, view.seat.y);
+      if (view.sleep) {
+        const sleep = view.sleep;
+        paint(c, turnFlat(avatar.sleep, sleep.headTurn), sleep.headX, sleep.headY);
+        paint(c, sleep.quilt, sleep.quiltX, sleep.quiltY - frame);
+      }
+      if (view.foreground) paint(c, view.foreground);
+      return c.art();
+    }) as [Art, Art];
+    const sheet = paint(paint(new Canvas(view.art.w * 2, view.art.h), frames[0]), frames[1], view.art.w).art();
+    action = { frames, sheet }; poses.set(cacheKey, action);
   }
-  const art = c.art();
-  if (direction !== 'left') return art;
-  return { ...art, px: art.px.map(([x, y, w, h, color]): Px => [art.w - x - w, y, w, h, color]) };
+  return { idle: view.art, action };
 }
-const avatars = (['down', 'up', 'left', 'right'] as Direction[]).reduce(
-  (all, d) => ({ ...all, [d]: [avatarArt(d, 0), avatarArt(d, 1)] }), {} as Record<Direction, [Art, Art]>);
 
-// SRS-504.1, SRS-504.2: the Game Room default avatar until customized avatars are available.
-export function PixelAvatar({ facing, moving, sprinting = false }: { facing: Direction; moving: boolean; sprinting?: boolean }) {
-  const [standing, stepping] = avatars[facing];
+export function FurnitureOccupant({ kind, itemKey, rotation = 0, seatName = 'chair', look = defaultPixelLook }: { kind: 'bed' | 'chair'; itemKey: string; rotation?: Rotation; seatName?: string; look?: PixelAvatarLook }) {
+  const sprites = furnitureSprites(itemKey, rotation, look);
+  if (!sprites?.action) return null;
   return (
-    <span className={styles.avatar} data-moving={moving} data-sprinting={sprinting} aria-hidden="true">
+    <span className={kind === 'bed' ? styles.sleepingPose : styles.seatedPose} role="img"
+      aria-label={kind === 'bed' ? 'Sleeping in bed' : `Avatar sitting ${seatName === 'sofa' ? 'on' : 'in'} ${seatName}`} data-facing={rotation} data-avatar-look={pixelLookKey(look)} title={pixelLookLabel(look)}>
+      <span className={styles.poseClip}><PixelArt art={sprites.action.sheet} className={styles.poseStrip} /></span>
+      {kind === 'bed' ? <span className={styles.sleepLetters} aria-hidden="true"
+        style={rotation === 90 ? { left: '78%', top: '22%' } : rotation === 180 ? { left: '58%', top: '42%' } : rotation === 270 ? { left: '10%', top: '22%' } : undefined}>
+        <span>z</span><span>Z</span><span>Z</span>
+      </span> : null}
+    </span>
+  );
+}
+
+// SRS-504.1, SRS-504.2: saved Game Room pieces are composed once; CSS animates the cached images.
+export function PixelAvatar({ facing, moving, sprinting = false, look = defaultPixelLook }: { facing: Direction; moving: boolean; sprinting?: boolean; look?: PixelAvatarLook }) {
+  const [standing, stepping] = pixelAvatarSprites(look).walk[facing];
+  return (
+    <span className={styles.avatar} data-moving={moving} data-sprinting={sprinting} data-avatar-look={pixelLookKey(look)} data-facing={facing} role="img" aria-label={pixelLookLabel(look)}>
       <span className={styles.avatarShadow} />
       <PixelArt art={standing} className={`${styles.avatarSprite} ${styles.frameA}`} />
       <PixelArt art={stepping} className={`${styles.avatarSprite} ${styles.frameB}`} />
