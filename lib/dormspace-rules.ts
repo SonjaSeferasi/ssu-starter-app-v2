@@ -5,7 +5,16 @@ export type CatalogItem = {
   id: string; kind: string; name: string; previewKey: string;
   surface: string | null; width: number | null; height: number | null; overlapCategory: string | null;
 };
-export type Placement = { itemId: string; x: number; y: number };
+export const ROTATIONS = [0, 90, 180, 270] as const;
+export type Rotation = typeof ROTATIONS[number];
+export const rotationFacing: Record<Rotation, string> = { 0: 'front', 90: 'left', 180: 'back', 270: 'right' };
+export function isRotation(value: unknown): value is Rotation { return typeof value === 'number' && ROTATIONS.includes(value as Rotation); }
+export type Placement = { itemId: string; x: number; y: number; rotation?: Rotation };
+
+export function placementSize(item: CatalogItem, rotation: Rotation = 0) {
+  const width = item.width ?? 1, height = item.height ?? 1;
+  return item.surface === 'floor' && (rotation === 90 || rotation === 270) ? { width: height, height: width } : { width, height };
+}
 export type Surface = { code: string; width: number; height: number };
 export type ReservedCell = { surface: string; x: number; y: number };
 export type Dorm = {
@@ -38,37 +47,54 @@ export function floorOfFriend(friends: Friend[], username: string) {
   return Math.floor(position / 10) + 1;
 }
 
-export type PlacementProblem = 'not-owned' | 'bounds' | 'entrance' | 'overlap';
+export type PlacementProblem = 'not-owned' | 'rotation' | 'bounds' | 'entrance' | 'overlap';
 
 export const placementMessages: Record<PlacementProblem, string> = {
   'not-owned': 'You can only place items you own.',
+  rotation: 'Floor furniture can turn in quarter turns. Wall decorations stay upright.',
   bounds: 'That spot is outside the room. Keep the whole item inside the room.',
   entrance: 'That spot blocks the doorway. Leave the entrance clear.',
   overlap: 'Those items cannot overlap. Choose an empty spot.',
 };
 
-function cells(item: CatalogItem, x: number, y: number) {
+function cells(item: CatalogItem, x: number, y: number, rotation: Rotation = 0) {
+  const { width, height } = placementSize(item, rotation);
   const list: [number, number][] = [];
-  for (let dx = 0; dx < (item.width ?? 1); dx++) for (let dy = 0; dy < (item.height ?? 1); dy++) list.push([x + dx, y + dy]);
+  for (let dx = 0; dx < width; dx++) for (let dy = 0; dy < height; dy++) list.push([x + dx, y + dy]);
   return list;
+}
+
+// Raised furniture blocks walking; rugs sit beneath it and stay walkable. Visitors have no owned items.
+export function roomSolidCells(catalog: CatalogItem[], placements: Placement[], doorwayRow: number, width = 10) {
+  // The entire brown strip, including the guestbook and exit artwork, is scenery, not floor.
+  const solid = new Set(Array.from({ length: width }, (_, x) => `${x},${doorwayRow}`));
+  for (const placement of placements) {
+    const item = catalog.find((entry) => entry.id === placement.itemId);
+    if (!item || item.surface !== 'floor' || item.overlapCategory === 'rug') continue;
+    for (const [x, y] of cells(item, placement.x, placement.y, placement.rotation)) solid.add(`${x},${y}`);
+  }
+  return solid;
 }
 
 // SRS-500.2, SRS-500.6 and SRS-500.8 to SRS-500.10, checked in the same order as the server trigger.
 export function placementProblem(dorm: Dorm, placements: Placement[], candidate: Placement): PlacementProblem | null {
   const item = dorm.catalog.find((entry) => entry.id === candidate.itemId);
   if (!item || !item.surface || !dorm.owned.includes(candidate.itemId)) return 'not-owned';
+  const rotation = candidate.rotation === undefined ? 0 : candidate.rotation;
+  if (!isRotation(rotation) || (item.surface !== 'floor' && rotation !== 0)) return 'rotation';
   if (!Number.isInteger(candidate.x) || !Number.isInteger(candidate.y)) return 'bounds';
   // Moving an item re-checks it against everything else; one placement per item is kept by the caller.
   const others = placements.filter((placement) => placement.itemId !== candidate.itemId);
   const surface = dorm.surfaces.find((entry) => entry.code === item.surface);
+  const size = placementSize(item, rotation);
   if (!surface || candidate.x < 0 || candidate.y < 0
-    || candidate.x + (item.width ?? 1) > surface.width || candidate.y + (item.height ?? 1) > surface.height) return 'bounds';
-  const footprint = cells(item, candidate.x, candidate.y);
+    || candidate.x + size.width > surface.width || candidate.y + size.height > surface.height) return 'bounds';
+  const footprint = cells(item, candidate.x, candidate.y, rotation);
   if (dorm.reserved.some((cell) => cell.surface === item.surface && footprint.some(([x, y]) => x === cell.x && y === cell.y))) return 'entrance';
   for (const other of others) {
     const otherItem = dorm.catalog.find((entry) => entry.id === other.itemId);
     if (!otherItem || otherItem.surface !== item.surface) continue;
-    const overlaps = cells(otherItem, other.x, other.y).some(([ox, oy]) => footprint.some(([x, y]) => x === ox && y === oy));
+    const overlaps = cells(otherItem, other.x, other.y, other.rotation).some(([ox, oy]) => footprint.some(([x, y]) => x === ox && y === oy));
     const permitted = dorm.compatible.some(([a, b]) => (a === item.id && b === otherItem.id) || (b === item.id && a === otherItem.id));
     if (overlaps && !permitted) return 'overlap';
   }

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { DormSpaceGame } from '../../../components/dormspace/dormspace-game';
-import { DormSpaceBanner } from '../../../components/dormspace/pixel-art';
+import { DormSpaceBanner } from '../../../components/dormspace/campus-art';
 import { SessionNotice } from '../../../components/navigation/section-page';
 import { useNavigationSession } from '../../../components/navigation/social-shell';
 import styles from '../../../components/navigation/social-shell.module.css';

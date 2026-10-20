@@ -1,0 +1,367 @@
+{
+  "repository": "https://github.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator",
+  "retrieved": "2026-10-20",
+  "upstream_tree": "9bf06be193b053db256b2536824af426de046aa2",
+  "files": [
+    {
+      "path": "body/bodies/female/run.png",
+      "sha256": "bba8de1e57951eed05c8685502caab858fe54058f537205737b50a33a839d79b",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/body/bodies/female/run.png"
+    },
+    {
+      "path": "body/bodies/female/sit.png",
+      "sha256": "02d844996bc94c57b5f30ae1aa919db1f6003a51b109250f071670bbf01f0b92",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/body/bodies/female/sit.png"
+    },
+    {
+      "path": "body/bodies/female/walk.png",
+      "sha256": "594cb64a032d06d560f23b17f77b572e2dc8ba61df490cfca43f15316c85cfcf",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/body/bodies/female/walk.png"
+    },
+    {
+      "path": "body/bodies/male/run.png",
+      "sha256": "f8eaec1f9a80b8bad5c402ac4d3215f0a513acfae988dd84a39cb370a78fde92",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/body/bodies/male/run.png"
+    },
+    {
+      "path": "body/bodies/male/sit.png",
+      "sha256": "ff339e6b3e34894d32db67c61d6a396e2d4286764aa26be79f0660f439317d0c",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/body/bodies/male/sit.png"
+    },
+    {
+      "path": "body/bodies/male/walk.png",
+      "sha256": "1e0e8f0c11ba5f4f7b3d4439fc416802b4227da2fe146c13de3de254d9f87f77",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/body/bodies/male/walk.png"
+    },
+    {
+      "path": "facial/glasses/nerd/adult/run/black.png",
+      "sha256": "0f975fbc41d12efa09225f170270da48d8855f39c4304cb0be46a1628bbf5a3c",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/facial/glasses/nerd/adult/run/black.png"
+    },
+    {
+      "path": "facial/glasses/nerd/adult/sit/black.png",
+      "sha256": "f381faeb8d3523873a501bac241899f251813980528059e4fe49093e35e26192",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/facial/glasses/nerd/adult/sit/black.png"
+    },
+    {
+      "path": "facial/glasses/nerd/adult/walk/black.png",
+      "sha256": "0ec64a8df63c6267916a03df96ac97652a2376d121620b2f1c352fa21388e09c",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/facial/glasses/nerd/adult/walk/black.png"
+    },
+    {
+      "path": "facial/glasses/round/adult/run/black.png",
+      "sha256": "c2475fbc1cf6d40b03a4c7cffb1ff2c3a4a490b417b5bbb43d26ba5332c4803a",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/facial/glasses/round/adult/run/black.png"
+    },
+    {
+      "path": "facial/glasses/round/adult/sit/black.png",
+      "sha256": "f34a0818385fa31f30fd0fc3bface93dfdbb084853f7d73758cb2f8b2e9de71d",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/facial/glasses/round/adult/sit/black.png"
+    },
+    {
+      "path": "facial/glasses/round/adult/walk/black.png",
+      "sha256": "c9cc1536d2c45dd10a333f7cfdda30d42b811f44594b173e7025545f8668bb58",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/facial/glasses/round/adult/walk/black.png"
+    },
+    {
+      "path": "feet/shoes/basic/male/run.png",
+      "sha256": "562d66a6b3d5f4ad4e2b07675d0628a31a08f34c14e8dbc60850475d50d9e2cf",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/feet/shoes/basic/male/run.png"
+    },
+    {
+      "path": "feet/shoes/basic/male/sit.png",
+      "sha256": "f181e8d8248a7a57a559d9faccefa2a73b2223cb0c8988dd8593ea28d6bec6e9",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/feet/shoes/basic/male/sit.png"
+    },
+    {
+      "path": "feet/shoes/basic/male/walk.png",
+      "sha256": "f544c6f65a3d87f08d8449e87a4f889bd1bc1bf6d714066ef5c30ab2bdafab46",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/feet/shoes/basic/male/walk.png"
+    },
+    {
+      "path": "feet/shoes/basic/thin/run.png",
+      "sha256": "64747a5e8e3f334679f8f36eaf925178b5b97336cae385a9197e2420af98dc4d",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/feet/shoes/basic/thin/run.png"
+    },
+    {
+      "path": "feet/shoes/basic/thin/sit.png",
+      "sha256": "ca6e1877e96c952ce1c2ae95436b3370797ddca0f0847461f2e9dcd2957dbb4e",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/feet/shoes/basic/thin/sit.png"
+    },
+    {
+      "path": "feet/shoes/basic/thin/walk.png",
+      "sha256": "b8cb7d702e03637a9207b3544a20909a287e1bde93b4208a6544a0b2b9d3c12a",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/feet/shoes/basic/thin/walk.png"
+    },
+    {
+      "path": "hair/bedhead/adult/run.png",
+      "sha256": "d609185ec4844cbd8f61f38bb6ad604c8a2d323f71335d1cb2de4f4aecc0141d",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/bedhead/adult/run.png"
+    },
+    {
+      "path": "hair/bedhead/adult/sit.png",
+      "sha256": "cc239a0824433c67bd931efacd403b120e4c200253383fd37c9ca469fd1f5f02",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/bedhead/adult/sit.png"
+    },
+    {
+      "path": "hair/bedhead/adult/walk.png",
+      "sha256": "e82273197446f4c2d91aa21e66e7ba01208ec94e2b36a0bd0ef33603eb4788e0",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/bedhead/adult/walk.png"
+    },
+    {
+      "path": "hair/buzzcut/adult/run.png",
+      "sha256": "85bde70faed3dfcc5368c2962d99cca856bb38bc2b403be7f3684e6807a8161b",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/buzzcut/adult/run.png"
+    },
+    {
+      "path": "hair/buzzcut/adult/sit.png",
+      "sha256": "d14fd1349669f4b2164c5991c5fe0f717647189f2205f77837f6c1e9152efbd0",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/buzzcut/adult/sit.png"
+    },
+    {
+      "path": "hair/buzzcut/adult/walk.png",
+      "sha256": "88a1a2edacd289605babacfbe9b6103a99c179de3c03acaccd864f11c225c6f0",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/buzzcut/adult/walk.png"
+    },
+    {
+      "path": "hair/curly_short/adult/run.png",
+      "sha256": "d462f02ed31b26e668066e97fa92aafed39db7f07054b34655765ffa931c9722",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/curly_short/adult/run.png"
+    },
+    {
+      "path": "hair/curly_short/adult/sit.png",
+      "sha256": "2eba97c76c47e6d441cb0a74cb56990b04c874dc655a165bb957de7317c447c2",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/curly_short/adult/sit.png"
+    },
+    {
+      "path": "hair/curly_short/adult/walk.png",
+      "sha256": "aca65f3f0e4c16ae936a9ed5aa78ffe439cc8f6abc9df79cbe796bae308e7317",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/curly_short/adult/walk.png"
+    },
+    {
+      "path": "hair/curly_short2/adult/run.png",
+      "sha256": "58d6304fd8077869160fef9fe04c9d149c7fd826c395a498a5a770b39df533bd",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/curly_short2/adult/run.png"
+    },
+    {
+      "path": "hair/curly_short2/adult/sit.png",
+      "sha256": "062bb7e8372f94b338478fa10502480d2ffa2c9a338d3933947713217a19116a",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/curly_short2/adult/sit.png"
+    },
+    {
+      "path": "hair/curly_short2/adult/walk.png",
+      "sha256": "bb8fc6cb61bd2ace2837c72a505f32ed84a842c0a85efb31f002e3cd54d26805",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/curly_short2/adult/walk.png"
+    },
+    {
+      "path": "hair/dreadlocks_short/adult/run.png",
+      "sha256": "3a28accb6edc79b9822d63c5c5e65a5cfd553785178eebd36f4db6ee0a95f83f",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/dreadlocks_short/adult/run.png"
+    },
+    {
+      "path": "hair/dreadlocks_short/adult/sit.png",
+      "sha256": "8a2eae7d4d6390990041fd68bd072b6e41f51e679e425170c896092910fa41fa",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/dreadlocks_short/adult/sit.png"
+    },
+    {
+      "path": "hair/dreadlocks_short/adult/walk.png",
+      "sha256": "81236850d5405f50131f3f2fefc6a66def3a2222430af75c87054f714a2d5257",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/dreadlocks_short/adult/walk.png"
+    },
+    {
+      "path": "hair/high_ponytail/adult/bg/run.png",
+      "sha256": "2b2dc8c0be11bebec9de118026f2f8fafebef325cccbb60372439bfd12b67099",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/high_ponytail/adult/bg/run.png"
+    },
+    {
+      "path": "hair/high_ponytail/adult/bg/sit.png",
+      "sha256": "2b57d82cbebc1790fa045c0b5481fdf000a3e2e632a4940d34507cf7b4d84d68",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/high_ponytail/adult/bg/sit.png"
+    },
+    {
+      "path": "hair/high_ponytail/adult/bg/walk.png",
+      "sha256": "4d0375e9b3ffae7658e50875e981b15bc564c29b5c726a825c16efba7148d6c0",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/high_ponytail/adult/bg/walk.png"
+    },
+    {
+      "path": "hair/high_ponytail/adult/fg/run.png",
+      "sha256": "e2d40208ae4e1dd8c25289693199a751c109fcf261c94422ec465e0485a04860",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/high_ponytail/adult/fg/run.png"
+    },
+    {
+      "path": "hair/high_ponytail/adult/fg/sit.png",
+      "sha256": "9cccb3a8ef56ccf0020fd642caf4aabd2a4cedb282819134ac10e4915413bcdd",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/high_ponytail/adult/fg/sit.png"
+    },
+    {
+      "path": "hair/high_ponytail/adult/fg/walk.png",
+      "sha256": "c5df6bfa38dafbae8b985a1fa7b81acf6d36e079225b2f540fa59f0a76d3145b",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/high_ponytail/adult/fg/walk.png"
+    },
+    {
+      "path": "hair/parted/adult/run.png",
+      "sha256": "4f14967f95e55a202155c16b9991107a7e0d93fa39766d1582985010090db504",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/parted/adult/run.png"
+    },
+    {
+      "path": "hair/parted/adult/sit.png",
+      "sha256": "60b9a0839868f47d5762b778a3b32e22053e85711c2d7c1dbc3843d34b98d8de",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/parted/adult/sit.png"
+    },
+    {
+      "path": "hair/parted/adult/walk.png",
+      "sha256": "aa86f9c6af54afb0b5ec52417fabf48f8d667a40ab9ccb44c8c46569b085898e",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/parted/adult/walk.png"
+    },
+    {
+      "path": "hair/wavy/adult/bg/run.png",
+      "sha256": "c4459c66e278ebf2748e85e14264f0ba944ba217c4b093e4843bb66cd5277512",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/wavy/adult/bg/run.png"
+    },
+    {
+      "path": "hair/wavy/adult/bg/sit.png",
+      "sha256": "c4cc65cd8eddfe6dafb1a55a8b55658b399547e7fbc4defbe473ffa351fa7d83",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/wavy/adult/bg/sit.png"
+    },
+    {
+      "path": "hair/wavy/adult/bg/walk.png",
+      "sha256": "e791541ef0e89e194300708f5f1f0873b17da72c8eb5cd72f13f9371a4eeee03",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/wavy/adult/bg/walk.png"
+    },
+    {
+      "path": "hair/wavy/adult/fg/run.png",
+      "sha256": "4aab003a7dff26d446e52db31e2c0f93c21aae2ddfa2c2dc2d54103f1283e02a",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/wavy/adult/fg/run.png"
+    },
+    {
+      "path": "hair/wavy/adult/fg/sit.png",
+      "sha256": "ec01851314eae31eb577575096aeb749c0f148fc2456b629b710b2ca78dfedea",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/wavy/adult/fg/sit.png"
+    },
+    {
+      "path": "hair/wavy/adult/fg/walk.png",
+      "sha256": "3660e0a80bce493892c17c9da9243313d4a325750b497f2df051de7e046a0a2f",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/hair/wavy/adult/fg/walk.png"
+    },
+    {
+      "path": "head/heads/human/female/run.png",
+      "sha256": "2ea26a58f267ec5d8312668138c2240d589c21c2550e2f1bb444a85d47441fe4",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/head/heads/human/female/run.png"
+    },
+    {
+      "path": "head/heads/human/female/sit.png",
+      "sha256": "8180341d3c2d7208f01e462fc606a81b8a72edacda6f9161fcd37de79b9af135",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/head/heads/human/female/sit.png"
+    },
+    {
+      "path": "head/heads/human/female/walk.png",
+      "sha256": "7ac84c09c9e126e5fd0b648c180901e24ddb116c7965cd3db6f2f653947b90bd",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/head/heads/human/female/walk.png"
+    },
+    {
+      "path": "head/heads/human/male/run.png",
+      "sha256": "5b8eb37b66677a0d65afbc85dd4f5a11156276ce6ff3c5425597e59fa93b3bd1",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/head/heads/human/male/run.png"
+    },
+    {
+      "path": "head/heads/human/male/sit.png",
+      "sha256": "5902e48ed23e8ce593e4fbf4d9f6371aba0f1d71966441075118fad0d8debd21",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/head/heads/human/male/sit.png"
+    },
+    {
+      "path": "head/heads/human/male/walk.png",
+      "sha256": "7e863954dc8c3c748d0727415c39888106bdd3779beb2e3b18011a3a9ef3e53c",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/head/heads/human/male/walk.png"
+    },
+    {
+      "path": "legs/pants2/male/run.png",
+      "sha256": "67c9f487f70dc09c4bd5b27bf7f7ed41c7ced14164596b872e2dbc7458f0f8f3",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/legs/pants2/male/run.png"
+    },
+    {
+      "path": "legs/pants2/male/sit.png",
+      "sha256": "a41f53c501bb774602bb3ff8d1de91364295d607c1f021ddbe2fcff60cf8c219",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/legs/pants2/male/sit.png"
+    },
+    {
+      "path": "legs/pants2/male/walk.png",
+      "sha256": "80532e64a8af149bba33a3677be7ab11b16323a4ab7cd263f5f3b73b89a2e6e6",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/legs/pants2/male/walk.png"
+    },
+    {
+      "path": "legs/pants2/thin/run.png",
+      "sha256": "4617dd7a5c1a66b5a6c88e88c84ba3b46f8d6c0698ae54eba8005ed84714f7b0",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/legs/pants2/thin/run.png"
+    },
+    {
+      "path": "legs/pants2/thin/sit.png",
+      "sha256": "f99790f1fb19ac3d87a343367378a0f6650f6e1b8c49ad90f0c54d68d79252e8",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/legs/pants2/thin/sit.png"
+    },
+    {
+      "path": "legs/pants2/thin/walk.png",
+      "sha256": "ec5f085eab4f3cd1088a97bdde9831f24dbd90adaa3bc66c4adf28f5b386d773",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/legs/pants2/thin/walk.png"
+    },
+    {
+      "path": "torso/clothes/longsleeve/longsleeve/female/run.png",
+      "sha256": "aa9b4ade82dfde1161edeb2ef8b50a9c9cef612235b96255294a487b9efad8a3",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/torso/clothes/longsleeve/longsleeve/female/run.png"
+    },
+    {
+      "path": "torso/clothes/longsleeve/longsleeve/female/sit.png",
+      "sha256": "8c7b2bc1e8f0d29d31271d704e28ee925ebc45bc53c294a113b1204da0be5fe4",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/torso/clothes/longsleeve/longsleeve/female/sit.png"
+    },
+    {
+      "path": "torso/clothes/longsleeve/longsleeve/female/walk.png",
+      "sha256": "6833ea1facfa45d07356a3b85ac022742db916f677c0a20474719aad61a13bc8",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/torso/clothes/longsleeve/longsleeve/female/walk.png"
+    },
+    {
+      "path": "torso/clothes/longsleeve/longsleeve/male/run.png",
+      "sha256": "cb559cd9619c8a7399caba47a9ac6bb7146ebd45db7fee8a3cb811939392b13b",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/torso/clothes/longsleeve/longsleeve/male/run.png"
+    },
+    {
+      "path": "torso/clothes/longsleeve/longsleeve/male/sit.png",
+      "sha256": "151c715412c988c4d3de1dac42c06b1c9eb468f93971fa5f03a8ea8dfb17d9b7",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/torso/clothes/longsleeve/longsleeve/male/sit.png"
+    },
+    {
+      "path": "torso/clothes/longsleeve/longsleeve/male/walk.png",
+      "sha256": "8b1c79d535d7a233371c9398ca51b196aa8fdf06117bd0eafd7fbcbf438d711b",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/torso/clothes/longsleeve/longsleeve/male/walk.png"
+    },
+    {
+      "path": "torso/clothes/longsleeve/longsleeve2/female/run.png",
+      "sha256": "0dba526884f4e57ea05d09bfa7c5ad9c62e4465727530e77cde705563558e435",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/torso/clothes/longsleeve/longsleeve2/female/run.png"
+    },
+    {
+      "path": "torso/clothes/longsleeve/longsleeve2/female/sit.png",
+      "sha256": "c7aaf24addbb74a9c60bc7e6fe9580a2a9c9500a9cb8302dd14d5fe79d8e20cf",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/torso/clothes/longsleeve/longsleeve2/female/sit.png"
+    },
+    {
+      "path": "torso/clothes/longsleeve/longsleeve2/female/walk.png",
+      "sha256": "1bc200c51443db953f1a2e136a0f6afd9f384e401ae093e56820c023101aa368",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/torso/clothes/longsleeve/longsleeve2/female/walk.png"
+    },
+    {
+      "path": "torso/clothes/longsleeve/longsleeve2/male/run.png",
+      "sha256": "7871927072eddff7bafeb0911f13f1e04bd553c4777c4f49dfdf783ee2e06d55",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/torso/clothes/longsleeve/longsleeve2/male/run.png"
+    },
+    {
+      "path": "torso/clothes/longsleeve/longsleeve2/male/sit.png",
+      "sha256": "9dac86ee11bf6e487fc94f064e49e665a86940195a0a643035b4c7eac4ead3f0",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/torso/clothes/longsleeve/longsleeve2/male/sit.png"
+    },
+    {
+      "path": "torso/clothes/longsleeve/longsleeve2/male/walk.png",
+      "sha256": "f28124aa2bf756e371794dc864e5b511e85f7bc4063acb44f76e676ffb09e3e9",
+      "source": "https://raw.githubusercontent.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator/master/spritesheets/torso/clothes/longsleeve/longsleeve2/male/walk.png"
+    }
+  ]
+}
