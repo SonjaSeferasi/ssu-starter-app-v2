@@ -6,7 +6,7 @@ export function drawAdventureBackdrop(scene:Phaser.Scene,course:Course){
  if(!scene.textures.exists(key))return false;
  const source=scene.textures.get(key).getSourceImage() as HTMLImageElement;
  const width=source.width*(540/source.height);
- scene.add.image(0,0,key).setOrigin(0).setDisplaySize(Math.max(960,width),540)
+ scene.add.image(0,0,key).setName('panorama').setOrigin(0).setDisplaySize(Math.max(1600,width)+72,564)
    .setScrollFactor(Math.max(0,(width-960)/(course.width-960)),0).setDepth(-3);
  const haze=scene.add.graphics().setScrollFactor(0).setDepth(-2);
  haze.fillStyle(0xf4ecd5,.08);haze.fillRect(0,0,960,540);
@@ -49,16 +49,16 @@ export function decorateRegion(scene:Phaser.Scene,region:Region,course:Course){
  // Local foreground details travel with the world, so the route changes visibly
  // even with the distant painted panorama moving more slowly in parallax.
  if(region.style==='forest'){
-   for(let x=left+60;x<right;x+=190){g.fillStyle(0x3e5945);g.fillRect(x,220,38,350);g.fillStyle(0x7d9270);g.fillRect(x+7,225,5,310);g.fillStyle(0x456b49,.9);g.fillEllipse(x+12,220,230,145);g.fillStyle(0x6f985f,.65);g.fillEllipse(x-30,182,130,90);}
+   for(let x=left+60;x<right;x+=190){g.fillStyle(0x3e5945,.18);g.fillRect(x,220,18,350);g.fillStyle(0x7d9270,.13);g.fillRect(x+4,225,3,310);g.fillStyle(0x456b49,.12);g.fillEllipse(x+12,220,180,105);g.fillStyle(0x6f985f,.1);g.fillEllipse(x-30,182,110,70);}
  }else if(region.style==='sand'){
-   for(let x=left+20;x<right;x+=210){g.fillStyle(0xb89567,.7);g.fillRoundedRect(x,280,150,270,60);g.fillStyle(0xd3b380,.7);g.fillEllipse(x+75,290,150,70);g.fillStyle(0x766c50);g.fillRoundedRect(x+60,350,24,42,12);}
+   for(let x=left+20;x<right;x+=210){g.fillStyle(0xb89567,.24);g.fillRoundedRect(x,280,150,270,60);g.fillStyle(0xd3b380,.24);g.fillEllipse(x+75,290,150,70);g.fillStyle(0x766c50);g.fillRoundedRect(x+60,350,24,42,12);}
  }else if(region.style==='cloud'){
    g.fillStyle(0xeaf0eb,.65);for(let x=left;x<right;x+=170){g.fillEllipse(x,500,310,100);g.fillEllipse(x+60,460,190,90);}
  }else if(region.style==='cavern'){
    g.fillStyle(0x45405d,.6);g.fillRect(left,0,right-left,130);
    for(let x=left;x<right;x+=120){g.fillTriangle(x,130,x+70,130,x+40,200);g.fillStyle(0x8a6dab,.5);g.fillTriangle(x+50,530,x+80,390,x+120,530);}
  }else if(region.style==='castle'){
-   for(let x=left+50;x<right;x+=200){g.fillStyle(0x535367,.7);g.fillRect(x,160,55,380);g.fillStyle(0x747084,.6);for(let y=170;y<520;y+=35)g.fillRect(x+5,y,45,3);g.fillStyle(0xe8a14e,.6);g.fillEllipse(x+25,340,25,40);}
+   for(let x=left+50;x<right;x+=200){g.fillStyle(0x535367,.28);g.fillRect(x,160,55,380);g.fillStyle(0x747084,.25);for(let y=170;y<520;y+=35)g.fillRect(x+5,y,45,3);g.fillStyle(0xe8a14e,.6);g.fillEllipse(x+25,340,25,40);}
    g.fillStyle(0xed793e,.55);g.fillRect(left,515,right-left,25);
  }else if(region.style==='arena'){
    g.lineStyle(2,0x99b6b8,.45);for(let x=left;x<right;x+=160)g.lineBetween(x,30,x-60,130);

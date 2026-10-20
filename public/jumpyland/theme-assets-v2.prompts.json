@@ -1,0 +1,38 @@
+﻿{
+  "tool": "Built-in image_gen; user-approved local background removal with OpenCV/Pillow",
+  "enemyGeneration": "A polished realistic 3D fantasy platform game sprite atlas on a TRANSPARENT background. Exact 3 columns by 2 rows, six equally sized square cells. Each cell contains one isolated complete enemy with generous transparent padding, no text or borders, no scenery. All characters face left in three-quarter side view. Top row: 1 an expressive brown forest mushroom creature with stout feet and heavy brows; 2 an armored golden woodland turtle with a green segmented shell; 3 a red spotted carnivorous flower with a curled green stem. Bottom row: 1 a purple horned alien guard in glossy ivory battle armor with dark blue fabric and a red eyepiece; 2 a hovering silver and violet spherical patrol drone with a glowing crimson core; 3 a masked ninja scout in layered charcoal cloth, forehead metal plate, green tactical vest and flowing scarf. Sculpted materials, rich ambient occlusion, detailed natural texture, dramatic rounded lighting, readable silhouettes suitable for 80 pixel tall gameplay. Not pixel art, not flat vector, not a screenshot. Six characters fit fully inside their own cells without touching any edge. Total image landscape 3:2.",
+  "enemyCutoutRequest": "Edit this exact sprite atlas by removing ALL background pixels completely to true transparent alpha. Keep the six character figures and their detailed colors and forms unchanged. No colored gradients, backdrop, shadows on the background, checkerboard drawing, halos or scenery. Empty transparent space between all figures and at edges. Preserve exact 1536x1024 canvas and three equal columns and two rows. Slightly shrink each figure within its existing cell if needed to leave transparent spacing; do not change their cell order. This output must be actual isolated game sprites on transparent alpha.",
+  "terrainGeneration": "Production side-scrolling game terrain sprite atlas. Landscape image 3:1 aspect ratio, three equal square cells in a horizontal row. PURE SOLID WHITE BACKGROUND, no shadows outside objects, no scenery, no text. Each cell contains one separate broad walkable floating terrain piece, fully inside its cell with 40 px margin. Every walking surface is near the top one third of the cell, seen in shallow side view with a little visible top, like a realistic cinematic 2.5D adventure platformer. Cell1: lush rounded grass and moss-topped irregular earthy cliff, beige limestone and root threads, little ferns and daisies, gentle uneven natural top, fractured tapering rocky underside, wide and low not tall cone. Cell2: ochre sandstone floating island with pale horizontal layered rock ledges and patches of sage green moss, natural eroded irregular underside, wide shallow oval top with a little depth. Cell3: a wide rustic log-and-bamboo tree platform with weathered rounded planks, bound ropes, small moss and vines, thick rounded wooden supports and organic edge, no upright rails or poles blocking walking. Photorealistic sculpted animated-game materials, beautiful detailed lighting and dimensional beveled edges. No flat vector shapes, no pixel art. The three isolated props must be clearly separated by white margins.",
+  "assets": [
+    "enemies-v2.png",
+    "terrain-props-v2.png"
+  ],
+  "research": [
+    {
+      "theme": "Mario",
+      "url": "https://www.nintendo.com/jp/character/mario/en/history/smb/index.html",
+      "adaptation": "Fire Flower bouncing fireballs, Super Star contact protection, mushroom/turtle/plant enemy archetypes."
+    },
+    {
+      "theme": "Dragon Ball",
+      "url": "https://en.dragon-ball-official.com/news/01_356.html",
+      "adaptation": "Golden spiked hair, golden aura, powered beam."
+    },
+    {
+      "theme": "Dragon Ball",
+      "url": "https://en.dragon-ball-official.com/news/01_1705.html",
+      "adaptation": "Golden Nimbus with curling trailing vapor."
+    },
+    {
+      "theme": "Naruto",
+      "url": "https://naruto-official.com/en/news/01_1802?nolangsuggestion=1",
+      "adaptation": "Rotating blue Rasengan chakra sphere."
+    },
+    {
+      "theme": "Naruto",
+      "url": "https://naruto-official.com/en/news/01_1715",
+      "adaptation": "Chidori is a close-range lightning thrust; adapted to a short-range strike rather than a long projectile."
+    }
+  ],
+  "scope": "Original fan-inspired adaptations. No official music recordings; run powers and costumes do not alter saved avatars or account currency."
+}

@@ -1,3 +1,5 @@
+import { validLayeredFields, type LayeredLook } from './avatar-layers';
+
 export type NavigationPosition = 'side' | 'bottom';
 export const faceDetails = [
   { id: 'natural', name: 'Natural' }, { id: 'round-glasses', name: 'Round glasses' },
@@ -19,7 +21,7 @@ export type AvatarAppearance = {
   faceStyle?: (typeof faceDetails)[number]['id'];
   shirtColor?: (typeof shirtColors)[number]['id'];
   pantsColor?: (typeof pantsColors)[number]['id'];
-};
+} & Partial<LayeredLook>;
 export type Outfit = { id: string; name: string; assetKey: string };
 export type DefaultFace = { id: string; assetKey: string; initial: boolean };
 export type Activity = { code: 'game1' | 'dormspace' | 'wordle'; name: string; description: string; included: boolean };
@@ -75,7 +77,8 @@ export function validAppearance(value: unknown): value is AvatarAppearance {
   const validId = (id: unknown) => typeof id === 'string' && /^[1-9]\d{0,18}$/.test(id) && BigInt(id) <= 9223372036854775807n;
   const allowed = (key: string, options: readonly { id: string }[]) => data[key] === undefined || options.some(option => option.id === data[key]);
   return validId(data.outfitId) && (data.faceId === null || validId(data.faceId))
-    && allowed('faceStyle', faceDetails) && allowed('shirtColor', shirtColors) && allowed('pantsColor', pantsColors);
+    && allowed('faceStyle', faceDetails) && allowed('shirtColor', shirtColors) && allowed('pantsColor', pantsColors)
+    && validLayeredFields(data);
 }
 
 // GitHub #41-44: presentation and entry integration only. Missing feature-owner
