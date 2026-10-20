@@ -220,6 +220,10 @@ function Conversation() {
 
       <section className={styles.conversation} aria-label="Conversation">
         <header className={styles.header}>
+          {/* Tablets and phones show one panel at a time, so this returns to the Messages list there. */}
+          <Link href="/messages" className={styles.backButton} aria-label="Back to Messages">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+          </Link>
           <span className={styles.avatar} aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z" /></svg>
           </span>

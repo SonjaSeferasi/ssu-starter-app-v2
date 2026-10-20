@@ -42,6 +42,8 @@ export function ConversationListPanel() {
   const [createError, setCreateError] = useState('');
   // SRS-200.1 (#314): choosing a friend to message replaces the DM list while open.
   const [picking, setPicking] = useState(false);
+  // SRS-202.1 (#456): New group first shows a confirmation step; only Create group creates it.
+  const [confirmingGroup, setConfirmingGroup] = useState(false);
 
   useEffect(() => {
     const again = () => setRefresh((count) => count + 1);
@@ -86,6 +88,7 @@ export function ConversationListPanel() {
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data.conversation?.id) throw new Error(data.error || 'The group could not be created. Please try again.');
       window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT));
+      setConfirmingGroup(false);
       router.push(`/messages/${encodeURIComponent(data.conversation.id)}`);
     } catch (err) {
       setCreateError(err instanceof Error && !(err instanceof TypeError) ? err.message : 'The group could not be created. Please try again.');
@@ -104,10 +107,10 @@ export function ConversationListPanel() {
     <section className={styles.listPanel} aria-label="Conversations">
       <h1 className={styles.heading}>Messages</h1>
       <div className={styles.tabs}>
-        <button type="button" className={styles.tab} aria-pressed={tab === 'dms'} onClick={() => { setTab('dms'); setPicking(false); }}>
+        <button type="button" className={styles.tab} aria-pressed={tab === 'dms'} onClick={() => { setTab('dms'); setPicking(false); setConfirmingGroup(false); }}>
           DMs{unreadIn('private') && <><span className={styles.tabDot} aria-hidden="true" /><span className={styles.srOnly}> (unread)</span></>}
         </button>
-        <button type="button" className={styles.tab} aria-pressed={tab === 'groups'} onClick={() => { setTab('groups'); setPicking(false); }}>
+        <button type="button" className={styles.tab} aria-pressed={tab === 'groups'} onClick={() => { setTab('groups'); setPicking(false); setConfirmingGroup(false); }}>
           Groups{unreadIn('group') && <><span className={styles.tabDot} aria-hidden="true" /><span className={styles.srOnly}> (unread)</span></>}
         </button>
       </div>
@@ -118,15 +121,32 @@ export function ConversationListPanel() {
         </button>
       )}
       {tab === 'groups' && (
-        <>
-          <button type="button" className={styles.newGroup} onClick={newGroup} disabled={creating}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 5v14" /><path d="M5 12h14" /></svg>
-            {creating ? 'Creating group…' : 'New group'}
-          </button>
-          {createError && <p className={styles.listError} role="alert">{createError}</p>}
-        </>
+        // Group invitations (SRS-205) are not built yet, so students are told before they create a group.
+        <div className={styles.notice} role="note">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M12 8v4" /><path d="M12 16h.01" /></svg>
+          <div>
+            <p className={styles.noticeTitle}>You can’t invite people to groups yet</p>
+            <p className={styles.noticeText}>Group invitations are coming in a later update. For now, you’ll be the only member of any group you create.</p>
+          </div>
+        </div>
       )}
-      {tab === 'dms' && picking ? (
+      {tab === 'groups' && !confirmingGroup && (
+        <button type="button" className={styles.newGroup} onClick={() => { setCreateError(''); setConfirmingGroup(true); }}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 5v14" /><path d="M5 12h14" /></svg>
+          New group
+        </button>
+      )}
+      {tab === 'groups' && confirmingGroup ? (
+        <div className={styles.picker} role="group" aria-labelledby="new-group-title">
+          <h2 id="new-group-title" className={styles.stepTitle}>Create a group chat?</h2>
+          <p className={styles.stepText}>You’ll be the group’s owner and its first member, and the group opens right away so you can send the first message. Adding friends to the group comes with group invitations in a later update.</p>
+          {createError && <p className={styles.listError} role="alert">{createError}</p>}
+          <div className={styles.stepActions}>
+            <button type="button" className={styles.newGroup} onClick={newGroup} disabled={creating}>{creating ? 'Creating group…' : 'Create group'}</button>
+            <button type="button" className={styles.retry} onClick={() => { setConfirmingGroup(false); setCreateError(''); }} disabled={creating}>Cancel</button>
+          </div>
+        </div>
+      ) : tab === 'dms' && picking ? (
         <FriendPicker onClose={() => setPicking(false)} onOpened={() => { setPicking(false); window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT)); }} />
       ) : !list ? (
         <p className={styles.emptyList} role={failed ? 'alert' : undefined}>
