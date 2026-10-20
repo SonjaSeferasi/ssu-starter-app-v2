@@ -36,6 +36,15 @@
 .newGroup:disabled { opacity: .6; cursor: progress; }
 .newGroup:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
 .listError { margin: 10px 4px 0; color: #a32d2d; font-size: 14px; }
+/* SRS-202.1 (#456): the confirmation step shown before a group is created. */
+.stepTitle { margin: 4px 4px 8px; color: #102c30; font-size: 18px; font-weight: 700; }
+.stepText { margin: 0 4px; color: #536963; font-size: 14px; line-height: 1.6; }
+.stepActions { display: flex; align-items: center; gap: 14px; margin-top: 4px; }
+.stepActions .newGroup { width: auto; flex: 1; }
+/* Back to the Messages list from a conversation; only shown when the list is hidden (tablets and phones). */
+.backButton { display: none; place-items: center; flex-shrink: 0; width: 40px; height: 40px; margin-left: -8px; border-radius: 50%; color: #102c30; text-decoration: none; }
+.backButton:hover { background: #e6efe9; }
+.backButton:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
 /* SRS-200.1 (#314): choose a friend to message from the DMs tab (the New message button reuses .newGroup). */
 .picker { display: flex; flex-direction: column; flex: 1; min-height: 0; margin-top: 12px; }
 .pickerTop { display: flex; align-items: center; gap: 10px; }
@@ -97,6 +106,7 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
   /* Phones show the list and the conversation on separate pages, so the list scrolls with the page. */
   .listPanel, :global([data-navigation='bottom']) .listPanel { position: static; height: auto; min-height: 0; }
   .conversationList { overflow: visible; }
+  .backButton { display: grid; }
 }
 @media (max-width: 700px) {
   :global([data-navigation='bottom']) .footer { bottom: 73px; }
