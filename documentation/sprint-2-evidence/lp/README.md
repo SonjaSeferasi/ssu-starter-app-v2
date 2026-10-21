@@ -6,7 +6,7 @@ Each screenshot is also posted on its SRS issue, together with the branch and pu
 
 | SRS item | Issue | Screenshot | Branch | Pull request |
 |---|---|---|---|---|
-| SRS-200.1, LP, Start a friend conversation | #311 | *to be added* | `srs-200.1-start-friend-conversation` | #471 |
+| SRS-200.1, LP, Start a friend conversation | #311 | `srs-200.1-new-conversation.png` | `srs-200.1-start-friend-conversation` | #471 |
 | SRS-201.2, LP, Display a sent text message | #316 | `srs-201.2-srs-212.5-conversation-opened.png` | `srs-201.2-message-history` | #462 |
 | SRS-202.1, LP, Create a group chat | #452 | `srs-202.1-groups-tab-before.png`, `srs-202.1-srs-203.1-group-created-owner.png` | `srs-202.1-create-group` (follow-ups: `srs-202.1-sticky-conversation-list`, `srs-202.1-group-step-and-back-button`, `srs-202.1-group-invites-notice`) | #463 (follow-ups #470, #472, #473) |
 | SRS-203.1, LP, Assign initial ownership | #453 | `srs-202.1-srs-203.1-group-created-owner.png` | `srs-202.1-create-group` | #463 |
@@ -15,6 +15,12 @@ Each screenshot is also posted on its SRS issue, together with the branch and pu
 | SRS-213.1, LP, Restrict private-conversation access | #321 | `srs-213.1-not-available.png` | `srs-213.1-private-access` | #464 |
 
 ## What each screenshot shows
+
+**SRS-200.1** — `srs-200.1-new-conversation.png`
+
+![A new private conversation, open and ready for the first message](srs-200.1-new-conversation.png)
+
+After choosing **New message** on the DMs tab and selecting a current friend, their private conversation opens. This friend had no conversation yet, so a new one was created, with **Live updates on** and ready for the first message. Choosing the same friend again reopens the same conversation.
 
 **SRS-201.2 and SRS-212.5** — `srs-201.2-srs-212.5-conversation-opened.png`
 
