@@ -9,6 +9,8 @@ export type RawCommentRow = {
   text_content: string;
   created_at: string;
   edited_at: string | null;
+  parent_comment_id: number | null;
+  deleted_at: string | null;
   author_name: string;
   author_photo_key: string | null;
 };
@@ -22,6 +24,8 @@ export type Comment = {
   textContent: string;
   createdAt: string;
   editedAt: string | null;
+  parentCommentId: number | null;
+  deletedAt: string | null;
 };
 
 export async function shapeComments(supabase: SupabaseClient<any, any, any>, rows: RawCommentRow[]): Promise<Comment[]> {
@@ -35,6 +39,8 @@ export async function shapeComments(supabase: SupabaseClient<any, any, any>, row
       textContent: row.text_content,
       createdAt: row.created_at,
       editedAt: row.edited_at,
+      parentCommentId: row.parent_comment_id,
+      deletedAt: row.deleted_at,
     }))
   );
 }

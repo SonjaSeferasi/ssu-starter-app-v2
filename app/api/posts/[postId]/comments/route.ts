@@ -25,6 +25,13 @@ export async function GET(request: Request, { params }: { params: Promise<{ post
 // authorized to view. author_id always comes from the verified session
 // (never a client-supplied value); ownership/visibility enforcement and the
 // actual insert live in socialu_create_comment.
+//
+// Replying to Comments (separate feature, not SRS-310): an optional
+// parentCommentId in the body targets an existing comment to reply to;
+// socialu_create_comment flattens it to one level of nesting automatically
+// (see 20261021000100_comment_replies.sql), so this route doesn't need to
+// know or care whether the client clicked Reply on a top-level comment or
+// on another reply.
 export async function POST(request: Request, { params }: { params: Promise<{ postId: string }> }) {
   try {
     const user = await verifiedUser(request);
@@ -33,10 +40,12 @@ export async function POST(request: Request, { params }: { params: Promise<{ pos
     if (!Number.isInteger(postId)) throw new AccountError('Invalid post id.', 400);
 
     const body = await jsonBody(request);
+    const parentCommentId = Number(body.parentCommentId);
     const row = await feedRpc<RawCommentRow>('socialu_create_comment', {
       p_auth_id: user.id,
       p_post_id: postId,
       p_text: textField(body.textContent),
+      p_parent_comment_id: Number.isInteger(parentCommentId) ? parentCommentId : null,
     });
 
     const [comment] = await shapeComments(accountClient(), [row]);

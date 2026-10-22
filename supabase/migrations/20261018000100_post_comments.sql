@@ -196,6 +196,7 @@ BEGIN
   SELECT coalesce(jsonb_agg(to_jsonb(c) ORDER BY c.created_at ASC), '[]'::jsonb) INTO result
   FROM (
     SELECT pc.comment_id, pc.post_id, pc.author_id, pc.text_content, pc.created_at, pc.edited_at,
+      pc.parent_comment_id, pc.deleted_at,
       coalesce(sp.display_name, s.full_name) AS author_name,
       am.storage_key AS author_photo_key
     FROM socialu.post_comments pc
@@ -213,9 +214,16 @@ GRANT EXECUTE ON FUNCTION public.socialu_list_comments(UUID, BIGINT) TO service_
 -- SRS-310.1/310.2/310.3 -- submit a comment on a post the caller is
 -- authorized to view. author_id always comes from the verified session,
 -- never a client-supplied value; same visibility check as the list above.
-CREATE FUNCTION public.socialu_create_comment(p_auth_id UUID, p_post_id BIGINT, p_text TEXT) RETURNS JSONB
+-- p_parent_comment_id (added by 20261021000100_comment_replies.sql, a
+-- separate Replying to Comments feature, not an SRS-310 change) flattens
+-- to one level of nesting: replying to a reply attaches to that reply's
+-- own top-level parent instead, never nesting deeper.
+CREATE OR REPLACE FUNCTION public.socialu_create_comment(
+  p_auth_id UUID, p_post_id BIGINT, p_text TEXT, p_parent_comment_id BIGINT DEFAULT NULL
+) RETURNS JSONB
 LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$
-DECLARE me BIGINT; owner BIGINT; vis TEXT; new_comment socialu.post_comments%ROWTYPE; result JSONB;
+DECLARE me BIGINT; owner BIGINT; vis TEXT; target_post BIGINT; target_parent BIGINT;
+  actual_parent BIGINT; target_author BIGINT; new_comment socialu.post_comments%ROWTYPE; result JSONB;
 BEGIN
   me := public.socialu_require_student(p_auth_id);
   IF p_text IS NULL OR btrim(p_text) = '' THEN
@@ -227,12 +235,37 @@ BEGIN
     RAISE EXCEPTION 'You are not authorized to view this post.' USING ERRCODE = '42501';
   END IF;
 
-  INSERT INTO socialu.post_comments (post_id, author_id, text_content)
-  VALUES (p_post_id, me, btrim(p_text)) RETURNING * INTO new_comment;
+  IF p_parent_comment_id IS NOT NULL THEN
+    SELECT post_id, parent_comment_id, author_id INTO target_post, target_parent, target_author
+    FROM socialu.post_comments WHERE comment_id = p_parent_comment_id;
+    IF NOT FOUND THEN RAISE EXCEPTION 'Comment not found.' USING ERRCODE = 'P0002'; END IF;
+    IF target_post <> p_post_id THEN RAISE EXCEPTION 'Comment not found.' USING ERRCODE = 'P0002'; END IF;
+    actual_parent := coalesce(target_parent, p_parent_comment_id);
+  END IF;
+
+  INSERT INTO socialu.post_comments (post_id, author_id, text_content, parent_comment_id)
+  VALUES (p_post_id, me, btrim(p_text), actual_parent) RETURNING * INTO new_comment;
+
+  -- SRS-313.1-313.3 + reply notifications, deduplicated
+  -- (20261022000100_comment_notifications.sql): a reply notifies whoever
+  -- was actually replied to (target_author, resolved before flattening);
+  -- the post author also gets a post_comment notification, but only when
+  -- they're a different person from the reply target, so the post author
+  -- never gets notified twice for one event when they're the one being
+  -- replied to. Self-actions never notify anyone.
+  IF p_parent_comment_id IS NOT NULL AND target_author <> me THEN
+    INSERT INTO socialu.notifications (recipient_id, actor_id, kind, comment_id)
+    VALUES (target_author, me, 'comment_reply', new_comment.comment_id);
+  END IF;
+  IF owner <> me AND (p_parent_comment_id IS NULL OR owner <> target_author) THEN
+    INSERT INTO socialu.notifications (recipient_id, actor_id, kind, comment_id)
+    VALUES (owner, me, 'post_comment', new_comment.comment_id);
+  END IF;
 
   SELECT to_jsonb(c) INTO result FROM (
     SELECT new_comment.comment_id, new_comment.post_id, new_comment.author_id,
       new_comment.text_content, new_comment.created_at, new_comment.edited_at,
+      new_comment.parent_comment_id, new_comment.deleted_at,
       coalesce(sp.display_name, s.full_name) AS author_name,
       am.storage_key AS author_photo_key
     FROM socialu.students s
@@ -243,8 +276,8 @@ BEGIN
   RETURN result;
 END;
 $$;
-REVOKE ALL ON FUNCTION public.socialu_create_comment(UUID, BIGINT, TEXT) FROM PUBLIC, anon, authenticated;
-GRANT EXECUTE ON FUNCTION public.socialu_create_comment(UUID, BIGINT, TEXT) TO service_role;
+REVOKE ALL ON FUNCTION public.socialu_create_comment(UUID, BIGINT, TEXT, BIGINT) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.socialu_create_comment(UUID, BIGINT, TEXT, BIGINT) TO service_role;
 
 -- Not an SRS-310 requirement (no numbered sub-requirement covers editing a
 -- comment -- see the implementation report), built for parity with
