@@ -1,3 +1,6 @@
+## Board reconciliation update
+The existing five Jumpyland SRS cards (#376, #379, #382, #385 and #388) and their existing tasks are the Sprint 2 board scope. No duplicate Jumpyland requirement cards were created. The separate avatar issues #516–521 document supporting work and are not substituted for these backlog requirements. The live project view is [Sonja — Sprint 2](https://github.com/users/SonjaSeferasi/projects/2/views/15). The original SRS criteria remain authoritative; automatic completion is not claimed for renderer/finite-life mismatches.
+
 ## Sprint 2 current implementation audit — 22 October 2026
 Owner: Sonja Seferasi (SS). Existing issue retained; no duplicate SRS card created.
 

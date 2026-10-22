@@ -1,6 +1,6 @@
 # Sprint 2 demonstration — Sonja
 
-Proposed formal item: [SRS-608.2 / #517](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/517). Allow about five minutes.
+Supporting avatar preview demonstration (not a formal Sprint 2 selection): [SRS-608.2 / #517](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/517). Allow about five minutes.
 
 1. Show the parent shall statement, UR-608 trace and three linked tasks. Identify the still-open live acceptance task.
 2. Show merged PR #515 and its separate avatar branch. Explain that 606 tests and the build pass, while hosted acceptance is a distinct check.

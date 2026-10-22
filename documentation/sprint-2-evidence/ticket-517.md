@@ -13,7 +13,7 @@ Traces to: UR-608.
 Source: [canonical SRS](https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/eab5235b867e608693240ede1184c7ba23d1c843/documentation/SocialU_SRS_Editable.md#ur-608).
 
 ## Current implementation and vertical slice
-Selecting an available outfit updates the draft avatar immediately. The opt-in collection adds 144 transparent pieces with calibrated layering. All 1,224 supported head/tone/top/bottom combinations pass layout checks. Live selector interaction remains pending. This is the proposed single formal Sprint 2 demo item; the other records form its supporting backlog.
+Selecting an available outfit updates the draft avatar immediately. The opt-in collection adds 144 transparent pieces with calibrated layering. All 1,224 supported head/tone/top/bottom combinations pass layout checks. Live selector interaction remains pending. This is supporting avatar work. Sonja requested that Sprint 2 organization focus on the existing Jumpyland SRS cards already in the project backlog. No formal demo selection is claimed by this card.
 
 Code/test locations: [components/game-room/game-room.tsx](https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/eab5235b867e608693240ede1184c7ba23d1c843/components/game-room/game-room.tsx), [components/game-room/avatar-preview.tsx](https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/eab5235b867e608693240ede1184c7ba23d1c843/components/game-room/avatar-preview.tsx), [components/game-room/layered-avatar.tsx](https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/eab5235b867e608693240ede1184c7ba23d1c843/components/game-room/layered-avatar.tsx), [lib/avatar-layers.ts](https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/eab5235b867e608693240ede1184c7ba23d1c843/lib/avatar-layers.ts), [__tests__/avatar-art.test.ts](https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/eab5235b867e608693240ede1184c7ba23d1c843/__tests__/avatar-art.test.ts).
 
@@ -39,8 +39,8 @@ Sign in, open Game Room, use an entitled outfit and provided face, try the new c
 Board access limitation: the available GitHub credential lacks Projects scopes, so this issue has not been added to a Sprint 2 view by this audit.
 
 ## Actual linked sub-issues
-- [x] #522 ? Task 608.2-1 — Implement immediate account-owned outfit preview
-- [x] #523 ? Task 608.2-2 — Verify imported artwork and preview data contracts
-- [ ] #524 ? Task 608.2-3 — Demonstrate signed-in outfit preview and attach app screenshot
+- [x] #522 — Task 608.2-1 — Implement immediate account-owned outfit preview
+- [x] #523 — Task 608.2-2 — Verify imported artwork and preview data contracts
+- [ ] #524 — Task 608.2-3 — Demonstrate signed-in outfit preview and attach app screenshot
 
-The parent remains open pending the signed-in demonstration and actual application screenshot.
+Two implementation/automated-verification tasks are complete. Live acceptance remains open; the requirement is not claimed Done.
