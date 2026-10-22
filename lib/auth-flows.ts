@@ -1,17 +1,19 @@
 import { createCipheriv, createDecipheriv, createHash, randomBytes, randomUUID } from 'node:crypto';
 import { AccountError, authClient, textField } from './socialu-account';
+import { academicEmail } from './university-email';
 
 export { passwordError } from './account/validation';
 
 export function universityEmail(value: unknown) {
   const email = textField(value).toLowerCase();
-  if (!/^[^\s@]+@salemstate\.edu$/.test(email)) throw new AccountError('Use your Salem State university email (@salemstate.edu).', 400);
+  if (!academicEmail(email)) throw new AccountError('Use your school email (.edu, .edu.xx, or .ac.xx).', 400);
   return email;
 }
 
 export async function authGuard(action: 'status' | 'failure' | 'success' | 'verified' | 'send', email: string, purpose = 'signup') {
   const client = authClient();
   const { data, error } = await client.rpc('socialu_auth_guard', { p_action: action, p_email: email, p_purpose: purpose });
+  if (error?.code === '22023') throw new AccountError('Use a supported school email (.edu, .edu.xx, or .ac.xx).', 400);
   if (error) throw new AccountError('Account security is not configured. Apply the SRS 100–105 migration on the server.', 503);
   if (data?.retry_after > 0) throw new AccountError(`Please wait ${data.retry_after} seconds before requesting another code.`, 429);
   return data as { verification_required?: boolean };

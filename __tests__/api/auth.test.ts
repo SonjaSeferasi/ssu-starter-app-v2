@@ -90,6 +90,11 @@ describe('SocialU login and registration', () => {
     expect(signUp).toHaveBeenCalledWith({ email: user.email, password: 'Secret123!', options: { data: { full_name: 'Student Name', username: 'student' }, emailRedirectTo: 'http://localhost/verify-email?purpose=signup' } });
     expect(await res.text()).not.toContain('access_token');
   });
+  it.each(['student@another.edu', 'student@students.another.edu', 'student@another.ac.uk'])('registers a student from an academic school domain: %s', async email => {
+    const response = await register(req('POST', { ...registration, email }));
+    expect(response.status).toBe(201);
+    expect(signUp).toHaveBeenCalledWith(expect.objectContaining({ email }));
+  });
   it.each([{ fullName: '' }, { username: '' }, { confirmPassword: 'different' }, { password: 'weak', confirmPassword: 'weak' }])('rejects invalid registration %j', async invalid => {
     expect((await register(req('POST', { ...registration, ...invalid }))).status).toBe(400);
     expect(signUp).not.toHaveBeenCalled();
@@ -100,7 +105,6 @@ describe('SocialU login and registration', () => {
     { email: undefined }, { email: '' }, { email: '   ' },
     { email: 'student@gmail.com' },
     { email: 'student@salemstate.edu.attacker.test' },
-    { email: 'student@sub.salemstate.edu' },
   ])('SRS-100.1/.2/.4/.5 reject direct invalid registration requests %j before signup', async invalid => {
     expect((await register(req('POST', { ...registration, ...invalid }))).status).toBe(400);
     expect(signUp).not.toHaveBeenCalled();
