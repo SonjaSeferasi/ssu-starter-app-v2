@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
-import { Bell, UserCheck, X } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Bell, UserCheck, UserPlus, X } from 'lucide-react';
 import { timeAgo } from '../feed/time';
 import { SessionNotice } from '../navigation/section-page';
 import { useNavigationSession } from '../navigation/social-shell';
@@ -93,15 +93,24 @@ function NotificationRow({ item, onAnswered }: { item: NotificationItem; onAnswe
   </li>;
 }
 
+type Tab = 'general' | 'friends';
+
 function NotificationsContent() {
   const [items, setItems] = useState<NotificationItem[] | null>(null);
   const [error, setError] = useState('');
+  const [tab, setTab] = useState<Tab>('general');
+  const firstLoad = useRef(true);
 
   const load = useCallback(() => {
     profileFetch('/api/notifications')
       .then(({ response, data }) => {
         if (!response.ok) throw new Error(data.error || 'Unable to load notifications.');
-        setItems(data.notifications); setError('');
+        const list: NotificationItem[] = data.notifications;
+        // First load: open on Friend requests when that is where the new items are.
+        if (firstLoad.current && list.some(item => item.kind === 'friend_request' && item.request_status === 'pending')
+          && !list.some(item => item.kind !== 'friend_request' && !item.read_at)) setTab('friends');
+        firstLoad.current = false;
+        setItems(list); setError('');
         // Seeing the list counts as reading it, so the bell badge clears.
         if (data.unread > 0) return profileFetch('/api/notifications', { method: 'POST' })
           .then(() => { window.dispatchEvent(new Event('socialu-notifications-changed')); }, () => undefined);
@@ -110,12 +119,30 @@ function NotificationsContent() {
   }, []);
   useEffect(load, [load]);
 
+  // Friend requests get their own tab; everything else is a general notification.
+  const requests = items?.filter(item => item.kind === 'friend_request') ?? [];
+  const general = items?.filter(item => item.kind !== 'friend_request') ?? [];
+  const pendingCount = requests.filter(item => item.request_status === 'pending').length;
+  const shown = tab === 'friends' ? requests : general;
+
   return <main className={styles.page}>
     <h1 className={styles.name} style={{ marginBottom: 16 }}>Notifications</h1>
-    {error ? <p className={`${styles.notice} ${styles.error}`} role="alert">{error}</p>
-      : !items ? <div className={styles.skeleton} style={{ height: 160, borderRadius: 16 }} aria-busy="true" />
-      : !items.length ? <div className={styles.empty}><Bell /><h2>No notifications yet</h2><p>Friend requests, likes, and comments will show up here.</p></div>
-      : <ul className={styles.notificationList}>{items.map(item => <NotificationRow key={item.notification_id} item={item} onAnswered={load} />)}</ul>}
+    <div className={styles.tabs} role="tablist" aria-label="Notification type">
+      <button type="button" role="tab" className={styles.tab} aria-selected={tab === 'general'} onClick={() => setTab('general')}><Bell />Notifications</button>
+      <button type="button" role="tab" className={styles.tab} aria-selected={tab === 'friends'} onClick={() => setTab('friends')}>
+        <UserPlus />Friend requests{pendingCount > 0 && <span className={styles.tabCount}>{pendingCount}</span>}
+      </button>
+    </div>
+    <div role="tabpanel" style={{ marginTop: 16 }}>
+      {error ? <p className={`${styles.notice} ${styles.error}`} role="alert">{error}</p>
+        : !items ? <div className={styles.skeleton} style={{ height: 160, borderRadius: 16 }} aria-busy="true" />
+        : !shown.length ? <div className={styles.empty}>
+          {tab === 'friends' ? <UserPlus /> : <Bell />}
+          <h2>{tab === 'friends' ? 'No friend requests' : 'No notifications yet'}</h2>
+          <p>{tab === 'friends' ? 'When someone sends you a friend request, it will show up here.' : 'Accepted friend requests, likes, and comments will show up here.'}</p>
+        </div>
+        : <ul className={styles.notificationList}>{shown.map(item => <NotificationRow key={item.notification_id} item={item} onAnswered={load} />)}</ul>}
+    </div>
   </main>;
 }
 
