@@ -118,7 +118,6 @@ export function NavigationFrame({ pathname, children, position = 'side', ...pref
           <input type="search" placeholder="Search students, groups, events…" disabled />
         </div>
         <div className={styles.headerActions}>
-          <NotificationBell />
           <span className={styles.pointsBadge} title="The points system isn't built yet">★ — pts</span>
           <NotificationBell pathname={pathname} />
           <Link href="/profile" className={styles.profileLink} aria-current={isCurrentDestination(pathname, '/profile') ? 'page' : undefined} aria-label="Your profile">

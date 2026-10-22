@@ -9,7 +9,7 @@ await db.exec(`CREATE ROLE anon;CREATE ROLE authenticated;CREATE ROLE service_ro
 CREATE SCHEMA auth;CREATE TABLE auth.users(id uuid PRIMARY KEY,email text,email_confirmed_at timestamptz);CREATE TABLE auth.sessions(id uuid PRIMARY KEY,user_id uuid,created_at timestamptz);`);
 await db.exec(readFileSync(root+'/supabase/schema.sql','utf8'));
 try {
-for(const file of ['20261008000100_link_supabase_accounts.sql','20261008000200_feed_functions.sql','20261008000300_fix_deferred_post_trigger.sql','20261012230000_srs_100_105_auth.sql','20261013200000_srs_109_113_profile.sql','20261015180000_profile_social.sql','20261015190000_profile_full_name.sql','20261016000100_like_post.sql','20261016001000_optional_profile_bio.sql','20261016010000_friendships.sql','20261016020000_feed_profile_links.sql','20261016030000_edit_profile_username.sql','20261016040000_friend_accept_mutual_follow.sql','20261017000100_unlike_post.sql','20261018000100_post_comments.sql','20261018010000_integrate_profile_feed.sql','20261020000100_like_notifications.sql','20261021000100_comment_replies.sql','20261022000100_comment_notifications.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
+for(const file of ['20261008000100_link_supabase_accounts.sql','20261008000200_feed_functions.sql','20261008000300_fix_deferred_post_trigger.sql','20261012230000_srs_100_105_auth.sql','20261013200000_srs_109_113_profile.sql','20261015180000_profile_social.sql','20261015190000_profile_full_name.sql','20261016000100_like_post.sql','20261016001000_optional_profile_bio.sql','20261016010000_friendships.sql','20261016020000_feed_profile_links.sql','20261016030000_edit_profile_username.sql','20261016040000_friend_accept_mutual_follow.sql','20261017000100_unlike_post.sql','20261018000100_post_comments.sql','20261018010000_integrate_profile_feed.sql','20261020000100_like_notifications.sql','20261021000100_comment_replies.sql','20261022000000_friend_requests_notifications.sql','20261022010000_notification_read_state.sql','20261022000100_comment_notifications.sql','20261024000100_unify_notifications.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
 
 const uid=(n:number)=>`00000000-0000-0000-0000-00000000000${n}`;
 for (let n=1;n<=3;n++) {
@@ -18,7 +18,7 @@ for (let n=1;n<=3;n++) {
 }
 const post=async(n:number,text:string)=>(await db.query<any>('SELECT public.socialu_create_post($1,$2,$3) AS p',[uid(n),text,'public'])).rows[0].p;
 const comment=async(n:number,postId:number,text:string,parentId:number|null=null)=>(await db.query<any>('SELECT public.socialu_create_comment($1,$2,$3,$4) AS c',[uid(n),postId,text,parentId])).rows[0].c;
-const notifs=async(n:number)=>(await db.query<any>('SELECT public.socialu_list_notifications($1) AS n',[uid(n)])).rows[0].n as any[];
+const notifs=async(n:number)=>(await db.query<any>('SELECT public.socialu_notifications($1) AS n',[uid(n)])).rows[0].n.notifications as any[];
 const kinds=async(n:number)=>(await notifs(n)).map((x:any)=>x.kind).sort();
 
 // Student 1 posts; student 2 comments (top-level) on it.
