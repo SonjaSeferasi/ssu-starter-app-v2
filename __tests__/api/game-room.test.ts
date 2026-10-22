@@ -99,4 +99,15 @@ describe('Independent avatar customization', () => {
     expect((await response.json()).code).toBe('AVATAR_CUSTOMIZATION_SETUP_REQUIRED');
     expect(rpc).not.toHaveBeenCalledWith('socialu_game_room', expect.anything());
   });
+  it.each([
+    { code: '22023', message: 'Invalid avatar selection' },
+    { code: '23514', message: 'new row violates check constraint "avatar_customization_options"' },
+  ])('explains when an older customization function cannot save layered options (%j)', async error => {
+    rpc.mockImplementation(async (name: string) => name === 'socialu_avatar_customization' ? { data: null, error }
+      : name === 'socialu_session_guard' ? { data: true, error: null } : { data: { id: '42' }, error: null });
+    const response = await PUT(req('PUT', { ...selection, skinTone: 'tone-2' }));
+    expect(response.status).toBe(503);
+    expect((await response.json()).code).toBe('AVATAR_CUSTOMIZATION_SETUP_REQUIRED');
+    expect(rpc).not.toHaveBeenCalledWith('socialu_game_room', expect.anything());
+  });
 });

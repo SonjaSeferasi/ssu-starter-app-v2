@@ -1,5 +1,19 @@
 # SocialU avatar art brief (v2: inclusive, layered)
 
+## Current implementation (2026-10-22)
+
+The four-sheet test batch and the full 24-sheet collection are generated and imported: **17 head styles, 4 tops and 3 pants styles**, with six painted variants each (**144 transparent pieces**).
+
+- Source sheets: `public/avatars/v2/raw/` (magenta fallback backgrounds).
+- Transparent runtime pieces and manifest: `public/avatars/v2/`.
+- Measured neck/collar anchors, face scale and individual eye positions: `public/avatars/v2/overrides.json`.
+- Built-in imagegen prompts: `documentation/avatar-art/GENERATION_PROMPTS.json`.
+- Assembled review images: `output/avatar-art/hairstyles-1.png`, `hairstyles-2.png`, `hijabs.png`, and `outfits.png`.
+
+Open Game Room and choose **Try the new avatar collection**. Existing saved avatars stay in the original collection until the user explicitly changes and saves their look. **Use original collection** switches back. The development-only preview is `/dev/game-room`; it never saves sample selections to an account.
+
+The local database regression test verifies saving, reloading, ownership checks and returning to the original collection. Hosted Supabase still needs `supabase/migrations/20261018020000_avatar_layers.sql` if it has not already been applied. Generating/importing art does not apply a database migration.
+
 The Game Room avatar is moving from one painted picture that the code recolors to **separate painted layers that stack**. Every color, skin tone and head covering is painted by the image generator, so nothing is recolored in code and colors stay exact.
 
 ## How the layers stack
@@ -14,7 +28,7 @@ Because skin appears only on the head layer, any head works with any outfit.
 
 ## Rules for every sheet
 
-These rules keep the layers lined upUse. Please keep them in every prompt.
+These rules keep the layers lined up. Please keep them in every prompt.
 
 - **Size:** 1536 × 1024 (landscape).
 - **Grid:** 3 columns × 2 rows = 6 cells, all the same size. Each item is centered in its cell with empty space around it, and nothing crosses into another cell.
@@ -103,7 +117,11 @@ Total: 11 hair + 6 hijab + 4 tops + 3 pants = **24 images**.
 2. Install the import tools once: `pip install pillow numpy`
 3. Run: `python scripts/avatar_import.py`
 
-The script cuts each sheet into 6 pieces, removes a magenta background if there is one, finds where each piece attaches (neck, collar, waistband), samples the painted colors, and writes `public/avatars/v2/manifest.json`. As soon as that file exists, the Game Room and Jumpyland switch to the layered avatar. Until then, everyone keeps the current avatars.
+The script cuts each sheet into 6 pieces, removes a magenta background if there is one, finds where each piece attaches (neck, collar, waistband), samples the painted colors, and writes `public/avatars/v2/manifest.json`. A valid manifest makes the new collection available in Game Room. Only explicitly selected layered looks use the new artwork in avatar previews, including Jumpyland. Existing saved avatars keep their current appearance.
+
+The importer requires exactly 1536 x 1024 source sheets. It preserves existing alpha, removes only the specified magenta fallback and refuses opaque white/gray/painted backgrounds, protecting white shoes and light clothing.
+
+Calibration may use `coordinateSpace: "cell"` to record coordinates in each original 512 x 512 cell. `cells` provides per-variant `anchor` and `eyes` overrides. Heads also have `faceWidth` to normalize face scale independently of hair volume; tops can override `size` and `hem`. The importer converts cell coordinates into the trimmed piece coordinates stored in the manifest.
 
 **Glasses and freckles** need each head's eye positions. Open a cut head file (for example `public/avatars/v2/head-long-waves-1.png`), note the pixel position of the center of each eye, and add them to `public/avatars/v2/overrides.json`:
 

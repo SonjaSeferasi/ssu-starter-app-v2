@@ -1,0 +1,2285 @@
+{
+ "version": 1,
+ "heads": {
+  "auburn-waves": [
+   {
+    "file": "/avatars/v2/head-auburn-waves-1.png",
+    "width": 411,
+    "height": 501,
+    "anchor": [
+     202,
+     430
+    ],
+    "size": 90,
+    "faceWidth": 175,
+    "eyes": [
+     164.2,
+     170.9,
+     245.7,
+     170.6
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-auburn-waves-2.png",
+    "width": 411,
+    "height": 501,
+    "anchor": [
+     203,
+     430
+    ],
+    "size": 90,
+    "faceWidth": 175,
+    "eyes": [
+     164.6,
+     171.3,
+     249.0,
+     170.2
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-auburn-waves-3.png",
+    "width": 411,
+    "height": 501,
+    "anchor": [
+     204,
+     430
+    ],
+    "size": 90,
+    "faceWidth": 175,
+    "eyes": [
+     165.7,
+     171.3,
+     248.7,
+     170.1
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-auburn-waves-4.png",
+    "width": 464,
+    "height": 506,
+    "anchor": [
+     256,
+     432
+    ],
+    "size": 90,
+    "faceWidth": 175,
+    "eyes": [
+     218.4,
+     172.5,
+     299.1,
+     172.1
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-auburn-waves-5.png",
+    "width": 410,
+    "height": 501,
+    "anchor": [
+     203,
+     431
+    ],
+    "size": 90,
+    "faceWidth": 175,
+    "eyes": [
+     164.8,
+     172.4,
+     248.89999999999998,
+     170.6
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-auburn-waves-6.png",
+    "width": 460,
+    "height": 505,
+    "anchor": [
+     204,
+     431
+    ],
+    "size": 90,
+    "faceWidth": 175,
+    "eyes": [
+     166.0,
+     172.5,
+     250.10000000000002,
+     170.4
+    ]
+   }
+  ],
+  "bob-bangs": [
+   {
+    "file": "/avatars/v2/head-bob-bangs-1.png",
+    "width": 365,
+    "height": 465,
+    "anchor": [
+     181,
+     459
+    ],
+    "size": 90,
+    "faceWidth": 181,
+    "eyes": [
+     141.1,
+     183.6,
+     225.2,
+     184.1
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-bob-bangs-2.png",
+    "width": 366,
+    "height": 465,
+    "anchor": [
+     183,
+     459
+    ],
+    "size": 90,
+    "faceWidth": 181,
+    "eyes": [
+     143.5,
+     184.3,
+     227.10000000000002,
+     184.4
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-bob-bangs-3.png",
+    "width": 365,
+    "height": 465,
+    "anchor": [
+     183,
+     459
+    ],
+    "size": 90,
+    "faceWidth": 181,
+    "eyes": [
+     143.5,
+     183.8,
+     227.10000000000002,
+     184.0
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-bob-bangs-4.png",
+    "width": 440,
+    "height": 507,
+    "anchor": [
+     256,
+     460
+    ],
+    "size": 90,
+    "faceWidth": 181,
+    "eyes": [
+     216.3,
+     184.9,
+     300.4,
+     185.4
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-bob-bangs-5.png",
+    "width": 366,
+    "height": 467,
+    "anchor": [
+     183,
+     461
+    ],
+    "size": 90,
+    "faceWidth": 181,
+    "eyes": [
+     144.2,
+     187.3,
+     227.3,
+     186.3
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-bob-bangs-6.png",
+    "width": 439,
+    "height": 507,
+    "anchor": [
+     183,
+     460
+    ],
+    "size": 90,
+    "faceWidth": 181,
+    "eyes": [
+     143.5,
+     185.8,
+     226.39999999999998,
+     185.0
+    ]
+   }
+  ],
+  "braids": [
+   {
+    "file": "/avatars/v2/head-braids-1.png",
+    "width": 397,
+    "height": 495,
+    "anchor": [
+     192,
+     420
+    ],
+    "size": 90,
+    "faceWidth": 175,
+    "eyes": [
+     154.2,
+     165.7,
+     235.5,
+     164.9
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-braids-2.png",
+    "width": 397,
+    "height": 495,
+    "anchor": [
+     196,
+     420
+    ],
+    "size": 90,
+    "faceWidth": 175,
+    "eyes": [
+     157.5,
+     166.6,
+     241.39999999999998,
+     164.8
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-braids-3.png",
+    "width": 398,
+    "height": 495,
+    "anchor": [
+     197,
+     420
+    ],
+    "size": 90,
+    "faceWidth": 175,
+    "eyes": [
+     157.3,
+     165.9,
+     242.3,
+     165.4
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-braids-4.png",
+    "width": 462,
+    "height": 499,
+    "anchor": [
+     256,
+     419
+    ],
+    "size": 90,
+    "faceWidth": 175,
+    "eyes": [
+     218.7,
+     164.8,
+     299.3,
+     164.8
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-braids-5.png",
+    "width": 397,
+    "height": 495,
+    "anchor": [
+     196,
+     420
+    ],
+    "size": 90,
+    "faceWidth": 175,
+    "eyes": [
+     157.5,
+     166.0,
+     240.8,
+     164.3
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-braids-6.png",
+    "width": 452,
+    "height": 499,
+    "anchor": [
+     196,
+     420
+    ],
+    "size": 90,
+    "faceWidth": 175,
+    "eyes": [
+     156.8,
+     165.3,
+     241.3,
+     164.4
+    ]
+   }
+  ],
+  "coils": [
+   {
+    "file": "/avatars/v2/head-coils-1.png",
+    "width": 321,
+    "height": 466,
+    "anchor": [
+     161,
+     461
+    ],
+    "size": 90,
+    "faceWidth": 184,
+    "eyes": [
+     120.4,
+     205.9,
+     205.89999999999998,
+     205.5
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-coils-2.png",
+    "width": 322,
+    "height": 466,
+    "anchor": [
+     162,
+     461
+    ],
+    "size": 90,
+    "faceWidth": 184,
+    "eyes": [
+     121.19999999999999,
+     205.8,
+     207.2,
+     205.5
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-coils-3.png",
+    "width": 322,
+    "height": 466,
+    "anchor": [
+     162,
+     461
+    ],
+    "size": 90,
+    "faceWidth": 184,
+    "eyes": [
+     122.0,
+     205.9,
+     208.10000000000002,
+     205.4
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-coils-4.png",
+    "width": 416,
+    "height": 505,
+    "anchor": [
+     256,
+     461
+    ],
+    "size": 90,
+    "faceWidth": 184,
+    "eyes": [
+     216.0,
+     206.1,
+     300.8,
+     206.0
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-coils-5.png",
+    "width": 322,
+    "height": 467,
+    "anchor": [
+     162,
+     461
+    ],
+    "size": 90,
+    "faceWidth": 184,
+    "eyes": [
+     122.30000000000001,
+     205.9,
+     206.89999999999998,
+     206.3
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-coils-6.png",
+    "width": 418,
+    "height": 505,
+    "anchor": [
+     162,
+     461
+    ],
+    "size": 90,
+    "faceWidth": 184,
+    "eyes": [
+     122.9,
+     206.3,
+     207.8,
+     206.0
+    ]
+   }
+  ],
+  "curls": [
+   {
+    "file": "/avatars/v2/head-curls-1.png",
+    "width": 352,
+    "height": 471,
+    "anchor": [
+     181,
+     465
+    ],
+    "size": 90,
+    "faceWidth": 186,
+    "eyes": [
+     139.2,
+     198.0,
+     225.60000000000002,
+     197.1
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-curls-2.png",
+    "width": 351,
+    "height": 471,
+    "anchor": [
+     180,
+     466
+    ],
+    "size": 90,
+    "faceWidth": 186,
+    "eyes": [
+     138.4,
+     198.0,
+     224.7,
+     197.6
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-curls-3.png",
+    "width": 352,
+    "height": 471,
+    "anchor": [
+     181,
+     466
+    ],
+    "size": 90,
+    "faceWidth": 186,
+    "eyes": [
+     139.7,
+     198.0,
+     226.60000000000002,
+     197.4
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-curls-4.png",
+    "width": 427,
+    "height": 510,
+    "anchor": [
+     256,
+     466
+    ],
+    "size": 90,
+    "faceWidth": 186,
+    "eyes": [
+     214.3,
+     198.5,
+     300.3,
+     197.5
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-curls-5.png",
+    "width": 351,
+    "height": 471,
+    "anchor": [
+     180,
+     466
+    ],
+    "size": 90,
+    "faceWidth": 186,
+    "eyes": [
+     139.4,
+     198.2,
+     224.0,
+     198.2
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-curls-6.png",
+    "width": 437,
+    "height": 510,
+    "anchor": [
+     181,
+     466
+    ],
+    "size": 90,
+    "faceWidth": 186,
+    "eyes": [
+     141.1,
+     198.4,
+     225.60000000000002,
+     197.8
+    ]
+   }
+  ],
+  "curly-bob": [
+   {
+    "file": "/avatars/v2/head-curly-bob-1.png",
+    "width": 421,
+    "height": 463,
+    "anchor": [
+     197,
+     458
+    ],
+    "size": 90,
+    "faceWidth": 193,
+    "eyes": [
+     158.0,
+     195.9,
+     247.8,
+     197.7
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-curly-bob-2.png",
+    "width": 421,
+    "height": 463,
+    "anchor": [
+     212,
+     458
+    ],
+    "size": 90,
+    "faceWidth": 193,
+    "eyes": [
+     169.6,
+     196.6,
+     256.5,
+     194.9
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-curly-bob-3.png",
+    "width": 421,
+    "height": 463,
+    "anchor": [
+     227,
+     457
+    ],
+    "size": 90,
+    "faceWidth": 193,
+    "eyes": [
+     180.4,
+     199.2,
+     270.7,
+     196.1
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-curly-bob-4.png",
+    "width": 480,
+    "height": 508,
+    "anchor": [
+     256,
+     458
+    ],
+    "size": 90,
+    "faceWidth": 193,
+    "eyes": [
+     218.1,
+     198.7,
+     304.2,
+     200.2
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-curly-bob-5.png",
+    "width": 421,
+    "height": 464,
+    "anchor": [
+     212,
+     458
+    ],
+    "size": 90,
+    "faceWidth": 193,
+    "eyes": [
+     170.2,
+     200.0,
+     255.8,
+     198.5
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-curly-bob-6.png",
+    "width": 483,
+    "height": 508,
+    "anchor": [
+     227,
+     459
+    ],
+    "size": 90,
+    "faceWidth": 193,
+    "eyes": [
+     181.8,
+     203.0,
+     272.4,
+     199.0
+    ]
+   }
+  ],
+  "fade": [
+   {
+    "file": "/avatars/v2/head-fade-1.png",
+    "width": 283,
+    "height": 472,
+    "anchor": [
+     122,
+     465
+    ],
+    "size": 90,
+    "faceWidth": 185,
+    "eyes": [
+     86.4,
+     193.9,
+     172.3,
+     198.3
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-fade-2.png",
+    "width": 283,
+    "height": 472,
+    "anchor": [
+     142,
+     466
+    ],
+    "size": 90,
+    "faceWidth": 185,
+    "eyes": [
+     101.0,
+     194.4,
+     188.5,
+     194.5
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-fade-3.png",
+    "width": 282,
+    "height": 473,
+    "anchor": [
+     161,
+     466
+    ],
+    "size": 90,
+    "faceWidth": 185,
+    "eyes": [
+     114.1,
+     198.3,
+     204.89999999999998,
+     195.2
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-fade-4.png",
+    "width": 417,
+    "height": 511,
+    "anchor": [
+     256,
+     466
+    ],
+    "size": 90,
+    "faceWidth": 185,
+    "eyes": [
+     222.6,
+     203.2,
+     299.8,
+     205.4
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-fade-5.png",
+    "width": 283,
+    "height": 473,
+    "anchor": [
+     142,
+     468
+    ],
+    "size": 90,
+    "faceWidth": 185,
+    "eyes": [
+     106.19999999999999,
+     206.5,
+     189.10000000000002,
+     205.8
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-fade-6.png",
+    "width": 417,
+    "height": 511,
+    "anchor": [
+     161,
+     467
+    ],
+    "size": 90,
+    "faceWidth": 185,
+    "eyes": [
+     120.4,
+     205.9,
+     204.0,
+     203.6
+    ]
+   }
+  ],
+  "hijab-black": [
+   {
+    "file": "/avatars/v2/head-hijab-black-1.png",
+    "width": 385,
+    "height": 477,
+    "anchor": [
+     189,
+     381.4
+    ],
+    "size": 230,
+    "faceWidth": 169,
+    "eyes": [
+     150.6,
+     151.7,
+     229.39999999999998,
+     151.2
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-black-2.png",
+    "width": 385,
+    "height": 477,
+    "anchor": [
+     190,
+     381.2
+    ],
+    "size": 230,
+    "faceWidth": 169,
+    "eyes": [
+     150.8,
+     151.8,
+     230.3,
+     150.7
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-black-3.png",
+    "width": 384,
+    "height": 477,
+    "anchor": [
+     191,
+     381.2
+    ],
+    "size": 230,
+    "faceWidth": 169,
+    "eyes": [
+     150.8,
+     151.7,
+     230.7,
+     150.7
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-black-4.png",
+    "width": 452,
+    "height": 497,
+    "anchor": [
+     256,
+     382.8
+    ],
+    "size": 230,
+    "faceWidth": 169,
+    "eyes": [
+     217.6,
+     152.8,
+     296.3,
+     152.8
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-black-5.png",
+    "width": 385,
+    "height": 478,
+    "anchor": [
+     190,
+     382.8
+    ],
+    "size": 230,
+    "faceWidth": 169,
+    "eyes": [
+     151.0,
+     153.2,
+     229.8,
+     152.4
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-black-6.png",
+    "width": 447,
+    "height": 497,
+    "anchor": [
+     191,
+     383.0
+    ],
+    "size": 230,
+    "faceWidth": 169,
+    "eyes": [
+     151.1,
+     153.2,
+     229.5,
+     152.8
+    ]
+   }
+  ],
+  "hijab-burgundy": [
+   {
+    "file": "/avatars/v2/head-hijab-burgundy-1.png",
+    "width": 384,
+    "height": 477,
+    "anchor": [
+     188,
+     380.9
+    ],
+    "size": 230,
+    "faceWidth": 172,
+    "eyes": [
+     148.9,
+     151.2,
+     229.0,
+     150.6
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-burgundy-2.png",
+    "width": 385,
+    "height": 477,
+    "anchor": [
+     190,
+     381.1
+    ],
+    "size": 230,
+    "faceWidth": 172,
+    "eyes": [
+     150.2,
+     151.6,
+     230.3,
+     150.5
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-burgundy-3.png",
+    "width": 384,
+    "height": 477,
+    "anchor": [
+     191,
+     380.7
+    ],
+    "size": 230,
+    "faceWidth": 172,
+    "eyes": [
+     150.6,
+     151.0,
+     231.39999999999998,
+     150.4
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-burgundy-4.png",
+    "width": 452,
+    "height": 497,
+    "anchor": [
+     256,
+     382.0
+    ],
+    "size": 230,
+    "faceWidth": 172,
+    "eyes": [
+     217.1,
+     152.2,
+     297.0,
+     151.8
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-burgundy-5.png",
+    "width": 384,
+    "height": 478,
+    "anchor": [
+     189,
+     382.3
+    ],
+    "size": 230,
+    "faceWidth": 172,
+    "eyes": [
+     149.1,
+     152.6,
+     228.10000000000002,
+     152.0
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-burgundy-6.png",
+    "width": 447,
+    "height": 497,
+    "anchor": [
+     191,
+     382.1
+    ],
+    "size": 230,
+    "faceWidth": 172,
+    "eyes": [
+     150.7,
+     152.1,
+     231.39999999999998,
+     152.2
+    ]
+   }
+  ],
+  "hijab-cream": [
+   {
+    "file": "/avatars/v2/head-hijab-cream-1.png",
+    "width": 386,
+    "height": 477,
+    "anchor": [
+     189,
+     380.9
+    ],
+    "size": 230,
+    "faceWidth": 170,
+    "eyes": [
+     150.2,
+     151.1,
+     229.2,
+     150.8
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-cream-2.png",
+    "width": 385,
+    "height": 477,
+    "anchor": [
+     190,
+     380.8
+    ],
+    "size": 230,
+    "faceWidth": 170,
+    "eyes": [
+     150.3,
+     151.3,
+     230.39999999999998,
+     150.2
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-cream-3.png",
+    "width": 385,
+    "height": 477,
+    "anchor": [
+     191,
+     380.6
+    ],
+    "size": 230,
+    "faceWidth": 170,
+    "eyes": [
+     150.9,
+     151.2,
+     231.89999999999998,
+     150.1
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-cream-4.png",
+    "width": 453,
+    "height": 497,
+    "anchor": [
+     256,
+     382.0
+    ],
+    "size": 230,
+    "faceWidth": 170,
+    "eyes": [
+     217.1,
+     152.2,
+     295.9,
+     151.8
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-cream-5.png",
+    "width": 385,
+    "height": 479,
+    "anchor": [
+     190,
+     381.9
+    ],
+    "size": 230,
+    "faceWidth": 170,
+    "eyes": [
+     150.1,
+     152.5,
+     229.7,
+     151.4
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-cream-6.png",
+    "width": 447,
+    "height": 497,
+    "anchor": [
+     191,
+     381.9
+    ],
+    "size": 230,
+    "faceWidth": 170,
+    "eyes": [
+     150.9,
+     152.2,
+     230.89999999999998,
+     151.6
+    ]
+   }
+  ],
+  "hijab-dusty-rose": [
+   {
+    "file": "/avatars/v2/head-hijab-dusty-rose-1.png",
+    "width": 385,
+    "height": 477,
+    "anchor": [
+     189,
+     380.9
+    ],
+    "size": 230,
+    "faceWidth": 172,
+    "eyes": [
+     150.0,
+     151.3,
+     230.10000000000002,
+     150.5
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-dusty-rose-2.png",
+    "width": 385,
+    "height": 477,
+    "anchor": [
+     190,
+     380.9
+    ],
+    "size": 230,
+    "faceWidth": 172,
+    "eyes": [
+     150.3,
+     151.5,
+     230.89999999999998,
+     150.3
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-dusty-rose-3.png",
+    "width": 385,
+    "height": 477,
+    "anchor": [
+     192,
+     380.6
+    ],
+    "size": 230,
+    "faceWidth": 172,
+    "eyes": [
+     151.6,
+     151.3,
+     232.89999999999998,
+     150.0
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-dusty-rose-4.png",
+    "width": 452,
+    "height": 497,
+    "anchor": [
+     256,
+     381.8
+    ],
+    "size": 230,
+    "faceWidth": 172,
+    "eyes": [
+     217.3,
+     152.0,
+     296.6,
+     151.6
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-dusty-rose-5.png",
+    "width": 385,
+    "height": 478,
+    "anchor": [
+     190,
+     382.4
+    ],
+    "size": 230,
+    "faceWidth": 172,
+    "eyes": [
+     150.4,
+     152.9,
+     229.7,
+     151.9
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-dusty-rose-6.png",
+    "width": 448,
+    "height": 497,
+    "anchor": [
+     192,
+     381.8
+    ],
+    "size": 230,
+    "faceWidth": 172,
+    "eyes": [
+     151.9,
+     152.4,
+     232.8,
+     151.2
+    ]
+   }
+  ],
+  "hijab-navy": [
+   {
+    "file": "/avatars/v2/head-hijab-navy-1.png",
+    "width": 385,
+    "height": 477,
+    "anchor": [
+     189,
+     381.3
+    ],
+    "size": 230,
+    "faceWidth": 169,
+    "eyes": [
+     150.3,
+     151.6,
+     229.0,
+     151.0
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-navy-2.png",
+    "width": 385,
+    "height": 477,
+    "anchor": [
+     190,
+     380.9
+    ],
+    "size": 230,
+    "faceWidth": 169,
+    "eyes": [
+     150.2,
+     151.6,
+     230.10000000000002,
+     150.2
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-navy-3.png",
+    "width": 384,
+    "height": 477,
+    "anchor": [
+     191,
+     381.0
+    ],
+    "size": 230,
+    "faceWidth": 169,
+    "eyes": [
+     150.7,
+     151.3,
+     230.60000000000002,
+     150.7
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-navy-4.png",
+    "width": 452,
+    "height": 497,
+    "anchor": [
+     256,
+     382.3
+    ],
+    "size": 230,
+    "faceWidth": 169,
+    "eyes": [
+     217.2,
+     152.4,
+     295.9,
+     152.2
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-navy-5.png",
+    "width": 385,
+    "height": 478,
+    "anchor": [
+     190,
+     382.1
+    ],
+    "size": 230,
+    "faceWidth": 169,
+    "eyes": [
+     150.2,
+     152.7,
+     229.39999999999998,
+     151.4
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-navy-6.png",
+    "width": 447,
+    "height": 497,
+    "anchor": [
+     191,
+     382.7
+    ],
+    "size": 230,
+    "faceWidth": 169,
+    "eyes": [
+     150.6,
+     152.2,
+     229.60000000000002,
+     153.2
+    ]
+   }
+  ],
+  "hijab-sage": [
+   {
+    "file": "/avatars/v2/head-hijab-sage-1.png",
+    "width": 386,
+    "height": 477,
+    "anchor": [
+     189,
+     381.4
+    ],
+    "size": 230,
+    "faceWidth": 170,
+    "eyes": [
+     150.6,
+     151.6,
+     229.60000000000002,
+     151.1
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-sage-2.png",
+    "width": 386,
+    "height": 477,
+    "anchor": [
+     190,
+     381.1
+    ],
+    "size": 230,
+    "faceWidth": 170,
+    "eyes": [
+     150.2,
+     151.6,
+     229.7,
+     150.5
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-sage-3.png",
+    "width": 385,
+    "height": 477,
+    "anchor": [
+     191,
+     380.9
+    ],
+    "size": 230,
+    "faceWidth": 170,
+    "eyes": [
+     150.4,
+     151.2,
+     230.8,
+     150.6
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-sage-4.png",
+    "width": 453,
+    "height": 497,
+    "anchor": [
+     256,
+     382.4
+    ],
+    "size": 230,
+    "faceWidth": 170,
+    "eyes": [
+     217.2,
+     152.4,
+     296.8,
+     152.5
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-sage-5.png",
+    "width": 386,
+    "height": 478,
+    "anchor": [
+     190,
+     382.4
+    ],
+    "size": 230,
+    "faceWidth": 170,
+    "eyes": [
+     150.3,
+     153.0,
+     229.0,
+     151.8
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-hijab-sage-6.png",
+    "width": 447,
+    "height": 497,
+    "anchor": [
+     191,
+     382.9
+    ],
+    "size": 230,
+    "faceWidth": 170,
+    "eyes": [
+     150.6,
+     152.5,
+     228.39999999999998,
+     153.4
+    ]
+   }
+  ],
+  "locs": [
+   {
+    "file": "/avatars/v2/head-locs-1.png",
+    "width": 377,
+    "height": 462,
+    "anchor": [
+     168,
+     456
+    ],
+    "size": 90,
+    "faceWidth": 180,
+    "eyes": [
+     133.4,
+     184.1,
+     217.2,
+     186.4
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-locs-2.png",
+    "width": 377,
+    "height": 462,
+    "anchor": [
+     184,
+     457
+    ],
+    "size": 90,
+    "faceWidth": 180,
+    "eyes": [
+     144.8,
+     184.3,
+     230.10000000000002,
+     184.3
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-locs-3.png",
+    "width": 378,
+    "height": 463,
+    "anchor": [
+     197,
+     458
+    ],
+    "size": 90,
+    "faceWidth": 180,
+    "eyes": [
+     154.4,
+     186.4,
+     241.5,
+     185.3
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-locs-4.png",
+    "width": 466,
+    "height": 504,
+    "anchor": [
+     256,
+     457
+    ],
+    "size": 90,
+    "faceWidth": 180,
+    "eyes": [
+     221.3,
+     186.2,
+     303.5,
+     189.2
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-locs-5.png",
+    "width": 377,
+    "height": 463,
+    "anchor": [
+     184,
+     457
+    ],
+    "size": 90,
+    "faceWidth": 180,
+    "eyes": [
+     145.1,
+     186.5,
+     229.7,
+     186.5
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-locs-6.png",
+    "width": 453,
+    "height": 504,
+    "anchor": [
+     197,
+     457
+    ],
+    "size": 90,
+    "faceWidth": 180,
+    "eyes": [
+     156.8,
+     188.3,
+     242.3,
+     186.7
+    ]
+   }
+  ],
+  "long-waves": [
+   {
+    "file": "/avatars/v2/head-long-waves-1.png",
+    "width": 383,
+    "height": 500,
+    "anchor": [
+     189,
+     422
+    ],
+    "size": 90,
+    "faceWidth": 178,
+    "eyes": [
+     151.0,
+     167.2,
+     233.8,
+     167.0
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-long-waves-2.png",
+    "width": 382,
+    "height": 500,
+    "anchor": [
+     192,
+     422
+    ],
+    "size": 90,
+    "faceWidth": 178,
+    "eyes": [
+     153.7,
+     167.6,
+     237.8,
+     166.3
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-long-waves-3.png",
+    "width": 383,
+    "height": 500,
+    "anchor": [
+     196,
+     422
+    ],
+    "size": 90,
+    "faceWidth": 178,
+    "eyes": [
+     155.7,
+     167.6,
+     241.2,
+     166.9
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-long-waves-4.png",
+    "width": 450,
+    "height": 503,
+    "anchor": [
+     256,
+     424
+    ],
+    "size": 90,
+    "faceWidth": 178,
+    "eyes": [
+     218.4,
+     168.5,
+     300.4,
+     168.8
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-long-waves-5.png",
+    "width": 382,
+    "height": 501,
+    "anchor": [
+     192,
+     424
+    ],
+    "size": 90,
+    "faceWidth": 178,
+    "eyes": [
+     154.0,
+     169.2,
+     238.10000000000002,
+     167.7
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-long-waves-6.png",
+    "width": 452,
+    "height": 503,
+    "anchor": [
+     196,
+     424
+    ],
+    "size": 90,
+    "faceWidth": 178,
+    "eyes": [
+     155.4,
+     169.2,
+     241.2,
+     168.8
+    ]
+   }
+  ],
+  "ponytail": [
+   {
+    "file": "/avatars/v2/head-ponytail-1.png",
+    "width": 373,
+    "height": 506,
+    "anchor": [
+     152,
+     446
+    ],
+    "size": 90,
+    "faceWidth": 189,
+    "eyes": [
+     110.30000000000001,
+     201.0,
+     198.3,
+     200.2
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-ponytail-2.png",
+    "width": 372,
+    "height": 506,
+    "anchor": [
+     164,
+     445
+    ],
+    "size": 90,
+    "faceWidth": 189,
+    "eyes": [
+     120.5,
+     204.2,
+     206.3,
+     201.0
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-ponytail-3.png",
+    "width": 373,
+    "height": 506,
+    "anchor": [
+     175,
+     444
+    ],
+    "size": 90,
+    "faceWidth": 189,
+    "eyes": [
+     127.1,
+     202.9,
+     213.39999999999998,
+     202.9
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-ponytail-4.png",
+    "width": 477,
+    "height": 512,
+    "anchor": [
+     256,
+     447
+    ],
+    "size": 90,
+    "faceWidth": 189,
+    "eyes": [
+     216.1,
+     204.5,
+     298.6,
+     205.3
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-ponytail-5.png",
+    "width": 372,
+    "height": 507,
+    "anchor": [
+     164,
+     446
+    ],
+    "size": 90,
+    "faceWidth": 189,
+    "eyes": [
+     121.9,
+     206.6,
+     207.8,
+     203.9
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-ponytail-6.png",
+    "width": 430,
+    "height": 512,
+    "anchor": [
+     174,
+     444
+    ],
+    "size": 90,
+    "faceWidth": 189,
+    "eyes": [
+     128.1,
+     205.0,
+     212.3,
+     203.7
+    ]
+   }
+  ],
+  "short-waves": [
+   {
+    "file": "/avatars/v2/head-short-waves-1.png",
+    "width": 333,
+    "height": 475,
+    "anchor": [
+     164,
+     470
+    ],
+    "size": 90,
+    "faceWidth": 185,
+    "eyes": [
+     123.6,
+     206.2,
+     209.60000000000002,
+     205.5
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-short-waves-2.png",
+    "width": 332,
+    "height": 475,
+    "anchor": [
+     164,
+     470
+    ],
+    "size": 90,
+    "faceWidth": 185,
+    "eyes": [
+     124.0,
+     206.2,
+     210.5,
+     205.6
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-short-waves-3.png",
+    "width": 332,
+    "height": 475,
+    "anchor": [
+     164,
+     470
+    ],
+    "size": 90,
+    "faceWidth": 185,
+    "eyes": [
+     124.19999999999999,
+     206.1,
+     210.10000000000002,
+     205.2
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-short-waves-4.png",
+    "width": 425,
+    "height": 504,
+    "anchor": [
+     256,
+     470
+    ],
+    "size": 90,
+    "faceWidth": 185,
+    "eyes": [
+     216.1,
+     206.7,
+     300.8,
+     206.0
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-short-waves-5.png",
+    "width": 332,
+    "height": 475,
+    "anchor": [
+     164,
+     470
+    ],
+    "size": 90,
+    "faceWidth": 185,
+    "eyes": [
+     124.4,
+     206.3,
+     209.8,
+     205.5
+    ]
+   },
+   {
+    "file": "/avatars/v2/head-short-waves-6.png",
+    "width": 420,
+    "height": 504,
+    "anchor": [
+     164,
+     470
+    ],
+    "size": 90,
+    "faceWidth": 185,
+    "eyes": [
+     125.1,
+     206.3,
+     209.5,
+     205.1
+    ]
+   }
+  ]
+ },
+ "tops": {
+  "cardigan": [
+   {
+    "file": "/avatars/v2/top-cardigan-1.png",
+    "width": 438,
+    "height": 442,
+    "anchor": [
+     207,
+     14
+    ],
+    "size": 360,
+    "hem": 421,
+    "color": "#af9a85"
+   },
+   {
+    "file": "/avatars/v2/top-cardigan-2.png",
+    "width": 438,
+    "height": 443,
+    "anchor": [
+     222,
+     15
+    ],
+    "size": 360,
+    "hem": 421,
+    "color": "#b3a388"
+   },
+   {
+    "file": "/avatars/v2/top-cardigan-3.png",
+    "width": 439,
+    "height": 442,
+    "anchor": [
+     235,
+     13
+    ],
+    "size": 360,
+    "hem": 421,
+    "color": "#b59b81"
+   },
+   {
+    "file": "/avatars/v2/top-cardigan-4.png",
+    "width": 487,
+    "height": 492,
+    "anchor": [
+     256,
+     14
+    ],
+    "size": 360,
+    "hem": 421,
+    "color": "#e9d4b3"
+   },
+   {
+    "file": "/avatars/v2/top-cardigan-5.png",
+    "width": 437,
+    "height": 442,
+    "anchor": [
+     222,
+     15
+    ],
+    "size": 360,
+    "hem": 421,
+    "color": "#ae94b0"
+   },
+   {
+    "file": "/avatars/v2/top-cardigan-6.png",
+    "width": 492,
+    "height": 493,
+    "anchor": [
+     236,
+     14
+    ],
+    "size": 360,
+    "hem": 422,
+    "color": "#564b4d"
+   }
+  ],
+  "crewneck": [
+   {
+    "file": "/avatars/v2/top-crewneck-1.png",
+    "width": 440,
+    "height": 447,
+    "anchor": [
+     208,
+     -11
+    ],
+    "size": 360,
+    "hem": 442,
+    "color": "#253360"
+   },
+   {
+    "file": "/avatars/v2/top-crewneck-2.png",
+    "width": 441,
+    "height": 447,
+    "anchor": [
+     222,
+     -10
+    ],
+    "size": 360,
+    "hem": 442,
+    "color": "#316046"
+   },
+   {
+    "file": "/avatars/v2/top-crewneck-3.png",
+    "width": 492,
+    "height": 487,
+    "anchor": [
+     236,
+     27
+    ],
+    "size": 360,
+    "hem": 482,
+    "color": "#99293d"
+   },
+   {
+    "file": "/avatars/v2/top-crewneck-4.png",
+    "width": 486,
+    "height": 492,
+    "anchor": [
+     256,
+     -13
+    ],
+    "size": 360,
+    "hem": 445,
+    "color": "#ebcfa8"
+   },
+   {
+    "file": "/avatars/v2/top-crewneck-5.png",
+    "width": 442,
+    "height": 450,
+    "anchor": [
+     223,
+     -12
+    ],
+    "size": 360,
+    "hem": 445,
+    "color": "#8848b4"
+   },
+   {
+    "file": "/avatars/v2/top-crewneck-6.png",
+    "width": 493,
+    "height": 492,
+    "anchor": [
+     237,
+     -13
+    ],
+    "size": 360,
+    "hem": 445,
+    "color": "#3a3c40"
+   }
+  ],
+  "hoodie": [
+   {
+    "file": "/avatars/v2/top-hoodie-1.png",
+    "width": 438,
+    "height": 469,
+    "anchor": [
+     207,
+     33
+    ],
+    "size": 360,
+    "hem": 464,
+    "color": "#26355a"
+   },
+   {
+    "file": "/avatars/v2/top-hoodie-2.png",
+    "width": 437,
+    "height": 469,
+    "anchor": [
+     221,
+     39
+    ],
+    "size": 360,
+    "hem": 464,
+    "color": "#345e47"
+   },
+   {
+    "file": "/avatars/v2/top-hoodie-3.png",
+    "width": 437,
+    "height": 469,
+    "anchor": [
+     235,
+     31
+    ],
+    "size": 360,
+    "hem": 464,
+    "color": "#89303e"
+   },
+   {
+    "file": "/avatars/v2/top-hoodie-4.png",
+    "width": 487,
+    "height": 497,
+    "anchor": [
+     256,
+     34
+    ],
+    "size": 360,
+    "hem": 466,
+    "color": "#e5ceae"
+   },
+   {
+    "file": "/avatars/v2/top-hoodie-5.png",
+    "width": 438,
+    "height": 471,
+    "anchor": [
+     221,
+     40
+    ],
+    "size": 360,
+    "hem": 466,
+    "color": "#7e52a7"
+   },
+   {
+    "file": "/avatars/v2/top-hoodie-6.png",
+    "width": 491,
+    "height": 498,
+    "anchor": [
+     235,
+     33
+    ],
+    "size": 360,
+    "hem": 467,
+    "color": "#3b3d41"
+   }
+  ],
+  "zip-jacket": [
+   {
+    "file": "/avatars/v2/top-zip-jacket-1.png",
+    "width": 445,
+    "height": 470,
+    "anchor": [
+     210,
+     38
+    ],
+    "size": 360,
+    "hem": 432,
+    "color": "#a6a8b1"
+   },
+   {
+    "file": "/avatars/v2/top-zip-jacket-2.png",
+    "width": 447,
+    "height": 471,
+    "anchor": [
+     228,
+     40
+    ],
+    "size": 360,
+    "hem": 432,
+    "color": "#a5a7ac"
+   },
+   {
+    "file": "/avatars/v2/top-zip-jacket-3.png",
+    "width": 497,
+    "height": 488,
+    "anchor": [
+     241,
+     55
+    ],
+    "size": 360,
+    "hem": 449,
+    "color": "#9f3d4d"
+   },
+   {
+    "file": "/avatars/v2/top-zip-jacket-4.png",
+    "width": 491,
+    "height": 510,
+    "anchor": [
+     256,
+     39
+    ],
+    "size": 360,
+    "hem": 433,
+    "color": "#e4d1b4"
+   },
+   {
+    "file": "/avatars/v2/top-zip-jacket-5.png",
+    "width": 447,
+    "height": 471,
+    "anchor": [
+     228,
+     40
+    ],
+    "size": 360,
+    "hem": 433,
+    "color": "#a8a7b4"
+   },
+   {
+    "file": "/avatars/v2/top-zip-jacket-6.png",
+    "width": 496,
+    "height": 510,
+    "anchor": [
+     240,
+     38
+    ],
+    "size": 360,
+    "hem": 432,
+    "color": "#7c7c81"
+   }
+  ]
+ },
+ "bottoms": {
+  "chinos": [
+   {
+    "file": "/avatars/v2/pants-chinos-1.png",
+    "width": 217,
+    "height": 475,
+    "anchor": [
+     109.2,
+     5
+    ],
+    "size": 141,
+    "color": "#89a0b4"
+   },
+   {
+    "file": "/avatars/v2/pants-chinos-2.png",
+    "width": 217,
+    "height": 474,
+    "anchor": [
+     109.3,
+     4
+    ],
+    "size": 141,
+    "color": "#35455f"
+   },
+   {
+    "file": "/avatars/v2/pants-chinos-3.png",
+    "width": 217,
+    "height": 474,
+    "anchor": [
+     109.5,
+     4
+    ],
+    "size": 141,
+    "color": "#323230"
+   },
+   {
+    "file": "/avatars/v2/pants-chinos-4.png",
+    "width": 367,
+    "height": 500,
+    "anchor": [
+     259.3,
+     5
+    ],
+    "size": 141,
+    "color": "#ad9467"
+   },
+   {
+    "file": "/avatars/v2/pants-chinos-5.png",
+    "width": 217,
+    "height": 476,
+    "anchor": [
+     109.2,
+     5
+    ],
+    "size": 141,
+    "color": "#6e7348"
+   },
+   {
+    "file": "/avatars/v2/pants-chinos-6.png",
+    "width": 368,
+    "height": 499,
+    "anchor": [
+     109.8,
+     4
+    ],
+    "size": 140,
+    "color": "#805f43"
+   }
+  ],
+  "straight-jeans": [
+   {
+    "file": "/avatars/v2/pants-straight-jeans-1.png",
+    "width": 217,
+    "height": 474,
+    "anchor": [
+     108.9,
+     5
+    ],
+    "size": 142,
+    "color": "#879fb3"
+   },
+   {
+    "file": "/avatars/v2/pants-straight-jeans-2.png",
+    "width": 217,
+    "height": 474,
+    "anchor": [
+     108.8,
+     5
+    ],
+    "size": 140,
+    "color": "#33435b"
+   },
+   {
+    "file": "/avatars/v2/pants-straight-jeans-3.png",
+    "width": 217,
+    "height": 474,
+    "anchor": [
+     109.4,
+     5
+    ],
+    "size": 141,
+    "color": "#2a2a2a"
+   },
+   {
+    "file": "/avatars/v2/pants-straight-jeans-4.png",
+    "width": 367,
+    "height": 499,
+    "anchor": [
+     258.9,
+     5
+    ],
+    "size": 140,
+    "color": "#a48b64"
+   },
+   {
+    "file": "/avatars/v2/pants-straight-jeans-5.png",
+    "width": 217,
+    "height": 475,
+    "anchor": [
+     108.8,
+     5
+    ],
+    "size": 140,
+    "color": "#6a6c46"
+   },
+   {
+    "file": "/avatars/v2/pants-straight-jeans-6.png",
+    "width": 368,
+    "height": 498,
+    "anchor": [
+     109.2,
+     4
+    ],
+    "size": 140,
+    "color": "#785840"
+   }
+  ],
+  "wide-leg": [
+   {
+    "file": "/avatars/v2/pants-wide-leg-1.png",
+    "width": 253,
+    "height": 475,
+    "anchor": [
+     137.4,
+     4
+    ],
+    "size": 141,
+    "color": "#89a1b5"
+   },
+   {
+    "file": "/avatars/v2/pants-wide-leg-2.png",
+    "width": 253,
+    "height": 475,
+    "anchor": [
+     126.2,
+     5
+    ],
+    "size": 140,
+    "color": "#364761"
+   },
+   {
+    "file": "/avatars/v2/pants-wide-leg-3.png",
+    "width": 252,
+    "height": 475,
+    "anchor": [
+     125.0,
+     5
+    ],
+    "size": 141,
+    "color": "#323231"
+   },
+   {
+    "file": "/avatars/v2/pants-wide-leg-4.png",
+    "width": 385,
+    "height": 500,
+    "anchor": [
+     258.3,
+     5
+    ],
+    "size": 141,
+    "color": "#aa9063"
+   },
+   {
+    "file": "/avatars/v2/pants-wide-leg-5.png",
+    "width": 253,
+    "height": 477,
+    "anchor": [
+     126.1,
+     5
+    ],
+    "size": 141,
+    "color": "#707447"
+   },
+   {
+    "file": "/avatars/v2/pants-wide-leg-6.png",
+    "width": 382,
+    "height": 500,
+    "anchor": [
+     125.2,
+     5
+    ],
+    "size": 141,
+    "color": "#7c5a3f"
+   }
+  ]
+ },
+ "skin": [
+  "#e1b494",
+  "#d9a37d",
+  "#cb8e63",
+  "#bf794d",
+  "#aa6741",
+  "#693520"
+ ]
+}

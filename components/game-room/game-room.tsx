@@ -9,7 +9,7 @@ import { activityEntrypoints, gameRoomSamples, sampleFaceStyles, faceDetails, sh
 import { useNavigationSession } from '../navigation/social-shell';
 import { SessionNotice } from '../navigation/section-page';
 import { AvatarPreview } from './avatar-preview';
-import { bottomColors, bottomStyles, defaultLook, headStyles, layoutAvatar, skinTones, swatchColor, topColors, topStyles, type LayeredLook } from '../../lib/avatar-layers';
+import { bottomColors, bottomStyles, defaultLook, hasLayeredLook, headStyles, layeredKeys, layoutAvatar, skinTones, swatchColor, topColors, topStyles, type LayeredLook } from '../../lib/avatar-layers';
 import { useAvatarManifest } from '../../lib/avatar-manifest';
 import { ActivityArt } from './activity-art';
 import styles from './game-room.module.css';
@@ -84,7 +84,7 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
   async function saveAvatar() {
     if (saving || !appearance) return;
     if (temporaryPreview) { setSaveMessage('This is a design preview. Sign in to save an avatar to your account.'); return; }
-    const selected = { ...(layeredDefaults || {}), ...appearance };
+    const selected = { ...appearance };
     setSaving(true); setRetrySelection(null); setSaveMessage('Saving your avatar…');
     try {
       const saved = await roomRequest('PUT', selected);
@@ -103,10 +103,26 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
   const available = room?.activities.filter(activity => activity.included) || [];
   const statusTone = retrySelection ? 'error' : saving ? 'pending' : dirty ? 'unsaved' : saveMessage === 'Avatar saved.' ? 'saved' : 'idle';
   const statusText = saveMessage || (temporaryPreview ? 'Preview only; account saving is unavailable here.' : 'Choose your look, then save your avatar.');
-  // What the preview shows: the saved/edited look plus layered defaults for any unset piece.
-  const shown = appearance && layeredDefaults ? { ...layeredDefaults, ...appearance } : appearance;
+  // Importing new art never changes an account's saved appearance by itself.
+  // Trying the new collection explicitly adds a complete, unsaved selection.
+  const shown = appearance;
   const look = shown as LayeredLook;
-  const layered = manifest && layeredDefaults && shown ? { manifest, layout: layoutAvatar(manifest, look) } : null;
+  const layout = manifest && hasLayeredLook(shown) ? layoutAvatar(manifest, shown) : null;
+  const layered = manifest && layout ? { manifest, layout } : null;
+  function tryNewCollection() {
+    if (!manifest || !layeredDefaults) return;
+    const legacy = selectedFace?.assetKey.replace(/^sample-/, '') || '';
+    const preferred = ({ smile: 'short-waves', glasses: 'short-waves', 'crew-cut': 'fade', 'side-part': 'short-waves' } as Record<string, string>)[legacy] || legacy;
+    const head = headStyles.find(style => style.id === preferred && manifest.heads[style.id]);
+    editAppearance({ ...layeredDefaults, ...(head ? { headStyle: head.id } : {}) });
+  }
+  function useOriginalCollection() {
+    if (!appearance || saving) return;
+    const original = { ...appearance };
+    for (const key of layeredKeys) delete original[key];
+    setAppearance(original); setRetrySelection(null);
+    setSaveMessage(JSON.stringify(original) === JSON.stringify(room?.appearance) ? 'Original collection restored.' : 'Unsaved changes');
+  }
   const swatches = (label: string, field: keyof AvatarAppearance, colors: readonly { id: string; name: string; hex: string }[]) =>
     <fieldset className={styles.colorField}><legend>{label}</legend><div className={styles.swatches}>{colors.map(color =>
       <button key={color.id} title={color.name} aria-label={label + ': ' + color.name} aria-pressed={shown?.[field] === color.id} disabled={saving}
@@ -134,6 +150,9 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
           </div>
           <div className={styles.controls}>
             <h3 className={styles.controlsTitle}>Make it yours</h3>
+            {layeredDefaults && <button className={styles.secondaryButton} disabled={saving || !room} onClick={layered ? useOriginalCollection : tryNewCollection}>
+              {layered ? 'Use original collection' : 'Try the new avatar collection'}
+            </button>}
             {!layered && <div className={styles.bodyChoices} role="group" aria-label="Avatar body style">
               {(['male','female'] as const).map(group => {
                 const availableFace = room?.faces.find(face => sampleFaceStyles[face.assetKey]?.group === group && face.assetKey !== 'sample-glasses');

@@ -58,7 +58,7 @@ export function validLayeredFields(data: Record<string, unknown>) {
   return layeredKeys.every(key => data[key] === undefined || layeredOptions[key].some(option => option.id === data[key]));
 }
 export function hasLayeredLook(value: Partial<LayeredLook> | null | undefined): value is LayeredLook {
-  return !!value && layeredKeys.every(key => typeof value[key] === 'string');
+  return !!value && layeredKeys.every(key => typeof value[key] === 'string') && validLayeredFields(value);
 }
 
 // ---- Generated manifest (scripts/avatar_import.py writes public/avatars/v2/manifest.json) ----
@@ -73,6 +73,8 @@ export type LayerCell = {
   hem?: number;
   /** Heads only, optional: [left x, left y, right x, right y]. Glasses and freckles need it. */
   eyes?: [number, number, number, number] | null;
+  /** Measured face width keeps different hair and hijab silhouettes in proportion. */
+  faceWidth?: number;
   /** Sampled from the art so colour buttons match what is painted. */
   color?: string;
 };
@@ -84,6 +86,26 @@ export type AvatarManifest = {
   skin?: string[];                       // sampled skin tone colours
 };
 
+/** Incomplete or malformed imports fall back to the existing collection. */
+export function parseAvatarManifest(value: unknown): AvatarManifest | null {
+  if (!value || typeof value !== 'object' || (value as AvatarManifest).version !== 1) return null;
+  const manifest = value as AvatarManifest;
+  const point = (v: unknown, count: number) => Array.isArray(v) && v.length === count && v.every(n => typeof n === 'number' && Number.isFinite(n));
+  const cell = (v: LayerCell) => v && typeof v.file === 'string' && /^\/avatars\/v2\/[a-z0-9-]+\.png$/.test(v.file)
+    && Number.isFinite(v.width) && v.width > 0 && Number.isFinite(v.height) && v.height > 0
+    && Number.isFinite(v.size) && v.size > 0 && point(v.anchor, 2)
+    && (v.hem === undefined || Number.isFinite(v.hem))
+    && (v.faceWidth === undefined || Number.isFinite(v.faceWidth) && v.faceWidth > 0)
+    && (v.eyes == null || point(v.eyes, 4));
+  for (const group of ['heads', 'tops', 'bottoms'] as const) {
+    const items = manifest[group];
+    if (!items || typeof items !== 'object' || Array.isArray(items)) return null;
+    for (const cells of Object.values(items)) if (!Array.isArray(cells) || cells.length !== 6 || !cells.every(cell)) return null;
+  }
+  if (manifest.skin && (!Array.isArray(manifest.skin) || manifest.skin.length !== 6 || !manifest.skin.every(c => /^#[0-9a-f]{6}$/i.test(c)))) return null;
+  return manifest;
+}
+
 // Where each piece lands on the 341.33 x 512 avatar canvas (same canvas as the v1 avatar).
 export const LAYOUT = {
   canvas: { width: 341.333333, height: 512, margin: 10 },
@@ -91,6 +113,7 @@ export const LAYOUT = {
   top: { collarY: 128, shoulderWidth: 150 },
   hair: { neckWidth: 30, neckOverlap: 14 },          // neck base tucks this far into the collar
   hijab: { headWidth: 92, drapeOverlap: 40 },        // drape lies over the top of the shirt
+  faceWidth: 60,
   bottom: { waistWidth: 112, hemOverlap: 24 },       // waistband hides under the top's hem
 };
 
@@ -120,8 +143,8 @@ export function layoutAvatar(manifest: AvatarManifest, look: LayeredLook): Avata
   const hemY = LAYOUT.top.collarY + ((top.hem ?? top.height) - top.anchor[1]) * topScale;
   const bottomLayer = place(bottom, LAYOUT.bottom.waistWidth / bottom.size, centerX, hemY - LAYOUT.bottom.hemOverlap, 'bottom');
   const hijab = headKind(look.headStyle) === 'hijab';
-  const headScale = hijab ? LAYOUT.hijab.headWidth / head.size : LAYOUT.hair.neckWidth / head.size;
-  const headLayer = place(head, headScale, centerX, LAYOUT.top.collarY + (hijab ? LAYOUT.hijab.drapeOverlap : LAYOUT.hair.neckOverlap), 'head');
+  const headScale = head.faceWidth ? LAYOUT.faceWidth / head.faceWidth : hijab ? LAYOUT.hijab.headWidth / head.size : LAYOUT.hair.neckWidth / head.size;
+  const headLayer = place(head, headScale, centerX, LAYOUT.top.collarY + (hijab && !head.faceWidth ? LAYOUT.hijab.drapeOverlap : LAYOUT.hair.neckOverlap), 'head');
   // Fit the whole figure inside the canvas without distorting it.
   const layers = [bottomLayer, topLayer, headLayer];
   const minY = Math.min(...layers.map(layer => layer.y)), maxY = Math.max(...layers.map(layer => layer.y + layer.height));
