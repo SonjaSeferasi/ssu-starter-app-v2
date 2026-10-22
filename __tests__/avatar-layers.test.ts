@@ -29,7 +29,7 @@ describe('layered avatar layout', () => {
   it('tucks the neck into the collar and the waistband under the hem', () => {
     const [bottom, top, head] = layoutAvatar(manifest, look)!.layers;
     const topScale = top.width / 337, headScale = head.width / 189, bottomScale = bottom.width / 217;
-    const collarY = top.y + 4 * topScale, hemY = top.y + 304 * topScale;
+    const collarY = top.y + 4 * top.height / 309, hemY = top.y + 304 * top.height / 309;
     expect(head.y + 334 * headScale).toBeCloseTo(collarY + LAYOUT.hair.neckOverlap * (topScale * 328 / LAYOUT.top.shoulderWidth), 3);
     expect(bottom.y + 4 * bottomScale).toBeLessThan(hemY);
     for (const layer of [bottom, top, head]) expect(layer.x + layer.width / 2).toBeGreaterThan(100);
