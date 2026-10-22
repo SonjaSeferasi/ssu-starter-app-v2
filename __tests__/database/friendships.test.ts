@@ -37,6 +37,14 @@ let rel=await call(1,'send','student2'); assert.equal(rel.state,'sent');const fi
 const notices=async(n:number)=>(await db.query<any>('SELECT public.socialu_notifications($1) AS n',[uid(n)])).rows[0].n;
 assert.equal((await notices(2)).unread,1);
 assert.equal((await notices(2)).notifications[0].kind,'friend_request');
+// Legacy pending requests created before notification delivery was installed are repaired once.
+await db.query('DELETE FROM socialu.notifications WHERE friend_request_id=$1',[firstId]);
+const backfill=readFileSync(root+'/supabase/migrations/20261022060000_backfill_friend_request_notifications.sql','utf8');
+await db.exec(backfill);
+await db.exec(backfill);
+assert.equal((await notices(2)).unread,1);
+assert.equal((await notices(2)).notifications.length,1);
+
 await db.query('SELECT public.socialu_mark_notifications_read($1)',[uid(2)]);
 assert.equal((await notices(2)).unread,0);
 assert.equal((await call(1,'send','student2')).request_id,firstId);
