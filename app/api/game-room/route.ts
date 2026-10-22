@@ -4,6 +4,8 @@ import { validAppearance } from '../../../lib/game-room';
 import { layeredKeys } from '../../../lib/avatar-layers';
 
 export const dynamic = 'force-dynamic';
+// Avatar reads must see the latest saved pieces, including the upstream account RPC.
+export const fetchCache = 'force-no-store';
 export async function GET(request: Request) {
   try {
     return Response.json(await gameRoomOperation(request, 'read_customized'), { headers: { 'Cache-Control': 'no-store' } });

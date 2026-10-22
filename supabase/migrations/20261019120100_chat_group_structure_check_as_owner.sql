@@ -1,0 +1,15 @@
+-- Chat fix (SRS-200.1 / SRS-202.1 / SRS-203.4): opening a NEW private conversation from the friends
+-- Message button failed with "Connections are temporarily unavailable"; saving group memberships would fail
+-- the same way. Existing conversations still opened because nothing new was saved.
+--
+-- Root cause, confirmed on the hosted database on 2026-10-19 with rolled-back tests:
+-- socialu.check_group_structure() (the deferred "exactly one current group owner" check on conversations and
+-- group_memberships) fires when the transaction commits, as the role active at that moment. The app calls as
+-- service_role, which has no USAGE on schema socialu, so the check cannot see socialu.conversations and fails
+-- with 42P01 `relation "conversations" does not exist`; the whole save is rolled back. The same call succeeds
+-- when the check runs as the function owner. (This is also why 20261008000300 needed SET CONSTRAINTS ALL
+-- IMMEDIATE for posts. The hosted database runs PostgreSQL 17.6; the in-memory tests run PostgreSQL 18, which
+-- runs such checks as the role that queued them, so those tests cannot reproduce this.)
+--
+-- Fix: run the check as its owner. The rule itself, its search_path, and every caller stay unchanged.
+ALTER FUNCTION socialu.check_group_structure() SECURITY DEFINER SET search_path = socialu, pg_catalog;
