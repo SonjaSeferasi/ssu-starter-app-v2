@@ -1,50 +1,49 @@
-## Sprint 2 current implementation audit — 22 October 2026
-Owner: Sonja Seferasi (SS). Existing issue retained; no duplicate SRS card created.
-
-REQUIREMENTS GAP: current gameplay consumes a heart and respawns at a checkpoint after nonfatal damage/falls, and ends the attempt after three damaging hits. It does not satisfy the exact requirement to end the attempt on every fall/hazard. Do not mark this requirement or its tasks Done. Reconcile the finite-life design with the team SRS before acceptance.
-
-Implementation: [Jumpyland PR #451](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/451), [later integrated Jumpyland merge 04af351](https://github.com/SonjaSeferasi/ssu-starter-app-v2/commit/04af351), and [review baseline eab5235](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/eab5235b867e608693240ede1184c7ba23d1c843). Avatar collection: [merged PR #515](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/515).
-
-Code: [attempt-life.ts](https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/eab5235b867e608693240ede1184c7ba23d1c843/components/jumpyland/attempt-life.ts), [engine.ts](https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/eab5235b867e608693240ede1184c7ba23d1c843/components/jumpyland/engine.ts). Tests: __tests__/jumpyland-challenge.test.ts, jumpyland-mechanics.test.ts, jumpyland-geometry.test.ts, jumpyland-model.test.ts, jumpyland-life.test.ts and api/jumpyland.test.ts. Current integrated check: 606 tests / 54 files passed; production build passed. Unit/geometry checks are not a full signed-in playthrough.
-
-![Blender environment review render](https://raw.githubusercontent.com/SonjaSeferasi/ssu-starter-app-v2/eab5235b867e608693240ede1184c7ba23d1c843/output/jumpyland/world-3-review.png)
-Picture type: Blender asset/environment review render already in the repository. It is not a browser screenshot and does not prove the game matches the reference artwork. Photorealistic fidelity is not claimed.
-
-Live acceptance: sign in, launch Jumpyland, select a world, demonstrate this card's exact behavior and capture the actual application. Full level playthroughs, hosted saving and current browser visuals are unverified. This issue remains open. Records updated today do not backdate development.
-
-## Historical plan and exact requirement
-The original planning text follows for traceability. Its Phaser implementation directions and old not-started claims are superseded by the current audit above; acceptance criteria remain unchanged.
-
 Owner: Sonja Seferasi (SS)
-Development plan: #375 — Jumpyland (Game 1), using Phaser.
-Status: implementation audit below; live acceptance pending.
+Sprint: Sprint 2 implementation/acceptance audit, 22 October 2026.
+Status: requirements gap; acceptance pending.
+Development plan: #375. Existing requirement and task IDs retained.
 
-## User story
-As a student, I want to be told whether a fall or hazard ended my attempt and be able to restart the current level immediately, with no limit on retries, so that I can try again without losing previously completed levels.
+## Exact system requirement and acceptance criterion
+##### SRS-620.1, SS — End an attempt after a fall or hazard.
 
-## SRS-620.1 — End an attempt after a fall or hazard
 When the character falls below the level's playable area or touches a hazard during running gameplay, the system shall end the attempt unsuccessfully.
 
-## Acceptance criterion
-Given an attempt is running, when either failure condition occurs, then that attempt stops unsuccessfully.
+Acceptance criterion: Given an attempt is running, when either failure condition occurs, then that attempt stops unsuccessfully.
 
 Traces to: UR-620.
-Source: [team SRS](https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/main/documentation/SocialU_SRS_Editable.md#ur-620).
 
-## Implementation boundaries
-Detect a fall below the playable area and contact with a hazard using Phaser world state/overlap handling. Transition the running attempt to a single failed state, stop gameplay input and physics for that attempt, and guard against duplicate failure events. Unlimited retry and explanatory failure UI remain separately traceable to SRS-620.2–620.4.
+Source: [canonical team SRS](https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/eab5235b867e608693240ede1184c7ba23d1c843/documentation/SocialU_SRS_Editable.md#ur-620).
 
-No database table/API is needed solely for this client-side behavior. Reuse signed-in entry and the existing account/session boundary. Persisted completion, points and participation have separate requirements and owner dependencies.
+## Current implementation
+REQUIREMENTS GAP: current damage/falls consume hearts and can respawn at a checkpoint; the attempt ends after three damaging hits. That differs from the exact requirement to end the attempt after every fall or hazard. This requirement is not accepted. The team must reconcile the finite-life design with the canonical SRS before closure.
+
+Current code: [attempt-life.ts](https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/eab5235b867e608693240ede1184c7ba23d1c843/components/jumpyland/attempt-life.ts), [engine.ts](https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/eab5235b867e608693240ede1184c7ba23d1c843/components/jumpyland/engine.ts). The client engine reuses the signed-in Game 1 entry and shared avatar. No new database table is required for this movement/collision behavior; progress/account persistence remains a separate API/schema concern. Historical Phaser instructions are replaced by this current Three.js description, while the exact canonical SRS above is preserved.
+
+## Existing linked tasks
+- [ ] #389 — implementation
+- [ ] #390 — verification and actual application evidence
+
+These are the existing actual sub-issues. No duplicate Jumpyland cards were created. Code presence is recorded separately from full task/requirement acceptance.
+
+## Merge and branch evidence
+- [Original Jumpyland PR #451, merged](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/451). Its original implementation used Phaser.
+- [Later Jumpyland integration 04af351](https://github.com/SonjaSeferasi/ssu-starter-app-v2/commit/04af351), containing subsequent 3D work. This is a merge commit, not an invented PR.
+- [Current integrated source eab5235](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/eab5235b867e608693240ede1184c7ba23d1c843).
+- [Avatar collection PR #515, merged](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/515); supporting avatar work, not proof of this movement/collision requirement.
+- [Sprint 2 evidence PR #525, merged](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/525).
+- [Sonja Sprint 2 evidence index](https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/main/documentation/sprint-2-evidence/README.md).
 
 ## Verification
-Verify both failure causes stop a running attempt, that a safe platform landing does not fail, and that repeated collision callbacks do not create multiple failure transitions. This requirement must not consume lives, erase completed levels, or award points.
+The integrated application passed 606 tests across 54 files and a production build (41 pages). Relevant suites: jumpyland-challenge, jumpyland-mechanics, jumpyland-geometry, jumpyland-model, jumpyland-life and api/jumpyland. API tests mock Supabase; geometry/mechanics tests do not constitute a signed-in playthrough. Live acceptance for this exact card remains pending.
 
-## Completion evidence required
-- [ ] Implementation and verification sub-issues completed.
-- [ ] Branch and merged PR linked; task-completing PRs use Closes #<task number>.
-- [ ] Relevant checks pass and signed-in running-app evidence is attached.
-- [ ] Actual demo steps and remaining dependencies are recorded; no mock or entry-only view is claimed as gameplay.
+## Pictures
+![Existing environment review render](https://raw.githubusercontent.com/SonjaSeferasi/ssu-starter-app-v2/eab5235b867e608693240ede1184c7ba23d1c843/output/jumpyland/world-3-review.png)
+This is a Blender environment/asset review render, not a running-game screenshot or proof of photorealistic fidelity to Sonja's reference.
 
-## Implementation sub-issues
-- [ ] #389 — implementation
-- [ ] #390 — verification
+![Actual Sprint 2 board screenshot](https://raw.githubusercontent.com/SonjaSeferasi/ssu-starter-app-v2/main/documentation/sprint-2-evidence/sonja-sprint-2-board.jpg)
+This is an actual GitHub board screenshot from 22 October 2026. Board organization does not prove gameplay acceptance.
+
+## Reproducible demo and remaining work
+Sign in, open Game Room, launch Jumpyland without first editing an avatar, select an available world and demonstrate the exact acceptance criterion above. Record the world, keyboard/on-screen control, expected result, actual result and date; attach the actual running-application screenshot. Full level playthroughs and hosted saving were not verified in this audit.
+
+The [Sonja — Sprint 2 view](https://github.com/users/SonjaSeferasi/projects/2/views/15) contains the existing five SRS parents. GitHub intermittently fails to load the project and reverted attempted status changes; this audit does not claim they moved to In review or Done. Sprint 1 and teammate records were left intact. No Canvas submission, retroactive development history or demo attendance is claimed.

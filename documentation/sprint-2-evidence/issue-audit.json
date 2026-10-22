@@ -91,7 +91,17 @@
       "done": false
     }
   ],
-  "projectsAccess": "blocked: credential lacks read:project and project scopes",
-  "browserScreenshots": "not captured: no browser surface available",
-  "images": "Existing avatar composition and Blender environment renders; not browser screenshots"
+  "projectsAccess": "API lacks Projects scopes; signed-in browser created view 15, renamed Sonja — Sprint 2",
+  "browserScreenshots": "Actual GitHub board screenshot captured; running-app screenshots remain pending",
+  "images": "Existing avatar composition and Blender environment renders; not browser screenshots",
+  "boardView": "https://github.com/users/SonjaSeferasi/projects/2/views/15",
+  "boardStatusChanges": "Not confirmed: GitHub reverted attempted status changes and intermittently failed to load",
+  "boardScope": [
+    376,
+    379,
+    382,
+    385,
+    388
+  ],
+  "formalSprintSelection": "Not assumed; avatar proposal withdrawn following clarification to use existing backlog cards"
 }

@@ -21,6 +21,13 @@ export const headStyles = [
   { id: 'hijab-cream', name: 'Cream', kind: 'hijab', hex: '#e8d9c0' }, { id: 'hijab-burgundy', name: 'Burgundy', kind: 'hijab', hex: '#7c3445' },
 ] as const;
 
+export type AvatarStyleGroup = 'male' | 'female';
+const maleHeads = new Set(['short-waves', 'curls', 'coils', 'locs', 'fade']);
+/** Presentation groups only; no change to the student's account/profile gender. */
+export function avatarStyleGroup(headStyle: string): AvatarStyleGroup {
+  return maleHeads.has(headStyle) ? 'male' : 'female';
+}
+
 export const topStyles = [
   { id: 'hoodie', name: 'Hoodie' }, { id: 'crewneck', name: 'Crewneck' },
   { id: 'zip-jacket', name: 'Zip jacket' }, { id: 'cardigan', name: 'Cardigan' },
@@ -101,6 +108,10 @@ export function parseAvatarManifest(value: unknown): AvatarManifest | null {
     const items = manifest[group];
     if (!items || typeof items !== 'object' || Array.isArray(items)) return null;
     for (const cells of Object.values(items)) if (!Array.isArray(cells) || cells.length !== 6 || !cells.every(cell)) return null;
+    for (const cells of Object.values(items)) for (const piece of cells) {
+      if (group === 'tops' && (piece.hem ?? piece.height) <= piece.anchor[1]) return null;
+      if (group === 'bottoms' && piece.height <= piece.anchor[1]) return null;
+    }
   }
   if (manifest.skin && (!Array.isArray(manifest.skin) || manifest.skin.length !== 6 || !manifest.skin.every(c => /^#[0-9a-f]{6}$/i.test(c)))) return null;
   return manifest;
@@ -110,11 +121,11 @@ export function parseAvatarManifest(value: unknown): AvatarManifest | null {
 export const LAYOUT = {
   canvas: { width: 341.333333, height: 512, margin: 10 },
   centerX: 170,
-  top: { collarY: 128, shoulderWidth: 150 },
+  top: { collarY: 128, shoulderWidth: 150, torsoHeight: 164 },
   hair: { neckWidth: 30, neckOverlap: 14 },          // neck base tucks this far into the collar
   hijab: { headWidth: 92, drapeOverlap: 40 },        // drape lies over the top of the shirt
-  faceWidth: 60,
-  bottom: { waistWidth: 112, hemOverlap: 24 },       // waistband hides under the top's hem
+  faceWidth: 52,
+  bottom: { legHeight: 234, hemOverlap: 24 },       // waistband hides under the top's hem
 };
 
 export type PlacedLayer = { href: string; x: number; y: number; width: number; height: number; part: 'bottom' | 'top' | 'head' };
@@ -134,17 +145,22 @@ export function layoutAvatar(manifest: AvatarManifest, look: LayeredLook): Avata
   const bottom = manifest.bottoms[look.bottomStyle]?.[indexOf(bottomColors, look.bottomColor)];
   if (!head || !top || !bottom) return null;
   const { centerX } = LAYOUT;
-  const place = (cell: LayerCell, scale: number, anchorX: number, anchorY: number, part: PlacedLayer['part']): PlacedLayer => ({
-    href: cell.file, part, width: cell.width * scale, height: cell.height * scale,
-    x: anchorX - cell.anchor[0] * scale, y: anchorY - cell.anchor[1] * scale,
+  const place = (cell: LayerCell, sx: number, sy: number, anchorX: number, anchorY: number, part: PlacedLayer['part']): PlacedLayer => ({
+    href: cell.file, part, width: cell.width * sx, height: cell.height * sy,
+    x: anchorX - cell.anchor[0] * sx, y: anchorY - cell.anchor[1] * sy,
   });
-  const topScale = LAYOUT.top.shoulderWidth / top.size;
-  const topLayer = place(top, topScale, centerX, LAYOUT.top.collarY, 'top');
-  const hemY = LAYOUT.top.collarY + ((top.hem ?? top.height) - top.anchor[1]) * topScale;
-  const bottomLayer = place(bottom, LAYOUT.bottom.waistWidth / bottom.size, centerX, hemY - LAYOUT.bottom.hemOverlap, 'bottom');
+  // The generated sheets have different crop dimensions. Match anatomical
+  // landmarks rather than stretching long trousers to a fixed waistband width.
+  // Outfit changes keep the collar, waistband and feet in the same places.
+  const topScaleX = LAYOUT.top.shoulderWidth / top.size;
+  const topScaleY = LAYOUT.top.torsoHeight / ((top.hem ?? top.height) - top.anchor[1]);
+  const topLayer = place(top, topScaleX, topScaleY, centerX, LAYOUT.top.collarY, 'top');
+  const hemY = LAYOUT.top.collarY + LAYOUT.top.torsoHeight;
+  const bottomScale = LAYOUT.bottom.legHeight / (bottom.height - bottom.anchor[1]);
+  const bottomLayer = place(bottom, bottomScale, bottomScale, centerX, hemY - LAYOUT.bottom.hemOverlap, 'bottom');
   const hijab = headKind(look.headStyle) === 'hijab';
   const headScale = head.faceWidth ? LAYOUT.faceWidth / head.faceWidth : hijab ? LAYOUT.hijab.headWidth / head.size : LAYOUT.hair.neckWidth / head.size;
-  const headLayer = place(head, headScale, centerX, LAYOUT.top.collarY + (hijab && !head.faceWidth ? LAYOUT.hijab.drapeOverlap : LAYOUT.hair.neckOverlap), 'head');
+  const headLayer = place(head, headScale, headScale, centerX, LAYOUT.top.collarY + (hijab && !head.faceWidth ? LAYOUT.hijab.drapeOverlap : LAYOUT.hair.neckOverlap), 'head');
   // Fit the whole figure inside the canvas without distorting it.
   const layers = [bottomLayer, topLayer, headLayer];
   const minY = Math.min(...layers.map(layer => layer.y)), maxY = Math.max(...layers.map(layer => layer.y + layer.height));
