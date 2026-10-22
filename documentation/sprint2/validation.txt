@@ -1,0 +1,12 @@
+Sprint 2 validation — October 22, 2026
+Branch: linh/srs-114.7-friend-request-notification-sprint2
+Integrated baseline: c3eaf80 (merged PR #501)
+
+npx tsc --noEmit: PASS
+npm test: PASS — 40 files, 522 tests
+
+Includes notification access regression tests for signed-out reads,
+signed-out read-state updates, and ignoring recipient IDs supplied in the URL.
+Database integration test runs the real schema/migrations in disposable PGlite.
+Supabase API responses are mocked in API tests.
+No successful live two-account delivery/screenshot is claimed.
