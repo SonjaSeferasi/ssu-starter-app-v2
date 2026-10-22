@@ -30,8 +30,8 @@ export function PostComposer({
   }
 
   async function handlePublish() {
-    if (!text.trim()) {
-      setError('Write something before publishing.');
+    if (!text.trim() && images.length === 0) {
+      setError('Write something or add a photo before publishing.');
       return;
     }
     setError('');
