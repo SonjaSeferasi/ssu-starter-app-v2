@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useNavigationSession } from '../components/navigation/social-shell';
 import { SessionNotice } from '../components/navigation/section-page';
 import { FeedPage } from '../components/feed/FeedPage';
@@ -16,7 +16,10 @@ export default function Home() {
     const target = { recovery: '/reset-password', magiclink: '/verify-email?purpose=reverification', signup: '/verify-email?purpose=signup' }[fragment.get('type') ?? ''];
     window.location.replace(target ? target + window.location.hash : '/');
   }, []);
-  if (session === 'signed-in') return <FeedPage />;
+  // SRS-312.10: FeedPage reads ?post=/&tab= via useSearchParams(), which
+  // Next.js requires a Suspense boundary for -- the fallback is skipped in
+  // practice almost instantly since this is a client-rendered page.
+  if (session === 'signed-in') return <Suspense><FeedPage /></Suspense>;
   if (session !== 'signed-out') return <SessionNotice state={session} />;
   return (
     <main className={styles.standalone}>

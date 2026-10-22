@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { isCurrentDestination, navigationDestinations } from '../../lib/navigation';
 import styles from './social-shell.module.css';
 import type { NavigationPosition } from '../../lib/game-room';
+import { NotificationBell } from './NotificationBell';
 
 type IconName = (typeof navigationDestinations)[number]['icon'] | 'profile' | 'search';
 
@@ -81,6 +82,7 @@ export function NavigationFrame({ pathname, children, position = 'side', ...pref
           <input type="search" placeholder="Search students, groups, events…" disabled />
         </div>
         <div className={styles.headerActions}>
+          <NotificationBell />
           <span className={styles.pointsBadge} title="The points system isn't built yet">★ — pts</span>
           <Link href="/profile" className={styles.profileLink} aria-current={isCurrentDestination(pathname, '/profile') ? 'page' : undefined} aria-label="Your profile">
             <NavigationIcon name="profile" />
