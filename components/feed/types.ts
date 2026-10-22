@@ -2,6 +2,7 @@ export type FeedPost = {
   postId: number;
   authorId: number;
   authorName: string;
+  authorUsername: string;
   authorPhotoUrl: string | null;
   textContent: string | null;
   visibility: 'public' | 'friends_only';

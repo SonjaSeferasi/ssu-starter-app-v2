@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import {
-  Camera, Clock, GraduationCap, Grid3x3, Images, Landmark, Lock, MessageCircle, Pencil, SquareUser, UserCheck, UserPlus, UserRound, X,
+  Camera, Clock, Users, GraduationCap, Grid3x3, Images, Landmark, Lock, MessageCircle, Pencil, SquareUser, UserCheck, UserPlus, UserRound, X,
 } from 'lucide-react';
 import type { StudentProfile } from '../../lib/profile';
 import type { FeedPost } from '../feed/types';
@@ -64,15 +64,132 @@ export function ProfileLogout() {
   </button>;
 }
 
-function ProfileActions({ profile }: { profile: StudentProfile }) {
+type FriendAction = 'send' | 'cancel' | 'accept' | 'decline' | 'unfriend';
+
+// SRS-114, SRS-116: friend request actions. Any page that shows a request can reuse this.
+export async function friendAction(username: string, action: FriendAction): Promise<StudentProfile> {
+  const { response, data } = await profileFetch('/api/friends', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, action }),
+  });
+  if (!response.ok) throw new Error(data.error || 'Unable to update this friend request.');
+  window.dispatchEvent(new Event('socialu-notifications-changed'));
+  return data.profile;
+}
+
+function ProfileActions({ profile, onChange }: { profile: StudentProfile; onChange: (profile: StudentProfile) => void }) {
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
   if (profile.is_own) return <div className={styles.actions}><Link href="/profile/edit" className={styles.button}><Pencil />Edit profile</Link><ProfileLogout /></div>;
-  // SRS-113.16-113.18. Sending a friend request belongs to SRS-114 and is not connected yet.
-  const friendLabel = profile.is_friend ? 'Friends' : profile.friend_request === 'sent' ? 'Requested' : profile.friend_request === 'received' ? 'Respond to request' : 'Add Friend';
+
+  async function run(action: FriendAction) {
+    if (action === 'unfriend' && !window.confirm(`Remove ${profile.name} from your friends?`)) return;
+    setBusy(true); setError('');
+    try { onChange(await friendAction(profile.username, action)); }
+    catch (reason) { setError(reason instanceof Error ? reason.message : 'Unable to update this friend request.'); }
+    finally { setBusy(false); }
+  }
+
+  async function message() {
+    setBusy(true); setError('');
+    try {
+      const { response, data } = await profileFetch('/api/conversations', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: profile.username }),
+      });
+      if (!response.ok) throw new Error(data.error || 'Unable to open this conversation.');
+      router.push(`/messages/${data.conversationId}`);
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : 'Unable to open this conversation.');
+      setBusy(false);
+    }
+  }
+
+  // SRS-113.16-113.18
   return <div className={styles.actions}>
-    <button type="button" className={styles.button} disabled title={profile.is_friend ? undefined : 'Friend requests are coming soon.'}>
-      {profile.is_friend ? <UserCheck /> : profile.friend_request ? <Clock /> : <UserPlus />}{friendLabel}
-    </button>
-    <Link href="/messages" className={`${styles.button} ${styles.secondary}`}><MessageCircle />Message</Link>
+    {profile.is_friend
+      ? <button type="button" className={styles.button} onClick={() => run('unfriend')} disabled={busy} title="Remove friend"><UserCheck />Friends</button>
+      : profile.friend_request === 'sent'
+        ? <button type="button" className={styles.button} onClick={() => run('cancel')} disabled={busy} title="Cancel friend request"><Clock />Requested</button>
+        : profile.friend_request === 'received'
+          ? <>
+            <button type="button" className={styles.button} onClick={() => run('accept')} disabled={busy}><UserCheck />Accept</button>
+            <button type="button" className={`${styles.button} ${styles.secondary}`} onClick={() => run('decline')} disabled={busy}><X />Decline</button>
+          </>
+          : <button type="button" className={styles.button} onClick={() => run('send')} disabled={busy}><UserPlus />Add Friend</button>}
+    {/* SRS-113.17: only current friends can start a private conversation. */}
+    {profile.is_friend && <button type="button" className={`${styles.button} ${styles.secondary}`} onClick={message} disabled={busy}><MessageCircle />Message</button>}
+    {error && <p className={`${styles.notice} ${styles.error}`} role="alert" style={{ width: '100%', marginTop: 0 }}>{error}</p>}
+  </div>;
+}
+
+type ProfileFriend = { username: string; name: string; photo_url: string | null; is_me: boolean; is_friend: boolean; friend_request: 'sent' | 'received' | null };
+
+// One person in a friends list, with your own friend status toward them (nothing when you are already friends).
+function FriendListRow({ friend, onClose }: { friend: ProfileFriend; onClose: () => void }) {
+  const [person, setPerson] = useState(friend);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+
+  async function run(action: FriendAction) {
+    setBusy(true); setError('');
+    try {
+      const updated = await friendAction(person.username, action);
+      setPerson(current => ({ ...current, is_friend: updated.is_friend, friend_request: updated.friend_request }));
+    } catch (reason) { setError(reason instanceof Error ? reason.message : 'Unable to update this friend request.'); }
+    finally { setBusy(false); }
+  }
+
+  return <li className={styles.friendItem}>
+    <Link href={person.is_me ? '/profile' : `/students/${encodeURIComponent(person.username)}`} className={styles.friendRow} onClick={onClose}>
+      <Avatar url={person.photo_url} name={person.name} />
+      <span className={styles.friendName}>{person.name}<small>@{person.username}</small></span>
+    </Link>
+    {person.is_me ? <span className={styles.friendTag}>You</span>
+      : person.is_friend ? null
+      : person.friend_request === 'received' ? <span className={styles.friendActions}>
+        <button type="button" className={`${styles.button} ${styles.small}`} onClick={() => run('accept')} disabled={busy}>Accept</button>
+        <button type="button" className={`${styles.button} ${styles.secondary} ${styles.small}`} onClick={() => run('decline')} disabled={busy}>Decline</button>
+      </span>
+      : person.friend_request === 'sent'
+        ? <button type="button" className={`${styles.button} ${styles.secondary} ${styles.small}`} onClick={() => run('cancel')} disabled={busy} title="Cancel friend request"><Clock />Requested</button>
+        : <button type="button" className={`${styles.button} ${styles.small}`} onClick={() => run('send')} disabled={busy}><UserPlus />Add Friend</button>}
+    {error && <p className={styles.friendError} role="alert">{error}</p>}
+  </li>;
+}
+
+// SRS-111.4, SRS-113.9: who this student is friends with.
+function FriendsList({ profile, onClose }: { profile: StudentProfile; onClose: () => void }) {
+  const [friends, setFriends] = useState<ProfileFriend[] | null>(null);
+  const [error, setError] = useState('');
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+  useEffect(() => {
+    let active = true;
+    profileFetch(profile.is_own ? '/api/profiles/friends' : `/api/profiles/friends?username=${encodeURIComponent(profile.username)}`)
+      .then(({ response, data }) => {
+        if (!active) return;
+        if (!response.ok) throw new Error(data.error || 'Unable to load friends.');
+        setFriends(data.friends);
+      })
+      .catch(reason => { if (active) setError(reason instanceof Error ? reason.message : 'Unable to load friends.'); });
+    return () => { active = false; };
+  }, [profile.is_own, profile.username]);
+
+  return <div className={styles.backdrop} onClick={onClose}>
+    <div className={styles.friendsDialog} role="dialog" aria-modal="true" aria-label={`${profile.name}'s friends`} onClick={event => event.stopPropagation()}>
+      <div className={styles.viewerAuthor}>
+        <span>{profile.is_own ? 'Your friends' : `${profile.name}'s friends`}</span>
+        <button type="button" className={styles.close} onClick={onClose} aria-label="Close friends list" autoFocus><X size={18} /></button>
+      </div>
+      {error ? <p className={`${styles.notice} ${styles.error}`} role="alert">{error}</p>
+        : !friends ? <div className={styles.skeleton} style={{ height: 120, marginTop: 16 }} aria-busy="true" />
+        : !friends.length ? <div className={styles.empty}><Users /><h2>No friends yet</h2>
+          <p>{profile.is_own ? 'Add classmates from their profiles and they will show up here.' : 'When they add friends, they will show up here.'}</p></div>
+        : <ul className={styles.friendsList}>{friends.map(friend => <FriendListRow key={friend.username} friend={friend} onClose={onClose} />)}</ul>}
+    </div>
   </div>;
 }
 
@@ -149,10 +266,11 @@ function ProfileContent({ username }: { username?: string }) {
   const [missing, setMissing] = useState(false);
   // SRS-112.2: Posts is selected when a profile opens.
   const [category, setCategory] = useState<Category>('posts');
+  const [showFriends, setShowFriends] = useState(false);
 
   useEffect(() => {
     let active = true;
-    setProfile(null); setError(''); setMissing(false); setCategory('posts');
+    setProfile(null); setError(''); setMissing(false); setCategory('posts'); setShowFriends(false);
     profileFetch(username ? `/api/profiles?username=${encodeURIComponent(username)}` : '/api/profiles')
       .then(({ response, data }) => {
         if (!active) return;
@@ -181,10 +299,10 @@ function ProfileContent({ username }: { username?: string }) {
       <div className={styles.info}>
         <div className={styles.nameRow}>
           <div><h1 className={styles.name}>{profile.name}</h1><p className={styles.username}>@{profile.username}</p></div>
-          <ProfileActions profile={profile} />
+          <ProfileActions profile={profile} onChange={setProfile} />
         </div>
         {/* SRS-111.1, SRS-111.4, SRS-111.8, SRS-113.8, SRS-113.9 */}
-        <ul className={styles.stats}><li>{count(profile.post_count, 'post', 'posts')}</li><li>{count(profile.friend_count, 'friend', 'friends')}</li></ul>
+        <ul className={styles.stats}><li>{count(profile.post_count, 'post', 'posts')}</li><li><button type="button" className={styles.statButton} onClick={() => setShowFriends(true)}>{count(profile.friend_count, 'friend', 'friends')}</button></li></ul>
         <p className={styles.meta}>
           {profile.university && <span><Landmark />{profile.university}</span>}
           {details && <span><GraduationCap />{details}</span>}
@@ -204,6 +322,7 @@ function ProfileContent({ username }: { username?: string }) {
       <button type="button" role="tab" className={styles.tab} aria-selected={category === 'tagged'} onClick={() => setCategory('tagged')}><SquareUser />Tagged</button>
     </div>
     <div role="tabpanel"><PostGrid username={profile.username} category={category} own={profile.is_own} /></div>
+    {showFriends && <FriendsList profile={profile} onClose={() => setShowFriends(false)} />}
   </main>;
 }
 

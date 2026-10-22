@@ -7,6 +7,7 @@ export function PostCard({ post }: { post: FeedPost }) {
     <article className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm">
       <PostAuthor
         name={post.authorName}
+        username={post.authorUsername}
         photoUrl={post.authorPhotoUrl}
         publishedAt={post.publishedAt}
         editedAt={post.editedAt}
