@@ -1,12 +1,13 @@
-Sprint 2 notification follow-up — October 22, 2026
-Branch: linh/srs-114.7-notification-delivery-followup
-Integrated main baseline: 04af351
+Sprint 2 readiness audit — October 22, 2026
+Integrated code baseline: 40294284dd806f139b7ab707695b9f1494591d3e
 
 npx tsc --noEmit: PASS
-npm test: PASS — 47 files, 576 tests
+npx vitest run __tests__/api/friends.test.ts __tests__/api/profile-notifications.test.ts __tests__/database/friendships.test.ts __tests__/database/notifications-unified.test.ts
+PASS — 41 tests across 4 files
 
-Includes real-schema disposable database verification of new request notifications,
-read-state updates, friendship acceptance, and idempotent legacy-notification backfill.
-Supabase API responses are mocked in API tests.
-Real running-app screenshot of two older received requests is attached to #506.
-A fresh two-account request/unread-bell demonstration is not yet claimed.
+API tests mock Supabase. Database tests execute actual SQL in disposable PGlite.
+Verified GitHub merged state: PR #501, #512, #514, #530.
+#502 and #526–#529 are closed as completed. #507–#510 are closed.
+#506 and #511 are open; fresh two-account delivery is deferred by Linh.
+Existing recipient screenshot is on #506; it does not prove a new request/bell test.
+No earlier sprint history, live test result, course attendance or Canvas submission is fabricated.

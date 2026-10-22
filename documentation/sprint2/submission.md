@@ -1,36 +1,23 @@
 # CSC 351 — Sprint 2 — Linh Nguyen (LN)
 
-Prepared October 22, 2026. Application: SocialU. GitHub: Dieulinhh23.
+Updated October 22, 2026. GitHub account: Dieulinhh23. Application: SocialU.
 
-## Current evidence update — October 22, 2026
+**Prepared for submission review; not a claim of full completion.** The selected notification slice is implemented and merged. Its final fresh two-account delivery check is deferred at Linh's request. No demo script is included in this submission package.
 
-The real recipient screenshot is now [attached to #506](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/506), showing pending requests from Darrin and Loens. Both remained visible after returning to the Notifications page. This supersedes the earlier empty-state observation below. The screenshot is also available [directly](https://github.com/user-attachments/assets/e362dae0-b3c1-4c53-9d79-43ae42a051ea).
+## Canvas: copy these links
 
-The notification trigger and compatibility wrapper were installed in hosted Supabase with Linh's explicit approval; catalog verification returned true for both trigger and function. This does not claim all feed-restoration statements in migration 20261022050000 were deployed by that operation.
+- Team project / personal Sprint 2 view: https://github.com/users/SonjaSeferasi/projects/2/views/14
+- Selected SRS issue: https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/506
+- Merged implementation PR: https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/501
+- Merged SRS-named recipient-access/evidence PR: https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/512
+- Merged notification UI/backfill PR: https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/514
+- SRS-named branch: https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/linh/srs-114.7-friend-request-notification-sprint2
 
-The follow-up UI separates pending friend requests from acceptance notifications and automatically opens the request tab when applicable. Migration 20261022060000 safely repairs missing notifications for real older pending requests, retaining their original request timestamps. A disposable database regression runs the backfill twice and verifies one notification remains.
+Suggested submission note:
 
-Latest integrated follow-up checks: TypeScript and all 576 tests pass across 47 files. The pictured requests are 2–3 days old: this is existing-request evidence, not a claimed fresh two-account delivery or unread-bell demonstration. #511 and #506 remain open for that final acceptance step. PR #512 is merged; the original implementation remains PR #501. Items #502–#505 have been audited and moved to In review with their remaining evidence gaps.
+> My Sprint 2 item is SRS-114.7, LN — Friend-request notification, tracing to UR-114. Its database, authenticated API, notification interface and automated tests are implemented and merged in PRs #501, #512 and #514. Issue #506 links the assigned task sub-issues, branches, code and running-application screenshot. Four of five tasks are complete. The screenshot shows real existing received requests; the final fresh two-account request/unread-bell check in #511 is still pending and is not claimed complete.
 
-The remainder of this file records the original preparation snapshot and demo checklist; use this current update when interpreting its earlier pending-screenshot statements.
-
-## Canvas links
-
-1. [Team project — Linh Nguyen - Sprint 2](https://github.com/users/SonjaSeferasi/projects/2/views/14).
-2. [Selected SRS-114.7 issue #506](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/506): requirement, UR trace, five assigned task sub-issues, implementation references and remaining acceptance work.
-3. [Merged implementation PR #501](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/501).
-4. [Evidence and recipient-access test PR #512](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/512).
-5. [SRS-named evidence branch](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/linh/srs-114.7-friend-request-notification-sprint2).
-
-**Submission status:** implementation is merged and automated checks pass. The live recipient screenshot and a real two-account demonstration remain outstanding. Do not represent this document as full completion until those are recorded on #506. The student must attend demo day; a prepared script does not satisfy attendance.
-
-## Board snapshot
-
-![Separate Linh Nguyen - Sprint 2 board](https://github.com/user-attachments/assets/99978455-f03f-4616-b466-467d80247cd8)
-
-This is board evidence only. It shows the selected card at 4/5 tasks; it does not replace the outstanding received-request screenshot. Sprint 1 and Sprint 2 personal views are separated by issue creation date at October 22, 2026; teammates’ cards and project-wide statuses were not changed.
-
-## Selected requirement
+## Selected SRS item
 
 **SRS-114.7, LN — Friend-request notification.**
 
@@ -42,71 +29,77 @@ Traces to: UR-114
 
 UR-114: As a student, I want to send a friend request from another student's profile, so that I can connect with classmates and other students I know.
 
-Source: [canonical SRS](../SocialU_SRS_Editable.md#ur-114); [UR overview #430](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/430).
+Canonical source: [SRS](../SocialU_SRS_Editable.md#ur-114); [UR overview #430](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/430).
 
-## Prioritized backlog
+## Five SRS cards, in dependency order
 
-| Priority | Exact SRS title | Issue | Sprint 2 role |
+All five titles, shall statements and trace lines were checked against the canonical SRS. All are assigned to Dieulinhh23. The following are current statuses, not fabricated earlier sprint history.
+
+| Priority | Exact title / issue | Current status |
+| --- | --- | --- |
+| 1 | [SRS-114.1, LN — Add Friend action. #502](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/502) | Done: PR #530 merged; four tasks closed; eligible-profile screenshot attached |
+| 2 | [SRS-114.2, LN — Create pending friend request. #503](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/503) | Product Backlog: supporting implementation exists; own acceptance package unfinished |
+| 3 | [SRS-114.3, LN — Duplicate pending-request restriction. #504](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/504) | Product Backlog: supporting implementation exists; own acceptance package unfinished |
+| 4 | [SRS-114.4, LN — Friendship requires acceptance. #505](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/505) | Product Backlog: supporting implementation exists; own acceptance package unfinished |
+| 5 | [SRS-114.7, LN — Friend-request notification. #506](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/506) | In review: one formal Sprint 2 selection, 4/5 tasks complete |
+
+The assignment text alternates between Sprint 1/Sprint 2 and several/exactly one SRS selection. This package follows the explicit rubric's one-formal-item rule and does not rewrite the assignment. Ask the instructor if a different interpretation is required.
+
+## Vertical slice: actual assigned sub-issues of #506
+
+| Layer | Task | Evidence | Status |
 | --- | --- | --- | --- |
-| 1 | SRS-114.1, LN — Add Friend action. | [#502](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/502) | Product Backlog acceptance audit; supporting code exists |
-| 2 | SRS-114.2, LN — Create pending friend request. | [#503](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/503) | Product Backlog acceptance audit; supporting code exists |
-| 3 | SRS-114.3, LN — Duplicate pending-request restriction. | [#504](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/504) | Product Backlog acceptance audit; supporting code exists |
-| 4 | SRS-114.4, LN — Friendship requires acceptance. | [#505](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/505) | Product Backlog acceptance audit; supporting code exists |
-| 5 | SRS-114.7, LN — Friend-request notification. | [#506](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/506) | One formal Sprint 2 selection; finish hosted evidence |
+| Database | [#507 — Task 114.7-1](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/507) | Persisted notification and friendship trigger; merged PR #501 | Done |
+| API | [#508 — Task 114.7-2](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/508) | Authenticated GET/POST `/api/notifications`; signed actor photos | Done |
+| UI | [#509 — Task 114.7-3](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/509) | Bell badge; Notifications and Friend requests tabs; profile links | Done |
+| Tests | [#510 — Task 114.7-4](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/510) | Recipient boundary, real-schema persistence and unread-state tests; PRs #512/#514 | Done |
+| Live acceptance | [#511 — Task 114.7-5](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/511) | Fresh request, recipient bell, persisted notification, screenshot | Open; deferred by Linh |
 
-The order follows dependencies: expose the action, persist a valid pending request, enforce request integrity, then notify the recipient. The notification slice reuses the already-built request behavior. Existing retired issues #193–#199 were left unchanged; the new issues use the assignment's exact SRS-card structure. These are current acceptance-audit records, not a claim that implementation began after their creation.
+These are real sub-issue relationships, not just checklist text. #506 and #511 stay open. When the sprint actually ends, any unfinished work returns to Product Backlog; the end date has not been invented.
 
-The assignment repeatedly says Sprint 1 and alternates between several items and exactly one. This preparation follows the explicit 50-point rubric's one-formal-item rule for Sprint 2. Confirm with the instructor if the intended rule differs.
+## Evidence already available
 
-## Vertical slice and real sub-issues
+[Real recipient screenshot attached to #506](https://github.com/user-attachments/assets/e362dae0-b3c1-4c53-9d79-43ae42a051ea): pending requests from Darrin and Loens, with Accept/Decline controls. Both remained after returning to the page. Their displayed ages were 2–3 days, so this is evidence of existing received requests, not proof of a fresh request generated after deployment.
 
-| Layer | Assigned task | Evidence | Current outcome |
-| --- | --- | --- | --- |
-| Database | [#507 — Task 114.7-1](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/507) | `socialu.notifications`, request relationship, transaction trigger in `20261022050000_integrate_notifications_with_main.sql` | Code merged; disposable database test passes |
-| API | [#508 — Task 114.7-2](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/508) | `/api/notifications` uses verified identity; signed photo URLs; read-state update | Code merged; API tests use mocks |
-| User interface | [#509 — Task 114.7-3](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/509) | Header bell, unread count, `/notifications`, actor profile links | Code merged; real page opened, currently empty |
-| Automated verification | [#510 — Task 114.7-4](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/510) | Database persistence/unread checks; API response and identity checks | Automated verification passes; does not substitute for hosted acceptance |
-| Live acceptance / evidence | [#511 — Task 114.7-5](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/511) | Real sender and recipient; notification persists on reload; recipient screenshot on #506 | OPEN — not claimed complete |
+[Completed Add Friend acceptance #502](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/502) has its own [eligible-profile screenshot](https://github.com/user-attachments/assets/edb99669-bfbd-4489-be8d-c6afe4cccd58), four closed sub-issues and [merged PR #530](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/530). It is supporting completed work, not a silent replacement for the selected #506. See [its acceptance record](srs-114.1-acceptance.md).
 
-The five tasks are actual sub-issues of #506, not a Markdown checklist standing in for relationships. Four implementation tasks are closed with merged-code evidence; live acceptance remains open. The parent stays open.
+The original implementation branch was `linh/friends-notifications-20261022`. SRS-named evidence branches and task records were created afterward. This package does not claim they were the original development branches or recreate a week's board history.
 
-## Implementation and schema findings
+## Schema and integration findings
 
-The original integrated feature was developed on `linh/friends-notifications-20261022` and merged through PR #501. The SRS-named branch was created afterward for assignment traceability and additional recipient-boundary tests; it is not falsely presented as the original implementation branch.
+Two overlapping friendship APIs and older feed function bodies needed integration. The compatibility migration `20261022050000_integrate_notifications_with_main.sql` preserves the newer feed contract while recording friendship notifications from the shared workflow. The notification trigger and wrapper were confirmed installed in hosted Supabase. This confirmation is not a claim that every statement in that migration was replayed.
 
-Integration found two overlapping friendship APIs and older feed functions that would overwrite newer likes/comments/photo contracts. The additive `20261022050000_integrate_notifications_with_main.sql` preserves the current feed functions, creates notifications from the shared friendship workflow, and adapts the older friend-action RPC to current authorization. Already-applied migrations were not rewritten and no data reset was used.
+The idempotent legacy-request backfill and notification tabs are merged in PR #514. Historical notifications retain the original request times. The backfill is not used as evidence of new live delivery.
 
-The notification `read_at` column supports a badge counting unread notifications instead of every pending request. Read-state behavior is supporting implementation, not a replacement for SRS-114.7's requirement to actually deliver a notification.
+Later school-community, profile-highlight and campus-directory work is in main. It is additional development, not automatically counted toward SRS-114.7. For the final live check, both real test accounts must now be in the same verified school community.
 
-Hosted deployment of the compatibility migration must be confirmed before the live demo. The earlier user-reported installed functions do not prove this later migration was deployed.
+## Current verification
 
-## Evidence and limits
+At integrated commit `40294284dd806f139b7ab707695b9f1494591d3e` on October 22, 2026:
 
-- PR #501 was verified merged on October 22, 2026.
-- The integrated snapshot passed 519 tests and TypeScript checks during conflict resolution. Later evidence-branch results are recorded in validation.txt.
-- Disposable database tests execute the real schema and notification migrations, create a request, inspect the recipient's unread notification, mark it read, and verify acceptance notifications.
-- API tests mock Supabase. They validate routing and identity boundaries, not email delivery or the hosted database.
-- The real signed-in app at `/notifications` displayed **No notifications yet** during preparation. That empty state is not evidence of successful request notification delivery.
-- No two-account screenshot, live request delivery, or demo attendance is claimed.
-- Board/task records were created October 22 after implementation. Continuous status updates earlier in the week cannot be recreated retroactively.
+- `npx tsc --noEmit`: passed.
+- Targeted friendship/notification API and database suites: **41 tests passed across 4 files**.
+- API tests mock the provider. Database tests execute real SQL in disposable PostgreSQL; they do not modify hosted classmates' records or replace the final two-account UI check.
 
-## Remaining actions before submission
+See [validation.txt](validation.txt). PR merge states were independently checked: #501, #512, #514 and #530 are merged.
 
-1. Confirm the latest compatibility migration is deployed in the shared environment.
-2. Perform [the five-minute demo and screenshot steps](demo.md) with two authorized accounts.
-3. Put the real recipient screenshot and reproduction notes on #506; close #511 only after it passes.
-4. Move #506 to Done only when the team's Definition of Done is satisfied. Keep other acceptance-audit cards open unless independently verified.
-5. Submit the project link, selected SRS issue and merged implementation PR in Canvas. Attend the actual demo.
+## Only remaining acceptance step
 
-## Rubric self-check — 50 points
+1. Arrange two consenting, verified same-school accounts that are not friends, have no pending request and have no block.
+2. Have the sender submit one new Add Friend request to Linh Nguyen's account.
+3. On the recipient's signed-in app, refresh/focus, show the unread bell, then open Notifications and show the new sender. Reload to confirm it persists.
+4. Attach the fresh screenshot and reproduction notes to #506. Close #511 and #506 and move them to Done only after this passes.
+5. Submit the verified links in Canvas. Linh must personally attend the course demo to receive credit; preparing files is not attendance or Canvas submission.
 
-| Criterion | Points | Evidence / remaining gap |
+## Rubric readiness
+
+| Criterion | Points | Current position |
 | --- | ---: | --- |
-| Product Backlog | 6 | Five exact LN SRS issues, shall statements, UR traces and dependency priority |
-| Sprint item and tasks | 10 | One formal selection; five assigned real sub-issues across data/API/UI/tests/live acceptance |
-| Branch and code links | 9 | Merged implementation PR #501; original branch identified honestly; later SRS-named branch and evidence PR linked separately |
-| Evidence it works | 5 | Real successful-delivery screenshot still required on #506 |
-| Board kept current | 5 | Current statuses recorded; no retroactive week-long history claimed |
-| Sprint demo | 15 | Five-minute script prepared; live demonstration and attendance still required |
+| Product Backlog | 6 | Five own SRS issues with exact titles, shall statements, traces and dependency order |
+| Sprint item/tasks | 10 | One selected item; five assigned vertical-slice sub-issues; one live task outstanding |
+| Branch/code links | 9 | Original branch identified; SRS-named branches and merged PRs linked honestly |
+| Working evidence | 5 | Real existing-request screenshot attached; fresh delivery check outstanding |
+| Current board | 5 | Completed work in Done; deferred/unfinished work open; no backdated history |
+| Sprint demo | 15 | Working implementation available; final real request check and personal attendance still required |
 
-This is an evidence audit, not a promised grade. See [the team's Definition of Done](../definition-of-done.md).
+This is a readiness record, not a guaranteed score. [Team Definition of Done](../definition-of-done.md).
