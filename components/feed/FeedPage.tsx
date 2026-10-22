@@ -3,6 +3,7 @@
 import { storedAccessToken } from '../../lib/account/session';
 
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { FeedSwitcher, type FeedTab } from './FeedSwitcher';
 import { PostComposer } from './PostComposer';
 import { PostCard } from './PostCard';
@@ -23,13 +24,27 @@ async function fetchFeed(tab: FeedTab, accessToken: string): Promise<FeedPost[]>
 
 /** Rendered only once the shared shell (social-shell.tsx) has confirmed the viewer is signed in. */
 export function FeedPage() {
+  // SRS-312.10: a clicked notification links here as /?post=<id>&tab=<for-you|friends>
+  // so the target post opens on the correct tab and gets scrolled into view/highlighted
+  // once the feed loads -- see the effect below.
+  const searchParams = useSearchParams();
+  const targetPostIdParam = Number(searchParams.get('post'));
+  const targetPostId = Number.isInteger(targetPostIdParam) && targetPostIdParam > 0 ? targetPostIdParam : null;
+  // SRS-313/312.10: a clicked comment/reply notification adds &comment=<id>
+  // -- only ever meaningful on the matching post, so it's only passed down
+  // to that one PostCard below.
+  const targetCommentIdParam = Number(searchParams.get('comment'));
+  const targetCommentId = Number.isInteger(targetCommentIdParam) && targetCommentIdParam > 0 ? targetCommentIdParam : undefined;
+  const initialTab: FeedTab = searchParams.get('tab') === 'friends' ? 'friends' : 'for-you';
+
   const [token, setToken] = useState('');
   const [authorInitial, setAuthorInitial] = useState('');
   const [currentStudentId, setCurrentStudentId] = useState<number | null>(null);
-  const [tab, setTab] = useState<FeedTab>('for-you');
+  const [tab, setTab] = useState<FeedTab>(initialTab);
   const [posts, setPosts] = useState<FeedPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [highlightedPostId, setHighlightedPostId] = useState<number | null>(null);
 
   useEffect(() => {
     const stored = storedAccessToken() || '';
@@ -63,6 +78,21 @@ export function FeedPage() {
   useEffect(() => {
     if (token) loadFeed(token);
   }, [tab, token]);
+
+  // Once the target post from a notification link has actually loaded into
+  // this tab, scroll to it and briefly highlight it. Does nothing if the
+  // post isn't on this tab/feed at all (e.g. a stale link to a deleted or
+  // since-inaccessible post) -- it just silently finds nothing to scroll to.
+  useEffect(() => {
+    if (loading || targetPostId === null) return;
+    if (!posts.some((p) => p.postId === targetPostId)) return;
+    const el = document.getElementById(`post-${targetPostId}`);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setHighlightedPostId(targetPostId);
+    const timer = setTimeout(() => setHighlightedPostId(null), 2500);
+    return () => clearTimeout(timer);
+  }, [loading, posts, targetPostId]);
 
   async function loadFeed(accessToken: string) {
     setLoading(true);
@@ -106,6 +136,8 @@ export function FeedPage() {
                   isOwnPost={currentStudentId !== null && currentStudentId === post.authorId}
                   authorInitial={authorInitial}
                   currentStudentId={currentStudentId}
+                  highlighted={post.postId === highlightedPostId}
+                  targetCommentId={post.postId === targetPostId ? targetCommentId : undefined}
                   onUpdated={handlePostUpdated}
                   onDeleted={handlePostDeleted}
                 />

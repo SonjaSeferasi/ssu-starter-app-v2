@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { CommentComposer } from './CommentComposer';
 import { CommentItem } from './CommentItem';
 import type { Comment } from './types';
@@ -10,12 +10,15 @@ export function CommentSection({
   accessToken,
   authorInitial,
   currentStudentId,
+  targetCommentId,
   onCountChange,
 }: {
   postId: number;
   accessToken: string;
   authorInitial: string;
   currentStudentId: number | null;
+  /** SRS-313/312.10: a clicked comment/reply notification's ?comment=<id>. */
+  targetCommentId?: number;
   onCountChange: (count: number) => void;
 }) {
   const [comments, setComments] = useState<Comment[] | null>(null);
@@ -47,22 +50,36 @@ export function CommentSection({
   }, [postId]);
 
   // Reports the count to the parent (PostCard -> FeedPage) in its own effect,
-  // separate from the fetch above. Calling onCountChange directly inside the
-  // fetch's .then() lifted a different component's state from inside this
-  // component's mount-phase effect, which React's StrictMode (enabled in
-  // next.config.js) flags in dev as a "setState while rendering a different
-  // component" warning -- harmless (it never reproduced against a production
-  // build), but a dedicated effect keyed on `comments` is the idiomatic fix:
-  // it reports the count on its own render pass, never nested inside the
-  // fetch callback that produced it.
+  // separate from the fetch above -- see the git history for why (a React
+  // StrictMode dev-only warning, resolved by not calling it inline inside
+  // the fetch's .then()). Excludes tombstoned (soft-deleted) comments, same
+  // as the server's comment_count -- Replying to Comments' safe-delete
+  // keeps a tombstone's row around for its replies' sake, but it was still
+  // "deleted" as far as the visible count goes.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if (comments !== null) onCountChange(comments.length);
+    if (comments !== null) onCountChange(comments.filter((c) => c.deletedAt === null).length);
   }, [comments]);
 
-  // All three just update the local comments array -- the effect above
-  // reports the resulting count to the parent whenever that array changes,
-  // so none of these need to call onCountChange themselves.
+  // Top-level comments + a parentCommentId -> replies[] map, recomputed
+  // whenever the flat list changes. Only one level deep by construction --
+  // every reply's parentCommentId already points at a top-level comment's
+  // id (socialu_create_comment flattens "reply to a reply" server-side),
+  // so this never needs to recurse.
+  const { topLevel, repliesByParent } = useMemo(() => {
+    const all = comments ?? [];
+    const topLevel = all.filter((c) => c.parentCommentId === null);
+    const repliesByParent = new Map<number, Comment[]>();
+    for (const c of all) {
+      if (c.parentCommentId !== null) {
+        const list = repliesByParent.get(c.parentCommentId) ?? [];
+        list.push(c);
+        repliesByParent.set(c.parentCommentId, list);
+      }
+    }
+    return { topLevel, repliesByParent };
+  }, [comments]);
+
   function handlePosted(comment: Comment) {
     setComments((prev) => [...(prev ?? []), comment]);
   }
@@ -73,8 +90,17 @@ export function CommentSection({
     // below, since .map() never changes the array's length.
   }
 
-  function handleDeleted(commentId: number) {
-    setComments((prev) => (prev ?? []).filter((c) => c.commentId !== commentId));
+  // tombstoned comments stay in the array (updated in place to render as
+  // "[deleted]") so their replies -- written by other students -- are
+  // never pulled out from under them; a true removal still filters as before.
+  function handleDeleted(commentId: number, tombstoned: boolean) {
+    setComments((prev) => {
+      const list = prev ?? [];
+      if (tombstoned) {
+        return list.map((c) => (c.commentId === commentId ? { ...c, textContent: '[deleted]', deletedAt: new Date().toISOString() } : c));
+      }
+      return list.filter((c) => c.commentId !== commentId);
+    });
   }
 
   return (
@@ -83,15 +109,23 @@ export function CommentSection({
         <p className="text-xs text-stone-400">Loading comments…</p>
       ) : error ? (
         <p className="text-xs text-red-600">{error}</p>
+      ) : comments !== null && comments.length === 0 ? (
+        <p className="text-xs text-stone-400">No comments yet. Be the first to say something.</p>
       ) : (
-        (comments ?? []).map((comment) => (
+        topLevel.map((comment) => (
           <CommentItem
             key={comment.commentId}
             comment={comment}
+            postId={postId}
             accessToken={accessToken}
+            authorInitial={authorInitial}
             isOwnComment={currentStudentId !== null && currentStudentId === comment.authorId}
+            replies={repliesByParent.get(comment.commentId) ?? []}
+            isReplyOwn={(reply) => currentStudentId !== null && currentStudentId === reply.authorId}
+            targetCommentId={targetCommentId}
             onUpdated={handleUpdated}
             onDeleted={handleDeleted}
+            onPosted={handlePosted}
           />
         ))
       )}

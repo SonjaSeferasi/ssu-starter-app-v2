@@ -29,6 +29,8 @@ const rawComment = (overrides: Partial<Record<string, unknown>> = {}) => ({
   text_content: 'Nice post!',
   created_at: '2026-10-16T12:00:00Z',
   edited_at: null,
+  parent_comment_id: null,
+  deleted_at: null,
   author_name: 'Maya Chen',
   author_photo_key: null,
   ...overrides,
@@ -50,12 +52,12 @@ beforeEach(() => {
 import { GET as listComments, POST as createComment } from '../../app/api/posts/[postId]/comments/route';
 import { PATCH as updateComment, DELETE as deleteComment } from '../../app/api/comments/[commentId]/route';
 
-function postReq(token: string | undefined, text: unknown, postId = '10') {
+function postReq(token: string | undefined, text: unknown, postId = '10', parentCommentId?: number) {
   return req(`/api/posts/${postId}/comments`, {
     method: 'POST',
     token,
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ textContent: text }),
+    body: JSON.stringify({ textContent: text, parentCommentId }),
   });
 }
 
@@ -70,6 +72,13 @@ describe('List Comments (SRS-310.1, SRS-311 minimum display)', () => {
     const response = await listComments(req('/api/posts/nope/comments', { token: 'valid' }), { params: Promise.resolve({ postId: 'nope' }) });
     expect(response.status).toBe(400);
     expect(rpc).not.toHaveBeenCalled();
+  });
+
+  it('SRS-311: returns an empty, successful list for a post with no comments (empty state)', async () => {
+    rpc.mockResolvedValue({ data: [], error: null });
+    const response = await listComments(req('/api/posts/10/comments', { token: 'valid' }), { params: Promise.resolve({ postId: '10' }) });
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ comments: [] });
   });
 
   it('returns comments oldest first with author name, photo, text, and timestamp (comments persist after refreshing)', async () => {
@@ -125,7 +134,20 @@ describe('Submit a Comment (SRS-310.1/310.2/310.3)', () => {
   it('associates the comment with the correct post and the authenticated student, never a client-supplied author (SRS-310.2/310.3)', async () => {
     rpc.mockResolvedValue({ data: rawComment(), error: null });
     await createComment(postReq('valid', 'Nice post!'), { params: Promise.resolve({ postId: '10' }) });
-    expect(rpc).toHaveBeenCalledWith('socialu_create_comment', { p_auth_id: user.id, p_post_id: 10, p_text: 'Nice post!' });
+    expect(rpc).toHaveBeenCalledWith('socialu_create_comment', { p_auth_id: user.id, p_post_id: 10, p_text: 'Nice post!', p_parent_comment_id: null });
+  });
+
+  it('Replying to Comments: passes parentCommentId through as p_parent_comment_id', async () => {
+    rpc.mockResolvedValue({ data: rawComment({ comment_id: 5, parent_comment_id: 1 }), error: null });
+    await createComment(postReq('valid', 'A reply', '10', 1), { params: Promise.resolve({ postId: '10' }) });
+    expect(rpc).toHaveBeenCalledWith('socialu_create_comment', { p_auth_id: user.id, p_post_id: 10, p_text: 'A reply', p_parent_comment_id: 1 });
+  });
+
+  it('Replying to Comments: a created reply carries its parentCommentId in the shaped response', async () => {
+    rpc.mockResolvedValue({ data: rawComment({ comment_id: 5, parent_comment_id: 1 }), error: null });
+    const response = await createComment(postReq('valid', 'A reply', '10', 1), { params: Promise.resolve({ postId: '10' }) });
+    const body = await response.json();
+    expect(body.comment).toMatchObject({ commentId: 5, parentCommentId: 1 });
   });
 
   it('an accepted friend comments on a Friends Only post (same RPC enforces it)', async () => {
@@ -157,7 +179,7 @@ describe('Submit a Comment (SRS-310.1/310.2/310.3)', () => {
     const response = await createComment(postReq('valid', '    '), { params: Promise.resolve({ postId: '10' }) });
     expect(response.status).toBe(400);
     // textField() trims before the RPC call -- whitespace-only arrives as an empty string.
-    expect(rpc).toHaveBeenCalledWith('socialu_create_comment', { p_auth_id: user.id, p_post_id: 10, p_text: '' });
+    expect(rpc).toHaveBeenCalledWith('socialu_create_comment', { p_auth_id: user.id, p_post_id: 10, p_text: '', p_parent_comment_id: null });
   });
 
   it('returns 404 for a post that does not exist', async () => {
@@ -222,6 +244,12 @@ describe('Edit Own Comment (parity with SRS-306, not itself a numbered SRS-310 s
     expect(response.status).toBe(404);
   });
 
+  it('Replying to Comments: cannot edit an already-deleted (tombstoned) comment', async () => {
+    rpc.mockResolvedValue({ data: null, error: { code: 'P0002', message: 'Comment not found.' } });
+    const response = await updateComment(patchReq('valid', 'Updated'), { params: Promise.resolve({ commentId: '1' }) });
+    expect(response.status).toBe(404);
+  });
+
   it('surfaces a 503 when the database operation fails unexpectedly', async () => {
     rpc.mockResolvedValue({ data: null, error: { code: 'XX000', message: 'unexpected' } });
     const response = await updateComment(patchReq('valid', 'Updated'), { params: Promise.resolve({ commentId: '1' }) });
@@ -246,12 +274,19 @@ describe('Delete Own Comment (parity with SRS-307, not itself a numbered SRS-310
     expect(rpc).not.toHaveBeenCalled();
   });
 
-  it('a student deletes their own comment', async () => {
-    rpc.mockResolvedValue({ data: { deleted: true }, error: null });
+  it('a student deletes their own comment with no replies (hard delete)', async () => {
+    rpc.mockResolvedValue({ data: { deleted: true, tombstoned: false }, error: null });
     const response = await deleteComment(delReq('valid'), { params: Promise.resolve({ commentId: '1' }) });
     expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ deleted: true });
+    expect(await response.json()).toEqual({ deleted: true, tombstoned: false });
     expect(rpc).toHaveBeenCalledWith('socialu_delete_comment', { p_auth_id: user.id, p_comment_id: 1 });
+  });
+
+  it('Replying to Comments: deleting a comment that has replies is tombstoned, not removed', async () => {
+    rpc.mockResolvedValue({ data: { deleted: true, tombstoned: true }, error: null });
+    const response = await deleteComment(delReq('valid'), { params: Promise.resolve({ commentId: '1' }) });
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ deleted: true, tombstoned: true });
   });
 
   it('a student cannot delete another student\'s comment', async () => {

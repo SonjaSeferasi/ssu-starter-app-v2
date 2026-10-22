@@ -118,7 +118,7 @@ BEGIN
                 WHERE pp.post_id = updated_post.post_id), '[]'::jsonb) AS photos,
       (SELECT count(*) FROM socialu.post_likes pl WHERE pl.post_id = updated_post.post_id) AS like_count,
       EXISTS (SELECT 1 FROM socialu.post_likes pl WHERE pl.post_id = updated_post.post_id AND pl.student_id = me) AS is_liked_by_viewer,
-      (SELECT count(*) FROM socialu.post_comments pc WHERE pc.post_id = updated_post.post_id) AS comment_count
+      (SELECT count(*) FROM socialu.post_comments pc WHERE pc.post_id = updated_post.post_id AND pc.deleted_at IS NULL) AS comment_count
     FROM socialu.students s
     LEFT JOIN socialu.student_profiles sp ON sp.student_id = s.student_id
     LEFT JOIN socialu.media_assets am ON am.asset_id = sp.photo_id
@@ -132,13 +132,17 @@ GRANT EXECUTE ON FUNCTION public.socialu_update_post(UUID, BIGINT, TEXT) TO serv
 
 -- SRS-306.3/306.5: remove one photo from a post the caller authored. Returns
 -- the freed storage_key so the Next.js server can delete the Storage object
--- too (SQL can't touch Storage directly). Only deletes the media_assets row
--- if no other post_photos link still references it (defensive -- the current
--- upload flow always creates one asset per upload, so this should never
--- actually block a deletion, but we don't assume that holds forever).
+-- too (SQL can't touch Storage directly).
+--
+-- Reads the storage_key BEFORE deleting (20261023000100_report_post.sql):
+-- that migration adds a media_asset_cleanup trigger on post_photos that
+-- deletes the now-unreferenced media_assets row automatically as soon as
+-- this DELETE removes its last reference, so reading it first is required
+-- to still get a real key back here -- reading after, like this function
+-- used to, would now race against the trigger and come back NULL.
 CREATE FUNCTION public.socialu_remove_post_photo(p_auth_id UUID, p_post_id BIGINT, p_asset_id BIGINT) RETURNS TEXT
 LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$
-DECLARE me BIGINT; owner BIGINT; freed_key TEXT; other_refs INT;
+DECLARE me BIGINT; owner BIGINT; freed_key TEXT;
 BEGIN
   me := public.socialu_require_student(p_auth_id);
   SELECT author_id INTO owner FROM socialu.posts WHERE post_id = p_post_id;
@@ -149,14 +153,10 @@ BEGIN
     RAISE EXCEPTION 'Photo not found on this post.' USING ERRCODE = 'P0002';
   END IF;
 
+  SELECT storage_key INTO freed_key FROM socialu.media_assets WHERE asset_id = p_asset_id;
+
   DELETE FROM socialu.post_photos WHERE post_id = p_post_id AND asset_id = p_asset_id;
   SET CONSTRAINTS ALL IMMEDIATE;
-
-  SELECT count(*) INTO other_refs FROM socialu.post_photos WHERE asset_id = p_asset_id;
-  SELECT storage_key INTO freed_key FROM socialu.media_assets WHERE asset_id = p_asset_id;
-  IF other_refs = 0 THEN
-    DELETE FROM socialu.media_assets WHERE asset_id = p_asset_id;
-  END IF;
 
   RETURN freed_key;
 END;

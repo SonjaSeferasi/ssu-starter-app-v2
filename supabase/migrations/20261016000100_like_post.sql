@@ -169,7 +169,7 @@ $$;
 -- there is deliberately no unlike path here (that is SRS-309).
 CREATE FUNCTION public.socialu_like_post(p_auth_id UUID, p_post_id BIGINT) RETURNS JSONB
 LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$
-DECLARE me BIGINT; owner BIGINT; vis TEXT; likes BIGINT;
+DECLARE me BIGINT; owner BIGINT; vis TEXT; likes BIGINT; inserted_count INT;
 BEGIN
   me := public.socialu_require_student(p_auth_id);
   SELECT author_id, visibility INTO owner, vis FROM socialu.posts WHERE post_id = p_post_id;
@@ -180,6 +180,15 @@ BEGIN
 
   INSERT INTO socialu.post_likes (post_id, student_id) VALUES (p_post_id, me)
   ON CONFLICT (post_id, student_id) DO NOTHING;
+  GET DIAGNOSTICS inserted_count = ROW_COUNT;
+
+  -- SRS-312.1-312.3 (20261020000100_like_notifications.sql): notify the
+  -- post author only on a genuinely new like, never a duplicate-like
+  -- no-op, never a self-like.
+  IF inserted_count > 0 AND owner <> me THEN
+    INSERT INTO socialu.notifications (recipient_id, actor_id, kind, post_id)
+    VALUES (owner, me, 'post_like', p_post_id);
+  END IF;
 
   SELECT count(*) INTO likes FROM socialu.post_likes WHERE post_id = p_post_id;
   RETURN jsonb_build_object('like_count', likes, 'is_liked_by_viewer', true);

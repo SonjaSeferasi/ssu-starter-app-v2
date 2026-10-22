@@ -28,4 +28,6 @@ export type Comment = {
   textContent: string;
   createdAt: string;
   editedAt: string | null;
+  parentCommentId: number | null;
+  deletedAt: string | null;
 };

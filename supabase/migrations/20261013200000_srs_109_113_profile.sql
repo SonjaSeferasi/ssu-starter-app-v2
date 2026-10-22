@@ -89,7 +89,7 @@ BEGIN
                 WHERE pp.post_id = p.post_id), '[]'::jsonb) AS photos,
       (SELECT count(*) FROM socialu.post_likes pl WHERE pl.post_id = p.post_id) AS like_count,
       EXISTS (SELECT 1 FROM socialu.post_likes pl WHERE pl.post_id = p.post_id AND pl.student_id = me) AS is_liked_by_viewer,
-      (SELECT count(*) FROM socialu.post_comments pc WHERE pc.post_id = p.post_id) AS comment_count
+      (SELECT count(*) FROM socialu.post_comments pc WHERE pc.post_id = p.post_id AND pc.deleted_at IS NULL) AS comment_count
     FROM socialu.posts p
     JOIN socialu.students s ON s.student_id = p.author_id
     LEFT JOIN socialu.student_profiles sp ON sp.student_id = s.student_id
