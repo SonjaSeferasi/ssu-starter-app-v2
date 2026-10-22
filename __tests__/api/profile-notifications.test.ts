@@ -69,6 +69,32 @@ describe('GET /api/notifications', () => {
     }] });
   });
 
+  // SRS-312/313: socialu_notifications (20261024000100_unify_notifications.sql)
+  // returns like/comment/reply items alongside friend ones in the same unified
+  // list -- this route just passes the RPC's shape through unchanged (plus
+  // the usual actor_photo_key -> actor_photo_url signing), so a mixed
+  // response round-trips every kind's own fields correctly.
+  it('passes through like/comment/reply notifications alongside friend ones, unchanged', async () => {
+    result = { data: { unread: 2, notifications: [
+      {
+        notification_id: 10, kind: 'post_like', created_at: '2026-10-23T09:00:00Z', read_at: null, actor_username: 'sarah.k',
+        actor_name: 'Sarah Kim', actor_photo_key: null, request_status: null,
+        post_id: 42, comment_id: null, visibility: 'public', actor_count: 3, actor_names: ['Sarah Kim', 'Adam Lee', 'Maya Chen'],
+      },
+      {
+        notification_id: 11, kind: 'comment_reply', created_at: '2026-10-23T08:00:00Z', read_at: '2026-10-23T08:30:00Z', actor_username: 'adam.lee',
+        actor_name: 'Adam Lee', actor_photo_key: null, request_status: null,
+        post_id: 42, comment_id: 99, visibility: 'public', actor_count: 1, actor_names: ['Adam Lee'],
+      },
+    ] }, error: null };
+    const response = await notifications(get());
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body.unread).toBe(2);
+    expect(body.notifications[0]).toMatchObject({ kind: 'post_like', post_id: 42, actor_count: 3, actor_names: ['Sarah Kim', 'Adam Lee', 'Maya Chen'] });
+    expect(body.notifications[1]).toMatchObject({ kind: 'comment_reply', post_id: 42, comment_id: 99, read_at: '2026-10-23T08:30:00Z' });
+  });
+
   it('marks all notifications read', async () => {
     result = { data: null, error: null };
     const response = await markRead(new Request('http://localhost/api/notifications', { method: 'POST', headers: { Authorization: `Bearer ${token}` } }));

@@ -9,21 +9,51 @@ import { useNavigationSession } from '../navigation/social-shell';
 import { Avatar, profileFetch } from './profile-view';
 import styles from './profile.module.css';
 
-type FriendNotification = {
+type NotificationItem = {
   notification_id: number;
-  kind: 'friend_request' | 'friendship_accepted';
+  kind: 'friend_request' | 'friendship_accepted' | 'post_like' | 'post_comment' | 'comment_reply';
   created_at: string;
   read_at: string | null;
   actor_username: string;
   actor_name: string;
   actor_photo_url: string | null;
   request_status: 'pending' | 'accepted' | 'declined' | 'canceled' | 'blocked' | null;
+  // SRS-312/313 (post_like/post_comment/comment_reply only; null for friend kinds).
+  post_id: number | null;
+  comment_id: number | null;
+  visibility: 'public' | 'friends_only' | null;
+  actor_count: number | null;
+  actor_names: string[] | null;
 };
 
-function NotificationRow({ item, onAnswered }: { item: FriendNotification; onAnswered: () => void }) {
+// SRS-312.10: "Sarah liked your post" / "Sarah and Adam liked your post" /
+// "Sarah, Adam and 3 others liked your post", driven by the grouped
+// actor_names/actor_count socialu_notifications computes server-side.
+// SRS-313 (plus reply notifications, additional functionality): both
+// ungrouped (actor_count is always 1 for these two kinds).
+function feedNotificationText(item: NotificationItem): string {
+  const names = item.actor_names ?? [item.actor_name];
+  const count = item.actor_count ?? 1;
+  const name = names[0] ?? item.actor_name;
+  if (item.kind === 'post_comment') return ' commented on your post.';
+  if (item.kind === 'comment_reply') return ' replied to your comment.';
+  if (count <= 1) return ' liked your post.';
+  if (count === 2) return ` and ${names[1]} liked your post.`;
+  const others = count - 2;
+  return `, ${names[1]} and ${others} other${others === 1 ? '' : 's'} liked your post.`;
+}
+
+function feedNotificationHref(item: NotificationItem): string {
+  const tab = item.visibility === 'friends_only' ? 'friends' : 'for-you';
+  const commentParam = item.comment_id ? `&comment=${item.comment_id}` : '';
+  return `/?post=${item.post_id}&tab=${tab}${commentParam}`;
+}
+
+function NotificationRow({ item, onAnswered }: { item: NotificationItem; onAnswered: () => void }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const profileHref = `/students/${encodeURIComponent(item.actor_username)}`;
+  const isFriendKind = item.kind === 'friend_request' || item.kind === 'friendship_accepted';
 
   async function answer(action: 'accept' | 'decline') {
     setBusy(true); setError('');
@@ -39,14 +69,20 @@ function NotificationRow({ item, onAnswered }: { item: FriendNotification; onAns
   }
 
   const pending = item.kind === 'friend_request' && item.request_status === 'pending';
-  const text = item.kind === 'friendship_accepted' ? ' accepted your friend request.'
-    : pending ? ' sent you a friend request.' : ' sent you a friend request. You are now friends.';
+  const text = isFriendKind
+    ? (item.kind === 'friendship_accepted' ? ' accepted your friend request.'
+       : pending ? ' sent you a friend request.' : ' sent you a friend request. You are now friends.')
+    : feedNotificationText(item);
   return <li className={`${styles.notificationRow} ${item.read_at ? '' : styles.notificationUnread}`}>
     <Link href={profileHref} className={styles.notificationAvatar} aria-label={`View ${item.actor_name}'s profile`}>
       <Avatar url={item.actor_photo_url} name={item.actor_name} />
     </Link>
     <div className={styles.notificationBody}>
-      <p><Link href={profileHref} className={styles.notificationName}>{item.actor_name}</Link>{text}</p>
+      {isFriendKind
+        ? <p><Link href={profileHref} className={styles.notificationName}>{item.actor_name}</Link>{text}</p>
+        : <Link href={feedNotificationHref(item)} className={styles.notificationName} style={{ display: 'block' }}>
+            <span>{item.actor_name}</span>{text}
+          </Link>}
       <span className={styles.notificationTime}>{timeAgo(item.created_at)}</span>
       {error && <p className={styles.notificationError} role="alert">{error}</p>}
     </div>
@@ -60,7 +96,7 @@ function NotificationRow({ item, onAnswered }: { item: FriendNotification; onAns
 type Tab = 'general' | 'friends';
 
 function NotificationsContent() {
-  const [items, setItems] = useState<FriendNotification[] | null>(null);
+  const [items, setItems] = useState<NotificationItem[] | null>(null);
   const [error, setError] = useState('');
   const [tab, setTab] = useState<Tab>('general');
   const firstLoad = useRef(true);
@@ -69,7 +105,7 @@ function NotificationsContent() {
     profileFetch('/api/notifications')
       .then(({ response, data }) => {
         if (!response.ok) throw new Error(data.error || 'Unable to load notifications.');
-        const list: FriendNotification[] = data.notifications;
+        const list: NotificationItem[] = data.notifications;
         // First load: open on Friend requests when that is where the new items are.
         if (firstLoad.current && list.some(item => item.kind === 'friend_request' && item.request_status === 'pending')
           && !list.some(item => item.kind !== 'friend_request' && !item.read_at)) setTab('friends');
@@ -103,7 +139,7 @@ function NotificationsContent() {
         : !shown.length ? <div className={styles.empty}>
           {tab === 'friends' ? <UserPlus /> : <Bell />}
           <h2>{tab === 'friends' ? 'No friend requests' : 'No notifications yet'}</h2>
-          <p>{tab === 'friends' ? 'When someone sends you a friend request, it will show up here.' : 'When someone accepts your friend request, it will show up here.'}</p>
+          <p>{tab === 'friends' ? 'When someone sends you a friend request, it will show up here.' : 'Accepted friend requests, likes, and comments will show up here.'}</p>
         </div>
         : <ul className={styles.notificationList}>{shown.map(item => <NotificationRow key={item.notification_id} item={item} onAnswered={load} />)}</ul>}
     </div>

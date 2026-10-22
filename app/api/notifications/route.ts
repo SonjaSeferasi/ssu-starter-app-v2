@@ -6,16 +6,23 @@ export const dynamic = 'force-dynamic';
 
 type RawNotification = {
   notification_id: number;
-  kind: 'friend_request' | 'friendship_accepted';
+  kind: 'friend_request' | 'friendship_accepted' | 'post_like' | 'post_comment' | 'comment_reply';
   created_at: string;
   read_at: string | null;
   actor_username: string;
   actor_name: string;
   actor_photo_key: string | null;
   request_status: 'pending' | 'accepted' | 'declined' | 'canceled' | 'blocked' | null;
+  // SRS-312/313 (post_like/post_comment/comment_reply only; null for friend kinds).
+  post_id: number | null;
+  comment_id: number | null;
+  visibility: 'public' | 'friends_only' | null;
+  actor_count: number | null;
+  actor_names: string[] | null;
 };
 
-// SRS-114.7, SRS-116.4: friend request and accepted-friendship notifications for the header bell.
+// SRS-114.7, SRS-116.4: friend request and accepted-friendship notifications.
+// SRS-312/313: like, comment, and reply notifications, unified into the same feed.
 export async function GET(request: Request) {
   try {
     const user = await verifiedUser(request);

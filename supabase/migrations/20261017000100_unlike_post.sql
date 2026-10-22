@@ -24,6 +24,14 @@ BEGIN
 
   DELETE FROM socialu.post_likes WHERE post_id = p_post_id AND student_id = me;
 
+  -- SRS-312 (20261020000100_like_notifications.sql): a post_like
+  -- notification exists iff the underlying like is currently active, so
+  -- unliking retracts every notification this actor generated for this
+  -- post -- any now-stale "X liked your post" claims from a prior
+  -- like/unlike cycle on this post.
+  DELETE FROM socialu.notifications
+  WHERE recipient_id = owner AND actor_id = me AND kind = 'post_like' AND post_id = p_post_id;
+
   SELECT count(*) INTO likes FROM socialu.post_likes WHERE post_id = p_post_id;
   RETURN jsonb_build_object('like_count', likes, 'is_liked_by_viewer', false);
 END;
