@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { ArrowLeft, Camera } from 'lucide-react';
+import { prepareProfilePhoto } from '../../lib/account/profile-photo';
 import type { StudentProfile } from '../../lib/profile';
 import { SessionNotice } from '../navigation/section-page';
 import { Avatar, profileFetch, useProfileGate } from './profile-view';
@@ -11,22 +12,13 @@ import styles from './profile.module.css';
 
 const CLASS_YEARS = ['Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate'];
 const BIO_LIMIT = 250;
-const PHOTO_TYPES: Record<string, string> = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', heic: 'image/heic' };
-const PHOTO_MAX_BYTES = 10_000_000;
 
-type Values = { displayName: string; major: string; classYear: string; bio: string };
+type Values = { username: string; fullName: string; displayName: string; major: string; classYear: string; bio: string };
 
 function valuesOf(profile: StudentProfile): Values {
-  return { displayName: profile.display_name ?? '', major: profile.major ?? '', classYear: profile.class_year ?? '', bio: profile.bio };
+  return { username: profile.username, fullName: profile.full_name, displayName: profile.display_name ?? '', major: profile.major ?? '', classYear: profile.class_year ?? '', bio: profile.bio };
 }
 
-// SRS-109.3/109.4, checked again on the server.
-function photoError(file: File) {
-  const type = PHOTO_TYPES[file.name.split('.').pop()?.toLowerCase() ?? ''];
-  if (!type) return 'Use a JPG, JPEG, PNG, or HEIC photo.';
-  if (file.size > PHOTO_MAX_BYTES) return 'Your profile photo must be 10 MB or smaller.';
-  return '';
-}
 
 function Editor({ profile }: { profile: StudentProfile }) {
   const router = useRouter();
@@ -35,11 +27,13 @@ function Editor({ profile }: { profile: StudentProfile }) {
   const [photo, setPhoto] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [preparingPhoto, setPreparingPhoto] = useState(false);
+  const photoSequence = useRef(0);
   const [error, setError] = useState('');
   const [leaveTo, setLeaveTo] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
   const setup = !profile.setup_completed;
-  const nameLockedUntil = profile.display_name_next_change_at ? new Date(profile.display_name_next_change_at) : null;
+  const nameLockedUntil = profile.display_name_next_change_at && new Date(profile.display_name_next_change_at).getTime() > Date.now() ? new Date(profile.display_name_next_change_at) : null;
   const dirty = photo !== null || (Object.keys(initial) as (keyof Values)[]).some(key => values[key] !== initial[key]);
   const dirtyRef = useRef(dirty);
   dirtyRef.current = dirty && !saving;
@@ -64,26 +58,33 @@ function Editor({ profile }: { profile: StudentProfile }) {
 
   function update(key: keyof Values, value: string) { setValues(current => ({ ...current, [key]: value })); }
 
-  function choosePhoto(file: File | undefined) {
+  async function choosePhoto(file: File | undefined) {
     if (!file) return;
-    const invalid = photoError(file);
-    if (invalid) { setError(invalid); return; }
-    setError('');
-    setPhoto(file);
-    // Browsers other than Safari cannot preview HEIC; the file is still accepted.
-    setPreview(file.name.toLowerCase().endsWith('.heic') ? null : URL.createObjectURL(file));
+    const sequence = ++photoSequence.current;
+    setPreparingPhoto(true); setError('');
+    try {
+      const prepared = await prepareProfilePhoto(file);
+      if (sequence !== photoSequence.current) return;
+      setPhoto(prepared);
+      setPreview(prepared.name.toLowerCase().endsWith('.heic') ? null : URL.createObjectURL(prepared));
+    } catch (reason) {
+      if (sequence === photoSequence.current) setError(reason instanceof Error ? reason.message : 'Unable to prepare your photo.');
+    } finally { if (sequence === photoSequence.current) setPreparingPhoto(false); }
   }
 
   async function submit(event: FormEvent) {
     event.preventDefault();
-    if (saving) return;
+    if (saving || preparingPhoto) return;
     // SRS-109.9: every required profile field must be present.
-    const missing = [!photo && !profile.photo_url && 'a profile photo', !values.major.trim() && 'your major',
-      !values.classYear && 'your class year', !values.bio.trim() && 'a bio'].filter(Boolean);
+    const missing = [!values.fullName.trim() && 'your full name', !photo && !profile.photo_url && 'a profile photo', !values.major.trim() && 'your major',
+      !values.classYear && 'your class year'].filter(Boolean);
     if (missing.length) { setError(`Add ${missing.join(', ')} to ${setup ? 'finish your profile' : 'save your changes'}.`); return; }
+    if (!/^[A-Za-z0-9_.-]{1,50}$/.test(values.username.trim())) { setError('Use 1–50 letters, numbers, periods, underscores, or hyphens for your username (without @).'); return; }
     setSaving(true); setError('');
     try {
       const form = new FormData();
+      form.set('username', values.username);
+      form.set('fullName', values.fullName);
       form.set('displayName', values.displayName); form.set('major', values.major); form.set('classYear', values.classYear); form.set('bio', values.bio);
       if (photo) form.set('photo', photo);
       const { response, data } = await profileFetch('/api/profile/details', { method: 'PUT', body: form });
@@ -107,30 +108,38 @@ function Editor({ profile }: { profile: StudentProfile }) {
   const bioLength = values.bio.length;
   return <main className={styles.page}>
     <Link href="/profile" className={`${styles.button} ${styles.secondary}`}><ArrowLeft />Back to profile</Link>
-    <form className={styles.form} onSubmit={submit} aria-busy={saving} noValidate>
+    <form className={styles.form} onSubmit={submit} aria-busy={saving || preparingPhoto} noValidate>
       <div>
         <h1 className={styles.formTitle}>{setup ? 'Set up your profile' : 'Edit profile'}</h1>
-        {setup && <p className={styles.hint}>Add a photo, your major, class year, and a short bio so other students can get to know you.</p>}
+        {setup && <p className={styles.hint}>Add a photo, your major, and class year. You can add a bio if you like.</p>}
       </div>
       {error && <p className={`${styles.notice} ${styles.error}`} role="alert" style={{ margin: 0 }}>{error}</p>}
 
       <div className={styles.photoRow}>
         <Avatar url={preview ?? (photo ? null : profile.photo_url)} name={profile.name} />
         <div>
-          <button type="button" className={styles.button} onClick={() => fileInput.current?.click()}><Camera />{profile.photo_url || photo ? 'Change photo' : 'Upload photo'}</button>
-          <p className={styles.hint}>{photo ? `Selected: ${photo.name}` : 'JPG, JPEG, PNG, or HEIC, up to 10 MB.'}</p>
+          <button type="button" className={styles.button} onClick={() => fileInput.current?.click()} disabled={preparingPhoto || saving}><Camera />{preparingPhoto ? 'Preparing photo…' : profile.photo_url || photo ? 'Change photo' : 'Upload photo'}</button>
+          <p className={styles.hint}>{photo ? `Selected: ${photo.name}` : 'JPG, JPEG, PNG, or HEIC. Large photos are resized automatically when supported by your browser.'}</p>
           <input ref={fileInput} type="file" accept=".jpg,.jpeg,.png,.heic,image/jpeg,image/png,image/heic" hidden
             onChange={event => { choosePhoto(event.target.files?.[0]); event.target.value = ''; }} />
         </div>
       </div>
 
+      <label className={styles.field}>Username
+        <input value={values.username} onChange={event => update('username', event.target.value)} maxLength={50} required autoComplete="username" autoCapitalize="none" spellCheck={false} />
+        <span className={styles.fieldNote}>Your unique @username. Use letters, numbers, periods, underscores, or hyphens, without @. Changing it updates your sign-in username and profile link; old profile links will stop working.</span>
+      </label>
+      <label className={styles.field}>Full name
+        <input value={values.fullName} onChange={event => update('fullName', event.target.value)} maxLength={100} required autoComplete="name" />
+        <span className={styles.fieldNote}>Your real name on your student record. This is shown on your profile when the display name below is empty.</span>
+      </label>
       {/* SRS-110.5/110.6 */}
       <label className={styles.field}>Display name
         <input value={values.displayName} onChange={event => update('displayName', event.target.value)} maxLength={100}
-          placeholder={profile.full_name} disabled={Boolean(nameLockedUntil)} autoComplete="nickname" />
+          placeholder={values.fullName} disabled={Boolean(nameLockedUntil)} autoComplete="nickname" />
         <span className={styles.fieldNote}>{nameLockedUntil
           ? `You can change your display name again on ${nameLockedUntil.toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}.`
-          : `Shown instead of your full name. Leave empty to use “${profile.full_name}”. You can change it once every 7 days.`}</span>
+          : `Shown instead of your full name. Leave empty to use “${values.fullName}”. You can change it once every 7 days.`}</span>
       </label>
       <label className={styles.field}>Major
         <input value={values.major} onChange={event => update('major', event.target.value)} maxLength={100} required placeholder="e.g. Computer Science" />
@@ -142,15 +151,15 @@ function Editor({ profile }: { profile: StudentProfile }) {
         </select>
       </label>
       {/* SRS-109.7/109.8 */}
-      <label className={styles.field}>Bio
-        <textarea value={values.bio} onChange={event => update('bio', event.target.value)} maxLength={BIO_LIMIT} required
+      <label className={styles.field}>Bio (optional)
+        <textarea value={values.bio} onChange={event => update('bio', event.target.value)} maxLength={BIO_LIMIT}
           placeholder="Tell other students a little about yourself." />
         <span className={`${styles.counter} ${bioLength >= BIO_LIMIT ? styles.counterOver : ''}`} aria-live="polite">{bioLength}/{BIO_LIMIT}</span>
       </label>
 
       <div className={styles.formActions}>
-        <button type="button" className={`${styles.button} ${styles.secondary}`} onClick={() => dirty ? setLeaveTo('/profile') : router.push('/profile')} disabled={saving}>Cancel</button>
-        <button type="submit" className={styles.button} disabled={saving}>{saving ? 'Saving…' : setup ? 'Finish setup' : 'Save Changes'}</button>
+        <button type="button" className={`${styles.button} ${styles.secondary}`} onClick={() => dirty ? setLeaveTo('/profile') : router.push('/profile')} disabled={saving || preparingPhoto}>Cancel</button>
+        <button type="submit" className={styles.button} disabled={saving || preparingPhoto}>{saving ? 'Saving…' : setup ? 'Finish setup' : 'Save Changes'}</button>
       </div>
     </form>
 

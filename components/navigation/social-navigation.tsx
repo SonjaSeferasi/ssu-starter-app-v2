@@ -108,7 +108,7 @@ function NotificationBell({ pathname }: { pathname: string }) {
 // Also used by the development-only preview; no session or private data lives here.
 export function NavigationFrame({ pathname, children, position = 'side', ...preferences }: { pathname: string; children: React.ReactNode } & PlacementProps) {
   return (
-    <div className={styles.shell} data-navigation={position}>
+    <div className={styles.shell} data-navigation={position} data-profile={pathname === '/friends' || pathname === '/profile' || pathname.startsWith('/profile/') || pathname.startsWith('/students/') ? 'true' : undefined}>
       <a className={styles.skipLink} href="#socialu-content">Skip to content</a>
       <header className={styles.header}>
         <Link href="/" className={styles.brand} aria-label="SocialU home">Social<span>U</span></Link>

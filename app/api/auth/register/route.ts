@@ -6,6 +6,7 @@ export async function POST(request: Request) {
     const body = await jsonBody(request);
     const email = universityEmail(body.email);
     const fullName = textField(body.fullName);
+    if (!fullName) throw new AccountError('Enter your full name.', 400);
     const username = textField(body.username);
     const password = typeof body.password === 'string' ? body.password : '';
     if (!fullName || !username || !email || !password) throw new AccountError('Full name, username, university email, and password are required.', 400);

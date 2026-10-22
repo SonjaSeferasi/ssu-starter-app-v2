@@ -1,5 +1,6 @@
 import { AccountError, accountResponse, jsonBody, verifiedUser } from '../../../lib/socialu-account';
 import { dormOperation, ownerParam } from '../../../lib/dormspace';
+import { isRotation } from '../../../lib/dormspace-rules';
 
 export const dynamic = 'force-dynamic';
 const noStore = { headers: { 'Cache-Control': 'no-store' } };
@@ -25,7 +26,9 @@ export async function PUT(request: Request) {
     const placements = body.placements.map((placement: unknown) => {
       const p = placement as Record<string, unknown>;
       if (!p || typeof p.itemId !== 'string' || !Number.isInteger(p.x) || !Number.isInteger(p.y)) throw new AccountError('Enter a valid dorm arrangement.', 400);
-      return { itemId: p.itemId, x: p.x, y: p.y };
+      const rotation = p.rotation === undefined ? 0 : p.rotation;
+      if (!isRotation(rotation)) throw new AccountError('Choose a rotation of 0, 90, 180 or 270 degrees.', 400);
+      return { itemId: p.itemId, x: p.x, y: p.y, rotation };
     });
     const dorm = await dormOperation(user.id, 'save', null, {
       version: body.version, placements, wallItemId: body.wallItemId ?? null, floorItemId: body.floorItemId ?? null,

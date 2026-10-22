@@ -1,13 +1,14 @@
 'use client';
 
-import { storedAccessToken } from '../../../lib/account/session';
+import Link from 'next/link';
+import { accessToken, storedAccessToken } from '../../../lib/account/session';
 
-import { type FormEvent, useEffect, useState } from 'react';
+import { type FormEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { SessionNotice } from '../../../components/navigation/section-page';
 import { useNavigationSession } from '../../../components/navigation/social-shell';
 import { subscribeToChat, type ChatLiveStatus, type ChatMessageEvent } from '../../../lib/realtime-client';
-import { ConversationListPanel } from '../conversation-list';
+import { CHAT_ACTIVITY_EVENT, ConversationListPanel } from '../conversation-list';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -20,37 +21,156 @@ const liveLabels: Record<ChatLiveStatus, string> = {
 
 export default function ConversationPage() {
   const session = useNavigationSession();
-  return session === 'signed-in' ? <Conversation /> : <SessionNotice state={session} />;
+  const { conversationId } = useParams<{ conversationId: string }>();
+  // The key starts each conversation with empty state when moving from one chat to another.
+  return session === 'signed-in' ? <Conversation key={conversationId} /> : <SessionNotice state={session} />;
+}
+
+// Saved history and live events can overlap; keep one copy of each message, oldest first.
+function mergeMessages(current: ChatMessageEvent[], incoming: ChatMessageEvent[]) {
+  const byId = new Map(current.map((message) => [message.id, message]));
+  for (const message of incoming) byId.set(message.id, message);
+  return [...byId.values()].sort((a, b) => Date.parse(a.sent_at) - Date.parse(b.sent_at) || Number(a.id) - Number(b.id));
 }
 
 // SRS-201.1 (#302): send a text message in a conversation, laid out like the Messages UI design.
-// Showing this session's sent and live messages confirms the send; loading history is SRS-201.2.
+// SRS-201.2 (#318, #319): show the saved messages on open, then new messages live.
 function Conversation() {
   const { conversationId } = useParams<{ conversationId: string }>();
   const [text, setText] = useState('');
+  const [peer, setPeer] = useState<{name:string;username:string}|null>(null);
+  useEffect(() => {
+    const controller = new AbortController(); setPeer(null);
+    fetch(`/api/conversations/${encodeURIComponent(conversationId)}/peer`, {headers:{Authorization:`Bearer ${storedAccessToken() ?? ''}`},cache:'no-store',signal:controller.signal})
+      .then(response => response.ok ? response.json() : null).then(data => { if (!controller.signal.aborted && data?.peer) setPeer(data.peer); }).catch(() => {});
+    return () => controller.abort();
+  }, [conversationId]);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
   const [live, setLive] = useState<ChatLiveStatus>('connecting');
   const [messages, setMessages] = useState<ChatMessageEvent[]>([]);
-  // Temporary (until SRS-201.2 / SRS-211.x): the signed-in student's ID puts their own messages on the right.
+  // The signed-in student's ID (returned with the history) puts their own messages on the right.
   const [myStudentId, setMyStudentId] = useState<string | null>(null);
+  // 'denied' (SRS-213.1, #324): the conversation is missing or the student is not a participant; both look the same.
+  const [history, setHistory] = useState<'loading' | 'loaded' | 'failed' | 'denied'>('loading');
+  const [historyError, setHistoryError] = useState('');
+  const [reload, setReload] = useState(0);
+  // #460: the conversation kind, the student's group role, and the member count come with the history.
+  const [info, setInfo] = useState<{ kind: 'private' | 'group'; role: string | null; memberCount: number | null } | null>(null);
 
-  useEffect(() => {
-    const controller = new AbortController();
-    fetch('/api/profile', { headers: { Authorization: `Bearer ${storedAccessToken() ?? ''}` }, cache: 'no-store', signal: controller.signal })
-      .then((response) => (response.ok ? response.json() : null))
-      .then((data) => { if (data?.profile?.id) setMyStudentId(String(data.profile.id)); })
-      .catch(() => {});
-    return () => controller.abort();
-  }, []);
-
-  // Keep only this conversation's messages; the ID check stops the send reply and live event both showing.
-  function addMessage(message: ChatMessageEvent) {
-    if (message.conversation_id !== conversationId) return;
-    setMessages((current) => current.some((m) => m.id === message.id) ? current : [...current, message]);
+  // SRS-212.5: mark the messages shown here as read, again when a message arrives while the student is looking
+  // at this conversation, and when they come back to the tab. Nothing is marked while the page is hidden.
+  const meRef = useRef<string | null>(null);
+  const shownRef = useRef(false);
+  const marking = useRef(false);
+  const markAgain = useRef(false);
+  async function markRead() {
+    if (!shownRef.current || document.visibilityState !== 'visible') return;
+    if (marking.current) { markAgain.current = true; return; }
+    marking.current = true;
+    try {
+      do {
+        markAgain.current = false;
+        const token = await accessToken();
+        const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/read`, { method: 'POST', headers: { Authorization: `Bearer ${token ?? ''}` } });
+        // The list refreshes so this conversation's unread dot clears (SRS-212.4).
+        if (response.ok) window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT));
+      } while (markAgain.current);
+    } catch {
+      // Not marked this time; it is tried again on the next message, visit, or return to the tab.
+    } finally {
+      marking.current = false;
+    }
   }
 
-  useEffect(() => subscribeToChat(addMessage, setLive), [conversationId]);
+  useEffect(() => {
+    const onVisible = () => { if (document.visibilityState === 'visible') void markRead(); };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => document.removeEventListener('visibilitychange', onVisible);
+  }, [conversationId]);
+
+  // #318: load the saved messages when the conversation opens, when Try again is pressed, and
+  // every time live updates (re)connect, so messages sent while the page was offline still appear.
+  useEffect(() => {
+    const controller = new AbortController();
+    setHistory((current) => (current === 'loaded' ? current : 'loading'));
+    (async () => {
+      try {
+        const token = await accessToken();
+        const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/messages`, {
+          headers: { Authorization: `Bearer ${token ?? ''}` }, cache: 'no-store', signal: controller.signal,
+        });
+        const data = await response.json().catch(() => ({}));
+        if (response.status === 404) { setHistory('denied'); return; }
+        if (!response.ok) throw new Error(data.error || 'Messages could not be loaded.');
+        setMyStudentId(String(data.student_id));
+        meRef.current = String(data.student_id);
+        if (data.kind) setInfo({ kind: data.kind, role: data.role ?? null, memberCount: data.member_count ?? null });
+        setMessages((current) => mergeMessages(current, data.messages ?? []));
+        setHistory('loaded');
+        shownRef.current = true;
+        void markRead();
+        setHistoryError('');
+      } catch (err) {
+        if (controller.signal.aborted) return;
+        setHistory('failed');
+        setHistoryError(err instanceof Error && !(err instanceof TypeError) ? err.message : 'Messages could not be loaded.');
+      }
+    })();
+    return () => controller.abort();
+  }, [conversationId, reload]);
+
+  // #319: keep only this conversation's messages; merging by ID stops the send reply and live event both showing.
+  function addMessage(message: ChatMessageEvent) {
+    // Any sent or received message (in any conversation) refreshes the list's order and previews (#457).
+    window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT));
+    if (message.conversation_id !== conversationId) return;
+    setMessages((current) => mergeMessages(current, [message]));
+    if (message.sender_id !== meRef.current) void markRead();
+  }
+
+  function liveStatus(status: ChatLiveStatus) {
+    setLive(status);
+    if (status === 'live') setReload((count) => count + 1);
+  }
+
+  useEffect(() => subscribeToChat(addMessage, liveStatus), [conversationId]);
+
+  // Show the latest message: on open, after the student's own message, and for new messages while they
+  // are already at the bottom. If they scrolled up to read, keep their place and offer a button instead.
+  const [atLatest, setAtLatest] = useState(true);
+  const [unseen, setUnseen] = useState(0);
+  const atLatestRef = useRef(true);
+  const shownCount = useRef(0);
+  const opened = useRef(false);
+
+  function scrollToLatest(behavior: ScrollBehavior = 'smooth') {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior });
+    setUnseen(0);
+  }
+
+  useEffect(() => {
+    const onScroll = () => {
+      const at = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 120;
+      atLatestRef.current = at;
+      setAtLatest(at);
+      if (at) setUnseen(0);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); };
+  }, []);
+
+  useLayoutEffect(() => {
+    const added = messages.length - shownCount.current;
+    shownCount.current = messages.length;
+    if (added <= 0) return;
+    const mine = messages[messages.length - 1].sender_id === myStudentId;
+    if (!opened.current) { opened.current = true; scrollToLatest('auto'); }
+    else if (mine || atLatestRef.current) scrollToLatest();
+    else setUnseen((count) => count + added);
+  }, [messages, myStudentId]);
 
   async function send(event: FormEvent) {
     event.preventDefault();
@@ -65,6 +185,7 @@ function Conversation() {
         body: JSON.stringify({ text }),
       });
       const data = await response.json().catch(() => ({}));
+      if (response.status === 404) { setHistory('denied'); return; }
       if (!response.ok) throw new Error(data.error || 'Your message could not be sent. Please try again.');
       addMessage(data.message);
       setMyStudentId((current) => current ?? data.message.sender_id);
@@ -76,24 +197,52 @@ function Conversation() {
     }
   }
 
+  // SRS-213.1 (#324): outsiders see the same clear message as for a missing conversation, with no message box.
+  if (history === 'denied') {
+    return (
+      <main className={`${styles.page} ${styles.withConversation}`}>
+        <ConversationListPanel />
+        <section className={`${styles.conversation} ${styles.unavailable}`} aria-label="Conversation">
+          <span className={styles.avatar} aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+          </span>
+          <h2 className={styles.emptyTitle}>This conversation isn’t available</h2>
+          <p className={styles.emptyText}>It may not exist, or you may not be one of its participants.</p>
+          <Link href="/messages" className={styles.backLink}>Back to Messages</Link>
+        </section>
+      </main>
+    );
+  }
+
   return (
     <main className={`${styles.page} ${styles.withConversation}`}>
       <ConversationListPanel />
 
       <section className={styles.conversation} aria-label="Conversation">
         <header className={styles.header}>
+          {/* Tablets and phones show one panel at a time, so this returns to the Messages list there. */}
+          <Link href="/messages" className={styles.backButton} aria-label="Back to Messages">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+          </Link>
           <span className={styles.avatar} aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z" /></svg>
           </span>
           <div>
-            <h2 className={styles.title}>Conversation</h2>
-            <p className={styles.subtitle}><span className={live === 'live' ? styles.dotLive : styles.dot} />{liveLabels[live]}</p>
+            <h2 className={styles.title}>
+              {info?.kind === 'group'
+                ? <>Group chat{info.role === 'owner' && <span className={styles.roleBadge}>Owner</span>}</>
+                : peer ? <Link href={`/students/${encodeURIComponent(peer.username)}`}>{peer.name}</Link> : 'Conversation'}
+            </h2>
+            <p className={styles.subtitle}>
+              {info?.kind === 'group' && info.memberCount !== null && <>{info.memberCount} member{info.memberCount === 1 ? '' : 's'} ·</>}
+              <span className={live === 'live' ? styles.dotLive : styles.dot} />{liveLabels[live]}
+            </p>
           </div>
         </header>
 
         <ol className={styles.messages} aria-live="polite">
           {messages.length === 0
-            ? <li className={styles.emptyMessages}>Send a message to start the conversation.</li>
+            ? <li className={styles.emptyMessages}>{history === 'loading' ? 'Loading messages…' : history === 'loaded' ? 'Send a message to start the conversation.' : 'No messages to show yet.'}</li>
             : messages.map((message) => {
               const mine = message.sender_id === myStudentId;
               return (
@@ -106,15 +255,28 @@ function Conversation() {
             })}
         </ol>
 
-        <form className={styles.composer} onSubmit={send}>
-          <label htmlFor="message-text" className={styles.srOnly}>Message</label>
-          <input id="message-text" className={styles.input} value={text} onChange={(event) => setText(event.target.value)}
-            placeholder="Message…" maxLength={500} autoComplete="off" disabled={sending} />
-          <button type="submit" className={styles.send} disabled={sending || !text.trim()} aria-label="Send message">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 2 11 13" /><path d="M22 2 15 22l-4-9-9-4 20-7Z" /></svg>
-          </button>
-        </form>
-        {error && <p className={styles.error} role="alert">{error}</p>}
+        <div className={styles.footer}>
+          {!atLatest && (
+            <button type="button" className={styles.jump} onClick={() => scrollToLatest()}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 5v14" /><path d="m19 12-7 7-7-7" /></svg>
+              {unseen > 0 ? `${unseen} new message${unseen === 1 ? '' : 's'}` : 'Jump to latest'}
+            </button>
+          )}
+          {history === 'failed' && (
+            <p className={`${styles.error} ${styles.errorAbove}`} role="alert">
+              {historyError} <button type="button" className={styles.retry} onClick={() => setReload((count) => count + 1)}>Try again</button>
+            </p>
+          )}
+          <form className={styles.composer} onSubmit={send}>
+            <label htmlFor="message-text" className={styles.srOnly}>Message</label>
+            <input id="message-text" className={styles.input} value={text} onChange={(event) => setText(event.target.value)}
+              placeholder="Message…" maxLength={500} autoComplete="off" disabled={sending} />
+            <button type="submit" className={styles.send} disabled={sending || !text.trim()} aria-label="Send message">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 2 11 13" /><path d="M22 2 15 22l-4-9-9-4 20-7Z" /></svg>
+            </button>
+          </form>
+          {error && <p className={styles.error} role="alert">{error}</p>}
+        </div>
       </section>
     </main>
   );

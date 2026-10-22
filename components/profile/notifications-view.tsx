@@ -6,7 +6,7 @@ import { Bell, UserCheck, X } from 'lucide-react';
 import { timeAgo } from '../feed/time';
 import { SessionNotice } from '../navigation/section-page';
 import { useNavigationSession } from '../navigation/social-shell';
-import { Avatar, friendAction, profileFetch } from './profile-view';
+import { Avatar, profileFetch } from './profile-view';
 import styles from './profile.module.css';
 
 type FriendNotification = {
@@ -27,7 +27,14 @@ function NotificationRow({ item, onAnswered }: { item: FriendNotification; onAns
 
   async function answer(action: 'accept' | 'decline') {
     setBusy(true); setError('');
-    try { await friendAction(item.actor_username, action); onAnswered(); }
+    try {
+      const relation = await profileFetch(`/api/friends?view=relation&username=${encodeURIComponent(item.actor_username)}`);
+      if (!relation.response.ok) throw new Error(relation.data.error || 'Unable to load this request.');
+      const result = await profileFetch('/api/friends', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: item.actor_username, action, requestId: relation.data.request_id }) });
+      if (!result.response.ok) throw new Error(result.data.error || 'Unable to answer this request.');
+      window.dispatchEvent(new Event('socialu-notifications-changed'));
+      onAnswered();
+    }
     catch (reason) { setError(reason instanceof Error ? reason.message : 'Unable to answer this request.'); setBusy(false); }
   }
 

@@ -115,6 +115,19 @@ describe('SocialU login and registration', () => {
       options: { data: { full_name: 'Student Name', username: 'student' }, emailRedirectTo: 'http://localhost/verify-email?purpose=signup' },
     });
   });
+  it.each([undefined, '', '   ', '\t\n', 123])('SRS-100.1 identifies a missing full name before database or signup work: %j', async fullName => {
+    const response = await register(req('POST', { ...registration, fullName }));
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ error: 'Enter your full name.' });
+    expect(rpc).not.toHaveBeenCalled();
+    expect(signUp).not.toHaveBeenCalled();
+  });
+  it('SRS-100.1 preserves a supplied name in the database check and signup metadata', async () => {
+    const fullName = '  Linh Nguyễn O’Connor  ';
+    expect((await register(req('POST', { ...registration, fullName }))).status).toBe(201);
+    expect(rpc).toHaveBeenCalledWith('socialu_account', expect.objectContaining({ p_action: 'check_registration', p_full_name: 'Linh Nguyễn O’Connor' }));
+    expect(signUp).toHaveBeenCalledWith(expect.objectContaining({ options: { data: { full_name: 'Linh Nguyễn O’Connor', username: 'student' }, emailRedirectTo: 'http://localhost/verify-email?purpose=signup' } }));
+  });
   it('rejects duplicate SocialU identities before signup', async () => {
     rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : fn === 'socialu_auth_guard' ? { data: {}, error: null } : { data: null, error: { code: '23505' } });
     expect((await register(req('POST', registration))).status).toBe(409);
@@ -129,5 +142,26 @@ describe('SocialU login and registration', () => {
     rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : fn === 'socialu_auth_guard' ? { data: {}, error: null } : { data: null, error: { code: 'PGRST202', message: 'private detail' } });
     const res = await login(req('POST', { email: user.email, password: 'Secret123!' }));
     expect(res.status).toBe(503); expect(await res.text()).not.toContain('private detail');
+  });
+});
+
+describe('Deactivated account login', () => {
+  it('requires explicit reactivation without returning a session', async () => {
+    rpc.mockImplementation(async (fn: string) => ({ data: fn === 'socialu_account_lifecycle' ? { is_active: false } : {}, error: null }));
+    const response = await login(req('POST', { email: user.email, password: 'Secret123!' }));
+    expect(response.status).toBe(403);
+    expect(await response.json()).toMatchObject({ code: 'ACCOUNT_INACTIVE' });
+    expect(rpc).not.toHaveBeenCalledWith('socialu_account_lifecycle', expect.objectContaining({ p_action:'reactivate' }));
+  });
+  it('reactivates after a correct password and explicit confirmation', async () => {
+    rpc.mockImplementation(async (fn: string, args: any) => ({data: fn === 'socialu_account_lifecycle' ? {is_active:args.p_action !== 'status'} : fn === 'socialu_account' ? profile : {},error:null}));
+    const response = await login(req('POST', {email:user.email,password:'Secret123!',reactivate:true}));
+    expect(response.status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_account_lifecycle',{p_auth_id:user.id,p_action:'reactivate'});
+  });
+  it('never reactivates with the wrong password', async () => {
+    signIn.mockResolvedValue({data:{},error:{message:'bad password'}});
+    expect((await login(req('POST',{email:user.email,password:'bad',reactivate:true}))).status).toBe(401);
+    expect(rpc).not.toHaveBeenCalledWith('socialu_account_lifecycle',expect.anything());
   });
 });

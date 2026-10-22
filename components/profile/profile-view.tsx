@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
-  Camera, Clock, Users, GraduationCap, Grid3x3, Images, Landmark, Lock, MessageCircle, Pencil, SquareUser, UserCheck, UserPlus, UserRound, X,
+  Users, Bookmark, Check, Settings, Camera, GraduationCap, Grid3x3, Images, Lock, MessageCircle, SquareUser, UserCheck, UserPlus, UserRound, X,
 } from 'lucide-react';
 import type { StudentProfile } from '../../lib/profile';
 import type { FeedPost } from '../feed/types';
@@ -13,8 +13,10 @@ import { accessToken, clearSession, storedAccessToken } from '../../lib/account/
 import { SessionNotice } from '../navigation/section-page';
 import { useNavigationSession } from '../navigation/social-shell';
 import styles from './profile.module.css';
+import { FriendActions } from '../friends/friend-actions';
+import { SavePostButton, ShareProfile, socialRequest, type SocialSummary } from './social-actions';
 
-type Category = 'posts' | 'tagged';
+type Category = 'posts' | 'saved' | 'tagged';
 
 // /api/auth/session reports a verified student without a SocialU profile row as signed out (409),
 // but that student must still reach /profile to create one. A stored token lets the page try;
@@ -64,96 +66,16 @@ export function ProfileLogout() {
   </button>;
 }
 
-type FriendAction = 'send' | 'cancel' | 'accept' | 'decline' | 'unfriend';
-
-// SRS-114, SRS-116: friend request actions. Any page that shows a request can reuse this.
-export async function friendAction(username: string, action: FriendAction): Promise<StudentProfile> {
-  const { response, data } = await profileFetch('/api/friends', {
-    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, action }),
-  });
-  if (!response.ok) throw new Error(data.error || 'Unable to update this friend request.');
-  window.dispatchEvent(new Event('socialu-notifications-changed'));
-  return data.profile;
-}
-
-function ProfileActions({ profile, onChange }: { profile: StudentProfile; onChange: (profile: StudentProfile) => void }) {
-  const router = useRouter();
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState('');
-  if (profile.is_own) return <div className={styles.actions}><Link href="/profile/edit" className={styles.button}><Pencil />Edit profile</Link><ProfileLogout /></div>;
-
-  async function run(action: FriendAction) {
-    if (action === 'unfriend' && !window.confirm(`Remove ${profile.name} from your friends?`)) return;
-    setBusy(true); setError('');
-    try { onChange(await friendAction(profile.username, action)); }
-    catch (reason) { setError(reason instanceof Error ? reason.message : 'Unable to update this friend request.'); }
-    finally { setBusy(false); }
-  }
-
-  async function message() {
-    setBusy(true); setError('');
-    try {
-      const { response, data } = await profileFetch('/api/conversations', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: profile.username }),
-      });
-      if (!response.ok) throw new Error(data.error || 'Unable to open this conversation.');
-      router.push(`/messages/${data.conversationId}`);
-    } catch (reason) {
-      setError(reason instanceof Error ? reason.message : 'Unable to open this conversation.');
-      setBusy(false);
-    }
-  }
-
-  // SRS-113.16-113.18
-  return <div className={styles.actions}>
-    {profile.is_friend
-      ? <button type="button" className={styles.button} onClick={() => run('unfriend')} disabled={busy} title="Remove friend"><UserCheck />Friends</button>
-      : profile.friend_request === 'sent'
-        ? <button type="button" className={styles.button} onClick={() => run('cancel')} disabled={busy} title="Cancel friend request"><Clock />Requested</button>
-        : profile.friend_request === 'received'
-          ? <>
-            <button type="button" className={styles.button} onClick={() => run('accept')} disabled={busy}><UserCheck />Accept</button>
-            <button type="button" className={`${styles.button} ${styles.secondary}`} onClick={() => run('decline')} disabled={busy}><X />Decline</button>
-          </>
-          : <button type="button" className={styles.button} onClick={() => run('send')} disabled={busy}><UserPlus />Add Friend</button>}
-    {/* SRS-113.17: only current friends can start a private conversation. */}
-    {profile.is_friend && <button type="button" className={`${styles.button} ${styles.secondary}`} onClick={message} disabled={busy}><MessageCircle />Message</button>}
-    {error && <p className={`${styles.notice} ${styles.error}`} role="alert" style={{ width: '100%', marginTop: 0 }}>{error}</p>}
-  </div>;
-}
-
 type ProfileFriend = { username: string; name: string; photo_url: string | null; is_me: boolean; is_friend: boolean; friend_request: 'sent' | 'received' | null };
 
 // One person in a friends list, with your own friend status toward them (nothing when you are already friends).
 function FriendListRow({ friend, onClose }: { friend: ProfileFriend; onClose: () => void }) {
-  const [person, setPerson] = useState(friend);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState('');
-
-  async function run(action: FriendAction) {
-    setBusy(true); setError('');
-    try {
-      const updated = await friendAction(person.username, action);
-      setPerson(current => ({ ...current, is_friend: updated.is_friend, friend_request: updated.friend_request }));
-    } catch (reason) { setError(reason instanceof Error ? reason.message : 'Unable to update this friend request.'); }
-    finally { setBusy(false); }
-  }
-
   return <li className={styles.friendItem}>
-    <Link href={person.is_me ? '/profile' : `/students/${encodeURIComponent(person.username)}`} className={styles.friendRow} onClick={onClose}>
-      <Avatar url={person.photo_url} name={person.name} />
-      <span className={styles.friendName}>{person.name}<small>@{person.username}</small></span>
+    <Link href={friend.is_me ? '/profile' : `/students/${encodeURIComponent(friend.username)}`} className={styles.friendRow} onClick={onClose}>
+      <Avatar url={friend.photo_url} name={friend.name} />
+      <span className={styles.friendName}>{friend.name}<small>@{friend.username}</small></span>
     </Link>
-    {person.is_me ? <span className={styles.friendTag}>You</span>
-      : person.is_friend ? null
-      : person.friend_request === 'received' ? <span className={styles.friendActions}>
-        <button type="button" className={`${styles.button} ${styles.small}`} onClick={() => run('accept')} disabled={busy}>Accept</button>
-        <button type="button" className={`${styles.button} ${styles.secondary} ${styles.small}`} onClick={() => run('decline')} disabled={busy}>Decline</button>
-      </span>
-      : person.friend_request === 'sent'
-        ? <button type="button" className={`${styles.button} ${styles.secondary} ${styles.small}`} onClick={() => run('cancel')} disabled={busy} title="Cancel friend request"><Clock />Requested</button>
-        : <button type="button" className={`${styles.button} ${styles.small}`} onClick={() => run('send')} disabled={busy}><UserPlus />Add Friend</button>}
-    {error && <p className={styles.friendError} role="alert">{error}</p>}
+    {friend.is_me ? <span className={styles.friendTag}>You</span> : <FriendActions username={friend.username} />}
   </li>;
 }
 
@@ -193,16 +115,51 @@ function FriendsList({ profile, onClose }: { profile: StudentProfile; onClose: (
   </div>;
 }
 
-function PostViewer({ post, onClose }: { post: FeedPost; onClose: () => void }) {
+function ProfileActions({ profile, social, onFollow }: { profile: StudentProfile; social: SocialSummary | null; onFollow: (data: SocialSummary) => void }) {
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  async function follow() {
+    if (!social || busy) return;
+    setBusy(true); setError('');
+    try { onFollow(await socialRequest('', { action: social.following ? 'unfollow' : 'follow', username: profile.username })); }
+    catch (reason) { setError(reason instanceof Error ? reason.message : 'Unable to follow this student.'); }
+    finally { setBusy(false); }
+  }
+  return <div className={styles.actions}>
+    {profile.is_own ? <><Link href="/profile/edit" className={styles.button}>Edit profile</Link><Link href="/friends" className={`${styles.button} ${styles.secondary}`}>Friends</Link></> : <>
+      <button type="button" className={styles.button} disabled={busy || !social} aria-pressed={social?.following ?? false} onClick={follow}>
+        {social?.following ? <UserCheck /> : <UserPlus />}{busy ? 'Updating…' : social?.following ? 'Following' : 'Follow'}
+      </button>
+      <FriendActions username={profile.username} inProfile />
+    </>}
+    <ShareProfile username={profile.username} />
+    {error && <p role="alert" className={styles.actionError}>{error}</p>}
+  </div>;
+}
+
+function PostViewer({ post, onClose, onSavedChange }: { post: FeedPost; onClose: () => void; onSavedChange?: (saved: boolean) => void }) {
+  const dialogRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose(); };
+    const previous = document.activeElement as HTMLElement | null;
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+      if (event.key === 'Tab') {
+        const controls = dialogRef.current?.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], [tabindex="0"]');
+        if (!controls?.length) return;
+        const first = controls[0], last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
+    };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = overflow; previous?.focus(); };
   }, [onClose]);
   const hasPhotos = post.photos.length > 0;
   return <div className={styles.backdrop} onClick={onClose}>
-    <div className={`${styles.viewer} ${hasPhotos ? '' : styles.viewerTextOnly}`} role="dialog" aria-modal="true" aria-label={`Post by ${post.authorName}`} onClick={event => event.stopPropagation()}>
-      {hasPhotos && <div className={styles.viewerMedia}>{post.photos.map((url, index) => <img key={url} src={url} alt={`Photo ${index + 1} of ${post.photos.length}`} />)}</div>}
+    <div ref={dialogRef} className={`${styles.viewer} ${hasPhotos ? '' : styles.viewerTextOnly}`} role="dialog" aria-modal="true" aria-label={`Post by ${post.authorName}`} onClick={event => event.stopPropagation()}>
+      {hasPhotos && <div className={styles.viewerMedia}>{post.photos.map((photo, index) => <img key={photo.assetId} src={photo.url} alt={`Photo ${index + 1} of ${post.photos.length}`} />)}</div>}
       <div className={styles.viewerBody}>
         <div className={styles.viewerAuthor}>
           <Avatar url={post.authorPhotoUrl} name={post.authorName} />
@@ -210,6 +167,7 @@ function PostViewer({ post, onClose }: { post: FeedPost; onClose: () => void }) 
           <button type="button" className={styles.close} onClick={onClose} aria-label="Close post" autoFocus><X size={18} /></button>
         </div>
         {post.textContent && <p className={styles.viewerText}>{post.textContent}</p>}
+        <SavePostButton postId={post.postId} onChange={onSavedChange} />
         <span className={styles.viewerDate}>
           {timeAgo(post.publishedAt)}{post.editedAt ? ' · edited' : ''} · {post.visibility === 'public' ? 'Public' : 'Friends only'}
         </span>
@@ -218,31 +176,31 @@ function PostViewer({ post, onClose }: { post: FeedPost; onClose: () => void }) 
   </div>;
 }
 
-function PostGrid({ username, category, own }: { username: string; category: Category; own: boolean }) {
+function PostGrid({ username, category, own, onCount }: { username: string; category: Category; own: boolean; onCount: (count: number | null) => void }) {
   const [posts, setPosts] = useState<FeedPost[] | null>(null);
   const [error, setError] = useState('');
   const [open, setOpen] = useState<FeedPost | null>(null);
 
   useEffect(() => {
     let active = true;
-    setPosts(null); setError('');
-    profileFetch(`/api/profiles/content?username=${encodeURIComponent(username)}&category=${category}`)
+    setPosts(null); setError(''); onCount(null);
+    profileFetch(category === 'saved' ? '/api/profiles/social?action=saved' : `/api/profiles/content?username=${encodeURIComponent(username)}&category=${category}`)
       .then(({ response, data }) => {
         if (!active) return;
         if (!response.ok) throw new Error(data.error || 'Unable to load posts.');
-        setPosts(data.posts);
+        setPosts(data.posts); onCount(data.posts.length);
       })
       .catch(reason => { if (active) setError(reason instanceof Error ? reason.message : 'Unable to load posts.'); });
     return () => { active = false; };
-  }, [username, category]);
+  }, [username, category, onCount]);
 
   if (error) return <p className={`${styles.notice} ${styles.error}`} role="alert">{error}</p>;
   if (!posts) return <div className={styles.grid} aria-busy="true">{[0, 1, 2].map(key => <div key={key} className={`${styles.tile} ${styles.skeleton}`} />)}</div>;
   // SRS-112.7: an empty-content message for each category.
   if (!posts.length) return <div className={styles.empty}>
-    {category === 'posts' ? <Camera /> : <SquareUser />}
-    <h2>{category === 'posts' ? 'No posts yet' : 'No tagged posts yet'}</h2>
-    <p>{category === 'posts'
+    {category === 'saved' ? <Bookmark /> : category === 'posts' ? <Camera /> : <SquareUser />}
+    <h2>{category === 'saved' ? 'Your favorite moments, kept here' : category === 'posts' ? 'No posts yet' : 'No tagged posts yet'}</h2>
+    <p>{category === 'saved' ? 'Tap Save on a post to keep it here. Only you can see your saved posts.' : category === 'posts'
       ? own ? 'Share your first post from the Campus Feed and it will show up here.' : 'When they share posts you can see, they will show up here.'
       : own ? 'Posts you are tagged in will show up here.' : 'Posts they are tagged in will show up here.'}</p>
   </div>;
@@ -251,12 +209,12 @@ function PostGrid({ username, category, own }: { username: string; category: Cat
     <div className={styles.grid}>
       {posts.map(post => <button type="button" key={post.postId} className={styles.tile} onClick={() => setOpen(post)}
         aria-label={`Open post from ${timeAgo(post.publishedAt)}${post.textContent ? `: ${post.textContent.slice(0, 60)}` : ''}`}>
-        {post.photos[0] ? <img src={post.photos[0]} alt="" /> : <div className={styles.tileTextBg}><p className={styles.tileText}>{post.textContent}</p></div>}
+        {post.photos[0] ? <img src={post.photos[0].url} alt="" /> : <div className={styles.tileTextBg}><p className={styles.tileText}>{post.textContent}</p></div>}
         {post.photos.length > 1 && <span className={styles.tileIcon} aria-hidden="true"><Images /></span>}
         {post.visibility === 'friends_only' && post.photos.length <= 1 && <span className={styles.tileIcon} title="Friends only" aria-hidden="true"><Lock /></span>}
       </button>)}
     </div>
-    {open && <PostViewer post={open} onClose={() => setOpen(null)} />}
+    {open && <PostViewer post={open} onClose={() => setOpen(null)} onSavedChange={saved => { if (!saved && category === 'saved') { const remaining = posts.filter(post => post.postId !== open.postId); setPosts(remaining); onCount(remaining.length); setOpen(null); } }} />}
   </>;
 }
 
@@ -267,10 +225,33 @@ function ProfileContent({ username }: { username?: string }) {
   // SRS-112.2: Posts is selected when a profile opens.
   const [category, setCategory] = useState<Category>('posts');
   const [showFriends, setShowFriends] = useState(false);
+  const [social, setSocial] = useState<SocialSummary | null>(null);
+  const [socialError, setSocialError] = useState('');
+  const [socialRetry, setSocialRetry] = useState(0);
+  const [contentCount, setContentCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    const refresh = () => setSocialRetry(value => value + 1);
+    window.addEventListener('socialu-connections-changed', refresh);
+    window.addEventListener('focus', refresh);
+    return () => {
+      window.removeEventListener('socialu-connections-changed', refresh);
+      window.removeEventListener('focus', refresh);
+    };
+  }, []);
+
 
   useEffect(() => {
     let active = true;
-    setProfile(null); setError(''); setMissing(false); setCategory('posts'); setShowFriends(false);
+    setSocial(null); setSocialError('');
+    socialRequest(`?username=${encodeURIComponent(username ?? '')}`).then(data => { if (active) setSocial(data); })
+      .catch(reason => { if (active) setSocialError(reason.message); });
+    return () => { active = false; };
+  }, [username, socialRetry]);
+
+  useEffect(() => {
+    let active = true;
+    setProfile(null); setError(''); setMissing(false); setCategory('posts');
     profileFetch(username ? `/api/profiles?username=${encodeURIComponent(username)}` : '/api/profiles')
       .then(({ response, data }) => {
         if (!active) return;
@@ -289,40 +270,59 @@ function ProfileContent({ username }: { username?: string }) {
   if (error) return <main className={styles.page}><p className={`${styles.notice} ${styles.error}`} role="alert">{error}</p></main>;
   if (!profile) return <main className={styles.page} aria-busy="true"><div className={`${styles.skeleton}`} style={{ height: 240 }} /></main>;
 
-  const details = [profile.major, profile.class_year].filter(Boolean).join(' · ');
-  return <main className={styles.page}>
+  return <main className={`${styles.page} ${styles.profilePage}`}>
+    <div className={styles.campusBar}><span>Your campus. Your people.</span><span className={styles.verified}><i />Campus verified <GraduationCap /></span></div>
+    <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/profile">My profile</Link><span>/</span><span>{profile.name}</span></nav>
     <section className={styles.header} aria-label={`${profile.name}'s profile`}>
       <div className={styles.avatarWrap}>
         <Avatar url={profile.photo_url} name={profile.name} />
-        {profile.is_own && <Link href="/profile/edit" className={styles.avatarBadge} aria-label="Change profile photo"><Camera size={18} /></Link>}
+        <span className={styles.avatarBadge} title="Verified university account"><Check size={14} /><span className={styles.srOnly}>Verified university account</span></span>
       </div>
       <div className={styles.info}>
-        <div className={styles.nameRow}>
-          <div><h1 className={styles.name}>{profile.name}</h1><p className={styles.username}>@{profile.username}</p></div>
-          <ProfileActions profile={profile} onChange={setProfile} />
+        <div className={styles.nameRow}><h1 className={styles.name}>{profile.name}</h1>
+          {profile.is_own && <Link href="/profile/settings" className={styles.settings} aria-label="Profile settings"><Settings size={17} /></Link>}
         </div>
-        {/* SRS-111.1, SRS-111.4, SRS-111.8, SRS-113.8, SRS-113.9 */}
-        <ul className={styles.stats}><li>{count(profile.post_count, 'post', 'posts')}</li><li><button type="button" className={styles.statButton} onClick={() => setShowFriends(true)}>{count(profile.friend_count, 'friend', 'friends')}</button></li></ul>
+        <ul className={styles.stats}>
+          <li>{count(profile.post_count, 'post', 'posts')}</li>
+          <li><button type="button" className={styles.statButton} onClick={() => setShowFriends(true)}>{count(profile.friend_count, 'friend', 'friends')}</button></li>
+          <li><strong>{social ? social.follower_count.toLocaleString() : '—'}</strong> followers</li>
+          <li><strong>{social ? social.following_count.toLocaleString() : '—'}</strong> following</li>
+        </ul>
+        <p className={styles.username}>@{profile.username}</p>
+        {profile.bio && <p className={styles.bio}>{profile.bio}</p>}
+        {profile.major && <p className={styles.major}>{profile.major}</p>}
         <p className={styles.meta}>
-          {profile.university && <span><Landmark />{profile.university}</span>}
-          {details && <span><GraduationCap />{details}</span>}
+          {profile.university && <span><GraduationCap />{profile.university}</span>}
+          {profile.class_year && <span>{profile.class_year}</span>}
         </p>
-        {profile.bio ? <p className={styles.bio}>{profile.bio}</p> : profile.is_own && <p className={styles.hint}>Add a bio so classmates can get to know you.</p>}
+        <ProfileActions profile={profile} social={social} onFollow={setSocial} />
       </div>
     </section>
+    {socialError && <p className={`${styles.notice} ${styles.error}`} role="alert">{socialError} <button onClick={() => setSocialRetry(value => value + 1)}>Retry</button></p>}
 
     {profile.is_own && !profile.setup_completed && <div className={styles.setupBanner} role="status">
-      <p><strong>Finish setting up your profile.</strong> Add a profile photo, your major, class year, and a short bio.</p>
+      <p><strong>Finish setting up your profile.</strong> Add a profile photo, your major, and class year.</p>
       <Link href="/profile/edit" className={styles.button}>Complete profile</Link>
     </div>}
 
-    {/* SRS-112.1: Posts and Tagged only; Snipes never appear on a profile. */}
-    <div className={styles.tabs} role="tablist" aria-label="Profile content">
-      <button type="button" role="tab" className={styles.tab} aria-selected={category === 'posts'} onClick={() => setCategory('posts')}><Grid3x3 />Posts</button>
-      <button type="button" role="tab" className={styles.tab} aria-selected={category === 'tagged'} onClick={() => setCategory('tagged')}><SquareUser />Tagged</button>
-    </div>
-    <div role="tabpanel"><PostGrid username={profile.username} category={category} own={profile.is_own} /></div>
     {showFriends && <FriendsList profile={profile} onClose={() => setShowFriends(false)} />}
+    <div className={styles.tabsRow}>
+      <div className={styles.tabs} role="tablist" aria-label="Profile content">
+        {(['posts', ...(profile.is_own ? ['saved'] : []), 'tagged'] as Category[]).map(item => <button key={item} id={`tab-${item}`} aria-controls="profile-posts" type="button" role="tab" className={styles.tab} aria-selected={category === item} tabIndex={category === item ? 0 : -1}
+          onKeyDown={event => { if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) { event.preventDefault(); const items: Category[] = profile.is_own ? ['posts', 'saved', 'tagged'] : ['posts', 'tagged']; const index = items.indexOf(item); const next = event.key === 'Home' ? items[0] : event.key === 'End' ? items[items.length - 1] : items[(index + (event.key === 'ArrowRight' ? 1 : -1) + items.length) % items.length]; setCategory(next); document.getElementById(`tab-${next}`)?.focus(); } }}
+          onClick={() => setCategory(item)}>{item === 'posts' ? <Grid3x3 /> : item === 'saved' ? <Bookmark /> : <UserRound />}{item[0].toUpperCase() + item.slice(1)}</button>)}
+      </div>
+      <span className={styles.momentCount}>{contentCount === null ? 'Loading…' : `${contentCount} ${contentCount === 1 ? 'moment' : 'moments'}`}</span>
+    </div>
+    {category === 'saved' && <p className={styles.savedNote}><Lock size={12} />Only you can see your saved posts.</p>}
+    <div id="profile-posts" role="tabpanel" aria-labelledby={`tab-${category}`} tabIndex={0}><PostGrid key={`${profile.username}-${category}`} username={profile.username} category={category} own={profile.is_own} onCount={setContentCount} /></div>
+    {profile.is_own && <nav className={styles.profileDock} aria-label="Profile shortcuts">
+      <button className={styles.dockButton} aria-pressed={category !== 'saved'} onClick={() => setCategory('posts')}><UserRound />Profile</button>
+      <button className={styles.dockButton} aria-pressed={category === 'saved'} onClick={() => setCategory('saved')}><Bookmark />Saved</button>
+      <Link className={styles.dockButton} href="/profile/edit"><Settings />Edit</Link>
+      <ShareProfile username={profile.username} compact />
+    </nav>}
+
   </main>;
 }
 

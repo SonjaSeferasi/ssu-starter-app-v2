@@ -2,6 +2,17 @@ import { AccountError, accountResponse, jsonBody, verifiedUser } from '../../../
 import { chatOperation, conversationIdParam } from '../../../../../lib/chat-access';
 export const dynamic = 'force-dynamic';
 
+// SRS-201.2 (#317): a conversation participant retrieves the saved text messages, oldest first.
+// The student always comes from the verified token; the database runs the participant check.
+export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
+  try {
+    const user = await verifiedUser(request);
+    const conversationId = conversationIdParam((await context.params).id);
+    const history = await chatOperation('socialu_conversation_messages', { p_auth_id: user.id, p_conversation_id: conversationId });
+    return Response.json(history, { headers: { 'Cache-Control': 'no-store' } });
+  } catch (error) { return accountResponse(error); }
+}
+
 // SRS-201.1: a conversation participant sends a text message.
 // The sender always comes from the verified token; any sender ID in the body is ignored.
 export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
