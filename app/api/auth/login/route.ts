@@ -1,5 +1,6 @@
 import { AccountError, accountOperation, accountResponse, authClient, jsonBody, textField } from '../../../../lib/socialu-account';
 import { friendshipRpc } from '../../../../lib/friendships';
+import { academicEmail } from '../../../../lib/university-email';
 import { authGuard } from '../../../../lib/auth-flows';
 
 export async function POST(request: Request) {
@@ -15,7 +16,7 @@ export async function POST(request: Request) {
       email = resolved.email;
     }
     // Use the same failure tracking whether the user types an email or a username.
-    if (!/^[^\s@]+@salemstate\.edu$/.test(email)) throw new AccountError('Incorrect email or password.', 401);
+    if (!academicEmail(email)) throw new AccountError('Incorrect email or password.', 401);
     const status = await authGuard('status', email);
     async function requireVerification() {
       try {

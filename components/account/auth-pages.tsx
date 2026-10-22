@@ -1,5 +1,7 @@
 'use client';
 
+import { academicEmail } from '../../lib/university-email';
+
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react';
@@ -12,7 +14,7 @@ export type AuthScreen = 'login' | 'register' | 'verify-email' | 'forgot-passwor
 type Purpose = 'signup' | 'recovery' | 'reverification';
 const copy: Record<AuthScreen, { title: string; description: string; action: string }> = {
   login: { title: 'Your campus. Your people.', description: 'Verify your student status with your university email.', action: 'Sign in' },
-  register: { title: 'Your campus. Your people.', description: 'Join your campus community with your university email.', action: 'Create account' },
+  register: { title: 'Your campus. Your people.', description: 'Verify your school email to join your own campus community.', action: 'Create account' },
   'verify-email': { title: 'Verify your university email.', description: 'Click the verification link sent to your university email.', action: 'Verify email' },
   'forgot-password': { title: 'Forgot your password?', description: 'Enter your university email to receive a password-reset link.', action: 'Send reset link' },
   'reset-password': { title: 'Choose a new password.', description: 'Give your account a fresh start with a strong new password.', action: 'Reset password' },
@@ -129,7 +131,7 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
     if (busy || cooldown > 0) return;
     setBusy(true); setError(''); setMessage('');
     try {
-      if (!/^[^\s@]+@salemstate\.edu$/i.test(email)) throw new Error('Enter your Salem State university email first.');
+      if (!academicEmail(email.trim())) throw new Error('Enter your school email first.');
       const { response, data } = await post('resend', { email, purpose });
       if (!response.ok) throw new Error(data.error || 'Unable to resend your email.');
       sent(); setMessage(data.message);
@@ -143,7 +145,7 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
     setBusy(true); setError(''); setMessage('');
     try {
       if (screen === 'register' && !name.trim()) throw new Error('Enter your full name.');
-      if (screen !== 'login' && screen !== 'change-password' && !/^[^\s@]+@salemstate\.edu$/i.test(email)) throw new Error('Use your Salem State university email (@salemstate.edu).');
+      if (screen !== 'login' && screen !== 'change-password' && !academicEmail(email.trim())) throw new Error('Use your school email (.edu, .edu.xx, or .ac.xx).');
       if (newPassword) {
         const invalid = passwordError(password, confirmation, screen === 'change-password' ? current : undefined);
         if (invalid) throw new Error(invalid);
@@ -193,7 +195,7 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
           {message && <div className={styles.notice} role="status">{message}</div>}
           {waitingForLink ? <div className={styles.form} aria-busy={busy}>
             {busy ? <p className={styles.hint} role="status">Checking your email link…</p> : <>
-              <Field label="University email" icon={<Mail />}><input value={email} onChange={event => { setEmail(event.target.value); setNeedsReactivation(false); setConfirmReactivation(false); }} type="email" placeholder="you@salemstate.edu" autoComplete="email" maxLength={254} /></Field>
+              <Field label="University email" icon={<Mail />}><input value={email} onChange={event => { setEmail(event.target.value); setNeedsReactivation(false); setConfirmReactivation(false); }} type="email" placeholder="you@school.edu" autoComplete="email" maxLength={254} /></Field>
               <button type="button" className={styles.button} onClick={resend} disabled={cooldown > 0}>{cooldown ? `Resend in ${cooldown}s` : 'Resend email'}</button>
             </>}
           </div> : <form onSubmit={submit} className={styles.form} aria-busy={busy}>
@@ -201,7 +203,7 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
               <Field label="Full name" icon={<UserRound />}><input value={name} onChange={event => setName(event.target.value)} placeholder="Your full name" autoComplete="name" required maxLength={100} /></Field>
               <Field label="Username" icon={<UserRound />}><input value={username} onChange={event => setUsername(event.target.value)} placeholder="Choose a username" autoComplete="username" required maxLength={50} pattern="[A-Za-z0-9_.]+" title="Use letters, numbers, periods, and underscores." /></Field>
             </>}
-            {(screen === 'login' || screen === 'register' || screen === 'forgot-password') && <Field label="University email" icon={<Mail />}><input value={email} onChange={event => { setEmail(event.target.value); setNeedsReactivation(false); setConfirmReactivation(false); }} type={screen === 'login' ? 'text' : 'email'} placeholder="you@salemstate.edu" autoComplete={screen === 'login' ? 'username' : 'email'} aria-label={screen === 'login' ? 'University email or username' : undefined} required maxLength={254} /></Field>}
+            {(screen === 'login' || screen === 'register' || screen === 'forgot-password') && <Field label="University email" icon={<Mail />}><input value={email} onChange={event => { setEmail(event.target.value); setNeedsReactivation(false); setConfirmReactivation(false); }} type={screen === 'login' ? 'text' : 'email'} placeholder="you@school.edu" autoComplete={screen === 'login' ? 'username' : 'email'} aria-label={screen === 'login' ? 'University email or username' : undefined} required maxLength={254} /></Field>}
             {screen === 'change-password' && passwordField('Current password', current, setCurrent, 'current-password')}
             {(screen === 'login' || newPassword) && passwordField(screen === 'login' ? 'Password' : 'New password', password, setPassword, screen === 'login' ? 'current-password' : 'new-password')}
             {newPassword && <>{passwordField('Confirm password', confirmation, setConfirmation, 'new-password')}<p className={styles.hint}>Use 8+ characters with uppercase and lowercase letters, a number, and a special character.</p></>}
@@ -211,7 +213,7 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
           </form>}
           <p className={styles.footer}>{screen === 'login' ? <>New to SocialU? <Link href={href('register')}>Create account</Link></> : screen === 'register' ? <>Already have an account? <Link href={href('login')}>Sign in</Link></> : <Link href={href('login')}>Back to sign in</Link>}</p>
       </section>
-      <p className={styles.campusFooter}>Salem State University &nbsp; | &nbsp; A more connected campus</p>
+      <p className={styles.campusFooter}>Your school. Your community. &nbsp; | &nbsp; A more connected campus</p>
     </main>
   </div>;
 }

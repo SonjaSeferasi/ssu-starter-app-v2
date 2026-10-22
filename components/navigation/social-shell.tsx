@@ -13,6 +13,7 @@ export function useNavigationSession() { return useContext(SessionContext); }
 
 export function SocialShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [community, setCommunity] = useState<string | null>(null);
   const [session, setSession] = useState<SessionState>('loading');
   const standalone = isStandalonePage(pathname);
   const gamePage = isGamePage(pathname);
@@ -63,6 +64,9 @@ export function SocialShell({ children }: { children: React.ReactNode }) {
           cache: 'no-store', signal: request.signal,
         });
         if (disposed || request.signal.aborted) return;
+        const data = response.ok ? await response.json() : null;
+        if (disposed || request.signal.aborted) return;
+        setCommunity(data?.community?.name ?? null);
         setSession(response.ok ? 'signed-in' : [401, 403, 409].includes(response.status) ? 'signed-out' : 'unavailable');
       } catch {
         if (!disposed && !request.signal.aborted) setSession('unavailable');
@@ -90,7 +94,7 @@ export function SocialShell({ children }: { children: React.ReactNode }) {
   return (
     <SessionContext.Provider value={session}>
       {!standalone && session === 'signed-in'
-        ? <NavigationFrame pathname={pathname} position={position} onPositionChange={selected => void savePosition(selected)} saving={saving} preferenceError={preferenceError} onRetry={() => preferenceLoadFailed ? setPreferenceReload(value => value+1) : void savePosition(pendingPosition)}>{children}</NavigationFrame>
+        ? <NavigationFrame community={community} pathname={pathname} position={position} onPositionChange={selected => void savePosition(selected)} saving={saving} preferenceError={preferenceError} onRetry={() => preferenceLoadFailed ? setPreferenceReload(value => value+1) : void savePosition(pendingPosition)}>{children}</NavigationFrame>
         : children}
     </SessionContext.Provider>
   );

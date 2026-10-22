@@ -1,0 +1,107 @@
+{
+  "auditedAt": "2026-10-22",
+  "owner": "SonjaSeferasi",
+  "baseline": "eab5235b867e608693240ede1184c7ba23d1c843",
+  "avatarMergePR": 515,
+  "createdRequirements": [
+    {
+      "key": "608.1",
+      "number": 516,
+      "id": 5981874878,
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/516",
+      "title": "SRS-608.1, SS — Show available complete outfits."
+    },
+    {
+      "key": "608.2",
+      "number": 517,
+      "id": 5981875271,
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/517",
+      "title": "SRS-608.2, SS — Preview an outfit selection."
+    },
+    {
+      "key": "608.4",
+      "number": 518,
+      "id": 5981875565,
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/518",
+      "title": "SRS-608.4, SS — Preview a default face."
+    },
+    {
+      "key": "610.1",
+      "number": 519,
+      "id": 5981875901,
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/519",
+      "title": "SRS-610.1, SS — Restore the saved appearance."
+    },
+    {
+      "key": "610.2",
+      "number": 520,
+      "id": 5981876269,
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/520",
+      "title": "SRS-610.2, SS — Use the saved appearance in Game 1."
+    },
+    {
+      "key": "611.1",
+      "number": 521,
+      "id": 5981876531,
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/521",
+      "title": "SRS-611.1, SS — Reopen avatar customization."
+    }
+  ],
+  "updatedExistingIssues": [
+    390,
+    389,
+    388,
+    387,
+    386,
+    385,
+    384,
+    383,
+    382,
+    381,
+    380,
+    379,
+    378,
+    377,
+    376,
+    375
+  ],
+  "linkedTasks": [
+    {
+      "key": "608.2-1",
+      "number": 522,
+      "id": 5981882837,
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/522",
+      "title": "Task 608.2-1 — Implement immediate account-owned outfit preview",
+      "done": true
+    },
+    {
+      "key": "608.2-2",
+      "number": 523,
+      "id": 5981883880,
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/523",
+      "title": "Task 608.2-2 — Verify imported artwork and preview data contracts",
+      "done": true
+    },
+    {
+      "key": "608.2-3",
+      "number": 524,
+      "id": 5981884813,
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/524",
+      "title": "Task 608.2-3 — Demonstrate signed-in outfit preview and attach app screenshot",
+      "done": false
+    }
+  ],
+  "projectsAccess": "API lacks Projects scopes; signed-in browser created view 15, renamed Sonja — Sprint 2",
+  "browserScreenshots": "Actual GitHub board screenshot captured; running-app screenshots remain pending",
+  "images": "Existing avatar composition and Blender environment renders; not browser screenshots",
+  "boardView": "https://github.com/users/SonjaSeferasi/projects/2/views/15",
+  "boardStatusChanges": "Not confirmed: GitHub reverted attempted status changes and intermittently failed to load",
+  "boardScope": [
+    376,
+    379,
+    382,
+    385,
+    388
+  ],
+  "formalSprintSelection": "Not assumed; avatar proposal withdrawn following clarification to use existing backlog cards"
+}

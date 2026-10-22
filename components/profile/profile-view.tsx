@@ -15,6 +15,7 @@ import { useNavigationSession } from '../navigation/social-shell';
 import styles from './profile.module.css';
 import { FriendActions } from '../friends/friend-actions';
 import { SavePostButton, ShareProfile, socialRequest, type SocialSummary } from './social-actions';
+import { ProfileHighlights } from './highlights';
 
 type Category = 'posts' | 'saved' | 'tagged';
 
@@ -75,13 +76,17 @@ function FriendListRow({ friend, onClose }: { friend: ProfileFriend; onClose: ()
       <Avatar url={friend.photo_url} name={friend.name} />
       <span className={styles.friendName}>{friend.name}<small>@{friend.username}</small></span>
     </Link>
-    {friend.is_me ? <span className={styles.friendTag}>You</span> : <FriendActions username={friend.username} />}
+    {friend.is_me ? <span className={styles.friendTag}>You</span> : <div className={styles.friendControls}><FriendActions username={friend.username} /></div>}
   </li>;
 }
 
-// SRS-111.4, SRS-113.9: who this student is friends with.
-function FriendsList({ profile, onClose }: { profile: StudentProfile; onClose: () => void }) {
-  const [friends, setFriends] = useState<ProfileFriend[] | null>(null);
+export type PeopleList = 'friends' | 'followers' | 'following';
+const PEOPLE_LABELS: Record<PeopleList, string> = { friends: 'Friends', followers: 'Followers', following: 'Following' };
+
+// SRS-111.4, SRS-113.9: who this student is friends with, who follows them, and who they follow.
+function PeopleDialog({ profile, initial, onClose }: { profile: StudentProfile; initial: PeopleList; onClose: () => void }) {
+  const [list, setList] = useState<PeopleList>(initial);
+  const [people, setPeople] = useState<ProfileFriend[] | null>(null);
   const [error, setError] = useState('');
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose(); };
@@ -90,27 +95,40 @@ function FriendsList({ profile, onClose }: { profile: StudentProfile; onClose: (
   }, [onClose]);
   useEffect(() => {
     let active = true;
-    profileFetch(profile.is_own ? '/api/profiles/friends' : `/api/profiles/friends?username=${encodeURIComponent(profile.username)}`)
+    setPeople(null); setError('');
+    const query = new URLSearchParams({ list, ...(profile.is_own ? {} : { username: profile.username }) });
+    profileFetch(`/api/profiles/friends?${query}`)
       .then(({ response, data }) => {
         if (!active) return;
-        if (!response.ok) throw new Error(data.error || 'Unable to load friends.');
-        setFriends(data.friends);
+        if (!response.ok) throw new Error(data.error || 'Unable to load this list.');
+        setPeople(data.friends);
       })
-      .catch(reason => { if (active) setError(reason instanceof Error ? reason.message : 'Unable to load friends.'); });
+      .catch(reason => { if (active) setError(reason instanceof Error ? reason.message : 'Unable to load this list.'); });
     return () => { active = false; };
-  }, [profile.is_own, profile.username]);
+  }, [list, profile.is_own, profile.username]);
+
+  const empty = list === 'friends'
+    ? { title: 'No friends yet', text: profile.is_own ? 'Add classmates from their profiles and they will show up here.' : 'When they add friends, they will show up here.' }
+    : list === 'followers'
+      ? { title: 'No followers yet', text: profile.is_own ? 'When someone follows you, they will show up here.' : 'When someone follows them, they will show up here.' }
+      : { title: 'Not following anyone yet', text: profile.is_own ? 'Students you follow will show up here.' : 'Students they follow will show up here.' };
 
   return <div className={styles.backdrop} onClick={onClose}>
-    <div className={styles.friendsDialog} role="dialog" aria-modal="true" aria-label={`${profile.name}'s friends`} onClick={event => event.stopPropagation()}>
+    <div className={styles.friendsDialog} role="dialog" aria-modal="true" aria-label={`${profile.name}'s ${PEOPLE_LABELS[list].toLowerCase()}`} onClick={event => event.stopPropagation()}>
       <div className={styles.viewerAuthor}>
-        <span>{profile.is_own ? 'Your friends' : `${profile.name}'s friends`}</span>
-        <button type="button" className={styles.close} onClick={onClose} aria-label="Close friends list" autoFocus><X size={18} /></button>
+        <span>{profile.is_own ? 'Your connections' : profile.name}</span>
+        <button type="button" className={styles.close} onClick={onClose} aria-label="Close list" autoFocus><X size={18} /></button>
       </div>
-      {error ? <p className={`${styles.notice} ${styles.error}`} role="alert">{error}</p>
-        : !friends ? <div className={styles.skeleton} style={{ height: 120, marginTop: 16 }} aria-busy="true" />
-        : !friends.length ? <div className={styles.empty}><Users /><h2>No friends yet</h2>
-          <p>{profile.is_own ? 'Add classmates from their profiles and they will show up here.' : 'When they add friends, they will show up here.'}</p></div>
-        : <ul className={styles.friendsList}>{friends.map(friend => <FriendListRow key={friend.username} friend={friend} onClose={onClose} />)}</ul>}
+      <div className={styles.peopleTabs} role="tablist" aria-label="Connections">
+        {(Object.keys(PEOPLE_LABELS) as PeopleList[]).map(item => <button key={item} type="button" role="tab" aria-selected={list === item}
+          className={styles.peopleTab} onClick={() => setList(item)}>{PEOPLE_LABELS[item]}</button>)}
+      </div>
+      <div role="tabpanel">
+        {error ? <p className={`${styles.notice} ${styles.error}`} role="alert">{error}</p>
+          : !people ? <div className={styles.skeleton} style={{ height: 120, marginTop: 16 }} aria-busy="true" />
+          : !people.length ? <div className={styles.empty}><Users /><h2>{empty.title}</h2><p>{empty.text}</p></div>
+          : <ul className={styles.friendsList}>{people.map(person => <FriendListRow key={person.username} friend={person} onClose={onClose} />)}</ul>}
+      </div>
     </div>
   </div>;
 }
@@ -137,7 +155,7 @@ function ProfileActions({ profile, social, onFollow }: { profile: StudentProfile
   </div>;
 }
 
-function PostViewer({ post, onClose, onSavedChange }: { post: FeedPost; onClose: () => void; onSavedChange?: (saved: boolean) => void }) {
+export function PostViewer({ post, onClose, onSavedChange }: { post: FeedPost; onClose: () => void; onSavedChange?: (saved: boolean) => void }) {
   const dialogRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
@@ -224,7 +242,7 @@ function ProfileContent({ username }: { username?: string }) {
   const [missing, setMissing] = useState(false);
   // SRS-112.2: Posts is selected when a profile opens.
   const [category, setCategory] = useState<Category>('posts');
-  const [showFriends, setShowFriends] = useState(false);
+  const [people, setPeople] = useState<PeopleList | null>(null);
   const [social, setSocial] = useState<SocialSummary | null>(null);
   const [socialError, setSocialError] = useState('');
   const [socialRetry, setSocialRetry] = useState(0);
@@ -270,32 +288,36 @@ function ProfileContent({ username }: { username?: string }) {
   if (error) return <main className={styles.page}><p className={`${styles.notice} ${styles.error}`} role="alert">{error}</p></main>;
   if (!profile) return <main className={styles.page} aria-busy="true"><div className={`${styles.skeleton}`} style={{ height: 240 }} /></main>;
 
+  const tabs: Category[] = profile.is_own ? ['posts', 'saved', 'tagged'] : ['posts', 'tagged'];
   return <main className={`${styles.page} ${styles.profilePage}`}>
-    <div className={styles.campusBar}><span>Your campus. Your people.</span><span className={styles.verified}><i />Campus verified <GraduationCap /></span></div>
-    <nav className={styles.breadcrumb} aria-label="Breadcrumb"><Link href="/profile">My profile</Link><span>/</span><span>{profile.name}</span></nav>
+    <div className={styles.profileIntro}>
+      <nav aria-label="Breadcrumb"><Link href="/profile">{profile.is_own ? 'Your profile' : 'My profile'}</Link>{!profile.is_own && <><span>/</span><span>{profile.name}</span></>}</nav>
+      <span><Check size={13} /> Campus verified</span>
+    </div>
     <section className={styles.header} aria-label={`${profile.name}'s profile`}>
       <div className={styles.avatarWrap}>
         <Avatar url={profile.photo_url} name={profile.name} />
         <span className={styles.avatarBadge} title="Verified university account"><Check size={14} /><span className={styles.srOnly}>Verified university account</span></span>
       </div>
       <div className={styles.info}>
-        <div className={styles.nameRow}><h1 className={styles.name}>{profile.name}</h1>
-          {profile.is_own && <Link href="/profile/settings" className={styles.settings} aria-label="Profile settings"><Settings size={17} /></Link>}
+        <div className={styles.profileHeading}>
+          <h1 className={styles.profileHandle}>{profile.username}</h1>
+          <ProfileActions profile={profile} social={social} onFollow={setSocial} />
+          {profile.is_own && <Link href="/profile/settings" className={styles.settings} aria-label="Profile settings"><Settings size={20} /></Link>}
         </div>
         <ul className={styles.stats}>
           <li>{count(profile.post_count, 'post', 'posts')}</li>
-          <li><button type="button" className={styles.statButton} onClick={() => setShowFriends(true)}>{count(profile.friend_count, 'friend', 'friends')}</button></li>
-          <li><strong>{social ? social.follower_count.toLocaleString() : '—'}</strong> followers</li>
-          <li><strong>{social ? social.following_count.toLocaleString() : '—'}</strong> following</li>
+          <li><button type="button" className={styles.statButton} onClick={() => setPeople('friends')}>{count(profile.friend_count, 'friend', 'friends')}</button></li>
+          <li><button type="button" className={styles.statButton} onClick={() => setPeople('followers')}><strong>{social ? social.follower_count.toLocaleString() : '—'}</strong> followers</button></li>
+          <li><button type="button" className={styles.statButton} onClick={() => setPeople('following')}><strong>{social ? social.following_count.toLocaleString() : '—'}</strong> following</button></li>
         </ul>
-        <p className={styles.username}>@{profile.username}</p>
+        <p className={styles.profileDisplayName}>{profile.name}</p>
         {profile.bio && <p className={styles.bio}>{profile.bio}</p>}
         {profile.major && <p className={styles.major}>{profile.major}</p>}
         <p className={styles.meta}>
           {profile.university && <span><GraduationCap />{profile.university}</span>}
           {profile.class_year && <span>{profile.class_year}</span>}
         </p>
-        <ProfileActions profile={profile} social={social} onFollow={setSocial} />
       </div>
     </section>
     {socialError && <p className={`${styles.notice} ${styles.error}`} role="alert">{socialError} <button onClick={() => setSocialRetry(value => value + 1)}>Retry</button></p>}
@@ -305,11 +327,12 @@ function ProfileContent({ username }: { username?: string }) {
       <Link href="/profile/edit" className={styles.button}>Complete profile</Link>
     </div>}
 
-    {showFriends && <FriendsList profile={profile} onClose={() => setShowFriends(false)} />}
+    {people && <PeopleDialog profile={profile} initial={people} onClose={() => setPeople(null)} />}
+    <ProfileHighlights key={profile.username} profile={profile} />
     <div className={styles.tabsRow}>
       <div className={styles.tabs} role="tablist" aria-label="Profile content">
-        {(['posts', ...(profile.is_own ? ['saved'] : []), 'tagged'] as Category[]).map(item => <button key={item} id={`tab-${item}`} aria-controls="profile-posts" type="button" role="tab" className={styles.tab} aria-selected={category === item} tabIndex={category === item ? 0 : -1}
-          onKeyDown={event => { if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) { event.preventDefault(); const items: Category[] = profile.is_own ? ['posts', 'saved', 'tagged'] : ['posts', 'tagged']; const index = items.indexOf(item); const next = event.key === 'Home' ? items[0] : event.key === 'End' ? items[items.length - 1] : items[(index + (event.key === 'ArrowRight' ? 1 : -1) + items.length) % items.length]; setCategory(next); document.getElementById(`tab-${next}`)?.focus(); } }}
+        {tabs.map(item => <button key={item} id={`tab-${item}`} aria-controls="profile-posts" type="button" role="tab" className={styles.tab} aria-selected={category === item} tabIndex={category === item ? 0 : -1}
+          onKeyDown={event => { if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) { event.preventDefault(); const items = tabs; const index = items.indexOf(item); const next = event.key === 'Home' ? items[0] : event.key === 'End' ? items[items.length - 1] : items[(index + (event.key === 'ArrowRight' ? 1 : -1) + items.length) % items.length]; setCategory(next); document.getElementById(`tab-${next}`)?.focus(); } }}
           onClick={() => setCategory(item)}>{item === 'posts' ? <Grid3x3 /> : item === 'saved' ? <Bookmark /> : <UserRound />}{item[0].toUpperCase() + item.slice(1)}</button>)}
       </div>
       <span className={styles.momentCount}>{contentCount === null ? 'Loading…' : `${contentCount} ${contentCount === 1 ? 'moment' : 'moments'}`}</span>

@@ -33,7 +33,12 @@ const integrated=(await campus())[0];
 assert.equal(integrated.like_count,1);assert.equal(integrated.is_liked_by_viewer,true);assert.equal(integrated.comment_count,1);
 
 assert.equal((await call(1,'friends')).length,0);
+// SRS-114.1: two eligible non-friends expose the Add Friend state without mutating data.
+assert.deepEqual(await call(1,'relation','student2'),{state:'none',request_id:null});
+assert.deepEqual(await call(2,'relation','student1'),{state:'none',request_id:null});
 let rel=await call(1,'send','student2'); assert.equal(rel.state,'sent');const firstId=rel.request_id;
+assert.equal((await call(1,'relation','student2')).state,'sent');
+assert.equal((await call(2,'relation','student1')).state,'received');
 const notices=async(n:number)=>(await db.query<any>('SELECT public.socialu_notifications($1) AS n',[uid(n)])).rows[0].n;
 assert.equal((await notices(2)).unread,1);
 assert.equal((await notices(2)).notifications[0].kind,'friend_request');

@@ -1,4 +1,5 @@
 import { AccountError, accountClient, accountOperation, verifiedUser } from './socialu-account';
+import { layeredKeys } from './avatar-layers';
 
 // Browser requests never select the acting student. Raw socialu tables stay private.
 export async function gameRoomOperation(request: Request, action: string, args: Record<string, unknown> = {}) {
@@ -15,6 +16,14 @@ export async function gameRoomOperation(request: Request, action: string, args: 
   }
   if (error) {
     console.error('Game Room database operation failed', { code: error.code, message: error.message });
+    const selection = args.p_appearance;
+    const layeredSave = action === 'save_customized' && selection && typeof selection === 'object'
+      && layeredKeys.some(key => key in selection);
+    const oldLayeredContract = error.code === '22023' && error.message === 'Invalid avatar selection'
+      || error.code === '23514' && error.message?.includes('avatar_customization_options');
+    if (layeredSave && oldLayeredContract) {
+      throw new AccountError('The new avatar collection needs its database update before it can be saved. Your preview has not been saved.', 503, 'AVATAR_CUSTOMIZATION_SETUP_REQUIRED');
+    }
     if (error.code === 'PGRST202') {
       if (action === 'save_customized') throw new AccountError('Avatar customization saving needs its database update. Your preview has not been saved.', 503, 'AVATAR_CUSTOMIZATION_SETUP_REQUIRED');
       throw new AccountError('Game Room account saving is not ready yet.', 503, 'GAME_ROOM_SETUP_REQUIRED');

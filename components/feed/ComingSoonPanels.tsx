@@ -12,7 +12,7 @@ const PANELS = [
 
 export function ComingSoonPanels() {
   return (
-    <aside className="hidden w-72 shrink-0 space-y-4 lg:block">
+    <div className="hidden space-y-4 lg:block">
       {PANELS.map((panel) => (
         <div key={panel.title} className="rounded-3xl border border-stone-200 bg-white/70 p-5" aria-disabled="true">
           <p className="text-sm font-semibold text-stone-800">
@@ -22,6 +22,6 @@ export function ComingSoonPanels() {
         </div>
       ))}
       <UpcomingEventsPanel />
-    </aside>
+    </div>
   );
 }
