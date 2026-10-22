@@ -33,6 +33,27 @@ beforeEach(() => {
   signedUrl.mockResolvedValue({ data: { signedUrl: 'https://signed.example/photo.png' }, error: null });
 });
 
+describe('Notification recipient access', () => {
+  it('requires authentication before reading notifications', async () => {
+    const response = await notifications(new Request('http://localhost/api/notifications'));
+    expect(response.status).toBe(401);
+    expect(rpc).not.toHaveBeenCalledWith('socialu_notifications', expect.anything());
+  });
+
+  it('requires authentication before marking notifications read', async () => {
+    const response = await markRead(new Request('http://localhost/api/notifications', { method: 'POST' }));
+    expect(response.status).toBe(401);
+    expect(rpc).not.toHaveBeenCalledWith('socialu_mark_notifications_read', expect.anything());
+  });
+
+  it('ignores a recipient identity supplied in the URL', async () => {
+    result = { data: { unread: 0, notifications: [] }, error: null };
+    const response = await notifications(new Request('http://localhost/api/notifications?auth_id=someone-else', { headers: { Authorization: `Bearer ${token}` } }));
+    expect(response.status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_notifications', { p_auth_id: user.id });
+  });
+});
+
 describe('GET /api/notifications', () => {
   it('returns the unread count and signs actor photos', async () => {
     result = { data: { unread: 1, notifications: [{
