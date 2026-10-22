@@ -126,12 +126,26 @@ describe('POST /api/conversations', () => {
 });
 
 describe('GET /api/profiles/friends', () => {
+  it('lists followers when asked', async () => {
+    const { GET: friendsList } = await import('../../app/api/profiles/friends/route');
+    result = { data: [], error: null };
+    const response = await friendsList(new Request('http://localhost/api/profiles/friends?list=followers', { headers: { Authorization: `Bearer ${token}` } }));
+    expect(response.status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_profile_people', { p_auth_id: user.id, p_username: null, p_list: 'followers' });
+  });
+
+  it('rejects an unknown list', async () => {
+    const { GET: friendsList } = await import('../../app/api/profiles/friends/route');
+    const response = await friendsList(new Request('http://localhost/api/profiles/friends?list=enemies', { headers: { Authorization: `Bearer ${token}` } }));
+    expect(response.status).toBe(400);
+  });
+
   it("lists a student's friends with signed photos", async () => {
     const { GET: friendsList } = await import('../../app/api/profiles/friends/route');
     result = { data: [{ username: 'maya.chen', name: 'Maya Chen', photo_key: 'profile/9/p.png', is_me: false, is_friend: false, friend_request: 'received' }], error: null };
     const response = await friendsList(new Request('http://localhost/api/profiles/friends?username=alex.kim', { headers: { Authorization: `Bearer ${token}` } }));
     expect(response.status).toBe(200);
-    expect(rpc).toHaveBeenCalledWith('socialu_profile_friends', { p_auth_id: user.id, p_username: 'alex.kim' });
+    expect(rpc).toHaveBeenCalledWith('socialu_profile_people', { p_auth_id: user.id, p_username: 'alex.kim', p_list: 'friends' });
     expect(await response.json()).toEqual({ friends: [{ username: 'maya.chen', name: 'Maya Chen', photo_url: 'https://signed.example/photo.png', is_me: false, is_friend: false, friend_request: 'received' }] });
   });
 });
