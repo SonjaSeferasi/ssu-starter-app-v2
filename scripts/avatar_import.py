@@ -26,16 +26,33 @@ PREFIX = {'head': 'heads', 'top': 'tops', 'pants': 'bottoms'}
 
 
 def remove_flat_background(rgba):
-    """Sheets without transparency: clear pixels close to the border colour."""
+    """Keep real alpha, or key only the brief's magenta (never white shoes)."""
     if rgba[..., 3].min() < 250:
         return rgba
     rgb = rgba[..., :3].astype(float)
     border = np.concatenate([rgb[0], rgb[-1], rgb[:, 0], rgb[:, -1]])
     background = np.median(border, axis=0)
-    distance = np.sqrt(((rgb - background) ** 2).sum(-1))
-    alpha = np.clip((distance - 14) / 26, 0, 1) * 255  # soft edge between 14 and 40
+    if not (background[0] > 235 and background[1] < 25 and background[2] > 235):
+        raise ValueError('Opaque sheet needs a flat #FF00FF background; white, gray and painted backgrounds are not safe to remove.')
+    chroma = np.minimum(rgb[..., 0], rgb[..., 2]) - rgb[..., 1]
+    alpha = np.clip((230 - chroma) / 130, 0, 1)
     out = rgba.copy()
-    out[..., 3] = alpha.astype(np.uint8)
+    # Unmatte partially keyed edges, so fine hair has no magenta fringe.
+    keyed = alpha < 1
+    clean = (rgb - (1 - alpha[..., None]) * background) / np.maximum(alpha[..., None], .001)
+    out[..., :3][keyed] = np.clip(clean[keyed], 0, 255).astype(np.uint8)
+    interior = alpha > .8
+    eroded = interior.copy()
+    for _ in range(3):
+        padded = np.pad(eroded, 1, constant_values=False)
+        eroded = padded[1:-1, 1:-1] & padded[:-2, 1:-1] & padded[2:, 1:-1] & padded[1:-1, :-2] & padded[1:-1, 2:]
+    edge = (alpha > 0) & ~eroded
+    colors = out[..., :3].astype(float)
+    spill = np.maximum(0, np.minimum(colors[..., 0], colors[..., 2]) - colors[..., 1] - 8)
+    for channel in (0, 2):
+        colors[..., channel][edge] -= spill[edge]
+    out[..., :3] = np.clip(colors, 0, 255).astype(np.uint8)
+    out[..., 3] = (alpha * 255).astype(np.uint8)
     return out
 
 
@@ -102,6 +119,8 @@ def main():
             print(f'skip {path.name} (expected head-*, top-* or pants-*)'); continue
         sheet = remove_flat_background(np.asarray(Image.open(path).convert('RGBA')))
         H, W = sheet.shape[:2]
+        if (W, H) != (1536, 1024):
+            raise ValueError(f'{path.name}: expected 1536x1024 (3 columns x 2 rows), got {W}x{H}')
         cells = []
         for index in range(COLS * ROWS):
             r, c = divmod(index, COLS)
@@ -118,16 +137,32 @@ def main():
             Image.fromarray(piece).save(out / name, optimize=True)
             info = {'file': f'{url_base}/{name}', 'width': int(piece.shape[1]), 'height': int(piece.shape[0])}
             info.update(geometry(kind, sheet_id, piece[..., 3] > 128))
+            setting = overrides.get(PREFIX[kind], {}).get(sheet_id, {})
+            per_cell = setting.get('cells', [])
+            calibrated = {**setting, **(per_cell[index] if index < len(per_cell) else {})}
+            for field in ('anchor', 'size', 'hem', 'faceWidth'):
+                if field in calibrated:
+                    info[field] = calibrated[field]
+            eyes = calibrated.get('eyes')
+            if eyes and isinstance(eyes[0], list):
+                eyes = eyes[index]
+            if kind == 'head':
+                info['eyes'] = eyes or None
+            if calibrated.get('coordinateSpace') == 'cell':
+                if 'anchor' in calibrated:
+                    info['anchor'] = [info['anchor'][0] - int(x0), info['anchor'][1] - int(y0)]
+                if 'hem' in calibrated:
+                    info['hem'] -= int(y0)
+                if info.get('eyes'):
+                    info['eyes'] = [n - (int(x0) if j % 2 == 0 else int(y0)) for j, n in enumerate(info['eyes'])]
+            if info['size'] <= 0 or info.get('faceWidth', 1) <= 0:
+                raise ValueError(f'{path.name}: cell {index + 1} has an invalid attachment width')
             if kind == 'top':
                 info['color'] = sample(piece, (0.35, 0.65, 0.35, 0.7))
             elif kind == 'pants':
                 info['color'] = sample(piece, (0.25, 0.75, 0.1, 0.4))
             cells.append(info)
         if kind == 'head':
-            eyes = overrides.get('heads', {}).get(sheet_id, {}).get('eyes')
-            for index, info in enumerate(cells):
-                if info:
-                    info['eyes'] = (eyes[index] if eyes and isinstance(eyes[0], list) else eyes) or None
             if skin is None and not sheet_id.startswith('hijab'):
                 skin = [sample(np.asarray(Image.open(out / Path(info['file']).name)), (0.4, 0.6, 0.5, 0.62)) if info else None for info in cells]
         if any(cell is None for cell in cells):

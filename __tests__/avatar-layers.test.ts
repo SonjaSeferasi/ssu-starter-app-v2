@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
-  LAYOUT, bottomColors, bottomStyles, defaultLook, headStyles, layoutAvatar, skinTones, swatchColor, topColors, topStyles, validLayeredFields,
+  LAYOUT, bottomColors, bottomStyles, defaultLook, hasLayeredLook, headStyles, layoutAvatar, parseAvatarManifest, skinTones, swatchColor, topColors, topStyles, validLayeredFields,
   type AvatarManifest, type LayerCell, type LayeredLook,
 } from '../lib/avatar-layers';
 
@@ -66,6 +66,19 @@ describe('layered avatar layout', () => {
 });
 
 describe('layered avatar options', () => {
+  it('requires a complete valid look before replacing an existing avatar', () => {
+    expect(hasLayeredLook(look)).toBe(true);
+    expect(hasLayeredLook({headStyle:'long-waves'})).toBe(false);
+    expect(hasLayeredLook({...look,skinTone:'tone-99'} as unknown as LayeredLook)).toBe(false);
+  });
+
+  it('rejects broken imports instead of rendering missing or invalid pieces', () => {
+    expect(parseAvatarManifest(manifest)).toEqual(manifest);
+    expect(parseAvatarManifest({version:1})).toBeNull();
+    expect(parseAvatarManifest({...manifest,heads:{'long-waves':manifest.heads['long-waves'].slice(0,5)}})).toBeNull();
+    expect(parseAvatarManifest({...manifest,tops:{hoodie:cells(()=>({...manifest.tops.hoodie[0],size:0}))}})).toBeNull();
+    expect(parseAvatarManifest({...manifest,tops:{hoodie:cells(()=>({...manifest.tops.hoodie[0],file:'https://example.com/tracker.png'}))}})).toBeNull();
+  });
   it('accepts catalog ids and rejects anything else', () => {
     expect(validLayeredFields(look)).toBe(true);
     expect(validLayeredFields({ headStyle: 'hijab-sage' })).toBe(true);
