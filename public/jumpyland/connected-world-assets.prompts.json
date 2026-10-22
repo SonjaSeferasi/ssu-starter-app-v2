@@ -1,0 +1,14 @@
+﻿{
+  "tool": "Built-in image_gen; user-authorized local background removal",
+  "akatsuki": "Realistic stylized 3D game character atlas, three equal columns on PURE WHITE background, landscape 3:2 image. Each column shows one full-body Naruto Shippuden Akatsuki member, entirely within its cell with generous white spacing. Left Itachi Uchiha, straight dark hair, forehead protector, black cloak patterned with red clouds, composed alert pose. Middle Kisame Hoshigaki, tall broad blue-gray sharklike face, forehead protector, Akatsuki cloak and enormous white bandage-wrapped sword over shoulder. Right Deidara, long blond hair over one eye with tied ponytail, Akatsuki cloak, hand extended with small pale clay bird. All looking LEFT in side three-quarter view, feet at equal baseline, highly detailed shaded cloth, hair, face, shoes, game-ready readable silhouettes. No scenery, no ground, no shadows on white background, no text, no weapons pointing outside their column. Match a cinematic 2.5D fantasy platformer with realistic materials rather than flat anime or pixel art.",
+  "outfits": "Game wardrobe compositing sprite atlas, 3 equally sized vertical columns in a landscape 3:2 canvas, PURE WHITE background, no scenery or ground shadows, no text. Three realistic shaded 3D clothing bodies from base of neck down to boots, NO HEAD, NO HAIR, NO FACE. All stand relaxed in identical pose, slight three-quarter facing right, shoulders relaxed, both hands resting tucked at waist or belt, legs apart, feet level. Each outfit fully isolated in its column with generous padding. Left Goku Dragon Ball orange sleeveless martial arts gi over navy short undershirt, blue tied sash, loose orange pants, dark blue wristbands and blue boots with red details. Middle Vegeta fitted royal blue bodysuit, distinctive ivory and golden ribbed Saiyan chest armor with shoulder straps, white gauntlet gloves and white golden-toed boots. Right Piccolo purple loose gi, turquoise tied belt, broad white shoulder cape over shoulders falling behind body to calves, purple pants and brown pointed boots. Clothing displayed on adult human-proportioned headless bodies, neck opening visible but no head. Same natural proportions as a realistic college-student game avatar. Detailed fabric folds, soft believable ambient lighting, no cartoon outlines. Need actual separate clothing-body pieces suitable for layering underneath an existing avatar head.",
+  "assets": [
+    "akatsuki-v1.png",
+    "dragon-outfits-v2.png"
+  ],
+  "references": [
+    "https://naruto-official.com/en/anime/naruto2/list/01_901",
+    "https://en.dragon-ball-official.com/news/01_313.html",
+    "https://en.dragon-ball-official.com/news/01_2511.html"
+  ]
+}

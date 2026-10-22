@@ -4,6 +4,11 @@ node_modules
 .env
 coverage
 *.tsbuildinfo
+/tmp/tools/
+/tmp/render-tools/
+/tmp/visual-review/
+*.blend1
+*.blend2
 
 # Word lock files
 /documentation/~$*.docx

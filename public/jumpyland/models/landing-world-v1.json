@@ -1,0 +1,48 @@
+{
+  "generator": "Blender 4.5.0",
+  "model": "landing-world-v1.glb",
+  "source": "assets/models/jumpyland/landing-world-v1.blend",
+  "projectionImage": false,
+  "triangles": 1330896,
+  "meshCount": 33,
+  "anchors": [
+    {
+      "name": "WorldAnchor1",
+      "position": [
+        -17,
+        11.2,
+        9
+      ]
+    },
+    {
+      "name": "WorldAnchor2",
+      "position": [
+        0,
+        14,
+        -15
+      ]
+    },
+    {
+      "name": "WorldAnchor3",
+      "position": [
+        19,
+        12,
+        7
+      ]
+    }
+  ],
+  "camera": {
+    "position": [
+      0.0,
+      31.0,
+      63.0
+    ],
+    "target": [
+      0.0,
+      11.0,
+      -13.0
+    ],
+    "verticalFov": 37.29907750810282
+  },
+  "textures": "Existing CC0 Poly Haven PBR maps; see ../pbr/ASSET-CREDITS.json"
+}

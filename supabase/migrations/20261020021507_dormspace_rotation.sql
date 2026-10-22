@@ -65,6 +65,9 @@ DECLARE
   old_output TEXT := $old$jsonb_build_object('itemId', item_id::TEXT, 'x', x, 'y', y)$old$;
   new_output TEXT := $new$jsonb_build_object('itemId', item_id::TEXT, 'x', x, 'y', y, 'rotation', rotation)$new$;
 BEGIN
+  -- Match the normalized function body on both Windows and Unix checkouts.
+  old_insert := replace(old_insert,chr(13),'');
+  new_insert := replace(new_insert,chr(13),'');
   IF strpos(definition,old_insert)>0 THEN definition:=replace(definition,old_insert,new_insert);
   ELSIF strpos(definition,new_insert)=0 THEN RAISE EXCEPTION 'DormSpace bridge input changed; review the rotation migration';
   END IF;

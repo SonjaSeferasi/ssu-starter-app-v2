@@ -11,8 +11,11 @@ it('persists rotated furniture through the real restricted bridge and validates 
     room = await dormCall(db, 1, 'save', null, { ...room, placements: [{ itemId: id('bed'), x: 0, y: 0 }] });
     const legacy = room;
     const migration = readFileSync('supabase/migrations/20261020021507_dormspace_rotation.sql', 'utf8');
-    await db.exec(migration);
-    await db.exec(migration); // Safe rerun with an already upgraded bridge.
+    // Migration files and pg_get_functiondef can have different line endings.
+    // Exercise a Windows deployment, followed by an idempotent Unix rerun.
+    const unixMigration = migration.replace(/\r\n/g, '\n');
+    await db.exec(unixMigration.replace(/\n/g, '\r\n'));
+    await db.exec(unixMigration);
     room = await dormCall(db, 1, 'open');
     expect(room.version).toBe(legacy.version);
     expect(room.placements).toEqual([{ ...legacy.placements[0], rotation: 0 }]);

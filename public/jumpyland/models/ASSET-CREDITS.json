@@ -1,0 +1,7 @@
+{
+  "geometry": "Original procedural scene authored in Blender 4.5 for this project.",
+  "source": "assets/models/jumpyland/landing-world-v1.blend",
+  "rebuildScript": "scripts/build_jumpyland_map.py",
+  "textures": {"provider": "Poly Haven", "license": "CC0 1.0", "details": "../pbr/ASSET-CREDITS.json"},
+  "decoder": {"name": "Google Draco", "license": "Apache-2.0", "source": "https://github.com/google/draco", "distribution": "Decoder distributed with the installed Three.js package"}
+}
