@@ -1,4 +1,4 @@
-import { AccountError, accountResponse, jsonBody, verifiedUser } from '../../../lib/socialu-account';
+import { AccountError, accountResponse, jsonBody, textField, verifiedUser } from '../../../lib/socialu-account';
 import { chatOperation } from '../../../lib/chat-access';
 export const dynamic = 'force-dynamic';
 
@@ -18,6 +18,10 @@ export async function POST(request: Request) {
   try {
     const user = await verifiedUser(request);
     const body = await jsonBody(request);
+    if (body.kind === undefined && textField(body.username)) {
+      const conversationId = await chatOperation('socialu_open_private_conversation', { p_auth_id: user.id, p_username: textField(body.username) });
+      return Response.json({ conversationId }, { headers: { 'Cache-Control': 'no-store' } });
+    }
     if (body.kind !== 'group') throw new AccountError('Choose a valid conversation type.', 400);
     const conversation = await chatOperation('socialu_create_group', { p_auth_id: user.id });
     return Response.json({ conversation }, { status: 201, headers: { 'Cache-Control': 'no-store' } });

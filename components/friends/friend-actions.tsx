@@ -31,6 +31,7 @@ export function FriendActions({ username, initial, onChanged, inProfile=false }:
       if(action==='message'){router.push(`/messages/${encodeURIComponent(data.conversation_id)}`);return;}
       setRelation(action==='unblock'?{state:'none',request_id:null}:data);setConfirm(null);
       window.dispatchEvent(new Event('socialu-connections-changed'));
+      window.dispatchEvent(new Event('socialu-notifications-changed'));
       onChanged?.();
       if(action==='block'&&inProfile)router.push('/friends?view=blocked');
     } catch(reason){setError(reason instanceof Error?reason.message:'Unable to update your connection.');}

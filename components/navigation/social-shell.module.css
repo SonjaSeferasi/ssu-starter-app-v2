@@ -24,6 +24,8 @@
 .profileLink:hover { background: #dcebe1; }
 .profileLink[aria-current='page'] { background: #c0ddcb; }
 .profileLink:focus-visible { outline: 3px solid #28634e; outline-offset: 3px; }
+.profileLink { position: relative; }
+.notificationBadge { position: absolute; top: -4px; right: -4px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: #c2412d; color: #fff; font-size: 11px; font-weight: 700; line-height: 20px; text-align: center; border: 2px solid #fff; }
 .navigation { position: fixed; top: var(--header-height); bottom: 0; left: 0; width: var(--sidebar-width); padding: 28px 12px; overflow-y: auto; border-right: 1px solid var(--line); background: #edf5ef; }
 .destinationList { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .destination { display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 12px 16px; border-radius: 10px; color: var(--ink); text-decoration: none; font-size: 16px; line-height: 1.4; white-space: nowrap; }

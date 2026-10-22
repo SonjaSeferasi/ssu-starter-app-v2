@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { isCurrentDestination, navigationDestinations } from '../../lib/navigation';
 import styles from './social-shell.module.css';
 import type { NavigationPosition } from '../../lib/game-room';
+import { accessToken } from '../../lib/account/session';
 
-type IconName = (typeof navigationDestinations)[number]['icon'] | 'profile' | 'search';
+type IconName = (typeof navigationDestinations)[number]['icon'] | 'profile' | 'search' | 'bell';
 
 function NavigationIcon({ name }: { name: IconName }) {
   return (
@@ -18,6 +19,7 @@ function NavigationIcon({ name }: { name: IconName }) {
       {name === 'invitations' && <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M7 3v4M17 3v4M3 10h18M9 15l2 2 4-4" /></>}
       {name === 'events' && <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M7 3v4M17 3v4M3 10h18M7 14h2M15 14h2M7 18h2" /></>}
       {name === 'profile' && <><circle cx="12" cy="7" r="4" /><path d="M4 21v-2a8 8 0 0 1 16 0v2Z" /></>}
+      {name === 'bell' && <><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></>}
       {name === 'search' && <><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></>}
     </svg>
   );
@@ -68,6 +70,41 @@ export function SocialNavigation({ pathname, position = 'side', onPositionChange
   );
 }
 
+// SRS-114.7: header bell; the badge counts unread notifications and is hidden when there are none.
+function NotificationBell({ pathname }: { pathname: string }) {
+  const [unread, setUnread] = useState(0);
+  useEffect(() => {
+    let active = true;
+    async function load() {
+      try {
+        const token = await accessToken();
+        if (!token) return;
+        const response = await fetch('/api/notifications', { headers: { Authorization: `Bearer ${token}` }, cache: 'no-store' });
+        if (!response.ok) return;
+        const data = await response.json();
+        if (active && typeof data.unread === 'number') setUnread(data.unread);
+      } catch {
+        // Keep the last count; the next refresh tries again.
+      }
+    }
+    void load();
+    const timer = window.setInterval(load, 30_000);
+    window.addEventListener('socialu-notifications-changed', load);
+    window.addEventListener('focus', load);
+    return () => {
+      active = false;
+      window.clearInterval(timer);
+      window.removeEventListener('socialu-notifications-changed', load);
+      window.removeEventListener('focus', load);
+    };
+  }, [pathname]);
+  const label = unread ? `Notifications, ${unread} unread` : 'Notifications';
+  return <Link href="/notifications" className={styles.profileLink} aria-current={isCurrentDestination(pathname, '/notifications') ? 'page' : undefined} aria-label={label}>
+    <NavigationIcon name="bell" />
+    {unread > 0 && <span className={styles.notificationBadge} aria-hidden="true">{unread > 9 ? '9+' : unread}</span>}
+  </Link>;
+}
+
 // Also used by the development-only preview; no session or private data lives here.
 export function NavigationFrame({ pathname, children, position = 'side', ...preferences }: { pathname: string; children: React.ReactNode } & PlacementProps) {
   return (
@@ -82,6 +119,7 @@ export function NavigationFrame({ pathname, children, position = 'side', ...pref
         </div>
         <div className={styles.headerActions}>
           <span className={styles.pointsBadge} title="The points system isn't built yet">★ — pts</span>
+          <NotificationBell pathname={pathname} />
           <Link href="/profile" className={styles.profileLink} aria-current={isCurrentDestination(pathname, '/profile') ? 'page' : undefined} aria-label="Your profile">
             <NavigationIcon name="profile" />
           </Link>
