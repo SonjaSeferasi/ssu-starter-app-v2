@@ -19,3 +19,9 @@ Apply `supabase/migrations/20261026000100_school_communities.sql` after the exis
 `__tests__/university-email.test.ts` covers domain formats and spoofing. `__tests__/database/school-communities.test.ts` uses disposable PostgreSQL to exercise verified onboarding, separate feeds, direct access denial, same-campus friendship/chat, cross-campus group denial, and rejection of unverified onboarding. `__tests__/database/school-dormspace.test.ts` verifies separate hallway snapshots and realtime recipients. No hosted test accounts or fake student data were created. A real email-verification journey at a second school still needs an owner of that mailbox.
 
 Keep later database migrations from replacing these access predicates with single-campus versions. Run the community database tests whenever changing shared feed/profile/chat functions.
+
+## Campus member directory
+
+The Campus Feed includes “People on your campus”: a searchable, paginated directory of registered members, with profile photos, profile links, and a “You” label. It is a registration directory, not an online-presence indicator. On mobile it appears above the feed with a Show/Hide control.
+
+Apply `20261026000200_campus_members.sql` after the school-community migration. This server-only RPC derives the school from the verified caller and omits emails and storage keys from the API response. Only active, verified school-linked accounts appear, and blocks in either direction hide the account. The migration has been applied to the connected database. API and PostgreSQL tests cover authentication, campus isolation, account state, blocking, search, pagination, and signed photos. The directory and member search were verified in the running desktop and mobile app.

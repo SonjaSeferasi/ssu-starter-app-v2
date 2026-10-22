@@ -8,6 +8,7 @@ import { FeedSwitcher, type FeedTab } from './FeedSwitcher';
 import { PostComposer } from './PostComposer';
 import { PostCard } from './PostCard';
 import { LoadingFeedState, EmptyFeedState, ErrorFeedState } from './FeedStates';
+import { CampusMembersPanel } from './CampusMembersPanel';
 import { ComingSoonPanels } from './ComingSoonPanels';
 import type { FeedPost } from './types';
 import shellStyles from '../navigation/social-shell.module.css';
@@ -110,8 +111,8 @@ export function FeedPage() {
     <main className={shellStyles.page}>
       <h1 className={shellStyles.title}>Campus Feed</h1>
 
-      <div className="mt-6 flex items-start gap-6">
-        <div className="min-w-0 flex-1 space-y-4 lg:max-w-2xl">
+      <div className="mt-6 flex flex-col items-start gap-6 lg:flex-row">
+        <div className="w-full min-w-0 flex-1 space-y-4 lg:max-w-2xl">
           <PostComposer accessToken={token} authorInitial={authorInitial} onPublished={() => token && loadFeed(token)} />
 
           <FeedSwitcher active={tab} onChange={setTab} />
@@ -146,7 +147,7 @@ export function FeedPage() {
           )}
         </div>
 
-        <ComingSoonPanels />
+        <aside className="order-first w-full shrink-0 space-y-4 lg:order-last lg:w-72"><CampusMembersPanel /><ComingSoonPanels /></aside>
       </div>
     </main>
   );
