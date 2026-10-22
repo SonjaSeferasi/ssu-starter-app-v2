@@ -9,8 +9,9 @@ import { activityEntrypoints, gameRoomSamples, sampleFaceStyles, faceDetails, sh
 import { useNavigationSession } from '../navigation/social-shell';
 import { SessionNotice } from '../navigation/section-page';
 import { AvatarPreview } from './avatar-preview';
-import { avatarStyleGroup, bottomColors, bottomStyles, defaultLook, hasLayeredLook, headStyles, layeredKeys, layoutAvatar, skinTones, swatchColor, topColors, topStyles, type LayeredLook } from '../../lib/avatar-layers';
-import { useAvatarManifest } from '../../lib/avatar-manifest';
+import { avatarStyleGroup, hasLayeredLook, layeredKeys } from '../../lib/avatar-layers';
+import { completeAvatar, completeAvatars, avatarGroups, type AvatarGroup } from '../../lib/avatar-collection';
+import { CompleteAvatar } from './complete-avatar';
 import { ActivityArt } from './activity-art';
 import styles from './game-room.module.css';
 
@@ -38,9 +39,11 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
   const [attempt, setAttempt] = useState(0);
   const [previewFallback, setPreviewFallback] = useState(false);
   const temporaryPreview = preview || previewFallback;
-  // Layered art (v2) replaces the v1 controls once it has been imported.
-  const manifest = useAvatarManifest();
-  const layeredDefaults = manifest ? defaultLook(manifest) : null;
+  const [collectionOpen, setCollectionOpen] = useState(false);
+  const [collectionGroup, setCollectionGroup] = useState<AvatarGroup | null>(null);
+  const selectedAvatar = completeAvatar(appearance?.avatarId);
+  const completeMode = collectionOpen || !!selectedAvatar || hasLayeredLook(appearance);
+  const visibleGroup = collectionGroup || selectedAvatar?.group || 'male';
 
   useEffect(() => {
     if (preview) return;
@@ -95,20 +98,23 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
   // Importing new art never changes an account's saved appearance by itself.
   // Trying the new collection explicitly adds a complete, unsaved selection.
   const shown = appearance;
-  const look = shown as LayeredLook;
-  const layout = manifest && hasLayeredLook(shown) ? layoutAvatar(manifest, shown) : null;
-  const layered = manifest && layout ? { manifest, layout } : null;
+  function chooseCompleteAvatar(id: string) {
+    if (!completeAvatar(id) || !room || saving) return;
+    const current = appearance || completeAppearance(room, { outfitId: room.outfits[0]?.id || '', faceId: room.faces.find(face => face.initial)?.id || room.faces[0]?.id || null });
+    const next = { ...current!, avatarId: id };
+    for (const key of layeredKeys) delete next[key];
+    setAppearance(next); setRetrySelection(null); setSaveMessage('Unsaved changes');
+  }
   function tryNewCollection() {
-    if (!manifest || !layeredDefaults) return;
-    const legacy = selectedFace?.assetKey.replace(/^sample-/, '') || '';
-    const preferred = ({ smile: 'short-waves', glasses: 'short-waves', 'crew-cut': 'fade', 'side-part': 'short-waves' } as Record<string, string>)[legacy] || legacy;
-    const head = headStyles.find(style => style.id === preferred && manifest.heads[style.id]);
-    editAppearance({ ...layeredDefaults, ...(head ? { headStyle: head.id } : {}) });
+    setCollectionOpen(true); setCollectionGroup(null);
+    chooseCompleteAvatar(completeAvatars[0].id);
   }
   function useOriginalCollection() {
     if (!appearance || saving) return;
     const original = { ...appearance };
     for (const key of layeredKeys) delete original[key];
+    delete original.avatarId;
+    setCollectionOpen(false); setCollectionGroup(null);
     setAppearance(original); setRetrySelection(null);
     setSaveMessage(JSON.stringify(original) === JSON.stringify(room?.appearance) ? 'Original collection restored.' : 'Unsaved changes');
   }
@@ -117,9 +123,6 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
       <button key={color.id} title={color.name} aria-label={label + ': ' + color.name} aria-pressed={shown?.[field] === color.id} disabled={saving}
         className={styles.swatch} style={{ backgroundColor: color.hex, color: lightColor(color.hex) ? '#18362f' : '#fff' }}
         onClick={() => editAppearance({ [field]: color.id } as Partial<AvatarAppearance>)}>{shown?.[field] === color.id && <span aria-hidden="true">✓</span>}</button>)}</div></fieldset>;
-  const chips = (label: string, field: keyof AvatarAppearance, options: readonly { id: string; name: string }[]) => options.length > 1 &&
-    <fieldset className={styles.colorField}><legend>{label}</legend><div className={styles.styleChoices}>{options.map(option =>
-      <button key={option.id} aria-pressed={shown?.[field] === option.id} disabled={saving} onClick={() => editAppearance({ [field]: option.id } as Partial<AvatarAppearance>)}>{option.name}</button>)}</div></fieldset>;
   const faceOptions = <div className={styles.options}>{faceDetails.map(detail => <button key={detail.id} aria-label={detail.name} className={styles.option} aria-pressed={shown?.faceStyle === detail.id} disabled={saving} onClick={() => editAppearance({ faceStyle: detail.id })}>
     <AvatarPreview small portrait appearance={{ ...shown!, faceStyle: detail.id }} outfits={room?.outfits || []} faces={room?.faces || []} /><span>{detail.name}</span>
   </button>)}</div>;
@@ -139,41 +142,31 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
           </div>
           <div className={styles.controls}>
             <h3 className={styles.controlsTitle}>Make it yours</h3>
-            {layeredDefaults && <button className={styles.secondaryButton} disabled={saving || !room} onClick={layered ? useOriginalCollection : tryNewCollection}>
-              {layered ? 'Use original collection' : 'Try the new avatar collection'}
-            </button>}
-            <div className={styles.bodyChoices} role="group" aria-label="Avatar style">
-              {(['male','female'] as const).map(group => {
-                if (layered) {
-                  const head = headStyles.find(style => avatarStyleGroup(style.id) === group && layered.manifest.heads[style.id]);
-                  return <button key={group} aria-pressed={bodyStyle === group} disabled={saving || !head} onClick={() => head && bodyStyle !== group && editAppearance({ headStyle: head.id })}>{group === 'male' ? 'Male' : 'Female'}</button>;
-                }
-                const availableFace = room?.faces.find(face => sampleFaceStyles[face.assetKey]?.group === group && face.assetKey !== 'sample-glasses');
-                return <button key={group} aria-pressed={bodyStyle === group} disabled={saving || !availableFace} onClick={() => availableFace && bodyStyle !== group && editAppearance({ faceId: availableFace.id })}>{group === 'male' ? 'Male' : 'Female'}</button>;
-              })}
-            </div>
-            <div className={styles.tabs} role="group" aria-label="Customize">
-              {(['hair','face','outfit'] as const).map(tab => <button key={tab} aria-pressed={editor === tab} disabled={saving} onClick={() => setEditor(tab)}>{tab === 'hair' ? 'Hair' : tab === 'face' ? 'Face' : 'Outfit'}</button>)}
-            </div>
-            <section className={styles.editor} aria-label={editor === 'hair' ? 'Choose a hairstyle' : editor === 'face' ? 'Choose face details' : 'Customize your outfit'}>
-              {layered ? <>
-                {editor === 'hair' && <>
-                  {swatches('Skin tone', 'skinTone', skinTones.map((tone, index) => ({ ...tone, hex: swatchColor(layered.manifest, 'skin', '', index, tone.hex) })))}
-                  <fieldset className={styles.colorField}><legend>{bodyStyle === 'male' ? 'Male hairstyles' : 'Female hairstyles'}</legend><div className={styles.options}>{headStyles.filter(style => style.kind === 'hair' && avatarStyleGroup(style.id) === bodyStyle && layered.manifest.heads[style.id]).map(style =>
-                    <button key={style.id} aria-label={style.name} className={styles.option} aria-pressed={look.headStyle === style.id} disabled={saving} onClick={() => editAppearance({ headStyle: style.id })}>
-                      <AvatarPreview small portrait appearance={{ ...shown!, headStyle: style.id, faceStyle: 'natural' }} outfits={room?.outfits || []} faces={room?.faces || []} /><span>{style.name}</span>
-                    </button>)}</div></fieldset>
-                  {bodyStyle === 'female' && headStyles.some(style => style.kind === 'hijab' && layered.manifest.heads[style.id]) &&
-                    swatches('Hijab', 'headStyle', headStyles.flatMap(style => style.kind === 'hijab' && layered.manifest.heads[style.id] ? [{ id: style.id, name: style.name, hex: style.hex }] : []))}
-                </>}
-                {editor === 'face' && (layered.layout?.eyes ? faceOptions : <p className={styles.footnote}>Glasses and freckles aren’t available for this look yet.</p>)}
-                {editor === 'outfit' && <>
-                  {chips('Top', 'topStyle', topStyles.filter(style => layered.manifest.tops[style.id]))}
-                  {swatches('Top color', 'topColor', topColors.map((color, index) => ({ ...color, hex: swatchColor(layered.manifest, 'tops', look.topStyle, index, color.hex) })))}
-                  {chips('Pants', 'bottomStyle', bottomStyles.filter(style => layered.manifest.bottoms[style.id]))}
-                  {swatches('Pants color', 'bottomColor', bottomColors.map((color, index) => ({ ...color, hex: swatchColor(layered.manifest, 'bottoms', look.bottomStyle, index, color.hex) })))}
-                </>}
-              </> : <>
+            <button className={styles.secondaryButton} disabled={saving || !room} onClick={completeMode ? useOriginalCollection : tryNewCollection}>
+              {completeMode ? 'Use original collection' : 'Try complete avatars'}
+            </button>
+            {completeMode ? <>
+              <p className={styles.collectionIntro}>18 complete looks. Each figure has a coordinated outfit and consistent proportions.</p>
+              <div className={styles.collectionTabs} role="group" aria-label="Complete avatar collection">
+                {avatarGroups.map(group => <button key={group} aria-pressed={visibleGroup === group} disabled={saving} onClick={() => setCollectionGroup(group)}>{group === 'male' ? 'Male' : group === 'female' ? 'Female' : 'Hijab'}</button>)}
+              </div>
+              <section aria-label="Choose a complete avatar" className={styles.completeOptions}>
+                {completeAvatars.filter(avatar => avatar.group === visibleGroup).map(avatar => <button key={avatar.id} aria-label={avatar.name + ': ' + avatar.description} aria-pressed={selectedAvatar?.id === avatar.id} disabled={saving} className={styles.completeOption} onClick={() => chooseCompleteAvatar(avatar.id)}>
+                  <CompleteAvatar avatar={avatar} small /><span>{avatar.name}</span>
+                </button>)}
+              </section>
+              <p className={styles.footnote}>{selectedAvatar ? selectedAvatar.description + '.' : 'Your saved look stays here until you choose a complete avatar.'}</p>
+            </> : <>
+              <div className={styles.bodyChoices} role="group" aria-label="Avatar style">
+                {(['male', 'female'] as const).map(group => {
+                  const face = room?.faces.find(face => sampleFaceStyles[face.assetKey]?.group === group && face.assetKey !== 'sample-glasses');
+                  return <button key={group} aria-pressed={bodyStyle === group} disabled={saving || !face} onClick={() => face && bodyStyle !== group && editAppearance({ faceId: face.id })}>{group === 'male' ? 'Male' : 'Female'}</button>;
+                })}
+              </div>
+              <div className={styles.tabs} role="group" aria-label="Customize">
+                {(['hair','face','outfit'] as const).map(tab => <button key={tab} aria-pressed={editor === tab} disabled={saving} onClick={() => setEditor(tab)}>{tab === 'hair' ? 'Hair' : tab === 'face' ? 'Face' : 'Outfit'}</button>)}
+              </div>
+              <section className={styles.editor} aria-label={editor === 'hair' ? 'Choose a hairstyle' : editor === 'face' ? 'Choose face details' : 'Customize your outfit'}>
               {editor === 'hair' && <div className={styles.options}>{hairOptions.map(face => <button key={face.id} aria-label={sampleFaceStyles[face.assetKey].label} className={styles.option} aria-pressed={appearance?.faceId === face.id || (selectedFace?.assetKey === 'sample-glasses' && face.assetKey === 'sample-smile')} disabled={saving} onClick={() => editAppearance({ faceId: face.id })}>
                 <AvatarPreview small portrait appearance={{ ...appearance!, faceId: face.id, faceStyle: 'natural' }} outfits={room?.outfits || []} faces={room?.faces || []} /><span>{sampleFaceStyles[face.assetKey].label}</span>
               </button>)}</div>}
@@ -184,12 +177,12 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
                 {swatches('Shirt color', 'shirtColor', shirtColors)}
                 {swatches('Pants color', 'pantsColor', pantsColors)}
               </>}
-              </>}
-            </section>
+              </section>
+            </>}
             <p className={styles.previewHint}>Changes preview instantly.</p>
             <p className={styles.saveStatus} data-tone={statusTone} role={retrySelection ? 'alert' : 'status'} aria-live="polite">{statusText}</p>
             <button className={styles.primaryButton} onClick={() => void saveAvatar()} disabled={saving || !appearance || !appearance.outfitId || !dirty || temporaryPreview}>{saving ? 'Saving…' : 'Save avatar'}</button>
-            <button className={styles.secondaryButton} disabled={saving || !dirty} onClick={() => { setAppearance(room?.appearance || null); setRetrySelection(null); setSaveMessage('Changes discarded.'); }}>Discard changes</button>
+            <button className={styles.secondaryButton} disabled={saving || !dirty} onClick={() => { setAppearance(room?.appearance || null); setCollectionOpen(false); setCollectionGroup(null); setRetrySelection(null); setSaveMessage('Changes discarded.'); }}>Discard changes</button>
             <p className={styles.footnote}>Customization is optional. Your avatar is ready to play.</p>
           </div>
         </div>

@@ -18,7 +18,7 @@ export async function gameRoomOperation(request: Request, action: string, args: 
     console.error('Game Room database operation failed', { code: error.code, message: error.message });
     const selection = args.p_appearance;
     const layeredSave = action === 'save_customized' && selection && typeof selection === 'object'
-      && layeredKeys.some(key => key in selection);
+      && ('avatarId' in selection || layeredKeys.some(key => key in selection));
     const oldLayeredContract = error.code === '22023' && error.message === 'Invalid avatar selection'
       || error.code === '23514' && error.message?.includes('avatar_customization_options');
     if (layeredSave && oldLayeredContract) {

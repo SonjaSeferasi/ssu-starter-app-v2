@@ -61,6 +61,15 @@ describe('Game Room account boundary', () => {
 
 describe('Independent avatar customization', () => {
   const selection = { outfitId: '1', faceId: '2', faceStyle: 'freckles', shirtColor: 'purple', pantsColor: 'khaki' };
+  it('saves a whole avatar id through the existing verified account bridge', async () => {
+    const selected = { ...selection, avatarId: 'campus-hijab-6' };
+    expect((await PUT(req('PUT', selected))).status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_avatar_customization', { p_auth_id: user.id, p_appearance: selected });
+  });
+  it.each(['unknown', null, 2])('rejects an invalid complete avatar id %j', async avatarId => {
+    expect((await PUT(req('PUT', { ...selection, avatarId }))).status).toBe(400);
+    expect(rpc).not.toHaveBeenCalled();
+  });
   it('sends all selected details through the verified account bridge', async () => {
     expect((await PUT(req('PUT', { ...selection, student_id: 'someone-else' }))).status).toBe(200);
     expect(rpc).toHaveBeenCalledWith('socialu_avatar_customization', { p_auth_id: user.id, p_appearance: selection });

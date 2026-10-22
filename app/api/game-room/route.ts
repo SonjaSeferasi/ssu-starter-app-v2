@@ -16,11 +16,12 @@ export async function PUT(request: Request) {
     const body = await jsonBody(request);
     if (!validAppearance(body)) throw new AccountError('Choose a valid face and outfit.', 400);
     const layered = Object.fromEntries(layeredKeys.filter(key => body[key] !== undefined).map(key => [key, body[key]]));
-    const hasDetails = body.faceStyle !== undefined || body.shirtColor !== undefined || body.pantsColor !== undefined || Object.keys(layered).length > 0;
+    const hasDetails = body.avatarId !== undefined || body.faceStyle !== undefined || body.shirtColor !== undefined || body.pantsColor !== undefined || Object.keys(layered).length > 0;
     const args = hasDetails ? { p_appearance: {
       outfitId: body.outfitId, faceId: body.faceId,
       faceStyle: body.faceStyle || 'natural', shirtColor: body.shirtColor || 'navy', pantsColor: body.pantsColor || 'denim',
       ...layered,
+      ...(body.avatarId ? { avatarId: body.avatarId } : {}),
     } } : { p_outfit_id: body.outfitId, p_face_id: body.faceId };
     return Response.json(await gameRoomOperation(request, hasDetails ? 'save_customized' : 'save_avatar', args),
       { headers: { 'Cache-Control': 'no-store' } });
