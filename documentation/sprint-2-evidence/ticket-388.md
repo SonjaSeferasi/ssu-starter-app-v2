@@ -48,4 +48,3 @@ Verify both failure causes stop a running attempt, that a safe platform landing 
 ## Implementation sub-issues
 - [ ] #389 — implementation
 - [ ] #390 — verification
-

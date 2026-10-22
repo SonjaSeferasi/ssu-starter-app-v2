@@ -48,4 +48,3 @@ Verify a grounded Space press starts a jump, an airborne repeated press does not
 ## Implementation sub-issues
 - [ ] #383 — implementation
 - [ ] #384 — verification
-

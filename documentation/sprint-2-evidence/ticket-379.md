@@ -48,4 +48,3 @@ Demonstrate and test left-only and right-only movement during a running attempt.
 ## Implementation sub-issues
 - [ ] #380 — implementation
 - [ ] #381 — verification
-

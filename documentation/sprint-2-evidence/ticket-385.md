@@ -48,4 +48,3 @@ Test landings at different horizontal positions and from different heights, stan
 ## Implementation sub-issues
 - [ ] #386 — implementation
 - [ ] #387 — verification
-

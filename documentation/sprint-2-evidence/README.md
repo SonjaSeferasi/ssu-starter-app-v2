@@ -4,6 +4,7 @@ Prepared 22 October 2026. Owner: Sonja Seferasi (SS). This is an implementation 
 
 ## Code and merge links
 
+- [Sprint 2 evidence PR #525](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/525), branch sonja/sprint-2-evidence.
 - [Avatar feature branch](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/feature/avatar-layered-collection).
 - [Merged avatar PR #515](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/515), merge commit [eab5235](https://github.com/SonjaSeferasi/ssu-starter-app-v2/commit/eab5235b867e608693240ede1184c7ba23d1c843). This includes 24 source sheets, 144 runtime pieces, opt-in selection, calibrated glasses/head placement, importer/manifest validation and save guards.
 - [Original Jumpyland implementation PR #451](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/451), verified merged. Its original branch used Phaser.

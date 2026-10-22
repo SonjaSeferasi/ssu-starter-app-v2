@@ -54,4 +54,3 @@ Physics, movement, collisions, pause, unfinished attempts and transient coins st
 - [ ] #382 — SRS-616.3
 - [ ] #385 — SRS-616.6
 - [ ] #388 — SRS-620.1
-

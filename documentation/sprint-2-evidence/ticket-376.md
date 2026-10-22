@@ -48,4 +48,3 @@ Verify authenticated entry, no required avatar editing, one Phaser canvas after 
 ## Implementation sub-issues
 - [ ] #377 — implementation
 - [ ] #378 — verification
-
