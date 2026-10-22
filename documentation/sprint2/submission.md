@@ -10,7 +10,7 @@ The notification trigger and compatibility wrapper were installed in hosted Supa
 
 The follow-up UI separates pending friend requests from acceptance notifications and automatically opens the request tab when applicable. Migration 20261022060000 safely repairs missing notifications for real older pending requests, retaining their original request timestamps. A disposable database regression runs the backfill twice and verifies one notification remains.
 
-Latest checks: TypeScript and all 522 tests pass. The pictured requests are 2–3 days old: this is existing-request evidence, not a claimed fresh two-account delivery or unread-bell demonstration. #511 and #506 remain open for that final acceptance step. PR #512 is merged; the original implementation remains PR #501. Items #502–#505 have been audited and moved to In review with their remaining evidence gaps.
+Latest integrated follow-up checks: TypeScript and all 576 tests pass across 47 files. The pictured requests are 2–3 days old: this is existing-request evidence, not a claimed fresh two-account delivery or unread-bell demonstration. #511 and #506 remain open for that final acceptance step. PR #512 is merged; the original implementation remains PR #501. Items #502–#505 have been audited and moved to In review with their remaining evidence gaps.
 
 The remainder of this file records the original preparation snapshot and demo checklist; use this current update when interpreting its earlier pending-screenshot statements.
 
