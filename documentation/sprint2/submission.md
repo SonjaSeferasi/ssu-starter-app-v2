@@ -7,9 +7,16 @@ Prepared October 22, 2026. Application: SocialU. GitHub: Dieulinhh23.
 1. [Team project — Linh Nguyen - Sprint 2](https://github.com/users/SonjaSeferasi/projects/2/views/14).
 2. [Selected SRS-114.7 issue #506](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/506): requirement, UR trace, five assigned task sub-issues, implementation references and remaining acceptance work.
 3. [Merged implementation PR #501](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/501).
-4. [SRS-named evidence branch](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/linh/srs-114.7-friend-request-notification-sprint2).
+4. [Evidence and recipient-access test PR #512](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/512).
+5. [SRS-named evidence branch](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/linh/srs-114.7-friend-request-notification-sprint2).
 
 **Submission status:** implementation is merged and automated checks pass. The live recipient screenshot and a real two-account demonstration remain outstanding. Do not represent this document as full completion until those are recorded on #506. The student must attend demo day; a prepared script does not satisfy attendance.
+
+## Board snapshot
+
+![Separate Linh Nguyen - Sprint 2 board](https://github.com/user-attachments/assets/99978455-f03f-4616-b466-467d80247cd8)
+
+This is board evidence only. It shows the selected card at 4/5 tasks; it does not replace the outstanding received-request screenshot. Sprint 1 and Sprint 2 personal views are separated by issue creation date at October 22, 2026; teammates’ cards and project-wide statuses were not changed.
 
 ## Selected requirement
 
