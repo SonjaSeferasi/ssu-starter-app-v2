@@ -4,7 +4,7 @@ import { type FormEvent, useEffect, useState } from 'react';
 import { Check, Plus, Trash2, X } from 'lucide-react';
 import type { FeedPost } from '../feed/types';
 import type { StudentProfile } from '../../lib/profile';
-import { PostViewer, profileFetch } from './profile-view';
+import { profileFetch } from './profile-view';
 import styles from './profile.module.css';
 
 type Highlight = { highlightId: number; title: string; posts: FeedPost[] };
@@ -32,9 +32,9 @@ function Dialog({ label, onClose, children }: { label: string; onClose: () => vo
 
 function PostTiles({ posts, selected, onPick }: { posts: FeedPost[]; selected?: Set<number>; onPick: (post: FeedPost) => void }) {
   return <div className={`${styles.grid} ${styles.highlightGrid}`}>
-    {posts.map(post => <button type="button" key={post.postId} className={styles.tile} onClick={() => onPick(post)} aria-pressed={selected ? selected.has(post.postId) : undefined}
+    {posts.filter(post => post.photos.length > 0).map(post => <button type="button" key={post.postId} className={styles.tile} onClick={() => onPick(post)} aria-pressed={selected ? selected.has(post.postId) : undefined}
       aria-label={post.textContent ? post.textContent.slice(0, 60) : 'Photo post'}>
-      {post.photos[0] ? <img src={post.photos[0].url} alt="" /> : <div className={styles.tileTextBg}><p className={styles.tileText}>{post.textContent}</p></div>}
+      <img src={post.photos[0].url} alt="" />
       {selected?.has(post.postId) && <span className={styles.tilePicked} aria-hidden="true"><Check /></span>}
     </button>)}
   </div>;
@@ -49,11 +49,18 @@ function NewHighlight({ onClose, onSaved }: { onClose: () => void; onSaved: (hig
 
   useEffect(() => {
     profileFetch('/api/profiles/content?category=posts')
-      .then(({ response, data }) => { if (!response.ok) throw new Error(data.error || 'Unable to load your posts.'); setPosts(data.posts); })
+      .then(({ response, data }) => { if (!response.ok) throw new Error(data.error || 'Unable to load your posts.'); setPosts((data.posts as FeedPost[]).filter(post => post.photos.length > 0)); })
       .catch(reason => setError(reason instanceof Error ? reason.message : 'Unable to load your posts.'));
   }, []);
 
+  const pictureCount = (posts ?? []).filter(post => picked.has(post.postId)).reduce((total, post) => total + post.photos.length, 0);
+
   function toggle(post: FeedPost) {
+    if (!picked.has(post.postId) && pictureCount + post.photos.length > 30) {
+      setError('Each highlight can contain up to 30 pictures.');
+      return;
+    }
+    setError('');
     setPicked(current => { const next = new Set(current); if (next.has(post.postId)) next.delete(post.postId); else next.add(post.postId); return next; });
   }
 
@@ -74,12 +81,12 @@ function NewHighlight({ onClose, onSaved }: { onClose: () => void; onSaved: (hig
     <form onSubmit={save} className={styles.highlightForm}>
       <label className={styles.fieldLabel} htmlFor="highlight-title">Name</label>
       <input id="highlight-title" className={styles.textInput} value={title} onChange={event => setTitle(event.target.value)} maxLength={30} placeholder="Coffee breaks" required />
-      <p className={styles.fieldLabel}>Choose posts {picked.size > 0 && `(${picked.size})`}</p>
+      <p className={styles.fieldLabel}>Choose photo posts · {pictureCount}/30 pictures</p>
       {!posts && !error ? <div className={styles.skeleton} style={{ height: 120 }} aria-busy="true" />
-        : posts && !posts.length ? <p className={styles.hint}>Share a post first, then add it to a highlight.</p>
+        : posts && !posts.length ? <p className={styles.hint}>Share a photo post first, then add it to a highlight.</p>
         : posts && <PostTiles posts={posts} selected={picked} onPick={toggle} />}
       {error && <p className={`${styles.notice} ${styles.error}`} role="alert">{error}</p>}
-      <button type="submit" className={styles.button} disabled={busy || !title.trim() || !picked.size}>{busy ? 'Saving…' : 'Create highlight'}</button>
+      <button type="submit" className={styles.button} disabled={busy || !title.trim() || !picked.size || pictureCount > 30}>{busy ? 'Saving…' : 'Create highlight'}</button>
     </form>
   </Dialog>;
 }
@@ -101,7 +108,9 @@ function HighlightViewer({ highlight, own, onClose, onDeleted }: { highlight: Hi
     } catch (reason) { setError(reason instanceof Error ? reason.message : 'Unable to delete this highlight.'); setBusy(false); }
   }
 
-  if (open) return <PostViewer post={open} onClose={() => setOpen(null)} />;
+  if (open) return <Dialog label={highlight.title} onClose={() => setOpen(null)}>
+    <div className={styles.highlightPhotos}>{open.photos.map(photo => <img key={photo.url} src={photo.url} alt="Highlight photo" />)}</div>
+  </Dialog>;
   return <Dialog label={highlight.title} onClose={onClose}>
     {highlight.posts.length ? <PostTiles posts={highlight.posts} onPick={setOpen} /> : <p className={styles.hint}>The posts in this highlight were deleted.</p>}
     {error && <p className={`${styles.notice} ${styles.error}`} role="alert">{error}</p>}

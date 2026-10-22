@@ -9,7 +9,7 @@ type RawHighlight = { highlight_id: number; title: string; posts: RawFeedRow[] }
 
 async function shapeHighlights(rows: RawHighlight[]) {
   return Promise.all(rows.map(async row => ({
-    highlightId: row.highlight_id, title: row.title, posts: await shapeFeedPosts(accountClient(), row.posts),
+    highlightId: row.highlight_id, title: row.title, posts: await shapeFeedPosts(accountClient(), row.posts.filter(post => post.photos.length > 0)),
   })));
 }
 
@@ -36,6 +36,9 @@ export async function POST(request: Request) {
     const body = await jsonBody(request);
     const action = textField(body.action);
     if (action !== 'create' && action !== 'delete') throw new AccountError('Choose a valid highlight action.', 400);
+    if (action === 'create' && (!Array.isArray(body.postIds) || body.postIds.length < 1 || body.postIds.length > 30)) {
+      throw new AccountError('Choose photo posts containing between 1 and 30 pictures.', 400);
+    }
     const args = action === 'create'
       ? { p_title: textField(body.title), p_post_ids: Array.isArray(body.postIds) ? body.postIds.map(id) : [] }
       : { p_highlight_id: id(body.highlightId) };

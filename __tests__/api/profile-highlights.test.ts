@@ -48,6 +48,22 @@ describe('profile highlights', () => {
     expect(rpc).toHaveBeenCalledWith('socialu_profile_highlights', { p_auth_id: user.id, p_action: 'create', p_title: 'Study days', p_post_ids: [3, 5] });
   });
 
+  it('rejects more than 30 selected posts before writing', async () => {
+    const response = await changeHighlights(post('/api/profiles/highlights', {
+      action: 'create', title: 'Too many', postIds: Array.from({ length: 31 }, (_, i) => i + 1),
+    }));
+    expect(response.status).toBe(400);
+    expect(rpc).not.toHaveBeenCalledWith('socialu_profile_highlights', expect.anything());
+  });
+
+  it('excludes legacy text-only posts from highlights', async () => {
+    result = { data: [{ highlight_id: 2, title: 'Photos', posts: [row, { ...row, post_id: 4, photos: [] }] }], error: null };
+    const response = await listHighlights(get('/api/profiles/highlights'));
+    const { highlights } = await response.json();
+    expect(highlights[0].posts).toHaveLength(1);
+    expect(highlights[0].posts[0].postId).toBe(3);
+  });
+
   it('rejects an invalid post id', async () => {
     const response = await changeHighlights(post('/api/profiles/highlights', { action: 'create', title: 'X', postIds: ['abc'] }));
     expect(response.status).toBe(400);
@@ -60,4 +76,3 @@ describe('profile highlights', () => {
     expect(await response.json()).toEqual({ error: 'You can have up to 20 highlights.' });
   });
 });
-

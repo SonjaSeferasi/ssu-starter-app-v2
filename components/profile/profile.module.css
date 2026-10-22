@@ -364,3 +364,6 @@
 .peopleTab { min-height: 36px; border: 0; border-radius: 9px; background: transparent; color: var(--muted); font: inherit; font-size: 14px; cursor: pointer; }
 .peopleTab[aria-selected='true'] { background: #fff; color: var(--ink); font-weight: 700; box-shadow: 0 1px 3px #173b2414; }
 .peopleTab:focus-visible { outline: 3px solid #28634e; outline-offset: 1px; }
+
+.highlightPhotos { display: grid; gap: 12px; margin-top: 16px; }
+.highlightPhotos img { display: block; width: 100%; max-height: 70vh; object-fit: contain; border-radius: 8px; }
