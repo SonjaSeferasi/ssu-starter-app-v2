@@ -12,7 +12,11 @@ The four-sheet test batch and the full 24-sheet collection are generated and imp
 
 Open Game Room and choose **Try the new avatar collection**. Existing saved avatars stay in the original collection until the user explicitly changes and saves their look. **Use original collection** switches back. The development-only preview is `/dev/game-room`; it never saves sample selections to an account.
 
-The local database regression test verifies saving, reloading, ownership checks and returning to the original collection. Hosted Supabase still needs `supabase/migrations/20261018020000_avatar_layers.sql` if it has not already been applied. Generating/importing art does not apply a database migration.
+The local database regression test verifies saving, reloading, ownership checks and returning to the original collection. The hosted SocialU database received `supabase/migrations/20261018020000_avatar_layers.sql` on 22 October 2026. A real service-role save/reload was verified inside a rolled-back transaction; all eight existing avatar records were preserved. Generating/importing art alone does not apply a database migration.
+
+The editor separates **Male** and **Female** presentation choices in both collections. The layered collection groups five male hairstyles separately from six female hairstyles and the hijab choices. These groups do not change account identity or add database fields; the existing saved head choice determines the selected group. Clothing choices are shared.
+
+Outfit layout uses consistent collar-to-hem and waistband-to-foot distances. Pants scale by leg height instead of waistband width, so a wide-leg cut cannot stretch the legs or overwhelm the top. The head, waistband and feet remain aligned while switching outfits, with measured neck/eye anchors retained. Review images above were regenerated with this correction. Game Room requests use the existing session refresh flow before loading or saving, and interrupted responses retain the unsaved draft.
 
 The Game Room avatar is moving from one painted picture that the code recolors to **separate painted layers that stack**. Every color, skin tone and head covering is painted by the image generator, so nothing is recolored in code and colors stay exact.
 
