@@ -72,7 +72,7 @@ These existing Blender asset-review renders show the modeled environments. They 
 
 The integrated avatar branch at fc049f0 (same application tree merged in eab5235) passed all 606 tests across 54 files and npm run build, including TypeScript checking and 41 page builds. The new asset checks cover all 144 transparent PNGs, 24 source-sheet imports and 1,224 supported avatar combinations. Three Python importer checks passed during implementation. Disposable PostgreSQL tests execute the real avatar schema/migration and check save/reload, legacy appearance retention, entitlement restrictions and private RPC access. API tests mock Supabase; geometry and composition tests are not live UI tests.
 
-Browser screenshot capture: Not Run — the available computer tool reported no browsers/apps. Hosted avatar-layer migration and live saving: Not Verified. Full level playthroughs: Not Run. Canvas submission and demo attendance: Not Performed.
+Initial running-game screenshot capture: Not Run because the initial browser connection was unavailable. A later connected browser captured the actual GitHub board screenshot below. Hosted saving and full playthroughs remain unverified; Canvas submission and demo attendance are not claimed.
 
 ## Requirements decisions still needed
 
