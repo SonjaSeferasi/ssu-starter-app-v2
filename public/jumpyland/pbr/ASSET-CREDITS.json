@@ -1,0 +1,32 @@
+{
+  "license": "CC0 1.0",
+  "source": "Poly Haven",
+  "licenseUrl": "https://polyhaven.com/license",
+  "assets": [
+    {
+      "url": "https://polyhaven.com/a/rock_moss_set_01",
+      "usage": "Scanned eroded stones around modeled terrain rims",
+      "id": "rock_moss_set_01"
+    },
+    {
+      "url": "https://polyhaven.com/a/aerial_grass_rock",
+      "usage": "Diffuse, OpenGL normal and roughness terrain maps, 1K",
+      "id": "aerial_grass_rock"
+    },
+    {
+      "url": "https://polyhaven.com/a/mossy_rock",
+      "usage": "Diffuse, OpenGL normal and roughness cliff maps, 1K",
+      "id": "mossy_rock"
+    },
+    {
+      "url": "https://polyhaven.com/a/mossy_sandstone",
+      "usage": "Warm sandstone cliffs and eroded sky islands, diffuse, normal and roughness, 1K",
+      "id": "mossy_sandstone"
+    },
+    {
+      "url": "https://polyhaven.com/a/japanese_cedar_bark",
+      "usage": "Forest trunks, roots and branches, diffuse, normal and roughness, 1K",
+      "id": "japanese_cedar_bark"
+    }
+  ]
+}

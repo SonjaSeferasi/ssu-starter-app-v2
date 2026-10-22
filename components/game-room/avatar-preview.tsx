@@ -1,17 +1,26 @@
 import type { AvatarAppearance, DefaultFace, Outfit } from '../../lib/game-room';
 import { sampleFaceStyles } from '../../lib/game-room';
 import styles from './avatar-preview.module.css';
+import type {CostumeStyle} from './costume-details';
 import { CustomAvatar } from './custom-avatar';
+import { LayeredAvatar } from './layered-avatar';
+import { hasLayeredLook, layoutAvatar } from '../../lib/avatar-layers';
+import { useAvatarManifest } from '../../lib/avatar-manifest';
 
 // Development samples use a transparent 3x3 sheet: outfits across, faces down.
 // Unknown catalog keys retain the generic placeholder until approved assets exist.
-export function AvatarPreview({ appearance, outfits, faces, small = false, portrait = false }: { appearance: AvatarAppearance | null; outfits: Outfit[]; faces: DefaultFace[]; small?: boolean; portrait?: boolean }) {
+export function AvatarPreview({ appearance, outfits, faces, small = false, portrait = false, costume }: { appearance: AvatarAppearance | null; outfits: Outfit[]; faces: DefaultFace[]; small?: boolean; portrait?: boolean; costume?:CostumeStyle }) {
+  const manifest = useAvatarManifest();
+  // Layered art (v2) is used once it is imported and this look has a piece for every layer.
+  if (!costume && manifest && hasLayeredLook(appearance) && layoutAvatar(manifest, appearance)) {
+    return <LayeredAvatar manifest={manifest} look={appearance} faceStyle={appearance.faceStyle} small={small} portrait={portrait} />;
+  }
   const outfit = outfits.find(item => item.id === appearance?.outfitId);
   const face = faces.find(item => item.id === appearance?.faceId);
   const outfitColumn = ['sample-campus', 'sample-study', 'sample-weekend'].indexOf(outfit?.assetKey || '');
   const faceStyle = sampleFaceStyles[face?.assetKey || ''];
   if (outfitColumn !== -1 && faceStyle) {
-    return <CustomAvatar appearance={appearance!} assetKey={face!.assetKey} outfit={outfit} column={outfitColumn} small={small} portrait={portrait} />;
+    return <CustomAvatar appearance={appearance!} assetKey={face!.assetKey} outfit={outfit} column={costume?0:outfitColumn} costume={costume} small={small} portrait={portrait} />;
   }
   const color = outfit?.assetKey === 'sample-study' ? '#9a7554' : outfit?.assetKey === 'sample-weekend' ? '#458674' : '#23394b';
   const curls = face?.assetKey === 'sample-curls';

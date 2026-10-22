@@ -9,7 +9,7 @@ await db.exec(`CREATE ROLE anon;CREATE ROLE authenticated;CREATE ROLE service_ro
 CREATE SCHEMA auth;CREATE TABLE auth.users(id uuid PRIMARY KEY,email text,email_confirmed_at timestamptz);CREATE TABLE auth.sessions(id uuid PRIMARY KEY,user_id uuid,created_at timestamptz);`);
 await db.exec(readFileSync(root+'/supabase/schema.sql','utf8'));
 try {
-for(const file of ['20261008000100_link_supabase_accounts.sql','20261008000200_feed_functions.sql','20261008000300_fix_deferred_post_trigger.sql','20261012230000_srs_100_105_auth.sql','20261013200000_srs_109_113_profile.sql','20261015180000_profile_social.sql','20261015190000_profile_full_name.sql','20261016000100_like_post.sql','20261016001000_optional_profile_bio.sql','20261016010000_friendships.sql','20261016020000_feed_profile_links.sql','20261016030000_edit_profile_username.sql','20261016040000_friend_accept_mutual_follow.sql','20261017000100_unlike_post.sql','20261018000100_post_comments.sql','20261018010000_integrate_profile_feed.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
+for(const file of ['20261008000100_link_supabase_accounts.sql','20261008000200_feed_functions.sql','20261008000300_fix_deferred_post_trigger.sql','20261012230000_srs_100_105_auth.sql','20261013200000_srs_109_113_profile.sql','20261015180000_profile_social.sql','20261015190000_profile_full_name.sql','20261016000100_like_post.sql','20261016001000_optional_profile_bio.sql','20261016010000_friendships.sql','20261016020000_feed_profile_links.sql','20261016030000_edit_profile_username.sql','20261016040000_friend_accept_mutual_follow.sql','20261017000100_unlike_post.sql','20261018000100_post_comments.sql','20261018010000_integrate_profile_feed.sql','20261022000000_friend_requests_notifications.sql','20261022010000_notification_read_state.sql','20261022020000_open_private_conversation.sql','20261022030000_profile_friends_list.sql','20261022040000_profile_friends_request_status.sql','20261022050000_integrate_notifications_with_main.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
 const uid=(n:number)=>`00000000-0000-0000-0000-00000000000${n}`;
 for (let n=1;n<=3;n++) {
  await db.query<any>('INSERT INTO auth.users VALUES($1,$2,now())',[uid(n),`s${n}@salemstate.edu`]);
@@ -34,6 +34,11 @@ assert.equal(integrated.like_count,1);assert.equal(integrated.is_liked_by_viewer
 
 assert.equal((await call(1,'friends')).length,0);
 let rel=await call(1,'send','student2'); assert.equal(rel.state,'sent');const firstId=rel.request_id;
+const notices=async(n:number)=>(await db.query<any>('SELECT public.socialu_notifications($1) AS n',[uid(n)])).rows[0].n;
+assert.equal((await notices(2)).unread,1);
+assert.equal((await notices(2)).notifications[0].kind,'friend_request');
+await db.query('SELECT public.socialu_mark_notifications_read($1)',[uid(2)]);
+assert.equal((await notices(2)).unread,0);
 assert.equal((await call(1,'send','student2')).request_id,firstId);
 assert.equal((await call(2,'send','student1')).state,'received');
 assert.equal((await call(2,'incoming')).length,1);
@@ -45,6 +50,7 @@ await assert.rejects(call(1,'accept','student2',firstId));
 await assert.rejects(call(3,'accept','student1',firstId));
 assert.equal((await call(2,'accept','student1',firstId)).state,'friends');
 assert.deepEqual(await follows(),[{follower:1,followed:2},{follower:2,followed:1}]);
+assert.equal((await notices(1)).notifications[0].kind,'friendship_accepted');
 await db.exec('DELETE FROM socialu.student_follows');
 await db.query('UPDATE socialu.friend_requests SET status=status WHERE request_id=$1',[firstId]);
 assert.deepEqual(await follows(),[]); // Unrelated updates must not undo a deliberate unfollow.

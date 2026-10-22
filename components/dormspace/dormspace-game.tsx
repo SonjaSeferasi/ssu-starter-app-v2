@@ -8,6 +8,10 @@ import { DormRoom } from './dorm-room';
 import { Guestbook } from './guestbook';
 import { dormApi } from './shared';
 import styles from './dormspace.module.css';
+import type { GameRoomData } from '../../lib/game-room';
+import { defaultPixelLook, pixelLookKey, resolveDormAvatar, type PixelAvatarLook } from '../../lib/dormspace-avatar';
+import { useDormLive } from './use-dorm-live';
+import { DormLiveChat } from './live-chat';
 
 type Hall = { me: { username: string }; friends: Friend[] };
 type View = { kind: 'hall'; floor: number; arriveAt: string | null } | { kind: 'room'; dorm: Dorm };
@@ -21,6 +25,40 @@ export function DormSpaceGame() {
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [avatar, setAvatar] = useState<PixelAvatarLook | null>(null);
+  const [avatarNotice, setAvatarNotice] = useState('');
+  const [avatarError, setAvatarError] = useState('');
+  const [avatarAttempt, setAvatarAttempt] = useState(0);
+  const live = useDormLive(hall && avatar ? view.kind === 'hall' ? { kind:'hall',floor:view.floor } : { kind:'room',owner:view.dorm.owner } : null,
+    room => setView(current => current.kind === 'room' && room.version > current.dorm.version
+      ? { kind:'room',dorm:{...current.dorm,...room} } : current),
+    message => { setNotice(message); if (view.kind === 'room' && !view.dorm.isOwner) void returnToHall(null,message); });
+
+  useEffect(() => {
+    const controller = new AbortController();
+    let loading = false;
+    async function loadAvatar() {
+      if (loading || document.visibilityState === 'hidden') return;
+      loading = true;
+      const result = await dormApi<GameRoomData>('/api/game-room', { signal: controller.signal });
+      loading = false;
+      if (controller.signal.aborted) return;
+      if (result.ok) {
+        const resolved = resolveDormAvatar(result.data);
+        setAvatar(previous => previous && pixelLookKey(previous) === pixelLookKey(resolved.look) ? previous : resolved.look);
+        setAvatarNotice(resolved.notice); setAvatarError('');
+      } else {
+        setAvatar(previous => previous ?? defaultPixelLook);
+        setAvatarError('Your saved avatar could not be loaded. Your last loaded look, or the default pixel avatar, is shown.');
+      }
+    }
+    void loadAvatar();
+    // Returning from a Game Room tab picks up newly saved clothing without a room reset.
+    const refresh = () => { void loadAvatar(); };
+    window.addEventListener('focus', refresh);
+    document.addEventListener('visibilitychange', refresh);
+    return () => { controller.abort(); window.removeEventListener('focus', refresh); document.removeEventListener('visibilitychange', refresh); };
+  }, [avatarAttempt]);
 
   const loadHall = useCallback(async () => {
     const result = await dormApi<Hall>('/api/dorm?view=hall');
@@ -97,22 +135,34 @@ export function DormSpaceGame() {
       </div>
     );
   }
-  if (!hall) return <p className={styles.status} role="status">Opening DormSpace…</p>;
+  if (!hall || !avatar) return <p className={styles.status} role="status">Opening DormSpace…</p>;
 
   return (
     <div className={styles.game}>
+      <div className={styles.toolbar}>
+        <Link className={styles.button} href="/game-room">Edit Game Room avatar</Link>
+        <Link className={styles.button} href="/game-room/dormspace/classic">Compare original</Link>
+        <Link className={styles.textLink} href="/game-room/dormspace/art-credits">Art credits</Link>
+        <span className={styles.hint}>Your saved Game Room look follows you into DormSpace.</span>
+      </div>
+      {avatarNotice ? <p className={styles.notice} role="status">{avatarNotice}</p> : null}
+      {avatarError ? <div className={styles.notice} role="status">{avatarError} <button type="button" className={styles.button} onClick={() => setAvatarAttempt(value => value + 1)}>Retry avatar</button></div> : null}
       {notice ? <p className={styles.notice} role="status">{notice}</p> : null}
       {error ? <p className={styles.error} role="alert">{error}</p> : null}
       {busy ? <p className={styles.status} role="status">Opening dorm…</p> : null}
 
       {view.kind === 'hall' ? (
         <DormHall
+          live={live} username={hall.me.username}
+          avatar={avatar}
           friends={hall.friends} floor={view.floor} arriveAt={view.arriveAt}
           onFloorChange={(floor) => setView({ kind: 'hall', floor, arriveAt: null })}
           onOpenDorm={(owner) => void openDorm(owner)}
         />
       ) : (
         <DormRoom
+          live={live} username={hall.me.username}
+          avatar={avatar}
           key={view.dorm.owner}
           dorm={view.dorm}
           onDormChange={(dorm) => setView({ kind: 'room', dorm })}
@@ -121,6 +171,9 @@ export function DormSpaceGame() {
           onOpenGuestbook={() => setGuestbookOpen(true)}
         />
       )}
+
+      <DormLiveChat key={view.kind==='hall'?`hall:${view.floor}`:`room:${view.dorm.owner}`} live={live}
+        location={view.kind==='hall'?`DormHall · Floor ${view.floor}`:`${view.dorm.owner}'s dorm`}/>
 
       {guestbookOpen && view.kind === 'room' ? (
         <Guestbook owner={view.dorm.owner} onClose={() => setGuestbookOpen(false)} onDenied={denied} />

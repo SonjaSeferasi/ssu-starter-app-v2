@@ -1,0 +1,25 @@
+{
+  "tool": "built-in image_gen",
+  "purpose": "Distant matte scenery and alpha-tested foliage cards; foreground gameplay remains Three.js meshes",
+  "prompts": [
+    [
+      "meadow",
+      "Use case: stylized-concept. Asset type: cinematic distant matte background for a playable Three.js side-scrolling platformer. Generate a landscape panorama, 16:9, high detail. Follow the attached Mario landscape's visual language: photoreal natural mossy pale limestone cliffs with lush shrubs, tall cascading waterfalls, dense evergreen groves, blue distant mountains and a small ivory castle with red roofs on the far right distant hillside. Bright blue summer sky and soft white cumulus. View across a broad deep valley, eye level, sunlight upper left. Rich natural rough stone, layered atmospheric depth. IMPORTANT only distant scenery, absolutely NO foreground terrain, no playable platforms, no floating islands, no characters, no mushrooms in foreground, no coins, no pipes, no text, no HUD, no frame. Lower third shows distant forest valley and waterfall mist, upper half mountains and sky. All terrain is far away, sufficiently subtle to sit behind actual 3D platforms."
+    ],
+    [
+      "dragon",
+      "Use case: stylized-concept. Asset type: cinematic distant matte background for a playable Three.js side-scrolling platformer. Generate a landscape panorama, 16:9, high detail. Match the attached Dragon Ball inspired landscape's visual language: a vast turquoise lake winding through tall ochre weathered rock mesas, sparse round blue alien tree canopies atop grassy shelves, numerous white waterfalls and mist. Huge pale cyan planet in the upper right sky, smaller pale moon, bright azure sky. Natural photoreal eroded stratified rock and cinematic atmospheric depth, sunny warm light upper left. Eye-level vista across a deep open canyon. IMPORTANT distant scenery ONLY, absolutely NO foreground platforms, no floating playable islands, no characters, no coins, no lanterns, no text, no HUD, no frame. Entire lower third is distant turquoise water and far crags, upper half big sky. Leave the middle visually calm for real 3D gameplay."
+    ],
+    [
+      "forest",
+      "Use case: stylized-concept. Asset type: cinematic distant matte background for a playable Three.js side-scrolling platformer. Generate a landscape panorama, 16:9, high detail. Follow the attached Naruto-inspired woodland landscape's visual language: dense ancient Japanese cedar forest, huge deeply furrowed trunks wrapped in ivy, layers of finely detailed green foliage and ferns, sunlight shafts through canopy, mist deep in the valley, little distant Japanese village with warm red tile roofs on the far right, pale rock mountain behind it. Cinematic photoreal natural forest, warm afternoon light from upper left, atmospheric depth. IMPORTANT distant scenery ONLY, NO foreground platforms, no floating platforms, no ropes across screen, no bridges across screen, no characters, no coins, no text, no HUD, no frame. All trunks in the midground or background. Bottom shows deep forest ravine, top dense canopy with small blue sky opening on right. Leave middle readable behind real 3D gameplay."
+    ]
+  ],
+  "foliagePrompt": "Photorealistic small oak and beech foliage cluster on thin twigs, natural sunlit green leaves, irregular silhouette and holes, transparent alpha cutout for 3D tree canopy cards.",
+  "assets": [
+    "meadow.webp",
+    "dragon.webp",
+    "forest.webp",
+    "foliage.webp"
+  ]
+}

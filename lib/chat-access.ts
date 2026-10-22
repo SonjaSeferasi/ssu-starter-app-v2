@@ -16,6 +16,7 @@ export async function chatOperation(fn: string, args: Record<string, string>) {
     if (!error.code && /fetch failed/i.test(error.message)) throw new AccountError('The server cannot reach Supabase. Check the server network connection and try again.', 503);
     if (error.code === 'SC404') throw new AccountError(CONVERSATION_NOT_AVAILABLE, 404);
     if (error.code === 'SC403') throw new AccountError('You cannot send messages in this conversation right now.', 403);
+    if (error.code === 'P0002') throw new AccountError('This profile is not available.', 404);
     if (error.code === '42501') throw new AccountError('A verified, active university account is required.', 403);
     if (error.code === '22023') throw new AccountError('Messages must contain 1 to 500 characters.', 400);
     throw new AccountError('Chat is unavailable. Check that the chat migration has been applied.', 503);

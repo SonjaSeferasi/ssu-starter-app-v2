@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import {
-  Bookmark, Check, Settings, Camera, GraduationCap, Grid3x3, Images, Lock, MessageCircle, SquareUser, UserCheck, UserPlus, UserRound, X,
+  Users, Bookmark, Check, Settings, Camera, GraduationCap, Grid3x3, Images, Lock, MessageCircle, SquareUser, UserCheck, UserPlus, UserRound, X,
 } from 'lucide-react';
 import type { StudentProfile } from '../../lib/profile';
 import type { FeedPost } from '../feed/types';
@@ -64,6 +64,55 @@ export function ProfileLogout() {
   return <button type="button" className={`${styles.button} ${styles.secondary}`} onClick={logout} disabled={loggingOut}>
     {loggingOut ? 'Logging out…' : 'Log out'}
   </button>;
+}
+
+type ProfileFriend = { username: string; name: string; photo_url: string | null; is_me: boolean; is_friend: boolean; friend_request: 'sent' | 'received' | null };
+
+// One person in a friends list, with your own friend status toward them (nothing when you are already friends).
+function FriendListRow({ friend, onClose }: { friend: ProfileFriend; onClose: () => void }) {
+  return <li className={styles.friendItem}>
+    <Link href={friend.is_me ? '/profile' : `/students/${encodeURIComponent(friend.username)}`} className={styles.friendRow} onClick={onClose}>
+      <Avatar url={friend.photo_url} name={friend.name} />
+      <span className={styles.friendName}>{friend.name}<small>@{friend.username}</small></span>
+    </Link>
+    {friend.is_me ? <span className={styles.friendTag}>You</span> : <FriendActions username={friend.username} />}
+  </li>;
+}
+
+// SRS-111.4, SRS-113.9: who this student is friends with.
+function FriendsList({ profile, onClose }: { profile: StudentProfile; onClose: () => void }) {
+  const [friends, setFriends] = useState<ProfileFriend[] | null>(null);
+  const [error, setError] = useState('');
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+  useEffect(() => {
+    let active = true;
+    profileFetch(profile.is_own ? '/api/profiles/friends' : `/api/profiles/friends?username=${encodeURIComponent(profile.username)}`)
+      .then(({ response, data }) => {
+        if (!active) return;
+        if (!response.ok) throw new Error(data.error || 'Unable to load friends.');
+        setFriends(data.friends);
+      })
+      .catch(reason => { if (active) setError(reason instanceof Error ? reason.message : 'Unable to load friends.'); });
+    return () => { active = false; };
+  }, [profile.is_own, profile.username]);
+
+  return <div className={styles.backdrop} onClick={onClose}>
+    <div className={styles.friendsDialog} role="dialog" aria-modal="true" aria-label={`${profile.name}'s friends`} onClick={event => event.stopPropagation()}>
+      <div className={styles.viewerAuthor}>
+        <span>{profile.is_own ? 'Your friends' : `${profile.name}'s friends`}</span>
+        <button type="button" className={styles.close} onClick={onClose} aria-label="Close friends list" autoFocus><X size={18} /></button>
+      </div>
+      {error ? <p className={`${styles.notice} ${styles.error}`} role="alert">{error}</p>
+        : !friends ? <div className={styles.skeleton} style={{ height: 120, marginTop: 16 }} aria-busy="true" />
+        : !friends.length ? <div className={styles.empty}><Users /><h2>No friends yet</h2>
+          <p>{profile.is_own ? 'Add classmates from their profiles and they will show up here.' : 'When they add friends, they will show up here.'}</p></div>
+        : <ul className={styles.friendsList}>{friends.map(friend => <FriendListRow key={friend.username} friend={friend} onClose={onClose} />)}</ul>}
+    </div>
+  </div>;
 }
 
 function ProfileActions({ profile, social, onFollow }: { profile: StudentProfile; social: SocialSummary | null; onFollow: (data: SocialSummary) => void }) {
@@ -175,6 +224,7 @@ function ProfileContent({ username }: { username?: string }) {
   const [missing, setMissing] = useState(false);
   // SRS-112.2: Posts is selected when a profile opens.
   const [category, setCategory] = useState<Category>('posts');
+  const [showFriends, setShowFriends] = useState(false);
   const [social, setSocial] = useState<SocialSummary | null>(null);
   const [socialError, setSocialError] = useState('');
   const [socialRetry, setSocialRetry] = useState(0);
@@ -234,7 +284,7 @@ function ProfileContent({ username }: { username?: string }) {
         </div>
         <ul className={styles.stats}>
           <li>{count(profile.post_count, 'post', 'posts')}</li>
-          {profile.is_own && <li><Link href="/friends">{count(profile.friend_count, 'friend', 'friends')}</Link></li>}
+          <li><button type="button" className={styles.statButton} onClick={() => setShowFriends(true)}>{count(profile.friend_count, 'friend', 'friends')}</button></li>
           <li><strong>{social ? social.follower_count.toLocaleString() : '—'}</strong> followers</li>
           <li><strong>{social ? social.following_count.toLocaleString() : '—'}</strong> following</li>
         </ul>
@@ -255,6 +305,7 @@ function ProfileContent({ username }: { username?: string }) {
       <Link href="/profile/edit" className={styles.button}>Complete profile</Link>
     </div>}
 
+    {showFriends && <FriendsList profile={profile} onClose={() => setShowFriends(false)} />}
     <div className={styles.tabsRow}>
       <div className={styles.tabs} role="tablist" aria-label="Profile content">
         {(['posts', ...(profile.is_own ? ['saved'] : []), 'tagged'] as Category[]).map(item => <button key={item} id={`tab-${item}`} aria-controls="profile-posts" type="button" role="tab" className={styles.tab} aria-selected={category === item} tabIndex={category === item ? 0 : -1}
