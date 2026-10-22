@@ -8,6 +8,18 @@ import {POST as deactivate} from '../../app/api/account/deactivate/route';
 const req=(body?:unknown,query='')=>new Request('http://localhost/api/friends'+query,{method:body?'POST':'GET',...(body?{body:JSON.stringify(body),headers:{'Content-Type':'application/json'}}:{})});
 beforeEach(()=>{vi.resetAllMocks();verified.mockResolvedValue({id:'verified-user',email:'me@salemstate.edu'});rpc.mockResolvedValue({state:'sent',request_id:'1'});shape.mockImplementation(async rows=>rows);signIn.mockResolvedValue({data:{user:{id:'verified-user'}},error:null});});
 describe('Friendship API boundaries',()=>{
+  it.each(['none','sent','received','friends','blocked'])('returns %s eligibility for the verified viewer',async state=>{
+    const relation={state,request_id:state==='none'||state==='blocked'?null:'123'};
+    rpc.mockResolvedValue(relation);
+    const response=await GET(req(undefined,'?view=relation&username=alex&auth_user_id=victim'));
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(relation);
+    expect(rpc).toHaveBeenCalledWith('socialu_friendships',{
+      p_auth_id:'verified-user',p_action:'relation',p_username:'alex',p_query:'',p_offset:0,
+    });
+    expect(shape).not.toHaveBeenCalled();
+  });
+
   it.each(['send','block','unblock','message'])('%s uses the authenticated identity',async action=>{
     expect((await POST(req({action,username:'alex',auth_user_id:'victim',student_id:99}))).status).toBe(200);
     expect(rpc).toHaveBeenCalledWith('socialu_friendships',{p_auth_id:'verified-user',p_action:action,p_username:'alex',p_request_id:null});
