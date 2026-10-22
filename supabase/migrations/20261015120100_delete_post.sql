@@ -6,37 +6,36 @@
 -- posts(post_id) ON DELETE CASCADE` in schema.sql, so a plain
 -- `DELETE FROM socialu.posts` cleans all of those up automatically --
 -- no manual cascade needed here. The one thing that does NOT cascade is
--- media_assets (post_photos.asset_id has no ON DELETE action), so this
--- function collects the post's photo asset ids before deleting, then --
--- same defensive "not referenced elsewhere" check as
--- socialu_remove_post_photo -- removes only the now-orphaned ones and
--- returns their storage_keys for the Next.js server to delete from Storage.
+-- media_assets (post_photos.asset_id has no ON DELETE action) -- as of
+-- 20261023000100_report_post.sql, a media_asset_cleanup trigger on
+-- post_photos deletes each now-unreferenced media_assets row automatically
+-- once this DELETE's cascade removes its last post_photos reference, so
+-- this function only needs to capture storage_keys BEFORE that cascade
+-- happens (reading them after, like it used to, would now race against
+-- the trigger and come back empty) and let the trigger handle the actual
+-- row cleanup.
 --
 -- Same SET CONSTRAINTS ALL IMMEDIATE gotcha as every other post
 -- insert/update/delete here: the deferred post_photo_content trigger on
 -- post_photos (cascaded by this DELETE) needs to be forced immediate.
 CREATE FUNCTION public.socialu_delete_post(p_auth_id UUID, p_post_id BIGINT) RETURNS JSONB
 LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$
-DECLARE me BIGINT; owner BIGINT; asset_ids BIGINT[]; freed_keys TEXT[];
+DECLARE me BIGINT; owner BIGINT; freed_keys TEXT[];
 BEGIN
   me := public.socialu_require_student(p_auth_id);
   SELECT author_id INTO owner FROM socialu.posts WHERE post_id = p_post_id;
   IF NOT FOUND THEN RAISE EXCEPTION 'Post not found.' USING ERRCODE = 'P0002'; END IF;
   IF owner <> me THEN RAISE EXCEPTION 'Only the post author can delete this post.' USING ERRCODE = '42501'; END IF;
 
-  SELECT array_agg(asset_id) INTO asset_ids FROM socialu.post_photos WHERE post_id = p_post_id;
+  -- An asset only counts as freed if no OTHER post's post_photos row also
+  -- uses it (this post's own rows are about to be removed regardless).
+  SELECT array_agg(ma.storage_key) INTO freed_keys
+    FROM socialu.post_photos pp JOIN socialu.media_assets ma ON ma.asset_id = pp.asset_id
+    WHERE pp.post_id = p_post_id
+      AND NOT EXISTS (SELECT 1 FROM socialu.post_photos pp2 WHERE pp2.asset_id = pp.asset_id AND pp2.post_id <> p_post_id);
 
   DELETE FROM socialu.posts WHERE post_id = p_post_id;
   SET CONSTRAINTS ALL IMMEDIATE;
-
-  IF asset_ids IS NOT NULL THEN
-    SELECT array_agg(storage_key) INTO freed_keys FROM socialu.media_assets ma
-      WHERE ma.asset_id = ANY(asset_ids)
-        AND NOT EXISTS (SELECT 1 FROM socialu.post_photos pp WHERE pp.asset_id = ma.asset_id);
-    DELETE FROM socialu.media_assets ma
-      WHERE ma.asset_id = ANY(asset_ids)
-        AND NOT EXISTS (SELECT 1 FROM socialu.post_photos pp WHERE pp.asset_id = ma.asset_id);
-  END IF;
 
   RETURN to_jsonb(coalesce(freed_keys, ARRAY[]::TEXT[]));
 END;
