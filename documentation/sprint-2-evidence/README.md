@@ -13,7 +13,7 @@ Prepared 22 October 2026. Owner: Sonja Seferasi (SS). This is an implementation 
 
 ## Prioritized avatar backlog
 
-Priority follows the workflow: entitled catalog choices, outfit preview, provided face preview, persistence restoration, gameplay reuse, then reopening customization. SRS-608.2 is the proposed single formal Sprint 2 demo item. This proposal does not silently select all supporting items as the formal submission.
+Priority follows the workflow: entitled catalog choices, outfit preview, provided face preview, persistence restoration, gameplay reuse, then reopening customization. These avatar issues are supporting work. Sonja clarified that Sprint 2 board organization must use the existing Jumpyland SRS cards already in the backlog; these avatar cards are not substituted for them.
 
 | Priority | Exact requirement | Issue | Current outcome |
 | --- | --- | --- | --- |
@@ -26,7 +26,7 @@ Priority follows the workflow: entitled catalog choices, outfit preview, provide
 
 These six issues preserve the exact shall statement, acceptance criterion and UR trace from the canonical SRS. Each includes code locations, explanation, merge link, picture, demo steps and acceptance gaps. They were created after implementation for traceability, not as evidence that implementation began on their creation date.
 
-## Proposed formal item: SRS-608.2
+## Supporting avatar preview tasks: SRS-608.2
 
 When a student selects an available outfit, the system shall display that complete outfit on the Game Room avatar. Acceptance: with the outfit selector open, choosing an outfit displays the selected complete outfit. Traces to UR-608.
 
@@ -81,10 +81,14 @@ Browser screenshot capture: Not Run — the available computer tool reported no 
 3. Current gameplay loses hearts and respawns at checkpoints; SRS-620.1 requires each fall/hazard to end an attempt. This is an explicit acceptance gap, not a completed requirement.
 4. Hosted use of new layered options requires supabase/migrations/20261018020000_avatar_layers.sql if not already applied. No hosted migration was executed by this audit.
 
-## Board and submission boundary
+## Board organization and current limitation
 
-[Team project](https://github.com/users/SonjaSeferasi/projects/2). Existing repository issue updates are published. New avatar issues are assigned to Sonja. However, project view access/mutations were rejected because the existing Git credential has repo, gist and workflow scopes but lacks read:project/project. The GitHub connector also lacks write permission; authenticated repository API access was used for the authorized PR/issue work. No board view, iteration or project status was changed.
+The existing five Jumpyland SRS parents (#376, #379, #382, #385 and #388) are the board scope Sonja identified. Their ten original tasks and development-plan issue #375 are retained. No duplicate Jumpyland cards were created. The six avatar issues above remain supporting work; no final formal demo selection is assumed.
 
-To finish board organization, authorize GitHub Projects access, add the six avatar cards to Sonja's Sprint 2 view, select #517 as the proposed formal item if appropriate, and retain its pending live-acceptance task. Leave teammate views and Sprint 1 cards intact. Capture the actual Sprint 2 board after organization.
+A separate [Sonja — Sprint 2 view](https://github.com/users/SonjaSeferasi/projects/2/views/15) was created through the signed-in browser, with Sonja's issues created from 15 October onward. Its saved name was observed after reloading. The current URL filter further shows just the five SRS parent cards; their actual tasks remain linked underneath. GitHub did not confirm persistence of that narrower filter (the Save control remained visible).
 
-Before submission: verify the required hosted schema, perform [the demo steps](demo.md), attach the actual UI screenshot to #517 and its live task, and close/move the parent only once the team's Definition of Done is satisfied. Submit links and attend the demo personally. Current evidence does not reconstruct earlier status history or guarantee a grade.
+![Actual board screenshot](sonja-sprint-2-board.jpg)
+
+This is a real screenshot of the GitHub board, not a design mockup or gameplay image. It records the five existing SRS cards. GitHub intermittently displayed "This project failed to load" and reverted attempted moves to In review. Status changes were not confirmed; no card is claimed Done from this audit. The Git credential's missing Projects scopes also prevents an API fallback. Fresh browser access was subsequently established through the in-app browser; the earlier browser-unavailable note describes the initial validation attempt only.
+
+Before submission: resolve the project save/connection issue, finish exact signed-in acceptance checks and attach running-app screenshots to the existing SRS cards, then update statuses in accordance with the team's Definition of Done. Reconcile the 2D/3D and finite-life requirements gaps before accepting those requirements. Canvas submission and actual demo attendance remain student actions. No teammate view or Sprint 1 card was changed.
