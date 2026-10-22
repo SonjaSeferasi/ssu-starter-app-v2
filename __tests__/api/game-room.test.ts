@@ -77,6 +77,20 @@ describe('Independent avatar customization', () => {
     expect((await GET(req('GET'))).status).toBe(200);
     expect(rpc).toHaveBeenCalledWith('socialu_game_room', { p_action: 'read', p_auth_id: user.id });
   });
+  it('saves the layered look (skin tone, hijab, top and pants) with the other details', async () => {
+    const layered = { skinTone: 'tone-6', headStyle: 'hijab-sage', topStyle: 'cardigan', topColor: 'cream', bottomStyle: 'wide-leg', bottomColor: 'dark-denim' };
+    expect((await PUT(req('PUT', { ...selection, ...layered }))).status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_avatar_customization', { p_auth_id: user.id, p_appearance: { ...selection, ...layered } });
+  });
+  it('fills the required details when only layered fields change', async () => {
+    expect((await PUT(req('PUT', { outfitId: '1', faceId: '2', skinTone: 'tone-2' }))).status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_avatar_customization', { p_auth_id: user.id,
+      p_appearance: { outfitId: '1', faceId: '2', faceStyle: 'natural', shirtColor: 'navy', pantsColor: 'denim', skinTone: 'tone-2' } });
+  });
+  it.each([{ skinTone: 'tone-7' }, { headStyle: 'hat' }, { topColor: 3 }])('rejects unknown layered option %j', async layered => {
+    expect((await PUT(req('PUT', { ...selection, ...layered }))).status).toBe(400);
+    expect(rpc).not.toHaveBeenCalled();
+  });
   it('never claims a customized avatar is saved without its database migration', async () => {
     rpc.mockImplementation(async (name: string) => name === 'socialu_avatar_customization' ? { data: null, error: { code: 'PGRST202' } }
       : name === 'socialu_session_guard' ? { data: true, error: null } : { data: { id: '42' }, error: null });

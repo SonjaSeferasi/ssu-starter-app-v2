@@ -1,10 +1,12 @@
-// Runtime cutout animation: every frame comes from the saved AvatarPreview image.
-// No replacement face, outfit, or skin palette is introduced by the game.
+// Runtime cutout animation uses the same AvatarPreview layers as Game Room.
+// Optional run-only costume accents are applied before capture; the original
+// face, hairstyle and skin artwork remain part of every animation frame.
 export const AVATAR_FRAME_WIDTH = 256;
 export const AVATAR_FRAME_HEIGHT = 384;
 export const RUN_FRAMES = 8;
 export const JUMP_FRAME = 9;
 export const FALL_FRAME = 10;
+export const CROUCH_FRAME = 11;
 
 export async function animateAvatar(source: string): Promise<string> {
   const image = new Image(); image.src = source; await image.decode();
@@ -23,7 +25,7 @@ export async function animateAvatar(source: string): Promise<string> {
   const width = (right - left + 1) * scale, height = (bottom - top + 1) * scale;
   ctx.clearRect(0, 0, 256, 384);
   ctx.drawImage(image, left, top, right - left + 1, bottom - top + 1, 128 - width / 2, 370 - height, width, height);
-  const sheet = document.createElement('canvas'); sheet.width = 256 * 11; sheet.height = 384;
+  const sheet = document.createElement('canvas'); sheet.width = 256 * 12; sheet.height = 384;
   const out = sheet.getContext('2d'); if (!out) throw new Error('Character animation is unavailable.');
   const hip = 224, knee = 296;
   // Split at the trouser gap. The saved artwork's transparent pixels keep the
@@ -37,9 +39,10 @@ export async function animateAvatar(source: string): Promise<string> {
     out.drawImage(base, start, knee, 128, 384 - knee, start, knee, 128, 384 - knee);
     out.restore();
   };
-  for (let frame = 0; frame < 11; frame++) {
+  for (let frame = 0; frame < 12; frame++) {
     out.save(); out.translate(frame * 256, 0);
     if (!frame) out.drawImage(base, 0, 0);
+    else if(frame===CROUCH_FRAME)out.drawImage(base,0,0,256,384,0,92,256,292);
     else {
       const run = frame <= RUN_FRAMES;
       const phase = ((frame - 1) / RUN_FRAMES) * Math.PI * 2;

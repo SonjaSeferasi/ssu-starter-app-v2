@@ -1,0 +1,5 @@
+﻿{
+  "tool": "Built-in image_gen; approved local cutout",
+  "prompt": "Three production game environment props, equally spaced in exact three square cells in a horizontal row, all isolated on PURE WHITE background. No ground shadows, no scenery, no text. Realistic sculpted cinematic 3D fantasy platformer materials, rich tactile highlights, not flat cartoon or vector. Left cell: giant red mushroom spring platform, creamy thick stem, wide glossy but weathered red cap with ivory spots, tiny moss at its foot, front side view, flat-ish playable top. Middle cell: open emerald-green metal warp pipe, thick cylindrical barrel, circular hollow dark opening at its top, broad beveled rim, worn metal highlights, front side view. Right cell: a wide horizontal rectangular block of four warm orange-brown weathered bricks, two rows with mortar cracks, rounded chips and little moss on top, top surface seen slightly, fits entirely in square cell. Transparent cutout-style object composition, generous margins, no touching between props. Same physical shading and photographic material quality as a detailed mossy cliff island.",
+  "asset": "interaction-props-v1.png"
+}

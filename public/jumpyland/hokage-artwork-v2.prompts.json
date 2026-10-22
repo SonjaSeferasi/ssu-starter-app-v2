@@ -1,0 +1,13 @@
+{
+  "generator": "Built-in image_gen edit",
+  "world3": {
+    "source": "world-3-v1.png",
+    "output": "world-3-v2.png",
+    "prompt": "Edit this panoramic game background while preserving its complete composition, dimensions and all four regions: the Konoha village on the left, central forest, sandy village, and cloudy mountain settlement on the right. Change ONLY the carved portraits in the rocky mountain above the LEFT village. Improve them into five distinct, believable Hokage Rock stone relief portraits, with different hair and headgear silhouettes: a long-haired leader, a spiky-haired leader with a forehead protector, an older leader in a tall traditional hat, a swept-spiky-haired younger leader, and a long-haired woman with a small forehead mark. They must look carved into natural weathered sandstone, never like living people pasted on the mountain. Use sculptural facial depth, chipped edges, eroded cracks, soft upper-left sunlight and deep natural crevice shadows. Keep the scale and mountain placement unchanged so the scenic layout remains the same. Preserve all trees, buildings, waterfalls, sky, palette and lighting outside that carved monument. No UI, text, labels, additional characters or watermarks. This is a realistic 2.5D fantasy game environment asset."
+  },
+  "map": {
+    "source": "world-map-v1.png",
+    "output": "world-map-v2.png",
+    "prompt": "Edit this realistic fantasy game world-map background. Preserve the complete three-region composition, every path, castle, island, waterfall, mushroom, pipe, village, tree, bridge, sky and planet. Change ONLY the rock-carved faces on the mountain in the UPPER RIGHT above the ninja village. Make FIVE distinct, convincing Hokage monument relief portraits carved into weathered sandstone: a long-haired leader, a spiky-haired leader with forehead protector, an older leader wearing a tall traditional hat, a younger leader with swept spiky hair, and a long-haired woman with a small forehead mark. Sculpt realistic stone facial structure, deep natural relief shadows, chipped edges, weathered crevices and hair carved as stone. They must be part of the mountain rather than living people or pasted portraits. Match existing sunlight, depth, scale and perspective. Keep everything outside that monument unchanged. No labels, text, UI, characters elsewhere or watermarks."
+  }
+}

@@ -83,8 +83,10 @@
   .searchBox { display: none; }
   .pointsBadge { padding: 8px 10px; font-size: 12px; }
   .navigation { padding: 18px 6px; }
-  .destination { flex-direction: column; gap: 7px; min-height: 76px; padding: 10px 4px; font-size: 12px; text-align: center; overflow-wrap: anywhere; }
-  .sidebarNote { display: none; }
+  .destination { flex-direction: column; gap: 6px; min-height: 76px; padding: 10px 4px; font-size: 12px; line-height: 1.25; text-align: center; white-space: normal; }
+  /* The narrow rail stacks icon, label and tag; keep the tag small and centred so it is not clipped. */
+  .soonTag { margin: 0; padding: 1px 6px; font-size: 9px; }
+  .sidebarCard, .sidebarNote { display: none; }
   .page { padding: 24px 16px; }
   .description { font-size: 15px; }
   .title { letter-spacing: -.7px; }
@@ -113,4 +115,12 @@
   .shell[data-profile='true'] .preferencePanel { position: fixed; top: 120px; bottom: auto; left: auto; right: 16px; }
   .shell[data-profile='true'] .header { position: static; min-height: 56px; padding: 8px 16px; }
   .shell[data-profile='true'] .brand { font-size: 25px; }
+}
+
+/* Very small phones: a slimmer rail leaves more room for page content. */
+@media (max-width: 420px) {
+  .shell { --sidebar-width: 84px; }
+  .destination { font-size: 11px; padding: 8px 2px; min-height: 70px; }
+  .preferenceToggle { font-size: 10px; }
+  .page { padding: 20px 12px; }
 }
