@@ -10,11 +10,11 @@ import styles from './preparation.module.css';
 
 export function Preparation({room,level,initial,onClose,onPlay}:{room:GameRoomData;level:number;initial:RunLoadout;onClose:()=>void;onPlay:(selection:RunLoadout)=>void}){
  const dialog=useRef<HTMLDialogElement>(null);
- const [selection,setSelection]=useState<RunLoadout>({...initial,costume:runCostume(initial,level)?.id||null});
+ const [selection,setSelection]=useState<RunLoadout>({...initial,costume:room.appearance?.avatarId?null:runCostume(initial,level)?.id||null});
  const [tab,setTab]=useState<'outfits'|'powers'|'protection'>('outfits');
  const costume=runCostume(selection,level);
  const face=room.faces.find(f=>f.id===room.appearance?.faceId);
- const illustrated=!!face&&!!sampleFaceStyles[face.assetKey];
+ const illustrated=!room.appearance?.avatarId&&!!face&&!!sampleFaceStyles[face.assetKey];
  useEffect(()=>{const el=dialog.current;el?.showModal();return()=>{if(el?.open)el.close();};},[]);
  return <dialog ref={dialog} className={styles.window} aria-labelledby="prepare-title" onCancel={e=>{e.preventDefault();onClose();}}>
   <header className={styles.header}><div><span>YOUR ADVENTURE, YOUR STYLE</span><h2 id="prepare-title">Prepare for adventure</h2><p>{courses[level-1].name}</p></div><button autoFocus className={styles.close} aria-label="Close preparation window" onClick={onClose}>×</button></header>
@@ -30,7 +30,7 @@ export function Preparation({room,level,initial,onClose,onPlay}:{room:GameRoomDa
     {tab==='outfits'?<><h3>Dress for this world</h3><p className={styles.description}>Try a themed costume, or keep your Game Room look. This does not change your saved avatar.</p><div className={styles.costumes}>
       <button aria-pressed={!selection.costume} onClick={()=>setSelection(s=>({...s,costume:null}))}><span aria-hidden="true"><AvatarPreview appearance={room.appearance} outfits={room.outfits} faces={room.faces}/></span><strong>Current avatar</strong></button>
       {costumes.filter(c=>c.world===level).map(c=><button key={c.id} disabled={!illustrated} aria-pressed={selection.costume===c.id} onClick={()=>setSelection(s=>({...s,costume:c.id}))}><span aria-hidden="true"><AvatarPreview appearance={room.appearance} outfits={room.outfits} faces={room.faces} costume={c}/></span><strong>{c.name}</strong><small>Themed outfit</small></button>)}
-     </div>{!illustrated&&<p>Choose an illustrated face in Game Room to try these costumes.</p>}</>
+     </div>{!illustrated&&<p>{room.appearance?.avatarId?'Your complete avatar keeps its coordinated outfit for this adventure.':'Choose an illustrated face in Game Room to try these costumes.'}</p>}</>
     :tab==='powers'?<><h3>Choose one starting power</h3><p className={styles.description}>Optional boosts begin when the level starts. You can still collect powers on the course.</p><div className={styles.powerCards}>
       {[{id:null,name:'No starting power',icon:'○',description:'Start normally and discover powers along the way.'},{id:'doubleJump' as const,name:'Sky jump',icon:'↑↑',description:'For 20 seconds, tap Jump again in the air for a second leap.'},{id:'rapid' as const,name:'Rapid fire',icon:'✦',description:'For 20 seconds, your X attack recharges much faster.'}].map(p=><button key={p.name} aria-pressed={selection.power===p.id} onClick={()=>setSelection(s=>({...s,power:p.id}))}><b aria-hidden="true">{p.icon}</b><span><strong>{p.name}</strong><small>{p.description}</small></span></button>)}
      </div></>

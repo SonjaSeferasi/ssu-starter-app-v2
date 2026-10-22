@@ -6,11 +6,15 @@ import { CustomAvatar } from './custom-avatar';
 import { LayeredAvatar } from './layered-avatar';
 import { hasLayeredLook, layoutAvatar } from '../../lib/avatar-layers';
 import { useAvatarManifest } from '../../lib/avatar-manifest';
+import { completeAvatar } from '../../lib/avatar-collection';
+import { CompleteAvatar } from './complete-avatar';
 
 // Development samples use a transparent 3x3 sheet: outfits across, faces down.
 // Unknown catalog keys retain the generic placeholder until approved assets exist.
 export function AvatarPreview({ appearance, outfits, faces, small = false, portrait = false, costume }: { appearance: AvatarAppearance | null; outfits: Outfit[]; faces: DefaultFace[]; small?: boolean; portrait?: boolean; costume?:CostumeStyle }) {
   const manifest = useAvatarManifest();
+  const complete = completeAvatar(appearance?.avatarId);
+  if (complete) return <CompleteAvatar avatar={complete} small={small} />;
   // Layered art (v2) is used once it is imported and this look has a piece for every layer.
   if (!costume && manifest && hasLayeredLook(appearance) && layoutAvatar(manifest, appearance)) {
     return <LayeredAvatar manifest={manifest} look={appearance} faceStyle={appearance.faceStyle} small={small} portrait={portrait} />;
