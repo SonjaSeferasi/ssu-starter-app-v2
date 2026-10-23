@@ -1,0 +1,200 @@
+{
+  "female-1.png": {
+    "width": 1086,
+    "height": 1448,
+    "columns": [
+      0,
+      362,
+      724,
+      1086
+    ],
+    "row": 724
+  },
+  "female-2.png": {
+    "width": 1086,
+    "height": 1448,
+    "columns": [
+      0,
+      362,
+      724,
+      1086
+    ],
+    "row": 727
+  },
+  "female-3.png": {
+    "width": 1086,
+    "height": 1448,
+    "columns": [
+      0,
+      362,
+      724,
+      1086
+    ],
+    "row": 728
+  },
+  "female-4.png": {
+    "width": 1087,
+    "height": 1447,
+    "columns": [
+      0,
+      362,
+      725,
+      1087
+    ],
+    "row": 723
+  },
+  "female-5.png": {
+    "width": 1087,
+    "height": 1447,
+    "columns": [
+      0,
+      367,
+      725,
+      1087
+    ],
+    "row": 723
+  },
+  "female-6.png": {
+    "width": 1086,
+    "height": 1448,
+    "columns": [
+      0,
+      362,
+      724,
+      1086
+    ],
+    "row": 724
+  },
+  "hijab-1.png": {
+    "width": 1086,
+    "height": 1448,
+    "columns": [
+      0,
+      372,
+      724,
+      1086
+    ],
+    "row": 724
+  },
+  "hijab-2.png": {
+    "width": 1087,
+    "height": 1447,
+    "columns": [
+      0,
+      384,
+      719,
+      1087
+    ],
+    "row": 734
+  },
+  "hijab-3.png": {
+    "width": 1086,
+    "height": 1448,
+    "columns": [
+      0,
+      367,
+      724,
+      1086
+    ],
+    "row": 738
+  },
+  "hijab-4.png": {
+    "width": 1086,
+    "height": 1448,
+    "columns": [
+      0,
+      362,
+      724,
+      1086
+    ],
+    "row": 724
+  },
+  "hijab-5.png": {
+    "width": 1086,
+    "height": 1448,
+    "columns": [
+      0,
+      362,
+      724,
+      1086
+    ],
+    "row": 724
+  },
+  "hijab-6.png": {
+    "width": 1086,
+    "height": 1448,
+    "columns": [
+      0,
+      362,
+      724,
+      1086
+    ],
+    "row": 724
+  },
+  "male-1.png": {
+    "width": 1086,
+    "height": 1448,
+    "columns": [
+      0,
+      368,
+      723,
+      1086
+    ],
+    "row": 724
+  },
+  "male-2.png": {
+    "width": 1086,
+    "height": 1448,
+    "columns": [
+      0,
+      362,
+      724,
+      1086
+    ],
+    "row": 724
+  },
+  "male-3.png": {
+    "width": 1086,
+    "height": 1448,
+    "columns": [
+      0,
+      372,
+      716,
+      1086
+    ],
+    "row": 719
+  },
+  "male-4.png": {
+    "width": 1087,
+    "height": 1447,
+    "columns": [
+      0,
+      374,
+      709,
+      1087
+    ],
+    "row": 725
+  },
+  "male-5.png": {
+    "width": 1086,
+    "height": 1448,
+    "columns": [
+      0,
+      362,
+      724,
+      1086
+    ],
+    "row": 724
+  },
+  "male-6.png": {
+    "width": 1086,
+    "height": 1448,
+    "columns": [
+      0,
+      364,
+      724,
+      1086
+    ],
+    "row": 726
+  }
+}

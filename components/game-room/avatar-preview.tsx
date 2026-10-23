@@ -14,7 +14,7 @@ import { CompleteAvatar } from './complete-avatar';
 export function AvatarPreview({ appearance, outfits, faces, small = false, portrait = false, costume }: { appearance: AvatarAppearance | null; outfits: Outfit[]; faces: DefaultFace[]; small?: boolean; portrait?: boolean; costume?:CostumeStyle }) {
   const manifest = useAvatarManifest();
   const complete = completeAvatar(appearance?.avatarId);
-  if (complete) return <CompleteAvatar avatar={complete} small={small} />;
+  if (complete) return <CompleteAvatar avatar={complete} small={small} portrait={portrait} />;
   // Layered art (v2) is used once it is imported and this look has a piece for every layer.
   if (!costume && manifest && hasLayeredLook(appearance) && layoutAvatar(manifest, appearance)) {
     return <LayeredAvatar manifest={manifest} look={appearance} faceStyle={appearance.faceStyle} small={small} portrait={portrait} />;
