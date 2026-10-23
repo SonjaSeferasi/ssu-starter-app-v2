@@ -6,6 +6,6 @@ Artwork lives in `public/avatars/v3/`. The picker and previews use `lib/avatar-c
 
 Hosted rollout: applied on October 22, 2026. A transaction verified that all 10 existing avatar records were unchanged. A service-role save/readback of a complete avatar succeeded and was rolled back; no student's selected look was permanently altered. Browser preview checks cover all three groups and complete figure selection. Signed-in UI saving has not been exercised.
 
-The new collection has no individual head, shirt or trouser controls. Jumpyland uses the same complete preview; themed costume replacement is disabled for these coordinated looks. Original collection avatars retain their existing controls and costumes.
+The original v3 collection selected whole looks. The expanded [Hair, Face and Outfit editor](../complete-variants/README.md) now provides independent choices backed by complete figure variants. Jumpyland uses the same complete preview; themed costume replacement is disabled for these coordinated looks. Original collection avatars retain their existing controls and costumes.
 
 Generated with the built-in image-generation tool. The three source prompts are recorded in `prompts.json`. Generated PNGs retain their original alpha and dimensions; SVG viewports select one complete figure without rewriting image pixels.

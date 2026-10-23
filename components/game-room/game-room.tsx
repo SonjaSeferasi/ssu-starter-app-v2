@@ -10,7 +10,7 @@ import { useNavigationSession } from '../navigation/social-shell';
 import { SessionNotice } from '../navigation/section-page';
 import { AvatarPreview } from './avatar-preview';
 import { avatarStyleGroup, hasLayeredLook, layeredKeys } from '../../lib/avatar-layers';
-import { completeAvatar, completeAvatars, avatarGroups, type AvatarGroup } from '../../lib/avatar-collection';
+import { completeAvatar, customizableAvatars, avatarGroups, avatarParts, avatarVariant, collectionHair, collectionFaces, type AvatarGroup } from '../../lib/avatar-collection';
 import { CompleteAvatar } from './complete-avatar';
 import { ActivityArt } from './activity-art';
 import styles from './game-room.module.css';
@@ -44,6 +44,7 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
   const selectedAvatar = completeAvatar(appearance?.avatarId);
   const completeMode = collectionOpen || !!selectedAvatar || hasLayeredLook(appearance);
   const visibleGroup = collectionGroup || selectedAvatar?.group || 'male';
+  const parts = selectedAvatar ? avatarParts(selectedAvatar) : { outfit: 1, hair: 0, detail: 'natural' as const };
 
   useEffect(() => {
     if (preview) return;
@@ -107,7 +108,7 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
   }
   function tryNewCollection() {
     setCollectionOpen(true); setCollectionGroup(null);
-    chooseCompleteAvatar(completeAvatars[0].id);
+    chooseCompleteAvatar(customizableAvatars[0].id);
   }
   function useOriginalCollection() {
     if (!appearance || saving) return;
@@ -146,14 +147,26 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
               {completeMode ? 'Use original collection' : 'Try complete avatars'}
             </button>
             {completeMode ? <>
-              <p className={styles.collectionIntro}>18 complete looks. Each figure has a coordinated outfit and consistent proportions.</p>
+              <p className={styles.collectionIntro}>Choose your hair, face and outfit. Each combination is a complete figure.</p>
               <div className={styles.collectionTabs} role="group" aria-label="Complete avatar collection">
                 {avatarGroups.map(group => <button key={group} aria-pressed={visibleGroup === group} disabled={saving} onClick={() => setCollectionGroup(group)}>{group === 'male' ? 'Male' : group === 'female' ? 'Female' : 'Hijab'}</button>)}
               </div>
-              <section aria-label="Choose a complete avatar" className={styles.completeOptions}>
-                {completeAvatars.filter(avatar => avatar.group === visibleGroup).map(avatar => <button key={avatar.id} aria-label={avatar.name + ': ' + avatar.description} aria-pressed={selectedAvatar?.id === avatar.id} disabled={saving} className={styles.completeOption} onClick={() => chooseCompleteAvatar(avatar.id)}>
-                  <CompleteAvatar avatar={avatar} small /><span>{avatar.name}</span>
-                </button>)}
+              <div className={styles.tabs} role="group" aria-label="Customize">
+                {(['hair','face','outfit'] as const).map(tab => <button key={tab} aria-pressed={editor === tab} disabled={saving} onClick={() => setEditor(tab)}>{tab === 'hair' ? 'Hair' : tab === 'face' ? 'Face' : 'Outfit'}</button>)}
+              </div>
+              <section aria-label={editor === 'hair' ? (visibleGroup === 'hijab' ? 'Choose a hijab' : 'Choose a hairstyle') : editor === 'face' ? 'Choose face details' : 'Choose an outfit'} className={styles.completeOptions}>
+                {editor === 'hair' && collectionHair[visibleGroup].map((name, hair) => {
+                  const choice = avatarVariant(visibleGroup, parts.outfit, hair, parts.detail);
+                  return <button key={name} aria-label={name} aria-pressed={selectedAvatar?.group === visibleGroup && parts.hair === hair} disabled={saving} className={styles.completeOption} onClick={() => chooseCompleteAvatar(choice.id)}><CompleteAvatar avatar={choice} small portrait /><span>{name}</span></button>;
+                })}
+                {editor === 'face' && collectionFaces.map(face => {
+                  const choice = avatarVariant(visibleGroup, parts.outfit, parts.hair, face.id);
+                  return <button key={face.id} aria-label={face.name} aria-pressed={selectedAvatar?.group === visibleGroup && parts.detail === face.id} disabled={saving} className={styles.completeOption} onClick={() => chooseCompleteAvatar(choice.id)}><CompleteAvatar avatar={choice} small portrait /><span>{face.name}</span></button>;
+                })}
+                {editor === 'outfit' && Array.from({ length: 6 }, (_, index) => {
+                  const choice = avatarVariant(visibleGroup, index + 1, parts.hair, parts.detail);
+                  return <button key={choice.id} aria-label={choice.name} aria-pressed={selectedAvatar?.group === visibleGroup && parts.outfit === index + 1} disabled={saving} className={styles.completeOption} onClick={() => chooseCompleteAvatar(choice.id)}><CompleteAvatar avatar={choice} small /><span>{choice.name}</span></button>;
+                })}
               </section>
               <p className={styles.footnote}>{selectedAvatar ? selectedAvatar.description + '.' : 'Your saved look stays here until you choose a complete avatar.'}</p>
             </> : <>
