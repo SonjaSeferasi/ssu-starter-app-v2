@@ -6,7 +6,8 @@ import {freshLife,loseHeart} from './attempt-life';
 import {characterRig} from './character-rig';
 import {rockDetail} from './rock-detail';
 import {biomeDetails} from './biome-details';
-import {clayMaterial,mushroomCrownHeight,createStage,environment,terrainMaterials,island,deck,tree,bridge,mushroom,pipe,castle,mesh,box,cylinder,link,material,disposeStage} from './scene-3d';
+import {clayMaterial,mushroomCrownHeight,createStage,terrainMaterials,island,deck,tree,bridge,mushroom,pipe,castle,mesh,box,cylinder,link,material,disposeStage} from './scene-3d';
+import {worldScenery} from './world-scenery';
 import {type Course,type Platform,GRAVITY,JUMP_SPEED,horizontalVelocity,regionAt} from './levels';
 import {surfaceY} from './terrain';
 import {landingHeight,landingBottom,safeRespawn} from './landing-geometry';
@@ -14,26 +15,29 @@ import {emptyLoadout,type RunLoadout} from './wardrobe';
 import {freshPowers,collectPower,canCollectPower,takeHit,activeTechnique,powerNames,type PowerKind} from './powers';
 import {weaponFor} from './combat';
 import type {GameSound} from './audio';
+import type {AvatarAppearance} from '../../lib/game-room';
 export type WorldState={hearts:number;region:string;cooldown:number;defeated:number;shield:boolean;skyJump:number;rapid:number;nimbus:number;saiyan:number;special:string;specialSeconds:number;notice:string;guarding:boolean;guardCooldown:number;blockedShots:number};
 
 export type GameController={pause:()=>void;resume:()=>void;destroy:()=>void};
 type Landing={base:Platform;at:Platform;object:T.Group;dx:number;dy:number};
 const top=landingHeight;
-export function mountGame(parent:HTMLElement,course:Course,avatar:string,input:InputState,onCoins:(count:number)=>void,onEnd:(cause:'fall'|'hazard'|'enemy'|'complete',coins:number)=>void,onPause:()=>void,onReady:(controller:GameController)=>void,onProgress:(percent:number)=>void,onWorld:(state:WorldState)=>void,loadout:RunLoadout=emptyLoadout,onSound:(sound:GameSound)=>void=()=>{}){
+export function mountGame(parent:HTMLElement,course:Course,avatar:string,input:InputState,onCoins:(count:number)=>void,onEnd:(cause:'fall'|'hazard'|'enemy'|'complete',coins:number)=>void,onPause:()=>void,onReady:(controller:GameController)=>void,onProgress:(percent:number)=>void,onWorld:(state:WorldState)=>void,loadout:RunLoadout=emptyLoadout,onSound:(sound:GameSound)=>void=()=>{},startX=90,appearance:AvatarAppearance|null=null){
  const {scene,renderer,sun}=createStage(),world=course.number;parent.appendChild(renderer.domElement);const canvas=renderer.domElement;canvas.tabIndex=0;canvas.setAttribute('aria-label','3D game. Left and right move, Up or Space jumps, Down crouches, climbs or enters pipes. X uses power. C or Shift defends against shots.');canvas.style.cssText='display:block;width:100%;height:100%;outline:none';
- const camera=new T.PerspectiveCamera(43,1,.1,210),env=environment(scene,world,course.width/100),mats=terrainMaterials(world),land:T.Group=new T.Group();scene.add(land);
+ const camera=new T.PerspectiveCamera(43,1,.1,210),env=worldScenery(scene,course),mats=terrainMaterials(world),land:T.Group=new T.Group();scene.add(land);
  const hanging:{rope:T.Mesh;anchor:T.Vector3;landing:Platform;offset:number}[]=[];
  const platforms:Landing[]=[...course.platforms,...course.ledges].map((p,i)=>{let object:T.Group;if(p.kind==='deck'||p.kind==='bamboo'||p.kind==='bridge'){object=deck(land,p,p.kind==='bamboo');if(p.kind==='bridge'){object.clear();bridge(object,0,p.width/100,-p.y/100);}
   if(p.kind==='deck'){
-   tree(land,(p.x+p.width/2)/100,-16,-5.5,17.5-p.y/100);
+   // One ancient trunk anchors the entrance; the scenery forest supports the
+   // remaining decks without planting a screen-filling tree at every ledge.
+   if(p===course.platforms.find(platform=>platform.kind==='deck'))tree(land,p.x/100-1,-16,-6.5,30-p.y/100);
    for(const zz of [-.95,.95])for(const sign of [-1,1])link(object,new T.Vector3(p.width/200,-p.y/100-1.2,zz),new T.Vector3(p.width/200+sign*Math.min(1,p.width/230),-p.y/100-.22,zz),.095,'#8c714d');
   }
-  if(p.motion==='swing'){for(const x of [p.x+30,p.x+p.width-30]){const anchor=new T.Vector3(x/100,-p.y/100+4,-.65),rope=link(land,anchor,new T.Vector3(x/100,-p.y/100,-.65),.025,'#bba779');hanging.push({rope,anchor,landing:p,offset:x-p.x});}link(land,new T.Vector3((p.x+15)/100,-p.y/100+4,-.65),new T.Vector3((p.x+p.width-15)/100,-p.y/100+4,-.65),.07,'#6e5d44');tree(land,(p.x+p.width/2)/100,-16,-7,20-p.y/100);link(land,new T.Vector3((p.x+p.width/2)/100,-p.y/100+3.8,-3),new T.Vector3((p.x+p.width/2)/100,-p.y/100+4,-.65),.1,'#6e5d44');}
+  if(p.motion==='swing'){for(const x of [p.x+30,p.x+p.width-30]){const anchor=new T.Vector3(x/100,-p.y/100+4,-.65),rope=link(land,anchor,new T.Vector3(x/100,-p.y/100,-.65),.025,'#bba779');hanging.push({rope,anchor,landing:p,offset:x-p.x});}link(land,new T.Vector3((p.x+15)/100,-p.y/100+4,-.65),new T.Vector3((p.x+p.width-15)/100,-p.y/100+4,-.65),.07,'#6e5d44');link(land,new T.Vector3((p.x+p.width/2)/100,-p.y/100+3.8,-3),new T.Vector3((p.x+p.width/2)/100,-p.y/100+4,-.65),.1,'#6e5d44');}
   }else if(p.kind==='brick'){
   object=new T.Group();object.position.x=p.x/100;land.add(object);
   const w=p.width/100,n=Math.ceil(w/.48),bw=w/n-.015,bevel=.012,shape=new T.Shape();shape.moveTo(-bw/2+bevel,-.113);shape.lineTo(bw/2-bevel,-.113);shape.lineTo(bw/2-bevel,.113);shape.lineTo(-bw/2+bevel,.113);shape.closePath();
   const geometry=new T.ExtrudeGeometry(shape,{depth:1.776,bevelEnabled:true,bevelSize:bevel,bevelThickness:bevel,bevelSegments:2,steps:1});geometry.translate(0,0,-.888);
-  const clay=[clayMaterial('#c79570'),clayMaterial('#b3835f')];
+  const clay=[clayMaterial('#de8a4f'),clayMaterial('#cc7842')];
   for(let j=0;j<n;j++)for(let row=0;row<2;row++)mesh(geometry,clay[(j+row)%2],object,(j+.5)*w/n,-p.y/100-.125-row*.25,0);
  }
  else if(p.kind==='mushroom'){object=new T.Group();object.position.x=p.x/100;land.add(object);const cap=mushroom(object,p.width/200,-p.y/100-mushroomCrownHeight*1.35,0,1.35);cap.scale.x=p.width/164;}
@@ -48,8 +52,8 @@ export function mountGame(parent:HTMLElement,course:Course,avatar:string,input:I
  if((world===2?[1,7,12]:world===3?[1,6,11]:[4,9]).includes(i)){const x=p.x+45,y=top(p,x),o=new T.Group();o.position.set(x/100,-y/100,-.3);land.add(o);cylinder(o,0,.35,0,.04,.7,'#9c7950');mesh(new T.SphereGeometry(.19,12,8),new T.MeshStandardMaterial({color:'#ffe19a',emissive:'#e8b548',emissiveIntensity:1}),o,0,.77,0);const light=new T.PointLight('#ffd983',1,3);light.position.y=.77;o.add(light);checkpoints.push({x,y,object:o,active:false});}}
  const finishPlatform=course.platforms[course.platforms.length-1];if(world===1)castle(land,(course.finish+20)/100,-finishPlatform.y/100,-1.6);else{const gate=new T.Group();gate.position.set(course.finish/100,-finishPlatform.y/100,0);land.add(gate);for(const xx of [-.8,.8])cylinder(gate,xx,1.2,0,.14,2.4,world===3?'#975544':'#b7b09a');box(gate,0,2.45,0,2.3,.22,.4,world===3?'#6c5143':'#c4bea7');const portal=mesh(new T.TorusGeometry(.65,.06,12,48),new T.MeshStandardMaterial({color:'#a6e6e1',emissive:'#55b7d1',emissiveIntensity:1}),gate,0,1.25,0);portal.name='exit-portal';}
  let goldenTexture:T.CanvasTexture|undefined;const texture=new T.TextureLoader().load(avatar,image=>{if(disposed)return;const c=document.createElement('canvas');c.width=image.image.width;c.height=image.image.height;const ctx=c.getContext('2d')!;ctx.drawImage(image.image,0,0);const pixels=ctx.getImageData(0,0,c.width,c.height);for(let y=0;y<100;y++)for(let x=0;x<c.width;x++){const at=(y*c.width+x)*4,r=pixels.data[at],g=pixels.data[at+1],b=pixels.data[at+2],local=x%256;if(pixels.data[at+3]>80&&local>45&&local<215&&r<145&&g<125&&b<120&&r>=b*.94){const light=(r+g+b)/435;pixels.data[at]=145+light*105;pixels.data[at+1]=99+light*117;pixels.data[at+2]=25+light*90;}}ctx.putImageData(pixels,0,0);goldenTexture=new T.CanvasTexture(c);goldenTexture.colorSpace=T.SRGBColorSpace;goldenTexture.repeat.set(1/12,1);});texture.colorSpace=T.SRGBColorSpace;texture.repeat.set(1/12,1);const avatarMat=new T.MeshStandardMaterial({map:texture,transparent:true,alphaTest:.25,roughness:1,side:T.DoubleSide});
- const figures:{rig:ReturnType<typeof characterRig>;fallback:T.Mesh}[]=[];
- function character(){const group=new T.Group();scene.add(group);const fallback=mesh(new T.PlaneGeometry(1.02,1.53),avatarMat,group,0,.75,.32),rig=characterRig(texture,loadout.costume);rig.root.position.y=-.06;group.add(rig.root);figures.push({rig,fallback});return group;}
+ const figures:{rig:ReturnType<typeof characterRig>}[]=[];
+ function character(){const group=new T.Group();scene.add(group);const rig=characterRig(texture,loadout.costume,appearance);rig.root.position.y=-.06;group.add(rig.root);figures.push({rig});return group;}
  const hero=character(),clones=[character(),character()];clones.forEach(c=>c.visible=false);
  const aura=new T.Group();hero.add(aura);for(let i=0;i<10;i++){const f=mesh(new T.ConeGeometry(.15,.9,6),new T.MeshBasicMaterial({color:'#ffdd51',transparent:true,opacity:.18,depthWrite:false}),aura,Math.sin(i*2.4)*.43,.8,Math.cos(i*2.4)*.28);f.rotation.z=Math.sin(i*2.4)*.25;}aura.visible=false;
  const nimbus=new T.Group();hero.add(nimbus);const cloudMat=new T.MeshStandardMaterial({color:'#ffdb45',roughness:.65,emissive:'#936c08',emissiveIntensity:.12});for(let i=0;i<8;i++)mesh(new T.SphereGeometry(.23,14,10),cloudMat,nimbus,Math.cos(i*2.4)*.5,-.02,Math.sin(i*2.4)*.21);const tailCurve=new T.CatmullRomCurve3([new T.Vector3(-.3,0,0),new T.Vector3(-.9,-.05,0),new T.Vector3(-1.4,-.23,0),new T.Vector3(-1.8,-.2,0),new T.Vector3(-1.95,0,0)]);mesh(new T.TubeGeometry(tailCurve,24,.065,8,false),cloudMat,nimbus);nimbus.visible=false;
@@ -76,7 +80,9 @@ export function mountGame(parent:HTMLElement,course:Course,avatar:string,input:I
   return {...e,index:i,carrier:platforms.find(p=>e.left>=p.base.x&&e.right<=p.base.x+p.base.width),spawnLeft:e.left,spawnRight:e.right,object:enemyModel(i),direction:i%2?1:-1,alive:true,nextShot:1100+i%3*180,windupUntil:0,aimX:0,aimY:0,alert:false,aimLine};
  });
  type Shot={x:number;y:number;vx:number;vy:number;until:number;object:T.Group;enemy:boolean;pierce:boolean};const shots:Shot[]=[],smoke:{object:T.Mesh;until:number;vx:number;vy:number}[]=[];
- let disposed=false,paused=false,ready=false,ended=false,frame=0,accumulator=0,last=performance.now(),time=0,x=90,y=top(course.platforms[0],90),vy=0,facing=1,ground:Landing|null=platforms[0],airJump=false,wasJump=false,wasPower=false,count=0,defeated=0,nextPower=0,checkpoint={x,y},pipeUntil=0,notice='Three hearts per attempt. Lanterns save your respawn point.',nextReport=0;
+ // Runs start at the trailhead; the dev preview may start further along a course.
+ const startOn=course.platforms.find(p=>startX>=p.x&&startX<=p.x+p.width)??course.platforms[0];
+ let disposed=false,paused=false,ready=false,ended=false,frame=0,accumulator=0,last=performance.now(),time=0,x=startX,y=top(startOn,startX),vy=0,facing=1,ground:Landing|null=platforms[course.platforms.indexOf(startOn)],airJump=false,wasJump=false,wasPower=false,count=0,defeated=0,nextPower=0,checkpoint={x,y},pipeUntil=0,notice='Three hearts per attempt. Lanterns save your respawn point.',nextReport=0;
  let health=freshLife(),respawnUntil=0,guard=freshGuard(),wasDefend=false,lastGroundedAt=0,jumpQueuedUntil=0;
  const guardBubble=mesh(new T.SphereGeometry(.78,24,16),new T.MeshBasicMaterial({color:'#89dcff',transparent:true,opacity:.2,depthWrite:false}),hero,0,.72,0);guardBubble.visible=false;
  let powers=freshPowers();powers.shield=loadout.shield;if(loadout.power)powers=collectPower(powers,loadout.power,0);
@@ -156,16 +162,16 @@ export function mountGame(parent:HTMLElement,course:Course,avatar:string,input:I
  for(let i=shots.length-1;i>=0;i--){const s=shots[i];s.x+=s.vx*dt;s.y+=s.vy*dt;s.object.position.set(s.x/100,-s.y/100,.2);s.object.rotation.x+=dt*4;let remove=now>s.until;if(s.enemy&&Math.abs(s.x-x)<25&&Math.abs(s.y-(y-65))<65){if(guardActive(guard,now)){guard={...guard,blocked:guard.blocked+1};notice='Shot blocked!';onSound('block');puff(s.x,s.y);}else hit();remove=true;}if(!s.enemy)for(const e of enemies)if(e.alive&&Math.abs(s.x-e.x)<42&&Math.abs(s.y-(e.y-50))<80){e.alive=false;e.object.visible=false;defeated++;puff(e.x,e.y);onSound('hit');if(!s.pierce)remove=true;}if(remove){scene.remove(s.object);s.object.traverse(o=>{const m=o as T.Mesh;if(m.geometry)m.geometry.dispose();if(m.material&&!Array.isArray(m.material))m.material.dispose();});shots.splice(i,1);}}
  if(y>Math.max(...course.platforms.map(p=>p.y))+230)loseLife('fall');if(x>=course.finish&&Math.abs(y-finishPlatform.y)<150)finish('complete');
  hero.position.set(x/100,-y/100,0);hero.scale.x=facing;const avatarFrame=!ground?(vy<0?9:10):down?11:Math.abs(vx)>0?1+Math.floor(now/80)%8:0;texture.offset.x=avatarFrame/12;if(goldenTexture)goldenTexture.offset.x=avatarFrame/12;avatarMat.map=powers.saiyanUntil>now&&goldenTexture?goldenTexture:texture;
- for(const figure of figures)figure.fallback.visible=!figure.rig.tick(now,vx,!ground,down,avatarFrame,avatarMat.map||texture,powers.saiyanUntil>now,vy);
+ for(const figure of figures)figure.rig.tick(now,vx,!ground,down,avatarFrame,avatarMat.map||texture,powers.saiyanUntil>now,vy);
  guardBubble.visible=guardActive(guard,now);guardBubble.scale.setScalar(1+Math.sin(now*.025)*.025);
  aura.visible=powers.saiyanUntil>now||powers.starUntil>now;aura.rotation.y=now*.002;aura.scale.setScalar(1+Math.sin(now*.012)*.07);shield.visible=powers.shield;nimbus.visible=flying;
  poses.push({x,y,facing});if(poses.length>180)poses.shift();const cloneCount=powers.cloneUntil>now?powers.clones:0;for(let i=0;i<2;i++){const c=clones[i],show=i<cloneCount;if(c.visible&&!show)puff(c.position.x*100,-c.position.y*100);c.visible=show;if(show){const pose=poses[Math.max(0,poses.length-1-(i+1)*25)];c.position.set((pose.x-facing*(i+1)*28)/100,-pose.y/100,.7+i*.22);c.scale.x=pose.facing;}}
  animateSmoke(dt,now);
  for(const c of coins)if(!c.taken)c.object.rotation.y=now*.002;env.update(now,camera);
- const targetX=x/100+3.1,targetY=-y/100+1.65;camera.position.x=T.MathUtils.lerp(camera.position.x,targetX,.07);camera.position.y=T.MathUtils.lerp(camera.position.y,targetY+.45,.07);camera.position.z=camera.aspect<1?20:13;camera.lookAt(camera.position.x,targetY,-1.5);sun.position.set(x/100-8,16,12);sun.target.position.set(x/100,-3,0);
+ const targetX=x/100+4.8,targetY=-y/100+1.65;camera.position.x=T.MathUtils.lerp(camera.position.x,targetX,.07);camera.position.y=T.MathUtils.lerp(camera.position.y,targetY+.45,.07);camera.position.z=camera.aspect<1?21:16;camera.lookAt(camera.position.x,targetY,-1.5);const sunOffset=(sun.userData.offset as number[]|undefined)??[-8,16,12];sun.position.set(x/100+sunOffset[0],sunOffset[1],sunOffset[2]);sun.target.position.set(x/100,-3,0);
  if(now>nextReport){nextReport=now+120;const special=activeTechnique(powers,now);onProgress(Math.min(100,Math.floor(x/course.finish*100)));onWorld({guarding:guardActive(guard,now),guardCooldown:Math.max(0,(guard.readyAt-now)/1000),blockedShots:guard.blocked,hearts:health.hearts,region:regionAt(course,x).name,cooldown:Math.max(0,Math.ceil((nextPower-now)/1000)),defeated,shield:powers.shield,skyJump:Math.max(0,Math.ceil((powers.doubleJumpUntil-now)/1000)),rapid:Math.max(0,Math.ceil((powers.rapidUntil-now)/1000)),nimbus:Math.max(0,Math.ceil((powers.nimbusUntil-now)/1000)),saiyan:Math.max(0,Math.ceil((powers.saiyanUntil-now)/1000)),special:special?.kind==='clone'?`Shadow clones (${cloneCount})`:special?.name||'',specialSeconds:special?Math.ceil((special.until-now)/1000):0,notice});}
  }
- camera.position.set(x/100+3.1,-y/100+2.1,13);camera.lookAt(x/100+3.1,-y/100+1.65,-1.5);
- const controller:GameController={pause(){paused=true;clearInput();},resume(){paused=false;last=performance.now();canvas.focus({preventScroll:true});},destroy(){if(disposed)return;disposed=true;cancelAnimationFrame(frame);observer.disconnect();window.removeEventListener('keydown',keyDown);window.removeEventListener('keyup',keyUp);window.removeEventListener('blur',clearInput);stopRockDetail();env.dispose();goldenTexture?.dispose();texture.dispose();disposeStage(renderer,scene);canvas.remove();}};
+ camera.position.set(x/100+4.8,-y/100+2.1,camera.aspect<1?21:16);camera.lookAt(x/100+4.8,-y/100+1.65,-1.5);
+ const controller:GameController={pause(){paused=true;clearInput();},resume(){paused=false;last=performance.now();canvas.focus({preventScroll:true});},destroy(){if(disposed)return;disposed=true;cancelAnimationFrame(frame);observer.disconnect();window.removeEventListener('keydown',keyDown);window.removeEventListener('keyup',keyUp);window.removeEventListener('blur',clearInput);stopRockDetail();env.dispose();figures.forEach(figure=>figure.rig.dispose());goldenTexture?.dispose();texture.dispose();disposeStage(renderer,scene);canvas.remove();}};
  const loop=(stamp:number)=>{if(disposed)return;const dt=Math.min(.1,(stamp-last)/1000);last=stamp;if(!paused&&!ended&&ready){accumulator+=dt;while(accumulator>=1/120&&!ended){update(1/120);accumulator-=1/120;}}else accumulator=0;renderer.render(scene,camera);if(!ready&&texture.image){ready=true;canvas.dataset.ready='true';onReady(controller);canvas.focus({preventScroll:true});}frame=requestAnimationFrame(loop);};frame=requestAnimationFrame(loop);return()=>controller.destroy();
 }
