@@ -166,10 +166,14 @@ skips overlapping polls and aborts stale requests. Normal chat behavior is uncha
 - Focused API/image/peer checks: 41 tests passed. All three real-schema Snipe database tests passed,
   including lifecycle behavior and browser-role Storage isolation under a broad permissive policy.
 - TypeScript validation, whitespace validation and the production build (`next build --webpack`) passed.
-- Snipe browser acceptance remains **unverified**. The normal sandbox refused the local test server
-  (`listen EPERM`); its two browser scenarios were skipped. An expanded-permission attempt was not
-  executed because automatic approval review hit its usage limit. No browser screenshots or hosted
-  acceptance are claimed for Snipe.
+- Integrated Snipe browser acceptance: **both scenarios passed**, with real Next UI/API and SQL in
+  disposable PGlite, and local Auth/Storage transport. This covers upload, private review, independent
+  answers, approval, fresh-session persistence, member visibility, withdrawal, blocked photo retrieval,
+  and lost-response retry without a duplicate. Desktop and phone screenshots are in the project output
+  folder under `SocialU_Avatar_Snipe_2026-10-25/snipe-browser`.
+- The first attempt was blocked by sandbox/approval-service limits. Once execution was available, the
+  browser test found mobile horizontal overflow. Claude corrected the photo-picker intrinsic width and
+  the mobile Messages grid minimum; both scenarios then passed without weakening the assertions.
 - Hosted migrations, provisioning and deployment have not been performed.
 
 ## Repeatable verification
@@ -221,4 +225,12 @@ npx vitest run --config vitest.snipe-basic.config.ts
 
 ## Hosted large-photo transport
 
-The basic multipart upload and buffered private-photo response pass local API tests; integrated browser acceptance remains pending as recorded above. Before releasing the full 10 MB policy on Vercel, adapt the transport: [Vercel Functions limits](https://vercel.com/docs/functions/limitations) cap request and buffered response payloads at 4.5 MB. Use an authenticated direct upload into the same protected bucket, followed by server validation and atomic acceptance, and an appropriate protected streaming/derivative response for large photographs. Keep the restrictive Storage policy and immediate authorization checks; do not replace private delivery with public or long-lived signed photo links. The current local flow is not a certification of 10 MB uploads on the hosted deployment.
+The basic multipart upload and buffered private-photo response pass local API and integrated browser tests. Before releasing the full 10 MB policy on Vercel, adapt the transport: [Vercel Functions limits](https://vercel.com/docs/functions/limitations) cap request and buffered response payloads at 4.5 MB. Use an authenticated direct upload into the same protected bucket, followed by server validation and atomic acceptance, and an appropriate protected streaming/derivative response for large photographs. Keep the restrictive Storage policy and immediate authorization checks; do not replace private delivery with public or long-lived signed photo links. The current local flow is not a certification of 10 MB uploads on the hosted deployment.
+
+## Interactive local sample preview
+
+Run `node node_modules/vite-node/vite-node.mjs scripts/demo/snipe-local.ts` with Node 24 from the checkout.
+The launcher prints a random loopback URL and disposable sample account logins, and keeps the real app
+running against in-memory SQL with local Auth/Storage transport. Sign in as the photographer, open the
+printed conversation URL, then choose **Snipe → New Snipe**. Stop the launcher to discard all sample data.
+This development-only script is not imported by the application and does not use hosted accounts.
