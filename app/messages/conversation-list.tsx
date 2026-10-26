@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { accessToken } from '../../lib/account/session';
 import { FriendPicker } from './friend-picker';
+import { GroupInvitationList, type PendingInvitation } from './group-invitations';
 import styles from './messages.module.css';
 
 export type ConversationSummary = {
@@ -44,6 +45,8 @@ export function ConversationListPanel() {
   const [picking, setPicking] = useState(false);
   // SRS-202.1 (#456): New group first shows a confirmation step; only Create group creates it.
   const [confirmingGroup, setConfirmingGroup] = useState(false);
+  // SRS-205.5 (#491): pending group invitations, refreshed with the list (focus and chat activity).
+  const [invitations, setInvitations] = useState<PendingInvitation[]>([]);
 
   useEffect(() => {
     const again = () => setRefresh((count) => count + 1);
@@ -68,6 +71,29 @@ export function ConversationListPanel() {
     })();
     return () => controller.abort();
   }, [refresh]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    (async () => {
+      try {
+        const token = await accessToken();
+        const response = await fetch('/api/group-invitations', { headers: { Authorization: `Bearer ${token ?? ''}` }, cache: 'no-store', signal: controller.signal });
+        if (!response.ok) return;
+        const data = await response.json();
+        setInvitations(data.invitations ?? []);
+      } catch {
+        // Invitations stay as they were; they are loaded again on the next refresh.
+      }
+    })();
+    return () => controller.abort();
+  }, [refresh]);
+
+  // SRS-205.6 / SRS-205.7: after accepting, the student is a member, so the group opens and the list refreshes.
+  function joined(invitation: PendingInvitation, conversationId: string) {
+    setInvitations((current) => current.filter((item) => item.id !== invitation.id));
+    window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT));
+    router.push(`/messages/${encodeURIComponent(conversationId)}`);
+  }
 
   // Show the tab that holds the open conversation.
   const openKind = list?.conversations.find((conversation) => conversation.id === openId)?.kind;
@@ -111,7 +137,7 @@ export function ConversationListPanel() {
           DMs{unreadIn('private') && <><span className={styles.tabDot} aria-hidden="true" /><span className={styles.srOnly}> (unread)</span></>}
         </button>
         <button type="button" className={styles.tab} aria-pressed={tab === 'groups'} onClick={() => { setTab('groups'); setPicking(false); setConfirmingGroup(false); }}>
-          Groups{unreadIn('group') && <><span className={styles.tabDot} aria-hidden="true" /><span className={styles.srOnly}> (unread)</span></>}
+          Groups{(unreadIn('group') || invitations.length > 0) && <><span className={styles.tabDot} aria-hidden="true" /><span className={styles.srOnly}>{unreadIn('group') ? ' (unread)' : ' (new invitations)'}</span></>}
         </button>
       </div>
       {tab === 'dms' && !picking && (
@@ -120,16 +146,9 @@ export function ConversationListPanel() {
           New message
         </button>
       )}
-      {tab === 'groups' && (
-        // Invitations can be sent (SRS-205.1, SRS-205.3, #487), but answering them (SRS-205.5 to 205.8) comes next,
-        // so students are told that invited friends cannot join yet.
-        <div className={styles.notice} role="note">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M12 8v4" /><path d="M12 16h.01" /></svg>
-          <div>
-            <p className={styles.noticeTitle}>Invited friends can’t join yet</p>
-            <p className={styles.noticeText}>Open a group and choose Invite to send a friend an invitation. Accepting invitations comes in the next update.</p>
-          </div>
-        </div>
+      {tab === 'groups' && !confirmingGroup && (
+        <GroupInvitationList invitations={invitations} onAccepted={joined}
+          onDeclined={(invitation) => setInvitations((current) => current.filter((item) => item.id !== invitation.id))} />
       )}
       {tab === 'groups' && !confirmingGroup && (
         <button type="button" className={styles.newGroup} onClick={() => { setCreateError(''); setConfirmingGroup(true); }}>
