@@ -9,6 +9,7 @@ import { SessionNotice } from '../../../components/navigation/section-page';
 import { useNavigationSession } from '../../../components/navigation/social-shell';
 import { subscribeToChat, type ChatLiveStatus, type ChatMessageEvent } from '../../../lib/realtime-client';
 import { CHAT_ACTIVITY_EVENT, ConversationListPanel } from '../conversation-list';
+import { EmojiPicker } from '../emoji-picker';
 import { InvitePicker } from '../invite-picker';
 import styles from '../messages.module.css';
 
@@ -176,9 +177,12 @@ function Conversation() {
     else setUnseen((count) => count + added);
   }, [messages, myStudentId]);
 
-  async function send(event: FormEvent) {
-    event.preventDefault();
-    if (!text.trim() || sending) return;
+  // Text (SRS-201.1) and emoji (SRS-201.8) messages are sent the same way; the ref stops double-sends
+  // before the disabled state shows. Returns whether the message was sent.
+  const sendingRef = useRef(false);
+  async function deliver(body: { text: string } | { kind: 'emoji'; emoji: string }) {
+    if (sendingRef.current) return false;
+    sendingRef.current = true;
     setSending(true);
     setError('');
     try {
@@ -186,19 +190,39 @@ function Conversation() {
       const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${storedAccessToken() ?? ''}` },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify(body),
       });
       const data = await response.json().catch(() => ({}));
-      if (response.status === 404) { setHistory('denied'); return; }
+      if (response.status === 404) { setHistory('denied'); return false; }
       if (!response.ok) throw new Error(data.error || 'Your message could not be sent. Please try again.');
       addMessage(data.message);
       setMyStudentId((current) => current ?? data.message.sender_id);
-      setText('');
+      return true;
     } catch (err) {
       setError(err instanceof Error && !(err instanceof TypeError) ? err.message : 'Your message could not be sent. Please try again.');
+      return false;
     } finally {
+      sendingRef.current = false;
       setSending(false);
     }
+  }
+
+  async function send(event: FormEvent) {
+    event.preventDefault();
+    if (!text.trim()) return;
+    if (await deliver({ text })) setText('');
+  }
+
+  // SRS-201.8 (#797): the emoji picker beside the message box; a chosen emoji is sent straight away.
+  const [picking, setPicking] = useState(false);
+  const emojiButton = useRef<HTMLButtonElement>(null);
+  function closePicker() {
+    setPicking(false);
+    emojiButton.current?.focus();
+  }
+  function sendEmoji(emoji: string) {
+    closePicker();
+    void deliver({ kind: 'emoji', emoji });
   }
 
   // SRS-213.1 (#324): outsiders see the same clear message as for a missing conversation, with no message box.
@@ -256,9 +280,11 @@ function Conversation() {
             ? <li className={styles.emptyMessages}>{history === 'loading' ? 'Loading messages…' : history === 'loaded' ? 'Send a message to start the conversation.' : 'No messages to show yet.'}</li>
             : messages.map((message) => {
               const mine = message.sender_id === myStudentId;
+              // SRS-201.9 (#800): an emoji message is shown larger, without a bubble, on the sender's side.
+              const bubble = `${styles.bubble}${mine ? ` ${styles.bubbleOwn}` : ''}${message.kind === 'emoji' ? ` ${styles.emojiBubble}` : ''}`;
               return (
                 <li key={message.id} className={mine ? `${styles.message} ${styles.messageOwn}` : styles.message}>
-                  <p className={mine ? `${styles.bubble} ${styles.bubbleOwn}` : styles.bubble}>
+                  <p className={bubble}>
                     <span className={styles.srOnly}>{mine ? 'You: ' : 'Them: '}</span>{message.text}
                   </p>
                 </li>
@@ -267,7 +293,7 @@ function Conversation() {
         </ol>
 
         <div className={styles.footer}>
-          {!atLatest && (
+          {!atLatest && !picking && (
             <button type="button" className={styles.jump} onClick={() => scrollToLatest()}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 5v14" /><path d="m19 12-7 7-7-7" /></svg>
               {unseen > 0 ? `${unseen} new message${unseen === 1 ? '' : 's'}` : 'Jump to latest'}
@@ -278,7 +304,12 @@ function Conversation() {
               {historyError} <button type="button" className={styles.retry} onClick={() => setReload((count) => count + 1)}>Try again</button>
             </p>
           )}
+          {picking && <EmojiPicker disabled={sending} onPick={sendEmoji} onClose={closePicker} />}
           <form className={styles.composer} onSubmit={send}>
+            <button ref={emojiButton} type="button" className={styles.emojiToggle} onClick={() => setPicking((open) => !open)}
+              aria-expanded={picking} aria-label="Choose an emoji">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><path d="M9 9h.01" /><path d="M15 9h.01" /></svg>
+            </button>
             <label htmlFor="message-text" className={styles.srOnly}>Message</label>
             <input id="message-text" className={styles.input} value={text} onChange={(event) => setText(event.target.value)}
               placeholder="Message…" maxLength={500} autoComplete="off" disabled={sending} />

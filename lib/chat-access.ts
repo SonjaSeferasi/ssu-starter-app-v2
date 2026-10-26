@@ -1,4 +1,5 @@
 import { AccountError, accountClient } from './socialu-account';
+import { EMOJI_REQUIRED } from './chat-emoji';
 
 // SRS-201.1 / SRS-213.1: one shared answer for missing and forbidden conversations,
 // so outsiders cannot discover which conversations exist.
@@ -31,6 +32,8 @@ export async function chatOperation(fn: string, args: Record<string, string>) {
     if (error.code === 'SCI03') throw new AccountError('This friend is already in the group.', 409);
     if (error.code === 'SCI04') throw new AccountError('Search must be 100 characters or fewer.', 400);
     if (error.code === 'SCI05') throw new AccountError(INVITATION_NOT_AVAILABLE, 404);
+    // SRS-201.8: emoji messages.
+    if (error.code === 'SCE01') throw new AccountError(EMOJI_REQUIRED, 400);
     if (error.code === '42501') throw new AccountError('A verified, active university account is required.', 403);
     if (error.code === '22023') throw new AccountError('Messages must contain 1 to 500 characters.', 400);
     throw new AccountError('Chat is unavailable. Check that the chat migration has been applied.', 503);
