@@ -100,6 +100,16 @@ await assert.rejects(sendEmoji(1,dm,'👋'),code('SC403'));
 await assert.rejects(sendEmoji(4,dm,'👋'),code('SC403'));
 assert.equal(await saved(dm),0);
 
+// The replaced list keeps LN's school rule where it is installed: a DM with a student from another school stays
+// hidden like a blocked one (without her migration there are no schools, so it is listed as before).
+if (migrations===withSchools) await db.query("SELECT socialu.ensure_school('s9@example.edu')");
+else await db.query("INSERT INTO socialu.university_domains(domain,university_id) SELECT 'example.edu',min(university_id) FROM socialu.university");
+await db.query("INSERT INTO auth.users VALUES($1,'s9@example.edu',now())",[uid(9)]);
+const other=(await db.query<any>("INSERT INTO socialu.students(full_name,username,university_email,auth_user_id,email_verified_at) VALUES('Student 9','student9','s9@example.edu',$1,now()) RETURNING student_id::int AS id",[uid(9)])).rows[0].id;
+const away=(await db.query<any>("INSERT INTO socialu.conversations(kind,created_by,private_student_low,private_student_high) VALUES('private',1,1,$1) RETURNING conversation_id::text AS c",[other])).rows[0].c;
+const listed=(await call('socialu_conversation_list',1)).conversations.some((x:any)=>x.id===away);
+assert.equal(listed,migrations!==withSchools);
+
 // Server-only: browsers (anon, authenticated) cannot call the new function directly.
 const fn='public.socialu_send_emoji(uuid,bigint,text)';
 for (const role of ['anon','authenticated']) assert.equal((await db.query<any>('SELECT has_function_privilege($1,$2,$3) AS ok',[role,fn,'EXECUTE'])).rows[0].ok,false);

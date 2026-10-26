@@ -3,9 +3,9 @@
 --   public.socialu_conversation_messages (from 20261019170100): history now includes 'emoji' messages; they carry
 --     "kind": "emoji" (text messages keep exactly the same fields as before, matching the live event).
 --   public.socialu_conversation_list (from 20261019190000): the preview of the latest message includes emoji.
---     It also keeps LN's school-community rule from 20261026000100_school_communities.sql (a group is listed only
---     while socialu.is_current_participant allows it), so applying this before or after that migration gives the
---     same result. Without that migration, the check matches the group membership already required here.
+--     It also keeps LN's school-community rules from 20261026000100_school_communities.sql: a group is listed only
+--     while socialu.is_current_participant allows it, and (where her migration is installed) a DM with a student
+--     from another school is hidden like a blocked one. Without her migration, both match the rules already here.
 -- CREATE OR REPLACE keeps the existing grants (service_role only). Nothing else changes.
 -- Apply once after 20261026140000_chat_send_emoji.sql.
 
@@ -107,6 +107,18 @@ BEGIN
     LEFT JOIN socialu.students s ON s.student_id = i.peer_id
     LEFT JOIN socialu.student_profiles sp ON sp.student_id = i.peer_id;
   RETURN result;
+END;
+$$;
+
+-- LN's school communities also makes the public.socialu_* functions treat a student from another school like a
+-- blocked one (socialu.community_unavailable). Where that rule is installed, apply it to the list again the same
+-- way her migration does, so this replacement keeps it.
+DO $$
+BEGIN
+  IF to_regprocedure('socialu.community_unavailable(bigint,bigint)') IS NOT NULL THEN
+    EXECUTE replace(pg_get_functiondef('public.socialu_conversation_list(uuid)'::regprocedure),
+      'socialu.is_blocked(', 'socialu.community_unavailable(');
+  END IF;
 END;
 $$;
 
