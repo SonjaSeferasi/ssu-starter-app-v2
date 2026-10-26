@@ -212,7 +212,7 @@ As a student, I want to reply directly to a specific message in a group conversa
 
 ##### UR-210, LP - React to messages.
 
-As a student, I want to react to messages in group conversations, so that I can quickly respond to conversations without always sending another message.
+As a student, I want to react to messages in private and group conversations, so that I can quickly respond to conversations without always sending another message.
 
 ##### UR-211, LP - Understand message details.
 

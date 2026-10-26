@@ -3072,35 +3072,35 @@ Traces to: UR-209.
 
 #### UR-210, LP - React to messages.
 
-User requirement: As a student, I want to react to messages in group conversations, so that I can quickly respond to conversations without always sending another message.
+User requirement: As a student, I want to react to messages in private and group conversations, so that I can quickly respond to conversations without always sending another message.
 
 ##### SRS-210.1, LP — Select a message for reaction.
 
-The system shall allow a current group participant to select an existing group message for a reaction.
+The system shall allow a current conversation participant to select an existing message in a private or group conversation for a reaction.
 
 Traces to: UR-210.
 
 ##### SRS-210.2, LP — Display the fixed reaction set.
 
-When a participant chooses to react to a group message, the system shall display the project's approved fixed set of reaction emojis. The exact fixed reaction emoji set is TBD.
+When a participant chooses to react to a message, the system shall display the project's approved fixed set of reaction emojis: 👍 ❤️ 😂 😮 😢 🙏.
 
 Traces to: UR-210.
 
 ##### SRS-210.3, LP — Apply a reaction.
 
-The system shall allow a group participant to apply one emoji from the approved reaction set to a selected group message.
+The system shall allow a conversation participant to apply one emoji from the approved reaction set to a selected message.
 
 Traces to: UR-210.
 
 ##### SRS-210.4, LP — Display an applied reaction.
 
-After a reaction is applied, the system shall display the reaction with the group message to which it belongs.
+After a reaction is applied, the system shall display the reaction with the message to which it belongs.
 
 Traces to: UR-210.
 
 ##### SRS-210.5, LP — Remove a reaction.
 
-The system shall allow a student to remove their own reaction from a group message.
+The system shall allow a student to remove their own reaction from a message.
 
 Traces to: UR-210.
 
@@ -3221,6 +3221,12 @@ Traces to: UR-212.
 ##### SRS-212.8, LP — Remove the unread indicator.
 
 When a conversation contains no unread messages for the signed-in student, the system shall stop displaying that conversation's unread indicator.
+
+Traces to: UR-212.
+
+##### SRS-212.9, LP — Notify participants of a new message.
+
+When a message is sent in a private or group conversation, the system shall create a notification for each other current participant that identifies the sender and the conversation.
 
 Traces to: UR-212.
 
@@ -7835,6 +7841,7 @@ The original uploaded PDFs remain unchanged. This revision updates the editable 
 | URD alignment | Applied shared-streak/reward, messaging consent, Snipe visibility/consent, DormHall, invitations, optional Wordle and deferred-draft decisions. Added UR-405; preserved UR-627. |
 | Presentation | One parent story per group; consistent requirement and acceptance-criterion labels; new TOC, page references and clean PDF text. |
 | Open findings | Kept reward/catalog values and unresolved test conditions explicit; proposed a measurable replacement for vague event readability. |
+| LP Chat, 26 October 2026 | UR-210 and SRS-210.1 to SRS-210.5 now cover private and group conversations. SRS-210.2 now names the reaction set (👍 ❤️ 😂 😮 😢 🙏), which settles the Chat part of B-15. Added SRS-212.9 (message notifications) under UR-212. |
 
 <a id="appendix-d"></a>
 
@@ -7899,7 +7906,7 @@ Unconfirmed operation outcomes do not prove failure. Retry and exit behavior pre
 | UR-209 | SRS-209.1 through SRS-209.6 | [See section](#ur-209) |
 | UR-210 | SRS-210.1 through SRS-210.6 | [See section](#ur-210) |
 | UR-211 | SRS-211.1 through SRS-211.9 | [See section](#ur-211) |
-| UR-212 | SRS-212.1 through SRS-212.8; SRS-NFR-31, SRS-NFR-37 | [See section](#ur-212) |
+| UR-212 | SRS-212.1 through SRS-212.9; SRS-NFR-31, SRS-NFR-37 | [See section](#ur-212) |
 | UR-213 | SRS-213.1 through SRS-213.9 | [See section](#ur-213) |
 
 <a id="merieme-sakhsoukhi-ms"></a>
