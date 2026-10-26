@@ -186,7 +186,8 @@ export function ConversationListPanel() {
       ) : (
         <ul className={styles.conversationList}>
           {shown.map((conversation) => {
-            const name = conversation.kind === 'private' ? conversation.name ?? 'Student' : 'Group chat';
+            // SRS-202.6 (#840): named groups show their name; others show "Group chat".
+            const name = conversation.name ?? (conversation.kind === 'private' ? 'Student' : 'Group chat');
             const last = conversation.last_message;
             const unread = Boolean(conversation.unread) && conversation.id !== openId;
             const preview = last

@@ -18,6 +18,9 @@ export function invitationIdParam(value: string) {
   return value;
 }
 
+// SRS-202.5: the length rule for group names, shared by the route and the database's answer.
+export const GROUP_NAME_LENGTH = 'Group names must be 1 to 50 characters.';
+
 export async function chatOperation(fn: string, args: Record<string, string>) {
   // Server-only: the participant check runs inside the database function (#299).
   const { data, error } = await accountClient().rpc(fn, args);
@@ -34,6 +37,9 @@ export async function chatOperation(fn: string, args: Record<string, string>) {
     if (error.code === 'SCI05') throw new AccountError(INVITATION_NOT_AVAILABLE, 404);
     // SRS-201.8: emoji messages.
     if (error.code === 'SCE01') throw new AccountError(EMOJI_REQUIRED, 400);
+    // SRS-202.5: group names.
+    if (error.code === 'SCG01') throw new AccountError('Only the group owner or an administrator can name the group.', 403);
+    if (error.code === 'SCG02') throw new AccountError(GROUP_NAME_LENGTH, 400);
     if (error.code === '42501') throw new AccountError('A verified, active university account is required.', 403);
     if (error.code === '22023') throw new AccountError('Messages must contain 1 to 500 characters.', 400);
     throw new AccountError('Chat is unavailable. Check that the chat migration has been applied.', 503);
