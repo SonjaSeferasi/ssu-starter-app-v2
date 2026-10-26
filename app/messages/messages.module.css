@@ -61,6 +61,27 @@ button.conversationItem:hover:not(:disabled) { background: #e6efe9; }
 button.conversationItem:disabled { cursor: progress; opacity: .7; }
 /* SRS-203.1 (#460): the student's role in a group, shown in the conversation header. */
 .roleBadge { display: inline-block; margin-left: 10px; padding: 2px 10px; border-radius: 999px; background: #c0ddcb; color: #28634e; font-size: 12px; font-weight: 700; letter-spacing: .02em; vertical-align: middle; }
+/* SRS-205.1 / SRS-205.3 (#483, #487): the owner's Invite button and the invite panel under the group header. */
+.inviteButton { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; margin-left: auto; min-height: 40px; padding: 8px 14px; border: 0; border-radius: 10px; background: #c0ddcb; color: #102c30; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+.inviteButton:hover { background: #b0d3be; }
+.inviteButton:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+.invitePanel { position: absolute; top: calc(100% + 6px); right: 16px; z-index: 2; display: flex; flex-direction: column; gap: 8px; width: min(380px, calc(100% - 32px)); max-height: min(440px, 60vh); padding: 16px; border: 1px solid #d3e2da; border-radius: 14px; background: #ffffff; box-shadow: 0 12px 32px rgba(16, 44, 48, .16); }
+.invitePanelTop { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.invitePanelTop .stepTitle { margin: 0; }
+.invitePanel .pickerSearch { flex: none; }
+.inviteList { flex: 1; min-height: 0; margin: 0; padding: 0; overflow-y: auto; overscroll-behavior: contain; list-style: none; }
+.inviteRow { display: flex; align-items: center; gap: 12px; padding: 8px 4px; }
+.inviteRow + .inviteRow { border-top: 1px solid #e3ece6; }
+.inviteRow .itemText { grid-template-columns: minmax(0, 1fr); }
+.inviteAction { flex-shrink: 0; min-height: 34px; padding: 6px 14px; border: 0; border-radius: 999px; background: #28634e; color: #ffffff; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.inviteAction:hover:not(:disabled) { background: #1f5040; }
+.inviteAction:disabled { opacity: .6; cursor: progress; }
+.inviteAction:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+.invitedBadge { flex-shrink: 0; padding: 4px 12px; border-radius: 999px; background: #e6efe9; color: #28634e; font-size: 13px; font-weight: 700; }
+/* #483: link to the Friends page to search for people and send friend requests. */
+.findPeople { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; margin: 10px 4px 0; color: #28634e; font-size: 14px; font-weight: 700; text-decoration: none; }
+.findPeople:hover { text-decoration: underline; }
+.findPeople:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; border-radius: 4px; }
 .conversation { display: flex; flex-direction: column; min-height: 520px; overflow: clip; }
 /* The conversation header stays visible under the app's top bar while the conversation scrolls.
    (overflow: clip on .conversation keeps the rounded corners without blocking sticky.) */

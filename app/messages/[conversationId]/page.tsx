@@ -9,6 +9,7 @@ import { SessionNotice } from '../../../components/navigation/section-page';
 import { useNavigationSession } from '../../../components/navigation/social-shell';
 import { subscribeToChat, type ChatLiveStatus, type ChatMessageEvent } from '../../../lib/realtime-client';
 import { CHAT_ACTIVITY_EVENT, ConversationListPanel } from '../conversation-list';
+import { InvitePicker } from '../invite-picker';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -57,6 +58,9 @@ function Conversation() {
   const [reload, setReload] = useState(0);
   // #460: the conversation kind, the student's group role, and the member count come with the history.
   const [info, setInfo] = useState<{ kind: 'private' | 'group'; role: string | null; memberCount: number | null } | null>(null);
+  // SRS-205.1 (#483): the invite panel, offered only to the group's owner or administrator.
+  const [inviting, setInviting] = useState(false);
+  const canInvite = info?.kind === 'group' && (info.role === 'owner' || info.role === 'administrator');
 
   // SRS-212.5: mark the messages shown here as read, again when a message arrives while the student is looking
   // at this conversation, and when they come back to the tab. Nothing is marked while the page is hidden.
@@ -238,6 +242,13 @@ function Conversation() {
               <span className={live === 'live' ? styles.dotLive : styles.dot} />{liveLabels[live]}
             </p>
           </div>
+          {canInvite && (
+            <button type="button" className={styles.inviteButton} onClick={() => setInviting((open) => !open)} aria-expanded={inviting}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M19 8v6" /><path d="M22 11h-6" /></svg>
+              Invite
+            </button>
+          )}
+          {canInvite && inviting && <InvitePicker conversationId={conversationId} onClose={() => setInviting(false)} />}
         </header>
 
         <ol className={styles.messages} aria-live="polite">

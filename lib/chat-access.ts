@@ -17,6 +17,11 @@ export async function chatOperation(fn: string, args: Record<string, string>) {
     if (error.code === 'SC404') throw new AccountError(CONVERSATION_NOT_AVAILABLE, 404);
     if (error.code === 'SC403') throw new AccountError('You cannot send messages in this conversation right now.', 403);
     if (error.code === 'P0002') throw new AccountError('This profile is not available.', 404);
+    // SRS-205.1 / SRS-205.2 / SRS-205.3: group invitations.
+    if (error.code === 'SCI01') throw new AccountError('Only the group owner or an administrator can invite people.', 403);
+    if (error.code === 'SCI02') throw new AccountError('You can only invite your current friends.', 403);
+    if (error.code === 'SCI03') throw new AccountError('This friend is already in the group.', 409);
+    if (error.code === 'SCI04') throw new AccountError('Search must be 100 characters or fewer.', 400);
     if (error.code === '42501') throw new AccountError('A verified, active university account is required.', 403);
     if (error.code === '22023') throw new AccountError('Messages must contain 1 to 500 characters.', 400);
     throw new AccountError('Chat is unavailable. Check that the chat migration has been applied.', 503);
