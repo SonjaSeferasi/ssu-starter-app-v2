@@ -2654,7 +2654,7 @@ Traces to: UR-201.
 
 #### UR-202, LP - Create my own group.
 
-User requirement: As a student, I want to be able to create a group chat, so that I can form groups for friends.
+User requirement: As a student, I want to be able to create and name a group chat, so that I can form groups for friends and tell my groups apart.
 
 ##### SRS-202.1, LP — Create a group chat.
 
@@ -2677,6 +2677,18 @@ Traces to: UR-202.
 ##### SRS-202.4, LP — Allow creation without additional members.
 
 The system shall allow a student to complete group creation before another student accepts an invitation to join the group.
+
+Traces to: UR-202.
+
+##### SRS-202.5, LP — Name a group chat.
+
+The system shall allow the owner or an administrator of a group chat to set or change the group's name, using 1 to 50 characters.
+
+Traces to: UR-202.
+
+##### SRS-202.6, LP — Display the group name.
+
+When a group chat has a name, the system shall display that name to the group's members in the conversation header, the Messages list, and group invitations.
 
 Traces to: UR-202.
 
@@ -7842,6 +7854,7 @@ The original uploaded PDFs remain unchanged. This revision updates the editable 
 | Presentation | One parent story per group; consistent requirement and acceptance-criterion labels; new TOC, page references and clean PDF text. |
 | Open findings | Kept reward/catalog values and unresolved test conditions explicit; proposed a measurable replacement for vague event readability. |
 | LP Chat, 26 October 2026 | UR-210 and SRS-210.1 to SRS-210.5 now cover private and group conversations. SRS-210.2 now names the reaction set (👍 ❤️ 😂 😮 😢 🙏), which settles the Chat part of B-15. Added SRS-212.9 (message notifications) under UR-212. |
+| LP Chat, 26 October 2026 (group names) | Added SRS-202.5 (name a group chat) and SRS-202.6 (display the group name) under UR-202. The UR-202 user requirement now includes naming the group. |
 
 <a id="appendix-d"></a>
 
@@ -7896,7 +7909,7 @@ Unconfirmed operation outcomes do not prove failure. Retry and exit behavior pre
 | --- | --- | --- |
 | UR-200 | SRS-200.1 through SRS-200.19; SRS-NFR-36, SRS-NFR-37 | [See section](#ur-200) |
 | UR-201 | SRS-201.1 through SRS-201.18; SRS-NFR-26, SRS-NFR-27, SRS-NFR-28, SRS-NFR-29, SRS-NFR-30 | [See section](#ur-201) |
-| UR-202 | SRS-202.1 through SRS-202.4 | [See section](#ur-202) |
+| UR-202 | SRS-202.1 through SRS-202.6 | [See section](#ur-202) |
 | UR-203 | SRS-203.1 through SRS-203.4; SRS-NFR-34 | [See section](#ur-203) |
 | UR-204 | SRS-204.1 through SRS-204.9; SRS-NFR-33, SRS-NFR-35 | [See section](#ur-204) |
 | UR-205 | SRS-205.1 through SRS-205.13; SRS-NFR-32 | [See section](#ur-205) |
