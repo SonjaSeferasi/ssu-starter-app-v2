@@ -100,8 +100,9 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 .message { display: flex; }
 /* The signed-in student's own messages on the right, in green (their ID comes with the saved history). */
 .messageOwn { justify-content: flex-end; }
-.bubbleOwn { background: #39775e; color: #ffffff; }
 .bubble { max-width: min(560px, 85%); margin: 0; padding: 12px 16px; border-radius: 14px; background: #e6efe9; color: #102c30; font-size: 16px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+/* After .bubble, so the student's own bubbles are green (both rules have the same weight; the later one wins). */
+.bubbleOwn { background: #39775e; color: #ffffff; }
 /* SRS-201.9 (#800): a sent emoji is shown larger than text and without a bubble. */
 .bubble.emojiBubble { padding: 0 4px; background: transparent; color: #102c30; font-size: 44px; line-height: 1.2; }
 .composer { display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 18px; border: 1px solid #d3e2da; border-radius: 14px; background: #ffffff; }
