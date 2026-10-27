@@ -16,3 +16,13 @@ The older per-requirement branches and `linh/srs-100-105-account-pages` are cons
 Before consolidation, a local recovery bundle was saved at `/tmp/socialu-before-srs-grouping.bundle`. Keep future recovery bundles somewhere durable if long-term recovery is needed.
 
 Work on the relevant branch, commit with a requirement reference (for example, `SRS-103: update login form`), and push that branch. Merge to main only through the team’s review process.
+
+# Kabanga’s SRS branch
+
+| Branch | Requirements | Purpose |
+| --- | --- | --- |
+| `srs400.6-createevent` | SRS 400.1–400.6 and 401.1–401.6 | Create campus events; view active events on Events and Trending and in the Campus Feed Events card |
+
+Event data lives in the `socialu` schema, so the API reaches it only through two server-only functions: `socialu_create_event` (`supabase/migrations/20261013150000_create_event.sql`) and `socialu_list_events` (`supabase/migrations/20261015120000_list_events.sql`). Both use `CREATE OR REPLACE`, so they apply cleanly where the functions were already created in the SQL Editor.
+
+The Events and Trending page shows real data only: a featured next event, upcoming events, a Hosting tab for the student’s own events, and a This week calendar. Event art is generated because events have no photos. My RSVPs and Trending on campus are labelled coming soon until invitations and RSVPs (UR-402, UR-403) and trending (UR-405) are built; event editing belongs to UR-404.
