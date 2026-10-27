@@ -14,7 +14,9 @@ export function PostComposer({
   onPublished: () => void;
 }) {
   const [text, setText] = useState('');
-  const [visibility, setVisibility] = useState<Visibility>('public');
+  // SRS-315.3: no visibility is pre-selected -- the student must explicitly
+  // choose Public or Friends Only before a post (text or photo) can publish.
+  const [visibility, setVisibility] = useState<Visibility | null>(null);
   const [images, setImages] = useState<PendingImage[]>([]);
   const [publishing, setPublishing] = useState(false);
   const [error, setError] = useState('');
@@ -30,6 +32,10 @@ export function PostComposer({
   }
 
   async function handlePublish() {
+    if (!visibility) {
+      setError('Choose Public or Friends Only before publishing.');
+      return;
+    }
     if (!text.trim() && images.length === 0) {
       setError('Write something or add a photo before publishing.');
       return;
@@ -68,7 +74,7 @@ export function PostComposer({
     }
 
     setText('');
-    setVisibility('public');
+    setVisibility(null);
     setImages([]);
     setPublishing(false);
     onPublished();
@@ -88,7 +94,7 @@ export function PostComposer({
         />
         <button
           onClick={handlePublish}
-          disabled={publishing}
+          disabled={publishing || !visibility}
           className="shrink-0 rounded-full bg-emerald-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-800 disabled:opacity-60"
         >
           {publishing ? 'Publishing…' : 'Create post'}

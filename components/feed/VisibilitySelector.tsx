@@ -1,6 +1,6 @@
 export type Visibility = 'public' | 'friends_only';
 
-export function VisibilitySelector({ value, onChange }: { value: Visibility; onChange: (v: Visibility) => void }) {
+export function VisibilitySelector({ value, onChange }: { value: Visibility | null; onChange: (v: Visibility) => void }) {
   const options: { id: Visibility; label: string }[] = [
     { id: 'public', label: 'Public' },
     { id: 'friends_only', label: 'Friends Only' },
