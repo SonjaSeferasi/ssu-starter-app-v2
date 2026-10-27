@@ -122,6 +122,31 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 .bubbleOwn { background: #39775e; color: #ffffff; }
 /* SRS-201.9 (#800): a sent emoji is shown larger than text and without a bubble. */
 .bubble.emojiBubble { padding: 0 4px; background: transparent; color: #102c30; font-size: 44px; line-height: 1.2; }
+/* SRS-210.1 (#802): each message's React button sits beside its bubble (on the left of the student's own). It shows
+   while the message is hovered or focused, and always on touch screens. */
+.bubbleRow { display: flex; align-items: center; gap: 4px; width: 100%; }
+.messageOwn .bubbleRow { flex-direction: row-reverse; }
+.reactButton { display: grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #536963; cursor: pointer; opacity: 0; }
+.message:hover .reactButton, .message:focus-within .reactButton, .reactButton[aria-expanded='true'] { opacity: 1; }
+.reactButton:hover, .reactButton[aria-expanded='true'] { background: #e6efe9; color: #28634e; }
+.reactButton:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; opacity: 1; }
+@media (hover: none) { .reactButton { opacity: .7; } }
+/* SRS-210.2 (#805): the approved reaction set, under the chosen message (kept clear of the sticky header and
+   message box when it scrolls into view). */
+.reactionPicker { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 6px; padding: 4px; border: 1px solid #d3e2da; border-radius: 999px; background: #ffffff; box-shadow: 0 6px 18px #102c3026; scroll-margin: 180px 0 140px; }
+.reactionOption { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; background: transparent; font: inherit; font-size: 22px; line-height: 1; cursor: pointer; }
+.reactionOption:hover:not(:disabled) { background: #e6efe9; }
+.reactionOption[aria-pressed='true'] { background: #c0ddcb; }
+.reactionOption:disabled { opacity: .5; cursor: progress; }
+.reactionOption:focus-visible { outline: 3px solid #28634e; outline-offset: -3px; }
+/* SRS-210.4 (#812): the reactions under a message, with how many chose each; the student's own is highlighted. */
+.reactions { display: flex; flex-wrap: wrap; gap: 6px; max-width: min(560px, 85%); margin: 6px 0 0; padding: 0; list-style: none; }
+.messageOwn .reactions { justify-content: flex-end; }
+.reactionChip { display: inline-flex; align-items: center; gap: 4px; min-height: 30px; padding: 2px 10px; border: 1px solid #d3e2da; border-radius: 999px; background: #ffffff; color: #102c30; font: inherit; font-size: 14px; font-weight: 700; line-height: 1; cursor: pointer; }
+.reactionChip:hover:not(:disabled) { border-color: #9fb3aa; }
+.reactionChip[aria-pressed='true'] { border-color: #39775e; background: #e6efe9; color: #28634e; }
+.reactionChip:disabled { cursor: progress; }
+.reactionChip:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
 .composer { display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 18px; border: 1px solid #d3e2da; border-radius: 14px; background: #ffffff; }
 /* The message box stays visible at the bottom of the screen while the conversation scrolls
    (above the bottom navigation bar when a student places navigation at the bottom). */

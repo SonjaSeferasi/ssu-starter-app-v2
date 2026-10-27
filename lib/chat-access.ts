@@ -1,5 +1,6 @@
 import { AccountError, accountClient } from './socialu-account';
 import { EMOJI_REQUIRED } from './chat-emoji';
+import { REACTION_REQUIRED } from './chat-reactions';
 
 // SRS-201.1 / SRS-213.1: one shared answer for missing and forbidden conversations,
 // so outsiders cannot discover which conversations exist.
@@ -15,6 +16,14 @@ export const INVITATION_NOT_AVAILABLE = 'This invitation is no longer available.
 
 export function invitationIdParam(value: string) {
   if (!/^[1-9]\d{0,17}$/.test(value)) throw new AccountError(INVITATION_NOT_AVAILABLE, 404);
+  return value;
+}
+
+// SRS-210.1: the same answer for a message that is missing, in another conversation, or one the student cannot read.
+export const MESSAGE_NOT_AVAILABLE = 'This message is no longer available.';
+
+export function messageIdParam(value: string) {
+  if (!/^[1-9]\d{0,17}$/.test(value)) throw new AccountError(MESSAGE_NOT_AVAILABLE, 404);
   return value;
 }
 
@@ -40,6 +49,10 @@ export async function chatOperation(fn: string, args: Record<string, string>) {
     // SRS-202.5: group names.
     if (error.code === 'SCG01') throw new AccountError('Only the group owner or an administrator can name the group.', 403);
     if (error.code === 'SCG02') throw new AccountError(GROUP_NAME_LENGTH, 400);
+    // SRS-210.1 to SRS-210.6: reactions.
+    if (error.code === 'SCR01') throw new AccountError(REACTION_REQUIRED, 400);
+    if (error.code === 'SCR03') throw new AccountError('You cannot react to messages in this conversation right now.', 403);
+    if (error.code === 'SCR04') throw new AccountError(MESSAGE_NOT_AVAILABLE, 404);
     if (error.code === '42501') throw new AccountError('A verified, active university account is required.', 403);
     if (error.code === '22023') throw new AccountError('Messages must contain 1 to 500 characters.', 400);
     throw new AccountError('Chat is unavailable. Check that the chat migration has been applied.', 503);
