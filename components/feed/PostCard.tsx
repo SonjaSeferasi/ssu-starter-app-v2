@@ -155,22 +155,27 @@ export function PostCard({
           the original is no longer accessible to this viewer right now. */}
       {post.isRepost ? (
         post.repostOf ? (
-          <Link
-            href={`/posts/${post.repostOf.postId}`}
-            className="mt-3 block rounded-2xl border border-stone-200 p-3 transition hover:border-emerald-300"
-          >
-            <PostAuthor
-              name={post.repostOf.authorName}
-              photoUrl={post.repostOf.authorPhotoUrl}
-              publishedAt={post.repostOf.publishedAt}
-              editedAt={null}
-              visibility={post.visibility}
-            />
-            {post.repostOf.textContent ? (
-              <p className="mt-2 whitespace-pre-wrap text-sm text-stone-800">{post.repostOf.textContent}</p>
-            ) : null}
+          <div className="mt-3 rounded-2xl border border-stone-200 p-3 transition hover:border-emerald-300">
+            {/* Photos are intentionally OUTSIDE this Link, not nested inside
+                it: a photo's click opens the lightbox instead of navigating,
+                and nesting an interactive thumbnail button inside an <a> is
+                invalid HTML (the same class of issue already fixed once in
+                this file for a nested <a>). Clicking the author/caption area
+                still navigates to the original post. */}
+            <Link href={`/posts/${post.repostOf.postId}`} className="block">
+              <PostAuthor
+                name={post.repostOf.authorName}
+                photoUrl={post.repostOf.authorPhotoUrl}
+                publishedAt={post.repostOf.publishedAt}
+                editedAt={null}
+                visibility={post.visibility}
+              />
+              {post.repostOf.textContent ? (
+                <p className="mt-2 whitespace-pre-wrap text-sm text-stone-800">{post.repostOf.textContent}</p>
+              ) : null}
+            </Link>
             <PostMedia photos={post.repostOf.photos} />
-          </Link>
+          </div>
         ) : (
           <div className="mt-3 rounded-2xl border border-dashed border-stone-300 bg-stone-50 p-3 text-sm text-stone-500">
             Original post unavailable.
