@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { SavePostButton } from '../profile/social-actions';
 import { PostAuthor } from './PostAuthor';
@@ -10,6 +11,7 @@ import { ReportPostModal, type ReportResult } from './ReportPostModal';
 import { LikeButton } from './LikeButton';
 import { CommentSection } from './CommentSection';
 import { MentionText } from './MentionText';
+import { ShareModal } from './ShareModal';
 import type { FeedPost } from './types';
 
 export function PostCard({
@@ -40,6 +42,8 @@ export function PostCard({
   const [reporting, setReporting] = useState(false);
   const [reportNotice, setReportNotice] = useState('');
   const [commentsOpen, setCommentsOpen] = useState(false);
+  const [sharing, setSharing] = useState(false);
+  const [shareNotice, setShareNotice] = useState(false);
 
   // SRS-314.4: confirm a submitted report. A post removed by this report
   // reaching the 5-distinct-reporter threshold reuses the same onDeleted
@@ -146,7 +150,39 @@ export function PostCard({
       ) : null}
       <PostMedia photos={post.photos} />
 
-      {/* Share remains visual prep; likes, comments and saving use their APIs. */}
+      {/* Share (additional functionality): the embedded original, re-authorized
+          on every read server-side -- null here means either not a repost, or
+          the original is no longer accessible to this viewer right now. */}
+      {post.isRepost ? (
+        post.repostOf ? (
+          <div className="mt-3 rounded-2xl border border-stone-200 p-3 transition hover:border-emerald-300">
+            {/* Photos are intentionally OUTSIDE this Link, not nested inside
+                it: a photo's click opens the lightbox instead of navigating,
+                and nesting an interactive thumbnail button inside an <a> is
+                invalid HTML (the same class of issue already fixed once in
+                this file for a nested <a>). Clicking the author/caption area
+                still navigates to the original post. */}
+            <Link href={`/posts/${post.repostOf.postId}`} className="block">
+              <PostAuthor
+                name={post.repostOf.authorName}
+                photoUrl={post.repostOf.authorPhotoUrl}
+                publishedAt={post.repostOf.publishedAt}
+                editedAt={null}
+                visibility={post.visibility}
+              />
+              {post.repostOf.textContent ? (
+                <p className="mt-2 whitespace-pre-wrap text-sm text-stone-800">{post.repostOf.textContent}</p>
+              ) : null}
+            </Link>
+            <PostMedia photos={post.repostOf.photos} />
+          </div>
+        ) : (
+          <div className="mt-3 rounded-2xl border border-dashed border-stone-300 bg-stone-50 p-3 text-sm text-stone-500">
+            Original post unavailable.
+          </div>
+        )
+      ) : null}
+
       <div className="mt-4 flex items-center justify-between border-t border-stone-100 pt-3 text-stone-400">
         <div className="flex items-center gap-5">
           <LikeButton post={post} accessToken={accessToken} onUpdated={onUpdated} />
@@ -159,10 +195,19 @@ export function PostCard({
             <span aria-hidden="true">💬</span>
             <span>{post.commentCount}</span>
           </button>
-          <span className="flex items-center gap-1.5 text-sm">↗ Share</span>
+          <button
+            type="button"
+            onClick={() => setSharing(true)}
+            className="flex items-center gap-1.5 text-sm text-stone-400 transition hover:text-stone-600"
+          >
+            <span aria-hidden="true">↗</span>
+            <span>Share</span>
+          </button>
         </div>
         <SavePostButton postId={post.postId} />
       </div>
+
+      {shareNotice ? <p className="mt-2 text-xs font-medium text-emerald-700">Shared to SocialU!</p> : null}
 
       {commentsOpen ? (
         <CommentSection
@@ -201,6 +246,18 @@ export function PostCard({
 
       {reporting ? (
         <ReportPostModal postId={post.postId} accessToken={accessToken} onClose={() => setReporting(false)} onReported={handleReported} />
+      ) : null}
+
+      {sharing ? (
+        <ShareModal
+          post={post}
+          accessToken={accessToken}
+          onClose={() => setSharing(false)}
+          onShared={() => {
+            setShareNotice(true);
+            setTimeout(() => setShareNotice(false), 4000);
+          }}
+        />
       ) : null}
     </article>
   );

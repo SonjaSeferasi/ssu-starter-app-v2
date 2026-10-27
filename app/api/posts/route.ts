@@ -5,15 +5,23 @@ import { shapeFeedPosts, type RawFeedRow } from '../../../lib/posts';
 // SRS-303.1/303.2/303.3, SRS-315.1-315.3 — create a text post. author_id comes
 // only from the verified session, never the request body. Validation (non-blank
 // text, visibility) lives in the socialu_create_post RPC.
+//
+// Share (additional functionality): repostOfPostId in the body creates a
+// repost instead of a plain post. Authorization (must be able to view the
+// original right now), anti-chaining (flattening to the true original),
+// and forcing a Friends Only original's own visibility onto the repost
+// all live in socialu_create_post -- never trusted from here.
 export async function POST(request: Request) {
   try {
     const user = await verifiedUser(request);
     const body = await jsonBody(request);
+    const repostOfPostId = Number(body.repostOfPostId);
 
     const row = await feedRpc<RawFeedRow>('socialu_create_post', {
       p_auth_id: user.id,
       p_text: textField(body.textContent),
       p_visibility: typeof body.visibility === 'string' ? body.visibility : null,
+      p_repost_of_post_id: Number.isInteger(repostOfPostId) ? repostOfPostId : null,
     });
 
     const [post] = await shapeFeedPosts(accountClient(), [row]);

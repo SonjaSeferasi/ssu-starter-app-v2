@@ -6,6 +6,7 @@ import { isCurrentDestination, navigationDestinations } from '../../lib/navigati
 import styles from './social-shell.module.css';
 import type { NavigationPosition } from '../../lib/game-room';
 import { accessToken } from '../../lib/account/session';
+import { MessageCountIcon, useMessageNotifications } from '../chat/message-notifications';
 
 type IconName = (typeof navigationDestinations)[number]['icon'] | 'profile' | 'search' | 'bell' | 'settings';
 
@@ -41,7 +42,8 @@ export function SocialNavigation({ pathname, position = 'side', onPositionChange
               </span>
             ) : (
               <Link href={href} className={styles.destination} aria-current={isCurrentDestination(pathname, href) ? 'page' : undefined}>
-                <NavigationIcon name={icon} /><span>{label}</span>
+                {/* SRS-212.9 (LP, Chat): the Messages link shows how many message notifications there are. */}
+                {icon === 'messages' ? <MessageCountIcon><NavigationIcon name={icon} /></MessageCountIcon> : <NavigationIcon name={icon} />}<span>{label}</span>
                 {tag === 'soon' ? <span className={styles.soonTag}>Soon</span> : null}
               </Link>
             )}
@@ -99,10 +101,15 @@ function NotificationBell({ pathname }: { pathname: string }) {
       window.removeEventListener('focus', load);
     };
   }, [pathname]);
-  const label = unread ? `Notifications, ${unread} unread` : 'Notifications';
-  return <Link href="/notifications" className={styles.profileLink} aria-current={isCurrentDestination(pathname, '/notifications') ? 'page' : undefined} aria-label={label}>
+  // SRS-212.9 (LP, Chat): message notifications (unseen messages and group invitations) count on the bell too.
+  // When they are the only new ones, the bell opens the Messages tab.
+  const messages = useMessageNotifications().count;
+  const total = unread + messages;
+  const label = total ? `Notifications, ${total} unread` : 'Notifications';
+  const href = !unread && messages ? '/notifications?tab=messages' : '/notifications';
+  return <Link href={href} className={styles.profileLink} aria-current={isCurrentDestination(pathname, '/notifications') ? 'page' : undefined} aria-label={label}>
     <NavigationIcon name="bell" />
-    {unread > 0 && <span className={styles.notificationBadge} aria-hidden="true">{unread > 9 ? '9+' : unread}</span>}
+    {total > 0 && <span className={styles.notificationBadge} aria-hidden="true">{total > 9 ? '9+' : total}</span>}
   </Link>;
 }
 

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { accessToken } from '../../lib/account/session';
+import { CHAT_ACTIVITY_EVENT } from '../../lib/chat-events';
 import { FriendPicker } from './friend-picker';
 import { GroupInvitationList, type PendingInvitation } from './group-invitations';
 import styles from './messages.module.css';
@@ -20,7 +21,7 @@ export type ConversationSummary = {
 };
 
 // The conversation page announces sent and received messages so the list can refresh its order and previews.
-export const CHAT_ACTIVITY_EVENT = 'socialu-chat-activity';
+export { CHAT_ACTIVITY_EVENT };
 
 function shortTime(value: string) {
   const date = new Date(value);

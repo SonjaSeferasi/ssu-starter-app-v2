@@ -11,11 +11,12 @@ import styles from './messages.module.css';
 export default function MessagesPage() {
   const session = useNavigationSession();
   // SRS-212.4 (#329): a new live message refreshes the list so its unread dot appears without a reload.
-  // SRS-202.6 (#844): so does a group being renamed, so the list shows its new name.
+  // SRS-202.6 (#844): so does a group being renamed, so the list shows its new name, and (#823) a new group
+  // invitation, so it appears on the Groups tab.
   useEffect(() => {
     if (session !== 'signed-in') return;
     const refresh = () => window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT));
-    return subscribeToChat(refresh, () => {}, refresh);
+    return subscribeToChat(refresh, () => {}, refresh, refresh);
   }, [session]);
   if (session !== 'signed-in') return <SessionNotice state={session} />;
   return (
