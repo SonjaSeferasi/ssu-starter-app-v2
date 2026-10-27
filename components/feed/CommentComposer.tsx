@@ -101,7 +101,7 @@ export function CommentComposer({
           onChange={(e) => handleTextChange(e.target.value, e.target.selectionStart ?? e.target.value.length)}
           onKeyDown={handleKeyDown}
           onBlur={mention.close}
-          placeholder={placeholder ?? 'Write a comment… (type @ to mention someone)'}
+          placeholder={placeholder ?? 'Write a comment…'}
           rows={1}
           autoFocus={autoFocus}
           disabled={posting}

@@ -118,7 +118,7 @@ export function PostComposer({
             onChange={(e) => handleTextChange(e.target.value, e.target.selectionStart ?? e.target.value.length)}
             onKeyDown={handleKeyDown}
             onBlur={mention.close}
-            placeholder="Share something with your campus… (type @ to mention someone)"
+            placeholder="Share something with your campus…"
             className="w-full rounded-full border-0 bg-stone-50 px-4 py-3 text-sm text-stone-800 outline-none placeholder:text-stone-400 focus:ring-2 focus:ring-emerald-200"
           />
           {mention.open ? (
