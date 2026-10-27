@@ -2,14 +2,16 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
-import { MessageCircle, UserCheck, Users, X } from 'lucide-react';
+import { type ReactNode, useEffect, useState, useSyncExternalStore } from 'react';
+import { ChevronRight, MessageCircle, UserCheck, Users, X } from 'lucide-react';
 import { accessToken } from '../../lib/account/session';
 import { subscribeToChat } from '../../lib/realtime-client';
+import { CHAT_ACTIVITY_EVENT } from '../../lib/chat-events';
 import type { PendingInvitation } from '../../app/messages/group-invitations';
 import { timeAgo } from '../feed/time';
 import { Avatar } from '../profile/profile-view';
 import styles from '../profile/profile.module.css';
+import own from './message-notifications.module.css';
 
 export type MessageNotification = {
   conversation_id: string;
@@ -29,36 +31,100 @@ async function chatFetch(path: string, init: RequestInit = {}) {
   return { response, data };
 }
 
-// SRS-212.9 (#823): the Messages tab on the Notifications page. Messages the student hasn't seen (their chat wasn't
-// open) and pending group invitations (SRS-205.5), kept up to date live through Supabase Realtime: a new message,
-// a renamed group or a new invitation refreshes the tab, as does coming back to the window.
+// SRS-212.9 (#823): message notifications, i.e. messages the student hasn't seen (their chat wasn't open) and
+// pending group invitations (SRS-205.5). The Messages tab on the Notifications page lists them; the header bell and
+// the Messages link show how many there are. All of them share one copy, loaded once and kept up to date live
+// through Supabase Realtime: a new message, a renamed group or a new invitation refreshes it, and so does reading a
+// conversation (the chat pages announce it) or coming back to the window.
+type Snapshot = { messages: MessageNotification[] | null; invitations: PendingInvitation[]; error: string };
+const EMPTY: Snapshot = { messages: null, invitations: [], error: '' };
+let snapshot = EMPTY;
+const watchers = new Set<() => void>();
+let loading = false;
+let loadAgain = false;
+let stopLive: (() => void) | null = null;
+let connecting = false;
+
+function publish(next: Snapshot) {
+  snapshot = next;
+  for (const watcher of [...watchers]) watcher();
+}
+
+async function loadOnce() {
+  // Signed out: nothing to show, and nothing is asked of the server.
+  if (!(await accessToken())) return;
+  try {
+    const [notes, invites] = await Promise.all([chatFetch('/api/message-notifications'), chatFetch('/api/group-invitations')]);
+    if (!notes.response.ok) throw new Error(notes.data.error || 'Unable to load message notifications.');
+    publish({ messages: notes.data.notifications ?? [], invitations: invites.response.ok ? invites.data.invitations ?? [] : [], error: '' });
+  } catch (reason) {
+    publish({ ...snapshot, messages: snapshot.messages ?? [], error: reason instanceof Error && !(reason instanceof TypeError) ? reason.message : 'Unable to load message notifications.' });
+  }
+}
+
+function connectLive() {
+  if (stopLive || connecting || !watchers.size) return;
+  connecting = true;
+  let usable = true;
+  let wasOffline = false;
+  const refresh = () => { void reloadMessageNotifications(); };
+  const stop = subscribeToChat(refresh, (status) => {
+    if (status === 'signed-out' || status === 'unavailable') usable = false;
+    else if (status === 'offline') wasOffline = true;
+    // Back online after a break: catch up on anything sent meanwhile.
+    else if (status === 'live' && wasOffline) { wasOffline = false; refresh(); }
+  }, refresh, refresh);
+  connecting = false;
+  // Not signed in yet: try again on the next refresh.
+  if (usable) stopLive = stop;
+}
+
+// One load at a time; a refresh asked for during a load runs once more afterwards.
+export async function reloadMessageNotifications() {
+  connectLive();
+  if (loading) { loadAgain = true; return; }
+  loading = true;
+  try {
+    do { loadAgain = false; await loadOnce(); } while (loadAgain);
+  } finally {
+    loading = false;
+  }
+}
+
+function onActivity() { void reloadMessageNotifications(); }
+
+// The store itself, for React (useMessageNotifications) and for tests.
+export function messageNotificationsSnapshot() { return snapshot; }
+
+export function watchMessageNotifications(onChange: () => void) {
+  watchers.add(onChange);
+  if (watchers.size === 1) {
+    window.addEventListener('focus', onActivity);
+    window.addEventListener(CHAT_ACTIVITY_EVENT, onActivity);
+    void reloadMessageNotifications();
+  }
+  return () => {
+    watchers.delete(onChange);
+    if (watchers.size) return;
+    window.removeEventListener('focus', onActivity);
+    window.removeEventListener(CHAT_ACTIVITY_EVENT, onActivity);
+    stopLive?.();
+    stopLive = null;
+  };
+}
+
 export function useMessageNotifications() {
-  const [messages, setMessages] = useState<MessageNotification[] | null>(null);
-  const [invitations, setInvitations] = useState<PendingInvitation[]>([]);
-  const [error, setError] = useState('');
+  const { messages, invitations, error } = useSyncExternalStore(watchMessageNotifications, messageNotificationsSnapshot, () => EMPTY);
+  return { messages, invitations, error, reload: reloadMessageNotifications, count: (messages?.length ?? 0) + invitations.length };
+}
 
-  const load = useCallback(async () => {
-    try {
-      const [notes, invites] = await Promise.all([chatFetch('/api/message-notifications'), chatFetch('/api/group-invitations')]);
-      if (!notes.response.ok) throw new Error(notes.data.error || 'Unable to load message notifications.');
-      setMessages(notes.data.notifications ?? []);
-      setInvitations(invites.response.ok ? invites.data.invitations ?? [] : []);
-      setError('');
-    } catch (reason) {
-      setMessages((current) => current ?? []);
-      setError(reason instanceof Error && !(reason instanceof TypeError) ? reason.message : 'Unable to load message notifications.');
-    }
-  }, []);
-
-  useEffect(() => {
-    void load();
-    const refresh = () => { void load(); };
-    window.addEventListener('focus', refresh);
-    const stop = subscribeToChat(refresh, () => {}, refresh, refresh);
-    return () => { window.removeEventListener('focus', refresh); stop(); };
-  }, [load]);
-
-  return { messages, invitations, error, reload: load, count: (messages?.length ?? 0) + invitations.length };
+// SRS-212.9: the Messages link's icon, with the number of message notifications in a badge like the bell's.
+export function MessageCountIcon({ children }: { children: ReactNode }) {
+  const { count } = useMessageNotifications();
+  return <span className={own.iconWithCount}>
+    {children}
+    {count > 0 && <span className={own.count}><span aria-hidden="true">{count > 9 ? '9+' : count}</span><span className={own.srOnly}>{count} unread, </span></span>}
+  </span>;
 }
 
 export type MessageNotificationsState = ReturnType<typeof useMessageNotifications>;
@@ -68,20 +134,22 @@ function preview(item: MessageNotification) {
   return item.message_kind === 'emoji' ? text : `“${text}”`;
 }
 
+// The whole notification opens the conversation it is about, where the new messages are marked read.
 function MessageRow({ item }: { item: MessageNotification }) {
   const href = `/messages/${encodeURIComponent(item.conversation_id)}`;
   const where = item.kind === 'group' ? ` in ${item.name ?? 'a group chat'}` : '';
   const many = item.unread_count > 1 ? ` (${item.unread_count} new)` : '';
   return <li className={`${styles.notificationRow} ${styles.notificationUnread}`}>
-    <Link href={href} className={styles.notificationAvatar} aria-label={`Open your conversation with ${item.kind === 'group' ? (item.name ?? 'the group') : item.sender.name}`}>
-      <Avatar url={item.sender.photo_url} name={item.sender.name} />
+    <Link href={href} className={own.rowLink}>
+      <span className={styles.notificationAvatar} aria-hidden="true"><Avatar url={item.sender.photo_url} name={item.sender.name} /></span>
+      <span className={styles.notificationBody}>
+        <span className={`${styles.notificationName} ${own.rowTitle}`}>
+          <span>{item.sender.name}</span>{item.kind === 'group' ? ' sent a message' : ' sent you a message'}{where}{many}.
+        </span>
+        <span className={styles.notificationTime}>{preview(item)} · {timeAgo(item.sent_at)}</span>
+      </span>
+      <span className={own.open}>Open chat<ChevronRight aria-hidden="true" /></span>
     </Link>
-    <div className={styles.notificationBody}>
-      <Link href={href} className={styles.notificationName} style={{ display: 'block' }}>
-        <span>{item.sender.name}</span>{item.kind === 'group' ? ' sent a message' : ' sent you a message'}{where}{many}.
-      </Link>
-      <span className={styles.notificationTime}>{preview(item)} · {timeAgo(item.sent_at)}</span>
-    </div>
   </li>;
 }
 
@@ -121,6 +189,7 @@ function InvitationRow({ invitation, onAnswered }: { invitation: PendingInvitati
 
 export function MessageNotificationList({ state }: { state: MessageNotificationsState }) {
   const { messages, invitations, error, reload } = state;
+  useEffect(() => { void reload(); }, [reload]);
   if (error && !messages?.length && !invitations.length) return <p className={`${styles.notice} ${styles.error}`} role="alert">{error}</p>;
   if (!messages) return <div className={styles.skeleton} style={{ height: 160, borderRadius: 16 }} aria-busy="true" />;
   if (!messages.length && !invitations.length) return <div className={styles.empty}>
