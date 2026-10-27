@@ -7,7 +7,7 @@ import { type FormEvent, useEffect, useLayoutEffect, useRef, useState } from 're
 import { useParams } from 'next/navigation';
 import { SessionNotice } from '../../../components/navigation/section-page';
 import { useNavigationSession } from '../../../components/navigation/social-shell';
-import { subscribeToChat, type ChatLiveStatus, type ChatMessageEvent } from '../../../lib/realtime-client';
+import { subscribeToChat, type ChatConversationEvent, type ChatLiveStatus, type ChatMessageEvent } from '../../../lib/realtime-client';
 import { CHAT_ACTIVITY_EVENT, ConversationListPanel } from '../conversation-list';
 import { EmojiPicker } from '../emoji-picker';
 import { GroupNameForm } from '../group-name';
@@ -149,7 +149,14 @@ function Conversation() {
     if (status === 'live') setReload((count) => count + 1);
   }
 
-  useEffect(() => subscribeToChat(addMessage, liveStatus), [conversationId]);
+  // SRS-202.6 (#844): a group renamed by its owner or administrator shows the new name right away, here and in the list.
+  function renamed(update: ChatConversationEvent) {
+    window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT));
+    if (update.conversation_id !== conversationId) return;
+    setInfo((current) => current && { ...current, name: update.name });
+  }
+
+  useEffect(() => subscribeToChat(addMessage, liveStatus, renamed), [conversationId]);
 
   // Show the latest message: on open, after the student's own message, and for new messages while they
   // are already at the bottom. If they scrolled up to read, keep their place and offer a button instead.

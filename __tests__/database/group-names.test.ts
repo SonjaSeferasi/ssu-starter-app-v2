@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import assert from 'node:assert/strict';
 const root=process.cwd();
 const chat=['20261012120000_chat_send_text_message.sql','20261019120000_chat_conversation_messages.sql','20261019120100_chat_group_structure_check_as_owner.sql','20261019150000_chat_conversation_list.sql','20261019170000_chat_create_group.sql','20261019170100_chat_conversation_role.sql','20261019190000_chat_unread_status.sql','20261019190100_chat_mark_read.sql'];
-const sprint3=['20261026120000_chat_group_invite_friends.sql','20261026120100_chat_send_group_invitation.sql','20261026130000_chat_pending_group_invitations.sql','20261026130100_chat_accept_group_invitation.sql','20261026130200_chat_decline_group_invitation.sql','20261026140000_chat_send_emoji.sql','20261026140100_chat_emoji_in_history.sql','20261026150000_chat_sender_names.sql','20261026160000_chat_name_group.sql','20261026160100_chat_group_name_display.sql'];
+const sprint3=['20261026120000_chat_group_invite_friends.sql','20261026120100_chat_send_group_invitation.sql','20261026130000_chat_pending_group_invitations.sql','20261026130100_chat_accept_group_invitation.sql','20261026130200_chat_decline_group_invitation.sql','20261026140000_chat_send_emoji.sql','20261026140100_chat_emoji_in_history.sql','20261026150000_chat_sender_names.sql','20261026160000_chat_name_group.sql','20261026160100_chat_group_name_display.sql','20261026170000_chat_group_name_live.sql'];
 // The migrations chat.test.ts uses, and main's latest set including LN's school communities.
 const chatOnly=['20261008000100_link_supabase_accounts.sql','20261008000200_feed_functions.sql','20261008000300_fix_deferred_post_trigger.sql','20261012230000_srs_100_105_auth.sql','20261013200000_srs_109_113_profile.sql','20261015180000_profile_social.sql','20261015190000_profile_full_name.sql','20261016000100_like_post.sql','20261016001000_optional_profile_bio.sql','20261016010000_friendships.sql','20261016020000_feed_profile_links.sql','20261016030000_edit_profile_username.sql','20261016040000_friend_accept_mutual_follow.sql','20261017000100_unlike_post.sql','20261018000100_post_comments.sql','20261018010000_integrate_profile_feed.sql',...chat,...sprint3];
 const withSchools=['20261008000100_link_supabase_accounts.sql','20261008000200_feed_functions.sql','20261008000300_fix_deferred_post_trigger.sql','20261012230000_srs_100_105_auth.sql','20261013200000_srs_109_113_profile.sql','20261015180000_profile_social.sql','20261015190000_profile_full_name.sql','20261016000100_like_post.sql','20261016001000_optional_profile_bio.sql','20261016010000_friendships.sql','20261016020000_feed_profile_links.sql','20261016030000_edit_profile_username.sql','20261016040000_friend_accept_mutual_follow.sql','20261017000100_unlike_post.sql','20261018000100_post_comments.sql','20261018010000_integrate_profile_feed.sql','20261020000100_like_notifications.sql','20261021000100_comment_replies.sql','20261022000000_friend_requests_notifications.sql','20261022010000_notification_read_state.sql','20261022000100_comment_notifications.sql','20261022050000_integrate_notifications_with_main.sql','20261024000100_unify_notifications.sql',...chat,'20261013150000_create_event.sql','20261015120000_list_events.sql','20261026000100_school_communities.sql',...sprint3];
@@ -66,6 +66,15 @@ assert.deepEqual(await rename(1,gid,'CSC 351 Team 🎉'),{id:gid,name:'CSC 351 T
 // An administrator can rename it too.
 await db.query("UPDATE socialu.group_memberships SET role='administrator' WHERE conversation_id=$1 AND student_id=2",[gid]);
 assert.equal((await rename(2,gid,'Study buddies')).name,'Study buddies');
+
+// #844: each saved name is sent live to every current member's channel; the invited student, outsiders and
+// refused renames get nothing.
+const renames=async(n:number)=>(await db.query<any>("SELECT payload FROM realtime.sent WHERE topic=$1 AND event='conversation_updated'",['student:'+uid(n)])).rows.map(r=>r.payload);
+const sent=['Study group','y'.repeat(50),'CSC 351 Team 🎉','Study buddies'].map((name)=>({conversation_id:gid,name}));
+assert.deepEqual(await renames(1),sent);
+assert.deepEqual(await renames(2),sent);
+assert.deepEqual(await renames(3),[]);
+assert.deepEqual(await renames(4),[]);
 
 // SRS-202.6 (#839): members see the name in the history, the Messages list and the pending invitation.
 for (const n of [1,2]) {
