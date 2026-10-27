@@ -10,6 +10,7 @@ import { useNavigationSession } from '../../../components/navigation/social-shel
 import { subscribeToChat, type ChatLiveStatus, type ChatMessageEvent } from '../../../lib/realtime-client';
 import { CHAT_ACTIVITY_EVENT, ConversationListPanel } from '../conversation-list';
 import { EmojiPicker } from '../emoji-picker';
+import { GroupNameForm } from '../group-name';
 import { InvitePicker } from '../invite-picker';
 import styles from '../messages.module.css';
 
@@ -58,10 +59,13 @@ function Conversation() {
   const [historyError, setHistoryError] = useState('');
   const [reload, setReload] = useState(0);
   // #460: the conversation kind, the student's group role, and the member count come with the history.
-  const [info, setInfo] = useState<{ kind: 'private' | 'group'; role: string | null; memberCount: number | null } | null>(null);
+  // SRS-202.6 (#840): a named group's name comes with the history too.
+  const [info, setInfo] = useState<{ kind: 'private' | 'group'; name: string | null; role: string | null; memberCount: number | null } | null>(null);
   // SRS-205.1 (#483): the invite panel, offered only to the group's owner or administrator.
   const [inviting, setInviting] = useState(false);
   const canInvite = info?.kind === 'group' && (info.role === 'owner' || info.role === 'administrator');
+  // SRS-202.5 (#836): the same owner or administrator can name the group from its header.
+  const [naming, setNaming] = useState(false);
   // SRS-211.1 (#831): sender names by student ID, returned with the history.
   const [senders, setSenders] = useState<Record<string, { name: string; username: string }>>({});
   const sendersRef = useRef<Record<string, { name: string; username: string }> | null>(null);
@@ -113,7 +117,7 @@ function Conversation() {
         if (!response.ok) throw new Error(data.error || 'Messages could not be loaded.');
         setMyStudentId(String(data.student_id));
         meRef.current = String(data.student_id);
-        if (data.kind) setInfo({ kind: data.kind, role: data.role ?? null, memberCount: data.member_count ?? null });
+        if (data.kind) setInfo({ kind: data.kind, name: data.name ?? null, role: data.role ?? null, memberCount: data.member_count ?? null });
         if (data.senders) { sendersRef.current = data.senders; setSenders(data.senders); }
         setMessages((current) => mergeMessages(current, data.messages ?? []));
         setHistory('loaded');
@@ -261,12 +265,30 @@ function Conversation() {
           <span className={styles.avatar} aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z" /></svg>
           </span>
-          <div>
-            <h2 className={styles.title}>
-              {info?.kind === 'group'
-                ? <>Group chat{info.role === 'owner' && <span className={styles.roleBadge}>Owner</span>}</>
-                : peer ? <Link href={`/students/${encodeURIComponent(peer.username)}`}>{peer.name}</Link> : 'Conversation'}
-            </h2>
+          <div className={styles.headerText}>
+            {canInvite && naming ? (
+              <GroupNameForm conversationId={conversationId} current={info.name} onCancel={() => setNaming(false)}
+                onSaved={(name) => {
+                  setInfo((current) => current && { ...current, name });
+                  setNaming(false);
+                  // The Messages list refreshes so it shows the new name too.
+                  window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT));
+                }} />
+            ) : (
+              <h2 className={styles.title}>
+                {info?.kind === 'group'
+                  ? <>
+                      {info.name ?? 'Group chat'}
+                      {canInvite && (
+                        <button type="button" className={styles.renameButton} onClick={() => setNaming(true)} aria-label={info.name ? 'Rename group' : 'Name group'} title={info.name ? 'Rename group' : 'Name group'}>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>
+                        </button>
+                      )}
+                      {info.role === 'owner' && <span className={styles.roleBadge}>Owner</span>}
+                    </>
+                  : peer ? <Link href={`/students/${encodeURIComponent(peer.username)}`}>{peer.name}</Link> : 'Conversation'}
+              </h2>
+            )}
             <p className={styles.subtitle}>
               {info?.kind === 'group' && info.memberCount !== null && <>{info.memberCount} member{info.memberCount === 1 ? '' : 's'} ·</>}
               <span className={live === 'live' ? styles.dotLive : styles.dot} />{liveLabels[live]}

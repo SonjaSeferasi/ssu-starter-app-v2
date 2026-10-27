@@ -7,6 +7,8 @@ import styles from './messages.module.css';
 export type PendingInvitation = {
   id: string;
   conversation_id: string;
+  // SRS-202.6: the group's name, when it has one.
+  group_name?: string | null;
   inviter: { username: string; name: string };
   member_count: number;
 };
@@ -55,7 +57,7 @@ export function GroupInvitationList({ invitations, onAccepted, onDeclined }: {
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
             </span>
             <span className={styles.itemText}>
-              <span className={styles.itemName}>Group chat</span>
+              <span className={styles.itemName}>{invitation.group_name ?? 'Group chat'}</span>
               <span className={styles.itemPreview}>
                 {invitation.inviter.name} invited you · {invitation.member_count} member{invitation.member_count === 1 ? '' : 's'}
               </span>
