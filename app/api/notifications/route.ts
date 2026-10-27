@@ -6,14 +6,14 @@ export const dynamic = 'force-dynamic';
 
 type RawNotification = {
   notification_id: number;
-  kind: 'friend_request' | 'friendship_accepted' | 'post_like' | 'post_comment' | 'comment_reply';
+  kind: 'friend_request' | 'friendship_accepted' | 'post_like' | 'post_comment' | 'comment_reply' | 'mention';
   created_at: string;
   read_at: string | null;
   actor_username: string;
   actor_name: string;
   actor_photo_key: string | null;
   request_status: 'pending' | 'accepted' | 'declined' | 'canceled' | 'blocked' | null;
-  // SRS-312/313 (post_like/post_comment/comment_reply only; null for friend kinds).
+  // SRS-312/313 + mentions (additional functionality): null for friend kinds.
   post_id: number | null;
   comment_id: number | null;
   visibility: 'public' | 'friends_only' | null;

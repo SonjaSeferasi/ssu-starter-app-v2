@@ -1,9 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import { timeAgo } from './time';
 import { CommentComposer } from './CommentComposer';
+import { MentionText } from './MentionText';
+import { MentionDropdown } from './MentionDropdown';
+import { useMentionAutocomplete } from './use-mention-autocomplete';
 import type { Comment } from './types';
 
 // Replying to Comments is a separate feature (no SRS number -- see the
@@ -60,6 +63,8 @@ export function CommentItem({
   const [repliesOpen, setRepliesOpen] = useState(false);
   const [replyTarget, setReplyTarget] = useState<Comment | null>(null);
   const [justNavigatedHere, setJustNavigatedHere] = useState(false);
+  const editTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const editMention = useMentionAutocomplete();
 
   const isDeleted = comment.deletedAt !== null;
   const isTarget = targetCommentId !== undefined && targetCommentId === comment.commentId;
@@ -123,7 +128,27 @@ export function CommentItem({
     onUpdated(body.comment);
   }
 
+  function handleEditTextChange(value: string, cursor: number) {
+    setText(value);
+    editMention.handleTextChange(value, cursor);
+  }
+
+  function selectEditMention(username: string) {
+    const cursor = editTextareaRef.current?.selectionStart ?? text.length;
+    const result = editMention.applyMention(text, cursor, username);
+    setText(result.text);
+    editMention.close();
+    requestAnimationFrame(() => {
+      editTextareaRef.current?.focus();
+      editTextareaRef.current?.setSelectionRange(result.cursor, result.cursor);
+    });
+  }
+
   function handleEditKeyDown(e: KeyboardEvent<HTMLTextAreaElement>) {
+    if (editMention.handleKeyDown(e, selectEditMention)) {
+      e.preventDefault();
+      return;
+    }
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       saveEdit();
@@ -179,15 +204,28 @@ export function CommentItem({
       <div className="min-w-0 flex-1">
         {editing ? (
           <div>
-            <textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              onKeyDown={handleEditKeyDown}
-              rows={1}
-              autoFocus
-              disabled={saving}
-              className="w-full resize-none rounded-2xl border-0 bg-stone-50 px-3 py-2 text-sm text-stone-800 outline-none focus:ring-2 focus:ring-emerald-200 disabled:opacity-60"
-            />
+            <div className="relative">
+              <textarea
+                ref={editTextareaRef}
+                value={text}
+                onChange={(e) => handleEditTextChange(e.target.value, e.target.selectionStart ?? e.target.value.length)}
+                onKeyDown={handleEditKeyDown}
+                onBlur={editMention.close}
+                rows={1}
+                autoFocus
+                disabled={saving}
+                className="w-full resize-none rounded-2xl border-0 bg-stone-50 px-3 py-2 text-sm text-stone-800 outline-none focus:ring-2 focus:ring-emerald-200 disabled:opacity-60"
+              />
+              {editMention.open ? (
+                <MentionDropdown
+                  members={editMention.members}
+                  loading={editMention.loading}
+                  activeIndex={editMention.activeIndex}
+                  onHover={editMention.setActiveIndex}
+                  onSelect={selectEditMention}
+                />
+              ) : null}
+            </div>
             {error ? <p className="mt-1 text-xs text-red-600">{error}</p> : null}
             <div className="mt-1.5 flex justify-end gap-2">
               <button
@@ -261,7 +299,9 @@ export function CommentItem({
                 </div>
               ) : null}
             </div>
-            <p className="whitespace-pre-wrap text-sm text-stone-800">{comment.textContent}</p>
+            <p className="whitespace-pre-wrap text-sm text-stone-800">
+              <MentionText text={comment.textContent} mentions={comment.mentions} />
+            </p>
           </div>
         )}
 

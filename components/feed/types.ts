@@ -3,6 +3,18 @@ export type FeedPhoto = {
   url: string;
 };
 
+/** A verified @mention: studentId is the stable identity used for the link,
+ * matchedUsername is the exact "@text" the author typed (frozen historically,
+ * used to find the right substring in textContent), username/name/photoUrl
+ * are the mentioned student's CURRENT profile info. */
+export type Mention = {
+  studentId: number;
+  matchedUsername: string;
+  username: string;
+  name: string;
+  photoUrl: string | null;
+};
+
 export type FeedPost = {
   postId: number;
   authorId: number;
@@ -14,6 +26,7 @@ export type FeedPost = {
   publishedAt: string;
   editedAt: string | null;
   photos: FeedPhoto[];
+  mentions: Mention[];
   likeCount: number;
   isLikedByViewer: boolean;
   commentCount: number;
@@ -30,4 +43,5 @@ export type Comment = {
   editedAt: string | null;
   parentCommentId: number | null;
   deletedAt: string | null;
+  mentions: Mention[];
 };

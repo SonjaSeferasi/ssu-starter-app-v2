@@ -94,6 +94,7 @@ describe('Campus Feed (SRS-301)', () => {
           publishedAt: '2026-10-08T12:00:00Z',
           editedAt: null,
           photos: [],
+          mentions: [],
           likeCount: 0,
           isLikedByViewer: false,
           commentCount: 0,
@@ -116,6 +117,29 @@ describe('Campus Feed (SRS-301)', () => {
     rpc.mockResolvedValue({ data: null, error: { code: '42501', message: 'A verified, active university account is required.' } });
     const response = await campusFeed(req('/api/posts/feed/campus', { token: 'valid' }));
     expect(response.status).toBe(403);
+  });
+
+  // Tagging/Mentioning Students (additional functionality, not SRS-numbered).
+  // This route-level test covers what the PGlite database test can't --
+  // the Next.js shaping layer that resolves each mention's photo_key to a
+  // signed photo_url and camelCases the row, same as it already does for
+  // post photos above.
+  it("shapes a post's mentions with resolved photo URLs", async () => {
+    rpc.mockResolvedValue({
+      data: [rawRow({
+        mentions: [
+          { student_id: 7, matched_username: 'oldhandle', username: 'newhandle', name: 'Sam Lee', photo_key: 'profile/7/photo.jpg' },
+          { student_id: 9, matched_username: 'jordan', username: 'jordan', name: 'Jordan Kim', photo_key: null },
+        ],
+      })],
+      error: null,
+    });
+    const response = await campusFeed(req('/api/posts/feed/campus', { token: 'valid' }));
+    const body = await response.json();
+    expect(body.posts[0].mentions).toEqual([
+      { studentId: 7, matchedUsername: 'oldhandle', username: 'newhandle', name: 'Sam Lee', photoUrl: 'https://signed.example/profile/7/photo.jpg' },
+      { studentId: 9, matchedUsername: 'jordan', username: 'jordan', name: 'Jordan Kim', photoUrl: null },
+    ]);
   });
 });
 
