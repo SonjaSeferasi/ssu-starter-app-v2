@@ -93,7 +93,7 @@ export function SocialShell({ children }: { children: React.ReactNode }) {
 
   return (
     <SessionContext.Provider value={session}>
-      {!standalone && session === 'signed-in'
+      {!standalone && pathname !== '/profile/decorate' && session === 'signed-in'
         ? <NavigationFrame community={community} pathname={pathname} position={position} onPositionChange={selected => void savePosition(selected)} saving={saving} preferenceError={preferenceError} onRetry={() => preferenceLoadFailed ? setPreferenceReload(value => value+1) : void savePosition(pendingPosition)}>{children}</NavigationFrame>
         : children}
     </SessionContext.Provider>
