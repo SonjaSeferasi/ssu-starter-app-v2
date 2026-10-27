@@ -62,6 +62,9 @@ function Conversation() {
   // SRS-205.1 (#483): the invite panel, offered only to the group's owner or administrator.
   const [inviting, setInviting] = useState(false);
   const canInvite = info?.kind === 'group' && (info.role === 'owner' || info.role === 'administrator');
+  // SRS-211.1 (#831): sender names by student ID, returned with the history.
+  const [senders, setSenders] = useState<Record<string, { name: string; username: string }>>({});
+  const sendersRef = useRef<Record<string, { name: string; username: string }> | null>(null);
 
   // SRS-212.5: mark the messages shown here as read, again when a message arrives while the student is looking
   // at this conversation, and when they come back to the tab. Nothing is marked while the page is hidden.
@@ -111,6 +114,7 @@ function Conversation() {
         setMyStudentId(String(data.student_id));
         meRef.current = String(data.student_id);
         if (data.kind) setInfo({ kind: data.kind, role: data.role ?? null, memberCount: data.member_count ?? null });
+        if (data.senders) { sendersRef.current = data.senders; setSenders(data.senders); }
         setMessages((current) => mergeMessages(current, data.messages ?? []));
         setHistory('loaded');
         shownRef.current = true;
@@ -132,6 +136,8 @@ function Conversation() {
     if (message.conversation_id !== conversationId) return;
     setMessages((current) => mergeMessages(current, [message]));
     if (message.sender_id !== meRef.current) void markRead();
+    // SRS-211.1: a member whose name is not loaded yet (for example, someone who just joined) loads the names again.
+    if (sendersRef.current && message.sender_id !== meRef.current && !sendersRef.current[message.sender_id]) setReload((count) => count + 1);
   }
 
   function liveStatus(status: ChatLiveStatus) {
@@ -278,14 +284,19 @@ function Conversation() {
         <ol className={styles.messages} aria-live="polite">
           {messages.length === 0
             ? <li className={styles.emptyMessages}>{history === 'loading' ? 'Loading messages…' : history === 'loaded' ? 'Send a message to start the conversation.' : 'No messages to show yet.'}</li>
-            : messages.map((message) => {
+            : messages.map((message, index) => {
               const mine = message.sender_id === myStudentId;
               // SRS-201.9 (#800): an emoji message is shown larger, without a bubble, on the sender's side.
               const bubble = `${styles.bubble}${mine ? ` ${styles.bubbleOwn}` : ''}${message.kind === 'emoji' ? ` ${styles.emojiBubble}` : ''}`;
+              // SRS-211.1 (#831): every message is read out with its sender's name; in groups the name is also
+              // shown above each run of messages from another member.
+              const sender = mine ? 'You' : senders[message.sender_id]?.name ?? (info?.kind === 'group' ? 'A member' : peer?.name ?? 'Them');
+              const showName = info?.kind === 'group' && !mine && messages[index - 1]?.sender_id !== message.sender_id;
               return (
                 <li key={message.id} className={mine ? `${styles.message} ${styles.messageOwn}` : styles.message}>
+                  {showName && <span className={styles.senderName} aria-hidden="true">{sender}</span>}
                   <p className={bubble}>
-                    <span className={styles.srOnly}>{mine ? 'You: ' : 'Them: '}</span>{message.text}
+                    <span className={styles.srOnly}>{sender}: </span>{message.text}
                   </p>
                 </li>
               );
