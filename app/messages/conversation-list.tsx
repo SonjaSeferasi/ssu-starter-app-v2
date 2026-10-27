@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { accessToken } from '../../lib/account/session';
 import { CHAT_ACTIVITY_EVENT } from '../../lib/chat-events';
+import { forgetInvitation } from '../../components/chat/message-notifications';
 import { FriendPicker } from './friend-picker';
 import { GroupInvitationList, type PendingInvitation } from './group-invitations';
 import styles from './messages.module.css';
@@ -92,6 +93,7 @@ export function ConversationListPanel() {
   // SRS-205.6 / SRS-205.7: after accepting, the student is a member, so the group opens and the list refreshes.
   function joined(invitation: PendingInvitation, conversationId: string) {
     setInvitations((current) => current.filter((item) => item.id !== invitation.id));
+    forgetInvitation(invitation.id);
     window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT));
     router.push(`/messages/${encodeURIComponent(conversationId)}`);
   }
@@ -149,7 +151,7 @@ export function ConversationListPanel() {
       )}
       {tab === 'groups' && !confirmingGroup && (
         <GroupInvitationList invitations={invitations} onAccepted={joined}
-          onDeclined={(invitation) => setInvitations((current) => current.filter((item) => item.id !== invitation.id))} />
+          onDeclined={(invitation) => { setInvitations((current) => current.filter((item) => item.id !== invitation.id)); forgetInvitation(invitation.id); }} />
       )}
       {tab === 'groups' && !confirmingGroup && (
         <button type="button" className={styles.newGroup} onClick={() => { setCreateError(''); setConfirmingGroup(true); }}>
