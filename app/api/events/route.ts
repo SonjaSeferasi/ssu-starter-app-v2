@@ -1,4 +1,6 @@
-import { AccountError, accountClient, accountResponse, jsonBody, verifiedUser } from '../../../lib/socialu-account';
+import { AccountError, accountResponse, jsonBody, verifiedUser } from '../../../lib/socialu-account';
+import { eventOperation } from '../../../lib/event-engagement';
+import { trendingEvents } from '../../../lib/events';
 export const dynamic = 'force-dynamic';
 
 function validateEvent(body: Record<string, unknown>) {
@@ -25,24 +27,12 @@ function validateEvent(body: Record<string, unknown>) {
   return { event: { title, description, location, starts_at: startsAt.toISOString() } };
 }
 
-async function eventOperation(fn: string, args: Record<string, string>) {
-  // Events live in the socialu schema, which is outside the Data API, so access goes through server-only functions.
-  const { data, error } = await accountClient().rpc(fn, args);
-  if (error) {
-    if (!error.code && /fetch failed/i.test(error.message)) throw new AccountError('The server cannot reach Supabase. Check the server network connection and try again.', 503);
-    if (error.code === '42501') throw new AccountError('A verified, active university account is required. Finish setting up your profile, then try again.', 403);
-    if (error.code === '22023') throw new AccountError('Title, description, location, date, and time are required.', 400);
-    throw new AccountError('Events are unavailable. Check that the event migrations have been applied.', 503);
-  }
-  return data;
-}
-
-// SRS-401.1-.6: list upcoming campus events for the signed-in student.
+// SRS-401.1-.6: list upcoming campus events for the signed-in student, plus trending events (UR-405).
 export async function GET(request: Request) {
   try {
     const user = await verifiedUser(request);
-    const events = await eventOperation('socialu_list_events', { p_auth_id: user.id });
-    return Response.json({ events: events ?? [] }, { headers: { 'Cache-Control': 'no-store' } });
+    const events = (await eventOperation('socialu_list_events', { p_auth_id: user.id })) ?? [];
+    return Response.json({ events, trending: trendingEvents(events) }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) { return accountResponse(error); }
 }
 

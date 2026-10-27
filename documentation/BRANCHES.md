@@ -22,7 +22,8 @@ Work on the relevant branch, commit with a requirement reference (for example, `
 | Branch | Requirements | Purpose |
 | --- | --- | --- |
 | `srs400.6-createevent` | SRS 400.1–400.6 and 401.1–401.6 | Create campus events; view active events on Events and Trending and in the Campus Feed Events card |
+| `srs-402-405-event-engagement` | UR-401, UR-403, UR-405 | Like events, comment on them, say “I’m going”, see who’s attending, and Trending (5 or more likes, most liked first) |
 
 Event data lives in the `socialu` schema, so the API reaches it only through two server-only functions: `socialu_create_event` (`supabase/migrations/20261013150000_create_event.sql`) and `socialu_list_events` (`supabase/migrations/20261015120000_list_events.sql`). Both use `CREATE OR REPLACE`, so they apply cleanly where the functions were already created in the SQL Editor.
 
-The Events and Trending page shows real data only: a featured next event, upcoming events, a Hosting tab for the student’s own events, and a This week calendar. Event art is generated because events have no photos. My RSVPs and Trending on campus are labelled coming soon until invitations and RSVPs (UR-402, UR-403) and trending (UR-405) are built; event editing belongs to UR-404.
+The Events and Trending page shows real data only: a featured next event, upcoming events, a Hosting tab for the student’s own events, and a This week calendar. Event art is generated because events have no photos. Likes, comments and open “I’m going” attendance are stored in `event_likes`, `event_comments` and `event_attendees` (`supabase/migrations/20261027130000_event_engagement.sql`), separate from invitation RSVPs in `event_invitations`. Attendance closes when an event starts. Each event has a details page (`/events/[id]`) with who’s going and comments; My RSVPs lists the events the student is going to. Invitations (UR-402) and event editing (UR-404) are not built yet.

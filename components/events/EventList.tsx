@@ -1,8 +1,13 @@
 import React from 'react';
-import { CalendarDays, MapPin, UserRound } from 'lucide-react';
+import Link from 'next/link';
+import { CalendarDays, Heart, MapPin, UserRound } from 'lucide-react';
 import styles from '../../app/events/events.module.css';
 import { EventArt } from './EventArt';
-import { formatWhen, monthFormat, weekDays, weekdayFormat, type CampusEvent } from '../../lib/events';
+import { EventActions, GoingSummary } from './EventActions';
+import { TRENDING_MIN_LIKES, formatWhen, monthFormat, weekDays, weekdayFormat, type CampusEvent, type EventEngagement } from '../../lib/events';
+
+type OnEngagement = (eventId: string, engagement: EventEngagement) => void;
+const ignore: OnEngagement = () => {};
 
 export type { CampusEvent } from '../../lib/events';
 
@@ -28,15 +33,20 @@ function EventDetails({ event }: { event: CampusEvent }) {
 }
 
 // The soonest event, shown large at the top of Discover.
-export function FeaturedEvent({ event }: { event: CampusEvent }) {
+export function FeaturedEvent({ event, onEngagement = ignore }: { event: CampusEvent; onEngagement?: OnEngagement }) {
   return (
     <article className={styles.featured} aria-labelledby={`featured-${event.event_id}`}>
       <EventArt id={event.event_id} title={event.title} className={styles.featuredArt} />
       <div className={styles.featuredBody}>
         <p className={styles.kicker}>Next up</p>
-        <h2 id={`featured-${event.event_id}`} className={styles.featuredTitle}>{event.title}</h2>
+        <h2 id={`featured-${event.event_id}`} className={styles.featuredTitle}>
+          <Link href={`/events/${event.event_id}`} className={styles.titleLink}>{event.title}</Link>
+        </h2>
         <EventDetails event={event} />
         <p className={styles.description}>{event.description}</p>
+        <GoingSummary event={event} />
+        <EventActions event={event} onChange={(engagement) => onEngagement(event.event_id, engagement)} />
+        <Link href={`/events/${event.event_id}`} className={styles.secondaryButton}>View details</Link>
       </div>
     </article>
   );
@@ -44,8 +54,8 @@ export function FeaturedEvent({ event }: { event: CampusEvent }) {
 
 // SRS-401.1-.6: each active event with its current title, description, location, date, and time,
 // or a message when no active events are available.
-export function EventList({ events, emptyMessage = NO_ACTIVE_EVENTS, emptyHint = 'Check back later, or create an event for your campus.' }:
-  { events: CampusEvent[]; emptyMessage?: string; emptyHint?: string }) {
+export function EventList({ events, emptyMessage = NO_ACTIVE_EVENTS, emptyHint = 'Check back later, or create an event for your campus.', onEngagement = ignore }:
+  { events: CampusEvent[]; emptyMessage?: string; emptyHint?: string; onEngagement?: OnEngagement }) {
   if (events.length === 0) {
     return (
       <div className={styles.empty}>
@@ -68,9 +78,13 @@ export function EventList({ events, emptyMessage = NO_ACTIVE_EVENTS, emptyHint =
               </p>
             </div>
             <div className={styles.cardBody}>
-              <h3 className={styles.cardTitle}>{event.title}</h3>
+              <h3 className={styles.cardTitle}>
+                <Link href={`/events/${event.event_id}`} className={styles.titleLink}>{event.title}</Link>
+              </h3>
               <EventDetails event={event} />
               <p className={`${styles.description} ${styles.clamp}`}>{event.description}</p>
+              <GoingSummary event={event} />
+              <EventActions event={event} onChange={(engagement) => onEngagement(event.event_id, engagement)} />
             </div>
           </li>
         );
@@ -93,6 +107,35 @@ export function WeekStrip({ events, today = new Date() }: { events: CampusEvent[
           </li>
         ))}
       </ol>
+    </section>
+  );
+}
+
+// UR-405: events with 5 or more likes, most liked first.
+export function TrendingEvents({ events }: { events: CampusEvent[] }) {
+  return (
+    <section className={styles.sideCard} aria-labelledby="trending-title">
+      <h2 id="trending-title" className={styles.sideTitle}>Trending on campus</h2>
+      <p className={styles.sideBody}>Ranked by likes · {TRENDING_MIN_LIKES}+ likes to trend</p>
+      {events.length === 0 ? (
+        <p className={styles.sideEmpty}>No trending events yet. Events with {TRENDING_MIN_LIKES} or more likes show up here.</p>
+      ) : (
+        <ol className={styles.trending}>
+          {events.map((event, index) => (
+            <li key={event.event_id}>
+              <Link href={`/events/${event.event_id}`} className={styles.trendingItem}>
+                <span className={styles.rank}>{index + 1}</span>
+                <EventArt id={event.event_id} title={event.title} className={styles.trendingArt} />
+                <span className={styles.trendingText}>
+                  <strong>{event.title}</strong>
+                  <span>{formatWhen(event.starts_at)}</span>
+                </span>
+                <span className={styles.trendingLikes}><Heart aria-hidden="true" fill="currentColor" />{event.like_count}<span className={styles.srOnly}> likes</span></span>
+              </Link>
+            </li>
+          ))}
+        </ol>
+      )}
     </section>
   );
 }

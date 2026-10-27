@@ -2,14 +2,14 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Flame, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { storedAccessToken } from '../../lib/account/session';
 import shellStyles from '../../components/navigation/social-shell.module.css';
 import styles from './events.module.css';
 import { useNavigationSession } from '../../components/navigation/social-shell';
 import { SessionNotice } from '../../components/navigation/section-page';
-import { EventList, FeaturedEvent, WeekStrip, type CampusEvent } from '../../components/events/EventList';
-import { hostedBy } from '../../lib/events';
+import { EventList, FeaturedEvent, TrendingEvents, WeekStrip, type CampusEvent } from '../../components/events/EventList';
+import { goingTo, hostedBy, trendingEvents, type EventEngagement } from '../../lib/events';
 
 type Tab = 'discover' | 'rsvps' | 'hosting';
 const TABS: { id: Tab; label: string }[] = [
@@ -65,10 +65,16 @@ export default function EventsPage() {
     };
   }, []);
 
+  // After a like or "I'm going", the server's updated counts replace that event's counts.
+  function updateEngagement(eventId: string, engagement: EventEngagement) {
+    setEvents((current) => current.map((event) => event.event_id === eventId ? { ...event, ...engagement } : event));
+  }
+
   if (session !== 'signed-in') return <SessionNotice state={session} />;
 
   const [featured, ...upcoming] = events;
   const hosting = hostedBy(events, studentId);
+  const attending = goingTo(events);
 
   return (
     <main className={shellStyles.page}>
@@ -105,34 +111,29 @@ export default function EventsPage() {
             ) : tab === 'discover' ? (
               featured ? (
                 <>
-                  <FeaturedEvent event={featured} />
+                  <FeaturedEvent event={featured} onEngagement={updateEngagement} />
                   <div className={styles.sectionHeader}>
                     <h2 className={styles.sectionTitle}>Upcoming events</h2>
                     <span className={styles.count}>{events.length} {events.length === 1 ? 'event' : 'events'}</span>
                   </div>
-                  <EventList events={upcoming} emptyMessage="No other events yet." emptyHint="Create one to give students more to do." />
+                  <EventList events={upcoming} onEngagement={updateEngagement} emptyMessage="No other events yet." emptyHint="Create one to give students more to do." />
                 </>
               ) : (
                 <EventList events={[]} />
               )
             ) : tab === 'hosting' ? (
-              <EventList events={hosting} emptyMessage="You aren’t hosting any active events."
+              <EventList events={hosting} onEngagement={updateEngagement} emptyMessage="You aren’t hosting any active events."
                 emptyHint="Events you create will appear here." />
             ) : (
-              <div className={styles.empty}>
-                <h2>RSVPs are coming soon</h2>
-                <p>Once event invitations are ready, events you’re attending will appear here.</p>
-              </div>
+              <EventList events={attending} onEngagement={updateEngagement} emptyMessage="You haven’t said you’re going to any events yet."
+                emptyHint="Tap “I’m going” on an event and it will appear here." />
             )}
           </div>
         </div>
 
         <aside className={styles.sideColumn}>
           <WeekStrip events={events} />
-          <section className={styles.sideCard} aria-labelledby="trending-title">
-            <h2 id="trending-title" className={styles.sideTitle}><Flame aria-hidden="true" className={styles.flame} /> Trending on campus</h2>
-            <p className={styles.sideBody}>Coming soon — trending campus posts and events will be ranked here.</p>
-          </section>
+          <TrendingEvents events={trendingEvents(events)} />
         </aside>
       </div>
     </main>
