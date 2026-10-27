@@ -9,7 +9,7 @@ import { subscribeToChat } from '../../lib/realtime-client';
 import { CHAT_ACTIVITY_EVENT } from '../../lib/chat-events';
 import type { PendingInvitation } from '../../app/messages/group-invitations';
 import { timeAgo } from '../feed/time';
-import { Avatar } from '../profile/profile-view';
+import { Avatar } from '../profile/profile-avatar';
 import styles from '../profile/profile.module.css';
 import own from './message-notifications.module.css';
 

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import {
-  Users, Bookmark, Check, Settings, Camera, GraduationCap, BookOpen, FileText, ArrowUpRight, Pencil, Tag, Images, Lock, MessageCircle, SquareUser, UserCheck, UserPlus, UserRound, X, Palette,
+  Users, Bookmark, Check, Settings, Camera, GraduationCap, BookOpen, FileText, ArrowUpRight, Pencil, Tag, Images, Lock, MessageCircle, SquareUser, UserCheck, UserPlus, X, Palette,
 } from 'lucide-react';
 import type { StudentProfile } from '../../lib/profile';
 import type { FeedPost } from '../feed/types';
@@ -13,6 +13,8 @@ import { accessToken, clearSession, storedAccessToken } from '../../lib/account/
 import { SessionNotice } from '../navigation/section-page';
 import { useNavigationSession } from '../navigation/social-shell';
 import styles from './profile.module.css';
+import { Avatar } from './profile-avatar';
+export { Avatar } from './profile-avatar';
 import { FriendActions } from '../friends/friend-actions';
 import { SavePostButton, ShareProfile, socialRequest, type SocialSummary } from './social-actions';
 import { ProfileCampusSidebar } from './profile-campus-sidebar';
@@ -44,11 +46,6 @@ export async function profileFetch(path: string, init: RequestInit = {}) {
   const response = await fetch(path, { ...init, cache: 'no-store', headers: { ...init.headers, Authorization: `Bearer ${token}` } });
   const data = await response.json().catch(() => ({}));
   return { response, data };
-}
-
-// SRS-109.1: a default avatar until a profile photo is saved.
-export function Avatar({ url, name, className = '' }: { url: string | null; name: string; className?: string }) {
-  return <span className={`${styles.avatar} ${className}`}>{url ? <img src={url} alt={`${name}'s profile photo`} /> : <UserRound aria-label="Default profile avatar" />}</span>;
 }
 
 // Preserve the group’s profile logout action when replacing the profile layout.
