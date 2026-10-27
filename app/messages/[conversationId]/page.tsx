@@ -9,6 +9,9 @@ import { SessionNotice } from '../../../components/navigation/section-page';
 import { useNavigationSession } from '../../../components/navigation/social-shell';
 import { subscribeToChat, type ChatLiveStatus, type ChatMessageEvent } from '../../../lib/realtime-client';
 import { CHAT_ACTIVITY_EVENT, ConversationListPanel } from '../conversation-list';
+import { EmojiPicker } from '../emoji-picker';
+import { GroupNameForm } from '../group-name';
+import { InvitePicker } from '../invite-picker';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -56,7 +59,16 @@ function Conversation() {
   const [historyError, setHistoryError] = useState('');
   const [reload, setReload] = useState(0);
   // #460: the conversation kind, the student's group role, and the member count come with the history.
-  const [info, setInfo] = useState<{ kind: 'private' | 'group'; role: string | null; memberCount: number | null } | null>(null);
+  // SRS-202.6 (#840): a named group's name comes with the history too.
+  const [info, setInfo] = useState<{ kind: 'private' | 'group'; name: string | null; role: string | null; memberCount: number | null } | null>(null);
+  // SRS-205.1 (#483): the invite panel, offered only to the group's owner or administrator.
+  const [inviting, setInviting] = useState(false);
+  const canInvite = info?.kind === 'group' && (info.role === 'owner' || info.role === 'administrator');
+  // SRS-202.5 (#836): the same owner or administrator can name the group from its header.
+  const [naming, setNaming] = useState(false);
+  // SRS-211.1 (#831): sender names by student ID, returned with the history.
+  const [senders, setSenders] = useState<Record<string, { name: string; username: string }>>({});
+  const sendersRef = useRef<Record<string, { name: string; username: string }> | null>(null);
 
   // SRS-212.5: mark the messages shown here as read, again when a message arrives while the student is looking
   // at this conversation, and when they come back to the tab. Nothing is marked while the page is hidden.
@@ -105,7 +117,8 @@ function Conversation() {
         if (!response.ok) throw new Error(data.error || 'Messages could not be loaded.');
         setMyStudentId(String(data.student_id));
         meRef.current = String(data.student_id);
-        if (data.kind) setInfo({ kind: data.kind, role: data.role ?? null, memberCount: data.member_count ?? null });
+        if (data.kind) setInfo({ kind: data.kind, name: data.name ?? null, role: data.role ?? null, memberCount: data.member_count ?? null });
+        if (data.senders) { sendersRef.current = data.senders; setSenders(data.senders); }
         setMessages((current) => mergeMessages(current, data.messages ?? []));
         setHistory('loaded');
         shownRef.current = true;
@@ -127,6 +140,8 @@ function Conversation() {
     if (message.conversation_id !== conversationId) return;
     setMessages((current) => mergeMessages(current, [message]));
     if (message.sender_id !== meRef.current) void markRead();
+    // SRS-211.1: a member whose name is not loaded yet (for example, someone who just joined) loads the names again.
+    if (sendersRef.current && message.sender_id !== meRef.current && !sendersRef.current[message.sender_id]) setReload((count) => count + 1);
   }
 
   function liveStatus(status: ChatLiveStatus) {
@@ -172,9 +187,12 @@ function Conversation() {
     else setUnseen((count) => count + added);
   }, [messages, myStudentId]);
 
-  async function send(event: FormEvent) {
-    event.preventDefault();
-    if (!text.trim() || sending) return;
+  // Text (SRS-201.1) and emoji (SRS-201.8) messages are sent the same way; the ref stops double-sends
+  // before the disabled state shows. Returns whether the message was sent.
+  const sendingRef = useRef(false);
+  async function deliver(body: { text: string } | { kind: 'emoji'; emoji: string }) {
+    if (sendingRef.current) return false;
+    sendingRef.current = true;
     setSending(true);
     setError('');
     try {
@@ -182,19 +200,39 @@ function Conversation() {
       const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${storedAccessToken() ?? ''}` },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify(body),
       });
       const data = await response.json().catch(() => ({}));
-      if (response.status === 404) { setHistory('denied'); return; }
+      if (response.status === 404) { setHistory('denied'); return false; }
       if (!response.ok) throw new Error(data.error || 'Your message could not be sent. Please try again.');
       addMessage(data.message);
       setMyStudentId((current) => current ?? data.message.sender_id);
-      setText('');
+      return true;
     } catch (err) {
       setError(err instanceof Error && !(err instanceof TypeError) ? err.message : 'Your message could not be sent. Please try again.');
+      return false;
     } finally {
+      sendingRef.current = false;
       setSending(false);
     }
+  }
+
+  async function send(event: FormEvent) {
+    event.preventDefault();
+    if (!text.trim()) return;
+    if (await deliver({ text })) setText('');
+  }
+
+  // SRS-201.8 (#797): the emoji picker beside the message box; a chosen emoji is sent straight away.
+  const [picking, setPicking] = useState(false);
+  const emojiButton = useRef<HTMLButtonElement>(null);
+  function closePicker() {
+    setPicking(false);
+    emojiButton.current?.focus();
+  }
+  function sendEmoji(emoji: string) {
+    closePicker();
+    void deliver({ kind: 'emoji', emoji });
   }
 
   // SRS-213.1 (#324): outsiders see the same clear message as for a missing conversation, with no message box.
@@ -227,28 +265,60 @@ function Conversation() {
           <span className={styles.avatar} aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z" /></svg>
           </span>
-          <div>
-            <h2 className={styles.title}>
-              {info?.kind === 'group'
-                ? <>Group chat{info.role === 'owner' && <span className={styles.roleBadge}>Owner</span>}</>
-                : peer ? <Link href={`/students/${encodeURIComponent(peer.username)}`}>{peer.name}</Link> : 'Conversation'}
-            </h2>
+          <div className={styles.headerText}>
+            {canInvite && naming ? (
+              <GroupNameForm conversationId={conversationId} current={info.name} onCancel={() => setNaming(false)}
+                onSaved={(name) => {
+                  setInfo((current) => current && { ...current, name });
+                  setNaming(false);
+                  // The Messages list refreshes so it shows the new name too.
+                  window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT));
+                }} />
+            ) : (
+              <h2 className={styles.title}>
+                {info?.kind === 'group'
+                  ? <>
+                      {info.name ?? 'Group chat'}
+                      {canInvite && (
+                        <button type="button" className={styles.renameButton} onClick={() => setNaming(true)} aria-label={info.name ? 'Rename group' : 'Name group'} title={info.name ? 'Rename group' : 'Name group'}>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>
+                        </button>
+                      )}
+                      {info.role === 'owner' && <span className={styles.roleBadge}>Owner</span>}
+                    </>
+                  : peer ? <Link href={`/students/${encodeURIComponent(peer.username)}`}>{peer.name}</Link> : 'Conversation'}
+              </h2>
+            )}
             <p className={styles.subtitle}>
               {info?.kind === 'group' && info.memberCount !== null && <>{info.memberCount} member{info.memberCount === 1 ? '' : 's'} ·</>}
               <span className={live === 'live' ? styles.dotLive : styles.dot} />{liveLabels[live]}
             </p>
           </div>
+          {canInvite && (
+            <button type="button" className={styles.inviteButton} onClick={() => setInviting((open) => !open)} aria-expanded={inviting}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M19 8v6" /><path d="M22 11h-6" /></svg>
+              Invite
+            </button>
+          )}
+          {canInvite && inviting && <InvitePicker conversationId={conversationId} onClose={() => setInviting(false)} />}
         </header>
 
         <ol className={styles.messages} aria-live="polite">
           {messages.length === 0
             ? <li className={styles.emptyMessages}>{history === 'loading' ? 'Loading messages…' : history === 'loaded' ? 'Send a message to start the conversation.' : 'No messages to show yet.'}</li>
-            : messages.map((message) => {
+            : messages.map((message, index) => {
               const mine = message.sender_id === myStudentId;
+              // SRS-201.9 (#800): an emoji message is shown larger, without a bubble, on the sender's side.
+              const bubble = `${styles.bubble}${mine ? ` ${styles.bubbleOwn}` : ''}${message.kind === 'emoji' ? ` ${styles.emojiBubble}` : ''}`;
+              // SRS-211.1 (#831): every message is read out with its sender's name; in groups the name is also
+              // shown above each run of messages from another member.
+              const sender = mine ? 'You' : senders[message.sender_id]?.name ?? (info?.kind === 'group' ? 'A member' : peer?.name ?? 'Them');
+              const showName = info?.kind === 'group' && !mine && messages[index - 1]?.sender_id !== message.sender_id;
               return (
                 <li key={message.id} className={mine ? `${styles.message} ${styles.messageOwn}` : styles.message}>
-                  <p className={mine ? `${styles.bubble} ${styles.bubbleOwn}` : styles.bubble}>
-                    <span className={styles.srOnly}>{mine ? 'You: ' : 'Them: '}</span>{message.text}
+                  {showName && <span className={styles.senderName} aria-hidden="true">{sender}</span>}
+                  <p className={bubble}>
+                    <span className={styles.srOnly}>{sender}: </span>{message.text}
                   </p>
                 </li>
               );
@@ -256,7 +326,7 @@ function Conversation() {
         </ol>
 
         <div className={styles.footer}>
-          {!atLatest && (
+          {!atLatest && !picking && (
             <button type="button" className={styles.jump} onClick={() => scrollToLatest()}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 5v14" /><path d="m19 12-7 7-7-7" /></svg>
               {unseen > 0 ? `${unseen} new message${unseen === 1 ? '' : 's'}` : 'Jump to latest'}
@@ -267,7 +337,12 @@ function Conversation() {
               {historyError} <button type="button" className={styles.retry} onClick={() => setReload((count) => count + 1)}>Try again</button>
             </p>
           )}
+          {picking && <EmojiPicker disabled={sending} onPick={sendEmoji} onClose={closePicker} />}
           <form className={styles.composer} onSubmit={send}>
+            <button ref={emojiButton} type="button" className={styles.emojiToggle} onClick={() => setPicking((open) => !open)}
+              aria-expanded={picking} aria-label="Choose an emoji">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><path d="M9 9h.01" /><path d="M15 9h.01" /></svg>
+            </button>
             <label htmlFor="message-text" className={styles.srOnly}>Message</label>
             <input id="message-text" className={styles.input} value={text} onChange={(event) => setText(event.target.value)}
               placeholder="Message…" maxLength={500} autoComplete="off" disabled={sending} />

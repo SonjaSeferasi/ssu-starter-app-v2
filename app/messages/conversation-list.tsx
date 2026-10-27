@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { accessToken } from '../../lib/account/session';
 import { FriendPicker } from './friend-picker';
+import { GroupInvitationList, type PendingInvitation } from './group-invitations';
 import styles from './messages.module.css';
 
 export type ConversationSummary = {
@@ -44,6 +45,8 @@ export function ConversationListPanel() {
   const [picking, setPicking] = useState(false);
   // SRS-202.1 (#456): New group first shows a confirmation step; only Create group creates it.
   const [confirmingGroup, setConfirmingGroup] = useState(false);
+  // SRS-205.5 (#491): pending group invitations, refreshed with the list (focus and chat activity).
+  const [invitations, setInvitations] = useState<PendingInvitation[]>([]);
 
   useEffect(() => {
     const again = () => setRefresh((count) => count + 1);
@@ -68,6 +71,29 @@ export function ConversationListPanel() {
     })();
     return () => controller.abort();
   }, [refresh]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    (async () => {
+      try {
+        const token = await accessToken();
+        const response = await fetch('/api/group-invitations', { headers: { Authorization: `Bearer ${token ?? ''}` }, cache: 'no-store', signal: controller.signal });
+        if (!response.ok) return;
+        const data = await response.json();
+        setInvitations(data.invitations ?? []);
+      } catch {
+        // Invitations stay as they were; they are loaded again on the next refresh.
+      }
+    })();
+    return () => controller.abort();
+  }, [refresh]);
+
+  // SRS-205.6 / SRS-205.7: after accepting, the student is a member, so the group opens and the list refreshes.
+  function joined(invitation: PendingInvitation, conversationId: string) {
+    setInvitations((current) => current.filter((item) => item.id !== invitation.id));
+    window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT));
+    router.push(`/messages/${encodeURIComponent(conversationId)}`);
+  }
 
   // Show the tab that holds the open conversation.
   const openKind = list?.conversations.find((conversation) => conversation.id === openId)?.kind;
@@ -111,7 +137,7 @@ export function ConversationListPanel() {
           DMs{unreadIn('private') && <><span className={styles.tabDot} aria-hidden="true" /><span className={styles.srOnly}> (unread)</span></>}
         </button>
         <button type="button" className={styles.tab} aria-pressed={tab === 'groups'} onClick={() => { setTab('groups'); setPicking(false); setConfirmingGroup(false); }}>
-          Groups{unreadIn('group') && <><span className={styles.tabDot} aria-hidden="true" /><span className={styles.srOnly}> (unread)</span></>}
+          Groups{(unreadIn('group') || invitations.length > 0) && <><span className={styles.tabDot} aria-hidden="true" /><span className={styles.srOnly}>{unreadIn('group') ? ' (unread)' : ' (new invitations)'}</span></>}
         </button>
       </div>
       {tab === 'dms' && !picking && (
@@ -120,15 +146,9 @@ export function ConversationListPanel() {
           New message
         </button>
       )}
-      {tab === 'groups' && (
-        // Group invitations (SRS-205) are not built yet, so students are told before they create a group.
-        <div className={styles.notice} role="note">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M12 8v4" /><path d="M12 16h.01" /></svg>
-          <div>
-            <p className={styles.noticeTitle}>You can’t invite people to groups yet</p>
-            <p className={styles.noticeText}>Group invitations are coming in a later update. For now, you’ll be the only member of any group you create.</p>
-          </div>
-        </div>
+      {tab === 'groups' && !confirmingGroup && (
+        <GroupInvitationList invitations={invitations} onAccepted={joined}
+          onDeclined={(invitation) => setInvitations((current) => current.filter((item) => item.id !== invitation.id))} />
       )}
       {tab === 'groups' && !confirmingGroup && (
         <button type="button" className={styles.newGroup} onClick={() => { setCreateError(''); setConfirmingGroup(true); }}>
@@ -136,10 +156,17 @@ export function ConversationListPanel() {
           New group
         </button>
       )}
+      {/* #483: a way to search for people and send friend requests on the Friends page before inviting them. */}
+      {!picking && !confirmingGroup && (
+        <Link href="/friends" className={styles.findPeople}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+          Find people
+        </Link>
+      )}
       {tab === 'groups' && confirmingGroup ? (
         <div className={styles.picker} role="group" aria-labelledby="new-group-title">
           <h2 id="new-group-title" className={styles.stepTitle}>Create a group chat?</h2>
-          <p className={styles.stepText}>You’ll be the group’s owner and its first member, and the group opens right away so you can send the first message. Adding friends to the group comes with group invitations in a later update.</p>
+          <p className={styles.stepText}>You’ll be the group’s owner and its first member, and the group opens right away so you can send the first message. Then choose Invite in the group to invite your friends.</p>
           {createError && <p className={styles.listError} role="alert">{createError}</p>}
           <div className={styles.stepActions}>
             <button type="button" className={styles.newGroup} onClick={newGroup} disabled={creating}>{creating ? 'Creating group…' : 'Create group'}</button>
@@ -159,7 +186,8 @@ export function ConversationListPanel() {
       ) : (
         <ul className={styles.conversationList}>
           {shown.map((conversation) => {
-            const name = conversation.kind === 'private' ? conversation.name ?? 'Student' : 'Group chat';
+            // SRS-202.6 (#840): named groups show their name; others show "Group chat".
+            const name = conversation.name ?? (conversation.kind === 'private' ? 'Student' : 'Group chat');
             const last = conversation.last_message;
             const unread = Boolean(conversation.unread) && conversation.id !== openId;
             const preview = last

@@ -1,4 +1,5 @@
 import { validLayeredFields, type LayeredLook } from './avatar-layers';
+import { completeAvatar } from './avatar-collection';
 
 export type NavigationPosition = 'side' | 'bottom';
 export const faceDetails = [
@@ -18,6 +19,7 @@ export const pantsColors = [
 ] as const;
 export type AvatarAppearance = {
   outfitId: string; faceId: string | null;
+  avatarId?: string;
   faceStyle?: (typeof faceDetails)[number]['id'];
   shirtColor?: (typeof shirtColors)[number]['id'];
   pantsColor?: (typeof pantsColors)[number]['id'];
@@ -78,7 +80,7 @@ export function validAppearance(value: unknown): value is AvatarAppearance {
   const allowed = (key: string, options: readonly { id: string }[]) => data[key] === undefined || options.some(option => option.id === data[key]);
   return validId(data.outfitId) && (data.faceId === null || validId(data.faceId))
     && allowed('faceStyle', faceDetails) && allowed('shirtColor', shirtColors) && allowed('pantsColor', pantsColors)
-    && validLayeredFields(data);
+    && validLayeredFields(data) && (data.avatarId === undefined || !!completeAvatar(data.avatarId));
 }
 
 // GitHub #41-44: presentation and entry integration only. Missing feature-owner

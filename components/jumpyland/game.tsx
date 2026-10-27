@@ -10,6 +10,7 @@ import { courses, levelAvailable } from './levels';
 import { themeFor } from './themes';
 import { CollectibleIcon } from './collectible-icon';
 import { avatarTexture } from './avatar-texture';
+import { avatarEditorPreview } from '../../lib/avatar-editor';
 import type { GameController, InputState, WorldState } from './engine';
 import styles from './game.module.css';
 import {WorldMap} from './world-map';
@@ -67,7 +68,7 @@ export default function Game() {
     // Warm the engine, avatar and background images while the map is explored.
     void import('./engine').catch(()=>{});
     void texture().catch(()=>{});
-    const images=['/jumpyland/pbr/aerial_grass_rock-Diffuse.jpg','/jumpyland/pbr/aerial_grass_rock-nor_gl.jpg','/jumpyland/pbr/mossy_rock-Diffuse.jpg','/jumpyland/pbr/mossy_rock-nor_gl.jpg'].map(src=>{const image=new Image();image.src=src;void image.decode().catch(()=>{});return image;});
+    const images=['/jumpyland/pbr/japanese_cedar_bark-Diffuse.jpg','/jumpyland/pbr/japanese_cedar_bark-nor_gl.jpg','/jumpyland/terrain-materials-v1.png'].map(src=>{const image=new Image();image.src=src;void image.decode().catch(()=>{});return image;});
     return()=>{images.forEach(image=>{image.onload=null;});};
   },[room]);
   const avatar=useRef<HTMLDivElement>(null),stage=useRef<HTMLDivElement>(null);
@@ -133,7 +134,7 @@ export default function Game() {
         const ended={...result,coins:count};setAttempt(ended);
         if(cause==='complete')void save(ended);
         else {setFailure(cause==='fall'?'You fell below the course.':cause==='enemy'?'A '+themeFor(number).villain+' caught you.':'You touched a hazard.');change('failed');}
-      },pause,handle=>{if(!mounted.current){handle.destroy();return;}controller.current=handle;change('running');audio.current?.play(number);if(document.hidden||!document.hasFocus()){handle.pause();audio.current?.pause();change('paused');}},setProgress,setWorld,selection,effect=>audio.current?.effect(effect));
+      },pause,handle=>{if(!mounted.current){handle.destroy();return;}controller.current=handle;change('running');audio.current?.play(number);if(document.hidden||!document.hasFocus()){handle.pause();audio.current?.pause();change('paused');}},setProgress,setWorld,selection,effect=>audio.current?.effect(effect),90,room?avatarEditorPreview(room,room.appearance):null);
     }catch(e){if(mounted.current){setError(e instanceof Error?e.message:'Unable to start. Please retry.');change('menu');}}
     finally{busy.current=false;}
   }
