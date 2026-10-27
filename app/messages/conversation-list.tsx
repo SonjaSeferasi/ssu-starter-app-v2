@@ -121,12 +121,13 @@ export function ConversationListPanel() {
         </button>
       )}
       {tab === 'groups' && (
-        // Group invitations (SRS-205) are not built yet, so students are told before they create a group.
+        // Invitations can be sent (SRS-205.1, SRS-205.3, #487), but answering them (SRS-205.5 to 205.8) comes next,
+        // so students are told that invited friends cannot join yet.
         <div className={styles.notice} role="note">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M12 8v4" /><path d="M12 16h.01" /></svg>
           <div>
-            <p className={styles.noticeTitle}>You can’t invite people to groups yet</p>
-            <p className={styles.noticeText}>Group invitations are coming in a later update. For now, you’ll be the only member of any group you create.</p>
+            <p className={styles.noticeTitle}>Invited friends can’t join yet</p>
+            <p className={styles.noticeText}>Open a group and choose Invite to send a friend an invitation. Accepting invitations comes in the next update.</p>
           </div>
         </div>
       )}
@@ -136,10 +137,17 @@ export function ConversationListPanel() {
           New group
         </button>
       )}
+      {/* #483: a way to search for people and send friend requests on the Friends page before inviting them. */}
+      {!picking && !confirmingGroup && (
+        <Link href="/friends" className={styles.findPeople}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+          Find people
+        </Link>
+      )}
       {tab === 'groups' && confirmingGroup ? (
         <div className={styles.picker} role="group" aria-labelledby="new-group-title">
           <h2 id="new-group-title" className={styles.stepTitle}>Create a group chat?</h2>
-          <p className={styles.stepText}>You’ll be the group’s owner and its first member, and the group opens right away so you can send the first message. Adding friends to the group comes with group invitations in a later update.</p>
+          <p className={styles.stepText}>You’ll be the group’s owner and its first member, and the group opens right away so you can send the first message. Then choose Invite in the group to invite your friends.</p>
           {createError && <p className={styles.listError} role="alert">{createError}</p>}
           <div className={styles.stepActions}>
             <button type="button" className={styles.newGroup} onClick={newGroup} disabled={creating}>{creating ? 'Creating group…' : 'Create group'}</button>
