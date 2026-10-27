@@ -58,7 +58,7 @@ beforeEach(() => {
 import { GET as campusFeed } from '../../app/api/posts/feed/campus/route';
 import { GET as friendsFeed } from '../../app/api/posts/feed/friends/route';
 import { POST as createPost } from '../../app/api/posts/route';
-import { PATCH as updatePost, DELETE as deletePost } from '../../app/api/posts/[postId]/route';
+import { GET as getPost, PATCH as updatePost, DELETE as deletePost } from '../../app/api/posts/[postId]/route';
 import { POST as attachPhotos } from '../../app/api/posts/[postId]/photos/route';
 import { DELETE as removePhoto } from '../../app/api/posts/[postId]/photos/[assetId]/route';
 import { POST as likePost, DELETE as unlikePost } from '../../app/api/posts/[postId]/likes/route';
@@ -95,6 +95,8 @@ describe('Campus Feed (SRS-301)', () => {
           editedAt: null,
           photos: [],
           mentions: [],
+          isRepost: false,
+          repostOf: null,
           likeCount: 0,
           isLikedByViewer: false,
           commentCount: 0,
@@ -183,7 +185,7 @@ describe('Create Post (SRS-303)', () => {
       req('/api/posts', { method: 'POST', token: 'valid', body: JSON.stringify({ textContent: '   ', visibility: 'public' }) })
     );
     expect(response.status).toBe(201);
-    expect(rpc).toHaveBeenCalledWith('socialu_create_post', { p_auth_id: user.id, p_text: '', p_visibility: 'public' });
+    expect(rpc).toHaveBeenCalledWith('socialu_create_post', { p_auth_id: user.id, p_text: '', p_visibility: 'public', p_repost_of_post_id: null });
   });
 
   it('creates a post for the authenticated student', async () => {
@@ -192,9 +194,46 @@ describe('Create Post (SRS-303)', () => {
       req('/api/posts', { method: 'POST', token: 'valid', body: JSON.stringify({ textContent: 'Hello!', visibility: 'public' }) })
     );
     expect(response.status).toBe(201);
-    expect(rpc).toHaveBeenCalledWith('socialu_create_post', { p_auth_id: user.id, p_text: 'Hello!', p_visibility: 'public' });
+    expect(rpc).toHaveBeenCalledWith('socialu_create_post', { p_auth_id: user.id, p_text: 'Hello!', p_visibility: 'public', p_repost_of_post_id: null });
     const body = await response.json();
     expect(body.post.authorId).toBe(42);
+  });
+
+  // Share (additional functionality, not SRS-numbered): repostOfPostId in
+  // the body creates a repost. Authorization/anti-chaining/visibility-
+  // forcing all live in socialu_create_post -- this just proves the route
+  // passes it through correctly and shapes the returned embed.
+  it('creates a repost and shapes its embedded original', async () => {
+    rpc.mockResolvedValue({
+      data: rawRow({
+        text_content: 'Check this out everyone',
+        is_repost: true,
+        repost_of: {
+          post_id: 10, author_id: 7, author_name: 'Sam Lee', author_username: 'sam',
+          author_photo_key: null, published_at: '2026-10-20T00:00:00Z', text_content: 'Original text', photos: [],
+        },
+      }),
+      error: null,
+    });
+    const response = await createPost(
+      req('/api/posts', { method: 'POST', token: 'valid', body: JSON.stringify({ textContent: 'Check this out everyone', visibility: 'public', repostOfPostId: 10 }) })
+    );
+    expect(response.status).toBe(201);
+    expect(rpc).toHaveBeenCalledWith('socialu_create_post', { p_auth_id: user.id, p_text: 'Check this out everyone', p_visibility: 'public', p_repost_of_post_id: 10 });
+    const body = await response.json();
+    expect(body.post.isRepost).toBe(true);
+    expect(body.post.repostOf).toEqual({
+      postId: 10, authorId: 7, authorName: 'Sam Lee', authorUsername: 'sam',
+      authorPhotoUrl: null, publishedAt: '2026-10-20T00:00:00Z', textContent: 'Original text', photos: [],
+    });
+  });
+
+  it('rejects reposting an inaccessible or nonexistent original with the generic error', async () => {
+    rpc.mockResolvedValue({ data: null, error: { code: 'P0002', message: "This post isn't available." } });
+    const response = await createPost(
+      req('/api/posts', { method: 'POST', token: 'valid', body: JSON.stringify({ textContent: '', visibility: 'public', repostOfPostId: 999 }) })
+    );
+    expect(response.status).toBe(404);
   });
 });
 
@@ -244,6 +283,46 @@ describe('Attach Photos (SRS-304)', () => {
     expect(await response.json()).toEqual({ attachedCount: 2 });
     expect(storageUpload).toHaveBeenCalledTimes(2);
     expect(rpc).toHaveBeenCalledTimes(2);
+  });
+});
+
+// Share (additional functionality, not SRS-numbered): fetch a single
+// post by id for a direct link.
+describe('Get a single post (Share)', () => {
+  it('rejects an unauthenticated request', async () => {
+    const response = await getPost(req('/api/posts/1'), { params: Promise.resolve({ postId: '1' }) });
+    expect(response.status).toBe(401);
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
+  it('rejects an invalid post id without calling the database', async () => {
+    const response = await getPost(req('/api/posts/nope', { token: 'valid' }), { params: Promise.resolve({ postId: 'nope' }) });
+    expect(response.status).toBe(400);
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
+  it('returns the shaped post, including its verified mentions', async () => {
+    rpc.mockResolvedValue({
+      data: rawRow({ mentions: [{ student_id: 7, matched_username: 'sam', username: 'sam', name: 'Sam Lee', photo_key: null }] }),
+      error: null,
+    });
+    const response = await getPost(req('/api/posts/1', { token: 'valid' }), { params: Promise.resolve({ postId: '1' }) });
+    expect(response.status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_get_post', { p_auth_id: user.id, p_post_id: 1 });
+    const body = await response.json();
+    expect(body.post.postId).toBe(1);
+    expect(body.post.mentions).toEqual([{ studentId: 7, matchedUsername: 'sam', username: 'sam', name: 'Sam Lee', photoUrl: null }]);
+  });
+
+  // socialu_get_post collapses nonexistent/deleted/unauthorized/blocked into
+  // the same P0002 -> 404, so the route-level contract is identical for all
+  // of them -- the PGlite test (share-post.test.ts) proves the SQL actually
+  // does this; this just proves the route maps that one error code correctly.
+  it('returns the same generic 404 whether the post is missing, deleted, unauthorized, or the viewer is blocked', async () => {
+    rpc.mockResolvedValue({ data: null, error: { code: 'P0002', message: "This post isn't available." } });
+    const response = await getPost(req('/api/posts/999', { token: 'valid' }), { params: Promise.resolve({ postId: '999' }) });
+    expect(response.status).toBe(404);
+    expect((await response.json()).error).toBe("This post isn't available.");
   });
 });
 
