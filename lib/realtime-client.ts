@@ -5,6 +5,8 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 // the realtime.messages policy limits each student to their own student:<auth uid> channel.
 // SRS-201.9 (#799): emoji messages also carry kind 'emoji' (the emoji is in text); text messages have no kind.
 export type ChatMessageEvent = { id: string; conversation_id: string; sender_id: string; text: string; sent_at: string; kind?: 'emoji' };
+// SRS-202.6 (#844): sent to each current member when a group is named or renamed.
+export type ChatConversationEvent = { conversation_id: string; name: string | null };
 export type ChatLiveStatus = 'connecting' | 'live' | 'offline' | 'signed-out' | 'unavailable';
 
 let client: SupabaseClient | null = null;
@@ -26,7 +28,8 @@ function tokenUserId(token: string) {
   } catch { return null; }
 }
 
-export function subscribeToChat(onMessage: (message: ChatMessageEvent) => void, onStatus: (status: ChatLiveStatus) => void) {
+export function subscribeToChat(onMessage: (message: ChatMessageEvent) => void, onStatus: (status: ChatLiveStatus) => void,
+  onConversation?: (update: ChatConversationEvent) => void) {
   const supabase = browserClient();
   if (!supabase) { onStatus('unavailable'); return () => {}; }
   const token = storedAccessToken();
@@ -36,7 +39,8 @@ export function subscribeToChat(onMessage: (message: ChatMessageEvent) => void, 
   onStatus('connecting');
   let disposed = false;
   const channel = supabase.channel(`student:${userId}`, { config: { private: true } })
-    .on('broadcast', { event: 'message_created' }, ({ payload }) => onMessage(payload as ChatMessageEvent));
+    .on('broadcast', { event: 'message_created' }, ({ payload }) => onMessage(payload as ChatMessageEvent))
+    .on('broadcast', { event: 'conversation_updated' }, ({ payload }) => onConversation?.(payload as ChatConversationEvent));
 
   void supabase.realtime.setAuth(token).then(() => {
     if (disposed) return;
