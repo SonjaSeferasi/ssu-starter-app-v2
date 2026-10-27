@@ -55,8 +55,8 @@ export function EditPostModal({
       onClose();
       return;
     }
-    if (!text.trim()) {
-      setError('Post text is required.');
+    if (!text.trim() && keptPhotos.length === 0 && newImages.length === 0) {
+      setError('A post must have text or at least one photo.');
       return;
     }
     setError('');

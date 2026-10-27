@@ -148,12 +148,18 @@ describe('Create Post (SRS-303)', () => {
     expect(response.status).toBe(401);
   });
 
-  it('rejects blank text (validated inside socialu_create_post)', async () => {
-    rpc.mockResolvedValue({ data: null, error: { code: '22023', message: 'Post text is required.' } });
+  // Neither SRS-303 nor SRS-304 requires text to accompany a photo -- a
+  // blank/whitespace-only textContent is accepted here (socialu_create_post
+  // stores no text_content); PostComposer.tsx is what actually guards
+  // against publishing with neither text nor a photo, since the two calls
+  // (create post, then attach photos) aren't atomic.
+  it('accepts blank text (a photo-only post attaches its photo in a separate request)', async () => {
+    rpc.mockResolvedValue({ data: rawRow({ text_content: null }), error: null });
     const response = await createPost(
       req('/api/posts', { method: 'POST', token: 'valid', body: JSON.stringify({ textContent: '   ', visibility: 'public' }) })
     );
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(201);
+    expect(rpc).toHaveBeenCalledWith('socialu_create_post', { p_auth_id: user.id, p_text: '', p_visibility: 'public' });
   });
 
   it('creates a post for the authenticated student', async () => {
@@ -271,10 +277,20 @@ describe('Edit Post text (SRS-306.1/306.2/306.4/306.5)', () => {
     expect(response.status).toBe(404);
   });
 
-  it('rejects blank text (validated inside socialu_update_post)', async () => {
-    rpc.mockResolvedValue({ data: null, error: { code: '22023', message: 'Post text is required.' } });
+  it('rejects blank text when the post has no photos to fall back on (schema.sql\'s check_post_content trigger, P0001 -> 400)', async () => {
+    rpc.mockResolvedValue({ data: null, error: { code: 'P0001', message: 'A published post must contain text or a photo' } });
     const response = await updatePost(editReq('valid', '   '), { params: Promise.resolve({ postId: '1' }) });
     expect(response.status).toBe(400);
+  });
+
+  it('accepts blank text when the post already has at least one photo', async () => {
+    rpc.mockResolvedValue({
+      data: rawRow({ text_content: null, photos: [{ asset_id: 7, storage_key: 'post_photo/1/7.jpg' }] }),
+      error: null,
+    });
+    const response = await updatePost(editReq('valid', '   '), { params: Promise.resolve({ postId: '1' }) });
+    expect(response.status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_update_post', { p_auth_id: user.id, p_post_id: 1, p_text: '' });
   });
 });
 
