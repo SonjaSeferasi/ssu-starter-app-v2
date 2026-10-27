@@ -3,7 +3,8 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 // SRS-201.1 (#298): browser side of Supabase Realtime. Uses only the public URL and anon key;
 // the realtime.messages policy limits each student to their own student:<auth uid> channel.
-export type ChatMessageEvent = { id: string; conversation_id: string; sender_id: string; text: string; sent_at: string };
+// SRS-201.9 (#799): emoji messages also carry kind 'emoji' (the emoji is in text); text messages have no kind.
+export type ChatMessageEvent = { id: string; conversation_id: string; sender_id: string; text: string; sent_at: string; kind?: 'emoji' };
 export type ChatLiveStatus = 'connecting' | 'live' | 'offline' | 'signed-out' | 'unavailable';
 
 let client: SupabaseClient | null = null;
