@@ -1,8 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import type { KeyboardEvent } from 'react';
 import { ImagePreview, type PendingImage } from './ImagePreview';
 import { VisibilitySelector, type Visibility } from './VisibilitySelector';
+import { MentionDropdown } from './MentionDropdown';
+import { useMentionAutocomplete } from './use-mention-autocomplete';
 
 export function PostComposer({
   accessToken,
@@ -20,6 +23,28 @@ export function PostComposer({
   const [images, setImages] = useState<PendingImage[]>([]);
   const [publishing, setPublishing] = useState(false);
   const [error, setError] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+  const mention = useMentionAutocomplete();
+
+  function handleTextChange(value: string, cursor: number) {
+    setText(value);
+    mention.handleTextChange(value, cursor);
+  }
+
+  function selectMention(username: string) {
+    const cursor = inputRef.current?.selectionStart ?? text.length;
+    const result = mention.applyMention(text, cursor, username);
+    setText(result.text);
+    mention.close();
+    requestAnimationFrame(() => {
+      inputRef.current?.focus();
+      inputRef.current?.setSelectionRange(result.cursor, result.cursor);
+    });
+  }
+
+  function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (mention.handleKeyDown(e, selectMention)) e.preventDefault();
+  }
 
   function addFiles(fileList: FileList | null) {
     if (!fileList) return;
@@ -86,12 +111,26 @@ export function PostComposer({
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-sm font-semibold text-emerald-800">
           {authorInitial}
         </div>
-        <input
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Share something with your campus…"
-          className="min-w-0 flex-1 rounded-full border-0 bg-stone-50 px-4 py-3 text-sm text-stone-800 outline-none placeholder:text-stone-400 focus:ring-2 focus:ring-emerald-200"
-        />
+        <div className="relative min-w-0 flex-1">
+          <input
+            ref={inputRef}
+            value={text}
+            onChange={(e) => handleTextChange(e.target.value, e.target.selectionStart ?? e.target.value.length)}
+            onKeyDown={handleKeyDown}
+            onBlur={mention.close}
+            placeholder="Share something with your campus… (type @ to mention someone)"
+            className="w-full rounded-full border-0 bg-stone-50 px-4 py-3 text-sm text-stone-800 outline-none placeholder:text-stone-400 focus:ring-2 focus:ring-emerald-200"
+          />
+          {mention.open ? (
+            <MentionDropdown
+              members={mention.members}
+              loading={mention.loading}
+              activeIndex={mention.activeIndex}
+              onHover={mention.setActiveIndex}
+              onSelect={selectMention}
+            />
+          ) : null}
+        </div>
         <button
           onClick={handlePublish}
           disabled={publishing || !visibility}

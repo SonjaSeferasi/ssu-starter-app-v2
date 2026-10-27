@@ -9,6 +9,7 @@ import { DeletePostModal } from './DeletePostModal';
 import { ReportPostModal, type ReportResult } from './ReportPostModal';
 import { LikeButton } from './LikeButton';
 import { CommentSection } from './CommentSection';
+import { MentionText } from './MentionText';
 import type { FeedPost } from './types';
 
 export function PostCard({
@@ -138,7 +139,11 @@ export function PostCard({
 
       {reportNotice ? <p className="mt-2 text-xs text-stone-500">{reportNotice}</p> : null}
 
-      {post.textContent ? <p className="mt-3 whitespace-pre-wrap text-[15px] text-stone-800">{post.textContent}</p> : null}
+      {post.textContent ? (
+        <p className="mt-3 whitespace-pre-wrap text-[15px] text-stone-800">
+          <MentionText text={post.textContent} mentions={post.mentions} />
+        </p>
+      ) : null}
       <PostMedia photos={post.photos} />
 
       {/* Share remains visual prep; likes, comments and saving use their APIs. */}

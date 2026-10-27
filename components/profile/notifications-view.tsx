@@ -12,7 +12,7 @@ import styles from './profile.module.css';
 
 type NotificationItem = {
   notification_id: number;
-  kind: 'friend_request' | 'friendship_accepted' | 'post_like' | 'post_comment' | 'comment_reply';
+  kind: 'friend_request' | 'friendship_accepted' | 'post_like' | 'post_comment' | 'comment_reply' | 'mention';
   created_at: string;
   read_at: string | null;
   actor_username: string;
@@ -38,6 +38,7 @@ function feedNotificationText(item: NotificationItem): string {
   const name = names[0] ?? item.actor_name;
   if (item.kind === 'post_comment') return ' commented on your post.';
   if (item.kind === 'comment_reply') return ' replied to your comment.';
+  if (item.kind === 'mention') return item.comment_id ? ' mentioned you in a comment.' : ' mentioned you in a post.';
   if (count <= 1) return ' liked your post.';
   if (count === 2) return ` and ${names[1]} liked your post.`;
   const others = count - 2;
@@ -147,7 +148,7 @@ function NotificationsContent() {
         : !shown.length ? <div className={styles.empty}>
           {tab === 'friends' ? <UserPlus /> : <Bell />}
           <h2>{tab === 'friends' ? 'No friend requests' : 'No notifications yet'}</h2>
-          <p>{tab === 'friends' ? 'When someone sends you a friend request, it will show up here.' : 'Accepted friend requests, likes, and comments will show up here.'}</p>
+          <p>{tab === 'friends' ? 'When someone sends you a friend request, it will show up here.' : 'Accepted friend requests, likes, comments, and mentions will show up here.'}</p>
         </div>
         : <ul className={styles.notificationList}>{shown.map(item => <NotificationRow key={item.notification_id} item={item} onAnswered={load} />)}</ul>}
     </div>
