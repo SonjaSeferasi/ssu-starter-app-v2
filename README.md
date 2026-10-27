@@ -263,4 +263,4 @@ SRS-212.9 (LP): when a message is sent in a private or group conversation, each 
 
   It runs with and without LN's school communities migration.
 
-Status: not applied to the hosted database yet (needs a rolled-back dry run first).
+Status: applied to the hosted database on 2026-10-26 and recorded as versions `20261026180000` and `20261026180100`, after a rolled-back dry run of both. Before applying, the hosted invitation function was checked to match `20261026120100`. In the dry run, run as `service_role`: loens1 went from 0 to 1 notification ("Test 2, 1 new", DM 17) after Testing 2 sent a message, the sender got none for their own message, and a new invitation went live to testing 1 only (no events to anyone else). After applying: both functions are server-only, LN's school rule is applied, and data is unchanged.
