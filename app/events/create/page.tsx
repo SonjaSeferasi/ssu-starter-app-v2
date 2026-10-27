@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { storedAccessToken } from '../../../lib/account/session';
-import { ArrowLeft, CirclePlus } from 'lucide-react';
+import { ArrowLeft, Plus } from 'lucide-react';
 import shellStyles from '../../../components/navigation/social-shell.module.css';
 import styles from '../events.module.css';
 import { useNavigationSession } from '../../../components/navigation/social-shell';
@@ -92,7 +92,7 @@ export default function CreateEventPage() {
       {error ? <p role="alert" className={styles.alert}>{error}</p> : null}
 
       <section className={styles.panel}>
-        <form onSubmit={handleSubmit} className={`${styles.card} ${styles.form}`}>
+        <form onSubmit={handleSubmit} className={`${styles.formCard} ${styles.form}`}>
           <div className={styles.row}>
             <label className={styles.label}>
               Event title
@@ -158,8 +158,8 @@ export default function CreateEventPage() {
 
           <div className={styles.formFooter}>
             <p className={styles.hint}>Once created, your event appears on the Events page for other students.</p>
-            <button type="submit" disabled={submitting} className={styles.button}>
-              <CirclePlus aria-hidden="true" />
+            <button type="submit" disabled={submitting} className={styles.primaryButton}>
+              <Plus aria-hidden="true" />
               {submitting ? 'Creating event…' : 'Create event'}
             </button>
           </div>
