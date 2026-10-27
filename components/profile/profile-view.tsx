@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import {
-  Users, Bookmark, Check, Settings, Camera, GraduationCap, Grid3x3, Images, Lock, MessageCircle, SquareUser, UserCheck, UserPlus, UserRound, X,
+  Users, Bookmark, Check, Settings, Camera, GraduationCap, BookOpen, FileText, ArrowUpRight, Pencil, Tag, Images, Lock, MessageCircle, SquareUser, UserCheck, UserPlus, UserRound, X, Palette,
 } from 'lucide-react';
 import type { StudentProfile } from '../../lib/profile';
 import type { FeedPost } from '../feed/types';
@@ -15,9 +15,18 @@ import { useNavigationSession } from '../navigation/social-shell';
 import styles from './profile.module.css';
 import { FriendActions } from '../friends/friend-actions';
 import { SavePostButton, ShareProfile, socialRequest, type SocialSummary } from './social-actions';
-import { ProfileHighlights } from './highlights';
+import { ProfileCampusSidebar } from './profile-campus-sidebar';
+import { ProfileJournal } from './profile-journal';
+import campus from './profile-campus.module.css';
+import spaceStyles from './profile-space.module.css';
+import { ProfileCover } from './profile-cover';
+import { useProfileSpace } from './use-profile-space';
+import { ProfileCorner } from './profile-corner';
+import { ProfileMemories } from './profile-memories';
+import { ProfilePortrait } from './profile-portrait';
+import { ProfileContentTabs, type ProfileCategory } from './profile-content-tabs';
 
-type Category = 'posts' | 'saved' | 'tagged';
+type Category = ProfileCategory;
 
 // /api/auth/session reports a verified student without a SocialU profile row as signed out (409),
 // but that student must still reach /profile to create one. A stored token lets the page try;
@@ -40,10 +49,6 @@ export async function profileFetch(path: string, init: RequestInit = {}) {
 // SRS-109.1: a default avatar until a profile photo is saved.
 export function Avatar({ url, name, className = '' }: { url: string | null; name: string; className?: string }) {
   return <span className={`${styles.avatar} ${className}`}>{url ? <img src={url} alt={`${name}'s profile photo`} /> : <UserRound aria-label="Default profile avatar" />}</span>;
-}
-
-function count(value: number, one: string, many: string) {
-  return <><strong>{value.toLocaleString()}</strong> {value === 1 ? one : many}</>;
 }
 
 // Preserve the group’s profile logout action when replacing the profile layout.
@@ -76,7 +81,7 @@ function FriendListRow({ friend, onClose }: { friend: ProfileFriend; onClose: ()
       <Avatar url={friend.photo_url} name={friend.name} />
       <span className={styles.friendName}>{friend.name}<small>@{friend.username}</small></span>
     </Link>
-    {friend.is_me ? <span className={styles.friendTag}>You</span> : <div className={styles.friendControls}><FriendActions username={friend.username} /></div>}
+    {friend.is_me ? <span className={styles.friendTag}>You</span> : <div className={styles.friendControls}><FriendActions username={friend.username} showBlock={false} /></div>}
   </li>;
 }
 
@@ -88,6 +93,12 @@ function PeopleDialog({ profile, initial, onClose }: { profile: StudentProfile; 
   const [list, setList] = useState<PeopleList>(initial);
   const [people, setPeople] = useState<ProfileFriend[] | null>(null);
   const [error, setError] = useState('');
+  const [revision, setRevision] = useState(0);
+  useEffect(() => {
+    const refresh = () => setRevision(value => value + 1);
+    window.addEventListener('socialu-connections-changed', refresh);
+    return () => window.removeEventListener('socialu-connections-changed', refresh);
+  }, []);
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose(); };
     window.addEventListener('keydown', onKey);
@@ -105,7 +116,7 @@ function PeopleDialog({ profile, initial, onClose }: { profile: StudentProfile; 
       })
       .catch(reason => { if (active) setError(reason instanceof Error ? reason.message : 'Unable to load this list.'); });
     return () => { active = false; };
-  }, [list, profile.is_own, profile.username]);
+  }, [list, profile.is_own, profile.username, revision]);
 
   const empty = list === 'friends'
     ? { title: 'No friends yet', text: profile.is_own ? 'Add classmates from their profiles and they will show up here.' : 'When they add friends, they will show up here.' }
@@ -139,12 +150,15 @@ function ProfileActions({ profile, social, onFollow }: { profile: StudentProfile
   async function follow() {
     if (!social || busy) return;
     setBusy(true); setError('');
-    try { onFollow(await socialRequest('', { action: social.following ? 'unfollow' : 'follow', username: profile.username })); }
+    try {
+      onFollow(await socialRequest('', { action: social.following ? 'unfollow' : 'follow', username: profile.username }));
+      window.dispatchEvent(new Event('socialu-connections-changed'));
+    }
     catch (reason) { setError(reason instanceof Error ? reason.message : 'Unable to follow this student.'); }
     finally { setBusy(false); }
   }
-  return <div className={styles.actions}>
-    {profile.is_own ? <><Link href="/profile/edit" className={styles.button}>Edit profile</Link><Link href="/friends" className={`${styles.button} ${styles.secondary}`}>Friends</Link></> : <>
+  return <div className={`${styles.actions} ${campus.actions}`}>
+    {profile.is_own ? <><Link href="/profile/edit" className={styles.button}><Pencil size={16} />Edit profile</Link></> : <>
       <button type="button" className={styles.button} disabled={busy || !social} aria-pressed={social?.following ?? false} onClick={follow}>
         {social?.following ? <UserCheck /> : <UserPlus />}{busy ? 'Updating…' : social?.following ? 'Following' : 'Follow'}
       </button>
@@ -194,7 +208,7 @@ export function PostViewer({ post, onClose, onSavedChange }: { post: FeedPost; o
   </div>;
 }
 
-function PostGrid({ username, category, own, onCount }: { username: string; category: Category; own: boolean; onCount: (count: number | null) => void }) {
+export function PostGrid({ username, category, own, onCount }: { username: string; category: Category; own: boolean; onCount: (count: number | null) => void }) {
   const [posts, setPosts] = useState<FeedPost[] | null>(null);
   const [error, setError] = useState('');
   const [open, setOpen] = useState<FeedPost | null>(null);
@@ -247,6 +261,9 @@ function ProfileContent({ username }: { username?: string }) {
   const [socialError, setSocialError] = useState('');
   const [socialRetry, setSocialRetry] = useState(0);
   const [contentCount, setContentCount] = useState<number | null>(null);
+  const [lookSaved,setLookSaved]=useState(false);
+  const space = useProfileSpace(profile?.username ?? null);
+  useEffect(()=>{setLookSaved(new URLSearchParams(window.location.search).get('look')==='saved');},[]);
 
   useEffect(() => {
     const refresh = () => setSocialRetry(value => value + 1);
@@ -261,25 +278,28 @@ function ProfileContent({ username }: { username?: string }) {
 
   useEffect(() => {
     let active = true;
-    setSocial(null); setSocialError('');
+    setSocialError('');
     socialRequest(`?username=${encodeURIComponent(username ?? '')}`).then(data => { if (active) setSocial(data); })
       .catch(reason => { if (active) setSocialError(reason.message); });
     return () => { active = false; };
   }, [username, socialRetry]);
 
   useEffect(() => {
+    setProfile(null); setSocial(null); setError(''); setMissing(false); setCategory('posts');
+  }, [username]);
+
+  useEffect(() => {
     let active = true;
-    setProfile(null); setError(''); setMissing(false); setCategory('posts');
     profileFetch(username ? `/api/profiles?username=${encodeURIComponent(username)}` : '/api/profiles')
       .then(({ response, data }) => {
         if (!active) return;
         if (response.status === 404) { setMissing(true); return; }
         if (!response.ok) throw new Error(data.error || 'Unable to load this profile.');
-        setProfile(data.profile);
+        setProfile(data.profile); setError(''); setMissing(false);
       })
       .catch(reason => { if (active) setError(reason instanceof Error ? reason.message : 'Unable to load this profile.'); });
     return () => { active = false; };
-  }, [username]);
+  }, [username, socialRetry]);
 
   if (missing) return <main className={styles.page}><div className={styles.empty}><SquareUser /><h2>Profile not available</h2>
     <p>{username ? 'This student’s profile cannot be shown. Check the username and try again.' : 'Finish creating your SocialU profile first.'}</p>
@@ -288,65 +308,50 @@ function ProfileContent({ username }: { username?: string }) {
   if (error) return <main className={styles.page}><p className={`${styles.notice} ${styles.error}`} role="alert">{error}</p></main>;
   if (!profile) return <main className={styles.page} aria-busy="true"><div className={`${styles.skeleton}`} style={{ height: 240 }} /></main>;
 
-  const tabs: Category[] = profile.is_own ? ['posts', 'saved', 'tagged'] : ['posts', 'tagged'];
-  return <main className={`${styles.page} ${styles.profilePage}`}>
-    <div className={styles.profileIntro}>
-      <nav aria-label="Breadcrumb"><Link href="/profile">{profile.is_own ? 'Your profile' : 'My profile'}</Link>{!profile.is_own && <><span>/</span><span>{profile.name}</span></>}</nav>
-      <span><Check size={13} /> Campus verified</span>
-    </div>
-    <section className={styles.header} aria-label={`${profile.name}'s profile`}>
-      <div className={styles.avatarWrap}>
-        <Avatar url={profile.photo_url} name={profile.name} />
-        <span className={styles.avatarBadge} title="Verified university account"><Check size={14} /><span className={styles.srOnly}>Verified university account</span></span>
-      </div>
-      <div className={styles.info}>
-        <div className={styles.profileHeading}>
-          <h1 className={styles.profileHandle}>{profile.username}</h1>
-          <ProfileActions profile={profile} social={social} onFollow={setSocial} />
-          {profile.is_own && <Link href="/profile/settings" className={styles.settings} aria-label="Profile settings"><Settings size={20} /></Link>}
-        </div>
-        <ul className={styles.stats}>
-          <li>{count(profile.post_count, 'post', 'posts')}</li>
-          <li><button type="button" className={styles.statButton} onClick={() => setPeople('friends')}>{count(profile.friend_count, 'friend', 'friends')}</button></li>
-          <li><button type="button" className={styles.statButton} onClick={() => setPeople('followers')}><strong>{social ? social.follower_count.toLocaleString() : '—'}</strong> followers</button></li>
-          <li><button type="button" className={styles.statButton} onClick={() => setPeople('following')}><strong>{social ? social.following_count.toLocaleString() : '—'}</strong> following</button></li>
+  return <main className={`${styles.page} ${campus.page} ${spaceStyles.theme}`} data-palette={space.look.palette} data-design-theme={space.look.theme} data-frame={space.look.frame}>
+    {lookSaved&&<p className={spaceStyles.savedLookNotice} role="status"><Check size={16}/>Your look is saved to your profile.</p>}
+    <div className={campus.layout}>
+      <div className={campus.mainColumn}>
+        {profile.is_own && <div className={spaceStyles.spaceToolbar}><p>Your profile, your way.</p><Link href="/profile/decorate" className={spaceStyles.decorateLink}><Palette size={15} />Decorate profile</Link></div>}
+        <ProfileCover look={space.look} coverUrl={space.coverUrl} />
+        <section className={campus.hero} aria-label={`${profile.name}'s profile`}>
+          <ProfilePortrait className={campus.portrait} frame={space.look.frame}><Avatar url={profile.photo_url} name={profile.name} /></ProfilePortrait>
+          <div className={campus.identity}>
+            <div className={campus.nameLine}>
+              <h1>{profile.name}</h1>
+              <span className={campus.verified}><Check size={16} />Campus verified</span>
+              {profile.is_own && <Link href="/profile/settings" className={`${styles.settings} ${campus.profileSettings}`} aria-label="Profile settings"><Settings size={20} /></Link>}
+            </div>
+            <p className={campus.handle}>@{profile.username}</p>
+            {(profile.major || profile.class_year) && <p className={campus.study}>{[profile.major, profile.class_year].filter(Boolean).join(' · ')}</p>}
+            {profile.university && <p className={campus.university}><GraduationCap size={20} />{profile.university}</p>}
+            <ProfileActions profile={profile} social={social} onFollow={setSocial} />
+          </div>
+        </section>
+        <ul className={campus.stats} aria-label="Profile statistics">
+          <li><FileText aria-hidden="true" /><span><strong>{profile.post_count.toLocaleString()}</strong>Posts</span></li>
+          <li><button type="button" onClick={() => setPeople('friends')}><Users aria-hidden="true" /><span><strong>{profile.friend_count.toLocaleString()}</strong>Friends</span></button></li>
+          <li><button type="button" onClick={() => setPeople('followers')}><Users aria-hidden="true" /><span><strong>{social ? social.follower_count.toLocaleString() : '—'}</strong>Followers</span></button></li>
+          <li><button type="button" onClick={() => setPeople('following')}><ArrowUpRight aria-hidden="true" /><span><strong>{social ? social.following_count.toLocaleString() : '—'}</strong>Following</span></button></li>
         </ul>
-        <p className={styles.profileDisplayName}>{profile.name}</p>
-        {profile.bio && <p className={styles.bio}>{profile.bio}</p>}
-        {profile.major && <p className={styles.major}>{profile.major}</p>}
-        <p className={styles.meta}>
-          {profile.university && <span><GraduationCap />{profile.university}</span>}
-          {profile.class_year && <span>{profile.class_year}</span>}
-        </p>
+        {socialError && <p className={`${styles.notice} ${styles.error}`} role="alert">{socialError} <button onClick={() => setSocialRetry(value => value + 1)}>Retry</button></p>}
+        {profile.is_own && !profile.setup_completed && <div className={styles.setupBanner} role="status">
+          <p><strong>Complete your profile.</strong> Add your profile photo, major, and class year.</p>
+          <Link href="/profile/edit" className={styles.button}>Complete profile</Link>
+        </div>}
+        <ProfileContentTabs value={category} onChange={setCategory} own={profile.is_own} />
+        {category === 'saved' && <p className={styles.savedNote}><Lock size={12} />Only you can see your saved posts.</p>}
+        <div id="profile-posts" role="tabpanel" aria-labelledby={`profile-tab-${category}`} tabIndex={0}>
+          {category === 'posts'
+            ? <><ProfileCorner key={profile.username} profile={profile} look={space.look} artworkReady={space.status==='ready'} onArtworkSaved={updated=>space.updateLook(current=>({...current,cornerArtwork:updated.cornerArtwork}))} /><ProfileMemories key={`memories-${profile.username}`} profile={profile} /><ProfileJournal key={profile.username} profile={profile} onPostCountChange={delta => setProfile(current => current ? { ...current, post_count: Math.max(0, current.post_count + delta) } : current)} /></>
+            : <><div className={campus.sectionHeading}><h2>{category === 'saved' ? 'Saved posts' : 'Tagged posts'}</h2><span>{contentCount === null ? 'Loading…' : `${contentCount} ${contentCount === 1 ? 'post' : 'posts'}`}</span></div><PostGrid key={`${profile.username}-${category}`} username={profile.username} category={category} own={profile.is_own} onCount={setContentCount} /></>}
+        </div>
       </div>
-    </section>
-    {socialError && <p className={`${styles.notice} ${styles.error}`} role="alert">{socialError} <button onClick={() => setSocialRetry(value => value + 1)}>Retry</button></p>}
-
-    {profile.is_own && !profile.setup_completed && <div className={styles.setupBanner} role="status">
-      <p><strong>Finish setting up your profile.</strong> Add a profile photo, your major, and class year.</p>
-      <Link href="/profile/edit" className={styles.button}>Complete profile</Link>
-    </div>}
-
-    {people && <PeopleDialog profile={profile} initial={people} onClose={() => setPeople(null)} />}
-    <ProfileHighlights key={profile.username} profile={profile} />
-    <div className={styles.tabsRow}>
-      <div className={styles.tabs} role="tablist" aria-label="Profile content">
-        {tabs.map(item => <button key={item} id={`tab-${item}`} aria-controls="profile-posts" type="button" role="tab" className={styles.tab} aria-selected={category === item} tabIndex={category === item ? 0 : -1}
-          onKeyDown={event => { if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) { event.preventDefault(); const items = tabs; const index = items.indexOf(item); const next = event.key === 'Home' ? items[0] : event.key === 'End' ? items[items.length - 1] : items[(index + (event.key === 'ArrowRight' ? 1 : -1) + items.length) % items.length]; setCategory(next); document.getElementById(`tab-${next}`)?.focus(); } }}
-          onClick={() => setCategory(item)}>{item === 'posts' ? <Grid3x3 /> : item === 'saved' ? <Bookmark /> : <UserRound />}{item[0].toUpperCase() + item.slice(1)}</button>)}
-      </div>
-      <span className={styles.momentCount}>{contentCount === null ? 'Loading…' : `${contentCount} ${contentCount === 1 ? 'moment' : 'moments'}`}</span>
+      <ProfileCampusSidebar profile={profile} onViewFriends={() => setPeople('friends')} space={space} />
     </div>
-    {category === 'saved' && <p className={styles.savedNote}><Lock size={12} />Only you can see your saved posts.</p>}
-    <div id="profile-posts" role="tabpanel" aria-labelledby={`tab-${category}`} tabIndex={0}><PostGrid key={`${profile.username}-${category}`} username={profile.username} category={category} own={profile.is_own} onCount={setContentCount} /></div>
-    {profile.is_own && <nav className={styles.profileDock} aria-label="Profile shortcuts">
-      <button className={styles.dockButton} aria-pressed={category !== 'saved'} onClick={() => setCategory('posts')}><UserRound />Profile</button>
-      <button className={styles.dockButton} aria-pressed={category === 'saved'} onClick={() => setCategory('saved')}><Bookmark />Saved</button>
-      <Link className={styles.dockButton} href="/profile/edit"><Settings />Edit</Link>
-      <ShareProfile username={profile.username} compact />
-    </nav>}
-
+    {people && <PeopleDialog profile={profile} initial={people} onClose={() => setPeople(null)} />}
   </main>;
+
 }
 
 export function ProfileView({ username }: { username?: string }) {

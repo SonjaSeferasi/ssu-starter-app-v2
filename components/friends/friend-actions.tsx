@@ -6,7 +6,7 @@ import type { Relationship } from '../../lib/friendships';
 import { friendsRequest } from './client';
 import { ConfirmDialog } from './confirm-dialog';
 import styles from './friends.module.css';
-export function FriendActions({ username, initial, onChanged, inProfile=false }: {username:string;initial?:Relationship;onChanged?:()=>void;inProfile?:boolean}) {
+export function FriendActions({ username, initial, onChanged, inProfile=false, showBlock=true }: {username:string;initial?:Relationship;onChanged?:()=>void;inProfile?:boolean;showBlock?:boolean}) {
   const router=useRouter();
   const [relation,setRelation]=useState<Relationship|null>(initial??null);
   const [busy,setBusy]=useState(false),[error,setError]=useState('');
@@ -44,7 +44,7 @@ export function FriendActions({ username, initial, onChanged, inProfile=false }:
       {relation?.state==='sent' && <button disabled={busy} className={styles.secondary} onClick={()=>void act('cancel')}>Cancel request</button>}
       {relation?.state==='received' && <><button disabled={busy} onClick={()=>void act('accept')}><UserCheck/>Accept</button><button disabled={busy} className={styles.secondary} onClick={()=>void act('decline')}>Decline</button></>}
       {relation?.state==='friends' && <><button disabled={busy} onClick={()=>void act('message')}><MessageCircle/>Message</button><button disabled={busy} className={styles.secondary} onClick={()=>{setError('');setConfirm('remove');}}>Remove friend</button></>}
-      {relation?.state==='blocked'?<button disabled={busy} className={styles.secondary} onClick={()=>{setError('');setConfirm('unblock');}}>Unblock</button>:relation&&<button disabled={busy} className={styles.quiet} onClick={()=>{setError('');setConfirm('block');}}>Block</button>}
+      {showBlock&&(relation?.state==='blocked'?<button disabled={busy} className={styles.secondary} onClick={()=>{setError('');setConfirm('unblock');}}>Unblock</button>:relation&&<button disabled={busy} className={styles.quiet} onClick={()=>{setError('');setConfirm('block');}}>Block</button>)}
     </div>
     {relation?.state==='sent' && <p className={styles.note} role="status">Friend request sent. When accepted, you’ll follow each other.</p>}
     {error&&!confirm&&<p role="alert" className={styles.error}>{error} <button className={styles.quiet} onClick={()=>{setError('');if(initial)onChanged?.();else setRetry(x=>x+1);}}>Refresh</button></p>}

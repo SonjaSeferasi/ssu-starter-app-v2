@@ -7,11 +7,11 @@ import styles from './social-shell.module.css';
 import type { NavigationPosition } from '../../lib/game-room';
 import { accessToken } from '../../lib/account/session';
 
-type IconName = (typeof navigationDestinations)[number]['icon'] | 'profile' | 'search' | 'bell';
+type IconName = (typeof navigationDestinations)[number]['icon'] | 'profile' | 'search' | 'bell' | 'settings';
 
 function NavigationIcon({ name }: { name: IconName }) {
   return (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" data-icon={name}>
       {name === 'home' && <path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z" />}
       {name === 'messages' && <><path d="M4 3h16a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-9l-6 4v-4H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" /><path d="M7 10h.01M12 10h.01M17 10h.01" strokeWidth="3" /></>}
       {name === 'sniping' && <><rect x="3" y="7" width="18" height="13" rx="2" /><path d="M8 7 10 4h4l2 3" /><circle cx="12" cy="13.5" r="3.5" /></>}
@@ -21,6 +21,7 @@ function NavigationIcon({ name }: { name: IconName }) {
       {name === 'profile' && <><circle cx="12" cy="7" r="4" /><path d="M4 21v-2a8 8 0 0 1 16 0v2Z" /></>}
       {name === 'bell' && <><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></>}
       {name === 'search' && <><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></>}
+      {name === 'settings' && <><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" /></>}
     </svg>
   );
 }
@@ -35,7 +36,7 @@ export function SocialNavigation({ pathname, position = 'side', onPositionChange
         {navigationDestinations.map(({ label, href, icon, status, tag }) => (
           <li key={label}>
             {status === 'soon' ? (
-              <span className={`${styles.destination} ${styles.destinationSoon}`} aria-disabled="true">
+              <span className={`${styles.destination} ${styles.destinationSoon}`} aria-disabled="true" title="Coming soon">
                 <NavigationIcon name={icon} /><span>{label}</span><span className={styles.soonTag}>Soon</span>
               </span>
             ) : (
@@ -49,7 +50,7 @@ export function SocialNavigation({ pathname, position = 'side', onPositionChange
       </ul>
       <div className={styles.preferences}>
         <button className={styles.preferenceToggle} onClick={() => setPreferencesOpen(!preferencesOpen)} aria-expanded={preferencesOpen} aria-controls="navigation-preferences">
-          <span aria-hidden="true">⚙</span> Preferences
+          <NavigationIcon name="settings" /> Preferences
         </button>
         {preferencesOpen && <section id="navigation-preferences" className={styles.preferencePanel} aria-label="Navigation preferences">
           <p>Navigation placement</p>

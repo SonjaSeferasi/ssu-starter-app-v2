@@ -9,7 +9,7 @@ export const navigationDestinations = [
   { label: 'Sniping', href: '#', icon: 'sniping', status: 'soon', tag: undefined },
   { label: 'Game Room', href: '/game-room', icon: 'game', status: 'live', tag: 'soon' },
   { label: 'Invitations', href: '#', icon: 'invitations', status: 'soon', tag: undefined },
-  { label: 'Events and Trending', href: '/events', icon: 'events', status: 'live', tag: 'soon' },
+  { label: 'Events', href: '/events', icon: 'events', status: 'live', tag: 'soon' },
 ] as const;
 
 export function isCurrentDestination(pathname: string, href: string) {
