@@ -105,6 +105,12 @@ function NotificationsContent() {
   const firstLoad = useRef(true);
   // SRS-212.9 (LP, Chat): loaded from Chat's own endpoints and kept up to date live; nothing above changes.
   const messages = useMessageNotifications();
+  // SRS-212.9 (LP, Chat): the bell links to ?tab=messages when only message notifications are new.
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('tab') !== 'messages') return;
+    firstLoad.current = false;
+    setTab('messages');
+  }, []);
 
   const load = useCallback(() => {
     profileFetch('/api/notifications')
