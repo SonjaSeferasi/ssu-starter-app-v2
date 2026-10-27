@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Bell, UserCheck, UserPlus, X } from 'lucide-react';
+import { Bell, MessageCircle, UserCheck, UserPlus, X } from 'lucide-react';
+import { MessageNotificationList, useMessageNotifications } from '../chat/message-notifications';
 import { timeAgo } from '../feed/time';
 import { SessionNotice } from '../navigation/section-page';
 import { useNavigationSession } from '../navigation/social-shell';
@@ -94,13 +95,16 @@ function NotificationRow({ item, onAnswered }: { item: NotificationItem; onAnswe
   </li>;
 }
 
-type Tab = 'general' | 'friends';
+// SRS-212.9 (LP, Chat): 'messages' shows message notifications and group invitations from Chat.
+type Tab = 'general' | 'friends' | 'messages';
 
 function NotificationsContent() {
   const [items, setItems] = useState<NotificationItem[] | null>(null);
   const [error, setError] = useState('');
   const [tab, setTab] = useState<Tab>('general');
   const firstLoad = useRef(true);
+  // SRS-212.9 (LP, Chat): loaded from Chat's own endpoints and kept up to date live; nothing above changes.
+  const messages = useMessageNotifications();
 
   const load = useCallback(() => {
     profileFetch('/api/notifications')
@@ -133,9 +137,13 @@ function NotificationsContent() {
       <button type="button" role="tab" className={styles.tab} aria-selected={tab === 'friends'} onClick={() => setTab('friends')}>
         <UserPlus />Friend requests{pendingCount > 0 && <span className={styles.tabCount}>{pendingCount}</span>}
       </button>
+      <button type="button" role="tab" className={styles.tab} aria-selected={tab === 'messages'} onClick={() => setTab('messages')}>
+        <MessageCircle />Messages{messages.count > 0 && <span className={styles.tabCount}>{messages.count}</span>}
+      </button>
     </div>
     <div role="tabpanel" style={{ marginTop: 16 }}>
-      {error ? <p className={`${styles.notice} ${styles.error}`} role="alert">{error}</p>
+      {tab === 'messages' ? <MessageNotificationList state={messages} />
+        : error ? <p className={`${styles.notice} ${styles.error}`} role="alert">{error}</p>
         : !items ? <div className={styles.skeleton} style={{ height: 160, borderRadius: 16 }} aria-busy="true" />
         : !shown.length ? <div className={styles.empty}>
           {tab === 'friends' ? <UserPlus /> : <Bell />}

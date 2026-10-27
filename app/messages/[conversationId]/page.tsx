@@ -156,7 +156,10 @@ function Conversation() {
     setInfo((current) => current && { ...current, name: update.name });
   }
 
-  useEffect(() => subscribeToChat(addMessage, liveStatus, renamed), [conversationId]);
+  // SRS-212.9 (#823): a new group invitation refreshes the list so it appears on the Groups tab.
+  const invited = () => window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT));
+
+  useEffect(() => subscribeToChat(addMessage, liveStatus, renamed, invited), [conversationId]);
 
   // Show the latest message: on open, after the student's own message, and for new messages while they
   // are already at the bottom. If they scrolled up to read, keep their place and offer a button instead.
