@@ -108,6 +108,21 @@ describe('List Comments (SRS-310.1, SRS-311 minimum display)', () => {
     const response = await listComments(req('/api/posts/999/comments', { token: 'valid' }), { params: Promise.resolve({ postId: '999' }) });
     expect(response.status).toBe(404);
   });
+
+  // Tagging/Mentioning Students (additional functionality, not SRS-numbered).
+  it("shapes a comment's mentions with resolved photo URLs", async () => {
+    rpc.mockResolvedValue({
+      data: [rawComment({
+        mentions: [{ student_id: 3, matched_username: 'sam', username: 'sam', name: 'Sam Lee', photo_key: 'profile/3/p.jpg' }],
+      })],
+      error: null,
+    });
+    const response = await listComments(req('/api/posts/10/comments', { token: 'valid' }), { params: Promise.resolve({ postId: '10' }) });
+    const body = await response.json();
+    expect(body.comments[0].mentions).toEqual([
+      { studentId: 3, matchedUsername: 'sam', username: 'sam', name: 'Sam Lee', photoUrl: 'https://signed.example/profile/3/p.jpg' },
+    ]);
+  });
 });
 
 describe('Submit a Comment (SRS-310.1/310.2/310.3)', () => {

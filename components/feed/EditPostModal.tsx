@@ -1,7 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { ImagePreview, type PendingImage } from './ImagePreview';
+import { MentionDropdown } from './MentionDropdown';
+import { useMentionAutocomplete } from './use-mention-autocomplete';
 import type { FeedPhoto, FeedPost } from './types';
 
 export function EditPostModal({
@@ -21,6 +24,28 @@ export function EditPostModal({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const dialogRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const mention = useMentionAutocomplete();
+
+  function handleTextChange(value: string, cursor: number) {
+    setText(value);
+    mention.handleTextChange(value, cursor);
+  }
+
+  function selectMention(username: string) {
+    const cursor = textareaRef.current?.selectionStart ?? text.length;
+    const result = mention.applyMention(text, cursor, username);
+    setText(result.text);
+    mention.close();
+    requestAnimationFrame(() => {
+      textareaRef.current?.focus();
+      textareaRef.current?.setSelectionRange(result.cursor, result.cursor);
+    });
+  }
+
+  function handleTextareaKeyDown(e: ReactKeyboardEvent<HTMLTextAreaElement>) {
+    if (mention.handleKeyDown(e, selectMention)) e.preventDefault();
+  }
 
   // SRS-306.1: opening the modal must not alter the post -- no network calls here.
   useEffect(() => {
@@ -134,12 +159,26 @@ export function EditPostModal({
           <p className="text-sm font-semibold text-stone-900">{post.authorName}</p>
         </div>
 
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          rows={4}
-          className="mt-4 w-full resize-none rounded-2xl border-0 bg-stone-50 px-4 py-3 text-sm text-stone-800 outline-none focus:ring-2 focus:ring-emerald-200"
-        />
+        <div className="relative">
+          <textarea
+            ref={textareaRef}
+            value={text}
+            onChange={(e) => handleTextChange(e.target.value, e.target.selectionStart ?? e.target.value.length)}
+            onKeyDown={handleTextareaKeyDown}
+            onBlur={mention.close}
+            rows={4}
+            className="mt-4 w-full resize-none rounded-2xl border-0 bg-stone-50 px-4 py-3 text-sm text-stone-800 outline-none focus:ring-2 focus:ring-emerald-200"
+          />
+          {mention.open ? (
+            <MentionDropdown
+              members={mention.members}
+              loading={mention.loading}
+              activeIndex={mention.activeIndex}
+              onHover={mention.setActiveIndex}
+              onSelect={selectMention}
+            />
+          ) : null}
+        </div>
 
         {keptPhotos.length > 0 ? (
           <div className="mt-3 flex flex-wrap gap-2">
