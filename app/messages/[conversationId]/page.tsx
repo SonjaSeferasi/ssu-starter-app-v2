@@ -308,6 +308,11 @@ function Conversation() {
             </button>
           )}
           {canInvite && inviting && <InvitePicker conversationId={conversationId} onClose={() => setInviting(false)} />}
+          {/* #847: on wide screens the Messages list sits beside the conversation, so this closes it and returns there.
+              Tablets and phones use the back button instead. Nothing is changed or deleted. */}
+          <Link href="/messages" className={styles.closeButton} aria-label="Close conversation" title="Close conversation">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+          </Link>
         </header>
 
         <ol className={styles.messages} aria-live="polite">

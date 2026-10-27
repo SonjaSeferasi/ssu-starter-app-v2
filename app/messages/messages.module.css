@@ -54,6 +54,10 @@
 .backButton { display: none; place-items: center; flex-shrink: 0; width: 40px; height: 40px; margin-left: -8px; border-radius: 50%; color: #102c30; text-decoration: none; }
 .backButton:hover { background: #e6efe9; }
 .backButton:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+/* #847: close the open conversation and return to the Messages list (wide screens; others use the back button). */
+.closeButton { display: grid; place-items: center; flex-shrink: 0; width: 40px; height: 40px; margin-right: -8px; border-radius: 50%; color: #536963; text-decoration: none; }
+.closeButton:hover { background: #e6efe9; color: #102c30; }
+.closeButton:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
 /* SRS-200.1 (#314): choose a friend to message from the DMs tab (the New message button reuses .newGroup). */
 .picker { display: flex; flex-direction: column; flex: 1; min-height: 0; margin-top: 12px; }
 .pickerTop { display: flex; align-items: center; gap: 10px; }
@@ -164,6 +168,7 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
   .listPanel, :global([data-navigation='bottom']) .listPanel { position: static; height: auto; min-height: 0; }
   .conversationList { overflow: visible; }
   .backButton { display: grid; }
+  .closeButton { display: none; }
 }
 @media (max-width: 700px) {
   :global([data-navigation='bottom']) .footer { bottom: 73px; }
