@@ -31,6 +31,11 @@ CREATE TABLE IF NOT EXISTS socialu.event_attendees (
   PRIMARY KEY (event_id, student_id)
 );
 
+-- Like the other socialu tables, no direct browser access: only the server-only functions below read and write them.
+ALTER TABLE socialu.event_likes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE socialu.event_comments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE socialu.event_attendees ENABLE ROW LEVEL SECURITY;
+
 -- The verified, active student behind a Supabase Auth user (same rule as the other event functions).
 CREATE OR REPLACE FUNCTION socialu.event_student(p_auth_id UUID) RETURNS socialu.students
 LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = '' AS $$
