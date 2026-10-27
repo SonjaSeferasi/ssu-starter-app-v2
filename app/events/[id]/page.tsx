@@ -11,6 +11,7 @@ import { useNavigationSession } from '../../../components/navigation/social-shel
 import { SessionNotice } from '../../../components/navigation/section-page';
 import { EventArt } from '../../../components/events/EventArt';
 import { EventActions } from '../../../components/events/EventActions';
+import { InviteStudents } from '../../../components/events/InviteStudents';
 import { formatWhen, type EventDetail } from '../../../lib/events';
 
 const commentTime = new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
@@ -21,6 +22,7 @@ export default function EventDetailPage() {
   const session = useNavigationSession();
   const { id } = useParams<{ id: string }>();
   const [event, setEvent] = useState<EventDetail | null>(null);
+  const [studentId, setStudentId] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [comment, setComment] = useState('');
   const [posting, setPosting] = useState(false);
@@ -43,6 +45,13 @@ export default function EventDetailPage() {
   useEffect(() => {
     const controller = new AbortController();
     load(controller.signal);
+    // Only the event's creator sees the invite panel; the server enforces this too.
+    const token = storedAccessToken();
+    if (token) {
+      fetch('/api/profile', { headers: { Authorization: `Bearer ${token}` }, cache: 'no-store', signal: controller.signal })
+        .then(async (response) => { if (response.ok) setStudentId((await response.json()).profile?.id ?? null); })
+        .catch(() => {});
+    }
     return () => controller.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
@@ -99,6 +108,9 @@ export default function EventDetailPage() {
                   onChange={(engagement) => { setEvent((current) => current && { ...current, ...engagement }); load(); }} />
               </div>
             </article>
+
+            {studentId && studentId === event.creator_id && Date.parse(event.starts_at) > Date.now()
+              ? <InviteStudents eventId={event.event_id} /> : null}
 
             <section id="comments" className={styles.sectionBlock} aria-labelledby="comments-title">
               <h2 id="comments-title" className={styles.sectionTitle}>Comments ({event.comment_count})</h2>

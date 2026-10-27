@@ -150,3 +150,26 @@ textarea.input { resize: none; }
 .attendee:hover { background: #edf5ef; }
 .attendee > span:last-child { display: grid; }
 .attendee strong { color: #102c30; font-size: 15px; }
+
+/* Event invitations (UR-402) */
+.subheading { margin: 24px 0 0; color: #102c30; font-size: 17px; font-weight: 800; }
+.searchField { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding: 0 14px; border: 1px solid #d3e2da; border-radius: 12px; background: #f8fbf8; color: #536963; }
+.searchField:focus-within { border-color: #39775e; box-shadow: 0 0 0 3px #c0ddcb; }
+.searchField svg { width: 18px; height: 18px; flex-shrink: 0; }
+.searchInput { flex: 1; min-width: 0; padding: 12px 0; border: 0; background: none; color: #102c30; font-size: 15px; outline: none; }
+.candidates { display: grid; gap: 4px; max-height: 320px; margin: 12px 0 16px; padding: 0; overflow-y: auto; list-style: none; }
+.candidate { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 10px; color: #536963; font-size: 13px; cursor: pointer; }
+.candidate:hover { background: #edf5ef; }
+.candidateInvited { cursor: default; opacity: .75; }
+.candidateInvited:hover { background: none; }
+.candidateName { display: grid; flex: 1; min-width: 0; }
+.candidateName strong { color: #102c30; font-size: 15px; }
+.checkbox { width: 18px; height: 18px; flex-shrink: 0; accent-color: #1f6b4f; }
+.invitedTag, .rsvpTag { display: inline-flex; align-items: center; gap: 4px; margin-left: auto; padding: 3px 10px; border-radius: 999px; background: #dcebe1; color: #1f6b4f; font-size: 12px; font-weight: 700; }
+.invitedTag svg { width: 14px; height: 14px; }
+.invitationList { display: grid; gap: 4px; margin: 12px 0 0; padding: 0; list-style: none; }
+.invitationItem { display: grid; padding: 8px 10px; margin: 0 -10px; border-radius: 10px; text-decoration: none; }
+.invitationItem:hover { background: #edf5ef; }
+.invitationItem:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+.invitationTitle { color: #102c30; font-size: 15px; font-weight: 700; }
+.invitationMeta { color: #536963; font-size: 13px; }

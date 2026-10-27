@@ -9,6 +9,7 @@ import styles from './events.module.css';
 import { useNavigationSession } from '../../components/navigation/social-shell';
 import { SessionNotice } from '../../components/navigation/section-page';
 import { EventList, FeaturedEvent, TrendingEvents, WeekStrip, type CampusEvent } from '../../components/events/EventList';
+import { InvitationList, useMyInvitations } from '../../components/events/MyInvitations';
 import { goingTo, hostedBy, trendingEvents, type EventEngagement } from '../../lib/events';
 
 type Tab = 'discover' | 'rsvps' | 'hosting';
@@ -27,6 +28,7 @@ export default function EventsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [created, setCreated] = useState(false);
+  const invitations = useMyInvitations();
 
   useEffect(() => {
     setCreated(new URLSearchParams(window.location.search).get('created') === '1');
@@ -133,6 +135,13 @@ export default function EventsPage() {
 
         <aside className={styles.sideColumn}>
           <WeekStrip events={events} />
+          <section className={styles.sideCard} aria-labelledby="invited-title">
+            <h2 id="invited-title" className={styles.sideTitle}>You’re invited</h2>
+            <InvitationList invitations={invitations} classNames={{
+              list: styles.invitationList, item: styles.invitationItem, title: styles.invitationTitle,
+              meta: styles.invitationMeta, empty: styles.sideEmpty,
+            }} />
+          </section>
           <TrendingEvents events={trendingEvents(events)} />
         </aside>
       </div>
