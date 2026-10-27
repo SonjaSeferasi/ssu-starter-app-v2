@@ -12,7 +12,7 @@ import styles from './profile.module.css';
 
 type NotificationItem = {
   notification_id: number;
-  kind: 'friend_request' | 'friendship_accepted' | 'post_like' | 'post_comment' | 'comment_reply' | 'mention';
+  kind: 'friend_request' | 'friendship_accepted' | 'post_like' | 'post_comment' | 'comment_reply' | 'mention' | 'repost';
   created_at: string;
   read_at: string | null;
   actor_username: string;
@@ -39,6 +39,7 @@ function feedNotificationText(item: NotificationItem): string {
   if (item.kind === 'post_comment') return ' commented on your post.';
   if (item.kind === 'comment_reply') return ' replied to your comment.';
   if (item.kind === 'mention') return item.comment_id ? ' mentioned you in a comment.' : ' mentioned you in a post.';
+  if (item.kind === 'repost') return ' reposted your post.';
   if (count <= 1) return ' liked your post.';
   if (count === 2) return ` and ${names[1]} liked your post.`;
   const others = count - 2;

@@ -15,6 +15,21 @@ export type Mention = {
   photoUrl: string | null;
 };
 
+/** Share (additional functionality): the embedded original post inside a
+ * repost, re-resolved fresh against the current viewer on every read.
+ * null either because this isn't a repost, or the original is no longer
+ * accessible right now -- isRepost on the outer post disambiguates. */
+export type RepostOf = {
+  postId: number;
+  authorId: number;
+  authorName: string;
+  authorUsername: string;
+  authorPhotoUrl: string | null;
+  publishedAt: string;
+  textContent: string | null;
+  photos: FeedPhoto[];
+};
+
 export type FeedPost = {
   postId: number;
   authorId: number;
@@ -27,6 +42,8 @@ export type FeedPost = {
   editedAt: string | null;
   photos: FeedPhoto[];
   mentions: Mention[];
+  isRepost: boolean;
+  repostOf: RepostOf | null;
   likeCount: number;
   isLikedByViewer: boolean;
   commentCount: number;

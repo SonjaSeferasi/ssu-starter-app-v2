@@ -21,7 +21,8 @@ export function SectionContent({ title, description, pending, action }: { title:
   );
 }
 
-export function SessionNotice({ state }: { state: 'loading' | 'signed-out' | 'unavailable' }) {
+export function SessionNotice({ state, redirectTo }: { state: 'loading' | 'signed-out' | 'unavailable'; redirectTo?: string }) {
+  const loginHref = redirectTo ? `/login?redirect=${encodeURIComponent(redirectTo)}` : '/login';
   return (
     <main className={styles.standalone}>
       <section className={styles.welcome}>
@@ -29,7 +30,7 @@ export function SessionNotice({ state }: { state: 'loading' | 'signed-out' | 'un
         {state === 'loading' ? <p className={styles.description} role="status">Checking your session…</p> : <>
           <h1 className={styles.title}>{state === 'unavailable' ? 'Unable to check your session' : 'Your campus is waiting'}</h1>
           <p className={styles.description}>{state === 'unavailable' ? 'Please refresh the page to try again.' : 'Sign in to explore SocialU with your university community.'}</p>
-          <Link href="/login" className={styles.action}>Go to login</Link>
+          <Link href={loginHref} className={styles.action}>Go to login</Link>
         </>}
       </section>
     </main>

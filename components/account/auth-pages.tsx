@@ -21,6 +21,18 @@ const copy: Record<AuthScreen, { title: string; description: string; action: str
   'change-password': { title: 'Change your password.', description: 'Confirm your current password, then choose a new one.', action: 'Save new password' },
 };
 
+// Share (additional functionality): after a successful login, return the
+// student to wherever they were trying to go (e.g. a shared post link)
+// via ?redirect=. Only ever an internal path -- a leading "/" but not "//"
+// (protocol-relative, e.g. "//evil.example") and no "://" anywhere rules
+// out every way this could point off-site, so this can never become an
+// open redirect even though the value comes straight from the URL.
+export function safeRedirectTarget(value: string | null): string | null {
+  if (!value) return null;
+  if (!value.startsWith('/') || value.startsWith('//') || value.includes('://')) return null;
+  return value;
+}
+
 function Brand({ href }: { href: string }) {
   return <Link href={href} className={styles.brand} aria-label="SocialU">Social<span>U</span></Link>;
 }
@@ -177,7 +189,10 @@ export default function AuthPages({ screen }: { screen: AuthScreen }) {
         const session = data.session?.session;
         if (!session?.access_token) throw new Error('No session was returned. Please sign in again.');
         saveSession(session, remember);
-        router.push(data.needsProfile ? '/profile' : '/');
+        // Profile setup always comes first if it's still needed; otherwise
+        // honor ?redirect= (e.g. back to a shared post) when present and safe.
+        const redirectTarget = safeRedirectTarget(new URLSearchParams(window.location.search).get('redirect'));
+        router.push(data.needsProfile ? '/profile' : redirectTarget ?? '/');
       }
     } catch (error) { setError(error instanceof Error ? error.message : 'Unable to connect. Please try again.'); }
     finally { setBusy(false); }
