@@ -264,3 +264,33 @@ SRS-212.9 (LP): when a message is sent in a private or group conversation, each 
   It runs with and without LN's school communities migration.
 
 Status: applied to the hosted database on 2026-10-26 and recorded as versions `20261026180000` and `20261026180100`, after a rolled-back dry run of both. Before applying, the hosted invitation function was checked to match `20261026120100`. In the dry run, run as `service_role`: loens1 went from 0 to 1 notification ("Test 2, 1 new", DM 17) after Testing 2 sent a message, the sender got none for their own message, and a new invitation went live to testing 1 only (no events to anyone else). After applying: both functions are server-only, LN's school rule is applied, and data is unchanged.
+
+### React to messages (SRS-210.1 to SRS-210.6)
+
+SRS-210.1 to SRS-210.6 (LP): a current participant picks a message in a private or group conversation and reacts with one emoji from the approved set (👍 ❤️ 😂 😮 😢 🙏). The reaction shows with the message, and the student can remove it or change it to another emoji from the set.
+
+- **Migration** `supabase/migrations/20261027120000_chat_reaction_set.sql` (#804). It saves the approved set in the existing `socialu.reaction_options` table, which was empty until the team agreed on it. It also replaces the shared `socialu.validate_message_receipt` trigger function from `schema.sql`, so reactions are allowed for current participants of private conversations as well as groups (UR-210 covers both). The function still requires that the student can read the message. Read receipts, which use the same function, are checked exactly as before.
+- **Migration** `supabase/migrations/20261027120100_chat_react_to_message.sql` (#807, #814, #818). It adds two server-only functions:
+  - `public.socialu_react_to_message(p_auth_id, p_conversation_id, p_message_id, p_emoji)` adds the student's reaction or replaces it. Each student has at most one reaction per message (the table's primary key).
+  - `public.socialu_remove_reaction(p_auth_id, p_conversation_id, p_message_id)` removes only the student's own reaction.
+
+  Both run the participant check (404 for outsiders) and accept only sent text and emoji messages in that conversation that the student may read (`SCR04`). Reacting also needs an emoji from the set (`SCR01`) and, in DMs, the same friendship and block rule as sending (`SCR03`); removing doesn't. Both return the message's reactions (each emoji, its count, and whether it is the student's own). A change is also sent live as a `reaction_updated` event to each participant who can read the message, through their private channel. Choosing the same emoji again, or removing a reaction that is already gone, changes nothing and sends nothing.
+- **Migration** `supabase/migrations/20261027120200_chat_reactions_in_history.sql` (#811). It replaces `public.socialu_conversation_messages` so the history also returns `reactions`, keyed by message ID, in the same shape as the live event. The messages themselves are unchanged, and the grants are unchanged.
+- **API** (#808, #815). `PUT /api/conversations/[id]/messages/[messageId]/reaction` with `{ "emoji": "👍" }` adds or changes the reaction. `DELETE` on the same address removes it. Both return `{ conversation_id, message_id, reactions }`. The student always comes from the bearer token, and other body fields are ignored. Errors:
+  - 400 for an emoji outside the set;
+  - 403 when reactions aren't allowed in a DM right now;
+  - 404 when the conversation or the message isn't available, or for malformed IDs.
+- **Page (#802, #805, #809, #812, #816, #819).** Each message has a **React** button beside its bubble. It shows on hover or keyboard focus, and always on touch screens. It opens the six emoji under that message, with the student's current reaction marked; Escape closes them.
+  - Choosing an emoji adds it or replaces the student's reaction. Choosing their current one again removes it.
+  - Reactions show as chips under the message with their counts, in the order of the set, and the student's own is highlighted. Selecting their own chip removes it, and selecting another chip changes theirs to it.
+  - Other participants see changes right away through live updates, and double-clicks can't send twice.
+- **Testing (#803, #806, #810, #813, #817, #820).** `__tests__/api/message-reactions.test.ts` covers the set, the two routes and the error answers. `__tests__/database/message-reactions.test.ts` checks:
+  - the database set matches the page's;
+  - adding, changing (still one reaction per student), removing only the student's own, and counts per emoji;
+  - the history and the live events, with each student's own reaction marked;
+  - refused emoji, messages from another conversation, outsiders, invitees, members who joined later or left, and blocks;
+  - the table rule, that read receipts are unchanged, and server-only grants.
+
+  It runs with and without LN's school communities migration.
+
+Status: applied to the hosted database on 2026-10-27 and recorded as versions `20261027120000`, `20261027120100` and `20261027120200`, after a rolled-back dry run of all three. They were applied as one all-or-nothing statement from single-line copies of the files (comments removed; same SQL), with guards that stop without changes if reactions are already installed, the reaction tables aren't empty, the versions are already recorded, or the replaced history and trigger functions differ from the checked versions. In the dry run, run as `service_role`: in DM 17, loens1 reacted 👍 and changed it to ❤️ (still one reaction), choosing ❤️ again changed nothing, Testing 2 added 😂, the history showed both with each student's own marked, and loens1's removal left only Testing 2's. An emoji outside the set (`SCR01`), an outsider (`SC404`) and a message from another conversation (`SCR04`) were refused. Each change went live to both students in the DM and to nobody else, and a reaction in group 32 went to both members. After applying: the six reactions are saved, the new and replaced functions match this repo, only `service_role` can run them, both triggers are in place, there are no reactions yet, and loens1's DM and group history load as before.

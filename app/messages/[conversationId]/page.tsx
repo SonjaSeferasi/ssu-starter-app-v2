@@ -7,11 +7,13 @@ import { type FormEvent, useEffect, useLayoutEffect, useRef, useState } from 're
 import { useParams } from 'next/navigation';
 import { SessionNotice } from '../../../components/navigation/section-page';
 import { useNavigationSession } from '../../../components/navigation/social-shell';
-import { subscribeToChat, type ChatConversationEvent, type ChatLiveStatus, type ChatMessageEvent } from '../../../lib/realtime-client';
+import { subscribeToChat, type ChatConversationEvent, type ChatLiveStatus, type ChatMessageEvent, type ChatReactionEvent } from '../../../lib/realtime-client';
+import { sortReactions, type ChatReaction } from '../../../lib/chat-reactions';
 import { CHAT_ACTIVITY_EVENT, ConversationListPanel } from '../conversation-list';
 import { EmojiPicker } from '../emoji-picker';
 import { GroupNameForm } from '../group-name';
 import { InvitePicker } from '../invite-picker';
+import { ReactionChips, ReactionPicker } from '../message-reactions';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -69,6 +71,8 @@ function Conversation() {
   // SRS-211.1 (#831): sender names by student ID, returned with the history.
   const [senders, setSenders] = useState<Record<string, { name: string; username: string }>>({});
   const sendersRef = useRef<Record<string, { name: string; username: string }> | null>(null);
+  // SRS-210.4 (#811, #812): each message's reactions by message ID, from the history and then live.
+  const [reactions, setReactions] = useState<Record<string, ChatReaction[]>>({});
 
   // SRS-212.5: mark the messages shown here as read, again when a message arrives while the student is looking
   // at this conversation, and when they come back to the tab. Nothing is marked while the page is hidden.
@@ -119,7 +123,14 @@ function Conversation() {
         meRef.current = String(data.student_id);
         if (data.kind) setInfo({ kind: data.kind, name: data.name ?? null, role: data.role ?? null, memberCount: data.member_count ?? null });
         if (data.senders) { sendersRef.current = data.senders; setSenders(data.senders); }
-        setMessages((current) => mergeMessages(current, data.messages ?? []));
+        const loaded: ChatMessageEvent[] = data.messages ?? [];
+        // Reactions removed while the page was offline are cleared too: every loaded message gets its saved list.
+        setReactions((current) => {
+          const next = { ...current };
+          for (const message of loaded) next[message.id] = data.reactions?.[message.id] ?? [];
+          return next;
+        });
+        setMessages((current) => mergeMessages(current, loaded));
         setHistory('loaded');
         shownRef.current = true;
         void markRead();
@@ -159,7 +170,13 @@ function Conversation() {
   // SRS-212.9 (#823): a new group invitation refreshes the list so it appears on the Groups tab.
   const invited = () => window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT));
 
-  useEffect(() => subscribeToChat(addMessage, liveStatus, renamed, invited), [conversationId]);
+  // SRS-210.4 (#812): a reaction added, changed or removed by anyone in this conversation shows right away.
+  function reacted(update: ChatReactionEvent) {
+    if (update.conversation_id !== conversationId) return;
+    setReactions((current) => ({ ...current, [update.message_id]: update.reactions }));
+  }
+
+  useEffect(() => subscribeToChat(addMessage, liveStatus, renamed, invited, reacted), [conversationId]);
 
   // Show the latest message: on open, after the student's own message, and for new messages while they
   // are already at the bottom. If they scrolled up to read, keep their place and offer a button instead.
@@ -196,6 +213,11 @@ function Conversation() {
     else if (mine || atLatestRef.current) scrollToLatest();
     else setUnseen((count) => count + added);
   }, [messages, myStudentId]);
+
+  // New reactions on the latest messages stay in view (above the message box) while the student is at the bottom.
+  useLayoutEffect(() => {
+    if (opened.current && atLatestRef.current) window.scrollTo({ top: document.documentElement.scrollHeight });
+  }, [reactions]);
 
   // Text (SRS-201.1) and emoji (SRS-201.8) messages are sent the same way; the ref stops double-sends
   // before the disabled state shows. Returns whether the message was sent.
@@ -243,6 +265,43 @@ function Conversation() {
   function sendEmoji(emoji: string) {
     closePicker();
     void deliver({ kind: 'emoji', emoji });
+  }
+
+  // SRS-210.1 (#802): each message's React button opens the reaction set under it, one message at a time.
+  const [reactingTo, setReactingTo] = useState<string | null>(null);
+  const reactButtons = useRef<Record<string, HTMLButtonElement | null>>({});
+  function closeReactions() {
+    if (reactingTo) reactButtons.current[reactingTo]?.focus();
+    setReactingTo(null);
+  }
+
+  // SRS-210.3 / SRS-210.5 / SRS-210.6 (#809, #816, #819): choosing the student's current reaction removes it;
+  // any other emoji adds it or replaces theirs. The ref stops double-clicks before the disabled state shows.
+  const reactingRef = useRef(false);
+  const [reactionBusy, setReactionBusy] = useState(false);
+  async function react(messageId: string, emoji: string) {
+    if (reactingRef.current) return;
+    reactingRef.current = true;
+    setReactionBusy(true);
+    setError('');
+    const remove = reactions[messageId]?.some((reaction) => reaction.mine && reaction.emoji === emoji) ?? false;
+    try {
+      // No student ID is sent: the server reads the student from the token.
+      const token = await accessToken();
+      const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/messages/${encodeURIComponent(messageId)}/reaction`, {
+        method: remove ? 'DELETE' : 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token ?? ''}` },
+        body: remove ? undefined : JSON.stringify({ emoji }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || 'Your reaction could not be saved. Please try again.');
+      setReactions((current) => ({ ...current, [messageId]: data.reactions ?? [] }));
+    } catch (err) {
+      setError(err instanceof Error && !(err instanceof TypeError) ? err.message : 'Your reaction could not be saved. Please try again.');
+    } finally {
+      reactingRef.current = false;
+      setReactionBusy(false);
+    }
   }
 
   // SRS-213.1 (#324): outsiders see the same clear message as for a missing conversation, with no message box.
@@ -329,12 +388,26 @@ function Conversation() {
               // shown above each run of messages from another member.
               const sender = mine ? 'You' : senders[message.sender_id]?.name ?? (info?.kind === 'group' ? 'A member' : peer?.name ?? 'Them');
               const showName = info?.kind === 'group' && !mine && messages[index - 1]?.sender_id !== message.sender_id;
+              const chips = sortReactions(reactions[message.id] ?? []);
+              const picking = reactingTo === message.id;
               return (
                 <li key={message.id} className={mine ? `${styles.message} ${styles.messageOwn}` : styles.message}>
                   {showName && <span className={styles.senderName} aria-hidden="true">{sender}</span>}
-                  <p className={bubble}>
-                    <span className={styles.srOnly}>{sender}: </span>{message.text}
-                  </p>
+                  <div className={styles.bubbleRow}>
+                    <p className={bubble}>
+                      <span className={styles.srOnly}>{sender}: </span>{message.text}
+                    </p>
+                    <button ref={(button) => { reactButtons.current[message.id] = button; }} type="button" className={styles.reactButton}
+                      onClick={() => setReactingTo(picking ? null : message.id)} aria-expanded={picking}
+                      aria-label={mine ? 'React to your message' : `React to ${sender}’s message`} title="React">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 11v1a10 10 0 1 1-9-10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><path d="M9 9h.01" /><path d="M15 9h.01" /><path d="M16 5h6" /><path d="M19 2v6" /></svg>
+                    </button>
+                  </div>
+                  {chips.length > 0 && <ReactionChips reactions={chips} disabled={reactionBusy} onPick={(emoji) => void react(message.id, emoji)} />}
+                  {picking && (
+                    <ReactionPicker current={chips.find((reaction) => reaction.mine)?.emoji ?? null} disabled={reactionBusy} onClose={closeReactions}
+                      onPick={(emoji) => { closeReactions(); void react(message.id, emoji); }} />
+                  )}
                 </li>
               );
             })}
