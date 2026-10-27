@@ -1,6 +1,6 @@
 # Prepared Sprint 3 issue bodies
 
-These are ready-to-copy issue and task bodies, not published GitHub cards. Create each parent with the exact heading below as its title, assign it to `Dieulinhh23`, then create/attach its task sub-issues. The older #125–#133 records are closed as not planned and remain unchanged.
+These are the original prepared issue/task templates. The cards have since been published through the reconnected GitHub browser; see [the planning index](README.md) and [verified issue links](publication.json). Placeholders below are retained as template text, not a claim that relationships are missing in the published cards. The older #125–#133 records are closed as not planned and remain unchanged.
 
 ## SRS-107.1, LN — Login-history access.
 

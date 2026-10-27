@@ -3,7 +3,7 @@
   "owner": "Dieulinhh23",
   "prepared_date": "2026-10-27",
   "baseline": "2b3a521c4ac2ce34e01845443471100ac37915b3",
-  "publication_status": "Prepared only; GitHub issue creation returned 403. No real issue IDs or sub-issue relationships created.",
+  "publication_status": "Published through normal GitHub browser UI after reconnection. All nine parents and 16 linked tasks are open and assigned to Dieulinhh23.",
   "items": [
     {
       "srs": "107.1",
@@ -21,30 +21,44 @@
           "body": "Parent: <replace with the real issue number for SRS-107.1>.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nReview database/schema.sql login_sessions and the live auth/session migration contract. Establish which successful sign-ins are recorded, how student ownership is derived, and whether history survives session revocation. Reuse the schema where sufficient; record any real gap before writing a migration. Verify the selected storage contract with isolated database checks.\n\nAttach this issue as a real sub-issue of its SRS parent in GitHub. Keep it open until the task is actually completed. Add code/PR/validation links after the work exists.",
           "assignees": [
             "Dieulinhh23"
-          ]
+          ],
+          "issue_number": 862,
+          "parent_issue": 858,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/862"
         },
         {
           "title": "Task 107.1-2 Expose the authenticated login-history API",
           "body": "Parent: <replace with the real issue number for SRS-107.1>.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nReturn only the verified signed-in student’s recorded login entries. Reject unauthenticated requests and forged student IDs; return an explicit empty result when no history exists. Do not return token digests, provider tokens or other students’ records.\n\nAttach this issue as a real sub-issue of its SRS parent in GitHub. Keep it open until the task is actually completed. Add code/PR/validation links after the work exists.",
           "assignees": [
             "Dieulinhh23"
-          ]
+          ],
+          "issue_number": 863,
+          "parent_issue": 858,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/863"
         },
         {
           "title": "Task 107.1-3 Connect Login Activity in Account Settings",
           "body": "Parent: <replace with the real issue number for SRS-107.1>.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nProvide an entry from Account Settings and render returned login records with loading, empty and error states. Opening the section must read real account data through the API. Do not introduce remote logout in this item.\n\nAttach this issue as a real sub-issue of its SRS parent in GitHub. Keep it open until the task is actually completed. Add code/PR/validation links after the work exists.",
           "assignees": [
             "Dieulinhh23"
-          ]
+          ],
+          "issue_number": 864,
+          "parent_issue": 858,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/864"
         },
         {
           "title": "Task 107.1-4 Test and capture own-account history access",
           "body": "Parent: <replace with the real issue number for SRS-107.1>.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nRun the data/API checks and test own-account isolation against forged identity. In the actual integrated app, open Login Activity and attach a screenshot and reproduction steps to the parent. Record the source commit and real observed result.\n\nAttach this issue as a real sub-issue of its SRS parent in GitHub. Keep it open until the task is actually completed. Add code/PR/validation links after the work exists.",
           "assignees": [
             "Dieulinhh23"
-          ]
+          ],
+          "issue_number": 865,
+          "parent_issue": 858,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/865"
         }
-      ]
+      ],
+      "issue_number": 858,
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/858"
     },
     {
       "srs": "107.2",
@@ -62,30 +76,44 @@
           "body": "Parent: <replace with the real issue number for SRS-107.2>.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nReuse the history storage from SRS-107.1. Check that query filtering does not discard recorded history just because a session ended. Define deterministic order and stable page boundaries if pagination is needed; avoid claiming unavailable historical records were reconstructed.\n\nAttach this issue as a real sub-issue of its SRS parent in GitHub. Keep it open until the task is actually completed. Add code/PR/validation links after the work exists.",
           "assignees": [
             "Dieulinhh23"
-          ]
+          ],
+          "issue_number": 866,
+          "parent_issue": 859,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/866"
         },
         {
           "title": "Task 107.2-2 Return every history page without silent truncation",
           "body": "Parent: <replace with the real issue number for SRS-107.2>.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nExtend the owner-authorized history API so all recorded entries are reachable. Use pagination only if needed, with an explicit continuation contract. Verify ownership on every page and avoid returning a permanently truncated latest-N list.\n\nAttach this issue as a real sub-issue of its SRS parent in GitHub. Keep it open until the task is actually completed. Add code/PR/validation links after the work exists.",
           "assignees": [
             "Dieulinhh23"
-          ]
+          ],
+          "issue_number": 867,
+          "parent_issue": 859,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/867"
         },
         {
           "title": "Task 107.2-3 Make all recorded history reachable in Login Activity",
           "body": "Parent: <replace with the real issue number for SRS-107.2>.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nConnect the page/continuation controls or complete-list rendering to the actual API, preserving loading/error feedback. A student must be able to reach older recorded entries, not just see a decorative Load more control.\n\nAttach this issue as a real sub-issue of its SRS parent in GitHub. Keep it open until the task is actually completed. Add code/PR/validation links after the work exists.",
           "assignees": [
             "Dieulinhh23"
-          ]
+          ],
+          "issue_number": 868,
+          "parent_issue": 859,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/868"
         },
         {
           "title": "Task 107.2-4 Verify older entries and capture complete-history evidence",
           "body": "Parent: <replace with the real issue number for SRS-107.2>.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nSeed multiple records in disposable database tests and verify none are skipped or duplicated across boundaries. In the real app with an authorized test account, show older recorded entries are reachable and attach a screenshot plus navigation steps to the parent.\n\nAttach this issue as a real sub-issue of its SRS parent in GitHub. Keep it open until the task is actually completed. Add code/PR/validation links after the work exists.",
           "assignees": [
             "Dieulinhh23"
-          ]
+          ],
+          "issue_number": 869,
+          "parent_issue": 859,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/869"
         }
-      ]
+      ],
+      "issue_number": 859,
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/859"
     },
     {
       "srs": "107.3",
@@ -103,30 +131,44 @@
           "body": "Parent: <replace with the real issue number for SRS-107.3>.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nReuse the actual signed-in timestamp contract from SRS-107.1. Verify it is stored as an instant rather than replacing historical dates with the current date. Agree and document the date display timezone; no duplicate date column is required when the existing timestamp suffices.\n\nAttach this issue as a real sub-issue of its SRS parent in GitHub. Keep it open until the task is actually completed. Add code/PR/validation links after the work exists.",
           "assignees": [
             "Dieulinhh23"
-          ]
+          ],
+          "issue_number": 870,
+          "parent_issue": 860,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/870"
         },
         {
           "title": "Task 107.3-2 Return recorded timestamps for date rendering",
           "body": "Parent: <replace with the real issue number for SRS-107.3>.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nPreserve the recorded timestamp through the authenticated history response, including older pages from SRS-107.2. Return an unambiguous timestamp so UI date formatting does not depend on a guessed server timezone.\n\nAttach this issue as a real sub-issue of its SRS parent in GitHub. Keep it open until the task is actually completed. Add code/PR/validation links after the work exists.",
           "assignees": [
             "Dieulinhh23"
-          ]
+          ],
+          "issue_number": 871,
+          "parent_issue": 860,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/871"
         },
         {
           "title": "Task 107.3-3 Render the recorded login date for every entry",
           "body": "Parent: <replace with the real issue number for SRS-107.3>.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nDisplay a readable recorded date on each Login Activity row using the documented timezone. Reuse the existing layout; handle unavailable dates honestly rather than inventing a date.\n\nAttach this issue as a real sub-issue of its SRS parent in GitHub. Keep it open until the task is actually completed. Add code/PR/validation links after the work exists.",
           "assignees": [
             "Dieulinhh23"
-          ]
+          ],
+          "issue_number": 872,
+          "parent_issue": 860,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/872"
         },
         {
           "title": "Task 107.3-4 Test date boundaries and capture recorded-date evidence",
           "body": "Parent: <replace with the real issue number for SRS-107.3>.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nCheck multiple dates and near-midnight timezone boundaries with fixed timestamps. In the actual app show the recorded date on login rows, compare it to authorized stored data, and attach a screenshot and steps to the parent.\n\nAttach this issue as a real sub-issue of its SRS parent in GitHub. Keep it open until the task is actually completed. Add code/PR/validation links after the work exists.",
           "assignees": [
             "Dieulinhh23"
-          ]
+          ],
+          "issue_number": 873,
+          "parent_issue": 860,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/873"
         }
-      ]
+      ],
+      "issue_number": 860,
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/860"
     },
     {
       "srs": "107.4",
@@ -144,30 +186,44 @@
           "body": "Parent: <replace with the real issue number for SRS-107.4>.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nReuse the login instant and timezone decision from SRS-107.3. Confirm the stored instant includes the time needed for display. Do not substitute request time or add redundant storage just to create a database task.\n\nAttach this issue as a real sub-issue of its SRS parent in GitHub. Keep it open until the task is actually completed. Add code/PR/validation links after the work exists.",
           "assignees": [
             "Dieulinhh23"
-          ]
+          ],
+          "issue_number": 874,
+          "parent_issue": 861,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/874"
         },
         {
           "title": "Task 107.4-2 Preserve recorded time through history responses",
           "body": "Parent: <replace with the real issue number for SRS-107.4>.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nEnsure authenticated history responses preserve the recorded time and offset information on every page. Reuse the existing timestamp field; test that serialization does not reset time to midnight or remove the offset.\n\nAttach this issue as a real sub-issue of its SRS parent in GitHub. Keep it open until the task is actually completed. Add code/PR/validation links after the work exists.",
           "assignees": [
             "Dieulinhh23"
-          ]
+          ],
+          "issue_number": 875,
+          "parent_issue": 861,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/875"
         },
         {
           "title": "Task 107.4-3 Render the recorded login time with clear timezone context",
           "body": "Parent: <replace with the real issue number for SRS-107.4>.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nShow each entry’s recorded time consistently with its displayed date. Make timezone context understandable so the student can interpret the time; include the real time on older entries too.\n\nAttach this issue as a real sub-issue of its SRS parent in GitHub. Keep it open until the task is actually completed. Add code/PR/validation links after the work exists.",
           "assignees": [
             "Dieulinhh23"
-          ]
+          ],
+          "issue_number": 876,
+          "parent_issue": 861,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/876"
         },
         {
           "title": "Task 107.4-4 Test time boundaries and capture recorded-time evidence",
           "body": "Parent: <replace with the real issue number for SRS-107.4>.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nTest fixed instants, midnight and daylight-saving boundaries for the chosen timezone. In the running app verify displayed time against the recorded instant and attach a screenshot and reproduction notes to the parent.\n\nAttach this issue as a real sub-issue of its SRS parent in GitHub. Keep it open until the task is actually completed. Add code/PR/validation links after the work exists.",
           "assignees": [
             "Dieulinhh23"
-          ]
+          ],
+          "issue_number": 877,
+          "parent_issue": 861,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/877"
         }
-      ]
+      ],
+      "issue_number": 861,
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/861"
     },
     {
       "srs": "107.5",
@@ -179,7 +235,9 @@
       "intended_status": "Product Backlog",
       "branch": null,
       "historical_issue": 129,
-      "tasks": []
+      "tasks": [],
+      "issue_number": 878,
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/878"
     },
     {
       "srs": "107.6",
@@ -191,7 +249,9 @@
       "intended_status": "Product Backlog",
       "branch": null,
       "historical_issue": 130,
-      "tasks": []
+      "tasks": [],
+      "issue_number": 879,
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/879"
     },
     {
       "srs": "107.7",
@@ -203,7 +263,9 @@
       "intended_status": "Product Backlog",
       "branch": null,
       "historical_issue": 131,
-      "tasks": []
+      "tasks": [],
+      "issue_number": 880,
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/880"
     },
     {
       "srs": "107.8",
@@ -215,7 +277,9 @@
       "intended_status": "Product Backlog",
       "branch": null,
       "historical_issue": 132,
-      "tasks": []
+      "tasks": [],
+      "issue_number": 881,
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/881"
     },
     {
       "srs": "107.9",
@@ -227,7 +291,11 @@
       "intended_status": "Product Backlog",
       "branch": null,
       "historical_issue": 133,
-      "tasks": []
+      "tasks": [],
+      "issue_number": 882,
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/882"
     }
-  ]
+  ],
+  "board": "https://github.com/users/SonjaSeferasi/projects/2/views/16",
+  "label": "sprint-3-ln"
 }

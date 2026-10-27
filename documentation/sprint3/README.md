@@ -5,11 +5,12 @@ Prepared October 27, 2026 from the professor's CSC 351 Sprint 3 assignment. **Pl
 ## Review this first
 
 - Team Project: https://github.com/users/SonjaSeferasi/projects/2
+- Personal Sprint 3 board: https://github.com/users/SonjaSeferasi/projects/2/views/16
 - Owner and required assignee for every SRS card and task: `Dieulinhh23`.
 - Canonical requirements: [SocialU SRS](../SocialU_SRS_Editable.md).
 - Completion rules: [team Definition of Done](../definition-of-done.md).
 - Copyable card, task and PR bodies: [templates](templates.md).
-- Exact prepared SRS and task bodies for this selection: [ready-issues.md](ready-issues.md); structured copy: [issue-plan.json](issue-plan.json).
+- Original prepared SRS/task templates: [ready-issues.md](ready-issues.md); structured plan with actual issue IDs: [issue-plan.json](issue-plan.json). Verified published links are recorded in [publication.json](publication.json).
 
 This branch is for planning files only. It is not an implementation branch for any SRS item. Create each item's own SRS-named branch before coding and put that item's actual implementation commits and PR on that branch.
 
@@ -20,8 +21,8 @@ This branch is for planning files only. It is not an implementation branch for a
 | Sprint 3 instructions reviewed | Complete |
 | Scope and exact SRS selection | Login Activity: SRS-107.1–107.4, selected from Linh's supplied ownership area after the initial code/backlog audit |
 | Planning templates | Prepared |
-| GitHub SRS cards and task sub-issues | Not created by this setup; connector returned 403 on issue creation |
-| Sprint 3 board view and statuses | Not configured; browser connection unavailable |
+| GitHub SRS cards and task sub-issues | Published through the reconnected GitHub browser: nine SRS parents and 16 real linked task sub-issues, all open and assigned to Dieulinhh23 |
+| Sprint 3 board view and statuses | Saved “Linh Nguyen - Sprint 3” view; filter `assignee:Dieulinhh23 label:sprint-3-ln`; five future requirements in Product Backlog, four selected parents and 16 tasks in Sprint Backlog |
 | Per-SRS implementation branches | Four SRS-named branches created at baseline `2b3a521` before coding; no implementation commits yet |
 | New Sprint 3 implementation | Not started in this setup |
 | Tests, merged implementation PRs and screenshots | Add after implementation; no results claimed yet |
@@ -30,7 +31,7 @@ This branch is for planning files only. It is not an implementation branch for a
 
 Sprint 3 prepares the read-only Login Activity feature: access to the student's own recorded history, access to all recorded entries, and recorded date/time display. Four selected items have 16 prepared task bodies in total. These are unstarted implementation plans, not a claim that branches alone satisfy the assignment.
 
-The historical #125–#133 issues were checked: they are closed as `not_planned`, not completed implementation. This setup leaves those retirement records unchanged and prepares new exact SRS parent bodies. The new parents have not been published because GitHub returned 403; no fake issue numbers or sub-issue progress are shown.
+The historical #125–#133 issues were checked: they are closed as `not_planned`, not completed implementation. This setup leaves those retirement records unchanged. The connector initially returned 403, but browser access later recovered and the new exact SRS parents and linked tasks were published through GitHub's normal UI.
 
 Reserve SRS-107.5–107.9 for later selection: recorded location when available, active-session status, the remote logout action, actual remote termination, and preservation of the current session. University-email changes in UR-106 also remain outside this sprint plan. This leaves meaningful implementation for the last sprint without claiming it is already scheduled or guaranteed to fit.
 
@@ -48,15 +49,19 @@ Existing graded Sprint 1 and Sprint 2 records, the profile evidence branch, prio
 
 ## Product Backlog and Sprint Backlog
 
-The intended order below is prepared for review. Publish the exact parent/task bodies and then set the actual board statuses. Start requirements in Product Backlog and move this four-item selection into Sprint Backlog. Do not move them to In progress until work actually starts. The board has not yet been changed by this setup.
+The board is set up in the dependency order below. All cards and tasks are open. Do not move them to In progress until work actually starts. Each selected parent shows **0/4** tasks complete. No earlier sprint view or teammate card was edited.
 
 | Priority | Exact SRS title and issue link | Status | Branch link | Task sub-issues |
 | --- | --- | --- | --- | --- |
-| 1 | SRS-107.1, LN — Login-history access. | Intended Sprint Backlog; card not published | [`linh/srs-107.1-login-history-access`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/linh/srs-107.1-login-history-access) | Four bodies prepared; relationships not created |
-| 2 | SRS-107.2, LN — Complete login history. | Intended Sprint Backlog; card not published | [`linh/srs-107.2-complete-login-history`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/linh/srs-107.2-complete-login-history) | Four bodies prepared; relationships not created |
-| 3 | SRS-107.3, LN — Login date. | Intended Sprint Backlog; card not published | [`linh/srs-107.3-login-date`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/linh/srs-107.3-login-date) | Four bodies prepared; relationships not created |
-| 4 | SRS-107.4, LN — Login time. | Intended Sprint Backlog; card not published | [`linh/srs-107.4-login-time`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/linh/srs-107.4-login-time) | Four bodies prepared; relationships not created |
-| 5–9 | Exact SRS-107.5–107.9 titles and bodies in ready-issues.md | Intended Product Backlog; not selected for Sprint 3 | Create when selected | Decompose when selected |
+| 1 | [SRS-107.1, LN — Login-history access. #858](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/858) | Sprint Backlog | [`linh/srs-107.1-login-history-access`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/linh/srs-107.1-login-history-access) | #862–#865; 0/4 complete |
+| 2 | [SRS-107.2, LN — Complete login history. #859](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/859) | Sprint Backlog | [`linh/srs-107.2-complete-login-history`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/linh/srs-107.2-complete-login-history) | #866–#869; 0/4 complete |
+| 3 | [SRS-107.3, LN — Login date. #860](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/860) | Sprint Backlog | [`linh/srs-107.3-login-date`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/linh/srs-107.3-login-date) | #870–#873; 0/4 complete |
+| 4 | [SRS-107.4, LN — Login time. #861](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/861) | Sprint Backlog | [`linh/srs-107.4-login-time`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/linh/srs-107.4-login-time) | #874–#877; 0/4 complete |
+| 5–9 | SRS-107.5–107.9, issues [#878](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/878), [#879](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/879), [#880](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/880), [#881](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/881), [#882](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/882) | Product Backlog; not selected for Sprint 3 | Create when selected | Decompose when selected |
+
+![Sprint 3 planning board: five future requirements and four selected parents with open linked tasks](sprint3-board.png)
+
+This screenshot is planning/board evidence only. It does not replace the per-SRS screenshots of the running application required after implementation.
 
 `database/schema.sql` already proposes a `login_sessions` table with a recorded timestamp, optional location, remembered-session flag and revocation timestamp. The first item's data task must verify how that reviewed schema relates to the live auth/session implementation. Do not add redundant tables or treat provider active sessions as complete historical records without checking retention.
 
@@ -89,7 +94,7 @@ Linh must attend demo day. Show the integrated checked-in application on one lap
 Canvas links to fill in later:
 
 - Team Project link: https://github.com/users/SonjaSeferasi/projects/2
-- Each Sprint 3 SRS issue: selected bodies prepared; actual GitHub publication pending.
+- Sprint 3 SRS issue links: #858, #859, #860 and #861 above; application evidence and implementation PRs must be added later.
 - Each merged implementation PR: pending implementation.
 
 The assignment totals 50 points: Product Backlog 6; sprint items/tasks 10; branches/code links 9; screenshots 5; current board 5; demo 15. This plan does not guarantee points or claim submission/attendance.
