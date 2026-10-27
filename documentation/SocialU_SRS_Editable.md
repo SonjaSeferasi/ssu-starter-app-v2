@@ -2654,7 +2654,7 @@ Traces to: UR-201.
 
 #### UR-202, LP - Create my own group.
 
-User requirement: As a student, I want to be able to create a group chat, so that I can form groups for friends.
+User requirement: As a student, I want to be able to create and name a group chat, so that I can form groups for friends and tell my groups apart.
 
 ##### SRS-202.1, LP — Create a group chat.
 
@@ -2677,6 +2677,18 @@ Traces to: UR-202.
 ##### SRS-202.4, LP — Allow creation without additional members.
 
 The system shall allow a student to complete group creation before another student accepts an invitation to join the group.
+
+Traces to: UR-202.
+
+##### SRS-202.5, LP — Name a group chat.
+
+The system shall allow the owner or an administrator of a group chat to set or change the group's name, using 1 to 50 characters.
+
+Traces to: UR-202.
+
+##### SRS-202.6, LP — Display the group name.
+
+When a group chat has a name, the system shall display that name to the group's members in the conversation header, the Messages list, and group invitations.
 
 Traces to: UR-202.
 
@@ -3072,35 +3084,35 @@ Traces to: UR-209.
 
 #### UR-210, LP - React to messages.
 
-User requirement: As a student, I want to react to messages in group conversations, so that I can quickly respond to conversations without always sending another message.
+User requirement: As a student, I want to react to messages in private and group conversations, so that I can quickly respond to conversations without always sending another message.
 
 ##### SRS-210.1, LP — Select a message for reaction.
 
-The system shall allow a current group participant to select an existing group message for a reaction.
+The system shall allow a current conversation participant to select an existing message in a private or group conversation for a reaction.
 
 Traces to: UR-210.
 
 ##### SRS-210.2, LP — Display the fixed reaction set.
 
-When a participant chooses to react to a group message, the system shall display the project's approved fixed set of reaction emojis. The exact fixed reaction emoji set is TBD.
+When a participant chooses to react to a message, the system shall display the project's approved fixed set of reaction emojis: 👍 ❤️ 😂 😮 😢 🙏.
 
 Traces to: UR-210.
 
 ##### SRS-210.3, LP — Apply a reaction.
 
-The system shall allow a group participant to apply one emoji from the approved reaction set to a selected group message.
+The system shall allow a conversation participant to apply one emoji from the approved reaction set to a selected message.
 
 Traces to: UR-210.
 
 ##### SRS-210.4, LP — Display an applied reaction.
 
-After a reaction is applied, the system shall display the reaction with the group message to which it belongs.
+After a reaction is applied, the system shall display the reaction with the message to which it belongs.
 
 Traces to: UR-210.
 
 ##### SRS-210.5, LP — Remove a reaction.
 
-The system shall allow a student to remove their own reaction from a group message.
+The system shall allow a student to remove their own reaction from a message.
 
 Traces to: UR-210.
 
@@ -3221,6 +3233,12 @@ Traces to: UR-212.
 ##### SRS-212.8, LP — Remove the unread indicator.
 
 When a conversation contains no unread messages for the signed-in student, the system shall stop displaying that conversation's unread indicator.
+
+Traces to: UR-212.
+
+##### SRS-212.9, LP — Notify participants of a new message.
+
+When a message is sent in a private or group conversation, the system shall create a notification for each other current participant that identifies the sender and the conversation.
 
 Traces to: UR-212.
 
@@ -7835,6 +7853,8 @@ The original uploaded PDFs remain unchanged. This revision updates the editable 
 | URD alignment | Applied shared-streak/reward, messaging consent, Snipe visibility/consent, DormHall, invitations, optional Wordle and deferred-draft decisions. Added UR-405; preserved UR-627. |
 | Presentation | One parent story per group; consistent requirement and acceptance-criterion labels; new TOC, page references and clean PDF text. |
 | Open findings | Kept reward/catalog values and unresolved test conditions explicit; proposed a measurable replacement for vague event readability. |
+| LP Chat, 26 October 2026 | UR-210 and SRS-210.1 to SRS-210.5 now cover private and group conversations. SRS-210.2 now names the reaction set (👍 ❤️ 😂 😮 😢 🙏), which settles the Chat part of B-15. Added SRS-212.9 (message notifications) under UR-212. |
+| LP Chat, 26 October 2026 (group names) | Added SRS-202.5 (name a group chat) and SRS-202.6 (display the group name) under UR-202. The UR-202 user requirement now includes naming the group. |
 
 <a id="appendix-d"></a>
 
@@ -7889,7 +7909,7 @@ Unconfirmed operation outcomes do not prove failure. Retry and exit behavior pre
 | --- | --- | --- |
 | UR-200 | SRS-200.1 through SRS-200.19; SRS-NFR-36, SRS-NFR-37 | [See section](#ur-200) |
 | UR-201 | SRS-201.1 through SRS-201.18; SRS-NFR-26, SRS-NFR-27, SRS-NFR-28, SRS-NFR-29, SRS-NFR-30 | [See section](#ur-201) |
-| UR-202 | SRS-202.1 through SRS-202.4 | [See section](#ur-202) |
+| UR-202 | SRS-202.1 through SRS-202.6 | [See section](#ur-202) |
 | UR-203 | SRS-203.1 through SRS-203.4; SRS-NFR-34 | [See section](#ur-203) |
 | UR-204 | SRS-204.1 through SRS-204.9; SRS-NFR-33, SRS-NFR-35 | [See section](#ur-204) |
 | UR-205 | SRS-205.1 through SRS-205.13; SRS-NFR-32 | [See section](#ur-205) |
@@ -7899,7 +7919,7 @@ Unconfirmed operation outcomes do not prove failure. Retry and exit behavior pre
 | UR-209 | SRS-209.1 through SRS-209.6 | [See section](#ur-209) |
 | UR-210 | SRS-210.1 through SRS-210.6 | [See section](#ur-210) |
 | UR-211 | SRS-211.1 through SRS-211.9 | [See section](#ur-211) |
-| UR-212 | SRS-212.1 through SRS-212.8; SRS-NFR-31, SRS-NFR-37 | [See section](#ur-212) |
+| UR-212 | SRS-212.1 through SRS-212.9; SRS-NFR-31, SRS-NFR-37 | [See section](#ur-212) |
 | UR-213 | SRS-213.1 through SRS-213.9 | [See section](#ur-213) |
 
 <a id="merieme-sakhsoukhi-ms"></a>

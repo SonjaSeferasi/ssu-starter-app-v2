@@ -178,7 +178,7 @@ As a student, I want to send text messages, photos, emojis, and GIFs in conversa
 
 ##### UR-202, LP - Create my own group.
 
-As a student, I want to be able to create a group chat, so that I can form groups for friends.
+As a student, I want to be able to create and name a group chat, so that I can form groups for friends and tell my groups apart.
 
 ##### UR-203, LP - Establish group ownership.
 
@@ -212,7 +212,7 @@ As a student, I want to reply directly to a specific message in a group conversa
 
 ##### UR-210, LP - React to messages.
 
-As a student, I want to react to messages in group conversations, so that I can quickly respond to conversations without always sending another message.
+As a student, I want to react to messages in private and group conversations, so that I can quickly respond to conversations without always sending another message.
 
 ##### UR-211, LP - Understand message details.
 
