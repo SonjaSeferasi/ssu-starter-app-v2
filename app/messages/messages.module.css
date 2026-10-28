@@ -205,3 +205,8 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 .memberItem { display: flex; align-items: center; gap: 10px; padding: 8px 4px; border-top: 1px solid #e3ece6; }
 .memberItem:first-child { border-top: 0; }
 .memberItem .itemText { flex: 1; min-width: 0; }
+/* SRS-207.1 (#886): leaving the group, at the foot of the Members panel. */
+.leaveGroup { align-self: flex-start; min-height: 36px; margin-top: 4px; padding: 8px 14px; border: 1px solid #e0c2bc; border-radius: 10px; background: #fdf4f2; color: #a32d2d; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+.leaveGroup:hover:not(:disabled) { background: #f8e7e3; }
+.leaveGroup:disabled { opacity: .6; cursor: progress; }
+.leaveGroup:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }

@@ -336,3 +336,14 @@ SRS-205.10 (LP): the group owner or administrator can remove a regular member fr
 
 Status: not yet applied to the hosted database, and it is applied together with `20261028120000` and `20261028120100`.
 
+### Leave as a regular member (SRS-207.1)
+
+SRS-207.1 (LP): a regular group member can leave the group. Traces to UR-207.
+
+- **Migration** `supabase/migrations/20261028120300_chat_leave_group.sql` (#886). One new server-only function, `public.socialu_leave_group(p_auth_id, p_conversation_id)`, which ends the student's own current membership by stamping `left_at` (SRS-207.3). As with removal, the membership row is kept, so the shared participant check stops anything sent afterwards (SRS-207.4) while `can_read_message` still matches messages from their membership period (SRS-207.5). An administrator who is not the owner leaves through the same path, which is SRS-207.2 and needs no separate code. The owner is refused while the group has no administrator (`SCL01`, SRS-208.1, SRS-208.9), so a group is never left without one; promoting that administrator and letting the owner go is SRS-208.2's own work.
+- **API** `POST /api/conversations/[id]/leave`. The student comes only from the bearer token and the route takes no student from the request, so nobody can use it to make someone else leave.
+- **Page (#886).** **Leave group** sits at the foot of the Members panel for anyone who is not the owner. The owner sees why instead: either that they need an administrator first, or that they hand the group to their administrator when they go. After leaving, the student returns to the Messages list, which no longer lists that group.
+- **Testing.** `__tests__/api/group-leaving.test.ts` covers the route, that it passes no student ID, and its error answers. `__tests__/database/group-leaving.test.ts` checks that outsiders, private conversations and unknown accounts are refused, that the owner cannot leave without an administrator, that a regular member and an administrator can and the position is freed, that leaving twice is refused, that the departed student keeps `can_read_message` access to earlier messages but not later ones and can no longer send or react, that exactly one owner remains, and server-only grants. It runs with and without LN's school communities migration.
+
+Status: not yet applied to the hosted database, and it is applied together with `20261028120000`, `20261028120100` and `20261028120200`.
+
