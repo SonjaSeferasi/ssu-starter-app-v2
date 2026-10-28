@@ -157,6 +157,12 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
             </article>;
           })}
           {!available.length && <p className={styles.footnote}>Included activities have not been configured yet.</p>}
+          <article className={styles.activityCard}>
+            <div className={styles.activityBody}>
+              <div className={styles.activityCopy}><h3>World Explorer</h3><p>Start the Japan prototype, or explore country scenery previews.</p><span className={styles.activityMeta}>Japan prototype · 193 country profiles</span></div>
+              <Link href="/world-explorer" className={styles.openLink}>Explore the world <span aria-hidden="true">→</span></Link>
+            </div>
+          </article>
         </section>
         <section className={styles.participation} aria-labelledby="participation-title"><span className={styles.streakIcon} aria-hidden="true">♨</span><div><h2 id="participation-title">Shared participation streak</h2><p>Status will appear when connected.</p></div></section>
       </div>

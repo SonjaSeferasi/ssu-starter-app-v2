@@ -1,0 +1,5562 @@
+[
+  {
+    "code": "AFG",
+    "iso2": "AF",
+    "name": "Afghanistan",
+    "officialName": "Islamic Republic of Afghanistan",
+    "continent": "asia",
+    "subregion": "Southern Asia",
+    "capital": [
+      "Kabul"
+    ],
+    "languages": [
+      "Dari",
+      "Pashto",
+      "Turkmen"
+    ],
+    "currencies": [
+      "AFN — Afghan afghani"
+    ],
+    "lat": 33,
+    "lng": 65,
+    "flag": "🇦🇫",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Afghanistan is grouped in Southern Asia in UN M49. Capital: Kabul.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "ALB",
+    "iso2": "AL",
+    "name": "Albania",
+    "officialName": "Republic of Albania",
+    "continent": "europe",
+    "subregion": "Southern Europe",
+    "capital": [
+      "Tirana"
+    ],
+    "languages": [
+      "Albanian"
+    ],
+    "currencies": [
+      "ALL — Albanian lek"
+    ],
+    "lat": 41,
+    "lng": 20,
+    "flag": "🇦🇱",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Albania is grouped in Southern Europe in UN M49. Capital: Tirana.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "DZA",
+    "iso2": "DZ",
+    "name": "Algeria",
+    "officialName": "People's Democratic Republic of Algeria",
+    "continent": "africa",
+    "subregion": "Northern Africa",
+    "capital": [
+      "Algiers"
+    ],
+    "languages": [
+      "Arabic"
+    ],
+    "currencies": [
+      "DZD — Algerian dinar"
+    ],
+    "lat": 28,
+    "lng": 3,
+    "flag": "🇩🇿",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Algeria is grouped in Northern Africa in UN M49. Capital: Algiers.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "AND",
+    "iso2": "AD",
+    "name": "Andorra",
+    "officialName": "Principality of Andorra",
+    "continent": "europe",
+    "subregion": "Southern Europe",
+    "capital": [
+      "Andorra la Vella"
+    ],
+    "languages": [
+      "Catalan"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 42.5,
+    "lng": 1.5,
+    "flag": "🇦🇩",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Andorra is grouped in Southern Europe in UN M49. Capital: Andorra la Vella.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "AGO",
+    "iso2": "AO",
+    "name": "Angola",
+    "officialName": "Republic of Angola",
+    "continent": "africa",
+    "subregion": "Middle Africa",
+    "capital": [
+      "Luanda"
+    ],
+    "languages": [
+      "Portuguese"
+    ],
+    "currencies": [
+      "AOA — Angolan kwanza"
+    ],
+    "lat": -12.5,
+    "lng": 18.5,
+    "flag": "🇦🇴",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Angola is grouped in Middle Africa in UN M49. Capital: Luanda.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "ATG",
+    "iso2": "AG",
+    "name": "Antigua and Barbuda",
+    "officialName": "Antigua and Barbuda",
+    "continent": "north-america",
+    "subregion": "Caribbean",
+    "capital": [
+      "Saint John's"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "XCD — Eastern Caribbean dollar"
+    ],
+    "lat": 17.05,
+    "lng": -61.8,
+    "flag": "🇦🇬",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Antigua and Barbuda is grouped in Caribbean in UN M49. Capital: Saint John's.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "ARG",
+    "iso2": "AR",
+    "name": "Argentina",
+    "officialName": "Argentine Republic",
+    "continent": "south-america",
+    "subregion": "South America",
+    "capital": [
+      "Buenos Aires"
+    ],
+    "languages": [
+      "Guaraní",
+      "Spanish"
+    ],
+    "currencies": [
+      "ARS — Argentine peso"
+    ],
+    "lat": -34,
+    "lng": -64,
+    "flag": "🇦🇷",
+    "biome": "grassland",
+    "landmark": "",
+    "description": "Argentina is grouped in South America in UN M49. Capital: Buenos Aires.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "ARM",
+    "iso2": "AM",
+    "name": "Armenia",
+    "officialName": "Republic of Armenia",
+    "continent": "asia",
+    "subregion": "Western Asia",
+    "capital": [
+      "Yerevan"
+    ],
+    "languages": [
+      "Armenian"
+    ],
+    "currencies": [
+      "AMD — Armenian dram"
+    ],
+    "lat": 40,
+    "lng": 45,
+    "flag": "🇦🇲",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Armenia is grouped in Western Asia in UN M49. Capital: Yerevan.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "AUS",
+    "iso2": "AU",
+    "name": "Australia",
+    "officialName": "Commonwealth of Australia",
+    "continent": "oceania",
+    "subregion": "Australia and New Zealand",
+    "capital": [
+      "Canberra"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "AUD — Australian dollar"
+    ],
+    "lat": -27,
+    "lng": 133,
+    "flag": "🇦🇺",
+    "biome": "coastal",
+    "landmark": "Sydney Opera House",
+    "description": "Australia is grouped in Australia and New Zealand in UN M49. Capital: Canberra. The Sydney Opera House opened in 1973 and stands beside Sydney Harbour.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries",
+      "https://whc.unesco.org/en/list/166/"
+    ]
+  },
+  {
+    "code": "AUT",
+    "iso2": "AT",
+    "name": "Austria",
+    "officialName": "Republic of Austria",
+    "continent": "europe",
+    "subregion": "Western Europe",
+    "capital": [
+      "Vienna"
+    ],
+    "languages": [
+      "Austro-Bavarian German"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 47.33333333,
+    "lng": 13.33333333,
+    "flag": "🇦🇹",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Austria is grouped in Western Europe in UN M49. Capital: Vienna.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "AZE",
+    "iso2": "AZ",
+    "name": "Azerbaijan",
+    "officialName": "Republic of Azerbaijan",
+    "continent": "asia",
+    "subregion": "Western Asia",
+    "capital": [
+      "Baku"
+    ],
+    "languages": [
+      "Azerbaijani",
+      "Russian"
+    ],
+    "currencies": [
+      "AZN — Azerbaijani manat"
+    ],
+    "lat": 40.5,
+    "lng": 47.5,
+    "flag": "🇦🇿",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Azerbaijan is grouped in Western Asia in UN M49. Capital: Baku.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "BHS",
+    "iso2": "BS",
+    "name": "Bahamas",
+    "officialName": "Commonwealth of the Bahamas",
+    "continent": "north-america",
+    "subregion": "Caribbean",
+    "capital": [
+      "Nassau"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "BSD — Bahamian dollar",
+      "USD — United States dollar"
+    ],
+    "lat": 24.25,
+    "lng": -76,
+    "flag": "🇧🇸",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Bahamas is grouped in Caribbean in UN M49. Capital: Nassau.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "BHR",
+    "iso2": "BH",
+    "name": "Bahrain",
+    "officialName": "Kingdom of Bahrain",
+    "continent": "asia",
+    "subregion": "Western Asia",
+    "capital": [
+      "Manama"
+    ],
+    "languages": [
+      "Arabic"
+    ],
+    "currencies": [
+      "BHD — Bahraini dinar"
+    ],
+    "lat": 26,
+    "lng": 50.55,
+    "flag": "🇧🇭",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Bahrain is grouped in Western Asia in UN M49. Capital: Manama.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "BGD",
+    "iso2": "BD",
+    "name": "Bangladesh",
+    "officialName": "People's Republic of Bangladesh",
+    "continent": "asia",
+    "subregion": "Southern Asia",
+    "capital": [
+      "Dhaka"
+    ],
+    "languages": [
+      "Bengali"
+    ],
+    "currencies": [
+      "BDT — Bangladeshi taka"
+    ],
+    "lat": 24,
+    "lng": 90,
+    "flag": "🇧🇩",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "Bangladesh is grouped in Southern Asia in UN M49. Capital: Dhaka.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "BRB",
+    "iso2": "BB",
+    "name": "Barbados",
+    "officialName": "Barbados",
+    "continent": "north-america",
+    "subregion": "Caribbean",
+    "capital": [
+      "Bridgetown"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "BBD — Barbadian dollar"
+    ],
+    "lat": 13.16666666,
+    "lng": -59.53333333,
+    "flag": "🇧🇧",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Barbados is grouped in Caribbean in UN M49. Capital: Bridgetown.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "BLR",
+    "iso2": "BY",
+    "name": "Belarus",
+    "officialName": "Republic of Belarus",
+    "continent": "europe",
+    "subregion": "Eastern Europe",
+    "capital": [
+      "Minsk"
+    ],
+    "languages": [
+      "Belarusian",
+      "Russian"
+    ],
+    "currencies": [
+      "BYN — Belarusian ruble"
+    ],
+    "lat": 53,
+    "lng": 28,
+    "flag": "🇧🇾",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Belarus is grouped in Eastern Europe in UN M49. Capital: Minsk.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "BEL",
+    "iso2": "BE",
+    "name": "Belgium",
+    "officialName": "Kingdom of Belgium",
+    "continent": "europe",
+    "subregion": "Western Europe",
+    "capital": [
+      "Brussels"
+    ],
+    "languages": [
+      "German",
+      "French",
+      "Dutch"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 50.83333333,
+    "lng": 4,
+    "flag": "🇧🇪",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "Belgium is grouped in Western Europe in UN M49. Capital: Brussels.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "BLZ",
+    "iso2": "BZ",
+    "name": "Belize",
+    "officialName": "Belize",
+    "continent": "north-america",
+    "subregion": "Central America",
+    "capital": [
+      "Belmopan"
+    ],
+    "languages": [
+      "Belizean Creole",
+      "English",
+      "Spanish"
+    ],
+    "currencies": [
+      "BZD — Belize dollar"
+    ],
+    "lat": 17.25,
+    "lng": -88.75,
+    "flag": "🇧🇿",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Belize is grouped in Central America in UN M49. Capital: Belmopan.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "BEN",
+    "iso2": "BJ",
+    "name": "Benin",
+    "officialName": "Republic of Benin",
+    "continent": "africa",
+    "subregion": "Western Africa",
+    "capital": [
+      "Porto-Novo"
+    ],
+    "languages": [
+      "French"
+    ],
+    "currencies": [
+      "XOF — West African CFA franc"
+    ],
+    "lat": 9.5,
+    "lng": 2.25,
+    "flag": "🇧🇯",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Benin is grouped in Western Africa in UN M49. Capital: Porto-Novo.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "BTN",
+    "iso2": "BT",
+    "name": "Bhutan",
+    "officialName": "Kingdom of Bhutan",
+    "continent": "asia",
+    "subregion": "Southern Asia",
+    "capital": [
+      "Thimphu"
+    ],
+    "languages": [
+      "Dzongkha"
+    ],
+    "currencies": [
+      "BTN — Bhutanese ngultrum",
+      "INR — Indian rupee"
+    ],
+    "lat": 27.5,
+    "lng": 90.5,
+    "flag": "🇧🇹",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Bhutan is grouped in Southern Asia in UN M49. Capital: Thimphu.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "BOL",
+    "iso2": "BO",
+    "name": "Bolivia",
+    "officialName": "Plurinational State of Bolivia",
+    "continent": "south-america",
+    "subregion": "South America",
+    "capital": [
+      "Sucre"
+    ],
+    "languages": [
+      "Aymara",
+      "Guaraní",
+      "Quechua",
+      "Spanish"
+    ],
+    "currencies": [
+      "BOB — Bolivian boliviano"
+    ],
+    "lat": -17,
+    "lng": -65,
+    "flag": "🇧🇴",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Bolivia is grouped in South America in UN M49. Capital: Sucre.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "BIH",
+    "iso2": "BA",
+    "name": "Bosnia and Herzegovina",
+    "officialName": "Bosnia and Herzegovina",
+    "continent": "europe",
+    "subregion": "Southern Europe",
+    "capital": [
+      "Sarajevo"
+    ],
+    "languages": [
+      "Bosnian",
+      "Croatian",
+      "Serbian"
+    ],
+    "currencies": [
+      "BAM — Bosnia and Herzegovina convertible mark"
+    ],
+    "lat": 44,
+    "lng": 18,
+    "flag": "🇧🇦",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Bosnia and Herzegovina is grouped in Southern Europe in UN M49. Capital: Sarajevo.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "BWA",
+    "iso2": "BW",
+    "name": "Botswana",
+    "officialName": "Republic of Botswana",
+    "continent": "africa",
+    "subregion": "Southern Africa",
+    "capital": [
+      "Gaborone"
+    ],
+    "languages": [
+      "English",
+      "Tswana"
+    ],
+    "currencies": [
+      "BWP — Botswana pula"
+    ],
+    "lat": -22,
+    "lng": 24,
+    "flag": "🇧🇼",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Botswana is grouped in Southern Africa in UN M49. Capital: Gaborone.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "BRA",
+    "iso2": "BR",
+    "name": "Brazil",
+    "officialName": "Federative Republic of Brazil",
+    "continent": "south-america",
+    "subregion": "South America",
+    "capital": [
+      "Brasília"
+    ],
+    "languages": [
+      "Portuguese"
+    ],
+    "currencies": [
+      "BRL — Brazilian real"
+    ],
+    "lat": -10,
+    "lng": -55,
+    "flag": "🇧🇷",
+    "biome": "tropical",
+    "landmark": "Central Amazon rainforest",
+    "description": "Brazil is grouped in South America in UN M49. Capital: Brasília. The Central Amazon Conservation Complex protects forests, lakes and river environments in Brazil.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries",
+      "https://whc.unesco.org/en/list/998/"
+    ]
+  },
+  {
+    "code": "BRN",
+    "iso2": "BN",
+    "name": "Brunei",
+    "officialName": "Nation of Brunei, Abode of Peace",
+    "continent": "asia",
+    "subregion": "South-eastern Asia",
+    "capital": [
+      "Bandar Seri Begawan"
+    ],
+    "languages": [
+      "Malay"
+    ],
+    "currencies": [
+      "BND — Brunei dollar",
+      "SGD — Singapore dollar"
+    ],
+    "lat": 4.5,
+    "lng": 114.66666666,
+    "flag": "🇧🇳",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Brunei is grouped in South-eastern Asia in UN M49. Capital: Bandar Seri Begawan.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "BGR",
+    "iso2": "BG",
+    "name": "Bulgaria",
+    "officialName": "Republic of Bulgaria",
+    "continent": "europe",
+    "subregion": "Eastern Europe",
+    "capital": [
+      "Sofia"
+    ],
+    "languages": [
+      "Bulgarian"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 43,
+    "lng": 25,
+    "flag": "🇧🇬",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "Bulgaria is grouped in Eastern Europe in UN M49. Capital: Sofia.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "BFA",
+    "iso2": "BF",
+    "name": "Burkina Faso",
+    "officialName": "Burkina Faso",
+    "continent": "africa",
+    "subregion": "Western Africa",
+    "capital": [
+      "Ouagadougou"
+    ],
+    "languages": [
+      "French"
+    ],
+    "currencies": [
+      "XOF — West African CFA franc"
+    ],
+    "lat": 13,
+    "lng": -2,
+    "flag": "🇧🇫",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Burkina Faso is grouped in Western Africa in UN M49. Capital: Ouagadougou.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "BDI",
+    "iso2": "BI",
+    "name": "Burundi",
+    "officialName": "Republic of Burundi",
+    "continent": "africa",
+    "subregion": "Eastern Africa",
+    "capital": [
+      "Gitega"
+    ],
+    "languages": [
+      "French",
+      "Kirundi"
+    ],
+    "currencies": [
+      "BIF — Burundian franc"
+    ],
+    "lat": -3.5,
+    "lng": 30,
+    "flag": "🇧🇮",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Burundi is grouped in Eastern Africa in UN M49. Capital: Gitega.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "CPV",
+    "iso2": "CV",
+    "name": "Cabo Verde",
+    "officialName": "Republic of Cabo Verde",
+    "continent": "africa",
+    "subregion": "Western Africa",
+    "capital": [
+      "Praia"
+    ],
+    "languages": [
+      "Portuguese"
+    ],
+    "currencies": [
+      "CVE — Cape Verdean escudo"
+    ],
+    "lat": 16,
+    "lng": -24,
+    "flag": "🇨🇻",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Cabo Verde is grouped in Western Africa in UN M49. Capital: Praia.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "KHM",
+    "iso2": "KH",
+    "name": "Cambodia",
+    "officialName": "Kingdom of Cambodia",
+    "continent": "asia",
+    "subregion": "South-eastern Asia",
+    "capital": [
+      "Phnom Penh"
+    ],
+    "languages": [
+      "Khmer"
+    ],
+    "currencies": [
+      "KHR — Cambodian riel",
+      "USD — United States dollar"
+    ],
+    "lat": 13,
+    "lng": 105,
+    "flag": "🇰🇭",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Cambodia is grouped in South-eastern Asia in UN M49. Capital: Phnom Penh.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "CMR",
+    "iso2": "CM",
+    "name": "Cameroon",
+    "officialName": "Republic of Cameroon",
+    "continent": "africa",
+    "subregion": "Middle Africa",
+    "capital": [
+      "Yaoundé"
+    ],
+    "languages": [
+      "English",
+      "French"
+    ],
+    "currencies": [
+      "XAF — Central African CFA franc"
+    ],
+    "lat": 6,
+    "lng": 12,
+    "flag": "🇨🇲",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Cameroon is grouped in Middle Africa in UN M49. Capital: Yaoundé.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "CAN",
+    "iso2": "CA",
+    "name": "Canada",
+    "officialName": "Canada",
+    "continent": "north-america",
+    "subregion": "Northern America",
+    "capital": [
+      "Ottawa"
+    ],
+    "languages": [
+      "English",
+      "French"
+    ],
+    "currencies": [
+      "CAD — Canadian dollar"
+    ],
+    "lat": 60,
+    "lng": -95,
+    "flag": "🇨🇦",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Canada is grouped in Northern America in UN M49. Capital: Ottawa.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "CAF",
+    "iso2": "CF",
+    "name": "Central African Republic",
+    "officialName": "Central African Republic",
+    "continent": "africa",
+    "subregion": "Middle Africa",
+    "capital": [
+      "Bangui"
+    ],
+    "languages": [
+      "French",
+      "Sango"
+    ],
+    "currencies": [
+      "XAF — Central African CFA franc"
+    ],
+    "lat": 7,
+    "lng": 21,
+    "flag": "🇨🇫",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Central African Republic is grouped in Middle Africa in UN M49. Capital: Bangui.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "TCD",
+    "iso2": "TD",
+    "name": "Chad",
+    "officialName": "Republic of Chad",
+    "continent": "africa",
+    "subregion": "Middle Africa",
+    "capital": [
+      "N'Djamena"
+    ],
+    "languages": [
+      "Arabic",
+      "French"
+    ],
+    "currencies": [
+      "XAF — Central African CFA franc"
+    ],
+    "lat": 15,
+    "lng": 19,
+    "flag": "🇹🇩",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Chad is grouped in Middle Africa in UN M49. Capital: N'Djamena.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "CHL",
+    "iso2": "CL",
+    "name": "Chile",
+    "officialName": "Republic of Chile",
+    "continent": "south-america",
+    "subregion": "South America",
+    "capital": [
+      "Santiago"
+    ],
+    "languages": [
+      "Spanish"
+    ],
+    "currencies": [
+      "CLP — Chilean peso"
+    ],
+    "lat": -30,
+    "lng": -71,
+    "flag": "🇨🇱",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Chile is grouped in South America in UN M49. Capital: Santiago.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "CHN",
+    "iso2": "CN",
+    "name": "China",
+    "officialName": "People's Republic of China",
+    "continent": "asia",
+    "subregion": "Eastern Asia",
+    "capital": [
+      "Beijing"
+    ],
+    "languages": [
+      "Chinese"
+    ],
+    "currencies": [
+      "CNY — Chinese yuan"
+    ],
+    "lat": 35,
+    "lng": 105,
+    "flag": "🇨🇳",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "China is grouped in Eastern Asia in UN M49. Capital: Beijing.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "COL",
+    "iso2": "CO",
+    "name": "Colombia",
+    "officialName": "Republic of Colombia",
+    "continent": "south-america",
+    "subregion": "South America",
+    "capital": [
+      "Bogotá"
+    ],
+    "languages": [
+      "Spanish"
+    ],
+    "currencies": [
+      "COP — Colombian peso"
+    ],
+    "lat": 4,
+    "lng": -72,
+    "flag": "🇨🇴",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Colombia is grouped in South America in UN M49. Capital: Bogotá.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "COM",
+    "iso2": "KM",
+    "name": "Comoros",
+    "officialName": "Union of the Comoros",
+    "continent": "africa",
+    "subregion": "Eastern Africa",
+    "capital": [
+      "Moroni"
+    ],
+    "languages": [
+      "Arabic",
+      "French",
+      "Comorian"
+    ],
+    "currencies": [
+      "KMF — Comorian franc"
+    ],
+    "lat": -12.16666666,
+    "lng": 44.25,
+    "flag": "🇰🇲",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Comoros is grouped in Eastern Africa in UN M49. Capital: Moroni.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "CRI",
+    "iso2": "CR",
+    "name": "Costa Rica",
+    "officialName": "Republic of Costa Rica",
+    "continent": "north-america",
+    "subregion": "Central America",
+    "capital": [
+      "San José"
+    ],
+    "languages": [
+      "Spanish"
+    ],
+    "currencies": [
+      "CRC — Costa Rican colón"
+    ],
+    "lat": 10,
+    "lng": -84,
+    "flag": "🇨🇷",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Costa Rica is grouped in Central America in UN M49. Capital: San José.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "CIV",
+    "iso2": "CI",
+    "name": "Côte d’Ivoire",
+    "officialName": "Republic of Côte d'Ivoire",
+    "continent": "africa",
+    "subregion": "Western Africa",
+    "capital": [
+      "Yamoussoukro"
+    ],
+    "languages": [
+      "French"
+    ],
+    "currencies": [
+      "XOF — West African CFA franc"
+    ],
+    "lat": 8,
+    "lng": -5,
+    "flag": "🇨🇮",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Côte d’Ivoire is grouped in Western Africa in UN M49. Capital: Yamoussoukro.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "HRV",
+    "iso2": "HR",
+    "name": "Croatia",
+    "officialName": "Republic of Croatia",
+    "continent": "europe",
+    "subregion": "Southern Europe",
+    "capital": [
+      "Zagreb"
+    ],
+    "languages": [
+      "Croatian"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 45.16666666,
+    "lng": 15.5,
+    "flag": "🇭🇷",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Croatia is grouped in Southern Europe in UN M49. Capital: Zagreb.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "CUB",
+    "iso2": "CU",
+    "name": "Cuba",
+    "officialName": "Republic of Cuba",
+    "continent": "north-america",
+    "subregion": "Caribbean",
+    "capital": [
+      "Havana"
+    ],
+    "languages": [
+      "Spanish"
+    ],
+    "currencies": [
+      "CUP — Cuban peso"
+    ],
+    "lat": 21.5,
+    "lng": -80,
+    "flag": "🇨🇺",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Cuba is grouped in Caribbean in UN M49. Capital: Havana.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "CYP",
+    "iso2": "CY",
+    "name": "Cyprus",
+    "officialName": "Republic of Cyprus",
+    "continent": "asia",
+    "subregion": "Western Asia",
+    "capital": [
+      "Nicosia"
+    ],
+    "languages": [
+      "Greek",
+      "Turkish"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 35,
+    "lng": 33,
+    "flag": "🇨🇾",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Cyprus is grouped in Western Asia in UN M49. Capital: Nicosia.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "CZE",
+    "iso2": "CZ",
+    "name": "Czechia",
+    "officialName": "Czech Republic",
+    "continent": "europe",
+    "subregion": "Eastern Europe",
+    "capital": [
+      "Prague"
+    ],
+    "languages": [
+      "Czech",
+      "Slovak"
+    ],
+    "currencies": [
+      "CZK — Czech koruna"
+    ],
+    "lat": 49.75,
+    "lng": 15.5,
+    "flag": "🇨🇿",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "Czechia is grouped in Eastern Europe in UN M49. Capital: Prague.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "COD",
+    "iso2": "CD",
+    "name": "Democratic Republic of the Congo",
+    "officialName": "Democratic Republic of the Congo",
+    "continent": "africa",
+    "subregion": "Middle Africa",
+    "capital": [
+      "Kinshasa"
+    ],
+    "languages": [
+      "French",
+      "Kikongo",
+      "Lingala",
+      "Tshiluba",
+      "Swahili"
+    ],
+    "currencies": [
+      "CDF — Congolese franc"
+    ],
+    "lat": 0,
+    "lng": 25,
+    "flag": "🇨🇩",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Democratic Republic of the Congo is grouped in Middle Africa in UN M49. Capital: Kinshasa.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "DNK",
+    "iso2": "DK",
+    "name": "Denmark",
+    "officialName": "Kingdom of Denmark",
+    "continent": "europe",
+    "subregion": "Northern Europe",
+    "capital": [
+      "Copenhagen"
+    ],
+    "languages": [
+      "Danish"
+    ],
+    "currencies": [
+      "DKK — Danish krone"
+    ],
+    "lat": 56,
+    "lng": 10,
+    "flag": "🇩🇰",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Denmark is grouped in Northern Europe in UN M49. Capital: Copenhagen.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "DJI",
+    "iso2": "DJ",
+    "name": "Djibouti",
+    "officialName": "Republic of Djibouti",
+    "continent": "africa",
+    "subregion": "Eastern Africa",
+    "capital": [
+      "Djibouti"
+    ],
+    "languages": [
+      "Arabic",
+      "French"
+    ],
+    "currencies": [
+      "DJF — Djiboutian franc"
+    ],
+    "lat": 11.5,
+    "lng": 43,
+    "flag": "🇩🇯",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Djibouti is grouped in Eastern Africa in UN M49. Capital: Djibouti.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "DMA",
+    "iso2": "DM",
+    "name": "Dominica",
+    "officialName": "Commonwealth of Dominica",
+    "continent": "north-america",
+    "subregion": "Caribbean",
+    "capital": [
+      "Roseau"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "XCD — Eastern Caribbean dollar"
+    ],
+    "lat": 15.41666666,
+    "lng": -61.33333333,
+    "flag": "🇩🇲",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Dominica is grouped in Caribbean in UN M49. Capital: Roseau.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "DOM",
+    "iso2": "DO",
+    "name": "Dominican Republic",
+    "officialName": "Dominican Republic",
+    "continent": "north-america",
+    "subregion": "Caribbean",
+    "capital": [
+      "Santo Domingo"
+    ],
+    "languages": [
+      "Spanish"
+    ],
+    "currencies": [
+      "DOP — Dominican peso"
+    ],
+    "lat": 19,
+    "lng": -70.66666666,
+    "flag": "🇩🇴",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Dominican Republic is grouped in Caribbean in UN M49. Capital: Santo Domingo.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "ECU",
+    "iso2": "EC",
+    "name": "Ecuador",
+    "officialName": "Republic of Ecuador",
+    "continent": "south-america",
+    "subregion": "South America",
+    "capital": [
+      "Quito"
+    ],
+    "languages": [
+      "Spanish"
+    ],
+    "currencies": [
+      "USD — United States dollar"
+    ],
+    "lat": -2,
+    "lng": -77.5,
+    "flag": "🇪🇨",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Ecuador is grouped in South America in UN M49. Capital: Quito.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "EGY",
+    "iso2": "EG",
+    "name": "Egypt",
+    "officialName": "Arab Republic of Egypt",
+    "continent": "africa",
+    "subregion": "Northern Africa",
+    "capital": [
+      "Cairo"
+    ],
+    "languages": [
+      "Arabic"
+    ],
+    "currencies": [
+      "EGP — Egyptian pound"
+    ],
+    "lat": 27,
+    "lng": 30,
+    "flag": "🇪🇬",
+    "biome": "desert",
+    "landmark": "Pyramids of Giza",
+    "description": "Egypt is grouped in Northern Africa in UN M49. Capital: Cairo. The Giza pyramids are part of the Memphis and its Necropolis World Heritage property.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries",
+      "https://whc.unesco.org/en/list/86/"
+    ]
+  },
+  {
+    "code": "SLV",
+    "iso2": "SV",
+    "name": "El Salvador",
+    "officialName": "Republic of El Salvador",
+    "continent": "north-america",
+    "subregion": "Central America",
+    "capital": [
+      "San Salvador"
+    ],
+    "languages": [
+      "Spanish"
+    ],
+    "currencies": [
+      "USD — United States dollar"
+    ],
+    "lat": 13.83333333,
+    "lng": -88.91666666,
+    "flag": "🇸🇻",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "El Salvador is grouped in Central America in UN M49. Capital: San Salvador.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "GNQ",
+    "iso2": "GQ",
+    "name": "Equatorial Guinea",
+    "officialName": "Republic of Equatorial Guinea",
+    "continent": "africa",
+    "subregion": "Middle Africa",
+    "capital": [
+      "Ciudad de la Paz"
+    ],
+    "languages": [
+      "French",
+      "Portuguese",
+      "Spanish"
+    ],
+    "currencies": [
+      "XAF — Central African CFA franc"
+    ],
+    "lat": 2,
+    "lng": 10,
+    "flag": "🇬🇶",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Equatorial Guinea is grouped in Middle Africa in UN M49. Capital: Ciudad de la Paz.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "ERI",
+    "iso2": "ER",
+    "name": "Eritrea",
+    "officialName": "State of Eritrea",
+    "continent": "africa",
+    "subregion": "Eastern Africa",
+    "capital": [
+      "Asmara"
+    ],
+    "languages": [
+      "Arabic",
+      "English",
+      "Tigrinya"
+    ],
+    "currencies": [
+      "ERN — Eritrean nakfa"
+    ],
+    "lat": 15,
+    "lng": 39,
+    "flag": "🇪🇷",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Eritrea is grouped in Eastern Africa in UN M49. Capital: Asmara.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "EST",
+    "iso2": "EE",
+    "name": "Estonia",
+    "officialName": "Republic of Estonia",
+    "continent": "europe",
+    "subregion": "Northern Europe",
+    "capital": [
+      "Tallinn"
+    ],
+    "languages": [
+      "Estonian"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 59,
+    "lng": 26,
+    "flag": "🇪🇪",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Estonia is grouped in Northern Europe in UN M49. Capital: Tallinn.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "SWZ",
+    "iso2": "SZ",
+    "name": "Eswatini",
+    "officialName": "Kingdom of Eswatini",
+    "continent": "africa",
+    "subregion": "Southern Africa",
+    "capital": [
+      "Lobamba"
+    ],
+    "languages": [
+      "English",
+      "Swazi"
+    ],
+    "currencies": [
+      "SZL — Swazi lilangeni",
+      "ZAR — South African rand"
+    ],
+    "lat": -26.5,
+    "lng": 31.5,
+    "flag": "🇸🇿",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "Eswatini is grouped in Southern Africa in UN M49. Capital: Lobamba.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "ETH",
+    "iso2": "ET",
+    "name": "Ethiopia",
+    "officialName": "Federal Democratic Republic of Ethiopia",
+    "continent": "africa",
+    "subregion": "Eastern Africa",
+    "capital": [
+      "Addis Ababa"
+    ],
+    "languages": [
+      "Amharic"
+    ],
+    "currencies": [
+      "ETB — Ethiopian birr"
+    ],
+    "lat": 8,
+    "lng": 38,
+    "flag": "🇪🇹",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Ethiopia is grouped in Eastern Africa in UN M49. Capital: Addis Ababa.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "FJI",
+    "iso2": "FJ",
+    "name": "Fiji",
+    "officialName": "Republic of Fiji",
+    "continent": "oceania",
+    "subregion": "Melanesia",
+    "capital": [
+      "Suva"
+    ],
+    "languages": [
+      "English",
+      "Fijian",
+      "Fiji Hindi"
+    ],
+    "currencies": [
+      "FJD — Fijian dollar"
+    ],
+    "lat": -18,
+    "lng": 175,
+    "flag": "🇫🇯",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Fiji is grouped in Melanesia in UN M49. Capital: Suva.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "FIN",
+    "iso2": "FI",
+    "name": "Finland",
+    "officialName": "Republic of Finland",
+    "continent": "europe",
+    "subregion": "Northern Europe",
+    "capital": [
+      "Helsinki"
+    ],
+    "languages": [
+      "Finnish",
+      "Swedish"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 64,
+    "lng": 26,
+    "flag": "🇫🇮",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Finland is grouped in Northern Europe in UN M49. Capital: Helsinki.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "FRA",
+    "iso2": "FR",
+    "name": "France",
+    "officialName": "French Republic",
+    "continent": "europe",
+    "subregion": "Western Europe",
+    "capital": [
+      "Paris"
+    ],
+    "languages": [
+      "French"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 46,
+    "lng": 2,
+    "flag": "🇫🇷",
+    "biome": "temperate",
+    "landmark": "Eiffel Tower",
+    "description": "France is grouped in Western Europe in UN M49. Capital: Paris. The Eiffel Tower was completed in Paris in 1889 for the World’s Fair.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries",
+      "https://www.toureiffel.paris/en/the-monument/history"
+    ]
+  },
+  {
+    "code": "GAB",
+    "iso2": "GA",
+    "name": "Gabon",
+    "officialName": "Gabonese Republic",
+    "continent": "africa",
+    "subregion": "Middle Africa",
+    "capital": [
+      "Libreville"
+    ],
+    "languages": [
+      "French"
+    ],
+    "currencies": [
+      "XAF — Central African CFA franc"
+    ],
+    "lat": -1,
+    "lng": 11.75,
+    "flag": "🇬🇦",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Gabon is grouped in Middle Africa in UN M49. Capital: Libreville.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "GMB",
+    "iso2": "GM",
+    "name": "Gambia",
+    "officialName": "Republic of the Gambia",
+    "continent": "africa",
+    "subregion": "Western Africa",
+    "capital": [
+      "Banjul"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "GMD — dalasi"
+    ],
+    "lat": 13.46666666,
+    "lng": -16.56666666,
+    "flag": "🇬🇲",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Gambia is grouped in Western Africa in UN M49. Capital: Banjul.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "GEO",
+    "iso2": "GE",
+    "name": "Georgia",
+    "officialName": "Georgia",
+    "continent": "asia",
+    "subregion": "Western Asia",
+    "capital": [
+      "Tbilisi"
+    ],
+    "languages": [
+      "Georgian"
+    ],
+    "currencies": [
+      "GEL — lari"
+    ],
+    "lat": 42,
+    "lng": 43.5,
+    "flag": "🇬🇪",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Georgia is grouped in Western Asia in UN M49. Capital: Tbilisi.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "DEU",
+    "iso2": "DE",
+    "name": "Germany",
+    "officialName": "Federal Republic of Germany",
+    "continent": "europe",
+    "subregion": "Western Europe",
+    "capital": [
+      "Berlin"
+    ],
+    "languages": [
+      "German"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 51,
+    "lng": 9,
+    "flag": "🇩🇪",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "Germany is grouped in Western Europe in UN M49. Capital: Berlin.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "GHA",
+    "iso2": "GH",
+    "name": "Ghana",
+    "officialName": "Republic of Ghana",
+    "continent": "africa",
+    "subregion": "Western Africa",
+    "capital": [
+      "Accra"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "GHS — Ghanaian cedi"
+    ],
+    "lat": 8,
+    "lng": -2,
+    "flag": "🇬🇭",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Ghana is grouped in Western Africa in UN M49. Capital: Accra.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "GRC",
+    "iso2": "GR",
+    "name": "Greece",
+    "officialName": "Hellenic Republic",
+    "continent": "europe",
+    "subregion": "Southern Europe",
+    "capital": [
+      "Athens"
+    ],
+    "languages": [
+      "Greek"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 39,
+    "lng": 22,
+    "flag": "🇬🇷",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Greece is grouped in Southern Europe in UN M49. Capital: Athens.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "GRD",
+    "iso2": "GD",
+    "name": "Grenada",
+    "officialName": "Grenada",
+    "continent": "north-america",
+    "subregion": "Caribbean",
+    "capital": [
+      "St. George's"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "XCD — Eastern Caribbean dollar"
+    ],
+    "lat": 12.11666666,
+    "lng": -61.66666666,
+    "flag": "🇬🇩",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Grenada is grouped in Caribbean in UN M49. Capital: St. George's.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "GTM",
+    "iso2": "GT",
+    "name": "Guatemala",
+    "officialName": "Republic of Guatemala",
+    "continent": "north-america",
+    "subregion": "Central America",
+    "capital": [
+      "Guatemala City"
+    ],
+    "languages": [
+      "Spanish"
+    ],
+    "currencies": [
+      "GTQ — Guatemalan quetzal"
+    ],
+    "lat": 15.5,
+    "lng": -90.25,
+    "flag": "🇬🇹",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Guatemala is grouped in Central America in UN M49. Capital: Guatemala City.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "GIN",
+    "iso2": "GN",
+    "name": "Guinea",
+    "officialName": "Republic of Guinea",
+    "continent": "africa",
+    "subregion": "Western Africa",
+    "capital": [
+      "Conakry"
+    ],
+    "languages": [
+      "French"
+    ],
+    "currencies": [
+      "GNF — Guinean franc"
+    ],
+    "lat": 11,
+    "lng": -10,
+    "flag": "🇬🇳",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Guinea is grouped in Western Africa in UN M49. Capital: Conakry.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "GNB",
+    "iso2": "GW",
+    "name": "Guinea-Bissau",
+    "officialName": "Republic of Guinea-Bissau",
+    "continent": "africa",
+    "subregion": "Western Africa",
+    "capital": [
+      "Bissau"
+    ],
+    "languages": [
+      "Portuguese",
+      "Upper Guinea Creole"
+    ],
+    "currencies": [
+      "XOF — West African CFA franc"
+    ],
+    "lat": 12,
+    "lng": -15,
+    "flag": "🇬🇼",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Guinea-Bissau is grouped in Western Africa in UN M49. Capital: Bissau.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "GUY",
+    "iso2": "GY",
+    "name": "Guyana",
+    "officialName": "Co-operative Republic of Guyana",
+    "continent": "south-america",
+    "subregion": "South America",
+    "capital": [
+      "Georgetown"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "GYD — Guyanese dollar"
+    ],
+    "lat": 5,
+    "lng": -59,
+    "flag": "🇬🇾",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Guyana is grouped in South America in UN M49. Capital: Georgetown.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "HTI",
+    "iso2": "HT",
+    "name": "Haiti",
+    "officialName": "Republic of Haiti",
+    "continent": "north-america",
+    "subregion": "Caribbean",
+    "capital": [
+      "Port-au-Prince"
+    ],
+    "languages": [
+      "French",
+      "Haitian Creole"
+    ],
+    "currencies": [
+      "HTG — Haitian gourde"
+    ],
+    "lat": 19,
+    "lng": -72.41666666,
+    "flag": "🇭🇹",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Haiti is grouped in Caribbean in UN M49. Capital: Port-au-Prince.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "HND",
+    "iso2": "HN",
+    "name": "Honduras",
+    "officialName": "Republic of Honduras",
+    "continent": "north-america",
+    "subregion": "Central America",
+    "capital": [
+      "Tegucigalpa"
+    ],
+    "languages": [
+      "Spanish"
+    ],
+    "currencies": [
+      "HNL — Honduran lempira"
+    ],
+    "lat": 15,
+    "lng": -86.5,
+    "flag": "🇭🇳",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Honduras is grouped in Central America in UN M49. Capital: Tegucigalpa.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "HUN",
+    "iso2": "HU",
+    "name": "Hungary",
+    "officialName": "Hungary",
+    "continent": "europe",
+    "subregion": "Eastern Europe",
+    "capital": [
+      "Budapest"
+    ],
+    "languages": [
+      "Hungarian"
+    ],
+    "currencies": [
+      "HUF — Hungarian forint"
+    ],
+    "lat": 47,
+    "lng": 20,
+    "flag": "🇭🇺",
+    "biome": "grassland",
+    "landmark": "",
+    "description": "Hungary is grouped in Eastern Europe in UN M49. Capital: Budapest.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "ISL",
+    "iso2": "IS",
+    "name": "Iceland",
+    "officialName": "Iceland",
+    "continent": "europe",
+    "subregion": "Northern Europe",
+    "capital": [
+      "Reykjavik"
+    ],
+    "languages": [
+      "Icelandic"
+    ],
+    "currencies": [
+      "ISK — Icelandic króna"
+    ],
+    "lat": 65,
+    "lng": -18,
+    "flag": "🇮🇸",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Iceland is grouped in Northern Europe in UN M49. Capital: Reykjavik.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "IND",
+    "iso2": "IN",
+    "name": "India",
+    "officialName": "Republic of India",
+    "continent": "asia",
+    "subregion": "Southern Asia",
+    "capital": [
+      "New Delhi"
+    ],
+    "languages": [
+      "English",
+      "Hindi",
+      "Tamil"
+    ],
+    "currencies": [
+      "INR — Indian rupee"
+    ],
+    "lat": 20,
+    "lng": 77,
+    "flag": "🇮🇳",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "India is grouped in Southern Asia in UN M49. Capital: New Delhi.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "IDN",
+    "iso2": "ID",
+    "name": "Indonesia",
+    "officialName": "Republic of Indonesia",
+    "continent": "asia",
+    "subregion": "South-eastern Asia",
+    "capital": [
+      "Jakarta"
+    ],
+    "languages": [
+      "Indonesian"
+    ],
+    "currencies": [
+      "IDR — Indonesian rupiah"
+    ],
+    "lat": -5,
+    "lng": 120,
+    "flag": "🇮🇩",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Indonesia is grouped in South-eastern Asia in UN M49. Capital: Jakarta.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "IRN",
+    "iso2": "IR",
+    "name": "Iran",
+    "officialName": "Islamic Republic of Iran",
+    "continent": "asia",
+    "subregion": "Southern Asia",
+    "capital": [
+      "Tehran"
+    ],
+    "languages": [
+      "Persian (Farsi)"
+    ],
+    "currencies": [
+      "IRR — Iranian rial"
+    ],
+    "lat": 32,
+    "lng": 53,
+    "flag": "🇮🇷",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Iran is grouped in Southern Asia in UN M49. Capital: Tehran.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "IRQ",
+    "iso2": "IQ",
+    "name": "Iraq",
+    "officialName": "Republic of Iraq",
+    "continent": "asia",
+    "subregion": "Western Asia",
+    "capital": [
+      "Baghdad"
+    ],
+    "languages": [
+      "Arabic",
+      "Aramaic",
+      "Sorani"
+    ],
+    "currencies": [
+      "IQD — Iraqi dinar"
+    ],
+    "lat": 33,
+    "lng": 44,
+    "flag": "🇮🇶",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Iraq is grouped in Western Asia in UN M49. Capital: Baghdad.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "IRL",
+    "iso2": "IE",
+    "name": "Ireland",
+    "officialName": "Republic of Ireland",
+    "continent": "europe",
+    "subregion": "Northern Europe",
+    "capital": [
+      "Dublin"
+    ],
+    "languages": [
+      "English",
+      "Irish"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 53,
+    "lng": -8,
+    "flag": "🇮🇪",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Ireland is grouped in Northern Europe in UN M49. Capital: Dublin.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "ISR",
+    "iso2": "IL",
+    "name": "Israel",
+    "officialName": "State of Israel",
+    "continent": "asia",
+    "subregion": "Western Asia",
+    "capital": [
+      "Jerusalem"
+    ],
+    "languages": [
+      "Arabic",
+      "Hebrew"
+    ],
+    "currencies": [
+      "ILS — Israeli new shekel"
+    ],
+    "lat": 31.47,
+    "lng": 35.13,
+    "flag": "🇮🇱",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Israel is grouped in Western Asia in UN M49. Jerusalem is the declared capital; its status is disputed.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "ITA",
+    "iso2": "IT",
+    "name": "Italy",
+    "officialName": "Italian Republic",
+    "continent": "europe",
+    "subregion": "Southern Europe",
+    "capital": [
+      "Rome"
+    ],
+    "languages": [
+      "Italian"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 42.83333333,
+    "lng": 12.83333333,
+    "flag": "🇮🇹",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Italy is grouped in Southern Europe in UN M49. Capital: Rome.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "JAM",
+    "iso2": "JM",
+    "name": "Jamaica",
+    "officialName": "Jamaica",
+    "continent": "north-america",
+    "subregion": "Caribbean",
+    "capital": [
+      "Kingston"
+    ],
+    "languages": [
+      "English",
+      "Jamaican Patois"
+    ],
+    "currencies": [
+      "JMD — Jamaican dollar"
+    ],
+    "lat": 18.25,
+    "lng": -77.5,
+    "flag": "🇯🇲",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Jamaica is grouped in Caribbean in UN M49. Capital: Kingston.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "JPN",
+    "iso2": "JP",
+    "name": "Japan",
+    "officialName": "Japan",
+    "continent": "asia",
+    "subregion": "Eastern Asia",
+    "capital": [
+      "Tokyo"
+    ],
+    "languages": [
+      "Japanese"
+    ],
+    "currencies": [
+      "JPY — Japanese yen"
+    ],
+    "lat": 36,
+    "lng": 138,
+    "flag": "🇯🇵",
+    "biome": "temperate",
+    "landmark": "Mount Fuji",
+    "description": "Japan is grouped in Eastern Asia in UN M49. Capital: Tokyo. Mount Fuji is a stratovolcano whose landscape has inspired religious traditions and art.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries",
+      "https://whc.unesco.org/en/list/1418/"
+    ]
+  },
+  {
+    "code": "JOR",
+    "iso2": "JO",
+    "name": "Jordan",
+    "officialName": "Hashemite Kingdom of Jordan",
+    "continent": "asia",
+    "subregion": "Western Asia",
+    "capital": [
+      "Amman"
+    ],
+    "languages": [
+      "Arabic"
+    ],
+    "currencies": [
+      "JOD — Jordanian dinar"
+    ],
+    "lat": 31,
+    "lng": 36,
+    "flag": "🇯🇴",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Jordan is grouped in Western Asia in UN M49. Capital: Amman.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "KAZ",
+    "iso2": "KZ",
+    "name": "Kazakhstan",
+    "officialName": "Republic of Kazakhstan",
+    "continent": "asia",
+    "subregion": "Central Asia",
+    "capital": [
+      "Astana"
+    ],
+    "languages": [
+      "Kazakh",
+      "Russian"
+    ],
+    "currencies": [
+      "KZT — Kazakhstani tenge"
+    ],
+    "lat": 48,
+    "lng": 68,
+    "flag": "🇰🇿",
+    "biome": "grassland",
+    "landmark": "",
+    "description": "Kazakhstan is grouped in Central Asia in UN M49. Capital: Astana.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "KEN",
+    "iso2": "KE",
+    "name": "Kenya",
+    "officialName": "Republic of Kenya",
+    "continent": "africa",
+    "subregion": "Eastern Africa",
+    "capital": [
+      "Nairobi"
+    ],
+    "languages": [
+      "English",
+      "Swahili"
+    ],
+    "currencies": [
+      "KES — Kenyan shilling"
+    ],
+    "lat": 1,
+    "lng": 38,
+    "flag": "🇰🇪",
+    "biome": "grassland",
+    "landmark": "",
+    "description": "Kenya is grouped in Eastern Africa in UN M49. Capital: Nairobi.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "KIR",
+    "iso2": "KI",
+    "name": "Kiribati",
+    "officialName": "Independent and Sovereign Republic of Kiribati",
+    "continent": "oceania",
+    "subregion": "Micronesia",
+    "capital": [
+      "South Tarawa"
+    ],
+    "languages": [
+      "English",
+      "Gilbertese"
+    ],
+    "currencies": [
+      "AUD — Australian dollar"
+    ],
+    "lat": 1.41666666,
+    "lng": 173,
+    "flag": "🇰🇮",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Kiribati is grouped in Micronesia in UN M49. Capital: South Tarawa.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "KWT",
+    "iso2": "KW",
+    "name": "Kuwait",
+    "officialName": "State of Kuwait",
+    "continent": "asia",
+    "subregion": "Western Asia",
+    "capital": [
+      "Kuwait City"
+    ],
+    "languages": [
+      "Arabic"
+    ],
+    "currencies": [
+      "KWD — Kuwaiti dinar"
+    ],
+    "lat": 29.5,
+    "lng": 45.75,
+    "flag": "🇰🇼",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Kuwait is grouped in Western Asia in UN M49. Capital: Kuwait City.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "KGZ",
+    "iso2": "KG",
+    "name": "Kyrgyzstan",
+    "officialName": "Kyrgyz Republic",
+    "continent": "asia",
+    "subregion": "Central Asia",
+    "capital": [
+      "Bishkek"
+    ],
+    "languages": [
+      "Kyrgyz",
+      "Russian"
+    ],
+    "currencies": [
+      "KGS — Kyrgyzstani som"
+    ],
+    "lat": 41,
+    "lng": 75,
+    "flag": "🇰🇬",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Kyrgyzstan is grouped in Central Asia in UN M49. Capital: Bishkek.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "LAO",
+    "iso2": "LA",
+    "name": "Laos",
+    "officialName": "Lao People's Democratic Republic",
+    "continent": "asia",
+    "subregion": "South-eastern Asia",
+    "capital": [
+      "Vientiane"
+    ],
+    "languages": [
+      "Lao"
+    ],
+    "currencies": [
+      "LAK — Lao kip"
+    ],
+    "lat": 18,
+    "lng": 105,
+    "flag": "🇱🇦",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Laos is grouped in South-eastern Asia in UN M49. Capital: Vientiane.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "LVA",
+    "iso2": "LV",
+    "name": "Latvia",
+    "officialName": "Republic of Latvia",
+    "continent": "europe",
+    "subregion": "Northern Europe",
+    "capital": [
+      "Riga"
+    ],
+    "languages": [
+      "Latvian"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 57,
+    "lng": 25,
+    "flag": "🇱🇻",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Latvia is grouped in Northern Europe in UN M49. Capital: Riga.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "LBN",
+    "iso2": "LB",
+    "name": "Lebanon",
+    "officialName": "Lebanese Republic",
+    "continent": "asia",
+    "subregion": "Western Asia",
+    "capital": [
+      "Beirut"
+    ],
+    "languages": [
+      "Arabic",
+      "French"
+    ],
+    "currencies": [
+      "LBP — Lebanese pound"
+    ],
+    "lat": 33.83333333,
+    "lng": 35.83333333,
+    "flag": "🇱🇧",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "Lebanon is grouped in Western Asia in UN M49. Capital: Beirut.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "LSO",
+    "iso2": "LS",
+    "name": "Lesotho",
+    "officialName": "Kingdom of Lesotho",
+    "continent": "africa",
+    "subregion": "Southern Africa",
+    "capital": [
+      "Maseru"
+    ],
+    "languages": [
+      "English",
+      "Sotho"
+    ],
+    "currencies": [
+      "LSL — Lesotho loti",
+      "ZAR — South African rand"
+    ],
+    "lat": -29.5,
+    "lng": 28.5,
+    "flag": "🇱🇸",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Lesotho is grouped in Southern Africa in UN M49. Capital: Maseru.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "LBR",
+    "iso2": "LR",
+    "name": "Liberia",
+    "officialName": "Republic of Liberia",
+    "continent": "africa",
+    "subregion": "Western Africa",
+    "capital": [
+      "Monrovia"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "LRD — Liberian dollar"
+    ],
+    "lat": 6.5,
+    "lng": -9.5,
+    "flag": "🇱🇷",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Liberia is grouped in Western Africa in UN M49. Capital: Monrovia.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "LBY",
+    "iso2": "LY",
+    "name": "Libya",
+    "officialName": "State of Libya",
+    "continent": "africa",
+    "subregion": "Northern Africa",
+    "capital": [
+      "Tripoli"
+    ],
+    "languages": [
+      "Arabic"
+    ],
+    "currencies": [
+      "LYD — Libyan dinar"
+    ],
+    "lat": 25,
+    "lng": 17,
+    "flag": "🇱🇾",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Libya is grouped in Northern Africa in UN M49. Capital: Tripoli.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "LIE",
+    "iso2": "LI",
+    "name": "Liechtenstein",
+    "officialName": "Principality of Liechtenstein",
+    "continent": "europe",
+    "subregion": "Western Europe",
+    "capital": [
+      "Vaduz"
+    ],
+    "languages": [
+      "German"
+    ],
+    "currencies": [
+      "CHF — Swiss franc"
+    ],
+    "lat": 47.26666666,
+    "lng": 9.53333333,
+    "flag": "🇱🇮",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Liechtenstein is grouped in Western Europe in UN M49. Capital: Vaduz.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "LTU",
+    "iso2": "LT",
+    "name": "Lithuania",
+    "officialName": "Republic of Lithuania",
+    "continent": "europe",
+    "subregion": "Northern Europe",
+    "capital": [
+      "Vilnius"
+    ],
+    "languages": [
+      "Lithuanian"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 56,
+    "lng": 24,
+    "flag": "🇱🇹",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Lithuania is grouped in Northern Europe in UN M49. Capital: Vilnius.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "LUX",
+    "iso2": "LU",
+    "name": "Luxembourg",
+    "officialName": "Grand Duchy of Luxembourg",
+    "continent": "europe",
+    "subregion": "Western Europe",
+    "capital": [
+      "Luxembourg"
+    ],
+    "languages": [
+      "German",
+      "French",
+      "Luxembourgish"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 49.75,
+    "lng": 6.16666666,
+    "flag": "🇱🇺",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "Luxembourg is grouped in Western Europe in UN M49. Capital: Luxembourg.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "MDG",
+    "iso2": "MG",
+    "name": "Madagascar",
+    "officialName": "Republic of Madagascar",
+    "continent": "africa",
+    "subregion": "Eastern Africa",
+    "capital": [
+      "Antananarivo"
+    ],
+    "languages": [
+      "French",
+      "Malagasy"
+    ],
+    "currencies": [
+      "MGA — Malagasy ariary"
+    ],
+    "lat": -20,
+    "lng": 47,
+    "flag": "🇲🇬",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Madagascar is grouped in Eastern Africa in UN M49. Capital: Antananarivo.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "MWI",
+    "iso2": "MW",
+    "name": "Malawi",
+    "officialName": "Republic of Malawi",
+    "continent": "africa",
+    "subregion": "Eastern Africa",
+    "capital": [
+      "Lilongwe"
+    ],
+    "languages": [
+      "English",
+      "Chewa"
+    ],
+    "currencies": [
+      "MWK — Malawian kwacha"
+    ],
+    "lat": -13.5,
+    "lng": 34,
+    "flag": "🇲🇼",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Malawi is grouped in Eastern Africa in UN M49. Capital: Lilongwe.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "MYS",
+    "iso2": "MY",
+    "name": "Malaysia",
+    "officialName": "Malaysia",
+    "continent": "asia",
+    "subregion": "South-eastern Asia",
+    "capital": [
+      "Kuala Lumpur"
+    ],
+    "languages": [
+      "English",
+      "Malay"
+    ],
+    "currencies": [
+      "MYR — Malaysian ringgit"
+    ],
+    "lat": 2.5,
+    "lng": 112.5,
+    "flag": "🇲🇾",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Malaysia is grouped in South-eastern Asia in UN M49. Capital: Kuala Lumpur.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "MDV",
+    "iso2": "MV",
+    "name": "Maldives",
+    "officialName": "Republic of the Maldives",
+    "continent": "asia",
+    "subregion": "Southern Asia",
+    "capital": [
+      "Malé"
+    ],
+    "languages": [
+      "Maldivian"
+    ],
+    "currencies": [
+      "MVR — Maldivian rufiyaa"
+    ],
+    "lat": 3.25,
+    "lng": 73,
+    "flag": "🇲🇻",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Maldives is grouped in Southern Asia in UN M49. Capital: Malé.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "MLI",
+    "iso2": "ML",
+    "name": "Mali",
+    "officialName": "Republic of Mali",
+    "continent": "africa",
+    "subregion": "Western Africa",
+    "capital": [
+      "Bamako"
+    ],
+    "languages": [
+      "French"
+    ],
+    "currencies": [
+      "XOF — West African CFA franc"
+    ],
+    "lat": 17,
+    "lng": -4,
+    "flag": "🇲🇱",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Mali is grouped in Western Africa in UN M49. Capital: Bamako.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "MLT",
+    "iso2": "MT",
+    "name": "Malta",
+    "officialName": "Republic of Malta",
+    "continent": "europe",
+    "subregion": "Southern Europe",
+    "capital": [
+      "Valletta"
+    ],
+    "languages": [
+      "English",
+      "Maltese"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 35.83333333,
+    "lng": 14.58333333,
+    "flag": "🇲🇹",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Malta is grouped in Southern Europe in UN M49. Capital: Valletta.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "MHL",
+    "iso2": "MH",
+    "name": "Marshall Islands",
+    "officialName": "Republic of the Marshall Islands",
+    "continent": "oceania",
+    "subregion": "Micronesia",
+    "capital": [
+      "Majuro"
+    ],
+    "languages": [
+      "English",
+      "Marshallese"
+    ],
+    "currencies": [
+      "USD — United States dollar"
+    ],
+    "lat": 9,
+    "lng": 168,
+    "flag": "🇲🇭",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Marshall Islands is grouped in Micronesia in UN M49. Capital: Majuro.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "MRT",
+    "iso2": "MR",
+    "name": "Mauritania",
+    "officialName": "Islamic Republic of Mauritania",
+    "continent": "africa",
+    "subregion": "Western Africa",
+    "capital": [
+      "Nouakchott"
+    ],
+    "languages": [
+      "Arabic"
+    ],
+    "currencies": [
+      "MRU — Mauritanian ouguiya"
+    ],
+    "lat": 20,
+    "lng": -12,
+    "flag": "🇲🇷",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Mauritania is grouped in Western Africa in UN M49. Capital: Nouakchott.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "MUS",
+    "iso2": "MU",
+    "name": "Mauritius",
+    "officialName": "Republic of Mauritius",
+    "continent": "africa",
+    "subregion": "Eastern Africa",
+    "capital": [
+      "Port Louis"
+    ],
+    "languages": [
+      "English",
+      "French",
+      "Mauritian Creole"
+    ],
+    "currencies": [
+      "MUR — Mauritian rupee"
+    ],
+    "lat": -20.28333333,
+    "lng": 57.55,
+    "flag": "🇲🇺",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Mauritius is grouped in Eastern Africa in UN M49. Capital: Port Louis.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "MEX",
+    "iso2": "MX",
+    "name": "Mexico",
+    "officialName": "United Mexican States",
+    "continent": "north-america",
+    "subregion": "Central America",
+    "capital": [
+      "Mexico City"
+    ],
+    "languages": [
+      "Spanish"
+    ],
+    "currencies": [
+      "MXN — Mexican peso"
+    ],
+    "lat": 23,
+    "lng": -102,
+    "flag": "🇲🇽",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Mexico is grouped in Central America in UN M49. Capital: Mexico City.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "FSM",
+    "iso2": "FM",
+    "name": "Micronesia",
+    "officialName": "Federated States of Micronesia",
+    "continent": "oceania",
+    "subregion": "Micronesia",
+    "capital": [
+      "Palikir"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "USD — United States dollar"
+    ],
+    "lat": 6.91666666,
+    "lng": 158.25,
+    "flag": "🇫🇲",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Micronesia is grouped in Micronesia in UN M49. Capital: Palikir.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries",
+      "https://www.six-group.com/en/products-services/financial-information/market-reference-data/data-standards.html"
+    ]
+  },
+  {
+    "code": "MDA",
+    "iso2": "MD",
+    "name": "Moldova",
+    "officialName": "Republic of Moldova",
+    "continent": "europe",
+    "subregion": "Eastern Europe",
+    "capital": [
+      "Chișinău"
+    ],
+    "languages": [
+      "Moldavian"
+    ],
+    "currencies": [
+      "MDL — Moldovan leu"
+    ],
+    "lat": 47,
+    "lng": 29,
+    "flag": "🇲🇩",
+    "biome": "grassland",
+    "landmark": "",
+    "description": "Moldova is grouped in Eastern Europe in UN M49. Capital: Chișinău.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "MCO",
+    "iso2": "MC",
+    "name": "Monaco",
+    "officialName": "Principality of Monaco",
+    "continent": "europe",
+    "subregion": "Western Europe",
+    "capital": [
+      "Monaco"
+    ],
+    "languages": [
+      "French"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 43.73333333,
+    "lng": 7.4,
+    "flag": "🇲🇨",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "Monaco is grouped in Western Europe in UN M49. Capital: Monaco.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "MNG",
+    "iso2": "MN",
+    "name": "Mongolia",
+    "officialName": "Mongolia",
+    "continent": "asia",
+    "subregion": "Eastern Asia",
+    "capital": [
+      "Ulan Bator"
+    ],
+    "languages": [
+      "Mongolian"
+    ],
+    "currencies": [
+      "MNT — Mongolian tögrög"
+    ],
+    "lat": 46,
+    "lng": 105,
+    "flag": "🇲🇳",
+    "biome": "grassland",
+    "landmark": "",
+    "description": "Mongolia is grouped in Eastern Asia in UN M49. Capital: Ulan Bator.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "MNE",
+    "iso2": "ME",
+    "name": "Montenegro",
+    "officialName": "Montenegro",
+    "continent": "europe",
+    "subregion": "Southern Europe",
+    "capital": [
+      "Podgorica"
+    ],
+    "languages": [
+      "Montenegrin"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 42.5,
+    "lng": 19.3,
+    "flag": "🇲🇪",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Montenegro is grouped in Southern Europe in UN M49. Capital: Podgorica.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "MAR",
+    "iso2": "MA",
+    "name": "Morocco",
+    "officialName": "Kingdom of Morocco",
+    "continent": "africa",
+    "subregion": "Northern Africa",
+    "capital": [
+      "Rabat"
+    ],
+    "languages": [
+      "Arabic",
+      "Berber"
+    ],
+    "currencies": [
+      "MAD — Moroccan dirham"
+    ],
+    "lat": 32,
+    "lng": -5,
+    "flag": "🇲🇦",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Morocco is grouped in Northern Africa in UN M49. Capital: Rabat.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "MOZ",
+    "iso2": "MZ",
+    "name": "Mozambique",
+    "officialName": "Republic of Mozambique",
+    "continent": "africa",
+    "subregion": "Eastern Africa",
+    "capital": [
+      "Maputo"
+    ],
+    "languages": [
+      "Portuguese"
+    ],
+    "currencies": [
+      "MZN — Mozambican metical"
+    ],
+    "lat": -18.25,
+    "lng": 35,
+    "flag": "🇲🇿",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Mozambique is grouped in Eastern Africa in UN M49. Capital: Maputo.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "MMR",
+    "iso2": "MM",
+    "name": "Myanmar",
+    "officialName": "Republic of the Union of Myanmar",
+    "continent": "asia",
+    "subregion": "South-eastern Asia",
+    "capital": [
+      "Naypyidaw"
+    ],
+    "languages": [
+      "Burmese"
+    ],
+    "currencies": [
+      "MMK — Burmese kyat"
+    ],
+    "lat": 22,
+    "lng": 98,
+    "flag": "🇲🇲",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Myanmar is grouped in South-eastern Asia in UN M49. Capital: Naypyidaw.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "NAM",
+    "iso2": "NA",
+    "name": "Namibia",
+    "officialName": "Republic of Namibia",
+    "continent": "africa",
+    "subregion": "Southern Africa",
+    "capital": [
+      "Windhoek"
+    ],
+    "languages": [
+      "Afrikaans",
+      "German",
+      "English",
+      "Herero",
+      "Khoekhoe",
+      "Kwangali",
+      "Lozi",
+      "Ndonga",
+      "Tswana"
+    ],
+    "currencies": [
+      "NAD — Namibian dollar",
+      "ZAR — South African rand"
+    ],
+    "lat": -22,
+    "lng": 17,
+    "flag": "🇳🇦",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Namibia is grouped in Southern Africa in UN M49. Capital: Windhoek.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "NRU",
+    "iso2": "NR",
+    "name": "Nauru",
+    "officialName": "Republic of Nauru",
+    "continent": "oceania",
+    "subregion": "Micronesia",
+    "capital": [],
+    "languages": [
+      "English",
+      "Nauru"
+    ],
+    "currencies": [
+      "AUD — Australian dollar"
+    ],
+    "lat": -0.53333333,
+    "lng": 166.91666666,
+    "flag": "🇳🇷",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Nauru is grouped in Micronesia in UN M49. No official capital; government offices are in Yaren district.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "NPL",
+    "iso2": "NP",
+    "name": "Nepal",
+    "officialName": "Federal Democratic Republic of Nepal",
+    "continent": "asia",
+    "subregion": "Southern Asia",
+    "capital": [
+      "Kathmandu"
+    ],
+    "languages": [
+      "Nepali"
+    ],
+    "currencies": [
+      "NPR — Nepalese rupee"
+    ],
+    "lat": 28,
+    "lng": 84,
+    "flag": "🇳🇵",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Nepal is grouped in Southern Asia in UN M49. Capital: Kathmandu.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "NLD",
+    "iso2": "NL",
+    "name": "Netherlands",
+    "officialName": "Kingdom of the Netherlands",
+    "continent": "europe",
+    "subregion": "Western Europe",
+    "capital": [
+      "Amsterdam"
+    ],
+    "languages": [
+      "Dutch"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 52.5,
+    "lng": 5.75,
+    "flag": "🇳🇱",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "Netherlands is grouped in Western Europe in UN M49. Capital: Amsterdam.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "NZL",
+    "iso2": "NZ",
+    "name": "New Zealand",
+    "officialName": "New Zealand",
+    "continent": "oceania",
+    "subregion": "Australia and New Zealand",
+    "capital": [
+      "Wellington"
+    ],
+    "languages": [
+      "English",
+      "Māori",
+      "New Zealand Sign Language"
+    ],
+    "currencies": [
+      "NZD — New Zealand dollar"
+    ],
+    "lat": -41,
+    "lng": 174,
+    "flag": "🇳🇿",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "New Zealand is grouped in Australia and New Zealand in UN M49. Capital: Wellington.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "NIC",
+    "iso2": "NI",
+    "name": "Nicaragua",
+    "officialName": "Republic of Nicaragua",
+    "continent": "north-america",
+    "subregion": "Central America",
+    "capital": [
+      "Managua"
+    ],
+    "languages": [
+      "Spanish"
+    ],
+    "currencies": [
+      "NIO — Nicaraguan córdoba"
+    ],
+    "lat": 13,
+    "lng": -85,
+    "flag": "🇳🇮",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Nicaragua is grouped in Central America in UN M49. Capital: Managua.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "NER",
+    "iso2": "NE",
+    "name": "Niger",
+    "officialName": "Republic of Niger",
+    "continent": "africa",
+    "subregion": "Western Africa",
+    "capital": [
+      "Niamey"
+    ],
+    "languages": [
+      "French"
+    ],
+    "currencies": [
+      "XOF — West African CFA franc"
+    ],
+    "lat": 16,
+    "lng": 8,
+    "flag": "🇳🇪",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Niger is grouped in Western Africa in UN M49. Capital: Niamey.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "NGA",
+    "iso2": "NG",
+    "name": "Nigeria",
+    "officialName": "Federal Republic of Nigeria",
+    "continent": "africa",
+    "subregion": "Western Africa",
+    "capital": [
+      "Abuja"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "NGN — Nigerian naira"
+    ],
+    "lat": 10,
+    "lng": 8,
+    "flag": "🇳🇬",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Nigeria is grouped in Western Africa in UN M49. Capital: Abuja.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "PRK",
+    "iso2": "KP",
+    "name": "North Korea",
+    "officialName": "Democratic People's Republic of Korea",
+    "continent": "asia",
+    "subregion": "Eastern Asia",
+    "capital": [
+      "Pyongyang"
+    ],
+    "languages": [
+      "Korean"
+    ],
+    "currencies": [
+      "KPW — North Korean won"
+    ],
+    "lat": 40,
+    "lng": 127,
+    "flag": "🇰🇵",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "North Korea is grouped in Eastern Asia in UN M49. Capital: Pyongyang.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "MKD",
+    "iso2": "MK",
+    "name": "North Macedonia",
+    "officialName": "Republic of North Macedonia",
+    "continent": "europe",
+    "subregion": "Southern Europe",
+    "capital": [
+      "Skopje"
+    ],
+    "languages": [
+      "Macedonian"
+    ],
+    "currencies": [
+      "MKD — denar"
+    ],
+    "lat": 41.83333333,
+    "lng": 22,
+    "flag": "🇲🇰",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "North Macedonia is grouped in Southern Europe in UN M49. Capital: Skopje.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "NOR",
+    "iso2": "NO",
+    "name": "Norway",
+    "officialName": "Kingdom of Norway",
+    "continent": "europe",
+    "subregion": "Northern Europe",
+    "capital": [
+      "Oslo"
+    ],
+    "languages": [
+      "Norwegian Nynorsk",
+      "Norwegian Bokmål",
+      "Sami"
+    ],
+    "currencies": [
+      "NOK — Norwegian krone"
+    ],
+    "lat": 62,
+    "lng": 10,
+    "flag": "🇳🇴",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Norway is grouped in Northern Europe in UN M49. Capital: Oslo.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "OMN",
+    "iso2": "OM",
+    "name": "Oman",
+    "officialName": "Sultanate of Oman",
+    "continent": "asia",
+    "subregion": "Western Asia",
+    "capital": [
+      "Muscat"
+    ],
+    "languages": [
+      "Arabic"
+    ],
+    "currencies": [
+      "OMR — Omani rial"
+    ],
+    "lat": 21,
+    "lng": 57,
+    "flag": "🇴🇲",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Oman is grouped in Western Asia in UN M49. Capital: Muscat.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "PAK",
+    "iso2": "PK",
+    "name": "Pakistan",
+    "officialName": "Islamic Republic of Pakistan",
+    "continent": "asia",
+    "subregion": "Southern Asia",
+    "capital": [
+      "Islamabad"
+    ],
+    "languages": [
+      "English",
+      "Urdu"
+    ],
+    "currencies": [
+      "PKR — Pakistani rupee"
+    ],
+    "lat": 30,
+    "lng": 70,
+    "flag": "🇵🇰",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Pakistan is grouped in Southern Asia in UN M49. Capital: Islamabad.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "PLW",
+    "iso2": "PW",
+    "name": "Palau",
+    "officialName": "Republic of Palau",
+    "continent": "oceania",
+    "subregion": "Micronesia",
+    "capital": [
+      "Ngerulmud"
+    ],
+    "languages": [
+      "English",
+      "Palauan"
+    ],
+    "currencies": [
+      "USD — United States dollar"
+    ],
+    "lat": 7.5,
+    "lng": 134.5,
+    "flag": "🇵🇼",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Palau is grouped in Micronesia in UN M49. Capital: Ngerulmud.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "PAN",
+    "iso2": "PA",
+    "name": "Panama",
+    "officialName": "Republic of Panama",
+    "continent": "north-america",
+    "subregion": "Central America",
+    "capital": [
+      "Panama City"
+    ],
+    "languages": [
+      "Spanish"
+    ],
+    "currencies": [
+      "PAB — Panamanian balboa",
+      "USD — United States dollar"
+    ],
+    "lat": 9,
+    "lng": -80,
+    "flag": "🇵🇦",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Panama is grouped in Central America in UN M49. Capital: Panama City.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "PNG",
+    "iso2": "PG",
+    "name": "Papua New Guinea",
+    "officialName": "Independent State of Papua New Guinea",
+    "continent": "oceania",
+    "subregion": "Melanesia",
+    "capital": [
+      "Port Moresby"
+    ],
+    "languages": [
+      "English",
+      "Hiri Motu",
+      "Tok Pisin"
+    ],
+    "currencies": [
+      "PGK — Papua New Guinean kina"
+    ],
+    "lat": -6,
+    "lng": 147,
+    "flag": "🇵🇬",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Papua New Guinea is grouped in Melanesia in UN M49. Capital: Port Moresby.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "PRY",
+    "iso2": "PY",
+    "name": "Paraguay",
+    "officialName": "Republic of Paraguay",
+    "continent": "south-america",
+    "subregion": "South America",
+    "capital": [
+      "Asunción"
+    ],
+    "languages": [
+      "Guaraní",
+      "Spanish"
+    ],
+    "currencies": [
+      "PYG — Paraguayan guaraní"
+    ],
+    "lat": -23,
+    "lng": -58,
+    "flag": "🇵🇾",
+    "biome": "grassland",
+    "landmark": "",
+    "description": "Paraguay is grouped in South America in UN M49. Capital: Asunción.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "PER",
+    "iso2": "PE",
+    "name": "Peru",
+    "officialName": "Republic of Peru",
+    "continent": "south-america",
+    "subregion": "South America",
+    "capital": [
+      "Lima"
+    ],
+    "languages": [
+      "Aymara",
+      "Quechua",
+      "Spanish"
+    ],
+    "currencies": [
+      "PEN — Peruvian sol"
+    ],
+    "lat": -10,
+    "lng": -76,
+    "flag": "🇵🇪",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Peru is grouped in South America in UN M49. Capital: Lima.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "PHL",
+    "iso2": "PH",
+    "name": "Philippines",
+    "officialName": "Republic of the Philippines",
+    "continent": "asia",
+    "subregion": "South-eastern Asia",
+    "capital": [
+      "Manila"
+    ],
+    "languages": [
+      "English",
+      "Filipino"
+    ],
+    "currencies": [
+      "PHP — Philippine peso"
+    ],
+    "lat": 13,
+    "lng": 122,
+    "flag": "🇵🇭",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Philippines is grouped in South-eastern Asia in UN M49. Capital: Manila.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "POL",
+    "iso2": "PL",
+    "name": "Poland",
+    "officialName": "Republic of Poland",
+    "continent": "europe",
+    "subregion": "Eastern Europe",
+    "capital": [
+      "Warsaw"
+    ],
+    "languages": [
+      "Polish"
+    ],
+    "currencies": [
+      "PLN — Polish złoty"
+    ],
+    "lat": 52,
+    "lng": 20,
+    "flag": "🇵🇱",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "Poland is grouped in Eastern Europe in UN M49. Capital: Warsaw.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "PRT",
+    "iso2": "PT",
+    "name": "Portugal",
+    "officialName": "Portuguese Republic",
+    "continent": "europe",
+    "subregion": "Southern Europe",
+    "capital": [
+      "Lisbon"
+    ],
+    "languages": [
+      "Portuguese"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 39.5,
+    "lng": -8,
+    "flag": "🇵🇹",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Portugal is grouped in Southern Europe in UN M49. Capital: Lisbon.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "QAT",
+    "iso2": "QA",
+    "name": "Qatar",
+    "officialName": "State of Qatar",
+    "continent": "asia",
+    "subregion": "Western Asia",
+    "capital": [
+      "Doha"
+    ],
+    "languages": [
+      "Arabic"
+    ],
+    "currencies": [
+      "QAR — Qatari riyal"
+    ],
+    "lat": 25.5,
+    "lng": 51.25,
+    "flag": "🇶🇦",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Qatar is grouped in Western Asia in UN M49. Capital: Doha.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "COG",
+    "iso2": "CG",
+    "name": "Republic of the Congo",
+    "officialName": "Republic of the Congo",
+    "continent": "africa",
+    "subregion": "Middle Africa",
+    "capital": [
+      "Brazzaville"
+    ],
+    "languages": [
+      "French",
+      "Kikongo",
+      "Lingala"
+    ],
+    "currencies": [
+      "XAF — Central African CFA franc"
+    ],
+    "lat": -1,
+    "lng": 15,
+    "flag": "🇨🇬",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Republic of the Congo is grouped in Middle Africa in UN M49. Capital: Brazzaville.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "ROU",
+    "iso2": "RO",
+    "name": "Romania",
+    "officialName": "Romania",
+    "continent": "europe",
+    "subregion": "Eastern Europe",
+    "capital": [
+      "Bucharest"
+    ],
+    "languages": [
+      "Romanian"
+    ],
+    "currencies": [
+      "RON — Romanian leu"
+    ],
+    "lat": 46,
+    "lng": 25,
+    "flag": "🇷🇴",
+    "biome": "grassland",
+    "landmark": "",
+    "description": "Romania is grouped in Eastern Europe in UN M49. Capital: Bucharest.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "RUS",
+    "iso2": "RU",
+    "name": "Russia",
+    "officialName": "Russian Federation",
+    "continent": "europe",
+    "subregion": "Eastern Europe",
+    "capital": [
+      "Moscow"
+    ],
+    "languages": [
+      "Russian"
+    ],
+    "currencies": [
+      "RUB — Russian ruble"
+    ],
+    "lat": 60,
+    "lng": 100,
+    "flag": "🇷🇺",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Russia is grouped in Eastern Europe in UN M49. Capital: Moscow.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "RWA",
+    "iso2": "RW",
+    "name": "Rwanda",
+    "officialName": "Republic of Rwanda",
+    "continent": "africa",
+    "subregion": "Eastern Africa",
+    "capital": [
+      "Kigali"
+    ],
+    "languages": [
+      "English",
+      "French",
+      "Kinyarwanda"
+    ],
+    "currencies": [
+      "RWF — Rwandan franc"
+    ],
+    "lat": -2,
+    "lng": 30,
+    "flag": "🇷🇼",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Rwanda is grouped in Eastern Africa in UN M49. Capital: Kigali.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "KNA",
+    "iso2": "KN",
+    "name": "Saint Kitts and Nevis",
+    "officialName": "Federation of Saint Christopher and Nevis",
+    "continent": "north-america",
+    "subregion": "Caribbean",
+    "capital": [
+      "Basseterre"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "XCD — Eastern Caribbean dollar"
+    ],
+    "lat": 17.33333333,
+    "lng": -62.75,
+    "flag": "🇰🇳",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Saint Kitts and Nevis is grouped in Caribbean in UN M49. Capital: Basseterre.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "LCA",
+    "iso2": "LC",
+    "name": "Saint Lucia",
+    "officialName": "Saint Lucia",
+    "continent": "north-america",
+    "subregion": "Caribbean",
+    "capital": [
+      "Castries"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "XCD — Eastern Caribbean dollar"
+    ],
+    "lat": 13.88333333,
+    "lng": -60.96666666,
+    "flag": "🇱🇨",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Saint Lucia is grouped in Caribbean in UN M49. Capital: Castries.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "VCT",
+    "iso2": "VC",
+    "name": "Saint Vincent and the Grenadines",
+    "officialName": "Saint Vincent and the Grenadines",
+    "continent": "north-america",
+    "subregion": "Caribbean",
+    "capital": [
+      "Kingstown"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "XCD — Eastern Caribbean dollar"
+    ],
+    "lat": 13.25,
+    "lng": -61.2,
+    "flag": "🇻🇨",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Saint Vincent and the Grenadines is grouped in Caribbean in UN M49. Capital: Kingstown.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "WSM",
+    "iso2": "WS",
+    "name": "Samoa",
+    "officialName": "Independent State of Samoa",
+    "continent": "oceania",
+    "subregion": "Polynesia",
+    "capital": [
+      "Apia"
+    ],
+    "languages": [
+      "English",
+      "Samoan"
+    ],
+    "currencies": [
+      "WST — Samoan tālā"
+    ],
+    "lat": -13.58333333,
+    "lng": -172.33333333,
+    "flag": "🇼🇸",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Samoa is grouped in Polynesia in UN M49. Capital: Apia.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "SMR",
+    "iso2": "SM",
+    "name": "San Marino",
+    "officialName": "Most Serene Republic of San Marino",
+    "continent": "europe",
+    "subregion": "Southern Europe",
+    "capital": [
+      "City of San Marino"
+    ],
+    "languages": [
+      "Italian"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 43.76666666,
+    "lng": 12.41666666,
+    "flag": "🇸🇲",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "San Marino is grouped in Southern Europe in UN M49. Capital: City of San Marino.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "STP",
+    "iso2": "ST",
+    "name": "São Tomé and Príncipe",
+    "officialName": "Democratic Republic of São Tomé and Príncipe",
+    "continent": "africa",
+    "subregion": "Middle Africa",
+    "capital": [
+      "São Tomé"
+    ],
+    "languages": [
+      "Portuguese"
+    ],
+    "currencies": [
+      "STN — São Tomé and Príncipe dobra"
+    ],
+    "lat": 1,
+    "lng": 7,
+    "flag": "🇸🇹",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "São Tomé and Príncipe is grouped in Middle Africa in UN M49. Capital: São Tomé.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "SAU",
+    "iso2": "SA",
+    "name": "Saudi Arabia",
+    "officialName": "Kingdom of Saudi Arabia",
+    "continent": "asia",
+    "subregion": "Western Asia",
+    "capital": [
+      "Riyadh"
+    ],
+    "languages": [
+      "Arabic"
+    ],
+    "currencies": [
+      "SAR — Saudi riyal"
+    ],
+    "lat": 25,
+    "lng": 45,
+    "flag": "🇸🇦",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Saudi Arabia is grouped in Western Asia in UN M49. Capital: Riyadh.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "SEN",
+    "iso2": "SN",
+    "name": "Senegal",
+    "officialName": "Republic of Senegal",
+    "continent": "africa",
+    "subregion": "Western Africa",
+    "capital": [
+      "Dakar"
+    ],
+    "languages": [
+      "French"
+    ],
+    "currencies": [
+      "XOF — West African CFA franc"
+    ],
+    "lat": 14,
+    "lng": -14,
+    "flag": "🇸🇳",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Senegal is grouped in Western Africa in UN M49. Capital: Dakar.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "SRB",
+    "iso2": "RS",
+    "name": "Serbia",
+    "officialName": "Republic of Serbia",
+    "continent": "europe",
+    "subregion": "Southern Europe",
+    "capital": [
+      "Belgrade"
+    ],
+    "languages": [
+      "Serbian"
+    ],
+    "currencies": [
+      "RSD — Serbian dinar"
+    ],
+    "lat": 44,
+    "lng": 21,
+    "flag": "🇷🇸",
+    "biome": "grassland",
+    "landmark": "",
+    "description": "Serbia is grouped in Southern Europe in UN M49. Capital: Belgrade.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "SYC",
+    "iso2": "SC",
+    "name": "Seychelles",
+    "officialName": "Republic of Seychelles",
+    "continent": "africa",
+    "subregion": "Eastern Africa",
+    "capital": [
+      "Victoria"
+    ],
+    "languages": [
+      "Seychellois Creole",
+      "English",
+      "French"
+    ],
+    "currencies": [
+      "SCR — Seychellois rupee"
+    ],
+    "lat": -4.58333333,
+    "lng": 55.66666666,
+    "flag": "🇸🇨",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Seychelles is grouped in Eastern Africa in UN M49. Capital: Victoria.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "SLE",
+    "iso2": "SL",
+    "name": "Sierra Leone",
+    "officialName": "Republic of Sierra Leone",
+    "continent": "africa",
+    "subregion": "Western Africa",
+    "capital": [
+      "Freetown"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "SLE — Sierra Leonean leone"
+    ],
+    "lat": 8.5,
+    "lng": -11.5,
+    "flag": "🇸🇱",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Sierra Leone is grouped in Western Africa in UN M49. Capital: Freetown.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "SGP",
+    "iso2": "SG",
+    "name": "Singapore",
+    "officialName": "Republic of Singapore",
+    "continent": "asia",
+    "subregion": "South-eastern Asia",
+    "capital": [
+      "Singapore"
+    ],
+    "languages": [
+      "English",
+      "Malay",
+      "Tamil",
+      "Chinese"
+    ],
+    "currencies": [
+      "SGD — Singapore dollar"
+    ],
+    "lat": 1.36666666,
+    "lng": 103.8,
+    "flag": "🇸🇬",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Singapore is grouped in South-eastern Asia in UN M49. Capital: Singapore.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "SVK",
+    "iso2": "SK",
+    "name": "Slovakia",
+    "officialName": "Slovak Republic",
+    "continent": "europe",
+    "subregion": "Eastern Europe",
+    "capital": [
+      "Bratislava"
+    ],
+    "languages": [
+      "Slovak"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 48.66666666,
+    "lng": 19.5,
+    "flag": "🇸🇰",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Slovakia is grouped in Eastern Europe in UN M49. Capital: Bratislava.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "SVN",
+    "iso2": "SI",
+    "name": "Slovenia",
+    "officialName": "Republic of Slovenia",
+    "continent": "europe",
+    "subregion": "Southern Europe",
+    "capital": [
+      "Ljubljana"
+    ],
+    "languages": [
+      "Slovene"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 46.11666666,
+    "lng": 14.81666666,
+    "flag": "🇸🇮",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Slovenia is grouped in Southern Europe in UN M49. Capital: Ljubljana.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "SLB",
+    "iso2": "SB",
+    "name": "Solomon Islands",
+    "officialName": "Solomon Islands",
+    "continent": "oceania",
+    "subregion": "Melanesia",
+    "capital": [
+      "Honiara"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "SBD — Solomon Islands dollar"
+    ],
+    "lat": -8,
+    "lng": 159,
+    "flag": "🇸🇧",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Solomon Islands is grouped in Melanesia in UN M49. Capital: Honiara.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "SOM",
+    "iso2": "SO",
+    "name": "Somalia",
+    "officialName": "Federal Republic of Somalia",
+    "continent": "africa",
+    "subregion": "Eastern Africa",
+    "capital": [
+      "Mogadishu"
+    ],
+    "languages": [
+      "Arabic",
+      "Somali"
+    ],
+    "currencies": [
+      "SOS — Somali shilling"
+    ],
+    "lat": 10,
+    "lng": 49,
+    "flag": "🇸🇴",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Somalia is grouped in Eastern Africa in UN M49. Capital: Mogadishu.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "ZAF",
+    "iso2": "ZA",
+    "name": "South Africa",
+    "officialName": "Republic of South Africa",
+    "continent": "africa",
+    "subregion": "Southern Africa",
+    "capital": [
+      "Pretoria",
+      "Bloemfontein",
+      "Cape Town"
+    ],
+    "languages": [
+      "Afrikaans",
+      "English",
+      "Southern Ndebele",
+      "Northern Sotho",
+      "Southern Sotho",
+      "Swazi",
+      "Tswana",
+      "Tsonga",
+      "Venda",
+      "Xhosa",
+      "Zulu"
+    ],
+    "currencies": [
+      "ZAR — South African rand"
+    ],
+    "lat": -29,
+    "lng": 24,
+    "flag": "🇿🇦",
+    "biome": "grassland",
+    "landmark": "",
+    "description": "South Africa is grouped in Southern Africa in UN M49. Capitals: Pretoria, Bloemfontein, Cape Town.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "KOR",
+    "iso2": "KR",
+    "name": "South Korea",
+    "officialName": "Republic of Korea",
+    "continent": "asia",
+    "subregion": "Eastern Asia",
+    "capital": [
+      "Seoul"
+    ],
+    "languages": [
+      "Korean"
+    ],
+    "currencies": [
+      "KRW — South Korean won"
+    ],
+    "lat": 37,
+    "lng": 127.5,
+    "flag": "🇰🇷",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "South Korea is grouped in Eastern Asia in UN M49. Capital: Seoul.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "SSD",
+    "iso2": "SS",
+    "name": "South Sudan",
+    "officialName": "Republic of South Sudan",
+    "continent": "africa",
+    "subregion": "Eastern Africa",
+    "capital": [
+      "Juba"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "SSP — South Sudanese pound"
+    ],
+    "lat": 7,
+    "lng": 30,
+    "flag": "🇸🇸",
+    "biome": "grassland",
+    "landmark": "",
+    "description": "South Sudan is grouped in Eastern Africa in UN M49. Capital: Juba.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "ESP",
+    "iso2": "ES",
+    "name": "Spain",
+    "officialName": "Kingdom of Spain",
+    "continent": "europe",
+    "subregion": "Southern Europe",
+    "capital": [
+      "Madrid"
+    ],
+    "languages": [
+      "Spanish"
+    ],
+    "currencies": [
+      "EUR — Euro"
+    ],
+    "lat": 40,
+    "lng": -4,
+    "flag": "🇪🇸",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Spain is grouped in Southern Europe in UN M49. Capital: Madrid.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "LKA",
+    "iso2": "LK",
+    "name": "Sri Lanka",
+    "officialName": "Democratic Socialist Republic of Sri Lanka",
+    "continent": "asia",
+    "subregion": "Southern Asia",
+    "capital": [
+      "Colombo"
+    ],
+    "languages": [
+      "Sinhala",
+      "Tamil"
+    ],
+    "currencies": [
+      "LKR — Sri Lankan rupee"
+    ],
+    "lat": 7,
+    "lng": 81,
+    "flag": "🇱🇰",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Sri Lanka is grouped in Southern Asia in UN M49. Capital: Colombo.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "SDN",
+    "iso2": "SD",
+    "name": "Sudan",
+    "officialName": "Republic of the Sudan",
+    "continent": "africa",
+    "subregion": "Northern Africa",
+    "capital": [
+      "Khartoum"
+    ],
+    "languages": [
+      "Arabic",
+      "English"
+    ],
+    "currencies": [
+      "SDG — Sudanese pound"
+    ],
+    "lat": 15,
+    "lng": 30,
+    "flag": "🇸🇩",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Sudan is grouped in Northern Africa in UN M49. Capital: Khartoum.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "SUR",
+    "iso2": "SR",
+    "name": "Suriname",
+    "officialName": "Republic of Suriname",
+    "continent": "south-america",
+    "subregion": "South America",
+    "capital": [
+      "Paramaribo"
+    ],
+    "languages": [
+      "Dutch"
+    ],
+    "currencies": [
+      "SRD — Surinamese dollar"
+    ],
+    "lat": 4,
+    "lng": -56,
+    "flag": "🇸🇷",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Suriname is grouped in South America in UN M49. Capital: Paramaribo.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "SWE",
+    "iso2": "SE",
+    "name": "Sweden",
+    "officialName": "Kingdom of Sweden",
+    "continent": "europe",
+    "subregion": "Northern Europe",
+    "capital": [
+      "Stockholm"
+    ],
+    "languages": [
+      "Swedish"
+    ],
+    "currencies": [
+      "SEK — Swedish krona"
+    ],
+    "lat": 62,
+    "lng": 15,
+    "flag": "🇸🇪",
+    "biome": "forest",
+    "landmark": "",
+    "description": "Sweden is grouped in Northern Europe in UN M49. Capital: Stockholm.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "CHE",
+    "iso2": "CH",
+    "name": "Switzerland",
+    "officialName": "Swiss Confederation",
+    "continent": "europe",
+    "subregion": "Western Europe",
+    "capital": [
+      "Bern"
+    ],
+    "languages": [
+      "French",
+      "Swiss German",
+      "Italian",
+      "Romansh"
+    ],
+    "currencies": [
+      "CHF — Swiss franc"
+    ],
+    "lat": 47,
+    "lng": 8,
+    "flag": "🇨🇭",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Switzerland is grouped in Western Europe in UN M49. Bern is the federal city and seat of government.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "SYR",
+    "iso2": "SY",
+    "name": "Syria",
+    "officialName": "Syrian Arab Republic",
+    "continent": "asia",
+    "subregion": "Western Asia",
+    "capital": [
+      "Damascus"
+    ],
+    "languages": [
+      "Arabic"
+    ],
+    "currencies": [
+      "SYP — Syrian pound"
+    ],
+    "lat": 35,
+    "lng": 38,
+    "flag": "🇸🇾",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "Syria is grouped in Western Asia in UN M49. Capital: Damascus.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "TJK",
+    "iso2": "TJ",
+    "name": "Tajikistan",
+    "officialName": "Republic of Tajikistan",
+    "continent": "asia",
+    "subregion": "Central Asia",
+    "capital": [
+      "Dushanbe"
+    ],
+    "languages": [
+      "Russian",
+      "Tajik"
+    ],
+    "currencies": [
+      "TJS — Tajikistani somoni"
+    ],
+    "lat": 39,
+    "lng": 71,
+    "flag": "🇹🇯",
+    "biome": "alpine",
+    "landmark": "",
+    "description": "Tajikistan is grouped in Central Asia in UN M49. Capital: Dushanbe.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "TZA",
+    "iso2": "TZ",
+    "name": "Tanzania",
+    "officialName": "United Republic of Tanzania",
+    "continent": "africa",
+    "subregion": "Eastern Africa",
+    "capital": [
+      "Dodoma"
+    ],
+    "languages": [
+      "English",
+      "Swahili"
+    ],
+    "currencies": [
+      "TZS — Tanzanian shilling"
+    ],
+    "lat": -6,
+    "lng": 35,
+    "flag": "🇹🇿",
+    "biome": "grassland",
+    "landmark": "",
+    "description": "Tanzania is grouped in Eastern Africa in UN M49. Capital: Dodoma.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "THA",
+    "iso2": "TH",
+    "name": "Thailand",
+    "officialName": "Kingdom of Thailand",
+    "continent": "asia",
+    "subregion": "South-eastern Asia",
+    "capital": [
+      "Bangkok"
+    ],
+    "languages": [
+      "Thai"
+    ],
+    "currencies": [
+      "THB — Thai baht"
+    ],
+    "lat": 15,
+    "lng": 100,
+    "flag": "🇹🇭",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Thailand is grouped in South-eastern Asia in UN M49. Capital: Bangkok.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "TLS",
+    "iso2": "TL",
+    "name": "Timor-Leste",
+    "officialName": "Democratic Republic of Timor-Leste",
+    "continent": "asia",
+    "subregion": "South-eastern Asia",
+    "capital": [
+      "Dili"
+    ],
+    "languages": [
+      "Portuguese",
+      "Tetum"
+    ],
+    "currencies": [
+      "USD — United States dollar"
+    ],
+    "lat": -8.83333333,
+    "lng": 125.91666666,
+    "flag": "🇹🇱",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Timor-Leste is grouped in South-eastern Asia in UN M49. Capital: Dili.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "TGO",
+    "iso2": "TG",
+    "name": "Togo",
+    "officialName": "Togolese Republic",
+    "continent": "africa",
+    "subregion": "Western Africa",
+    "capital": [
+      "Lomé"
+    ],
+    "languages": [
+      "French"
+    ],
+    "currencies": [
+      "XOF — West African CFA franc"
+    ],
+    "lat": 8,
+    "lng": 1.16666666,
+    "flag": "🇹🇬",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Togo is grouped in Western Africa in UN M49. Capital: Lomé.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "TON",
+    "iso2": "TO",
+    "name": "Tonga",
+    "officialName": "Kingdom of Tonga",
+    "continent": "oceania",
+    "subregion": "Polynesia",
+    "capital": [
+      "Nuku'alofa"
+    ],
+    "languages": [
+      "English",
+      "Tongan"
+    ],
+    "currencies": [
+      "TOP — Tongan paʻanga"
+    ],
+    "lat": -20,
+    "lng": -175,
+    "flag": "🇹🇴",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Tonga is grouped in Polynesia in UN M49. Capital: Nuku'alofa.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "TTO",
+    "iso2": "TT",
+    "name": "Trinidad and Tobago",
+    "officialName": "Republic of Trinidad and Tobago",
+    "continent": "north-america",
+    "subregion": "Caribbean",
+    "capital": [
+      "Port of Spain"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "TTD — Trinidad and Tobago dollar"
+    ],
+    "lat": 11,
+    "lng": -61,
+    "flag": "🇹🇹",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Trinidad and Tobago is grouped in Caribbean in UN M49. Capital: Port of Spain.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "TUN",
+    "iso2": "TN",
+    "name": "Tunisia",
+    "officialName": "Tunisian Republic",
+    "continent": "africa",
+    "subregion": "Northern Africa",
+    "capital": [
+      "Tunis"
+    ],
+    "languages": [
+      "Arabic"
+    ],
+    "currencies": [
+      "TND — Tunisian dinar"
+    ],
+    "lat": 34,
+    "lng": 9,
+    "flag": "🇹🇳",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Tunisia is grouped in Northern Africa in UN M49. Capital: Tunis.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "TUR",
+    "iso2": "TR",
+    "name": "Türkiye",
+    "officialName": "Republic of Türkiye",
+    "continent": "asia",
+    "subregion": "Western Asia",
+    "capital": [
+      "Ankara"
+    ],
+    "languages": [
+      "Turkish"
+    ],
+    "currencies": [
+      "TRY — Turkish lira"
+    ],
+    "lat": 39,
+    "lng": 35,
+    "flag": "🇹🇷",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "Türkiye is grouped in Western Asia in UN M49. Capital: Ankara.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "TKM",
+    "iso2": "TM",
+    "name": "Turkmenistan",
+    "officialName": "Turkmenistan",
+    "continent": "asia",
+    "subregion": "Central Asia",
+    "capital": [
+      "Ashgabat"
+    ],
+    "languages": [
+      "Russian",
+      "Turkmen"
+    ],
+    "currencies": [
+      "TMT — Turkmenistan manat"
+    ],
+    "lat": 40,
+    "lng": 60,
+    "flag": "🇹🇲",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Turkmenistan is grouped in Central Asia in UN M49. Capital: Ashgabat.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "TUV",
+    "iso2": "TV",
+    "name": "Tuvalu",
+    "officialName": "Tuvalu",
+    "continent": "oceania",
+    "subregion": "Polynesia",
+    "capital": [
+      "Funafuti"
+    ],
+    "languages": [
+      "English",
+      "Tuvaluan"
+    ],
+    "currencies": [
+      "AUD — Australian dollar"
+    ],
+    "lat": -8,
+    "lng": 178,
+    "flag": "🇹🇻",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Tuvalu is grouped in Polynesia in UN M49. Capital: Funafuti.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "UGA",
+    "iso2": "UG",
+    "name": "Uganda",
+    "officialName": "Republic of Uganda",
+    "continent": "africa",
+    "subregion": "Eastern Africa",
+    "capital": [
+      "Kampala"
+    ],
+    "languages": [
+      "English",
+      "Swahili"
+    ],
+    "currencies": [
+      "UGX — Ugandan shilling"
+    ],
+    "lat": 1,
+    "lng": 32,
+    "flag": "🇺🇬",
+    "biome": "grassland",
+    "landmark": "",
+    "description": "Uganda is grouped in Eastern Africa in UN M49. Capital: Kampala.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "UKR",
+    "iso2": "UA",
+    "name": "Ukraine",
+    "officialName": "Ukraine",
+    "continent": "europe",
+    "subregion": "Eastern Europe",
+    "capital": [
+      "Kyiv"
+    ],
+    "languages": [
+      "Ukrainian"
+    ],
+    "currencies": [
+      "UAH — Ukrainian hryvnia"
+    ],
+    "lat": 49,
+    "lng": 32,
+    "flag": "🇺🇦",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "Ukraine is grouped in Eastern Europe in UN M49. Capital: Kyiv.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "ARE",
+    "iso2": "AE",
+    "name": "United Arab Emirates",
+    "officialName": "United Arab Emirates",
+    "continent": "asia",
+    "subregion": "Western Asia",
+    "capital": [
+      "Abu Dhabi"
+    ],
+    "languages": [
+      "Arabic"
+    ],
+    "currencies": [
+      "AED — United Arab Emirates dirham"
+    ],
+    "lat": 24,
+    "lng": 54,
+    "flag": "🇦🇪",
+    "biome": "desert",
+    "landmark": "",
+    "description": "United Arab Emirates is grouped in Western Asia in UN M49. Capital: Abu Dhabi.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "GBR",
+    "iso2": "GB",
+    "name": "United Kingdom",
+    "officialName": "United Kingdom of Great Britain and Northern Ireland",
+    "continent": "europe",
+    "subregion": "Northern Europe",
+    "capital": [
+      "London"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "GBP — British pound"
+    ],
+    "lat": 54,
+    "lng": -2,
+    "flag": "🇬🇧",
+    "biome": "temperate",
+    "landmark": "",
+    "description": "United Kingdom is grouped in Northern Europe in UN M49. Capital: London.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "USA",
+    "iso2": "US",
+    "name": "United States",
+    "officialName": "United States of America",
+    "continent": "north-america",
+    "subregion": "Northern America",
+    "capital": [
+      "Washington D.C."
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "USD — United States dollar"
+    ],
+    "lat": 38,
+    "lng": -97,
+    "flag": "🇺🇸",
+    "biome": "temperate",
+    "landmark": "Statue of Liberty",
+    "description": "United States is grouped in Northern America in UN M49. Capital: Washington D.C.. The Statue of Liberty stands in New York Harbor and was inaugurated in 1886.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries",
+      "https://whc.unesco.org/en/list/307/"
+    ]
+  },
+  {
+    "code": "URY",
+    "iso2": "UY",
+    "name": "Uruguay",
+    "officialName": "Oriental Republic of Uruguay",
+    "continent": "south-america",
+    "subregion": "South America",
+    "capital": [
+      "Montevideo"
+    ],
+    "languages": [
+      "Spanish"
+    ],
+    "currencies": [
+      "UYU — Uruguayan peso"
+    ],
+    "lat": -33,
+    "lng": -56,
+    "flag": "🇺🇾",
+    "biome": "grassland",
+    "landmark": "",
+    "description": "Uruguay is grouped in South America in UN M49. Capital: Montevideo.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "UZB",
+    "iso2": "UZ",
+    "name": "Uzbekistan",
+    "officialName": "Republic of Uzbekistan",
+    "continent": "asia",
+    "subregion": "Central Asia",
+    "capital": [
+      "Tashkent"
+    ],
+    "languages": [
+      "Russian",
+      "Uzbek"
+    ],
+    "currencies": [
+      "UZS — Uzbekistani soʻm"
+    ],
+    "lat": 41,
+    "lng": 64,
+    "flag": "🇺🇿",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Uzbekistan is grouped in Central Asia in UN M49. Capital: Tashkent.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "VUT",
+    "iso2": "VU",
+    "name": "Vanuatu",
+    "officialName": "Republic of Vanuatu",
+    "continent": "oceania",
+    "subregion": "Melanesia",
+    "capital": [
+      "Port Vila"
+    ],
+    "languages": [
+      "Bislama",
+      "English",
+      "French"
+    ],
+    "currencies": [
+      "VUV — Vanuatu vatu"
+    ],
+    "lat": -16,
+    "lng": 167,
+    "flag": "🇻🇺",
+    "biome": "coastal",
+    "landmark": "",
+    "description": "Vanuatu is grouped in Melanesia in UN M49. Capital: Port Vila.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "VEN",
+    "iso2": "VE",
+    "name": "Venezuela",
+    "officialName": "Bolivarian Republic of Venezuela",
+    "continent": "south-america",
+    "subregion": "South America",
+    "capital": [
+      "Caracas"
+    ],
+    "languages": [
+      "Spanish"
+    ],
+    "currencies": [
+      "VES — Venezuelan bolívar soberano"
+    ],
+    "lat": 8,
+    "lng": -66,
+    "flag": "🇻🇪",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Venezuela is grouped in South America in UN M49. Capital: Caracas.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "VNM",
+    "iso2": "VN",
+    "name": "Vietnam",
+    "officialName": "Socialist Republic of Vietnam",
+    "continent": "asia",
+    "subregion": "South-eastern Asia",
+    "capital": [
+      "Hanoi"
+    ],
+    "languages": [
+      "Vietnamese"
+    ],
+    "currencies": [
+      "VND — Vietnamese đồng"
+    ],
+    "lat": 16.16666666,
+    "lng": 107.83333333,
+    "flag": "🇻🇳",
+    "biome": "tropical",
+    "landmark": "",
+    "description": "Vietnam is grouped in South-eastern Asia in UN M49. Capital: Hanoi.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "YEM",
+    "iso2": "YE",
+    "name": "Yemen",
+    "officialName": "Republic of Yemen",
+    "continent": "asia",
+    "subregion": "Western Asia",
+    "capital": [
+      "Sana'a"
+    ],
+    "languages": [
+      "Arabic"
+    ],
+    "currencies": [
+      "YER — Yemeni rial"
+    ],
+    "lat": 15,
+    "lng": 48,
+    "flag": "🇾🇪",
+    "biome": "desert",
+    "landmark": "",
+    "description": "Yemen is grouped in Western Asia in UN M49. Capital: Sana'a.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "ZMB",
+    "iso2": "ZM",
+    "name": "Zambia",
+    "officialName": "Republic of Zambia",
+    "continent": "africa",
+    "subregion": "Eastern Africa",
+    "capital": [
+      "Lusaka"
+    ],
+    "languages": [
+      "English"
+    ],
+    "currencies": [
+      "ZMW — Zambian kwacha"
+    ],
+    "lat": -15,
+    "lng": 30,
+    "flag": "🇿🇲",
+    "biome": "grassland",
+    "landmark": "",
+    "description": "Zambia is grouped in Eastern Africa in UN M49. Capital: Lusaka.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  },
+  {
+    "code": "ZWE",
+    "iso2": "ZW",
+    "name": "Zimbabwe",
+    "officialName": "Republic of Zimbabwe",
+    "continent": "africa",
+    "subregion": "Eastern Africa",
+    "capital": [
+      "Harare"
+    ],
+    "languages": [
+      "Chibarwe",
+      "English",
+      "Kalanga",
+      "Khoisan",
+      "Ndau",
+      "Northern Ndebele",
+      "Chewa",
+      "Shona",
+      "Sotho",
+      "Tonga",
+      "Tswana",
+      "Tsonga",
+      "Venda",
+      "Xhosa",
+      "Zimbabwean Sign Language"
+    ],
+    "currencies": [
+      "BWP — Botswana pula",
+      "CNY — Chinese yuan",
+      "EUR — Euro",
+      "GBP — British pound",
+      "INR — Indian rupee",
+      "JPY — Japanese yen",
+      "USD — United States dollar",
+      "ZAR — South African rand",
+      "ZWG — Zimbabwe Gold"
+    ],
+    "lat": -20,
+    "lng": 30,
+    "flag": "🇿🇼",
+    "biome": "grassland",
+    "landmark": "",
+    "description": "Zimbabwe is grouped in Eastern Africa in UN M49. Capital: Harare.",
+    "sources": [
+      "https://research.un.org/en/unmembers/currentmembers",
+      "https://unstats.un.org/unsd/methodology/m49/overview/",
+      "https://github.com/mledoze/countries"
+    ]
+  }
+]

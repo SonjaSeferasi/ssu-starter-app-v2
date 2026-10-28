@@ -1,0 +1,453 @@
+{
+  "id": "jp-level-01",
+  "countryId": "JP",
+  "legacyCode": "JPN",
+  "title": "Cherry Blossom Mountain Path",
+  "environmentId": "japan-mountain-spring",
+  "spawn": {
+    "platformId": "jp-p1",
+    "offset": 1.4
+  },
+  "platforms": [
+    {
+      "id": "jp-p1",
+      "x": 0,
+      "y": 0,
+      "width": 8,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.4
+    },
+    {
+      "id": "jp-p2",
+      "x": 9.4,
+      "y": 0.15,
+      "width": 6.7,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.4
+    },
+    {
+      "id": "jp-p3",
+      "x": 17.7,
+      "y": 0.35,
+      "width": 6.4,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.4
+    },
+    {
+      "id": "jp-p4",
+      "x": 25.5,
+      "y": 0.35,
+      "width": 8,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "wooden-bridge",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.4
+    },
+    {
+      "id": "jp-p5",
+      "x": 35.3,
+      "y": 0.7,
+      "width": 6.1,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.4
+    },
+    {
+      "id": "jp-p6",
+      "x": 43.1,
+      "y": 0.4,
+      "width": 7.2,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.4
+    },
+    {
+      "id": "jp-p7",
+      "x": 51.9,
+      "y": 0.8,
+      "width": 6.4,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.4
+    },
+    {
+      "id": "jp-p8",
+      "x": 59.8,
+      "y": 0.8,
+      "width": 8.2,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.4
+    },
+    {
+      "id": "jp-p9",
+      "x": 69.8,
+      "y": 0.95,
+      "width": 6.2,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "wooden-moving",
+      "motion": "horizontal",
+      "amplitude": 0.4,
+      "phase": 0,
+      "period": 6.8
+    },
+    {
+      "id": "jp-p10",
+      "x": 77.7,
+      "y": 0.7,
+      "width": 6.8,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.4
+    },
+    {
+      "id": "jp-p11",
+      "x": 86.3,
+      "y": 1.15,
+      "width": 6.4,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.4
+    },
+    {
+      "id": "jp-p12",
+      "x": 94.6,
+      "y": 0.85,
+      "width": 7.4,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.4
+    },
+    {
+      "id": "jp-p13",
+      "x": 103.8,
+      "y": 0.6,
+      "width": 6.1,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "wooden-moving",
+      "motion": "vertical",
+      "amplitude": 0.25,
+      "phase": 0,
+      "period": 7.4
+    },
+    {
+      "id": "jp-p14",
+      "x": 111.6,
+      "y": 0.9,
+      "width": 6.8,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.4
+    },
+    {
+      "id": "jp-p15",
+      "x": 120.2,
+      "y": 0.35,
+      "width": 7,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.4
+    },
+    {
+      "id": "jp-p16",
+      "x": 128.8,
+      "y": 0.35,
+      "width": 9,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.4
+    }
+  ],
+  "coins": [
+    {
+      "id": "jp-coin-01",
+      "platformId": "jp-p2",
+      "offset": 2.144,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-02",
+      "platformId": "jp-p2",
+      "offset": 4.288,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-03",
+      "platformId": "jp-p3",
+      "offset": 2.048,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-04",
+      "platformId": "jp-p3",
+      "offset": 4.096,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-05",
+      "platformId": "jp-p4",
+      "offset": 2.56,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-06",
+      "platformId": "jp-p4",
+      "offset": 5.12,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-07",
+      "platformId": "jp-p5",
+      "offset": 1.952,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-08",
+      "platformId": "jp-p5",
+      "offset": 3.904,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-09",
+      "platformId": "jp-p6",
+      "offset": 2.304,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-10",
+      "platformId": "jp-p6",
+      "offset": 4.608,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-11",
+      "platformId": "jp-p7",
+      "offset": 2.048,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-12",
+      "platformId": "jp-p7",
+      "offset": 4.096,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-13",
+      "platformId": "jp-p8",
+      "offset": 2.624,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-14",
+      "platformId": "jp-p8",
+      "offset": 5.248,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-15",
+      "platformId": "jp-p9",
+      "offset": 1.984,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-16",
+      "platformId": "jp-p9",
+      "offset": 3.968,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-17",
+      "platformId": "jp-p10",
+      "offset": 2.176,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-18",
+      "platformId": "jp-p10",
+      "offset": 4.352,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-19",
+      "platformId": "jp-p11",
+      "offset": 2.048,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-20",
+      "platformId": "jp-p11",
+      "offset": 4.096,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-21",
+      "platformId": "jp-p12",
+      "offset": 2.368,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-22",
+      "platformId": "jp-p12",
+      "offset": 4.736,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-23",
+      "platformId": "jp-p13",
+      "offset": 1.952,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-24",
+      "platformId": "jp-p13",
+      "offset": 3.904,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-25",
+      "platformId": "jp-p14",
+      "offset": 2.176,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-26",
+      "platformId": "jp-p14",
+      "offset": 4.352,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-27",
+      "platformId": "jp-p15",
+      "offset": 2.24,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-28",
+      "platformId": "jp-p15",
+      "offset": 4.48,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-29",
+      "platformId": "jp-p16",
+      "offset": 2.88,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-30",
+      "platformId": "jp-p16",
+      "offset": 5.76,
+      "height": 1.45
+    }
+  ],
+  "stars": [
+    {
+      "id": "jp-star-01",
+      "platformId": "jp-p4",
+      "offset": 4,
+      "height": 2.25
+    },
+    {
+      "id": "jp-star-02",
+      "platformId": "jp-p8",
+      "offset": 5.4,
+      "height": 1.1
+    },
+    {
+      "id": "jp-star-03",
+      "platformId": "jp-p14",
+      "offset": 4,
+      "height": 2.2
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "jp-checkpoint-01",
+      "platformId": "jp-p8",
+      "offset": 1.8
+    }
+  ],
+  "discovery": {
+    "id": "jp-discovery-fuji",
+    "platformId": "jp-p10",
+    "offset": 2.7,
+    "factId": "mount-fuji"
+  },
+  "finish": {
+    "platformId": "jp-p16",
+    "offset": 7.2
+  },
+  "hazards": [],
+  "physics": {
+    "gravity": 20,
+    "jumpSpeed": 9,
+    "runSpeed": 6,
+    "acceleration": 25,
+    "airControl": 0.65,
+    "coyoteTime": 0.12,
+    "jumpBuffer": 0.12,
+    "playerRadius": 0.2,
+    "playerHeight": 1.6,
+    "killY": -7
+  }
+}
