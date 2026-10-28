@@ -312,3 +312,14 @@ SRS-204.2 (LP): when the group owner assigns administrator privileges to a selec
 
 Status: not yet applied to the hosted database. Until it is, the Members panel reports that chat is unavailable and nothing else changes.
 
+### Revoke administrator privileges (SRS-204.6)
+
+SRS-204.6 (LP): the group owner can revoke administrator privileges from the currently assigned administrator. Traces to UR-204.
+
+- **Migration** `supabase/migrations/20261028120100_chat_revoke_group_admin.sql` (#884). One new server-only function, `public.socialu_revoke_group_admin(p_auth_id, p_conversation_id, p_username)`, which returns the named administrator to regular-member status (SRS-204.7). Only the owner may revoke (`SCA04`, SRS-204.8), and the owner's own row is never touched (SRS-204.9). A group with no administrator, a student who is only a regular member, and a student outside the group all get the same answer (`SCA05`), so the panel cannot be used to learn about other students. Once the position is vacant the owner can assign someone else (SRS-204.4).
+- **API** `PATCH /api/conversations/[id]/members` also accepts `{ "username": "...", "role": "member" }`, which takes the administrator role back. `"role": "administrator"` still assigns it, and any other role is refused before the database is called.
+- **Page (#884).** In the Members panel the owner sees **Remove admin** beside the current administrator. Taking the role back frees the position, so the **Make admin** buttons reappear beside the regular members.
+- **Testing.** `__tests__/api/group-administrator.test.ts` covers the revoking half of the route, including that it never calls the assign function. `__tests__/database/group-administrator.test.ts` checks that there is nothing to revoke before an administrator exists, that regular members, the administrator themselves, outsiders and DMs are refused, that naming anyone other than the administrator is refused, that the role returns to member while ownership and other roles stay put, that revoking twice finds nobody, that the position can then be given to someone else, and server-only grants. It runs with and without LN's school communities migration.
+
+Status: not yet applied to the hosted database, and it is applied together with `20261028120000`.
+

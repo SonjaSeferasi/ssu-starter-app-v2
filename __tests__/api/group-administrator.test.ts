@@ -59,7 +59,7 @@ describe('SRS-204.2 (#883) assign administrator privileges', () => {
     expect(res.status).toBe(404); expect(await res.json()).toEqual({ error: 'Choose a current member of this group.' });
     expect(chatCalls()).toHaveLength(0);
   });
-  it.each([['owner'], ['member'], [undefined], ['Administrator']])('refuses a role the route does not grant %#', async (role) => {
+  it.each([['owner'], [undefined], ['Administrator'], ['']])('refuses a role the route does not grant %#', async (role) => {
     const res = await PATCH(patch({ username: 'student2', role }), ctx());
     expect(res.status).toBe(400);
     expect(chatCalls()).toHaveLength(0);
@@ -88,6 +88,42 @@ describe('SRS-204.2 (#883) assign administrator privileges', () => {
   it('never reports a failed assignment as saved', async () => {
     failWith('XX000');
     const res = await PATCH(patch({ username: 'student2', role: 'administrator' }), ctx());
+    expect(res.status).toBe(503); expect(await res.json()).not.toHaveProperty('member');
+  });
+});
+
+describe('SRS-204.6 (#884) revoke administrator privileges', () => {
+  const revoked = { conversation_id: '32', member: { student_id: '2', username: 'student2', name: 'Student 2', role: 'member' } };
+  it('returns the administrator to regular-member status', async () => {
+    answer(revoked);
+    const res = await PATCH(patch({ username: 'student2', role: 'member' }), ctx());
+    expect(res.status).toBe(200);
+    expect(res.headers.get('Cache-Control')).toBe('no-store');
+    expect(await res.json()).toEqual(revoked);
+    expect(chatCalls()).toEqual([['socialu_revoke_group_admin', { p_auth_id: user.id, p_conversation_id: '32', p_username: 'student2' }]]);
+  });
+  it('never calls the assign function when taking the role back', async () => {
+    answer(revoked);
+    await PATCH(patch({ username: 'student2', role: 'member' }), ctx());
+    expect(chatCalls().map(([fn]) => fn)).not.toContain('socialu_assign_group_admin');
+  });
+  it('explains when the student is not the group owner', async () => {
+    failWith('SCA04');
+    const res = await PATCH(patch({ username: 'student2', role: 'member' }), ctx());
+    expect(res.status).toBe(403); expect(await res.json()).toEqual({ error: 'Only the group owner can revoke administrator privileges.' });
+  });
+  it('gives one answer when the group has no administrator or the student is not the one holding it', async () => {
+    failWith('SCA05');
+    const res = await PATCH(patch({ username: 'student3', role: 'member' }), ctx());
+    expect(res.status).toBe(404); expect(await res.json()).toEqual({ error: 'Choose this group’s current administrator.' });
+  });
+  it('requires a signed-in, verified student before touching the database', async () => {
+    expect((await PATCH(patch({ username: 'student2', role: 'member' }, ''), ctx())).status).toBe(401);
+    expect(chatCalls()).toHaveLength(0);
+  });
+  it('never reports a failed revocation as saved', async () => {
+    failWith('XX000');
+    const res = await PATCH(patch({ username: 'student2', role: 'member' }), ctx());
     expect(res.status).toBe(503); expect(await res.json()).not.toHaveProperty('member');
   });
 });
