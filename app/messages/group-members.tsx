@@ -1,7 +1,9 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { accessToken } from '../../lib/account/session';
+import { CHAT_ACTIVITY_EVENT } from '../../lib/chat-events';
 import styles from './messages.module.css';
 
 export type GroupMember = {
@@ -20,11 +22,15 @@ const roleLabels: Record<GroupMember['role'], string> = { owner: 'Owner', admini
 // member, which frees the position for someone else.
 // SRS-205.10 (#885): the owner and the administrator also see Remove beside each regular member, which ends that
 // student's membership.
+// SRS-207.1 (#886): Leave group at the foot of the panel ends the student's own membership. The owner sees why
+// they cannot leave until the group has an administrator (SRS-208.1).
 export function GroupMemberList({ conversationId, viewerRole, onClose }: {
   conversationId: string;
   viewerRole: string | null;
   onClose: () => void;
 }) {
+  const router = useRouter();
+  const [leaving, setLeaving] = useState(false);
   // SRS-204.5 / SRS-204.8: only the owner assigns or revokes the administrator.
   const canManage = viewerRole === 'owner';
   // SRS-205.10 / SRS-206.9: the owner and the administrator can both remove regular members.
@@ -97,6 +103,27 @@ export function GroupMemberList({ conversationId, viewerRole, onClose }: {
     }
   }
 
+  // SRS-207.1 / SRS-207.2: leave the group, then go back to the Messages list, which no longer lists it.
+  async function leave() {
+    if (leaving || saving) return;
+    setLeaving(true);
+    setError('');
+    try {
+      const token = await accessToken();
+      const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/leave`, {
+        method: 'POST', headers: { Authorization: `Bearer ${token ?? ''}` },
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || 'You could not leave this group.');
+      window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT));
+      router.push('/messages');
+    } catch (reason) {
+      setError(reason instanceof Error && !(reason instanceof TypeError) ? reason.message : 'You could not leave this group.');
+      setLeaving(false);
+      await load();
+    }
+  }
+
   const hasAdmin = (members ?? []).some((member) => member.role === 'administrator');
 
   return (
@@ -137,6 +164,14 @@ export function GroupMemberList({ conversationId, viewerRole, onClose }: {
         </ul>
       )}
       {canManage && hasAdmin && <p className={styles.pickerHint}>A group can have one administrator at a time. Remove this one to choose someone else.</p>}
+      {/* SRS-207.1 / SRS-207.2: anyone but the owner can leave. SRS-208.1: the owner needs an administrator first. */}
+      {members && (canManage
+        ? <p className={styles.pickerHint}>{hasAdmin
+            ? 'As the owner you hand the group to your administrator when you leave.'
+            : 'Assign an administrator before you leave the group.'}</p>
+        : <button type="button" className={styles.leaveGroup} onClick={() => void leave()} disabled={leaving || Boolean(saving)}>
+            {leaving ? 'Leaving…' : 'Leave group'}
+          </button>)}
     </div>
   );
 }
