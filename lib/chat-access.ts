@@ -67,6 +67,9 @@ export async function chatOperation(fn: string, args: Record<string, string>) {
     // SRS-204.6: revoke administrator privileges.
     if (error.code === 'SCA04') throw new AccountError('Only the group owner can revoke administrator privileges.', 403);
     if (error.code === 'SCA05') throw new AccountError(ADMINISTRATOR_NOT_AVAILABLE, 404);
+    // SRS-205.10: remove a regular group member.
+    if (error.code === 'SCM01') throw new AccountError('Only the group owner or an administrator can remove members.', 403);
+    if (error.code === 'SCM02') throw new AccountError(MEMBER_NOT_AVAILABLE, 404);
     if (error.code === '42501') throw new AccountError('A verified, active university account is required.', 403);
     if (error.code === '22023') throw new AccountError('Messages must contain 1 to 500 characters.', 400);
     throw new AccountError('Chat is unavailable. Check that the chat migration has been applied.', 503);

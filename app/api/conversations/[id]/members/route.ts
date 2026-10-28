@@ -20,6 +20,19 @@ export async function GET(request: Request, context: Context) {
 // SRS-204.6: the same owner takes it back with { "username": "...", "role": "member" }, returning that student to
 // regular-member status. The database checks the owner, the one-administrator rule and the chosen member in both
 // cases. Other body fields are ignored.
+// SRS-205.10: the group's owner or administrator removes a regular member, with the member's username in the
+// query string. The database checks the manager's role and that the student is a current regular member.
+export async function DELETE(request: Request, context: Context) {
+  try {
+    const user = await verifiedUser(request);
+    const conversationId = conversationIdParam((await context.params).id);
+    const username = textField(new URL(request.url).searchParams.get('username'));
+    if (!username) throw new AccountError(MEMBER_NOT_AVAILABLE, 404);
+    const result = await chatOperation('socialu_remove_group_member', { p_auth_id: user.id, p_conversation_id: conversationId, p_username: username });
+    return Response.json(result, { headers: { 'Cache-Control': 'no-store' } });
+  } catch (error) { return accountResponse(error); }
+}
+
 export async function PATCH(request: Request, context: Context) {
   try {
     const user = await verifiedUser(request);

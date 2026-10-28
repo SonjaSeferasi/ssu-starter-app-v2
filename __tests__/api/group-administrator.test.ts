@@ -20,7 +20,7 @@ beforeEach(() => {
   getUser.mockResolvedValue({ data: { user }, error: null });
   answer(saved);
 });
-import { GET, PATCH } from '../../app/api/conversations/[id]/members/route';
+import { DELETE, GET, PATCH } from '../../app/api/conversations/[id]/members/route';
 
 describe('SRS-204.1 (#883) list the group members to choose from', () => {
   it('returns the group members for the signed-in student', async () => {
@@ -125,5 +125,55 @@ describe('SRS-204.6 (#884) revoke administrator privileges', () => {
     failWith('XX000');
     const res = await PATCH(patch({ username: 'student2', role: 'member' }), ctx());
     expect(res.status).toBe(503); expect(await res.json()).not.toHaveProperty('member');
+  });
+});
+
+describe('SRS-205.10 (#885) remove a regular group member', () => {
+  const removed = { conversation_id: '32', member_count: 2, removed: { student_id: '3', username: 'student3', name: 'Student 3' } };
+  const del = (username: string | null, bearer = token, id = '32') =>
+    new Request(url(id) + (username === null ? '' : `?username=${encodeURIComponent(username)}`), { method: 'DELETE', headers: headers(bearer) });
+  it('removes the named member and returns the remaining count', async () => {
+    answer(removed);
+    const res = await DELETE(del('student3'), ctx());
+    expect(res.status).toBe(200);
+    expect(res.headers.get('Cache-Control')).toBe('no-store');
+    expect(await res.json()).toEqual(removed);
+    expect(chatCalls()).toEqual([['socialu_remove_group_member', { p_auth_id: user.id, p_conversation_id: '32', p_username: 'student3' }]]);
+  });
+  it('trims the username from the query string', async () => {
+    answer(removed);
+    await DELETE(del('  student3  '), ctx());
+    expect(chatCalls()).toEqual([['socialu_remove_group_member', { p_auth_id: user.id, p_conversation_id: '32', p_username: 'student3' }]]);
+  });
+  it.each([[null], [''], ['   ']])('refuses a missing username without touching the database %#', async (username) => {
+    const res = await DELETE(del(username), ctx());
+    expect(res.status).toBe(404); expect(await res.json()).toEqual({ error: 'Choose a current member of this group.' });
+    expect(chatCalls()).toHaveLength(0);
+  });
+  it('requires a signed-in, verified student before touching the database', async () => {
+    expect((await DELETE(del('student3', ''), ctx())).status).toBe(401);
+    getUser.mockResolvedValue({ data: { user: { ...user, email_confirmed_at: null } }, error: null });
+    expect((await DELETE(del('student3'), ctx())).status).toBe(403);
+    expect(chatCalls()).toHaveLength(0);
+  });
+  it('explains when the student is not the owner or an administrator', async () => {
+    failWith('SCM01');
+    const res = await DELETE(del('student3'), ctx());
+    expect(res.status).toBe(403); expect(await res.json()).toEqual({ error: 'Only the group owner or an administrator can remove members.' });
+  });
+  it('gives one answer for the owner, the administrator and anyone outside the group', async () => {
+    failWith('SCM02');
+    const res = await DELETE(del('student1'), ctx());
+    expect(res.status).toBe(404); expect(await res.json()).toEqual({ error: 'Choose a current member of this group.' });
+  });
+  it('gives malformed conversation IDs the same answer as a missing conversation', async () => {
+    const res = await DELETE(del('student3', token, 'abc'), ctx('abc'));
+    expect(res.status).toBe(404); expect(await res.json()).toEqual({ error: 'Conversation not available.' });
+    expect(chatCalls()).toHaveLength(0);
+  });
+  it('never reports a failed removal as saved', async () => {
+    failWith('XX000');
+    const res = await DELETE(del('student3'), ctx());
+    expect(res.status).toBe(503); expect(await res.json()).not.toHaveProperty('removed');
   });
 });

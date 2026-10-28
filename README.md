@@ -323,3 +323,16 @@ SRS-204.6 (LP): the group owner can revoke administrator privileges from the cur
 
 Status: not yet applied to the hosted database, and it is applied together with `20261028120000`.
 
+### Remove a regular group member (SRS-205.10)
+
+SRS-205.10 (LP): the group owner or administrator can remove a regular member from the group. Traces to UR-205.
+
+- **Migration** `supabase/migrations/20261028120200_chat_remove_group_member.sql` (#885). One new server-only function, `public.socialu_remove_group_member(p_auth_id, p_conversation_id, p_username)`, which ends that student's current membership by stamping `left_at` (SRS-205.11). The membership row is kept rather than deleted, which is what makes the rest of UR-205 true with no extra work: the shared `is_current_participant` check already excludes a student whose membership ended, so nothing sent afterwards reaches them and they cannot send or react (SRS-205.12), while `can_read_message` still matches messages from their membership period (SRS-205.13). Only the owner or the administrator may remove (`SCM01`, SRS-206.2, SRS-206.9), and only a current regular member can be removed, which is what protects the owner from the administrator (`SCM02`, SRS-206.6).
+- **API** `DELETE /api/conversations/[id]/members?username=...` removes that member and returns the group's remaining member count.
+- **Page (#885).** In the Members panel the owner and the administrator see **Remove** beside each regular member. The owner, the administrator and anyone outside the group have no Remove button, and the server refuses them anyway.
+- **Testing.** `__tests__/api/group-administrator.test.ts` covers the route and its error answers. `__tests__/database/group-member-removal.test.ts` checks that a regular member cannot remove anyone, that the owner and the administrator can, that the owner, the administrator, yourself and outsiders cannot be removed, that removing twice finds nobody, that the removed student keeps `can_read_message` access to earlier messages but not later ones and can no longer send or react, that the rows are kept rather than deleted, and server-only grants. It runs with and without LN's school communities migration.
+
+**Finding (noted on #885).** `public.socialu_conversation_messages` still gates on `is_current_participant`, so a removed student cannot open the conversation at all, even though the data layer preserves the messages they could already see. Showing that preserved history to a former member is SRS-205.13's own work, and the same gap applies to SRS-207.5 and SRS-208.7 for students who leave. The removal itself is unaffected.
+
+Status: not yet applied to the hosted database, and it is applied together with `20261028120000` and `20261028120100`.
+
