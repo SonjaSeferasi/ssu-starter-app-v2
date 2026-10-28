@@ -1,8 +1,18 @@
 # CSC 351 — Sprint 2 — Linh Nguyen (LN)
 
-Updated October 22, 2026. GitHub account: Dieulinhh23. Application: SocialU.
+Updated October 28, 2026; original submission record dated October 22. GitHub account: Dieulinhh23. Application: SocialU.
 
-**Prepared for submission review; not a claim of full completion.** The selected notification slice is implemented and merged. Its final fresh two-account delivery check is deferred at Linh's request. No demo script is included in this submission package.
+**Graded Sprint 2: 48/50, including 15/15 for the demo**, according to the professor’s feedback supplied by Linh. The two-point deduction was for the original implementation branch name in PR #501. This update records that feedback; it does not claim a regrade or restore the deducted points.
+
+## Grading feedback and correction — October 28, 2026
+
+The professor confirmed the assigned SRS card, five task sub-issues, branch/PR workflow and running-app screenshot. PR #501 originally used `linh/friends-notifications-20261022`, rather than an SRS-named branch. The branch was renamed afterward to [`linh/srs-114.7-friend-request-notification-implementation`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/linh/srs-114.7-friend-request-notification-implementation); its commits and the merged PR’s historical head name remain intact. A later rename does not establish that coding began on the required branch.
+
+For Sprint 3, create the exact SRS-named branch before coding and keep that item’s implementation, tests and PR on it. The five selected Sprint 3 branches have been created before implementation.
+
+The course demo has already been assessed. Separately, the additional fresh two-account request/unread-bell acceptance check in #511 has no recorded passing result and remains open. The 15/15 demo score does not fabricate that test result.
+
+The Sprint 2 board filter is now bounded to Linh’s cards created October 22–26, so Sprint 3 cards created later no longer appear. This is an October 28 view correction, not a reconstruction of earlier board history. See the [corrected board screenshot](sprint2-board-corrected-20261028.png). The original dated notes below remain evidence of what was known then.
 
 ## Canvas: copy these links
 
@@ -89,7 +99,7 @@ See [validation.txt](validation.txt). PR merge states were independently checked
 2. Have the sender submit one new Add Friend request to Linh Nguyen's account.
 3. On the recipient's signed-in app, refresh/focus, show the unread bell, then open Notifications and show the new sender. Reload to confirm it persists.
 4. Attach the fresh screenshot and reproduction notes to #506. Close #511 and #506 and move them to Done only after this passes.
-5. Submit the verified links in Canvas. Linh must personally attend the course demo to receive credit; preparing files is not attendance or Canvas submission.
+5. Submit the verified links in Canvas. The professor has awarded 15/15 for the demo. Canvas submission itself is not established by preparing these files.
 
 ## Rubric readiness
 
@@ -100,6 +110,6 @@ See [validation.txt](validation.txt). PR merge states were independently checked
 | Branch/code links | 9 | Original branch identified; SRS-named branches and merged PRs linked honestly |
 | Working evidence | 5 | Real existing-request screenshot attached; fresh delivery check outstanding |
 | Current board | 5 | Completed work in Done; deferred/unfinished work open; no backdated history |
-| Sprint demo | 15 | Working implementation available; final real request check and personal attendance still required |
+| Sprint demo | 15 | Working implementation available; final real request check and demo awarded 15/15 per professor feedback; additional fresh-request check remains open |
 
-This is a readiness record, not a guaranteed score. [Team Definition of Done](../definition-of-done.md).
+The historical rubric rows describe submission readiness; the reported assessed total is 48/50, including 15/15 for the demo. [Team Definition of Done](../definition-of-done.md).

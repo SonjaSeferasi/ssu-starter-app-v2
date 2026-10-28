@@ -6,6 +6,10 @@ The system shall require a student to enter a full name when creating a SocialU 
 
 Traces to: UR-100
 
+## Board view correction — October 28, 2026
+
+The saved Sprint 1 view now uses `assignee:Dieulinhh23 label:sprint-1-ln`, limiting it to the five SRS cards and five selected task issues (10 items). Broader UR summaries and later work remain in the project but no longer appear in this view. No issue completion dates, graded history or application code were changed. The original October 15 screenshot below is retained as historical evidence; the current view is captured in [sprint1-board-corrected-20261028.png](sprint1-board-corrected-20261028.png).
+
 ## Submit in Canvas
 
 1. [Team GitHub Project / LN view](https://github.com/users/SonjaSeferasi/projects/2/views/8).

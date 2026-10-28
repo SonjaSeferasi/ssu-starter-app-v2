@@ -1,3 +1,5 @@
+> October 28, 2026 record update: the professor’s feedback supplied by Linh awards 15/15 for the completed Sprint 2 demo and 48/50 overall. This is the original preparation script, retained for reference. The additional fresh notification check in #511 remains open; no new test result is claimed.
+
 # Sprint 2 — five-minute demo — Linh Nguyen
 
 Selected item: SRS-114.7, LN — Friend-request notification (#506), tracing to UR-114.
