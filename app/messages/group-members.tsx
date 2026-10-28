@@ -16,6 +16,8 @@ const roleLabels: Record<GroupMember['role'], string> = { owner: 'Owner', admini
 // SRS-204.1 (#883): the group's current members, so the owner can select one for administrator assignment.
 // SRS-204.2: choosing Make admin gives that member the administrator role. Only the owner sees the buttons, and
 // only one member can hold the role, so they disappear once the group has an administrator.
+// SRS-204.6 (#884): Remove admin beside that administrator takes the role back, returning them to a regular
+// member, which frees the position for someone else.
 export function GroupMemberList({ conversationId, canManage, onClose }: {
   conversationId: string;
   canManage: boolean;
@@ -43,9 +45,13 @@ export function GroupMemberList({ conversationId, canManage, onClose }: {
 
   useEffect(() => { void load(); }, [load]);
 
-  // SRS-204.2: the ref stops a double-click assigning twice before the disabled state shows.
-  async function makeAdmin(member: GroupMember) {
+  // SRS-204.2 / SRS-204.6: give or take back the administrator role. Only one request runs at a time, so a
+  // double-click cannot assign twice before the disabled state shows, and the list is reloaded either way.
+  async function setRole(member: GroupMember, role: 'administrator' | 'member') {
     if (saving) return;
+    const trouble = role === 'administrator'
+      ? 'That member could not be made an administrator.'
+      : 'That administrator could not be changed back to a member.';
     setSaving(member.username);
     setError('');
     try {
@@ -53,16 +59,15 @@ export function GroupMemberList({ conversationId, canManage, onClose }: {
       const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/members`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token ?? ''}` },
-        body: JSON.stringify({ username: member.username, role: 'administrator' }),
+        body: JSON.stringify({ username: member.username, role }),
       });
       const data = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(data.error || 'That member could not be made an administrator.');
-      await load();
+      if (!response.ok) throw new Error(data.error || trouble);
     } catch (reason) {
-      setError(reason instanceof Error && !(reason instanceof TypeError) ? reason.message : 'That member could not be made an administrator.');
-      await load();
+      setError(reason instanceof Error && !(reason instanceof TypeError) ? reason.message : trouble);
     } finally {
       setSaving('');
+      await load();
     }
   }
 
@@ -86,15 +91,20 @@ export function GroupMemberList({ conversationId, canManage, onClose }: {
               </span>
               {roleLabels[member.role] && <span className={styles.roleBadge}>{roleLabels[member.role]}</span>}
               {canManage && !hasAdmin && member.role === 'member' && (
-                <button type="button" className={styles.inviteAction} onClick={() => void makeAdmin(member)} disabled={Boolean(saving)}>
+                <button type="button" className={styles.inviteAction} onClick={() => void setRole(member, 'administrator')} disabled={Boolean(saving)}>
                   {saving === member.username ? 'Saving…' : 'Make admin'}
+                </button>
+              )}
+              {canManage && member.role === 'administrator' && (
+                <button type="button" className={styles.retry} onClick={() => void setRole(member, 'member')} disabled={Boolean(saving)}>
+                  {saving === member.username ? 'Saving…' : 'Remove admin'}
                 </button>
               )}
             </li>
           ))}
         </ul>
       )}
-      {canManage && hasAdmin && <p className={styles.pickerHint}>A group can have one administrator at a time.</p>}
+      {canManage && hasAdmin && <p className={styles.pickerHint}>A group can have one administrator at a time. Remove this one to choose someone else.</p>}
     </div>
   );
 }

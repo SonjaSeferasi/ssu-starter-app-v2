@@ -31,6 +31,9 @@ export function messageIdParam(value: string) {
 // regular member, so nobody can use the picker to learn about students outside the group.
 export const MEMBER_NOT_AVAILABLE = 'Choose a current member of this group.';
 
+// SRS-204.6: one answer whether the group has no administrator or the named student is not the one holding it.
+export const ADMINISTRATOR_NOT_AVAILABLE = 'Choose this group’s current administrator.';
+
 // SRS-202.5: the length rule for group names, shared by the route and the database's answer.
 export const GROUP_NAME_LENGTH = 'Group names must be 1 to 50 characters.';
 
@@ -61,6 +64,9 @@ export async function chatOperation(fn: string, args: Record<string, string>) {
     if (error.code === 'SCA01') throw new AccountError('Only the group owner can assign an administrator.', 403);
     if (error.code === 'SCA02') throw new AccountError('This group already has an administrator.', 409);
     if (error.code === 'SCA03') throw new AccountError(MEMBER_NOT_AVAILABLE, 404);
+    // SRS-204.6: revoke administrator privileges.
+    if (error.code === 'SCA04') throw new AccountError('Only the group owner can revoke administrator privileges.', 403);
+    if (error.code === 'SCA05') throw new AccountError(ADMINISTRATOR_NOT_AVAILABLE, 404);
     if (error.code === '42501') throw new AccountError('A verified, active university account is required.', 403);
     if (error.code === '22023') throw new AccountError('Messages must contain 1 to 500 characters.', 400);
     throw new AccountError('Chat is unavailable. Check that the chat migration has been applied.', 503);

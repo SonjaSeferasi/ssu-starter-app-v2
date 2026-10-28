@@ -16,8 +16,10 @@ export async function GET(request: Request, context: Context) {
 }
 
 // SRS-204.2: the group's owner gives a selected current regular member the administrator role, with
-// { "username": "...", "role": "administrator" }. The database checks the owner, the one-administrator rule and
-// the chosen member. Other body fields are ignored.
+// { "username": "...", "role": "administrator" }.
+// SRS-204.6: the same owner takes it back with { "username": "...", "role": "member" }, returning that student to
+// regular-member status. The database checks the owner, the one-administrator rule and the chosen member in both
+// cases. Other body fields are ignored.
 export async function PATCH(request: Request, context: Context) {
   try {
     const user = await verifiedUser(request);
@@ -25,8 +27,9 @@ export async function PATCH(request: Request, context: Context) {
     const body = await jsonBody(request);
     const username = textField(body.username);
     if (!username) throw new AccountError(MEMBER_NOT_AVAILABLE, 404);
-    if (body.role !== 'administrator') throw new AccountError('Choose a role to give this member.', 400);
-    const result = await chatOperation('socialu_assign_group_admin', { p_auth_id: user.id, p_conversation_id: conversationId, p_username: username });
+    if (body.role !== 'administrator' && body.role !== 'member') throw new AccountError('Choose a role for this member.', 400);
+    const operation = body.role === 'administrator' ? 'socialu_assign_group_admin' : 'socialu_revoke_group_admin';
+    const result = await chatOperation(operation, { p_auth_id: user.id, p_conversation_id: conversationId, p_username: username });
     return Response.json(result, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) { return accountResponse(error); }
 }
