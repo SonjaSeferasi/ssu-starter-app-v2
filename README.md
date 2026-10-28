@@ -347,3 +347,18 @@ SRS-207.1 (LP): a regular group member can leave the group. Traces to UR-207.
 
 Status: not yet applied to the hosted database, and it is applied together with `20261028120000`, `20261028120100` and `20261028120200`.
 
+### Promote the administrator to owner (SRS-208.2)
+
+SRS-208.2 (LP): when the group owner leaves, the current administrator becomes the new group owner. Traces to UR-208.
+
+- **Migration** `supabase/migrations/20261028120400_chat_transfer_group_ownership.sql` (#887). It replaces `public.socialu_leave_group` so the owner can leave once the group has an administrator. Everything else about leaving, including the grants, is unchanged.
+
+  The whole handover is one all-or-nothing step (SRS-208.3), so the group is never committed without an owner (SRS-208.9). Inside it the rows are written in this order: the departing owner's role becomes `member`, which frees the owner position; the administrator's role becomes `owner`, completing the promotion (SRS-208.2) and leaving the administrator position unassigned (SRS-208.5) for the new owner to fill (SRS-208.6); then the departing owner's `left_at` is stamped (SRS-208.4). That first step is bookkeeping, not a demotion anyone sees: `group_current_owner` is a partial unique index, which Postgres checks as each row is written rather than at the end of the transaction, so the old and new owner cannot both hold the role even for one statement. The exactly-one-owner rule is the deferred constraint trigger `group_membership_structure`, which tolerates the gap and is checked when the function returns. The former owner's history row therefore reads `member`; `role` only describes current membership and nothing reads it once `left_at` is set.
+
+  The former owner keeps the history they could already see (SRS-208.7) and receives nothing sent afterwards (SRS-208.8), for the same reason as every other departure.
+- **API** unchanged: `POST /api/conversations/[id]/leave` now also answers with `new_owner` when the owner is the one leaving.
+- **Page (#887).** The owner sees **Leave group** once there is an administrator, with a line naming who takes the group on. Without one they still see that they must assign an administrator first.
+- **Testing.** `__tests__/api/group-leaving.test.ts` checks that the route passes the new owner through. `__tests__/database/group-leaving.test.ts` checks the handover end to end: refused with no administrator, the administrator becomes owner while the former owner leaves, exactly one owner at every committed point and no administrator left assigned, the former owner keeps earlier messages but not later ones and can no longer send or manage the group, the new owner can assign a fresh administrator but not the former owner, the handover runs again for the next owner, and a sole remaining owner still cannot leave. It runs with and without LN's school communities migration.
+
+Status: not yet applied to the hosted database, and it is applied together with `20261028120000` through `20261028120300`.
+

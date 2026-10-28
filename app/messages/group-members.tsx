@@ -24,6 +24,7 @@ const roleLabels: Record<GroupMember['role'], string> = { owner: 'Owner', admini
 // student's membership.
 // SRS-207.1 (#886): Leave group at the foot of the panel ends the student's own membership. The owner sees why
 // they cannot leave until the group has an administrator (SRS-208.1).
+// SRS-208.2 (#887): once there is one, the owner can leave too, and that administrator becomes the new owner.
 export function GroupMemberList({ conversationId, viewerRole, onClose }: {
   conversationId: string;
   viewerRole: string | null;
@@ -124,7 +125,9 @@ export function GroupMemberList({ conversationId, viewerRole, onClose }: {
     }
   }
 
-  const hasAdmin = (members ?? []).some((member) => member.role === 'administrator');
+  const admin = (members ?? []).find((member) => member.role === 'administrator');
+  const hasAdmin = Boolean(admin);
+  const adminName = admin?.name ?? 'Your administrator';
 
   return (
     <div className={styles.memberPanel} role="dialog" aria-labelledby="group-members-title"
@@ -164,14 +167,16 @@ export function GroupMemberList({ conversationId, viewerRole, onClose }: {
         </ul>
       )}
       {canManage && hasAdmin && <p className={styles.pickerHint}>A group can have one administrator at a time. Remove this one to choose someone else.</p>}
-      {/* SRS-207.1 / SRS-207.2: anyone but the owner can leave. SRS-208.1: the owner needs an administrator first. */}
-      {members && (canManage
-        ? <p className={styles.pickerHint}>{hasAdmin
-            ? 'As the owner you hand the group to your administrator when you leave.'
-            : 'Assign an administrator before you leave the group.'}</p>
-        : <button type="button" className={styles.leaveGroup} onClick={() => void leave()} disabled={leaving || Boolean(saving)}>
-            {leaving ? 'Leaving…' : 'Leave group'}
-          </button>)}
+      {/* SRS-207.1 / SRS-207.2: anyone but the owner can leave. SRS-208.1 / SRS-208.2: the owner needs an
+          administrator first, and that administrator becomes the new owner when the owner goes. */}
+      {members && canManage && (hasAdmin
+        ? <p className={styles.pickerHint}>{adminName} becomes the owner when you leave.</p>
+        : <p className={styles.pickerHint}>Assign an administrator before you leave the group.</p>)}
+      {members && (!canManage || hasAdmin) && (
+        <button type="button" className={styles.leaveGroup} onClick={() => void leave()} disabled={leaving || Boolean(saving)}>
+          {leaving ? 'Leaving…' : 'Leave group'}
+        </button>
+      )}
     </div>
   );
 }
