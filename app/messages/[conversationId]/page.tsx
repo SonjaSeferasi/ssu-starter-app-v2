@@ -12,6 +12,7 @@ import { sortReactions, type ChatReaction } from '../../../lib/chat-reactions';
 import { CHAT_ACTIVITY_EVENT, ConversationListPanel } from '../conversation-list';
 import { EmojiPicker } from '../emoji-picker';
 import { GroupNameForm } from '../group-name';
+import { GroupMemberList } from '../group-members';
 import { InvitePicker } from '../invite-picker';
 import { ReactionChips, ReactionPicker } from '../message-reactions';
 import styles from '../messages.module.css';
@@ -68,6 +69,9 @@ function Conversation() {
   const canInvite = info?.kind === 'group' && (info.role === 'owner' || info.role === 'administrator');
   // SRS-202.5 (#836): the same owner or administrator can name the group from its header.
   const [naming, setNaming] = useState(false);
+  // SRS-204.1 (#883): the group's members, where the owner selects one for administrator assignment.
+  const [showingMembers, setShowingMembers] = useState(false);
+  const isOwner = info?.kind === 'group' && info.role === 'owner';
   // SRS-211.1 (#831): sender names by student ID, returned with the history.
   const [senders, setSenders] = useState<Record<string, { name: string; username: string }>>({});
   const sendersRef = useRef<Record<string, { name: string; username: string }> | null>(null);
@@ -370,6 +374,17 @@ function Conversation() {
             </button>
           )}
           {canInvite && inviting && <InvitePicker conversationId={conversationId} onClose={() => setInviting(false)} />}
+          {/* SRS-204.1: any member can see who is in the group; only the owner gets the Make admin buttons. */}
+          {info?.kind === 'group' && (
+            <button type="button" className={styles.inviteButton} onClick={() => setShowingMembers((open) => !open)} aria-expanded={showingMembers}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+              Members
+            </button>
+          )}
+          {showingMembers && info?.kind === 'group' && (
+            <GroupMemberList conversationId={conversationId} canManage={isOwner}
+              onClose={() => { setShowingMembers(false); setReload((count) => count + 1); }} />
+          )}
           {/* #847: on wide screens the Messages list sits beside the conversation, so this closes it and returns there.
               Tablets and phones use the back button instead. Nothing is changed or deleted. */}
           <Link href="/messages" className={styles.closeButton} aria-label="Close conversation" title="Close conversation">

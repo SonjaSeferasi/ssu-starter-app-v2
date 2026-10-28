@@ -27,6 +27,10 @@ export function messageIdParam(value: string) {
   return value;
 }
 
+// SRS-204.1: the same answer whether the chosen student does not exist, is not in this group, or is not a
+// regular member, so nobody can use the picker to learn about students outside the group.
+export const MEMBER_NOT_AVAILABLE = 'Choose a current member of this group.';
+
 // SRS-202.5: the length rule for group names, shared by the route and the database's answer.
 export const GROUP_NAME_LENGTH = 'Group names must be 1 to 50 characters.';
 
@@ -53,6 +57,10 @@ export async function chatOperation(fn: string, args: Record<string, string>) {
     if (error.code === 'SCR01') throw new AccountError(REACTION_REQUIRED, 400);
     if (error.code === 'SCR03') throw new AccountError('You cannot react to messages in this conversation right now.', 403);
     if (error.code === 'SCR04') throw new AccountError(MESSAGE_NOT_AVAILABLE, 404);
+    // SRS-204.1 / SRS-204.2: assign an administrator.
+    if (error.code === 'SCA01') throw new AccountError('Only the group owner can assign an administrator.', 403);
+    if (error.code === 'SCA02') throw new AccountError('This group already has an administrator.', 409);
+    if (error.code === 'SCA03') throw new AccountError(MEMBER_NOT_AVAILABLE, 404);
     if (error.code === '42501') throw new AccountError('A verified, active university account is required.', 403);
     if (error.code === '22023') throw new AccountError('Messages must contain 1 to 500 characters.', 400);
     throw new AccountError('Chat is unavailable. Check that the chat migration has been applied.', 503);
