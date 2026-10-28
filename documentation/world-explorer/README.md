@@ -6,9 +6,9 @@ World Explorer is a separate geography adventure. The existing Jumpyland mode an
 
 The current deliverable follows the supplied specification's immediate priority: **one authored Japan prototype**. The 193-country catalogue and existing scenery previews remain available for planning and inspection. `levelAvailability()` marks Japan as `prototype`, other destinations as `preview`, and every destination as `releaseReady: false` / `visualReviewed: false` until the required human/device review is complete.
 
-Japan's `jp-level-01.json` is an authored 137.8-unit route with 16 platforms, a solid wooden bridge, two moving ledges, 30 coins, three optional stars, a midpoint checkpoint, an in-level Mount Fuji discovery and a finish marker. The easy route intentionally includes a gentle moving landing. The character uses one original modeled student with idle/run/jump/fall/land/collect/celebrate/damage/respawn states.
+Japan's `jp-level-01.json` is an authored 137.8-unit route with 16 platforms, two solid wooden bridges, two moving ledges, 30 coins, three optional stars, a midpoint checkpoint, an in-level Mount Fuji discovery and a finish marker. The easy route intentionally includes a gentle moving landing. The character uses one original modeled student with idle/run/jump/fall/land/collect/celebrate/damage/respawn states.
 
-The spring environment is actual Three.js geometry: a snow-streaked Fuji, curved-eave pagodas, branching cherry groves, mossy cliff layers, torii, lanterns, animated water surfaces, instanced foam/mist and drifting petals. Foreground plants stay below the traversal lane; scenic objects are separate from the validated collision surfaces. This remains procedural stylized art, not Blender scans or an approved match to the concept images.
+The spring environment is actual Three.js geometry: a snow-streaked Fuji, curved-eave pagodas, branching cherry groves, mossy cliff layers, torii, lanterns, animated water surfaces, instanced foam/mist and drifting petals. Foreground plants stay below the traversal lane; scenic objects are separate from the validated collision surfaces. Architecture, vegetation and the student are original modeled artwork. The cliffs also use bundled CC0 PBR maps by Rob Tuytel / Poly Haven; see [material licenses](../../public/world-explorer/materials/LICENSES.md). This remains stylized game art awaiting the user's visual acceptance, rather than an exact recreation of the concept illustration.
 
 ### Run and verify
 
@@ -29,7 +29,7 @@ The optional review build uses the fixed `.next-review` directory, supported by 
 
 Desktop controls: arrows/A/D, Space/Up/W, P/Escape. Mobile has simultaneous left/right/jump pointer controls, safe-area spacing and compact HUD. Settings include music/effects volume, reduced motion and lightweight graphics. Sound is original synthesized audio unlocked by a real pointer/keyboard gesture; no remote music is loaded. Graphics quality applies on the next run. Facts open in a paused discovery dialog rather than obscuring an active jump.
 
-For a future visual reviewer, append `&review=1` to expose a full-level overview/player-camera switch and sampled FPS/draw/triangle diagnostics. Overview pauses the simulation and awards no completion. The existence of diagnostics is not a measured performance claim.
+For visual review, append `&review=1` to expose a full-level overview/player-camera switch and sampled FPS/draw/triangle diagnostics. Overview pauses the simulation and awards no completion. The existence of diagnostics is not a performance sign-off. See the [actual review captures](review/README.md).
 
 ### Component boundaries
 
@@ -38,6 +38,9 @@ For a future visual reviewer, append `&review=1` to expose a full-level overview
 - `simulation.ts`: pure fixed-60-Hz movement, swept collisions, carrying platforms, coyote/buffer timing, collectibles, checkpoints, hazards, discovery pause and completion.
 - `country-scene.ts`: renderer/input adapters, visible entities, articulated character and bounded side camera. Rendering reads simulation state.
 - `japan-environment.ts`: independent five-layer country scenery, animation, reduced-motion/quality presets and GPU cleanup.
+- `japan-architecture.ts`, `japan-terrain.ts`, `japan-grove.ts` and `japan-vista.ts`: tiled pagodas/veranda buildings, weathered moss terraces, instanced cherry blossoms, outward-facing snow-streaked Fuji, a gradient sky volume and cloud banks.
+- `japan-materials.ts`: locally bundled CC0 rock diffuse/normal/roughness maps, with procedural fallback and safe asynchronous loading.
+- `explorer-character.ts`: articulated student with modeled curls, glasses, hoodie seams, jeans, sneakers and backpack, batched by animation pivot.
 - `country-run.tsx`: compact HUD, touch controls, explicit loading/play/pause/discovery/completion/error views and accessible dialogs.
 - `world-explorer.tsx`: atlas, continent/country/level selection, passport, milestones and settings.
 - `world-explorer-progress.ts`, `progress-client.ts`, progress API and SQL migration: compatible device saves plus existing SocialU account integration.
@@ -46,7 +49,9 @@ For a future visual reviewer, append `&review=1` to expose a full-level overview
 
 Input-driven tests traverse normal and Expert Japan without teleporting, retain all three hearts, land on moving platforms, activate the checkpoint/discovery, collect more than ten coins and reach the real finish. A second input-driven route collects all three optional stars and finishes. Further checks cover side walls, hazard failure, checkpoint recovery, item deduplication, coyote time, input buffering, pause timing and frame partitioning. Environment checks cover real geometry, depth clearance, animation, reduced-motion toggling, lightweight quality and resource cleanup.
 
-**Visual/mobile acceptance is pending.** The native Computer Use review was stopped by its safety layer because it could not determine the current Windows browser URL with sufficient confidence. No gameplay screenshots, manual browser completion, reference-image approval, real-device mobile layout verification or desktop/mobile FPS target is claimed. No workaround through another UI automation route was attempted after that stop.
+**Japan visual revision, October 28:** inspected the real running scene in Microsoft Edge and compared the normal camera with the supplied Japan reference. Replaced smooth islands, sparse blossom masses and distant cone primitives; added tiled architectural detail, layered waterfall terraces, denser spring groves, natural rock surface maps, an early playable bridge and the timber/blue HUD. Regression tests protect cap height, a clear walking corridor, outward mountain/roof normals, visible Fuji snow and initial pagoda framing. The full suite passed **782 tests in 86 files**.
+
+**Acceptance remains partial.** The desktop preview sampled around 30 FPS at 1,707 pixels window width during the observed review; this is a point-in-time observation, not a sustained production benchmark or the requested 60 FPS sign-off. Native browser review does not replace real-device mobile testing. Automated input tests complete the route, but a full manual browser completion, user approval of visual fidelity and mobile/FPS targets remain pending. Other countries remain scenery previews until their authored levels and country-specific visual work receive the same review.
 
 The hosted passport RPC was probed with a null identity/read action and returned `404 / PGRST202`, confirming its migration is not installed. Apply the reviewed additive migration through the team's authorized database workflow before claiming account saving. Device saves remain available. See [account progress](ACCOUNT-PROGRESS.md). Publication/deployment and the remaining production-country rollout follow the specification's later phases.
 

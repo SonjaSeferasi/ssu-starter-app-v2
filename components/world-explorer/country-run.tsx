@@ -67,7 +67,7 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
  },[status,showSettings]);
  const signal=(action:'left'|'right'|'jump',pressed:boolean)=>stage.current?.dispatchEvent(new CustomEvent('explorer-input',{detail:{action,pressed}}));
  const openGuide=()=>{controller.current?.pause();setStatus('discovery');};
- return <section className={styles.run} aria-label={country.name+' country level'}>
+ return <section className={`${styles.run} ${country.code==='JPN'?styles.japanRun:''}`} aria-label={country.name+' country level'}>
   <div ref={stage} className={styles.runStage}/>
   <header className={styles.playHeader}>
    <div className={styles.playIdentity}><button onClick={onExit} aria-label="Return to the world map"><ArrowLeft size={19}/></button><CountryFlag iso2={country.iso2} name={country.name} size={42}/><div><h1>{country.name}</h1><p>Level 1 · {availability?.title}</p><small>{availability?.stage==='prototype'?'Playable prototype':'Environment preview'} · {labels[difficulty-1]}</small></div></div>

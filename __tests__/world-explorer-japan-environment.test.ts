@@ -28,7 +28,9 @@ describe('Japan spring environment vertical slice',()=>{
  });
  it('uses bounded finite meshes and genuinely reduces scenery work in low graphics mode',()=>{
   const standard=create(),low=create('low'),standardVertices=vertices(standard.environment.root),lowVertices=vertices(low.environment.root);
-  expect(standardVertices).toBeGreaterThan(20000);expect(standardVertices).toBeLessThan(400000);expect(lowVertices).toBeLessThan(standardVertices*.8);
+  expect(standardVertices).toBeGreaterThan(20000);// Rich blossom canopies, modeled roof tiles and multiple valley tiers share
+  // a bounded scene budget; low graphics must remove real geometry work.
+  expect(standardVertices).toBeLessThan(2600000);expect(lowVertices).toBeLessThan(standardVertices*.8);
   standard.environment.root.traverse(object=>{if(object instanceof T.Mesh)expect(object.geometry.getAttribute('position').array.every(Number.isFinite)).toBe(true);});
   expect(low.environment.root.userData.petalCount).toBeLessThan(standard.environment.root.userData.petalCount);standard.environment.dispose();low.environment.dispose();
  });
