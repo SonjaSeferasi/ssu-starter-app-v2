@@ -310,7 +310,7 @@ SRS-204.2 (LP): when the group owner assigns administrator privileges to a selec
 - **Page (#883).** A **Members** button in a group's header opens the member list, showing each member's name, username and role. The owner also sees **Make admin** beside each regular member; those buttons disappear once the group has an administrator, with a note that a group can have one at a time. Closing the panel reloads the conversation so the header reflects any role change.
 - **Testing.** `__tests__/api/group-administrator.test.ts` covers both routes and every error answer. `__tests__/database/group-administrator.test.ts` checks the member list and its access rules, that only the owner can assign, that regular members, invitees, outsiders and DMs are refused, that the chosen student must be a current regular member, the one-administrator rule (including the table's own constraint), that ownership and other roles never move, that a member who left is not eligible, and server-only grants. It runs with and without LN's school communities migration.
 
-Status: not yet applied to the hosted database. Until it is, the Members panel reports that chat is unavailable and nothing else changes.
+Status: applied to the hosted database on 2026-10-28 and recorded as versions `20261028120000` through `20261028120400`, after a rolled-back dry run of all five. They were applied as one all-or-nothing statement from single-line copies of the files (comments removed; same SQL), with guards that stop without changes if any of the five functions already exist or the versions are already recorded. In the dry run, run as `service_role` against group 32: the owner made the other member an administrator, a second assignment was refused (`SCA02`), a non-owner's revoke was refused (`SCA04`), the owner revoked it, removed the member, the member left on their own, the owner's departure with no administrator was refused (`SCL01`), and with one in place the group was handed over so exactly one owner remained and the old administrator became it. Everything rolled back. After applying: the five functions exist, only `service_role` can run them, every group still has exactly one current owner, and conversations, messages and memberships are unchanged.
 
 ### Revoke administrator privileges (SRS-204.6)
 
@@ -321,7 +321,7 @@ SRS-204.6 (LP): the group owner can revoke administrator privileges from the cur
 - **Page (#884).** In the Members panel the owner sees **Remove admin** beside the current administrator. Taking the role back frees the position, so the **Make admin** buttons reappear beside the regular members.
 - **Testing.** `__tests__/api/group-administrator.test.ts` covers the revoking half of the route, including that it never calls the assign function. `__tests__/database/group-administrator.test.ts` checks that there is nothing to revoke before an administrator exists, that regular members, the administrator themselves, outsiders and DMs are refused, that naming anyone other than the administrator is refused, that the role returns to member while ownership and other roles stay put, that revoking twice finds nobody, that the position can then be given to someone else, and server-only grants. It runs with and without LN's school communities migration.
 
-Status: not yet applied to the hosted database, and it is applied together with `20261028120000`.
+Status: applied to the hosted database on 2026-10-28, together with `20261028120000` (see above).
 
 ### Remove a regular group member (SRS-205.10)
 
@@ -334,7 +334,7 @@ SRS-205.10 (LP): the group owner or administrator can remove a regular member fr
 
 **Finding (noted on #885).** `public.socialu_conversation_messages` still gates on `is_current_participant`, so a removed student cannot open the conversation at all, even though the data layer preserves the messages they could already see. Showing that preserved history to a former member is SRS-205.13's own work, and the same gap applies to SRS-207.5 and SRS-208.7 for students who leave. The removal itself is unaffected.
 
-Status: not yet applied to the hosted database, and it is applied together with `20261028120000` and `20261028120100`.
+Status: applied to the hosted database on 2026-10-28, together with `20261028120000` and `20261028120100` (see above).
 
 ### Leave as a regular member (SRS-207.1)
 
@@ -345,5 +345,20 @@ SRS-207.1 (LP): a regular group member can leave the group. Traces to UR-207.
 - **Page (#886).** **Leave group** sits at the foot of the Members panel for anyone who is not the owner. The owner sees why instead: either that they need an administrator first, or that they hand the group to their administrator when they go. After leaving, the student returns to the Messages list, which no longer lists that group.
 - **Testing.** `__tests__/api/group-leaving.test.ts` covers the route, that it passes no student ID, and its error answers. `__tests__/database/group-leaving.test.ts` checks that outsiders, private conversations and unknown accounts are refused, that the owner cannot leave without an administrator, that a regular member and an administrator can and the position is freed, that leaving twice is refused, that the departed student keeps `can_read_message` access to earlier messages but not later ones and can no longer send or react, that exactly one owner remains, and server-only grants. It runs with and without LN's school communities migration.
 
-Status: not yet applied to the hosted database, and it is applied together with `20261028120000`, `20261028120100` and `20261028120200`.
+Status: applied to the hosted database on 2026-10-28, together with `20261028120000` through `20261028120200` (see above).
+
+### Promote the administrator to owner (SRS-208.2)
+
+SRS-208.2 (LP): when the group owner leaves, the current administrator becomes the new group owner. Traces to UR-208.
+
+- **Migration** `supabase/migrations/20261028120400_chat_transfer_group_ownership.sql` (#887). It replaces `public.socialu_leave_group` so the owner can leave once the group has an administrator. Everything else about leaving, including the grants, is unchanged.
+
+  The whole handover is one all-or-nothing step (SRS-208.3), so the group is never committed without an owner (SRS-208.9). Inside it the rows are written in this order: the departing owner's role becomes `member`, which frees the owner position; the administrator's role becomes `owner`, completing the promotion (SRS-208.2) and leaving the administrator position unassigned (SRS-208.5) for the new owner to fill (SRS-208.6); then the departing owner's `left_at` is stamped (SRS-208.4). That first step is bookkeeping, not a demotion anyone sees: `group_current_owner` is a partial unique index, which Postgres checks as each row is written rather than at the end of the transaction, so the old and new owner cannot both hold the role even for one statement. The exactly-one-owner rule is the deferred constraint trigger `group_membership_structure`, which tolerates the gap and is checked when the function returns. The former owner's history row therefore reads `member`; `role` only describes current membership and nothing reads it once `left_at` is set.
+
+  The former owner keeps the history they could already see (SRS-208.7) and receives nothing sent afterwards (SRS-208.8), for the same reason as every other departure.
+- **API** unchanged: `POST /api/conversations/[id]/leave` now also answers with `new_owner` when the owner is the one leaving.
+- **Page (#887).** The owner sees **Leave group** once there is an administrator, with a line naming who takes the group on. Without one they still see that they must assign an administrator first.
+- **Testing.** `__tests__/api/group-leaving.test.ts` checks that the route passes the new owner through. `__tests__/database/group-leaving.test.ts` checks the handover end to end: refused with no administrator, the administrator becomes owner while the former owner leaves, exactly one owner at every committed point and no administrator left assigned, the former owner keeps earlier messages but not later ones and can no longer send or manage the group, the new owner can assign a fresh administrator but not the former owner, the handover runs again for the next owner, and a sole remaining owner still cannot leave. It runs with and without LN's school communities migration.
+
+Status: applied to the hosted database on 2026-10-28, together with `20261028120000` through `20261028120300` (see above).
 

@@ -10,7 +10,7 @@ const failWith = (code: string) => rpc.mockImplementation(async (fn: string) => 
 const headers = (bearer: string): Record<string, string> => ({ ...(bearer ? { Authorization: 'Bearer ' + bearer } : {}) });
 const post = (bearer = token, id = '32') => new Request(`http://localhost/api/conversations/${id}/leave`, { method: 'POST', headers: headers(bearer) });
 const ctx = (id = '32') => ({ params: Promise.resolve({ id }) });
-const left = { conversation_id: '32', member_count: 2, left_role: 'member' };
+const left = { conversation_id: '32', member_count: 2, left_role: 'member', new_owner: null };
 beforeEach(() => {
   vi.resetAllMocks();
   vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'test-server-key');
@@ -56,6 +56,13 @@ describe('SRS-207.1 (#886) leave a group', () => {
     rpc.mockClear();
     expect((await POST(post(token, 'abc'), ctx('abc'))).status).toBe(404);
     expect(chatCalls()).toHaveLength(0);
+  });
+  // SRS-208.2 (#887): when the owner leaves, the answer names the administrator who took the group on.
+  it('passes on the new owner when the owner is the one leaving', async () => {
+    const handover = { conversation_id: '32', member_count: 2, left_role: 'owner',
+      new_owner: { student_id: '2', username: 'student2', name: 'Student 2' } };
+    answer(handover);
+    expect(await (await POST(post(), ctx())).json()).toEqual(handover);
   });
   it('never reports a failed departure as saved', async () => {
     failWith('XX000');
