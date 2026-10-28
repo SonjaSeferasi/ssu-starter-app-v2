@@ -13,8 +13,15 @@ export type MentionCandidate = { username: string; name: string; photoUrl: strin
  * Reuses the existing Campus Members search (/api/campus/members) -- same
  * university scoping, same blocked-student exclusion, same {username, name,
  * photo_url} shape the People panel already uses. No new search endpoint.
+ *
+ * The optional `endpoint` override (additive, every existing caller is
+ * unaffected) points this at a different {username, name, photo_url, is_me}
+ * search instead -- used by the Whisper Wall's Campus Crush composer, whose
+ * suggestions must additionally exclude opted-out students
+ * (/api/whispers/mention-candidates), without touching this shared hook's
+ * behavior for every regular post/comment composer.
  */
-export function useMentionAutocomplete() {
+export function useMentionAutocomplete(endpoint: string = '/api/campus/members') {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [triggerStart, setTriggerStart] = useState<number | null>(null);
@@ -34,7 +41,7 @@ export function useMentionAutocomplete() {
         const token = await accessToken();
         if (controller.signal.aborted || !token) return;
         const params = new URLSearchParams({ q: query, offset: '0' });
-        const response = await fetch(`/api/campus/members?${params}`, {
+        const response = await fetch(`${endpoint}?${params}`, {
           headers: { Authorization: `Bearer ${token}` }, cache: 'no-store', signal: controller.signal,
         });
         if (controller.signal.aborted) return;
