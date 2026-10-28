@@ -1,3 +1,5 @@
+> October 28 scope update: SRS-107.6 is now selected for Sprint 3, with real tasks #915–#918. The original templates below are historical preparation; use [README.md](README.md), [issue-plan.json](issue-plan.json) and [publication.json](publication.json) for the current published plan.
+
 # Prepared Sprint 3 issue bodies
 
 These are the original prepared issue/task templates. The cards have since been published through the reconnected GitHub browser; see [the planning index](README.md) and [verified issue links](publication.json). Placeholders below are retained as template text, not a claim that relationships are missing in the published cards. The older #125–#133 records are closed as not planned and remain unchanged.

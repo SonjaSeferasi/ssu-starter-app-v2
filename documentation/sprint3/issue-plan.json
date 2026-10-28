@@ -3,7 +3,7 @@
   "owner": "Dieulinhh23",
   "prepared_date": "2026-10-27",
   "baseline": "2b3a521c4ac2ce34e01845443471100ac37915b3",
-  "publication_status": "Published through normal GitHub browser UI after reconnection. All nine parents and 16 linked tasks are open and assigned to Dieulinhh23.",
+  "publication_status": "Published: nine parents, 20 linked task sub-issues. Five selected requirements remain unstarted.",
   "items": [
     {
       "srs": "107.1",
@@ -242,16 +242,58 @@
     {
       "srs": "107.6",
       "title": "SRS-107.6, LN — Active-session status.",
-      "body": "The system shall identify which recorded sessions are currently active.\n\nAcceptance criterion: Given one or more sessions remain active, when login activity is viewed, then each active session is identified as active.\n\nTraces to: UR-107\n\nOwner: Linh Nguyen (LN), GitHub: Dieulinhh23.\nPlanning date: October 27, 2026.\nPriority: 6 in the Login Activity backlog.\nIntended board status: Product Backlog — reserved for later sprint selection; not started.\n\nSource SRS: https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/main/documentation/SocialU_SRS_Editable.md#ur-107\nUR overview: #423.\nURD: https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/main/documentation/user_requirements.md\n\nHistorical issue #130 was closed as not_planned on October 8, 2026; it is not implementation evidence. This is a fresh dated planning record, not a backdated status change.\n\nNo Sprint 3 commitment, implementation branch, task decomposition, PR, test result or screenshot is claimed. Revisit after the selected history feature is delivered. Remote logout and other later capabilities must use their own SRS-named branches when selected.\n",
+      "body": "The system shall identify which recorded sessions are currently active.\n\nAcceptance criterion: Given one or more sessions remain active, when login activity is viewed, then each active session is identified as active.\n\nTraces to: UR-107\n\nOwner: Linh Nguyen (LN), GitHub: Dieulinhh23.\nPlanning date: October 27, 2026.\nPriority: 6 in the Login Activity backlog.\nIntended board status: Sprint Backlog — Sprint 3, not started.\n\nSource SRS: https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/main/documentation/SocialU_SRS_Editable.md#ur-107\nUR overview: #423.\nURD: https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/main/documentation/user_requirements.md\n\nHistorical issue #130 was closed as not_planned on October 8, 2026; it is not implementation evidence. This is a fresh dated planning record, not a backdated status change.\n\n\n## Sprint 3 scope review — October 28, 2026\nSelected after the remaining-work audit as the fifth Sprint 3 requirement. Depends on SRS-107.1 and SRS-107.2. Implement real active-session status; remote logout remains outside this card.\n\nImplementation branch created before coding: https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/linh/srs-107.6-active-session-status\nBranch baseline: 7d048efc59060fab163e6275b55916f8f2515d38.\nPR: not opened. Implementation, automated results and running-app screenshot: pending.\n\nAudit and Sprint 4 handoff: https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/linh/sprint-3-planning/documentation/sprint3/remaining-work-audit.md\nAll child tasks must remain open until their actual acceptance passes. Do not mark this item Done based on branch creation or a planned badge alone.\n",
       "assignees": [
         "Dieulinhh23"
       ],
-      "intended_status": "Product Backlog",
-      "branch": null,
+      "intended_status": "Sprint Backlog",
+      "branch": "linh/srs-107.6-active-session-status",
       "historical_issue": 130,
-      "tasks": [],
+      "tasks": [
+        {
+          "title": "Task 107.6-1 Verify actual session and revocation state",
+          "body": "Parent: #879 — SRS-107.6.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nReview the existing login-history contract, Supabase auth.sessions and the application socialu_session_guard revocation cutoff/preserved-session rules. Define an authoritative active-state query for the signed-in account and verify expiry/revocation behavior in isolated data tests. Reuse existing structures when sufficient; record any real schema gap instead of creating duplicate session data.\n\nCreated as a real sub-issue of SRS-107.6. Keep open until actually complete; add code/PR/check links and live evidence after implementation.",
+          "assignees": [
+            "Dieulinhh23"
+          ],
+          "issue_number": 915,
+          "parent_issue": 879,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/915"
+        },
+        {
+          "title": "Task 107.6-2 Return authorized active-session status",
+          "body": "Parent: #879 — SRS-107.6.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nExtend the authenticated Login Activity API to identify actual active sessions using the verified owner identity. Do not infer activity solely from a remembered browser token or expose provider access/refresh tokens. Ensure stale/revoked sessions cannot be reported active just because their history record remains.\n\nCreated as a real sub-issue of SRS-107.6. Keep open until actually complete; add code/PR/check links and live evidence after implementation.",
+          "assignees": [
+            "Dieulinhh23"
+          ],
+          "issue_number": 916,
+          "parent_issue": 879,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/916"
+        },
+        {
+          "title": "Task 107.6-3 Display active status in Login Activity",
+          "body": "Parent: #879 — SRS-107.6.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nShow which recorded sessions remain active in the actual Login Activity rows. Read the API result and refresh it when the section reloads. Preserve date/time/history behavior and loading/error states. Do not add a remote logout button; that belongs to SRS-107.7/.8.\n\nCreated as a real sub-issue of SRS-107.6. Keep open until actually complete; add code/PR/check links and live evidence after implementation.",
+          "assignees": [
+            "Dieulinhh23"
+          ],
+          "issue_number": 917,
+          "parent_issue": 879,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/917"
+        },
+        {
+          "title": "Task 107.6-4 Verify active and revoked sessions and capture evidence",
+          "body": "Parent: #879 — SRS-107.6.\nOwner: Linh Nguyen (Dieulinhh23).\nTraces to: UR-107.\nInitial intended status: Sprint Backlog; not started.\n\nTest active, expired/revoked and cross-account cases against the chosen contract. With an authorized test account signed in on two sessions, show actual active status, verify a revoked session is no longer marked active after reload, and attach a running-app screenshot plus reproduction steps to #879. Do not revoke a teammate session without their permission.\n\nCreated as a real sub-issue of SRS-107.6. Keep open until actually complete; add code/PR/check links and live evidence after implementation.",
+          "assignees": [
+            "Dieulinhh23"
+          ],
+          "issue_number": 918,
+          "parent_issue": 879,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/918"
+        }
+      ],
       "issue_number": 879,
-      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/879"
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/879",
+      "branch_baseline": "7d048efc59060fab163e6275b55916f8f2515d38"
     },
     {
       "srs": "107.7",
@@ -297,5 +339,6 @@
     }
   ],
   "board": "https://github.com/users/SonjaSeferasi/projects/2/views/16",
-  "label": "sprint-3-ln"
+  "label": "sprint-3-ln",
+  "scope_review_date": "2026-10-28"
 }

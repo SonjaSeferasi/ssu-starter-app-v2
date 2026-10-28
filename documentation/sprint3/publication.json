@@ -119,7 +119,28 @@
       "parent": 861,
       "srs": "107.4",
       "number": 877
+    },
+    {
+      "parent": 879,
+      "srs": "107.6",
+      "number": 915
+    },
+    {
+      "parent": 879,
+      "srs": "107.6",
+      "number": 916
+    },
+    {
+      "parent": 879,
+      "srs": "107.6",
+      "number": 917
+    },
+    {
+      "parent": 879,
+      "srs": "107.6",
+      "number": 918
     }
   ],
-  "status": "Planning only; all open. Four selected parents and 16 tasks in Sprint Backlog; five future parents in Product Backlog."
+  "status": "Planning only; all open. Five selected parents and 20 tasks in Sprint Backlog; four future parents in Product Backlog.",
+  "scope_review_date": "2026-10-28"
 }
