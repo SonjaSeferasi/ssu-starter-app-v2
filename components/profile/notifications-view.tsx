@@ -12,7 +12,7 @@ import styles from './profile.module.css';
 
 type NotificationItem = {
   notification_id: number;
-  kind: 'friend_request' | 'friendship_accepted' | 'post_like' | 'post_comment' | 'comment_reply' | 'mention' | 'repost';
+  kind: 'friend_request' | 'friendship_accepted' | 'post_like' | 'post_comment' | 'comment_reply' | 'mention' | 'repost' | 'whisper_comment';
   created_at: string;
   read_at: string | null;
   actor_username: string;
@@ -40,6 +40,11 @@ function feedNotificationText(item: NotificationItem): string {
   if (item.kind === 'comment_reply') return ' replied to your comment.';
   if (item.kind === 'mention') return item.comment_id ? ' mentioned you in a comment.' : ' mentioned you in a post.';
   if (item.kind === 'repost') return ' reposted your post.';
+  // The Whisper Wall (additional functionality): no actor identity is ever
+  // revealed for this kind (see socialu_notifications' whisper_comment_items
+  // CTE) -- actor_name is always null here, so this is a standalone sentence,
+  // not a "<name> did X" suffix like every other kind above.
+  if (item.kind === 'whisper_comment') return 'Someone commented on your confession.';
   if (count <= 1) return ' liked your post.';
   if (count === 2) return ` and ${names[1]} liked your post.`;
   const others = count - 2;
@@ -47,6 +52,11 @@ function feedNotificationText(item: NotificationItem): string {
 }
 
 function feedNotificationHref(item: NotificationItem): string {
+  // The Whisper Wall (additional functionality): opens the tab, not a
+  // specific confession -- there's no per-confession deep link/scroll
+  // target in this version (confessions have no stable DOM anchor the way
+  // posts do), only "go see your confessions."
+  if (item.kind === 'whisper_comment') return '/?tab=whispers';
   const tab = item.visibility === 'friends_only' ? 'friends' : 'for-you';
   const commentParam = item.comment_id ? `&comment=${item.comment_id}` : '';
   return `/?post=${item.post_id}&tab=${tab}${commentParam}`;

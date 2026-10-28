@@ -5,18 +5,24 @@ import { storedAccessToken } from '../../lib/account/session';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { FeedSwitcher, type FeedTab } from './FeedSwitcher';
+import { FeedBanner } from './FeedBanner';
 import { PostComposer } from './PostComposer';
 import { PostCard } from './PostCard';
 import { LoadingFeedState, EmptyFeedState, ErrorFeedState } from './FeedStates';
 import { CampusMembersPanel } from './CampusMembersPanel';
 import { ComingSoonPanels } from './ComingSoonPanels';
+import { WhisperTab } from '../whisper/WhisperTab';
 import type { FeedPost } from './types';
 import shellStyles from '../navigation/social-shell.module.css';
 
-// "For you" is the public Campus Feed (SRS-301); "Friends" is Friends Only (SRS-302).
-const FEED_ENDPOINT: Record<FeedTab, 'campus' | 'friends'> = { 'for-you': 'campus', friends: 'friends' };
+// "For you" is the public Campus Feed (SRS-301); "Friends" is Friends Only
+// (SRS-302). "whispers" (The Whisper Wall, additional functionality) has
+// no entry here -- it isn't a posts-feed endpoint at all, and WhisperTab
+// manages its own fetching entirely, so fetchFeed/loadFeed below are never
+// called for it.
+const FEED_ENDPOINT: Record<'for-you' | 'friends', 'campus' | 'friends'> = { 'for-you': 'campus', friends: 'friends' };
 
-async function fetchFeed(tab: FeedTab, accessToken: string): Promise<FeedPost[]> {
+async function fetchFeed(tab: 'for-you' | 'friends', accessToken: string): Promise<FeedPost[]> {
   const res = await fetch(`/api/posts/feed/${FEED_ENDPOINT[tab]}`, { headers: { Authorization: `Bearer ${accessToken}` } });
   const body = await res.json();
   if (!res.ok) throw new Error(body.error || 'Failed to load the feed.');
@@ -36,7 +42,8 @@ export function FeedPage() {
   // to that one PostCard below.
   const targetCommentIdParam = Number(searchParams.get('comment'));
   const targetCommentId = Number.isInteger(targetCommentIdParam) && targetCommentIdParam > 0 ? targetCommentIdParam : undefined;
-  const initialTab: FeedTab = searchParams.get('tab') === 'friends' ? 'friends' : 'for-you';
+  const initialTabParam = searchParams.get('tab');
+  const initialTab: FeedTab = initialTabParam === 'friends' ? 'friends' : initialTabParam === 'whispers' ? 'whispers' : 'for-you';
 
   const [token, setToken] = useState('');
   const [authorInitial, setAuthorInitial] = useState('');
@@ -77,7 +84,7 @@ export function FeedPage() {
   }
 
   useEffect(() => {
-    if (token) loadFeed(token);
+    if (token && tab !== 'whispers') loadFeed(token);
   }, [tab, token]);
 
   // Once the target post from a notification link has actually loaded into
@@ -96,6 +103,7 @@ export function FeedPage() {
   }, [loading, posts, targetPostId]);
 
   async function loadFeed(accessToken: string) {
+    if (tab === 'whispers') return;
     setLoading(true);
     setError('');
     try {
@@ -107,15 +115,32 @@ export function FeedPage() {
     }
   }
 
+  if (tab === 'whispers') {
+    return (
+      <main className={shellStyles.page}>
+        <h1 className={shellStyles.title}>Campus Feed</h1>
+        <div className="mt-6">
+          <FeedSwitcher active={tab} onChange={setTab} />
+        </div>
+        <div className="mt-6">
+          <WhisperTab accessToken={token} />
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className={shellStyles.page}>
       <h1 className={shellStyles.title}>Campus Feed</h1>
+      <div className="mt-6">
+        <FeedSwitcher active={tab} onChange={setTab} />
+      </div>
 
       <div className="mt-6 flex flex-col items-start gap-6 lg:flex-row">
         <div className="w-full min-w-0 flex-1 space-y-4 lg:max-w-2xl">
-          <PostComposer accessToken={token} authorInitial={authorInitial} onPublished={() => token && loadFeed(token)} />
+          <FeedBanner tab={tab} />
 
-          <FeedSwitcher active={tab} onChange={setTab} />
+          <PostComposer accessToken={token} authorInitial={authorInitial} onPublished={() => token && loadFeed(token)} />
 
           {deletedNotice ? (
             <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">Post deleted successfully.</div>
