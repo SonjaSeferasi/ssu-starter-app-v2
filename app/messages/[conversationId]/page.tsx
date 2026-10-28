@@ -69,9 +69,9 @@ function Conversation() {
   const canInvite = info?.kind === 'group' && (info.role === 'owner' || info.role === 'administrator');
   // SRS-202.5 (#836): the same owner or administrator can name the group from its header.
   const [naming, setNaming] = useState(false);
-  // SRS-204.1 (#883): the group's members, where the owner selects one for administrator assignment.
+  // SRS-204.1 (#883): the group's members, where the owner selects one for administrator assignment, and
+  // SRS-205.10 (#885) where the owner or administrator removes a regular member.
   const [showingMembers, setShowingMembers] = useState(false);
-  const isOwner = info?.kind === 'group' && info.role === 'owner';
   // SRS-211.1 (#831): sender names by student ID, returned with the history.
   const [senders, setSenders] = useState<Record<string, { name: string; username: string }>>({});
   const sendersRef = useRef<Record<string, { name: string; username: string }> | null>(null);
@@ -382,7 +382,7 @@ function Conversation() {
             </button>
           )}
           {showingMembers && info?.kind === 'group' && (
-            <GroupMemberList conversationId={conversationId} canManage={isOwner}
+            <GroupMemberList conversationId={conversationId} viewerRole={info.role}
               onClose={() => { setShowingMembers(false); setReload((count) => count + 1); }} />
           )}
           {/* #847: on wide screens the Messages list sits beside the conversation, so this closes it and returns there.

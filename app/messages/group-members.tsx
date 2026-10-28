@@ -18,11 +18,17 @@ const roleLabels: Record<GroupMember['role'], string> = { owner: 'Owner', admini
 // only one member can hold the role, so they disappear once the group has an administrator.
 // SRS-204.6 (#884): Remove admin beside that administrator takes the role back, returning them to a regular
 // member, which frees the position for someone else.
-export function GroupMemberList({ conversationId, canManage, onClose }: {
+// SRS-205.10 (#885): the owner and the administrator also see Remove beside each regular member, which ends that
+// student's membership.
+export function GroupMemberList({ conversationId, viewerRole, onClose }: {
   conversationId: string;
-  canManage: boolean;
+  viewerRole: string | null;
   onClose: () => void;
 }) {
+  // SRS-204.5 / SRS-204.8: only the owner assigns or revokes the administrator.
+  const canManage = viewerRole === 'owner';
+  // SRS-205.10 / SRS-206.9: the owner and the administrator can both remove regular members.
+  const canRemove = canManage || viewerRole === 'administrator';
   const [members, setMembers] = useState<GroupMember[] | null>(null);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState('');
@@ -71,6 +77,26 @@ export function GroupMemberList({ conversationId, canManage, onClose }: {
     }
   }
 
+  // SRS-205.10: end a regular member's membership, then show the group's remaining members.
+  async function remove(member: GroupMember) {
+    if (saving) return;
+    setSaving(member.username);
+    setError('');
+    try {
+      const token = await accessToken();
+      const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/members?username=${encodeURIComponent(member.username)}`, {
+        method: 'DELETE', headers: { Authorization: `Bearer ${token ?? ''}` },
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || 'That member could not be removed.');
+    } catch (reason) {
+      setError(reason instanceof Error && !(reason instanceof TypeError) ? reason.message : 'That member could not be removed.');
+    } finally {
+      setSaving('');
+      await load();
+    }
+  }
+
   const hasAdmin = (members ?? []).some((member) => member.role === 'administrator');
 
   return (
@@ -98,6 +124,12 @@ export function GroupMemberList({ conversationId, canManage, onClose }: {
               {canManage && member.role === 'administrator' && (
                 <button type="button" className={styles.retry} onClick={() => void setRole(member, 'member')} disabled={Boolean(saving)}>
                   {saving === member.username ? 'Saving…' : 'Remove admin'}
+                </button>
+              )}
+              {canRemove && member.role === 'member' && (
+                <button type="button" className={styles.retry} onClick={() => void remove(member)} disabled={Boolean(saving)}
+                  aria-label={`Remove ${member.name} from the group`}>
+                  {saving === member.username ? 'Saving…' : 'Remove'}
                 </button>
               )}
             </li>
