@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { resolveMediaUrl } from './media';
+import type { Reaction } from './reactions';
 
 /** Row shape of one verified mention (socialu.post_mentions/comment_mentions,
  * joined fresh against the current student row every read -- username/name/
@@ -66,6 +67,8 @@ export type RawFeedRow = {
   repost_of?: RawRepostOf | null;
   like_count: number;
   is_liked_by_viewer: boolean;
+  reaction_counts: Record<Reaction, number>;
+  my_reaction: Reaction | null;
   comment_count: number;
 };
 
@@ -90,6 +93,8 @@ export type FeedPost = {
   repostOf: RepostOf | null;
   likeCount: number;
   isLikedByViewer: boolean;
+  reactionCounts: Record<Reaction, number>;
+  myReaction: Reaction | null;
   commentCount: number;
 };
 
@@ -152,6 +157,8 @@ export async function shapeFeedPosts(supabase: SupabaseClient<any, any, any>, ro
         repostOf: await shapeRepostOf(supabase, row.repost_of),
         likeCount: row.like_count,
         isLikedByViewer: row.is_liked_by_viewer,
+        reactionCounts: row.reaction_counts,
+        myReaction: row.my_reaction,
         commentCount: row.comment_count,
       };
     })

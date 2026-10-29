@@ -2,7 +2,7 @@ import { AccountError, accountResponse, jsonBody, verifiedUser } from '../../../
 import { feedRpc } from '../../../../../../../lib/feed';
 import type { WhisperReaction } from '../../../../../../../lib/whisper';
 
-const REACTIONS: WhisperReaction[] = ['funny', 'support', 'shocked', 'love', 'sad', 'fire'];
+const REACTIONS: WhisperReaction[] = ['like', 'love', 'haha', 'wow', 'sad', 'care'];
 
 // The Whisper Wall -- set, change, or remove the caller's own reaction on
 // an anonymous comment/reply. A null/missing reaction in the body removes

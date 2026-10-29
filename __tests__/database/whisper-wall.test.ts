@@ -21,7 +21,7 @@ await db.exec(`CREATE ROLE anon;CREATE ROLE authenticated;CREATE ROLE service_ro
 CREATE SCHEMA auth;CREATE TABLE auth.users(id uuid PRIMARY KEY,email text,email_confirmed_at timestamptz);CREATE TABLE auth.sessions(id uuid PRIMARY KEY,user_id uuid,created_at timestamptz);`);
 await db.exec(readFileSync(root+'/supabase/schema.sql','utf8'));
 try {
-for(const file of ['20261008000100_link_supabase_accounts.sql','20261008000200_feed_functions.sql','20261008000300_fix_deferred_post_trigger.sql','20261008000400_seed_post_photo_upload_policy.sql','20261012230000_srs_100_105_auth.sql','20261013200000_srs_109_113_profile.sql','20261015000100_edit_post.sql','20261015120100_delete_post.sql','20261015180000_profile_social.sql','20261015190000_profile_full_name.sql','20261016000100_like_post.sql','20261016001000_optional_profile_bio.sql','20261016010000_friendships.sql','20261016020000_feed_profile_links.sql','20261016030000_edit_profile_username.sql','20261016040000_friend_accept_mutual_follow.sql','20261017000100_unlike_post.sql','20261018000100_post_comments.sql','20261018010000_integrate_profile_feed.sql','20261021000100_comment_replies.sql','20261022000000_friend_requests_notifications.sql','20261022010000_notification_read_state.sql','20261022000100_comment_notifications.sql','20261023000100_report_post.sql','20261024000100_unify_notifications.sql','20261024000200_fix_feed_functions.sql','20261024000300_optional_post_text.sql','20261025000100_profile_highlights_study_log.sql','20261025000200_profile_people_lists.sql','20261025000300_highlight_photo_limit.sql','20261026000100_school_communities.sql','20261026000200_campus_members.sql','20261026000300_srs_315_fixes.sql','20261026000400_mentions.sql','20261026000500_share_post.sql','20261027000100_reposts.sql','20261027000300_restore_school_isolation.sql','20261028000100_whisper_wall.sql','20261028000200_whisper_reactions_expansion.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
+for(const file of ['20261008000100_link_supabase_accounts.sql','20261008000200_feed_functions.sql','20261008000300_fix_deferred_post_trigger.sql','20261008000400_seed_post_photo_upload_policy.sql','20261012230000_srs_100_105_auth.sql','20261013200000_srs_109_113_profile.sql','20261015000100_edit_post.sql','20261015120100_delete_post.sql','20261015180000_profile_social.sql','20261015190000_profile_full_name.sql','20261016000100_like_post.sql','20261016001000_optional_profile_bio.sql','20261016010000_friendships.sql','20261016020000_feed_profile_links.sql','20261016030000_edit_profile_username.sql','20261016040000_friend_accept_mutual_follow.sql','20261017000100_unlike_post.sql','20261018000100_post_comments.sql','20261018010000_integrate_profile_feed.sql','20261021000100_comment_replies.sql','20261022000000_friend_requests_notifications.sql','20261022010000_notification_read_state.sql','20261022000100_comment_notifications.sql','20261023000100_report_post.sql','20261024000100_unify_notifications.sql','20261024000200_fix_feed_functions.sql','20261024000300_optional_post_text.sql','20261025000100_profile_highlights_study_log.sql','20261025000200_profile_people_lists.sql','20261025000300_highlight_photo_limit.sql','20261026000100_school_communities.sql','20261026000200_campus_members.sql','20261026000300_srs_315_fixes.sql','20261026000400_mentions.sql','20261026000500_share_post.sql','20261027000100_reposts.sql','20261027000300_restore_school_isolation.sql','20261028000100_whisper_wall.sql','20261028000200_whisper_reactions_expansion.sql','20261028000300_global_reaction_system.sql','20261029000100_whisper_retire_categories.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
 
 // A second school, same pattern as the school-isolation regression test.
 await db.query<any>("INSERT INTO socialu.university(university_id,name) VALUES(2,'Other University')");
@@ -67,15 +67,15 @@ const notifs=async(n:number)=>(await db.query<any>('SELECT public.socialu_notifi
 // --- Basic creation + same-school isolation (checked FIRST, not last). ---
 // Created via createRaw (not backdated yet) so the confession-posting
 // cooldown test right below has a genuinely fresh row to reject against.
-const c1=await createRaw(1,'funny','Someone tripped in the dining hall today 😂');
+const c1=await createRaw(1,'unpopular_opinion','Someone tripped in the dining hall today 😂');
 assert.equal(c1.is_own,true);
-assert.deepEqual(c1.reaction_counts,{funny:0,support:0,shocked:0,love:0,sad:0,fire:0});
+assert.deepEqual(c1.reaction_counts,{like:0,love:0,haha:0,wow:0,sad:0,care:0});
 const feedForStudent2=await list(2);
 assert.ok(feedForStudent2.some((c:any)=>c.confession_id===c1.confession_id));
 const feedForStudent5=await list(5);
 assert.ok(!feedForStudent5.some((c:any)=>c.confession_id===c1.confession_id)); // different school never sees it
 await assert.rejects(db.query('SELECT public.socialu_whisper_create_comment($1,$2,$3)',[uid(5),c1.confession_id,'nice try']), /isn't available/);
-await assert.rejects(db.query('SELECT public.socialu_whisper_react($1,$2,$3)',[uid(5),c1.confession_id,'funny']), /isn't available/);
+await assert.rejects(db.query('SELECT public.socialu_whisper_react($1,$2,$3)',[uid(5),c1.confession_id,'like']), /isn't available/);
 
 // --- No identity ever appears in any returned shape. ---
 assert.equal('author_id' in c1, false);
@@ -84,13 +84,45 @@ assert.equal('authorId' in c1, false);
 // --- Posting cooldown (confessions): student 1's c1 above is still fresh,
 // so another confession from them right now must be rejected. Backdated
 // afterward so nothing later in this test trips over it unintentionally. ---
-await assert.rejects(db.query('SELECT public.socialu_whisper_create($1,$2,$3)',[uid(1),'funny','too soon']), /wait a moment/);
+await assert.rejects(db.query('SELECT public.socialu_whisper_create($1,$2,$3)',[uid(1),'unpopular_opinion','too soon']), /wait a moment/);
 await backdateLastConfession(1);
 
-// --- Category filter. ---
-await create(2,'rant','Group projects are the worst.');
-assert.ok((await list(2,'funny')).every((c:any)=>c.category==='funny'));
-assert.ok((await list(2,'rant')).every((c:any)=>c.category==='rant'));
+// --- Category filter (active categories only -- creating with a retired
+// category is covered separately below). ---
+await create(2,'advice','Group projects are the worst.');
+assert.ok((await list(2,'unpopular_opinion')).every((c:any)=>c.category==='unpopular_opinion'));
+assert.ok((await list(2,'advice')).every((c:any)=>c.category==='advice'));
+
+// --- Retired categories (funny/embarrassing/rant): rejected for NEW
+// confessions, but the table's own CHECK constraint still accepts them
+// (unchanged, not narrowed) -- proven by inserting one directly the way
+// genuinely historical, pre-retirement data would look, then confirming
+// it behaves completely normally everywhere: visible in the unfiltered
+// feed, has a working comment/reaction/report path, and its original
+// category is never silently rewritten. ---
+for (const retired of ['funny','embarrassing','rant']) {
+  await assert.rejects(db.query('SELECT public.socialu_whisper_create($1,$2,$3)',[uid(2),retired,'nice try']), /valid category/);
+}
+const historical=(await db.query<any>(
+  "INSERT INTO socialu.whisper_confessions(author_id,category,text_content) VALUES((SELECT student_id FROM socialu.students WHERE username='student1'),'embarrassing','A genuinely old confession from before retirement') RETURNING confession_id"
+)).rows[0];
+// Backdate it like every other confession in this test (same helper used
+// throughout) -- otherwise, being a fresh unbackdated row, it becomes
+// student 1's own most-recent confession and incorrectly trips their
+// posting cooldown later in this test.
+await backdateLastConfession(1);
+const historicalInAll=(await list(2)).find((c:any)=>c.confession_id===historical.confession_id);
+assert.ok(historicalInAll, 'historical retired-category confession must still appear in the unfiltered feed');
+assert.equal(historicalInAll.category,'embarrassing'); // never silently reclassified
+const historicalComment=await comment(3,historical.confession_id,'still works');
+assert.equal(historicalComment.alias_label,'Anonymous Student 1');
+await reactComment(2,historicalComment.comment_id,'love');
+const historicalThread=await listComments(1,historical.confession_id);
+assert.equal(historicalThread.find((x:any)=>x.comment_id===historicalComment.comment_id).reaction_counts.love,1);
+const historicalReact=await react(4,historical.confession_id,'care');
+assert.equal(historicalReact.reaction_counts.care,1);
+const historicalReport=await db.query<any>('SELECT public.socialu_whisper_report_confession($1,$2,$3) AS r',[uid(3),historical.confession_id,'spam']);
+assert.equal(historicalReport.rows[0].r.reported,true);
 
 // --- Anonymous aliasing: stable within a thread, "Original Poster" for the
 // author, uncorrelated across two different confessions. ---
@@ -119,21 +151,21 @@ const student3InC2=await comment(3,c2.confession_id,'Depends on the major');
 assert.equal(student3InC2.alias_label,'Anonymous Student 1'); // not "2" -- no cross-confession correlation
 
 // --- Reactions: set, change, remove; counts only, never who reacted. ---
-let reacted=await react(2,c1.confession_id,'funny');
-assert.equal(reacted.reaction_counts.funny,1);
-reacted=await react(2,c1.confession_id,'support'); // change
-assert.equal(reacted.reaction_counts.funny,0);
-assert.equal(reacted.reaction_counts.support,1);
+let reacted=await react(2,c1.confession_id,'like');
+assert.equal(reacted.reaction_counts.like,1);
+reacted=await react(2,c1.confession_id,'care'); // change
+assert.equal(reacted.reaction_counts.like,0);
+assert.equal(reacted.reaction_counts.care,1);
 reacted=await react(2,c1.confession_id,null); // remove
-assert.equal(reacted.reaction_counts.support,0);
-await react(2,c1.confession_id,'funny');
-await react(3,c1.confession_id,'funny');
+assert.equal(reacted.reaction_counts.care,0);
+await react(2,c1.confession_id,'like');
+await react(3,c1.confession_id,'like');
 // All 6 reaction kinds are valid; one active reaction per student, enforced
 // by the table's own PRIMARY KEY + UPSERT, not just app logic.
-reacted=await react(2,c1.confession_id,'fire');
-assert.equal(reacted.reaction_counts.fire,1);
-assert.equal(reacted.reaction_counts.funny,1); // student 3's reaction untouched
-await react(2,c1.confession_id,'funny'); // back to funny for later assertions below
+reacted=await react(2,c1.confession_id,'haha');
+assert.equal(reacted.reaction_counts.haha,1);
+assert.equal(reacted.reaction_counts.like,1); // student 3's reaction untouched
+await react(2,c1.confession_id,'like'); // back to like for later assertions below
 
 // --- Comment reactions: the same set/change/remove mechanism, now also
 // available on comments/replies, independent of the confession's own
@@ -154,7 +186,7 @@ const c1AfterCommentReactions=(await list(1)).find((x:any)=>x.confession_id===c1
 assert.equal(c1AfterCommentReactions.reaction_counts.love,0);
 // Cross-school: a different-school student can't react to a comment either
 // -- same generic "not available" collapse as reacting to the confession.
-await assert.rejects(db.query('SELECT public.socialu_whisper_react_comment($1,$2,$3)',[uid(5),rootComment.comment_id,'funny']), /isn't available/);
+await assert.rejects(db.query('SELECT public.socialu_whisper_react_comment($1,$2,$3)',[uid(5),rootComment.comment_id,'like']), /isn't available/);
 
 // --- whisper_comment notification to the real confession author: fires,
 // but never reveals who commented or any post/visibility metadata. ---
@@ -174,7 +206,7 @@ const afterTombstone=await listComments(1,c1.confession_id);
 assert.equal(afterTombstone.find((x:any)=>x.comment_id===rootComment.comment_id).is_deleted,true);
 assert.ok(afterTombstone.some((x:any)=>x.comment_id===reply.comment_id)); // reply survives
 // A tombstoned comment can no longer be reacted to (nothing left to react to).
-await assert.rejects(db.query('SELECT public.socialu_whisper_react_comment($1,$2,$3)',[uid(3),rootComment.comment_id,'funny']), /no longer available/);
+await assert.rejects(db.query('SELECT public.socialu_whisper_react_comment($1,$2,$3)',[uid(3),rootComment.comment_id,'like']), /no longer available/);
 
 // --- Campus Crush: mention opt-out, enforced both in the suggestion RPC
 // and server-side on raw text (cannot be bypassed by typing the handle). ---
@@ -201,10 +233,10 @@ assert.ok(!(await notifs(1)).some((x:any)=>x.kind==='mention'));
 // Mentions are inert outside Campus Crush -- checked via listComments too,
 // confirming sync_whisper_mentions' category early-return actually stores
 // nothing, not just that the create response hides it.
-const funnyWithAt=await create(3,'funny','Hey @student1 you would not believe this');
-const funnyComment=await comment(2,funnyWithAt.confession_id,'@student1 lol');
-const funnyThread=await listComments(1,funnyWithAt.confession_id);
-assert.equal(funnyThread.find((x:any)=>x.comment_id===funnyComment.comment_id).mentions.length,0);
+const nonCrushWithAt=await create(3,'advice','Hey @student1 you would not believe this');
+const nonCrushComment=await comment(2,nonCrushWithAt.confession_id,'@student1 lol');
+const nonCrushThread=await listComments(1,nonCrushWithAt.confession_id);
+assert.equal(nonCrushThread.find((x:any)=>x.comment_id===nonCrushComment.comment_id).mentions.length,0);
 
 // --- Posting cooldown (comments): a genuinely fresh comment from student 2
 // right now (via commentRaw, not backdated), then confirm their very next
@@ -215,7 +247,7 @@ await assert.rejects(db.query('SELECT public.socialu_whisper_create_comment($1,$
 
 // --- Reporting: severity-tiered thresholds. Two "harassment" reports
 // remove a confession immediately; four "spam" reports do not (needs 5). ---
-const toReportSevere=await create(3,'rant','placeholder for severe report test');
+const toReportSevere=await create(3,'advice','placeholder for severe report test');
 await db.query('SELECT public.socialu_whisper_report_confession($1,$2,$3)',[uid(1),toReportSevere.confession_id,'harassment']);
 let stillThere=(await db.query<any>('SELECT count(*)::int AS n FROM socialu.whisper_confessions WHERE confession_id=$1',[toReportSevere.confession_id])).rows[0].n;
 assert.equal(stillThere,1);
@@ -228,7 +260,7 @@ assert.equal(stillThere,0); // 2 severe reports -> removed
 // same-school students total, there aren't enough non-author reporters
 // otherwise to prove "4 isn't enough, needs 5" without someone reporting
 // their own confession).
-const toReportSpam=await create(1,'rant','placeholder for spam report test');
+const toReportSpam=await create(1,'unpopular_opinion','placeholder for spam report test');
 for (const n of [2,3,4]) {
   await db.query('SELECT public.socialu_whisper_report_confession($1,$2,$3)',[uid(n),toReportSpam.confession_id,'spam']);
 }
@@ -249,6 +281,6 @@ assert.ok(Array.isArray(trending));
 const mostDiscussed=await list(1,null,'most_discussed');
 assert.ok(Array.isArray(mostDiscussed));
 
-console.log('PASS: Whisper Wall same-school isolation, anonymous aliasing (stable + uncorrelated), confession + comment reactions (6 kinds, set/change/remove, one per student), tombstoning (including reaction rejection on a tombstoned comment), Campus Crush opt-out (RPC + raw-text enforcement), no-notification-on-mention, whisper_comment notifications without identity leak, cooldowns, and severity-tiered report thresholds -- against the real schema.');
+console.log('PASS: Whisper Wall same-school isolation, anonymous aliasing (stable + uncorrelated), confession + comment reactions (6 kinds, set/change/remove, one per student), tombstoning (including reaction rejection on a tombstoned comment), Campus Crush opt-out (RPC + raw-text enforcement), no-notification-on-mention, whisper_comment notifications without identity leak, cooldowns, severity-tiered report thresholds, and retired-category enforcement (new confessions rejected, historical confessions fully functional and never reclassified) -- against the real schema.');
 } finally { await db.close(); }
 }, 30000);

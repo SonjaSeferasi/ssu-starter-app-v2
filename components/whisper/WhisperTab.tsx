@@ -6,7 +6,6 @@ import { ConfessionComposer } from './ConfessionComposer';
 import { ConfessionCard } from './ConfessionCard';
 import { CategoryFilter } from './CategoryFilter';
 import { TrendingConfessions } from './TrendingConfessions';
-import { CommunityGuidelines } from './CommunityGuidelines';
 import type { Confession, WhisperCategory, WhisperSort } from './types';
 
 const SORTS: { id: WhisperSort; label: string }[] = [
@@ -17,8 +16,9 @@ const SORTS: { id: WhisperSort; label: string }[] = [
 
 // The Whisper Wall tab (additional functionality, not SRS-numbered) --
 // rendered inside FeedPage as the third FeedSwitcher tab. The right
-// sidebar here is intentionally just Trending Confessions + Community
-// Guidelines -- no separate category panel, per explicit instruction.
+// sidebar here is intentionally just Trending Confessions -- Community
+// Guidelines was removed per explicit instruction (its Campus Crush
+// mention opt-out moved to Profile Settings, see campus-crush-privacy.tsx).
 export function WhisperTab({ accessToken }: { accessToken: string }) {
   const [category, setCategory] = useState<WhisperCategory | null>(null);
   const [sort, setSort] = useState<WhisperSort>('latest');
@@ -112,7 +112,6 @@ export function WhisperTab({ accessToken }: { accessToken: string }) {
 
       <aside className="order-first w-full shrink-0 space-y-4 lg:order-last lg:w-72">
         <TrendingConfessions accessToken={accessToken} />
-        <CommunityGuidelines accessToken={accessToken} />
       </aside>
     </div>
   );

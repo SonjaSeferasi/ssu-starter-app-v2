@@ -6,6 +6,7 @@ import { SessionNotice } from '../navigation/section-page';
 import { ProfileLogout, useProfileGate } from './profile-view';
 import styles from './profile.module.css';
 import { DeactivateAccount } from '../friends/deactivate-account';
+import { CampusCrushPrivacy } from './campus-crush-privacy';
 
 export function ProfileSettings() {
   const gate = useProfileGate();
@@ -30,6 +31,7 @@ export function ProfileSettings() {
         <Link href="/friends" className={styles.settingsRow}><Users aria-hidden="true"/><span><strong>Friends and requests</strong><small>Find friends, respond to requests, and start conversations.</small></span><ChevronRight aria-hidden="true"/></Link>
         <Link href="/friends?view=blocked" className={styles.settingsRow}><Shield aria-hidden="true"/><span><strong>Blocked students</strong><small>Review and manage the students you have blocked.</small></span><ChevronRight aria-hidden="true"/></Link>
       </nav>
+      <CampusCrushPrivacy />
       <div className={styles.settingsLogout}>
         <div><h2>Log out</h2><p className={styles.hint}>Sign out of SocialU on this browser.</p></div>
         <ProfileLogout />

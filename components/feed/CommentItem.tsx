@@ -7,6 +7,8 @@ import { CommentComposer } from './CommentComposer';
 import { MentionText } from './MentionText';
 import { MentionDropdown } from './MentionDropdown';
 import { useMentionAutocomplete } from './use-mention-autocomplete';
+import { ReactionPicker } from '../shared/ReactionPicker';
+import type { Reaction } from '../../lib/reactions';
 import type { Comment } from './types';
 
 // Replying to Comments is a separate feature (no SRS number -- see the
@@ -189,6 +191,10 @@ export function CommentItem({
     onPosted(posted);
   }
 
+  function handleReactionChanged(reactionCounts: Record<Reaction, number>, myReaction: Reaction | null) {
+    onUpdated({ ...comment, reactionCounts, myReaction });
+  }
+
   const avatarSize = isReply ? 'h-6 w-6' : 'h-8 w-8';
 
   return (
@@ -306,11 +312,20 @@ export function CommentItem({
         )}
 
         {!editing ? (
-          <div className="mt-1 flex items-center gap-3 pl-3 text-xs text-stone-500">
+          <div className="mt-1 flex flex-wrap items-center gap-3 pl-3 text-xs text-stone-500">
             <span title={new Date(comment.createdAt).toLocaleString()}>
               {timeAgo(comment.createdAt)}
               {comment.editedAt ? ' · Edited' : ''}
             </span>
+            {!isDeleted ? (
+              <ReactionPicker
+                reactUrl={`/api/comments/${comment.commentId}/reactions`}
+                accessToken={accessToken}
+                reactionCounts={comment.reactionCounts}
+                myReaction={comment.myReaction}
+                onChanged={handleReactionChanged}
+              />
+            ) : null}
             {!isDeleted ? (
               <button
                 type="button"

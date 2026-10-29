@@ -7,9 +7,11 @@
 -- as before -- a composite PRIMARY KEY plus UPSERT -- never a trigger or
 -- app-layer check that could be bypassed by calling the RPC directly.
 
-UPDATE socialu.whisper_reactions SET reaction = 'funny' WHERE reaction = 'relatable';
-UPDATE socialu.whisper_reactions SET reaction = 'shocked' WHERE reaction = 'no_way';
-
+-- The old CHECK constraint (relatable/support/no_way) must be dropped
+-- BEFORE the renaming UPDATEs below -- otherwise setting reaction='funny'
+-- while the old constraint is still active violates it immediately. Drop
+-- first, rename values, then add the new constraint once every row
+-- already holds a value it allows.
 DO $$
 DECLARE r RECORD;
 BEGIN
@@ -20,6 +22,10 @@ BEGIN
     EXECUTE format('ALTER TABLE socialu.whisper_reactions DROP CONSTRAINT %I', r.conname);
   END LOOP;
 END $$;
+
+UPDATE socialu.whisper_reactions SET reaction = 'funny' WHERE reaction = 'relatable';
+UPDATE socialu.whisper_reactions SET reaction = 'shocked' WHERE reaction = 'no_way';
+
 ALTER TABLE socialu.whisper_reactions
   ADD CONSTRAINT whisper_reactions_reaction_check CHECK (reaction IN ('funny','support','shocked','love','sad','fire'));
 

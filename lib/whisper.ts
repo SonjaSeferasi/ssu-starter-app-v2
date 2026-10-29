@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { shapeMentions, type RawMention, type Mention } from './posts';
+import type { Reaction } from './reactions';
 
 // The Whisper Wall, additional functionality not in the official SRS (see
 // the approved plan). Deliberately NOT reusing lib/posts.ts's FeedPost/
@@ -9,7 +10,8 @@ import { shapeMentions, type RawMention, type Mention } from './posts';
 // reusable as-is.
 
 export type WhisperCategory = 'funny' | 'campus_crush' | 'embarrassing' | 'rant' | 'advice' | 'unpopular_opinion';
-export type WhisperReaction = 'funny' | 'support' | 'shocked' | 'love' | 'sad' | 'fire';
+/** Whisper Wall reactions use the exact same global vocabulary as regular posts/comments -- see lib/reactions.ts. */
+export type WhisperReaction = Reaction;
 export type WhisperSort = 'latest' | 'trending' | 'most_discussed';
 
 export type RawConfessionRow = {
