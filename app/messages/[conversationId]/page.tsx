@@ -15,6 +15,7 @@ import { GroupNameForm } from '../group-name';
 import { GroupMemberList } from '../group-members';
 import { InvitePicker } from '../invite-picker';
 import { ReactionChips, ReactionPicker } from '../message-reactions';
+import { SnipePanel } from '../../../components/snipe/snipe-panel';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -391,6 +392,10 @@ function Conversation() {
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
           </Link>
         </header>
+
+        {/* SRS-510.1: Snipe lives inside the conversation once the participant check has passed. A later
+            history refresh failure keeps the panel (and any Snipe being composed) in place. */}
+        {myStudentId !== null && <SnipePanel conversationId={conversationId} />}
 
         <ol className={styles.messages} aria-live="polite">
           {messages.length === 0

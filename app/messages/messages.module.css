@@ -187,7 +187,7 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 .backLink:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
 /* Phones: the list page shows the list; a conversation page shows the conversation. */
 @media (max-width: 900px) {
-  .page { grid-template-columns: 1fr; padding: 16px; }
+  .page { grid-template-columns: minmax(0, 1fr); padding: 16px; }
   .withConversation .listPanel, .emptyConversation { display: none; }
   /* Phones show the list and the conversation on separate pages, so the list scrolls with the page. */
   .listPanel, :global([data-navigation='bottom']) .listPanel { position: static; height: auto; min-height: 0; }
