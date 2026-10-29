@@ -1,8 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { ReactionPicker } from '../shared/ReactionPicker';
+import type { Reaction } from '../../lib/reactions';
 import type { FeedPost } from './types';
 
+// Facebook-style reaction control for a post (including a repost -- a
+// repost has its own post_id, so this always reacts to the correct post,
+// never the embedded original). Thin wrapper around the shared picker
+// (see components/shared/ReactionPicker.tsx) translating FeedPost's
+// shape into the picker's generic reactUrl/counts/onChanged interface.
 export function LikeButton({
   post,
   accessToken,
@@ -12,45 +18,18 @@ export function LikeButton({
   accessToken: string;
   onUpdated: (updated: FeedPost) => void;
 }) {
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState('');
-
-  async function handleClick() {
-    if (pending) return; // SRS-308/309: prevent repeated clicks while a request is pending.
-    setPending(true);
-    setError('');
-    // SRS-309: the same button drives both directions -- DELETE unlikes an
-    // already-liked post, POST likes an unliked one.
-    const res = await fetch(`/api/posts/${post.postId}/likes`, {
-      method: post.isLikedByViewer ? 'DELETE' : 'POST',
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    const body = await res.json();
-    setPending(false);
-    if (!res.ok) {
-      // Previous state is untouched since this never updates optimistically.
-      setError(body.error || (post.isLikedByViewer ? 'Failed to unlike post.' : 'Failed to like post.'));
-      return;
-    }
-    onUpdated({ ...post, likeCount: body.likeCount, isLikedByViewer: body.isLikedByViewer });
+  function handleChanged(reactionCounts: Record<Reaction, number>, myReaction: Reaction | null) {
+    const total = Object.values(reactionCounts).reduce((sum, n) => sum + n, 0);
+    onUpdated({ ...post, reactionCounts, myReaction, likeCount: total, isLikedByViewer: myReaction !== null });
   }
 
   return (
-    <span className="inline-flex items-center gap-2">
-      <button
-        type="button"
-        onClick={handleClick}
-        disabled={pending}
-        aria-pressed={post.isLikedByViewer}
-        aria-label={post.isLikedByViewer ? 'Unlike post' : 'Like post'}
-        className={`flex items-center gap-1.5 text-sm transition disabled:opacity-60 ${
-          post.isLikedByViewer ? 'text-rose-600' : 'text-stone-400 hover:text-stone-600'
-        }`}
-      >
-        <span aria-hidden="true">{post.isLikedByViewer ? '♥' : '♡'}</span>
-        <span>{post.likeCount}</span>
-      </button>
-      {error ? <span className="text-xs text-red-600">{error}</span> : null}
-    </span>
+    <ReactionPicker
+      reactUrl={`/api/posts/${post.postId}/reactions`}
+      accessToken={accessToken}
+      reactionCounts={post.reactionCounts}
+      myReaction={post.myReaction}
+      onChanged={handleChanged}
+    />
   );
 }

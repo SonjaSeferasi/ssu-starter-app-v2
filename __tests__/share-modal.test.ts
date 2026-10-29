@@ -9,7 +9,8 @@ import type { FeedPost } from '../components/feed/types';
 const post = (overrides: Partial<FeedPost> = {}): FeedPost => ({
   postId: 1, authorId: 2, authorName: 'Maya Chen', authorUsername: 'maya.chen', authorPhotoUrl: null,
   textContent: 'Original post text', visibility: 'public', publishedAt: '2026-10-08T12:00:00Z', editedAt: null,
-  photos: [], mentions: [], isRepost: false, repostOf: null, likeCount: 0, isLikedByViewer: false, commentCount: 0,
+  photos: [], mentions: [], isRepost: false, repostOf: null, likeCount: 0, isLikedByViewer: false,
+  reactionCounts: { like: 0, love: 0, haha: 0, wow: 0, sad: 0, care: 0 }, myReaction: null, commentCount: 0,
   ...overrides,
 });
 
