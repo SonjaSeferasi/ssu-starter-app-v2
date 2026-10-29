@@ -7820,7 +7820,7 @@ TBD means a team decision is still required. These are explicit dependencies, no
 
 | Decision | Owner | Required decision | Traces |
 | --- | --- | --- | --- |
-| B-01 | DP | Snipe points per positively identified target; no extra daily photographer cap. | SRS-525.2; SRS-525.6; UR-528 |
+| B-01 | DP | Snipe points per positively identified target; no extra daily photographer cap. Approved by DP on 29 October 2026 for the Snipe implementation: 25 shared points per verified friend (an originally tagged friend whose identity answer is Yes at publication), credited once to the photographer only; no photographer-wide daily cap (see documentation/snipe-rewards.md). This records DP's approval only; team review is not recorded, and every other reward amount and catalog price stays open. | SRS-525.2; SRS-525.6; UR-528 |
 | B-02 | DP + SS | Daily participation amount and separate 7/14/30-day milestone amounts. | SRS-526.5; SRS-526.17; SRS-528.5 |
 | B-03 | DP + SS | Normal Game 1 rewards, coin conversion, completion proof, and reduced replay reward rules; Wordle reward rules only if included. | SRS-520.3 to SRS-520.5; SRS-528.6 |
 | B-04 | DP | Catalog entries, point prices, eligibility, and initial/purchasable wall and floor appearances. | UR-500; UR-522; UR-529 |

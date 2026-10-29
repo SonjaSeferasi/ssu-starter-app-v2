@@ -8,7 +8,7 @@ import sharp from 'sharp';
 import { befriend, testUid } from '../../__tests__/helpers/dormspace-db';
 import { createGroup, createSnipeDatabase } from '../../__tests__/helpers/snipe-db';
 
-// SRS-510 to 514 basic acceptance: the real Next UI and API run against the real schema and functions in
+// SRS-510 to 514 and 525 acceptance: the real Next UI and API run against the real schema and functions in
 // PGlite. Only the provider's Auth, Storage and PostgREST HTTP transport is replaced, on loopback; no hosted
 // accounts, keys or data. Students: 1 photographer, 2 and 3 tagged friends, 4 an untagged group member.
 let db: PGlite, service: Server, next: ChildProcess, browser: any;
@@ -63,10 +63,13 @@ async function openSnipes(page: any) {
   await toggle.waitFor();
   // Keyboard: the panel opens from the focused toggle.
   await toggle.focus(); await page.keyboard.press('Enter');
-  await page.getByText('Rewards are not connected yet', { exact: false }).waitFor();
+  await page.getByText('Snipes stay in this conversation only.', { exact: false }).waitFor();
   return page;
 }
 const card = (page: any) => page.getByRole('article', { name: 'Snipe by Dorm Student 1' }).first();
+// SRS-521.1: the signed-in student's confirmed shared balance inside the Snipe panel.
+const balance = (page: any) => page.getByRole('status').filter({ hasText: /shared (points )?balance/ });
+const ledgerRows = async () => (await db.query<any>('SELECT student_id::int AS student, points_change::int AS points FROM socialu.point_transactions ORDER BY transaction_id')).rows;
 async function screenshot(page: any, name: string) {
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: `${artifacts}/${name}.png`, fullPage: true });
@@ -180,12 +183,20 @@ it('uploads, reviews, approves, persists, withdraws and then blocks the photo', 
     .withExif({ IFD0: { Copyright: 'SocialU acceptance owner' } }).jpeg().toBuffer();
 
   const photographer = pages.photographer = await openSnipes(await signIn(1));
+  await balance(photographer).getByText('0 points', { exact: true }).waitFor();
   await photographer.getByRole('button', { name: 'New Snipe' }).click();
+  // SRS-528.2: reward, sharing, expiry and cooldown rules are shown before submission.
+  const rules = photographer.getByRole('group', { name: 'Snipe rules' });
+  await rules.getByText('You earn 25 points for each tagged friend who answers Yes to “Is this you?”', { exact: false }).waitFor();
+  await rules.getByText('Every tagged friend must approve sharing', { exact: false }).waitFor();
+  await rules.getByText('Requests close after 24 hours', { exact: false }).waitFor();
   // Only current friends who are in this conversation are offered; the untagged member 4 is not a friend.
   expect(await photographer.getByRole('checkbox').count()).toBe(2);
   await photographer.getByLabel(/^Photo/).setInputFiles({ name: 'snipe.jpg', mimeType: 'image/jpeg', buffer: photo });
   await photographer.getByRole('img', { name: 'Selected Snipe photo preview' }).waitFor();
   await photographer.getByRole('checkbox', { name: /Dorm Student 2/ }).check();
+  await photographer.getByText('Up to 25 points if published and your friend confirms it’s them.').waitFor();
+  await screenshot(photographer, 'desktop-photographer-rules');
   await photographer.getByRole('button', { name: 'Submit Snipe' }).click();
   await photographer.getByText('Snipe submitted.', { exact: false }).waitFor();
   await card(photographer).getByText('Pending', { exact: true }).waitFor();
@@ -226,11 +237,27 @@ it('uploads, reviews, approves, persists, withdraws and then blocks the photo', 
   await sharing.getByRole('button', { name: 'Save answer' }).click();
   await card(tagged).getByText('Approved', { exact: true }).waitFor();
   await card(tagged).getByText('Verified: Dorm Student 2').waitFor();
+  // SRS-525.1: publication credited the photographer once, in the shared ledger; the tagged friend gets nothing.
+  expect(await ledgerRows()).toEqual([{ student: 1, points: 25 }]);
+  expect(await card(tagged).getByRole('group', { name: 'Snipe reward' }).count()).toBe(0);
+  await balance(tagged).getByText('0 points', { exact: true }).waitFor();
 
-  // SRS-512.10/512.11: the outcome persists for the photographer, a fresh session and other members.
+  // SRS-512.10/512.11, 525.6, 521.1: the outcome and the frozen reward persist for the photographer after a
+  // refresh and in a new session on another device, for the tagged friend in a fresh session, and for members.
   await photographer.reload(); await openSnipes(photographer);
   await card(photographer).getByText('Approved', { exact: true }).waitFor();
   expect(await photoBlob(photographer)).toMatch(/^blob:/);
+  const reward = card(photographer).getByRole('group', { name: 'Snipe reward' });
+  await reward.getByText('Reward: 25 points', { exact: true }).waitFor();
+  await reward.getByText('1 verified friend × 25 points per friend = 25 points', { exact: true }).waitFor();
+  await balance(photographer).getByText('25 points', { exact: true }).waitFor();
+  await screenshot(photographer, 'desktop-photographer-reward');
+  const photographerPhone = pages.photographerPhone = await openSnipes(await signIn(1, phone));
+  await card(photographerPhone).getByRole('group', { name: 'Snipe reward' }).getByText('Reward: 25 points', { exact: true }).waitFor();
+  await balance(photographerPhone).getByText('25 points', { exact: true }).waitFor();
+  expect(await photographerPhone.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await screenshot(photographerPhone, 'mobile-photographer-reward-new-session');
+  await photographerPhone.context().close();
   await tagged.context().close();
   const returning = pages.tagged = await openSnipes(await signIn(2, phone));
   await card(returning).getByText('Approved', { exact: true }).waitFor();
@@ -254,6 +281,10 @@ it('uploads, reviews, approves, persists, withdraws and then blocks the photo', 
   expect(await card(member).getByRole('img', { name: 'Snipe by Dorm Student 1' }).count()).toBe(0);
   await photographer.reload(); await openSnipes(photographer);
   await card(photographer).getByText('Reason: Sharing permission withdrawn').waitFor();
+  // SRS-524.4, 527.7: removal keeps the awarded points and the reward explanation, without the photo.
+  await card(photographer).getByRole('group', { name: 'Snipe reward' }).getByText('Removing a Snipe doesn’t take its points back.', { exact: false }).waitFor();
+  await balance(photographer).getByText('25 points', { exact: true }).waitFor();
+  expect(await ledgerRows()).toEqual([{ student: 1, points: 25 }]);
   await screenshot(photographer, 'desktop-photographer-removed');
   // SRS-513.1: the pair cooldown remains after removal; the friend is offered again only after 24 hours.
   await photographer.getByRole('button', { name: 'New Snipe' }).click();
@@ -269,6 +300,8 @@ it('uploads, reviews, approves, persists, withdraws and then blocks the photo', 
 it('returns the saved Snipe when the response is lost after commit, without a second request', async () => {
   const before = (await snipeRows()).length;
   const photographer = pages.photographer = await openSnipes(await signIn(1));
+  // SRS-524.1: the earlier reward is still in the shared balance in yet another session.
+  await balance(photographer).getByText('25 points', { exact: true }).waitFor();
   await photographer.getByRole('button', { name: 'New Snipe' }).click();
   await photographer.getByLabel(/^Photo/).setInputFiles({ name: 'retry.png', mimeType: 'image/png',
     buffer: await sharp({ create: { width: 320, height: 240, channels: 3, background: '#c0ddcb' } }).png().toBuffer() });
@@ -284,6 +317,8 @@ it('returns the saved Snipe when the response is lost after commit, without a se
   const tagged = pages.tagged = await openSnipes(await signIn(3, phone));
   expect(await photoBlob(tagged)).toMatch(/^blob:/);
   await screenshot(tagged, 'mobile-retry-review');
+  // A pending (unpublished) retry earns nothing.
+  expect(await ledgerRows()).toEqual([{ student: 1, points: 25 }]);
   expect(otherBucketRequests).toEqual([]);
   expect(leakedKeys).toEqual([]);
   for (const page of [photographer, tagged]) await page.context().close();

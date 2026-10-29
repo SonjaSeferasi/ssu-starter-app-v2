@@ -208,8 +208,11 @@ it('runs the Snipe lifecycle with separate consent, private visibility, cooldown
     expect(await find(4, G, U)).toMatchObject({ status: 'canceled', terminal_reason: 'Required friendship ended' });
     await fails(call(2, 'list', G), '42501');
 
-    // No rewards are connected, and Snipes never become feed posts.
-    expect(await count('SELECT count(*)::int AS n FROM socialu.point_transactions')).toBe(0);
+    // SRS-525: only the three published Snipes (A, P by student 1; Q by student 3) earned points, each once,
+    // for its photographer only, at 25 per verified friend. Removed A and P keep theirs. No feed posts.
+    expect((await db.query<any>(`SELECT student_id::int AS student, snipe_id::text AS snipe, reward_units AS units, points_change::int AS points
+      FROM socialu.point_transactions ORDER BY transaction_id`)).rows).toEqual([
+      { student: 1, snipe: A, units: 1, points: 25 }, { student: 1, snipe: P, units: 1, points: 25 }, { student: 3, snipe: Q, units: 1, points: 25 }]);
     expect(await count('SELECT count(*)::int AS n FROM socialu.posts')).toBe(0);
   } finally { await db.close(); }
 }, 60000);

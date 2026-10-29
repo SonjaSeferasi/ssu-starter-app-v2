@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { createDormDatabase, testUid } from './dormspace-db';
 
 export const SNIPE_MIGRATION = 'supabase/migrations/20261025043213_snipe_basic.sql';
+export const SNIPE_REWARDS_MIGRATION = 'supabase/migrations/20261029182808_snipe_rewards.sql';
 const CHAT_MIGRATIONS = ['20261012120000_chat_send_text_message.sql', '20261019120000_chat_conversation_messages.sql',
   '20261019120100_chat_group_structure_check_as_owner.sql', '20261019150000_chat_conversation_list.sql', '20261019170000_chat_create_group.sql',
   '20261019170100_chat_conversation_role.sql', '20261019190000_chat_unread_status.sql', '20261019190100_chat_mark_read.sql'];
@@ -20,8 +21,9 @@ export const STORAGE_FIXTURE = `CREATE SCHEMA storage;
   GRANT SELECT ON storage.buckets TO anon, authenticated, service_role;
   CREATE POLICY broad_fixture_access ON storage.objects FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);`;
 
-// Real schema and functions in memory, applied in filename order: Chat, then Snipe, then school communities.
-export async function createSnipeDatabase(students = 7, { storage = true } = {}) {
+// Real schema and functions in memory, applied in filename order: Chat, then Snipe, then school communities,
+// then Snipe rewards. `rewards: false` stops before the rewards migration (to apply it later in a test).
+export async function createSnipeDatabase(students = 7, { storage = true, rewards = true } = {}) {
   const db = await createDormDatabase(students);
   if (storage) await db.exec(STORAGE_FIXTURE);
   // Local stand-ins for Supabase's Realtime objects used by the chat migrations (as in chat.test.ts).
@@ -30,7 +32,8 @@ export async function createSnipeDatabase(students = 7, { storage = true } = {})
     CREATE FUNCTION realtime.topic() RETURNS text LANGUAGE sql AS $$SELECT nullif(current_setting('test.topic', true), '')$$;
     ALTER TABLE realtime.messages ENABLE ROW LEVEL SECURITY; GRANT USAGE ON SCHEMA realtime, auth TO authenticated; GRANT SELECT, INSERT ON realtime.messages TO authenticated;
     CREATE FUNCTION realtime.send(payload jsonb, event text, topic text, private boolean) RETURNS void LANGUAGE sql AS 'INSERT INTO realtime.sent VALUES($3,$2,$1)';`);
-  for (const file of [...CHAT_MIGRATIONS.map((name) => `supabase/migrations/${name}`), SNIPE_MIGRATION, 'supabase/migrations/20261026000100_school_communities.sql'])
+  for (const file of [...CHAT_MIGRATIONS.map((name) => `supabase/migrations/${name}`), SNIPE_MIGRATION, 'supabase/migrations/20261026000100_school_communities.sql',
+    ...(rewards ? [SNIPE_REWARDS_MIGRATION] : [])])
     await db.exec(readFileSync(file, 'utf8'));
   return db;
 }
