@@ -14,8 +14,9 @@ function formatCount(n: number): string {
 }
 
 // Right-sidebar panel, additional functionality not in the official SRS.
-// Deliberately the ONLY discovery panel here besides CommunityGuidelines --
-// no separate "Popular Categories" panel, per explicit instruction.
+// Now the ONLY panel in the sidebar -- Community Guidelines was removed
+// per explicit instruction, and there's no separate "Popular Categories"
+// panel either.
 export function TrendingConfessions({ accessToken }: { accessToken: string }) {
   const [confessions, setConfessions] = useState<Confession[] | null>(null);
 

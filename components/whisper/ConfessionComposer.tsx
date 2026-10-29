@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { CATEGORIES } from './types';
+import { SELECTABLE_CATEGORIES } from './types';
 import type { Confession, WhisperCategory } from './types';
 
 const MAX_LENGTH = 500;
@@ -71,7 +71,7 @@ export function ConfessionComposer({ accessToken, onPublished }: { accessToken: 
       </div>
 
       <div className="mt-3 flex flex-wrap gap-1.5 pl-[52px]" role="radiogroup" aria-label="Confession category">
-        {CATEGORIES.map((c) => (
+        {SELECTABLE_CATEGORIES.map((c) => (
           <button
             key={c.id}
             type="button"

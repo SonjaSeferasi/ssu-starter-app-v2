@@ -1,11 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { CATEGORIES } from './types';
+import { CATEGORIES, SELECTABLE_CATEGORIES } from './types';
 import type { WhisperCategory } from './types';
 
 export function CategoryFilter({ value, onChange }: { value: WhisperCategory | null; onChange: (category: WhisperCategory | null) => void }) {
   const [open, setOpen] = useState(false);
+  // The full CATEGORIES list (not just SELECTABLE_CATEGORIES) is used here
+  // so a historically-filtered retired category still displays its real
+  // label/emoji on the button itself, even though it's no longer offered
+  // as a choice in the dropdown below.
   const selected = CATEGORIES.find((c) => c.id === value);
 
   function choose(category: WhisperCategory | null) {
@@ -44,7 +48,7 @@ export function CategoryFilter({ value, onChange }: { value: WhisperCategory | n
             >
               All Categories
             </button>
-            {CATEGORIES.map((c) => (
+            {SELECTABLE_CATEGORIES.map((c) => (
               <button
                 key={c.id}
                 type="button"
