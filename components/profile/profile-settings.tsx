@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowLeft, ChevronRight, KeyRound, UserRound, Users, Shield } from 'lucide-react';
+import { ArrowLeft, ChevronRight, KeyRound, UserRound, Users, Shield, History } from 'lucide-react';
 import { SessionNotice } from '../navigation/section-page';
 import { ProfileLogout, useProfileGate } from './profile-view';
 import styles from './profile.module.css';
@@ -28,6 +28,7 @@ export function ProfileSettings() {
           <span><strong>Change password</strong><small>Keep your account secure with a new password.</small></span>
           <ChevronRight aria-hidden="true" />
         </Link>
+        <Link href="/account/login-activity" className={styles.settingsRow}><History aria-hidden="true"/><span><strong>Login Activity</strong><small>Review the recorded sign-ins for your account.</small></span><ChevronRight aria-hidden="true"/></Link>
         <Link href="/friends" className={styles.settingsRow}><Users aria-hidden="true"/><span><strong>Friends and requests</strong><small>Find friends, respond to requests, and start conversations.</small></span><ChevronRight aria-hidden="true"/></Link>
         <Link href="/friends?view=blocked" className={styles.settingsRow}><Shield aria-hidden="true"/><span><strong>Blocked students</strong><small>Review and manage the students you have blocked.</small></span><ChevronRight aria-hidden="true"/></Link>
       </nav>
