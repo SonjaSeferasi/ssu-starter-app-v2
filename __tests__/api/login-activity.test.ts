@@ -8,8 +8,11 @@ describe('SRS-107.1 Login Activity',()=>{
  it('uses verified identity and never accepts an owner from the URL',async()=>{
   const response=await GET(new Request('http://localhost/api/account/login-activity?auth_user_id=other'));
   expect(response.status).toBe(200);expect(response.headers.get('Cache-Control')).toBe('no-store');
-  expect(rpc).toHaveBeenCalledWith('socialu_login_history',{p_auth_id:'owner'});
+  expect(rpc).toHaveBeenCalledWith('socialu_login_history',{p_auth_id:'owner',p_before_at:null,p_before_id:null});
  });
  it.each([401,403])('rejects unauthorized access (%s)',async status=>{verified.mockRejectedValue(new AccountError('Denied',status));expect((await GET(new Request('http://localhost/api/account/login-activity'))).status).toBe(status);expect(rpc).not.toHaveBeenCalled();});
  it('reports missing storage as an error, never an empty history',async()=>{rpc.mockResolvedValue({error:{code:'PGRST202'}});const r=await GET(new Request('http://localhost/api/account/login-activity'));expect(r.status).toBe(503);expect(await r.json()).toEqual({error:expect.stringContaining('unavailable')});});
 });
+
+it('rejects malformed pagination before querying history',async()=>{const response=await GET(new Request('http://localhost/api/account/login-activity?cursor=invalid'));expect(response.status).toBe(400);expect(rpc).not.toHaveBeenCalled();});
+it('passes the keyset cursor while still using the verified owner',async()=>{const cursor={at:'2026-10-28T12:00:00.000Z',id:'123'};await GET(new Request('http://localhost/api/account/login-activity?cursor='+Buffer.from(JSON.stringify(cursor)).toString('base64url')));expect(rpc).toHaveBeenCalledWith('socialu_login_history',{p_auth_id:'owner',p_before_at:cursor.at,p_before_id:'123'});});
