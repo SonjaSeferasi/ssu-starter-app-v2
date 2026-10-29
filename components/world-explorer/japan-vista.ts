@@ -20,7 +20,7 @@ export function createJapanSky(parent:T.Object3D){
 /** Sculpted, snow-streaked volcanic silhouette, rather than a cone primitive.
  * The distant massif uses slow parallax so it remains a navigational landmark. */
 export function createFujiVista(parent:T.Object3D){
- const root=new T.Group();root.name='mount-fuji';root.position.set(22,-10,-105);
+ const root=new T.Group();root.name='mount-fuji';root.position.set(15,-10,-100);root.scale.y=.82;
  root.userData.landmark='Mount Fuji';root.userData.source='https://whc.unesco.org/en/list/1418/';parent.add(root);
  const segments=128,rings=48,positions:number[]=[],colors:number[]=[],indices:number[]=[];
  const blue=new T.Color('#5275ad'),deep=new T.Color('#354f81'),snow=new T.Color('#f2f6ff');
@@ -29,9 +29,9 @@ export function createFujiVista(parent:T.Object3D){
   const folds=Math.sin(a*19+t*2)*.52+Math.sin(a*37-t*3)*.24+Math.sin(a*67+t*6)*.12;
   const radius=2.15+48*Math.pow(1-t,1.1)+folds*Math.sin(t*Math.PI)*2.1;
   positions.push(Math.sin(a)*radius,t*46+Math.sin(a*5)*Math.pow(t,9)*.5,Math.cos(a)*radius*.57);
-  const snowEdge=.56+Math.sin(a*19)*.07+Math.sin(a*37)*.04;
+  const snowEdge=.66+Math.sin(a*19)*.06+Math.sin(a*37)*.035;
   const streak=Math.max(0,Math.sin(a*19+t*2)*.75+Math.sin(a*37-t*3)*.23);
-  const cover=T.MathUtils.smoothstep(t,snowEdge-streak*.12,snowEdge+.025);
+  const cover=T.MathUtils.smoothstep(t,snowEdge-streak*.16,snowEdge+.025);
   const color=deep.clone().lerp(blue,.45+folds*.28).lerp(snow,cover);
   color.multiplyScalar(.77+Math.sin(a+1.1)*.17+Math.max(0,folds)*.13);
   colors.push(color.r,color.g,color.b);
@@ -42,33 +42,39 @@ export function createFujiVista(parent:T.Object3D){
  const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.setAttribute('color',new T.Float32BufferAttribute(colors,3));geometry.setIndex(indices);geometry.computeVertexNormals();
  const mountain=mesh(root,geometry,new T.MeshStandardMaterial({vertexColors:true,roughness:1}));mountain.name='fuji-snow-streaked-volcanic-slope';mountain.castShadow=false;
  const crater=mesh(root,new T.CircleGeometry(2.1,48),matte('#b0bfda'),0,46.04,0);crater.rotation.x=-Math.PI/2;crater.scale.y=.57;crater.castShadow=false;
- return{root,follow(cameraX:number){root.position.x=6+cameraX*.78;}};
+ return{root,follow(cameraX:number){root.position.x=15+(cameraX-16.4)*.78;}};
 }
 
 /** Layered rounded foothill ridgelines. Their varied crest shapes leave Fuji's
  * summit unobscured; warm near foliage and cool far rock establish depth. */
 export function addJapanRidges(parent:T.Object3D,finish:number,low:boolean){
- const root=new T.Group();root.name='japan-forested-valley';parent.add(root);const r=random(68231);
- for(let layer=0;layer<3;layer++){
-  const n=low?55:100,width=finish+150,z=-78+layer*17,positions:number[]=[],colors:number[]=[],indices:number[]=[];
-  const color=new T.Color(['#7598ae','#597f88','#3b706a'][layer]);
-  for(let i=0;i<=n;i++){
-   const x=-65+width*i/n,height=-5.5+Math.sin(i*.37+layer)*2.2+Math.sin(i*.88+1)*1.4+Math.cos(i*.17)*1.7;
-   positions.push(x,-20,z+9,x,height,z);
-   for(const shade of [.52,.8+r()*.18]){const c=color.clone().multiplyScalar(shade);colors.push(c.r,c.g,c.b);}
-   if(i<n){const a=i*2;indices.push(a,a+1,a+2,a+1,a+3,a+2);}
+ const root=new T.Group();root.name='japan-forested-valley';root.userData.terrainProfile='sculpted-rounded-forested-massifs';parent.add(root);const r=random(68231);
+ const placements=[{x:-24,z:-76,width:54,depth:36,height:24},{x:65,z:-81,width:72,depth:42,height:27},{x:Math.max(98,finish*.88),z:-101,width:68,depth:45,height:29}];
+ const samples:{x:number;y:number;z:number;height:number}[]=[],segments=low?28:44,rings=low?8:13;
+ const rock=new T.Color('#78918d'),green=new T.Color('#40735f'),light=new T.Color('#759e72');
+ for(let mass=0;mass<placements.length;mass++){
+  const p=placements[mass],positions:number[]=[],colors:number[]=[],indices:number[]=[];
+  const surface=(angle:number,t:number)=>{
+   const edge=1+Math.sin(angle*3+mass)*.13+Math.sin(angle*7+mass)*.055;
+   const ridge=Math.sin(angle*4+t*5+mass)*1.5+Math.cos(angle*9-t*3)*.6;
+   return new T.Vector3(p.x+Math.cos(angle)*p.width*.5*t*edge,-19+p.height*Math.pow(Math.max(0,1-t*t),1.25)+ridge*Math.sin(t*Math.PI),p.z+Math.sin(angle)*p.depth*.5*t*edge);
+  };
+  for(let row=0;row<=rings;row++)for(let i=0;i<=segments;i++){
+   const t=row/rings,a=i/segments*Math.PI*2,point=surface(a,t);positions.push(point.x,point.y,point.z);
+   const color=rock.clone().lerp(green,Math.max(0,1-t)*.72).lerp(light,Math.max(0,Math.sin(a*3+mass))*.17).multiplyScalar(.78+.14*Math.cos(a+.8));colors.push(color.r,color.g,color.b);
   }
-  const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(positions,3));g.setAttribute('color',new T.Float32BufferAttribute(colors,3));g.setIndex(indices);g.computeVertexNormals();
-  const ridge=mesh(root,g,new T.MeshStandardMaterial({vertexColors:true,roughness:1,side:T.DoubleSide}));ridge.castShadow=false;
+  for(let row=0;row<rings;row++)for(let i=0;i<segments;i++){const a=row*(segments+1)+i,b=a+1,c=a+segments+1;indices.push(a,b,c,b,c+1,c);}
+  const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.setAttribute('color',new T.Float32BufferAttribute(colors,3));geometry.setIndex(indices);geometry.computeVertexNormals();
+  const hill=mesh(root,geometry,new T.MeshStandardMaterial({vertexColors:true,roughness:1}));hill.castShadow=false;hill.name='rounded-forested-mountain-mass';
+  for(let i=0;i<(low?18:40);i++){const point=surface(r()*Math.PI*2,.18+r()*.66);samples.push({x:point.x,y:point.y,z:point.z,height:1+r()*1.6});}
  }
- // Tiered conifers, not the triangular mountain primitives of the graybox.
- const trunk=matte('#685342'),leaves=matte('#356e55');
- for(let i=0;i<(low?30:65);i++){
-  const x=-22+r()*(finish+50),z=-22-r()*20,y=-1+r()*2,height=1.6+r()*2.6;
-  strut(root,trunk,new T.Vector3(x,y,z),new T.Vector3(x+.07,y+height,z),.065);
-  for(let tier=0;tier<3;tier++){const crown=mesh(root,new T.ConeGeometry((height*.27)*(1-tier*.19),height*.56,7),leaves,x,y+height*(.44+tier*.19),z);crown.rotation.y=r()*3;}
- }
- batchStatic(root);return root;
+ // Three-dimensional crowns grow from the sampled mountain surface. There
+ // are no flat green wall strips and no floating rows of cone primitives.
+ const trunks=new T.InstancedMesh(new T.CylinderGeometry(.045,.065,1,5),matte('#685342'),samples.length),crowns=new T.InstancedMesh(new T.SphereGeometry(1,low?6:7,low?3:4),matte('#52785b'),samples.length*3),dummy=new T.Object3D();trunks.name='surface-anchored-ridge-trunks';crowns.name='surface-anchored-ridge-canopies';trunks.castShadow=crowns.castShadow=false;
+ samples.forEach((sample,i)=>{
+  dummy.position.set(sample.x,sample.y+sample.height*.5,sample.z);dummy.rotation.set(0,0,.035*Math.sin(i));dummy.scale.set(1,sample.height,1);dummy.updateMatrix();trunks.setMatrixAt(i,dummy.matrix);
+  for(let tier=0;tier<3;tier++){const size=.5-tier*.09;dummy.position.set(sample.x+Math.sin(i*2.4+tier)*.18,sample.y+sample.height*(.58+tier*.2),sample.z+Math.cos(i*2.4+tier)*.16);dummy.rotation.set(0,i*.4,0);dummy.scale.set(sample.height*size,sample.height*.24,sample.height*size*.8);dummy.updateMatrix();crowns.setMatrixAt(i*3+tier,dummy.matrix);crowns.setColorAt(i*3+tier,new T.Color(tier%2?'#3e6c54':'#5c8663').multiplyScalar(.8+r()*.25));}
+ });root.add(trunks,crowns);batchStatic(root);return root;
 }
 
 /** Billowing groups of round puffs, with a broken silhouette instead of flat

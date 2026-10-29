@@ -13,12 +13,11 @@ describe('Japan spring environment vertical slice',()=>{
   expect(environment.root.getObjectByName('japan-animated-waterfall')).toBeDefined();expect(environment.root.userData.layers).toHaveLength(5);expect(environment.root.userData.decorative).toBe(true);
   expect(japanEnvironmentInfo.license).toContain('Original procedural');expect(japanEnvironmentInfo.landmarkSource).toContain('whc.unesco.org');environment.dispose();
  });
- it('keeps decorative geometry behind the traversal lane and foreground flowers below the player',()=>{
-  const {environment}=create();environment.root.updateMatrixWorld(true);
+ it('anchors the framing groves on real cliff caps and keeps foreground banks below the player',()=>{
+  const {environment}=create('low');environment.root.updateMatrixWorld(true);
   const foreground=environment.root.getObjectByName('japan-low-foreground')!;expect(new T.Box3().setFromObject(foreground).max.y).toBeLessThan(-1.8);
-  for(const name of ['japan-static-scenery','japan-sky-atmosphere','japan-floating-petals']){
-   const bounds=new T.Box3().setFromObject(environment.root.getObjectByName(name)!);expect(bounds.max.z).toBeLessThan(-3);
-  }
+  const caps:T.Mesh[]=[];environment.root.getObjectByName('japan-near-background')!.traverse(object=>{if(object instanceof T.Mesh&&object.material instanceof T.MeshStandardMaterial&&object.material.map&&!object.material.vertexColors)caps.push(object);});
+  let trees=0;environment.root.getObjectByName('japan-cherry-groves')!.traverse(tree=>{if(!tree.userData.anchoredTo)return;trees++;const position=tree.getWorldPosition(new T.Vector3()),ray=new T.Raycaster(position.clone().add(new T.Vector3(0,1,0)),new T.Vector3(0,-1,0)),hit=ray.intersectObjects(caps,false)[0];expect(hit).toBeDefined();expect(Math.abs(hit.point.y-position.y)).toBeLessThan(.04);});expect(trees).toBeGreaterThanOrEqual(5);
   const bridge=environment.root.getObjectByName('background-wooden-crossing')!;expect(bridge.userData.collidable).toBe(false);environment.dispose();
  });
  it('animates real water material, foam and petals, and freezes them for reduced motion',()=>{

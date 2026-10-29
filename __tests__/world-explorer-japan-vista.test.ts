@@ -29,6 +29,7 @@ describe('Japan landmark visibility and outward surfaces',()=>{
   for(const playerX of [1.2,35,75,125]){
    const camera=cameraAt(playerX);vista.follow(camera.position.x);vista.root.updateMatrixWorld(true);
    const summit=new T.Vector3(0,46,0).applyMatrix4(vista.root.matrixWorld).project(camera);expect(Math.abs(summit.x)).toBeLessThan(.6);expect(summit.y).toBeGreaterThan(.3);expect(summit.y).toBeLessThan(.99);expect(summit.z).toBeLessThan(1);
+   if(playerX<10){expect(summit.y).toBeGreaterThan(.65);expect(summit.y).toBeLessThan(.85);}
    let visibleSnow=0;
    for(let i=0;i<p.count;i++)if(p.getZ(i)>0&&c.getX(i)>.6&&c.getY(i)>.6&&c.getZ(i)>.6){const point=new T.Vector3().fromBufferAttribute(p,i).applyMatrix4(vista.root.matrixWorld).project(camera);if(Math.abs(point.x)<1&&Math.abs(point.y)<1&&point.z<1&&point.z> -1)visibleSnow++;}
    expect(visibleSnow).toBeGreaterThan(150);

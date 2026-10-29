@@ -2,10 +2,10 @@ import * as T from 'three';
 import {hash,random,matte,mesh} from './scenic-kit';
 
 export type JapanTerrainDefinition={id:string;x:number;y:number;width:number;depth:number;thickness:number;type:string};
-export type JapanTerrainOptions={quality?:'standard'|'low'};
+export type JapanTerrainOptions={quality?:'standard'|'low';lush?:boolean};
 export type JapanScenicCliffOptions={x:number;y:number;z:number;width:number;depth:number;thickness:number;seed?:number;quality?:'standard'|'low'};
 
-const palette={granite:'#c3c0ae',darkRock:'#a8a693',moss:'#638c45',grass:'#629540',fern:'#3e7b46',vine:'#4b753b',pink:'#edacca',white:'#faf1df',pollen:'#e4c574'};
+const palette={granite:'#c3c0ae',darkRock:'#a8a693',moss:'#638f35',grass:'#6eac28',fern:'#3f812e',vine:'#4b8033',pink:'#f3a9c7',white:'#fff7ec',pollen:'#e4c574'};
 const clamp=(value:number,min:number,max:number)=>Math.max(min,Math.min(max,value));
 export const japanTerrainInfo={id:'japan-mossy-stone-terraces',license:'Original procedural geometry and textures created for SocialU; no external assets.',representation:'Fictional Japanese mountain-garden terraces, not a geological reconstruction of the Mount Fuji trail.',capHeight:.015,clearCorridorHalfDepth:.55,maximumEffectiveVertices:{standard:22000,low:6000},rockTextures:{standard:256,low:128,kind:'cellular-granite-with-layered-fissures'}};
 
@@ -125,13 +125,13 @@ function fernGeometry(){
  const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(positions,3));g.computeVertexNormals();return g;
 }
 
-function addRim(root:T.Group,width:number,depth:number,r:()=>number,low:boolean){
- const dummy=new T.Object3D(),count=Math.min(low?20:42,Math.ceil(width*(low?2.8:6.3)));
+function addRim(root:T.Group,width:number,depth:number,r:()=>number,low:boolean,lush=false){
+ const dummy=new T.Object3D(),count=Math.min(low?20:lush?120:42,Math.ceil(width*(low?2.8:lush?13:6.3)));
  const moss=new T.InstancedMesh(new T.SphereGeometry(1,6,low?3:4),new T.MeshStandardMaterial({color:'#ffffff',roughness:1}),count);moss.name='japan-irregular-moss-rim';moss.castShadow=false;root.add(moss);
  for(let i=0;i<count;i++){
   const a=i/count*Math.PI*2,point=perimeter(a,width,depth),s=.1+r()*.12,sy=.035+r()*.045;dummy.position.set(point.x*.98,Math.abs(point.z)<.9?-sy-.02:.012,point.z*.98);dummy.scale.set(s*(1.4+r()),sy,s);dummy.rotation.set(0,a,0);dummy.updateMatrix();moss.setMatrixAt(i,dummy.matrix);moss.setColorAt(i,new T.Color(i%3?palette.moss:palette.grass).multiplyScalar(.82+r()*.35));
  }
- const bladesCount=Math.min(low?40:135,Math.ceil(width*depth*(low?1.1:4.8))),blades=new T.InstancedMesh(bladeGeometry(low),new T.MeshStandardMaterial({color:'#ffffff',roughness:1,side:T.DoubleSide}),bladesCount);blades.name='japan-instanced-grass-blades';blades.castShadow=false;root.add(blades);
+ const bladesCount=Math.min(low?40:lush?500:135,Math.ceil(width*depth*(low?1.1:lush?11:4.8))),blades=new T.InstancedMesh(bladeGeometry(low),new T.MeshStandardMaterial({color:'#ffffff',roughness:1,side:T.DoubleSide}),bladesCount);blades.name='japan-instanced-grass-blades';blades.castShadow=false;root.add(blades);
  for(let i=0;i<bladesCount;i++){
   const a=r()*Math.PI*2,edge=perimeter(a,width,depth),point=edge.multiplyScalar(.8+r()*.15);if(Math.abs(point.z)<.84)point.z=Math.sign(point.z||1)*.84;
   const remaining=clamp(1-Math.pow(Math.abs(point.z)/(depth*.5),2/.69),0,1),edgeX=width*.5*Math.pow(remaining,.69/2);point.x=clamp(point.x,-edgeX*.97,edgeX*.97);
@@ -155,8 +155,8 @@ function addRockChunks(root:T.Group,width:number,depth:number,thickness:number,r
  }
 }
 
-function addFlowersAndFerns(root:T.Group,width:number,depth:number,r:()=>number,low:boolean){
- const count=Math.min(low?8:26,Math.ceil(width*(low?.9:3))),flowers=new T.InstancedMesh(flowerGeometry(),new T.MeshStandardMaterial({color:'#ffffff',roughness:.95,side:T.DoubleSide}),count),centers=new T.InstancedMesh(new T.SphereGeometry(.018,6,4),matte(palette.pollen),count),stems=new T.InstancedMesh(new T.CylinderGeometry(.006,.009,.18,5),matte(palette.fern),count),dummy=new T.Object3D();
+function addFlowersAndFerns(root:T.Group,width:number,depth:number,r:()=>number,low:boolean,lush=false){
+ const count=Math.min(low?8:lush?100:26,Math.ceil(width*(low?.9:lush?8:3))),flowers=new T.InstancedMesh(flowerGeometry(),new T.MeshStandardMaterial({color:'#ffffff',roughness:.95,side:T.DoubleSide}),count),centers=new T.InstancedMesh(new T.SphereGeometry(.018,6,4),matte(palette.pollen),count),stems=new T.InstancedMesh(new T.CylinderGeometry(.006,.009,.18,5),matte(palette.fern),count),dummy=new T.Object3D();
  flowers.name='japan-pink-and-white-flowers';flowers.castShadow=false;centers.name='japan-flower-centres';centers.castShadow=false;stems.name='japan-flower-stems';stems.castShadow=false;root.add(flowers,centers,stems);
  for(let i=0;i<count;i++){
   const a=(i%4===0?.2:.64)*Math.PI+r()*.28*Math.PI,point=perimeter(a,width,depth).multiplyScalar(.77+r()*.1);if(i%4!==0)point.z=-Math.abs(point.z);point.z=Math.sign(point.z)*Math.max(.82,Math.abs(point.z));
@@ -167,13 +167,13 @@ function addFlowersAndFerns(root:T.Group,width:number,depth:number,r:()=>number,
  for(let i=0;i<fernCount;i++){const size=Math.min(.7+r()*.4,Math.max(.3,(depth*.5-.12-.66)/.52));dummy.position.set((i+.5)/fernCount*width*.76-width*.38,.03,-(.66+.52*size));dummy.scale.setScalar(size);dummy.rotation.set(0,r()*Math.PI*2,0);dummy.updateMatrix();ferns.setMatrixAt(i,dummy.matrix);ferns.setColorAt(i,new T.Color(i%2?palette.fern:'#568e48'));}
 }
 
-function addVines(root:T.Group,width:number,depth:number,thickness:number,r:()=>number,low:boolean){
- const count=Math.min(low?3:6,Math.max(2,Math.ceil(width/(low?2.5:1.2)))),leafCount=count*(low?5:9),leaves=new T.InstancedMesh(vineLeafGeometry(),new T.MeshStandardMaterial({color:'#698a46',roughness:1,side:T.DoubleSide}),leafCount),dummy=new T.Object3D();leaves.name='japan-hanging-vine-leaves';leaves.castShadow=false;root.add(leaves);
+function addVines(root:T.Group,width:number,depth:number,thickness:number,r:()=>number,low:boolean,lush=false){
+ const count=Math.min(low?3:lush?18:6,Math.max(2,Math.ceil(width/(low?2.5:lush?.65:1.2)))),leafCount=count*(low?5:9),leaves=new T.InstancedMesh(vineLeafGeometry(),new T.MeshStandardMaterial({color:'#698a46',roughness:1,side:T.DoubleSide}),leafCount),dummy=new T.Object3D();leaves.name='japan-hanging-vine-leaves';leaves.castShadow=false;root.add(leaves);
  const stemMaterial=matte(palette.vine);let leafIndex=0;
  for(let i=0;i<count;i++){
-  const a=(.14+.72*(i+.5)/count)*Math.PI,point=perimeter(a,width,depth),length=Math.min(thickness*.72,.65+r()*1.05),curve=new T.CatmullRomCurve3([new T.Vector3(point.x,-.04,point.z+.025),new T.Vector3(point.x+.08,-length*.33,point.z*.92+.05),new T.Vector3(point.x-.1,-length*.7,point.z*.8+.1),new T.Vector3(point.x+.02,-length,point.z*.7+.12)]);
+  const a=(.14+.72*(i+.5)/count)*Math.PI,point=perimeter(a,width,depth),length=Math.min(thickness*.72,.65+r()*(lush?3.5:1.05)),curve=new T.CatmullRomCurve3([new T.Vector3(point.x,-.04,point.z+.025),new T.Vector3(point.x+.08,-length*.33,point.z*.92+.05),new T.Vector3(point.x-.1,-length*.7,point.z*.8+.1),new T.Vector3(point.x+.02,-length,point.z*.7+.12)]);
   const stem=mesh(root,new T.TubeGeometry(curve,low?7:11,.012,4,false),stemMaterial);stem.name='japan-draping-vine';stem.castShadow=false;
-  for(let j=0;j<(low?5:9);j++){const t=(j+.5)/(low?5:9),p=curve.getPoint(t),side=j%2?1:-1;dummy.position.set(p.x+side*.045,p.y,p.z+.012);dummy.rotation.set(-.15,side*.25,side*.55);dummy.scale.setScalar(.8+r()*.35);dummy.updateMatrix();leaves.setMatrixAt(leafIndex++,dummy.matrix);}
+  for(let j=0;j<(low?5:9);j++){const t=(j+.5)/(low?5:9),p=curve.getPoint(t),side=j%2?1:-1;dummy.position.set(p.x+side*.045,p.y,p.z+.012);dummy.rotation.set(-.15,side*.25,side*.55);dummy.scale.setScalar((lush?1.6:.8)+r()*.35);dummy.updateMatrix();leaves.setMatrixAt(leafIndex++,dummy.matrix);}
  }
 }
 
@@ -196,7 +196,7 @@ export function dressJapanPlatform(root:T.Group,definition:JapanTerrainDefinitio
  const rocks=rockTextures(seed,low);
  if(cliff){replaceGeometry(cliff,graniteGeometry(width,depth,thickness,seed,low));const material=materialFor(cliff);material.color.set('#ffffff');material.vertexColors=true;material.roughness=.95;material.metalness=0;replaceTexture(material,'map',rocks.map);replaceTexture(material,'bumpMap',rocks.bump);replaceTexture(material,'roughnessMap',rocks.roughness);material.bumpScale=.2;material.needsUpdate=true;}
  if(cap){replaceGeometry(cap,capGeometry(low));const material=materialFor(cap),textures=surfaceTextures(seed,depth,low);material.color.set('#ffffff');material.vertexColors=false;material.roughness=.94;material.metalness=0;replaceTexture(material,'map',textures.map);replaceTexture(material,'bumpMap',textures.bump);material.bumpScale=.025;material.needsUpdate=true;}
- addRockChunks(details,width,depth,thickness,r,low,rocks);addRim(details,width,depth,r,low);addFlowersAndFerns(details,width,depth,r,low);addVines(details,width,depth,thickness,r,low);
+ addRockChunks(details,width,depth,thickness,r,low,rocks);addRim(details,width,depth,r,low,options.lush);addFlowersAndFerns(details,width,depth,r,low,options.lush);addVines(details,width,depth,thickness,r,low,options.lush);
  details.userData.style='mossy-weathered-granite-terrace';details.userData.originalProceduralArt=true;return details;
 }
 

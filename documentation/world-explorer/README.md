@@ -6,7 +6,7 @@ World Explorer is a separate geography adventure. The existing Jumpyland mode an
 
 The current deliverable follows the supplied specification's immediate priority: **one authored Japan prototype**. The 193-country catalogue and existing scenery previews remain available for planning and inspection. `levelAvailability()` marks Japan as `prototype`, other destinations as `preview`, and every destination as `releaseReady: false` / `visualReviewed: false` until the required human/device review is complete.
 
-Japan's `jp-level-01.json` is an authored 137.8-unit route with 16 platforms, two solid wooden bridges, two moving ledges, 30 coins, three optional stars, a midpoint checkpoint, an in-level Mount Fuji discovery and a finish marker. The easy route intentionally includes a gentle moving landing. The character uses one original modeled student with idle/run/jump/fall/land/collect/celebrate/damage/respawn states.
+Japan's `jp-level-01.json` is an authored 107-unit course with 15 colliding platforms, a 16.5-unit lower suspension bridge, a separate ascending bonus route, two moving ledges, 30 coins, three optional stars, two safe checkpoints and a finish gateway. The main route can be completed without using the upper route or collecting a star. An original hooded enemy patrols the right-hand island; a jump-hit wooden block unlocks the Mount Fuji discovery once, with its fact dialog deferred until the player lands. The character uses one original modeled student with idle/run/jump/fall/land/collect/celebrate/damage/respawn states.
 
 The spring environment is actual Three.js geometry: a snow-streaked Fuji, curved-eave pagodas, branching cherry groves, mossy cliff layers, torii, lanterns, animated water surfaces, instanced foam/mist and drifting petals. Foreground plants stay below the traversal lane; scenic objects are separate from the validated collision surfaces. Architecture, vegetation and the student are original modeled artwork. The cliffs also use bundled CC0 PBR maps by Rob Tuytel / Poly Haven; see [material licenses](../../public/world-explorer/materials/LICENSES.md). This remains stylized game art awaiting the user's visual acceptance, rather than an exact recreation of the concept illustration.
 
@@ -29,17 +29,21 @@ The optional review build uses the fixed `.next-review` directory, supported by 
 
 Desktop controls: arrows/A/D, Space/Up/W, P/Escape. Mobile has simultaneous left/right/jump pointer controls, safe-area spacing and compact HUD. Settings include music/effects volume, reduced motion and lightweight graphics. Sound is original synthesized audio unlocked by a real pointer/keyboard gesture; no remote music is loaded. Graphics quality applies on the next run. Facts open in a paused discovery dialog rather than obscuring an active jump.
 
+See the [new reference-layout revision](review/reference-layout/README.md) for the supplied picture's broad-left-cliff / lower-bridge / upper-star arrangement. The earlier review captures remain preserved.
+
 For visual review, append `&review=1` to expose a full-level overview/player-camera switch and sampled FPS/draw/triangle diagnostics. Overview pauses the simulation and awards no completion. The existence of diagnostics is not a performance sign-off. See the [actual review captures](review/README.md).
 
 ### Component boundaries
 
 - `lib/world-explorer/game-types.ts`: shared level, input, state, result and callback types.
 - `public/world-explorer/levels/jp-level-01.json` and `level-manifest.ts`: ISO-alpha-2 level identity, stable IDs, runtime validation, authored Japan and seeded preview configurations.
-- `simulation.ts`: pure fixed-60-Hz movement, swept collisions, carrying platforms, coyote/buffer timing, collectibles, checkpoints, hazards, discovery pause and completion.
+- `simulation.ts`: pure fixed-60-Hz movement, swept collisions, carrying platforms, coyote/buffer timing, collectibles, safe checkpoints, enemy patrol/contact damage, one-time underside-hit discovery blocks, discovery pause and completion.
+- `game-camera.ts`: reference-oriented Japan framing, leading player position and a vertical dead zone for small jumps.
 - `country-scene.ts`: renderer/input adapters, visible entities, articulated character and bounded side camera. Rendering reads simulation state.
 - `japan-environment.ts`: independent five-layer country scenery, animation, reduced-motion/quality presets and GPU cleanup.
 - `japan-architecture.ts`, `japan-terrain.ts`, `japan-grove.ts` and `japan-vista.ts`: tiled pagodas/veranda buildings, weathered moss terraces, instanced cherry blossoms, outward-facing snow-streaked Fuji, a gradient sky volume and cloud banks.
 - `japan-materials.ts`: locally bundled CC0 rock diffuse/normal/roughness maps, with procedural fallback and safe asynchronous loading.
+- `japan-interactives.ts`: original hooded patrol character, beveled wooden discovery block and disposable collection sparkles.
 - `explorer-character.ts`: articulated student with modeled curls, glasses, hoodie seams, jeans, sneakers and backpack, batched by animation pivot.
 - `country-run.tsx`: compact HUD, touch controls, explicit loading/play/pause/discovery/completion/error views and accessible dialogs.
 - `world-explorer.tsx`: atlas, continent/country/level selection, passport, milestones and settings.
@@ -124,6 +128,8 @@ Existing v1 device stamps, best coins and attempts are preserved. New fields rec
 `supabase/migrations/20261027000200_world_explorer_progress.sql` adds a destination allowlist, private passport records and UUID-deduplicated run receipts. It has passed real disposable PGlite schema/RLS tests but has **not been applied to hosted Supabase**. Its destination IDs are alpha-2, with compatible alpha-3 API/device keys. It neither changes avatar data nor awards SocialU points. [Account integration and migration details](ACCOUNT-PROGRESS.md) cover ownership, retries, failure behavior and remaining live QA.
 
 ## Verification
+
+The latest [Japan reference-layout revision](review/reference-layout/README.md) passed **789 tests across 87 files** and a production build. All **21 targeted route, simulation and vista tests** passed again after the final camera starting-position adjustment. Its actual opening and full-course captures are preserved in that review folder. The layout is closer to the supplied picture; cinematic art fidelity and real-device mobile acceptance remain pending.
 
 The full bounded-worker command passed **768 tests across 83 files**. `SOCIALU_BUILD_TARGET=review npm run build` passed, including TypeScript, both optional country/media endpoints and the authenticated progress endpoint. Tests use disposable databases or mocked providers; they do not prove hosted saving or browser visual fidelity. A prior unconstrained worker run exhausted host memory; the same complete suite passed with two workers.
 

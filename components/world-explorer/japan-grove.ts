@@ -5,17 +5,17 @@ type Crown={point:T.Vector3;radius:number;flatten:number};
 
 /** A small, cupped five-petal flower. The canopy consists of actual blossoms,
  * with gaps revealing the branch structure, rather than opaque pink spheres. */
-function cherryBlossomGeometry(){
+function cherryBlossomGeometry(low:boolean){
  const positions:number[]=[0,0,.012],colors:number[]=[1,.88,.51],indices:number[]=[];
- // Five samples across each petal produce a broad rounded outer arc, rather
- // than the triangular points that made the previous blossoms read as stars.
- const angles=[-.5,-.24,0,.24,.5],radii=[.46,.91,1,.91,.46];
- for(let petal=0;petal<5;petal++)for(let edge=0;edge<5;edge++){
-  const a=petal*Math.PI*2/5+angles[edge],r=radii[edge],outer=edge>0&&edge<4;
-  positions.push(Math.sin(a)*r,Math.cos(a)*r,outer?.13+.065*(edge===2?1:0):0);
-  colors.push(1,outer?.94:.8,outer?.98:.9);
+ // Smoothly varying radius yields five rounded petal lobes. Eight angular
+ // samples per petal prevent enlarged foreground flowers looking like stars.
+ const segments=low?30:40;
+ for(let i=0;i<segments;i++){
+  const a=i/segments*Math.PI*2,lobe=(Math.cos(a*5)+1)*.5,r=.45+lobe*.55;
+  positions.push(Math.sin(a)*r,Math.cos(a)*r,.025+lobe*.15);
+  colors.push(1,.83+lobe*.11,.91+lobe*.07);
  }
- for(let i=1;i<=25;i++)indices.push(0,i,i===25?1:i+1);
+ for(let i=1;i<=segments;i++)indices.push(0,i,i===segments?1:i+1);
  const geometry=new T.BufferGeometry();
  geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));
  geometry.setAttribute('color',new T.Float32BufferAttribute(colors,3));
@@ -72,10 +72,10 @@ export function createCherryGroveTree(parent:T.Object3D,x:number,y:number,z:numb
  }
  batchStatic(woodRoot);
  const flowerCount=low?440:1280;
- const flowers=new T.InstancedMesh(cherryBlossomGeometry(),new T.MeshStandardMaterial({color:'#ffffff',vertexColors:true,side:T.DoubleSide,roughness:.88}),flowerCount);
+ const flowers=new T.InstancedMesh(cherryBlossomGeometry(low),new T.MeshStandardMaterial({color:'#ffffff',vertexColors:true,side:T.DoubleSide,roughness:.91,emissive:'#d8507b',emissiveIntensity:.09}),flowerCount);
  flowers.name='instanced-cherry-blossoms';flowers.castShadow=false;flowers.receiveShadow=true;
  const dummy=new T.Object3D(),normal=new T.Vector3(),axis=new T.Vector3(0,0,1),pink=new T.Color();
- const palette=['#ec78aa','#ef97bd','#f6b5d0','#ffd1e2','#df6d9e'];
+ const palette=['#f38fa9','#f7adc1','#ffd0dc','#f9bbce','#eb839f'];
  for(let i=0;i<flowerCount;i++){
   const crown=crowns[i%crowns.length],a=r()*Math.PI*2,v=r()*2-1,horizontal=Math.sqrt(1-v*v);
   // Most blossoms sit on the twig tips; others fill the inner depth in darker

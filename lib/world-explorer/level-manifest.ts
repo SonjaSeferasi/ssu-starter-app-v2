@@ -14,7 +14,7 @@ export type LevelAvailability={levelId:string;countryId:string;title:string;stag
  * approval from a test count or the presence of a country flag. */
 export function levelAvailability(code:string):LevelAvailability|undefined{
  const country=identity(code);if(!country)return undefined;
- return{levelId:country.code==='ANTARCTICA'?'antarctica-expedition':`${country.iso2.toLowerCase()}-level-01`,countryId:country.iso2,title:country.code==='JPN'?'Cherry Blossom Mountain Path':countryProfile(country.code)?.levelTitle||'Country scenery preview',stage:country.code==='JPN'?'prototype':'preview',visualReviewed:false,releaseReady:false};
+ return{levelId:country.code==='ANTARCTICA'?'antarctica-expedition':`${country.iso2.toLowerCase()}-level-01`,countryId:country.iso2,title:country.code==='JPN'?'Cherry Blossom Path':countryProfile(country.code)?.levelTitle||'Country scenery preview',stage:country.code==='JPN'?'prototype':'preview',visualReviewed:false,releaseReady:false};
 }
 
 /** A bounded, runtime-validated manifest is the only input to the simulation.
@@ -26,24 +26,33 @@ export function validateLevel(value:unknown):LevelDefinition{
  const id=(item:Record<string,unknown>)=>{if(typeof item.id!=='string'||!item.id||ids.has(item.id))throw new Error('Level IDs must be unique.');ids.add(item.id);};
  for(const p of value.platforms){
   if(!object(p))throw new Error('Invalid platform.');id(p);
-  if(!finite(p.x,-100,2000)||!finite(p.y,-20,30)||!finite(p.width,2.8,30)||!finite(p.depth,2,15)||!finite(p.thickness,.15,30)||!['stone','wooden-bridge','wooden-moving'].includes(String(p.type))||![null,'horizontal','vertical'].includes(p.motion as null|string)||!finite(p.amplitude,0,1.5)||!finite(p.phase,-100,100)||!finite(p.period,1,60))throw new Error('Invalid platform dimensions or motion.');
+  if(!finite(p.x,-100,2000)||!finite(p.y,-20,30)||!finite(p.width,1.6,30)||!finite(p.depth,2,15)||!finite(p.thickness,.15,30)||!['stone','wooden-bridge','wooden-moving'].includes(String(p.type))||![null,'horizontal','vertical'].includes(p.motion as null|string)||!finite(p.amplitude,0,1.5)||!finite(p.phase,-100,100)||!finite(p.period,1,60)||(p.route!==undefined&&!['main','upper','bonus'].includes(String(p.route))))throw new Error('Invalid platform dimensions or motion.');
   if(p.motion===null&&p.amplitude!==0)throw new Error('Static platforms cannot have motion amplitude.');platforms.set(p.id as string,p);
  }
- const reference=(item:unknown,collectible=false)=>{
+ const reference=(item:unknown,collectible=false,maximumHeight=3.2)=>{
   if(!object(item)||typeof item.platformId!=='string'||!platforms.has(item.platformId))throw new Error('Level item references a missing platform.');
   const p=platforms.get(item.platformId)!;if(!finite(item.offset,.2,Number(p.width)-.2))throw new Error('Level item is outside its platform.');
-  if(collectible&&!finite(item.height,.4,3.2))throw new Error('Invalid collectible height.');
+  if(collectible&&!finite(item.height,.4,maximumHeight))throw new Error('Invalid collectible height.');
   return item;
  };
  reference(value.spawn);reference(value.finish);
  for(const key of ['coins','stars','checkpoints'] as const){
   if(!Array.isArray(value[key])||value[key].length>(key==='coins'?200:key==='stars'?3:5))throw new Error('Invalid level collection.');
-  for(const item of value[key]){const checked=reference(item,key!=='checkpoints');id(checked);if(key==='checkpoints'&&platforms.get(checked.platformId as string)!.motion!==null)throw new Error('A checkpoint needs a stable platform.');}
+  for(const item of value[key]){const checked=reference(item,key!=='checkpoints',key==='coins'?5:3.2);id(checked);if(key==='checkpoints'&&platforms.get(checked.platformId as string)!.motion!==null)throw new Error('A checkpoint needs a stable platform.');}
  }
  if((value.stars as unknown[]).length!==3)throw new Error('A level must declare three optional stars.');
  const discovery=reference(value.discovery);id(discovery);if(typeof discovery.factId!=='string'||!discovery.factId)throw new Error('Invalid discovery reference.');
  if(!Array.isArray(value.hazards)||value.hazards.length>30)throw new Error('Invalid hazards.');
  for(const hazard of value.hazards){if(!object(hazard))throw new Error('Invalid hazard.');id(hazard);if(!finite(hazard.x,-100,2000)||!finite(hazard.y,-20,30)||!finite(hazard.width,.1,20)||!finite(hazard.height,.1,20))throw new Error('Invalid hazard bounds.');}
+ if(value.enemies!==undefined){
+  if(!Array.isArray(value.enemies)||value.enemies.length>20)throw new Error('Invalid enemy definitions.');
+  for(const enemy of value.enemies){if(!object(enemy))throw new Error('Invalid enemy.');id(enemy);const platform=typeof enemy.platformId==='string'?platforms.get(enemy.platformId):undefined;if(!platform||!finite(enemy.minOffset,.3,Number(platform.width)-.3)||!finite(enemy.maxOffset,.3,Number(platform.width)-.3)||Number(enemy.maxOffset)-Number(enemy.minOffset)<.5||!finite(enemy.speed,.2,3))throw new Error('Invalid enemy patrol bounds.');}
+ }
+ if(value.discoveryBlocks!==undefined){
+  if(!Array.isArray(value.discoveryBlocks)||value.discoveryBlocks.length>12)throw new Error('Invalid discovery blocks.');
+  for(const block of value.discoveryBlocks){if(!object(block))throw new Error('Invalid discovery block.');id(block);if(!finite(block.x,-100,2000)||!finite(block.y,-20,30)||!finite(block.width,.4,3)||!finite(block.height,.4,3)||typeof block.factId!=='string'||!block.factId||block.factId.length>96)throw new Error('Invalid discovery block bounds.');}
+ }
+ for(const key of ['mainRoute','upperRoute']){const route=value[key];if(route===undefined)continue;if(!Array.isArray(route)||route.length<2||route.length>100||new Set(route).size!==route.length||route.some(platformId=>typeof platformId!=='string'||!platforms.has(platformId)))throw new Error('Invalid platform route.');}
  const p=value.physics;if(!object(p)||!finite(p.gravity,8,40)||!finite(p.jumpSpeed,4,15)||!finite(p.runSpeed,2,10)||!finite(p.acceleration,10,60)||!finite(p.airControl,.3,1)||!finite(p.coyoteTime,.05,.2)||!finite(p.jumpBuffer,.05,.2)||!finite(p.playerRadius,.1,.4)||!finite(p.playerHeight,1,2.4)||!finite(p.killY,-30,-3))throw new Error('Invalid physics configuration.');
  const actualCountry=identity(value.legacyCode)!;if(actualCountry.iso2!==value.countryId)throw new Error('Level country IDs do not match.');
  return structuredClone(value) as LevelDefinition;
@@ -52,17 +61,12 @@ export function validateLevel(value:unknown):LevelDefinition{
 function japanLevel(difficulty:Difficulty){
  const level=structuredClone(japan) as LevelDefinition;
  if(difficulty>1){
-  const amount=difficulty-1,original=level.platforms.map(p=>({...p})),factor=1-amount*.035;let cursor=0;
-  level.platforms=original.map((p,i)=>{
-   const previous=original[i-1],gap=i?p.x-(previous.x+previous.width)+amount*.06:0;
-   cursor+=gap;const copy={...p,x:cursor,width:i===0||i===original.length-1?p.width:p.width*factor};
-   if(copy.motion){copy.amplitude*=1+amount*.12;copy.period/=1+amount*.06;}cursor+=copy.width;return copy;
-  });
-  const last=level.platforms.pop()!,before=level.platforms.at(-1)!;cursor=before.x+before.width;
-  for(let i=0;i<amount;i++){cursor+=1.7+i*.1;const extra:PlatformDefinition={id:`jp-challenge-${i+1}`,x:cursor,y:.4+i*.13,width:5.4-i*.2,depth:3.4,thickness:2.8,type:'wooden-moving',motion:i%2?'vertical':'horizontal',amplitude:.3,phase:0,period:7-i*.35};level.platforms.push(extra);cursor+=extra.width;}
-  last.x=cursor+1.7;level.platforms.push(last);
-  // Item offsets are proportions of the authored platform, never stale world positions.
-  for(const item of [...level.coins,...level.stars,...level.checkpoints,level.discovery]){const base=original.find(p=>p.id===item.platformId)!,current=level.platforms.find(p=>p.id===item.platformId)!;item.offset*=current.width/base.width;}
+  // Preserve the reference composition and both opening routes. Difficulty
+  // changes later landing widths, gentle motion and patrol speed, not the art.
+  const amount=difficulty-1,original=new Map(level.platforms.map(platform=>[platform.id,platform.width]));
+  for(const platform of level.platforms){if(platform.x>=45&&platform.id!==level.finish.platformId)platform.width*=1-amount*.025;if(platform.motion){platform.amplitude*=1+amount*.16;platform.period/=1+amount*.08;}}
+  for(const item of [...level.coins,...level.stars,...level.checkpoints,level.discovery]){const current=level.platforms.find(platform=>platform.id===item.platformId)!;item.offset*=current.width/original.get(item.platformId)!;}
+  for(const enemy of level.enemies||[])enemy.speed*=1+amount*.14;
  }
  return validateLevel(level);
 }

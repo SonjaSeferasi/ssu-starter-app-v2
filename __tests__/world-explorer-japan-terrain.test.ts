@@ -49,14 +49,14 @@ describe('Japan terrain keeps rich scenery separate from gameplay collision',()=
   for(const quality of ['standard','low'] as const){
    const {root}=build(quality),material=surface(root),map=material.map as T.DataTexture,bump=material.bumpMap as T.DataTexture,roughness=material.roughnessMap as T.DataTexture,expected=quality==='standard'?256:128;
    expect(map).toBeInstanceOf(T.DataTexture);expect(map.colorSpace).toBe(T.SRGBColorSpace);expect(bump.colorSpace).toBe(T.NoColorSpace);expect(roughness.colorSpace).toBe(T.NoColorSpace);expect(material.bumpScale).toBeGreaterThan(.1);
-   for(const texture of [map,bump,roughness]){expect(texture.image.width).toBe(expected);expect(texture.image.height).toBe(expected);expect(texture.image.data.length).toBe(expected*expected*4);expect(texture.image.data.every(Number.isFinite)).toBe(true);}
-   let min=255,max=0;for(let i=0;i<map.image.data.length;i+=4){min=Math.min(min,map.image.data[i]);max=Math.max(max,map.image.data[i]);}expect(max-min).toBeGreaterThan(70);expect(map.offset.equals(bump.offset)).toBe(true);expect(map.offset.equals(roughness.offset)).toBe(true);dispose(root);
+   for(const texture of [map,bump,roughness]){expect(texture.image.width).toBe(expected);expect(texture.image.height).toBe(expected);expect(texture.image.data!.length).toBe(expected*expected*4);expect(texture.image.data!.every(Number.isFinite)).toBe(true);}
+   let min=255,max=0;for(let i=0;i<map.image.data!.length;i+=4){min=Math.min(min,map.image.data![i]);max=Math.max(max,map.image.data![i]);}expect(max-min).toBeGreaterThan(70);expect(map.offset.equals(bump.offset)).toBe(true);expect(map.offset.equals(roughness.offset)).toBe(true);dispose(root);
   }
  });
 
  it('reuses immutable pixel data without sharing disposable Texture owners across terrace instances',()=>{
-  const a=build('standard','shared-pixel-seed'),b=build('standard','shared-pixel-seed'),mapA=surface(a.root).map as T.DataTexture,mapB=surface(b.root).map as T.DataTexture,before=Array.from(mapB.image.data.slice(0,256));let otherDisposals=0;
-  mapB.addEventListener('dispose',()=>otherDisposals++);expect(mapA).not.toBe(mapB);expect(mapA.image.data).toBe(mapB.image.data);dispose(a.root);expect(otherDisposals).toBe(0);expect(Array.from(mapB.image.data.slice(0,256))).toEqual(before);dispose(b.root);
+  const a=build('standard','shared-pixel-seed'),b=build('standard','shared-pixel-seed'),mapA=surface(a.root).map as T.DataTexture,mapB=surface(b.root).map as T.DataTexture,before=Array.from(mapB.image.data!.slice(0,256));let otherDisposals=0;
+  mapB.addEventListener('dispose',()=>otherDisposals++);expect(mapA).not.toBe(mapB);expect(mapA.image.data).toBe(mapB.image.data);dispose(a.root);expect(otherDisposals).toBe(0);expect(Array.from(mapB.image.data!.slice(0,256))).toEqual(before);dispose(b.root);
  });
 
  it('preserves an existing wooden bridge deck and never adds an extra stone cap to it',()=>{

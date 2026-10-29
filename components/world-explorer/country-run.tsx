@@ -1,6 +1,6 @@
 'use client';
 import {useEffect,useMemo,useRef,useState} from 'react';
-import {ArrowLeft,ArrowRight,BookOpen,Check,Compass,Flag,Heart,Pause,Play,RotateCcw,Settings,Star,Trophy,Volume2} from 'lucide-react';
+import {ArrowLeft,ArrowRight,ArrowUp,BookOpen,Check,Compass,Flag,Heart,Pause,Play,RotateCcw,Settings,Star,Trophy,Volume2} from 'lucide-react';
 import type {Country} from '../../lib/world-explorer/catalog';
 import {discoveryFor} from '../../lib/world-explorer-discoveries';
 import {countryProfile} from '../../lib/world-explorer/profiles';
@@ -27,6 +27,8 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
  const availability=levelAvailability(country.code),profile=countryProfile(country.code),level=useMemo(()=>levelDefinitionFor(country.code,difficulty),[country.code,difficulty]);
  const finalPlatform=level.platforms.find(platform=>platform.id===level.finish.platformId)!,finishX=finalPlatform.x+level.finish.offset;
  const checkpointMarks=level.checkpoints.map(point=>{const platform=level.platforms.find(item=>item.id===point.platformId)!;return(platform.x+point.offset)/finishX*100;});
+ const activeCheckpoint=level.checkpoints.findIndex(point=>point.id===stats.checkpointId);
+ const starMarks=level.stars.map(star=>{const platform=level.platforms.find(item=>item.id===star.platformId)!;return{id:star.id,percent:(platform.x+star.offset)/finishX*100};});
  useEffect(()=>{
   let disposed=false,expired=false,game:Controller|undefined;attempt.current=runId();setReview(new URLSearchParams(window.location.search).get('review')==='1');
   const timeout=setTimeout(()=>{if(disposed)return;expired=true;setError('The level took too long to load. Check the connection and try again.');setStatus('failed');},20000);
@@ -70,14 +72,19 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
  return <section className={`${styles.run} ${country.code==='JPN'?styles.japanRun:''}`} aria-label={country.name+' country level'}>
   <div ref={stage} className={styles.runStage}/>
   <header className={styles.playHeader}>
-   <div className={styles.playIdentity}><button onClick={onExit} aria-label="Return to the world map"><ArrowLeft size={19}/></button><CountryFlag iso2={country.iso2} name={country.name} size={42}/><div><h1>{country.name}</h1><p>Level 1 · {availability?.title}</p><small>{availability?.stage==='prototype'?'Playable prototype':'Environment preview'} · {labels[difficulty-1]}</small></div></div>
-   <div className={styles.playProgress} aria-label="Level route"><div><span>Start</span><span>Checkpoint</span><Flag size={12}/></div><progress aria-label="Level progress" value={distance} max={100}/>{checkpointMarks.map((mark,index)=><i key={index} className={stats.checkpointActive?styles.checkpointEarned:undefined} style={{left:mark+'%'}} aria-label={stats.checkpointActive?'Checkpoint activated':'Checkpoint ahead'}/>)}</div>
+   <div className={styles.playIdentity}><button onClick={onExit} aria-label="Return to the world map"><ArrowLeft size={19}/></button><CountryFlag iso2={country.iso2} name={country.name} size={42}/><div><h1>{country.name}</h1><p>Level 1: {country.code==='JPN'?'Cherry Blossom Path':availability?.title}</p>{country.code!=='JPN'&&<small>{availability?.stage==='prototype'?'Playable prototype':'Environment preview'} · {labels[difficulty-1]}</small>}</div></div>
+   {country.code==='JPN'?<div className={styles.referenceProgress} aria-label="Level route">
+    <progress aria-label="Level progress" value={distance} max={100}/>
+    {checkpointMarks.map((mark,index)=><i key={index} className={index<=activeCheckpoint?styles.checkpointEarned:undefined} style={{left:mark+'%'}} aria-label={index<=activeCheckpoint?'Checkpoint activated':'Checkpoint ahead'}/>)}
+    {starMarks.map((star,index)=><span key={star.id} className={`${styles.routeStar} ${stats.collectedStarIds?.includes(star.id)?styles.routeStarEarned:''}`} style={{left:star.percent+'%'}} aria-label={`Star ${index+1}${stats.collectedStarIds?.includes(star.id)?' collected':' ahead'}`}><Star size={25} fill="currentColor"/></span>)}
+    <span className={styles.routeExplorer} style={{left:Math.max(2,Math.min(96,distance))+'%'}}><RoutePortrait/></span><span className={styles.routeDestination}><RoutePagoda/></span>
+   </div>:<div className={styles.playProgress} aria-label="Level route"><div><span>Start</span><span>Checkpoint</span><Flag size={12}/></div><progress aria-label="Level progress" value={distance} max={100}/>{checkpointMarks.map((mark,index)=><i key={index} className={index<=activeCheckpoint?styles.checkpointEarned:undefined} style={{left:mark+'%'}} aria-label={index<=activeCheckpoint?'Checkpoint activated':'Checkpoint ahead'}/>)}</div>}
    <div className={styles.playCounters}><span aria-label={`${stats.coins} of ${stats.totalCoins} coins`}><i className={styles.coin}/>{stats.coins}<small>/{stats.totalCoins}</small></span><span aria-label={`${stats.stars} of ${stats.totalStars} stars`}><Star size={23} fill="#efcf65"/>{stats.stars}<small>/{stats.totalStars}</small></span><button onClick={pause} disabled={!['running','paused','discovery'].includes(status)} aria-label={status==='running'?'Pause level':'Resume level'}>{status==='running'?<Pause/>:<Play/>}</button></div>
   </header>
   <div className={styles.playSecondary}><div className={styles.playLives} aria-label={stats.hearts+' hearts remaining'}>{[0,1,2].map(index=><Heart key={index} size={17} fill={index<stats.hearts?'#ff9b91':'none'} color={index<stats.hearts?'#ff9b91':'#afc0bd'}/>)}<span>{formatTime(stats.timeSeconds)}</span></div><button onClick={openGuide} disabled={status!=='running'}><BookOpen size={15}/>{stats.discoveryFound?'Discovery unlocked':'Country guide'}</button></div>
   <p className={styles.controlsHint}>← → / A D to move · Space / ↑ / W to jump · P / Esc to pause</p>
   {review&&status==='running'&&<div className={styles.reviewTools}><button onClick={()=>{controller.current?.setReviewView?.(overview?'gameplay':'overview');setOverview(value=>!value);}}>{overview?'Player camera':'Full-level overview'}</button><span>{overview?'Scenery review · gameplay paused':'Gameplay review'}{performance?` · ${performance.fps} FPS · ${performance.drawCalls} draws · ${performance.triangles.toLocaleString()} triangles`:''}</span></div>}
-  <div className={styles.touchControls} aria-label="Touch game controls">{(['left','right','jump'] as const).map(action=><button key={action} aria-label={action==='jump'?'Jump':'Move '+action} onPointerDown={event=>{event.preventDefault();event.currentTarget.setPointerCapture(event.pointerId);signal(action,true);}} onPointerUp={()=>signal(action,false)} onPointerCancel={()=>signal(action,false)} onLostPointerCapture={()=>signal(action,false)}>{action==='left'?'←':action==='right'?'→':'Jump ↑'}</button>)}</div>
+  <div className={styles.touchControls} aria-label="Touch game controls">{(['left','right','jump'] as const).map(action=><button key={action} aria-label={action==='jump'?'Jump':'Move '+action} onPointerDown={event=>{event.preventDefault();event.currentTarget.setPointerCapture(event.pointerId);signal(action,true);}} onPointerUp={()=>signal(action,false)} onPointerCancel={()=>signal(action,false)} onLostPointerCapture={()=>signal(action,false)}>{action==='left'?<ArrowLeft/>:action==='right'?<ArrowRight/>:<ArrowUp/>}</button>)}</div>
   {status!=='running'&&<div className={styles.runOverlay}><div ref={dialog} role="dialog" aria-modal="true" aria-labelledby="run-dialog-title" className={styles.gameDialog}>
    {status==='starting'?<><Compass className={styles.loadingCompass}/><h2 id="run-dialog-title">Preparing {country.name}</h2><p>Loading the landscape and checking your route.</p></>:status==='paused'?<>
     <Pause size={30}/><h2 id="run-dialog-title">Adventure paused</h2><button className={styles.playButton} onClick={resume}><Play size={17}/>Continue adventure</button>
@@ -96,6 +103,9 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
   </div></div>}
  </section>;
 }
+
+function RoutePortrait(){return <svg viewBox="0 0 36 40" aria-hidden="true"><circle cx="18" cy="20" r="17" fill="#74bde9" stroke="#e0f3ff" strokeWidth="2"/><path d="M7 35Q6 23 18 23T30 35" fill="#1b3764"/><ellipse cx="18" cy="18" rx="9" ry="11" fill="#dca078"/><path d="M9 19L7 11Q8 4 15 7Q19 1 22 7Q30 5 28 14L25 17L22 10L17 12L13 10Z" fill="#28211c"/><circle cx="15" cy="18" r="1.1" fill="#242524"/><circle cx="22" cy="18" r="1.1" fill="#242524"/><path d="M17 24Q20 26 23 23" fill="none" stroke="#985a43" strokeWidth="1"/></svg>;}
+function RoutePagoda(){return <svg viewBox="0 0 36 44" aria-hidden="true"><path d="M8 40V29H28V40M10 27V17H26V27M13 15V7H23V15" fill="#f3e4cc" stroke="#8f3438" strokeWidth="2"/><path d="M3 30L18 25L33 30ZM5 18L18 13L31 18ZM10 8L18 3L26 8Z" fill="#d04f4d" stroke="#243d60" strokeWidth="2"/><path d="M16 40V34H21V40M18 3V0" fill="#263e62" stroke="#d1b775"/></svg>;}
 
 function Discovery({country,compact=false}:{country:Country;compact?:boolean}){
  const fact=discoveryFor(country.code),profile=countryProfile(country.code);

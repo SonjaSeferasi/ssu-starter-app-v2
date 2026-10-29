@@ -8,6 +8,7 @@ import {mountJapanEnvironment,addJapanTorii} from './japan-environment';
 import {dressJapanPlatform} from './japan-terrain';
 import {createExplorerCharacter} from './explorer-character';
 import {mountJapanRockMaterials} from './japan-materials';
+import {createJapanEnemy,createJapanDiscoveryBlock,createCollectibleBurst} from './japan-interactives';
 import {levelDefinitionFor} from '../../lib/world-explorer/level-manifest';
 import {LevelSimulation,cameraFrame} from '../../lib/world-explorer/simulation';
 import {createExplorerAudio} from '../../lib/world-explorer/audio';
@@ -27,14 +28,23 @@ export function buildCountryCourse(country:{code:string;difficulty?:1|2|3|4},dif
 /** The wooden deck is a playable solid surface; its rails stay outside z=0. */
 export function woodenPlatform(root:T.Group,definition:PlatformDefinition){
  for(const name of ['country-platform-cap','country-platform-cliff']){const old=root.getObjectByName(name) as T.Mesh|undefined;if(old){old.removeFromParent();old.geometry.dispose();for(const material of Array.isArray(old.material)?old.material:[old.material])material.dispose();}}
- const width=definition.width,wood=matte('#8c593f'),edge=matte('#b68b5b'),rope=matte('#bfb08b'),n=Math.ceil(width/.27);
+ const width=definition.width,wood=matte('#936a45'),edge=matte('#a47a50'),rope=matte('#bfb08b'),n=Math.ceil(width/.27);
  root.userData.surface=definition.type;
  for(let i=0;i<n;i++)mesh(root,new T.BoxGeometry(width/n-.009,.18,3.1),i%3?wood:edge,-width/2+(i+.5)*width/n,-.075,0);
  for(const z of [-1.42,1.42]){
   mesh(root,new T.BoxGeometry(width,.2,.14),wood,0,-.21,z);
-  for(const x of [-width/2+.2,width/2-.2]){mesh(root,new T.CylinderGeometry(.045,.06,.68,8),wood,x,.34,z);sphere(root,edge,x,.7,z,.07);}
-  const curve=new T.QuadraticBezierCurve3(new T.Vector3(-width/2+.2,.62,z),new T.Vector3(0,.34,z),new T.Vector3(width/2-.2,.62,z));mesh(root,new T.TubeGeometry(curve,24,.026,5,false),rope);
+  const posts=Math.max(2,Math.ceil(width/2.8)+1);for(let i=0;i<posts;i++){const x=-width/2+.2+(width-.4)*i/(posts-1);mesh(root,new T.CylinderGeometry(.045,.06,.76,8),wood,x,.38,z);sphere(root,edge,x,.79,z,.07);}
+  for(let i=0;i<posts-1;i++){const a=-width/2+.2+(width-.4)*i/(posts-1),b=-width/2+.2+(width-.4)*(i+1)/(posts-1),curve=new T.QuadraticBezierCurve3(new T.Vector3(a,.72,z),new T.Vector3((a+b)/2,.38,z),new T.Vector3(b,.72,z));mesh(root,new T.TubeGeometry(curve,12,.032,5,false),rope);}
+  // Curved lower ropes and diagonal braces give the suspension silhouette;
+  // the upper plank surface remains exactly aligned with its stable collider.
+  const lower=new T.QuadraticBezierCurve3(new T.Vector3(-width/2,-.1,z),new T.Vector3(0,-.65,z),new T.Vector3(width/2,-.1,z));mesh(root,new T.TubeGeometry(lower,32,.055,6,false),wood);
  }
+}
+
+function collectibleGlow(){
+ const size=32,data=new Uint8Array(size*size*4);
+ for(let y=0;y<size;y++)for(let x=0;x<size;x++){const radius=Math.hypot((x+.5)/size*2-1,(y+.5)/size*2-1),i=(y*size+x)*4;data[i]=255;data[i+1]=236;data[i+2]=163;data[i+3]=Math.round(Math.max(0,1-radius)**2*210);}
+ const texture=new T.DataTexture(data,size,size,T.RGBAFormat);texture.colorSpace=T.SRGBColorSpace;texture.needsUpdate=true;return texture;
 }
 
 
@@ -52,7 +62,7 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
   const root=island(scene,p.x+p.width/2,p.y,p.width,p.depth,biome,i+hash(country.code),p.thickness);
   if(country.code!=='JPN'){countryPlatform(root,country.code,p.width,i,profile);countrySurface(root,profile);routeArchitecture(root,profile,p.width,i);}
   if(p.type==='wooden-bridge'||p.type==='wooden-moving')woodenPlatform(root,p);
-  if(country.code==='JPN')dressJapanPlatform(root,p,{quality:country.graphicsQuality});
+  if(country.code==='JPN')dressJapanPlatform(root,p,{quality:country.graphicsQuality,lush:p.id===level.spawn.platformId||p.width>=9});
   root.name='playable-'+p.id;return{...p,root};
  });
  const japan=country.code==='JPN'?mountJapanEnvironment(scene,{platforms:level.platforms,finish,reducedMotion,quality:country.graphicsQuality}):null;
@@ -75,6 +85,10 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
  const checkpointObjects:T.Mesh[]=[];
  for(const checkpoint of level.checkpoints){const position=simulation.position(checkpoint),marker=new T.Group();marker.name=checkpoint.id;marker.position.set(position.x,position.y,-.9);scene.add(marker);if(japan)addJapanTorii(marker,0,0,-.7,2.2);mesh(marker,new T.CylinderGeometry(.035,.045,1.3,8),matte('#8c593f'),0,.65,0);const orb=mesh(marker,new T.SphereGeometry(.17,14,10),new T.MeshStandardMaterial({color:'#a9c0b0',emissive:'#789c82',emissiveIntensity:.18}),0,1.4,0);checkpointObjects.push(orb);}
  const discoveryPosition=simulation.position(level.discovery),discoveryRoot=new T.Group();discoveryRoot.position.set(discoveryPosition.x,discoveryPosition.y,-.95);discoveryRoot.name='discovery-point';scene.add(discoveryRoot);mesh(discoveryRoot,new T.CylinderGeometry(.25,.35,.5,10),matte('#bcb39a'),0,.25,0);const discoveryOrb=mesh(discoveryRoot,new T.OctahedronGeometry(.23),new T.MeshStandardMaterial({color:'#bcebe1',emissive:'#5abfac',emissiveIntensity:.45}),0,1.03,0);
+ discoveryRoot.visible=!japan;
+ const enemies=new Map((level.enemies||[]).map(enemy=>[enemy.id,createJapanEnemy(scene)]));
+ const blocks=new Map<string,{object:T.Group;baseY:number;bounceAt:number}>((level.discoveryBlocks||[]).map(block=>{const object=createJapanDiscoveryBlock(scene,block.width,block.height);object.position.set(block.x,block.y-block.height/2,0);return[block.id,{object,baseY:object.position.y,bounceAt:-10}] as const;}));
+ const bursts:{effect:ReturnType<typeof createCollectibleBurst>;born:number}[]=[];
  for(const p of platforms)batchStatic(p.root);
  const rockMaterials=japan?mountJapanRockMaterials(scene,country.graphicsQuality==='low',()=>{canvas.dataset.surfaceDetail='natural-rock-pbr';}):null;
  const flag=countryFlag(scene,country.iso2,country.code==='ANTARCTICA');canvas.dataset.flagType=country.code==='ANTARCTICA'?'expedition':'national';
@@ -84,10 +98,13 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
  mesh(gate,new T.CylinderGeometry(.028,.036,2.6,8),matte('#8c593f'),1.2,1.3,-.9);const bannerShape=new T.Shape();bannerShape.moveTo(0,0);bannerShape.lineTo(.85,-.15);bannerShape.lineTo(0,-.45);bannerShape.closePath();mesh(gate,new T.ShapeGeometry(bannerShape),new T.MeshStandardMaterial({color:'#e4bd58',emissive:'#624319',emissiveIntensity:.2,side:T.DoubleSide}),1.2,2.45,-.9);
  sign(gate,'FINISH',0,3.05,-1.55,2.2);
  const {hero,body,legs,arms}=createExplorerCharacter(scene);
- const coinGeo=new T.CylinderGeometry(.14,.14,.05,20).rotateX(Math.PI/2),coinObjects=new Map<string,T.Mesh>();
- for(const item of level.coins){const point=simulation.position(item),object=mesh(scene,coinGeo,gold,point.x,point.y,.1);object.name=item.id;coinObjects.set(item.id,object);}
- const starShape=new T.Shape();for(let i=0;i<10;i++){const a=i*Math.PI/5+Math.PI/2,rad=i%2?.14:.31;if(i===0)starShape.moveTo(Math.cos(a)*rad,Math.sin(a)*rad);else starShape.lineTo(Math.cos(a)*rad,Math.sin(a)*rad);}starShape.closePath();const starGeometry=new T.ExtrudeGeometry(starShape,{depth:.09,bevelEnabled:true,bevelSize:.025,bevelThickness:.025,bevelSegments:1,steps:1}),starObjects=new Map<string,T.Mesh>();
- for(const item of level.stars){const point=simulation.position(item),object=mesh(scene,starGeometry,gold,point.x,point.y,.11);object.name=item.id;starObjects.set(item.id,object);}
+ if(japan)hero.scale.setScalar(level.physics.playerHeight/1.59);
+ const coinRadius=japan ? .24 : .14,coinGeo=new T.CylinderGeometry(coinRadius,coinRadius,.07,28).rotateX(Math.PI/2),coinObjects=new Map<string,T.Mesh>();
+ const collectibleGold=new T.MeshStandardMaterial({color:'#ffcd35',emissive:'#dc9b16',emissiveIntensity:.5,roughness:.22,metalness:.5});
+ for(const item of level.coins){const point=simulation.position(item),object=mesh(scene,coinGeo,collectibleGold,point.x,point.y,.1);object.name=item.id;if(japan){mesh(object,new T.TorusGeometry(.183,.017,5,24),collectibleGold,0,0,.043);mesh(object,new T.BoxGeometry(.033,.23,.018),collectibleGold,0,0,.05);}coinObjects.set(item.id,object);}
+ const starShape=new T.Shape();for(let i=0;i<10;i++){const a=i*Math.PI/5+Math.PI/2,rad=i%2?(japan?.2:.14):(japan?.45:.31);if(i===0)starShape.moveTo(Math.cos(a)*rad,Math.sin(a)*rad);else starShape.lineTo(Math.cos(a)*rad,Math.sin(a)*rad);}starShape.closePath();const starGeometry=new T.ExtrudeGeometry(starShape,{depth:.1,bevelEnabled:true,bevelSize:.035,bevelThickness:.035,bevelSegments:2,steps:1}),starObjects=new Map<string,T.Mesh>(),starHalos=new Map<string,T.Mesh>();
+ const haloMaterial=new T.MeshBasicMaterial({map:collectibleGlow(),transparent:true,depthWrite:false,toneMapped:false,color:'#ffd44e',side:T.DoubleSide,opacity:.65});
+ for(const item of level.stars){const point=simulation.position(item),object=mesh(scene,starGeometry,collectibleGold,point.x,point.y,.11);object.name=item.id;starObjects.set(item.id,object);if(japan){const halo=mesh(scene,new T.PlaneGeometry(2.1,2.1),haloMaterial,point.x,point.y,-.08);halo.castShadow=false;starHalos.set(item.id,halo);}}
  const audio=createExplorerAudio({musicVolume:country.musicVolume??0,effectsVolume:country.effectsVolume??.35}),keys=new Set<string>();
  let dead=false,graphicsFailed=false,frame=0,previous=performance.now(),left=false,right=false,touchJump=false,finishedReported=false,lastStats='',lastProgress=-1,visualTime=0;
  const notify=()=>{const stats=simulation.stats(),json=JSON.stringify(stats);if(json!==lastStats){lastStats=json;callbacks.onStats?.(stats);}const progress=simulation.progress();if(progress!==lastProgress){lastProgress=progress;callbacks.onProgress(progress);}};
@@ -106,8 +123,12 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
  const render=(dt:number)=>{
   const s=simulation.state;visualTime+=s.status==='paused'||s.status==='discovery'?0:dt;canvas.dataset.gameState=s.status;canvas.dataset.animation=s.animation;
   for(let i=0;i<platforms.length;i++){const p=simulation.platforms[i];platforms[i].root.position.set(p.x+p.width/2,p.y,0);}
-  for(const item of level.coins){const point=simulation.position(item),object=coinObjects.get(item.id)!;object.visible=!simulation.collectedCoins.has(item.id);object.position.set(point.x,point.y,.1);object.rotation.y=reducedMotion?0:visualTime*2.4;}
-  for(const item of level.stars){const point=simulation.position(item),object=starObjects.get(item.id)!;object.visible=!simulation.collectedStars.has(item.id);object.position.set(point.x,point.y+(reducedMotion?0:Math.sin(visualTime*2)*.07),.11);object.rotation.y=reducedMotion?0:visualTime*1.2;}
+  for(const item of level.coins){const point=simulation.position(item),object=coinObjects.get(item.id)!;object.visible=!simulation.collectedCoins.has(item.id);object.position.set(point.x,point.y,.1);object.rotation.y=reducedMotion?0:visualTime*1.8+(hash(item.id)%100)*.035;}
+  for(const item of level.stars){const point=simulation.position(item),object=starObjects.get(item.id)!;object.visible=!simulation.collectedStars.has(item.id);object.position.set(point.x,point.y+(reducedMotion?0:Math.sin(visualTime*2)*.07),.11);object.rotation.y=reducedMotion?0:japan?Math.sin(visualTime*.7)*.3:visualTime*1.2;}
+  for(const [id,halo] of starHalos){const star=starObjects.get(id)!;halo.visible=star.visible;halo.position.set(star.position.x,star.position.y,-.08);halo.scale.setScalar(reducedMotion?1:1+Math.sin(visualTime*2)*.05);}
+  for(const enemy of simulation.enemies){const object=enemies.get(enemy.id);if(object){object.root.position.set(enemy.x,enemy.y,.1);object.update(reducedMotion?0:visualTime,enemy.direction,enemy.state);}}
+  for(const [id,block] of blocks){const age=visualTime-block.bounceAt;block.object.position.y=block.baseY+(!reducedMotion&&age<.3?Math.sin(age/.3*Math.PI)*.16:0);block.object.userData.activated=simulation.activatedBlocks.has(id);}
+  for(let i=bursts.length-1;i>=0;i--)if(!bursts[i].effect.update(visualTime-bursts[i].born)){bursts[i].effect.dispose();bursts.splice(i,1);}
   hero.position.set(s.x,s.y,.2);hero.visible=s.invulnerable<=0||Math.floor(s.invulnerable*12)%2===0;
   body.rotation.y=T.MathUtils.damp(body.rotation.y,s.facing===1?1.15:-1.15,9,dt);body.rotation.z=T.MathUtils.damp(body.rotation.z,s.animation==='damage'?s.facing*.3:-s.vx*.01,12,dt);body.scale.y=T.MathUtils.damp(body.scale.y,s.animation==='land'?.91:1,14,dt);body.position.y=reducedMotion?0:s.animation==='celebrate'?Math.abs(Math.sin(visualTime*6))*.08:s.animation==='collect'?.06:s.grounded?Math.abs(Math.sin(visualTime*12))*.035*Math.min(1,Math.abs(s.vx)):0;
   for(let i=0;i<2;i++){const swing=Math.sin(visualTime*12+i*Math.PI)*.65*Math.min(1,Math.abs(s.vx)),air=s.animation==='jump'||s.animation==='fall';legs[i].rotation.x=air?i?-.5:.7:s.grounded?swing:.2;arms[i].rotation.x=s.animation==='celebrate'?0:air?-.5:-swing*.9;arms[i].rotation.z=s.animation==='celebrate'?(i?1:-1)*2.4:0;}
@@ -127,8 +148,13 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
    const dt=Math.min(.25,Math.max(0,(stamp-previous)/1000));previous=stamp;
    const events=simulation.advance(dt);
    for(const event of events){
+    if(event.type==='coin'||event.type==='star'||event.type==='block'){
+     const item=event.type==='coin'?level.coins.find(item=>item.id===event.id):event.type==='star'?level.stars.find(item=>item.id===event.id):undefined;
+     const point=item?simulation.position(item):level.discoveryBlocks?.find(block=>block.id===event.id);if(point&&japan&&!reducedMotion)bursts.push({effect:createCollectibleBurst(scene,point.x,point.y,.2),born:visualTime});
+     if(event.type==='block'){const block=blocks.get(event.id||'');if(block)block.bounceAt=visualTime;audio.play('checkpoint');}
+    }
     if(event.type==='coin'||event.type==='star'||event.type==='damage'||event.type==='checkpoint'||event.type==='discovery'||event.type==='finish')audio.play(event.type);
-    if(event.type==='checkpoint')for(const orb of checkpointObjects){const material=orb.material as T.MeshStandardMaterial;material.color.set('#d8efb4');material.emissive.set('#b4cf68');material.emissiveIntensity=.45;}
+    if(event.type==='checkpoint')for(const orb of checkpointObjects){if(orb.parent?.name!==event.id)continue;const material=orb.material as T.MeshStandardMaterial;material.color.set('#d8efb4');material.emissive.set('#b4cf68');material.emissiveIntensity=.45;}
     if(event.type==='discovery'){clear();audio.pause();notify();if(callbacks.onDiscovery)callbacks.onDiscovery();else simulation.resume();}
     if(event.type==='failed'&&!finishedReported){finishedReported=true;clear();audio.pause();callbacks.onFail?.();}
     if(event.type==='finish'&&!finishedReported){finishedReported=true;clear();notify();callbacks.onFinish(simulation.state.coins,{stars:simulation.state.stars,elapsedMs:Math.round(simulation.state.elapsedSeconds*1000),discoveryFound:simulation.state.discoveryFound});}
@@ -137,5 +163,5 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
   }catch(error){graphicsFailure(error instanceof Error?error.message:'The 3D scene could not continue. Please retry.');}
  };
  frame=requestAnimationFrame(loop);canvas.dataset.ready='true';callbacks.onReady();focus();
- return{pause(){simulation.pause();clear();audio.pause();},resume(){if(finishedReported||graphicsFailed)return;simulation.resume();clear();previous=performance.now();audio.resume();focus();},setReviewView(view:'gameplay'|'overview'){reviewView=view;clear();if(view==='overview'){simulation.pause();audio.pause();}else{simulation.resume();audio.resume();const position=cameraFrame(level,simulation.state.x,simulation.state.y,camera.aspect);camera.position.set(position.x,position.y,position.z);camera.far=190;camera.updateProjectionMatrix();focus();}render(0);},setPreferences(preferences:ExplorerRunPreferences){audio.setVolumes({musicVolume:preferences.musicVolume,effectsVolume:preferences.effectsVolume});if(preferences.reducedMotion!==undefined){reducedMotion=preferences.reducedMotion;japan?.setReducedMotion(reducedMotion);}},destroy(){if(dead)return;dead=true;cancelAnimationFrame(frame);observer.disconnect();window.removeEventListener('keydown',keydown);window.removeEventListener('keyup',keyup);window.removeEventListener('blur',clear);window.removeEventListener('pointerdown',unlock);parent.removeEventListener('explorer-input',control);canvas.removeEventListener('pointerdown',focus);canvas.removeEventListener('webglcontextlost',contextLost);audio.dispose();flag.dispose();rockMaterials?.dispose();japan?.dispose();dispose(renderer,scene);}};
+ return{pause(){simulation.pause();clear();audio.pause();},resume(){if(finishedReported||graphicsFailed)return;simulation.resume();clear();previous=performance.now();audio.resume();focus();},setReviewView(view:'gameplay'|'overview'){reviewView=view;clear();if(view==='overview'){simulation.pause();audio.pause();}else{simulation.resume();audio.resume();const position=cameraFrame(level,simulation.state.x,simulation.state.y,camera.aspect);camera.position.set(position.x,position.y,position.z);camera.far=190;camera.updateProjectionMatrix();focus();}render(0);},setPreferences(preferences:ExplorerRunPreferences){audio.setVolumes({musicVolume:preferences.musicVolume,effectsVolume:preferences.effectsVolume});if(preferences.reducedMotion!==undefined){reducedMotion=preferences.reducedMotion;japan?.setReducedMotion(reducedMotion);}},destroy(){if(dead)return;dead=true;cancelAnimationFrame(frame);observer.disconnect();window.removeEventListener('keydown',keydown);window.removeEventListener('keyup',keyup);window.removeEventListener('blur',clear);window.removeEventListener('pointerdown',unlock);parent.removeEventListener('explorer-input',control);canvas.removeEventListener('pointerdown',focus);canvas.removeEventListener('webglcontextlost',contextLost);bursts.forEach(burst=>burst.effect.dispose());haloMaterial.map?.dispose();haloMaterial.dispose();audio.dispose();flag.dispose();rockMaterials?.dispose();japan?.dispose();dispose(renderer,scene);}};
 }
