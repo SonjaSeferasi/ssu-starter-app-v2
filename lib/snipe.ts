@@ -1,8 +1,8 @@
 import { AccountError, accountClient, accountOperation, accountResponse, verifiedUser } from './socialu-account';
 import { CONVERSATION_NOT_AVAILABLE } from './chat-access';
 
-// Server-only Snipe bridge (UR-510 to UR-514). The acting student always comes from the verified
-// token; the database function performs every participant, friendship and consent check.
+// Server-only Snipe bridge (UR-510 to UR-514, UR-525). The acting student always comes from the verified
+// token; the database function performs every participant, friendship, consent and reward check.
 export const SNIPE_NOT_AVAILABLE = 'Snipe not available.';
 export const NO_STORE = { 'Cache-Control': 'no-store' };
 
@@ -47,6 +47,8 @@ function snipeError(error: RpcError): SnipeError {
       try { cooldowns = JSON.parse(error.details || '[]'); } catch { /* message alone still explains it */ }
       return known(429, 'SNIPE_COOLDOWN', { cooldowns });
     }
+    // The publishing answer and its reward roll back together (no current Snipe reward rule); retry later.
+    case 'SN503': return known(503, 'SNIPE_REWARDS_UNAVAILABLE');
     case '42501': return new SnipeError('A verified, active university account is required.', 403, true);
     case 'PGRST202': return new SnipeError('Snipe needs its database update before it can be used.', 503, true, 'SNIPE_SETUP_REQUIRED');
   }

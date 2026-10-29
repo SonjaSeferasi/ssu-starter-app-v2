@@ -42,6 +42,11 @@
 .danger { border-color: #a32d2d; background: #a32d2d; color: #ffffff; }
 .danger:hover:not(:disabled) { background: #8e1b1b; }
 .secondary:focus-visible, .danger:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+/* UR-525 rewards: balance, rules before submission, and the photographer's reward result. */
+.balance { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; margin: 0; padding: 10px 14px; border: 1px solid #d3e2da; border-radius: 12px; background: #ffffff; color: #102c30; font-size: 15px; }
+.balance strong { font-size: 18px; color: #28634e; }
+.rules { display: grid; gap: 6px; padding: 10px 12px; border-radius: 10px; background: #f8fbf8; border: 1px solid #e3ece6; color: #102c30; font-size: 14px; }
+.reward { display: grid; gap: 4px; padding: 10px 12px; border-left: 4px solid #39775e; border-radius: 10px; background: #e6efe9; color: #102c30; }
 .confirm { display: grid; gap: 10px; padding: 12px; border: 2px solid #c62828; border-radius: 12px; background: #fdecea; color: #8e1b1b; }
 @media (max-width: 700px) {
   .toggle { padding: 10px 16px; }

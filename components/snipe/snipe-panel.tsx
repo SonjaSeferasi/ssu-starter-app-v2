@@ -6,20 +6,27 @@ import { SNIPE_PHOTO_POLICY, SNIPE_POLICY_TEXT, isSnipeMimeType } from '../../li
 import chat from '../../app/messages/messages.module.css';
 import styles from './snipe.module.css';
 
-// UR-510 to UR-514 (basic slice): a private, conversation-only Snipe panel. Pending requests are only
+// UR-510 to UR-514 and UR-525: a private, conversation-only Snipe panel. Pending requests are only
 // returned to the photographer and tagged friends, so other members never see a placeholder for them.
+// Points come from the shared ledger; only the photographer sees a Snipe's reward result.
 type Person = { id: string; name: string; username: string };
 type Target = Person & { next_eligible_at: string | null };
 type Answers = { identity: boolean | null; sharing: boolean | null; withdrawn: boolean };
 type Status = 'pending' | 'approved' | 'rejected' | 'expired' | 'canceled' | 'closed' | 'removed';
+// Frozen ledger outcome for a published Snipe; `awarded: false` means no credit was ever recorded for it.
+type Reward = { awarded: true; verified_friends: number; points_per_friend: number; points: number; recorded_at: string; balance_after: number }
+  | { awarded: false };
 export type SnipeView = {
   id: string; status: Status; viewer_role: 'photographer' | 'tagged' | 'member';
   submitted_at: string; expires_at: string; published_at: string | null; terminal_reason: string | null;
   photographer: Person; photo_available: boolean; verified_targets: Person[];
   tags: (Person & Answers)[] | null; my_answers: Answers | null;
   can_answer: boolean; can_withdraw: boolean; can_remove: boolean;
+  reward?: Reward | null;
 };
-type SnipeList = { student_id: string; kind: 'private' | 'group'; targets: Target[]; snipes: SnipeView[] };
+type Rewards = { points_per_friend: number | null; balance: number };
+// `rewards` is absent only if the server predates the rewards migration.
+type SnipeList = { student_id: string; kind: 'private' | 'group'; rewards?: Rewards; targets: Target[]; snipes: SnipeView[] };
 type Cooldown = { friend: Person; next_eligible_at: string };
 
 const POLL_MS = 20_000;
@@ -28,6 +35,8 @@ const statusLabels: Record<Status, string> = {
 };
 const when = (iso: string) => new Date(iso).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
 const answerText = (value: boolean | null) => value === null ? 'Not answered' : value ? 'Yes' : 'No';
+const points = (n: number) => `${Number(n).toLocaleString()} ${Number(n) === 1 ? 'point' : 'points'}`;
+const friends = (n: number) => `${n} verified ${n === 1 ? 'friend' : 'friends'}`;
 const failure = (error: unknown, fallback: string) =>
   error instanceof TypeError ? 'Connection problem. Check your connection and try again.' : error instanceof Error && error.message ? error.message : fallback;
 
@@ -106,14 +115,22 @@ export function SnipePanel({ conversationId }: { conversationId: string }) {
       </button>
       {open && (
         <div id={panelId} className={styles.body}>
-          <p className={styles.note}>Snipes stay in this conversation only. Rewards are not connected yet, so Snipes award no points.</p>
-          {state === 'loading' && <p className={styles.muted}>Loading Snipes…</p>}
+          <p className={styles.note}>Snipes stay in this conversation only. Photographers earn points for each verified friend once a Snipe is published.</p>
+          {state === 'loading' && <p className={styles.muted}>Loading Snipes and points…</p>}
           {state === 'failed' && !list && (
             <p className={chat.error} role="alert">{loadError} <button type="button" className={chat.retry} onClick={() => void load()}>Try again</button></p>
           )}
           {list && (
             <>
-              <Composer base={base} targets={list.targets} onSubmitted={(snipe) => { replaceSnipe(snipe); void load(); }} />
+              {/* SRS-521.1, 521.4: confirmed shared balance; marked as last confirmed when a refresh fails. */}
+              {list.rewards && (
+                <p className={styles.balance} role="status" aria-live="polite">
+                  <span>{loadError ? 'Last confirmed shared balance' : 'Your shared points balance'}</span>
+                  <strong>{points(list.rewards.balance)}</strong>
+                </p>
+              )}
+              <Composer base={base} targets={list.targets} pointsPerFriend={list.rewards?.points_per_friend}
+                onSubmitted={(snipe) => { replaceSnipe(snipe); void load(); }} />
               {loadError && (
                 <p className={chat.error} role="alert">Couldn’t refresh Snipes. <button type="button" className={chat.retry} onClick={() => void load()}>Retry</button></p>
               )}
@@ -134,7 +151,10 @@ export function SnipePanel({ conversationId }: { conversationId: string }) {
   );
 }
 
-function Composer({ base, targets, onSubmitted }: { base: string; targets: Target[]; onSubmitted: (snipe: SnipeView) => void }) {
+function Composer({ base, targets, pointsPerFriend, onSubmitted }: {
+  // null: no current Snipe rule; undefined: the server predates rewards.
+  base: string; targets: Target[]; pointsPerFriend?: number | null; onSubmitted: (snipe: SnipeView) => void;
+}) {
   const [composing, setComposing] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -205,6 +225,14 @@ function Composer({ base, targets, onSubmitted }: { base: string; targets: Targe
 
   return (
     <form className={styles.compose} onSubmit={submit} aria-label="New Snipe">
+      {/* SRS-528.2: reward, sharing, expiry and cooldown rules before submission. */}
+      <div className={styles.rules} role="group" aria-label="Snipe rules">
+        {pointsPerFriend !== undefined && <p className={styles.tight}><strong>Rewards: </strong>{pointsPerFriend !== null
+          ? `You earn ${points(pointsPerFriend)} for each tagged friend who answers Yes to “Is this you?”, once your Snipe is published. Tagged friends don’t earn points.`
+          : 'Snipe rewards are unavailable right now, so Snipes can’t be published until they return.'}</p>}
+        <p className={styles.tight}>Every tagged friend must approve sharing, even someone who says it isn’t them. Otherwise nothing is published and no points are awarded.</p>
+        <p className={styles.tight}>Requests close after 24 hours if not everyone answers. You can Snipe the same friend once every 24 hours.</p>
+      </div>
       <label className={styles.label} htmlFor="snipe-photo">Photo <span className={styles.muted}>({SNIPE_POLICY_TEXT})</span></label>
       <input id="snipe-photo" ref={input} className={styles.file} type="file" accept={SNIPE_PHOTO_POLICY.mimeTypes.join(',')} disabled={submitting}
         onChange={(event) => { submissionKey.current = null; setSize(null); setError(''); setFile(event.target.files?.[0] ?? null); }} />
@@ -230,6 +258,9 @@ function Composer({ base, targets, onSubmitted }: { base: string; targets: Targe
               );
             })}
         {targets.length > 0 && eligible.length === 0 && <p className={styles.muted}>Everyone here was Sniped by you in the last 24 hours.</p>}
+        {typeof pointsPerFriend === 'number' && selected.length > 0 && (
+          <p className={styles.muted} aria-live="polite">Up to {points(selected.length * pointsPerFriend)} if published and {selected.length === 1 ? 'your friend confirms' : `all ${selected.length} confirm`} it’s them.</p>
+        )}
       </fieldset>
 
       {error && (
@@ -286,6 +317,7 @@ function SnipeCard({ base, snipe, onChange }: { base: string; snipe: SnipeView; 
         <p className={styles.tight}>Verified: {snipe.verified_targets.map((p) => p.name).join(', ')}</p>
       )}
       {snipe.terminal_reason && snipe.status !== 'approved' && <p className={styles.reason}>Reason: {snipe.terminal_reason}</p>}
+      {mine && <RewardResult snipe={snipe} />}
 
       {snipe.tags && (
         <ul className={styles.tagList} aria-label="Tagged friends’ answers">
@@ -321,6 +353,24 @@ function SnipeCard({ base, snipe, onChange }: { base: string; snipe: SnipeView; 
       )}
       {error && <p className={chat.error} role="alert">{error}</p>}
     </article>
+  );
+}
+
+// SRS-525.6, 524.4, 527.7: the photographer's confirmed reward, read from the ledger entry written at
+// publication. It never changes later, including after removal. A published Snipe with no entry (approved
+// before rewards started) is shown as not awarded; nothing is credited by viewing it.
+function RewardResult({ snipe }: { snipe: SnipeView }) {
+  if (snipe.status === 'pending') return null;
+  if (snipe.status !== 'approved' && snipe.status !== 'removed') return <p className={styles.reason}>No points: this Snipe was not published.</p>;
+  const reward = snipe.reward;
+  if (!reward?.awarded) return <p className={styles.reason}>Not awarded: no reward was recorded for this Snipe. Snipes published before rewards started don’t earn points.</p>;
+  return (
+    <div className={styles.reward} role="group" aria-label="Snipe reward">
+      <p className={styles.tight}><strong>Reward: {points(reward.points)}</strong></p>
+      <p className={styles.tight}>{friends(reward.verified_friends)} × {points(reward.points_per_friend)} per friend = {points(reward.points)}</p>
+      <p className={styles.muted}>Added to your shared balance on {when(reward.recorded_at)} (balance then: {points(reward.balance_after)}).
+        {snipe.status === 'removed' && ' Removing a Snipe doesn’t take its points back.'}</p>
+    </div>
   );
 }
 

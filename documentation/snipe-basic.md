@@ -1,8 +1,9 @@
 # Snipe — basic vertical slice (UR-510 to UR-514, DP)
 
 Branch: `feature/srs-510-1-basic-snipe`. This is a basic, usable Snipe inside existing conversations. It is
-not the full Snipe feature. Group reporting, administrator report review, administrator removal and reward
-points are **not** implemented and are not advertised in the UI.
+not the full Snipe feature. Group reporting, administrator report review and administrator removal are
+**not** implemented and are not advertised in the UI. Reward points were added later; see
+[`snipe-rewards.md`](snipe-rewards.md).
 
 ## Decision record: Snipe photo policy (Appendix B-06)
 
@@ -18,8 +19,9 @@ Where it is enforced: `lib/snipe-policy.ts` (shared constants and browser pre-ch
 (server decoder), and the two `upload_policies` rows seeded by the migration (`validate_media` rejects any
 other Snipe type or size). Dimensions are enforced by the decoder; `media_assets` does not store them.
 
-Rewards: no reward amounts were chosen (B-01 stays open). No `reward_rules` rows are seeded, Snipes award
-no points, and the panel says so: “Rewards are not connected yet, so Snipes award no points.”
+Rewards: this basic slice awarded no points. B-01 (25 points per verified friend, photographer only) was
+approved by DP on 29 October 2026 and is implemented by `20261029182808_snipe_rewards.sql`; see
+[`snipe-rewards.md`](snipe-rewards.md).
 
 ## What the basic slice does
 
@@ -143,7 +145,7 @@ skips overlapping polls and aborts stale requests. Normal chat behavior is uncha
 | 514.2 – 514.7 removal | Done | `remove`, `withdraw`, placeholder, photo route |
 | 514.8 – 514.14 group reporting and admin review | Later | `snipe_reports` table exists, unused |
 | 514.15 repeat removal | Done | idempotent `remove` / `withdraw` |
-| 525.x Snipe rewards | Later (B-01 open) | No points |
+| 525.x Snipe rewards | Done (B-01, DP) | `snipe-rewards.md` |
 
 ## Prerequisites before hosted use (not performed here)
 
@@ -203,7 +205,7 @@ npx vitest run --config vitest.snipe-basic.config.ts
   separate answers and the incomplete gate; approve, reject, identity No with sharing Yes, and no verified
   targets; expiry enforced on response; cooldowns across conversations, including the exact 24-hour boundary;
   photographer removal; tagged withdrawal before and after publication; later members; friendship end,
-  departure and deactivation cancellation; no points; no posts.
+  departure and deactivation cancellation; exactly the published Snipes credited (see `snipe-rewards.md`); no posts.
 - `scripts/tests/snipe-basic.browser.ts`: photographer and tagged student through upload, review (keyboard,
   phone), approval, persistence across reload and new session, member view, confirmed withdrawal and blocked photo
   retrieval for everyone. Also covers lost-response retry without a duplicate. It asserts that no Snipe storage
@@ -214,7 +216,6 @@ npx vitest run --config vitest.snipe-basic.config.ts
 
 - Group reporting, report receipt, administrator report review and decisions (SRS-514.8 to 514.14), and
   group administrator removal (rest of SRS-514.1).
-- Snipe rewards (SRS-525, B-01 amounts) and the shared points integration.
 - Live updates and notifications for new requests and outcomes (the basic panel polls while open).
 - A reconciliation job for Snipe objects without a `media_assets` row (kept after uncertain outcomes). A
   retention decision for the private bytes of Removed / unpublished Snipes, which are never served but not

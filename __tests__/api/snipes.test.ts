@@ -69,6 +69,15 @@ describe('Snipe list (SRS-510.4, 512.1, 512.2)', () => {
     expect(res.headers.get('Cache-Control')).toBe('no-store');
     expect(snipeCalls()).toEqual([{ p_auth_id: AUTH_ID, p_action: 'list', p_conversation_id: '7', p_snipe_id: null, p_payload: {} }]);
   });
+  it('returns the verified student’s own rate and confirmed balance, ignoring any supplied account (SRS-521.5)', async () => {
+    const rewarded = { ...pending, status: 'approved', reward: { awarded: true, verified_friends: 2, points_per_friend: 25, points: 50, recorded_at: '2026-10-29T12:00:00Z', balance_after: 50 } };
+    snipe = () => ({ data: { student_id: '1', kind: 'group', rewards: { points_per_friend: 25, balance: 50 }, targets: [], snipes: [rewarded] } });
+    const res = await list(new Request(base + '?student_id=9&p_auth_id=victim', { headers: headers() }), ctx());
+    expect(res.status).toBe(200);
+    expect(res.headers.get('Cache-Control')).toBe('no-store');
+    expect(await res.json()).toMatchObject({ rewards: { points_per_friend: 25, balance: 50 }, snipes: [rewarded] });
+    expect(snipeCalls()).toEqual([{ p_auth_id: AUTH_ID, p_action: 'list', p_conversation_id: '7', p_snipe_id: null, p_payload: {} }]);
+  });
   it('requires sign-in, a live session and an active account before any Snipe call', async () => {
     expect((await list(new Request(base, { headers: headers('') }), ctx())).status).toBe(401);
     sessionValid = false;
@@ -227,6 +236,16 @@ describe('Snipe answers, withdrawal and removal (SRS-511, 514)', () => {
     const res = await act(patch({ action: 'respond', sharing: true }), snipeCtx());
     expect(res.status).toBe(409);
     expect(await res.json()).toMatchObject({ code: 'SNIPE_CLOSED', snipe: expired });
+  });
+  it('reports a publishing answer rolled back with its reward as retryable, saving nothing (SRS-525, NFR-49)', async () => {
+    const message = 'Snipe rewards are unavailable right now, so your answer was not saved. Please try again later.';
+    snipe = () => ({ error: { code: 'SN503', message } });
+    const res = await act(patch({ action: 'respond', sharing: true, points: 9999 }), snipeCtx());
+    expect(res.status).toBe(503);
+    expect(res.headers.get('Cache-Control')).toBe('no-store');
+    expect(await res.json()).toEqual({ error: message, code: 'SNIPE_REWARDS_UNAVAILABLE' });
+    // No client-supplied amount ever reaches the database (SRS-523.8).
+    expect(snipeCalls()).toEqual([{ p_auth_id: AUTH_ID, p_action: 'respond', p_conversation_id: '7', p_snipe_id: '5', p_payload: { sharing: true } }]);
   });
   it('maps permission and visibility answers without revealing hidden requests', async () => {
     snipe = () => ({ error: { code: 'SN403', message: 'Only the photographer or a tagged friend can remove this Snipe.' } });
