@@ -121,7 +121,8 @@ It covers compose with preview and policy pre-check, eligible target selection (
 disabled with their next time), cards with status badges, the photo or “Snipe removed”, verified targets,
 each tagged friend's two answers, independent answer forms, confirmation steps, terminal reasons, and
 loading, empty, error, refresh and retry states. It polls every 20 s only while open and the tab is visible,
-skips overlapping polls and aborts stale requests. Normal chat behavior is unchanged.
+skips overlapping polls and aborts stale requests. Polls pause while older Snipes are shown or loading
+(`snipe-pagination.md`). Normal chat behavior is unchanged.
 
 ## Requirement mapping
 
@@ -139,10 +140,10 @@ skips overlapping polls and aborts stale requests. Normal chat behavior is uncha
 | 511.6 – 511.10 outcomes | Done | existing `apply_snipe_consent` / `check_snipe_consent` |
 | 511.11 / 511.12 withdrawal | Done | `withdraw`; published withdrawal by former participants: `snipe-sharing-permissions.md` (#969–#971) |
 | 511.13 terminal response rejection | Done | `respond` returns closed/expired (409) |
-| 512.1 – 512.3 private status, invisibility | Done | list view |
+| 512.1 – 512.3 private status, invisibility | Done | list view. The basic list returned only the newest 50 visible requests, so older Pending ones could become unreachable; paged with “Show older Snipes” in `snipe-pagination.md` (512.1, 512.3, 512.11; #647 with tasks #974–#976, #649, #657) |
 | 512.4 – 512.6 deadline and expiry | Done | `snipe_settle` before every read/action |
 | 512.7 / 512.8 eligibility cancellation | Done | existing triggers + `snipe_settle` (also blocks/deactivation) |
-| 512.9 – 512.12 reasons, durability | Done | stored outcome, view |
+| 512.9 – 512.12 reasons, durability | Done | stored outcome, view; 512.11 older requests stay reachable through the paged list (`snipe-pagination.md`) |
 | 513.1 – 513.9 cooldowns | Done | create checks + trigger; SN429 names friend and next time |
 | 514.1 removal roles | Done (group administrators on a later branch) | Photographer and tagged friends here, also after leaving or unfriending (`snipe-sharing-permissions.md`, #969–#971); current group owner/administrator in `snipe-moderation.md` |
 | 514.2 – 514.7 removal | Done | `remove`, `withdraw`, placeholder, photo route |
