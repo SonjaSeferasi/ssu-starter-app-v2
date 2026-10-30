@@ -99,8 +99,9 @@ Photos.
   valid until they expire, so they cannot guarantee immediate removal. Snipe therefore creates no public or
   signed URL. Bytes are streamed by the authorized photo route with
   `Cache-Control: private, no-store, max-age=0` and `nosniff`. Access is rechecked on every request against
-  the request's current status, before the download and again after it, so a withdrawal or removal that
-  commits during the download sends nothing. Missing, hidden and removed photos all return the same 404.
+  the request's current status, before the download and again after the whole object has been read (at most
+  10 MB), so a withdrawal or removal that commits during the download sends nothing. Only then are the bytes
+  streamed, in chunks with no `Content-Length` ([`snipe-photo-transport.md`](snipe-photo-transport.md)). Missing, hidden and removed photos all return the same 404.
 - Storage isolation. The migration creates the private `socialu-snipe-photos` bucket (when Supabase Storage
   tables exist) and adds one RESTRICTIVE policy on `storage.objects` for anon and authenticated:
   `bucket_id IS DISTINCT FROM 'socialu-snipe-photos'` in both USING and WITH CHECK. Restrictive policies are
@@ -235,7 +236,7 @@ npx vitest run --config vitest.snipe-basic.config.ts
 
 ## Hosted large-photo transport
 
-The basic multipart upload and buffered private-photo response pass local API and integrated browser tests. Before releasing the full 10 MB policy on Vercel, adapt the transport: [Vercel Functions limits](https://vercel.com/docs/functions/limitations) cap request and buffered response payloads at 4.5 MB. Use an authenticated direct upload into the same protected bucket, followed by server validation and atomic acceptance, and an appropriate protected streaming/derivative response for large photographs. Keep the restrictive Storage policy and immediate authorization checks; do not replace private delivery with public or long-lived signed photo links. The current local flow is not a certification of 10 MB uploads on the hosted deployment.
+Implemented in SRS-510.2; see [`snipe-photo-transport.md`](snipe-photo-transport.md). [Vercel Functions limits](https://vercel.com/docs/functions/limitations) cap request bodies at 4.5 MB, so the UI now uploads the original photo directly to a private staging bucket through an upload-only URL, the server validates and re-encodes it, and the Snipe is accepted atomically through the core bridge. Photo reads are streamed. The multipart POST below remains only as a legacy path. Hosted validation of 10 MB uploads is still outstanding (listed in that document).
 
 ## Interactive local sample preview
 

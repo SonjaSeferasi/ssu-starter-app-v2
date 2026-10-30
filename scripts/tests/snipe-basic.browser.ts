@@ -7,26 +7,27 @@ import type { PGlite } from '@electric-sql/pglite';
 import sharp from 'sharp';
 import { befriend, friendship, testUid } from '../../__tests__/helpers/dormspace-db';
 import { createGroup, createSnipeDatabase } from '../../__tests__/helpers/snipe-db';
+import { SNIPE_BUCKET, SNIPE_STAGING_BUCKET, createSnipeStorage } from './snipe-local-storage';
 
 // SRS-510 to 514 and 525 acceptance: the real Next UI and API run against the real schema and functions in
 // PGlite. Only the provider's Auth, Storage and PostgREST HTTP transport is replaced, on loopback; no hosted
 // accounts, keys or data. Students: 1 photographer and group owner, 2 and 3 tagged friends (also friends of
-// each other, with a direct message), 4 an untagged group member. The sharing-permission tests add fresh groups
-// owned by 4 (group membership has no friendship rule) with 1, 2 and 3, and use the unused pairs 3→1 and 2→1.
+// each other, with a direct message), 4 an untagged group member (and, in the final large-photo scenario, a newly
+// added friend of 1). The sharing-permission tests add fresh groups owned by 4 (group membership has no friendship
+// rule) with 1, 2 and 3, and use the unused pairs 3→1 and 2→1. Photos go from the browser straight to the Storage
+// stand-in through an upload-only URL (SRS-510.2 direct transport); the app only receives small JSON.
+const SERVICE_KEY = 'isolated-test-service-key';
 let db: PGlite, service: Server, next: ChildProcess, browser: any;
-let base = '', nextLog = '', group = '', dm = '', dropNextCreate = false;
+let base = '', nextLog = '', group = '', dm = '', dropNextAccept = false;
 const pages: Record<string, any> = {};
 const sessions = new Map<string, any>();
-const objects = new Map<string, { bytes: Buffer; type: string }>();
-const signedSnipeKeys: string[] = [];
+const storage = createSnipeStorage(SERVICE_KEY);
+const objects = storage.objects;
 const leakedKeys: string[] = [];
-// Must match SNIPE_BUCKET in lib/snipe.ts and the migration (not imported: lib/snipe pulls in server modules).
-const SNIPE_BUCKET = 'socialu-snipe-photos';
 // Additive migrations on top of the shared Snipe fixture, in filename order: the real group-leave bridge and
 // original-actor sharing permissions (SRS-511.12, 514.1).
 const ADDITIVE_MIGRATIONS = ['supabase/migrations/20261028120300_chat_leave_group.sql', 'supabase/migrations/20261030040044_snipe_withdrawal_access.sql'];
 const SHARING_RECORD_KEYS = ['action', 'id', 'published_at', 'role', 'sharing', 'status', 'submitted_at'];
-const otherBucketRequests: string[] = [];
 const artifacts = process.env.SNIPE_EVIDENCE_DIR || 'tmp/snipe-basic';
 const desktop = { width: 1280, height: 900 }, phone = { width: 390, height: 844 };
 const user = (student: number) => ({ id: testUid(student), email: `dorm${student}@salemstate.edu`, email_confirmed_at: '2026-10-19T12:00:00Z', aud: 'authenticated', role: 'authenticated', user_metadata: { full_name: `Dorm Student ${student}`, username: `dorm${student}` } });
@@ -51,7 +52,9 @@ async function signIn(student: number, viewport = desktop) {
     const text = await response.text().catch(() => '');
     if (/snipe\/00000000-0000-4000-8000-/.test(text) || text.includes('storage_key')) leakedKeys.push(response.url());
   });
-  await page.goto(base + '/login', { waitUntil: 'networkidle' });
+  // Not 'networkidle': cold-start compiles and app polling can keep the network busy. The hydration wait
+  // below is the real readiness check before any field is touched.
+  await page.goto(base + '/login', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => { const form = document.querySelector('form'); return form && Object.keys(form).some(key => key.startsWith('__reactProps$')); });
   await page.getByRole('textbox', { name: 'University email or username' }).fill(`dorm${student}@salemstate.edu`);
   await page.getByLabel('Password', { exact: true }).fill('SnipeTest123!');
@@ -175,6 +178,46 @@ async function cancelThenConfirm(page: any, record: any, control: string, warnin
   await record.getByRole('button', { name: control, exact: true }).click();
   await confirm.getByRole('button', { name: 'Confirm', exact: true }).click();
 }
+// Snipe is played inside conversations only: the rendered Main navigation (checked to be the real one by its
+// Messages link) offers no Snipe or Sniping entry, while the open conversation still has its Snipe toggle.
+async function snipeOnlyInConversation(page: any) {
+  // includeHidden: the phone layout may move or hide the navigation, and it must hold no Snipe entry either way.
+  const navigation = page.getByRole('navigation', { name: 'Main navigation', exact: true, includeHidden: true });
+  await navigation.getByRole('link', { name: 'Messages', includeHidden: true }).waitFor({ state: 'attached' });
+  expect(await navigation.getByRole('link', { name: /snip/i, includeHidden: true }).count()).toBe(0);
+  expect(await navigation.getByText(/snip/i).count()).toBe(0);
+  expect(await navigation.locator('a[href*="snip" i]').count()).toBe(0);
+  const open = page.getByRole('region', { name: 'Conversation', exact: true });
+  expect(await open.getByRole('button', { name: /^Snipe/ }).isVisible()).toBe(true);
+}
+// The committed (re-encoded) object of one Snipe, looked up the way the photo route does.
+async function committedObject(snipeId: string) {
+  const key = (await db.query<any>(`SELECT m.storage_key FROM socialu.media_assets m JOIN socialu.snipe_requests r ON r.photo_id = m.asset_id
+    WHERE r.snipe_id = $1`, [snipeId])).rows[0].storage_key as string;
+  return { key, object: objects.get(`${SNIPE_BUCKET}/${key}`) };
+}
+// Every request the browser sends to this app (not to Storage): method, path, content type and body size.
+function recordAppRequests(page: any) {
+  const seen: { method: string; path: string; type: string; bytes: number }[] = [];
+  page.on('request', (request: any) => {
+    if (!request.url().startsWith(base + '/api/')) return;
+    seen.push({ method: request.method(), path: new URL(request.url()).pathname, type: request.headers()['content-type'] || '', bytes: request.postDataBuffer()?.length ?? 0 });
+  });
+  return seen;
+}
+// Deterministic incompressible pixels (xorshift32), so the PNG is several MB yet well inside 4096 × 4096.
+async function noisePng(width: number, height: number) {
+  const pixels = Buffer.alloc(width * height * 3);
+  let x = 0x2545f491;
+  for (let i = 0; i < pixels.length; i++) { x ^= x << 13; x ^= x >>> 17; x ^= x << 5; pixels[i] = x & 0xff; }
+  return sharp(pixels, { raw: { width, height, channels: 3 } }).png().toBuffer();
+}
+const transportClean = () => {
+  expect(storage.log.signedReads).toEqual([]);
+  expect(storage.log.otherBuckets).toEqual([]);
+  expect(storage.log.browserReads).toEqual([]);
+  expect(leakedKeys).toEqual([]);
+};
 
 beforeAll(async () => {
   mkdirSync(artifacts, { recursive: true });
@@ -204,36 +247,16 @@ beforeAll(async () => {
         const account = sessions.get(request.headers.authorization?.slice(7) || '');
         reply(account ? 200 : 401, account || { message: 'Expired session' }); return;
       }
-      // Private Storage stand-in for the dedicated Snipe bucket only (SNIPE_BUCKET in lib/snipe.ts): no public
-      // or signed Snipe URLs exist and the general media bucket is never used; the server reads bytes directly.
-      if (path.startsWith('/storage/v1/') && !path.includes(SNIPE_BUCKET)) otherBucketRequests.push(path);
-      if (path === `/storage/v1/bucket/${SNIPE_BUCKET}`) { reply(200, { id: SNIPE_BUCKET, name: SNIPE_BUCKET, public: false }); return; }
-      if (path.startsWith('/storage/v1/object/sign/')) {
-        if (path.includes('snipe/')) signedSnipeKeys.push(path);
-        reply(404, { statusCode: '404', error: 'not_found', message: 'Object not found' }); return;
-      }
-      if (path === `/storage/v1/object/${SNIPE_BUCKET}` && request.method === 'DELETE') {
-        for (const key of JSON.parse(raw.toString()).prefixes) objects.delete(key);
-        reply(200, []); return;
-      }
-      if (path.startsWith(`/storage/v1/object/${SNIPE_BUCKET}/`)) {
-        const key = path.slice(`/storage/v1/object/${SNIPE_BUCKET}/`.length);
-        if (request.method === 'POST') {
-          if (objects.has(key)) { reply(409, { statusCode: '409', error: 'Duplicate', message: 'The resource already exists' }); return; }
-          objects.set(key, { bytes: raw, type: String(request.headers['content-type']) });
-          reply(200, { Key: `${SNIPE_BUCKET}/${key}`, Id: randomUUID() }); return;
-        }
-        const object = objects.get(key);
-        if (!object) { reply(404, { statusCode: '404', error: 'not_found', message: 'Object not found' }); return; }
-        response.writeHead(200, { 'Content-Type': object.type }); response.end(object.bytes); return;
-      }
+      // Private Storage stand-in for the two Snipe buckets only (scripts/tests/snipe-local-storage.ts): no public
+      // or signed READ URLs exist and the general media bucket is never used.
+      if (storage.handle(request, response, path, url, raw)) return;
       const fn = path.match(/^\/rest\/v1\/rpc\/(socialu_[a-z_]+)$/)?.[1];
       const body = raw.length ? JSON.parse(raw.toString()) : {};
       if (!fn || !Object.keys(body).every(key => /^p_[a-z_]+$/.test(key))) { reply(404, { code: 'PGRST202', message: 'Unknown local test endpoint' }); return; }
       const entries = Object.entries(body);
       const result = await db.query<{ result: any }>(`SELECT public.${fn}(${entries.map(([key], index) => `${key} => $${index + 1}`).join(',')}) AS result`, entries.map(([, value]) => value && typeof value === 'object' ? JSON.stringify(value) : value));
-      // Lost connection after the database committed: the server cannot know the outcome.
-      if (fn === 'socialu_snipe' && body.p_action === 'create' && dropNextCreate) { dropNextCreate = false; request.socket.destroy(); return; }
+      // Lost connection after the database committed the acceptance: the server cannot know the outcome.
+      if (fn === 'socialu_snipe_photo' && body.p_action === 'accept' && dropNextAccept) { dropNextAccept = false; request.socket.destroy(); return; }
       reply(200, result.rows[0].result);
     } catch (error: any) { reply(400, { code: error.code || 'TEST', message: error.message, details: error.detail ?? null }); }
   });
@@ -245,7 +268,7 @@ beforeAll(async () => {
   // checkout and watches sibling checkouts too, so edits elsewhere recompile and reload pages without end.
   next = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'dev', '--webpack', '--hostname', '127.0.0.1', '--port', String(nextPort)], {
     cwd: process.env.SNIPE_APP_ROOT || process.cwd(),
-    env: { ...process.env, SUPABASE_URL: `http://127.0.0.1:${servicePort}`, NEXT_PUBLIC_SUPABASE_URL: `http://127.0.0.1:${servicePort}`, SUPABASE_SERVICE_ROLE_KEY: 'isolated-test-service-key', SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_TELEMETRY_DISABLED: '1' }, stdio: ['ignore', 'pipe', 'pipe'],
+    env: { ...process.env, SUPABASE_URL: `http://127.0.0.1:${servicePort}`, NEXT_PUBLIC_SUPABASE_URL: `http://127.0.0.1:${servicePort}`, SUPABASE_SERVICE_ROLE_KEY: SERVICE_KEY, SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_TELEMETRY_DISABLED: '1' }, stdio: ['ignore', 'pipe', 'pipe'],
   });
   next.stdout?.on('data', chunk => { nextLog += chunk.toString(); });
   next.stderr?.on('data', chunk => { nextLog += chunk.toString(); });
@@ -275,12 +298,69 @@ afterAll(async () => {
   await db?.close();
 });
 
+it('shows the open conversation header on a phone without horizontal overflow', async () => {
+  // SRS-510.1/#622: at 390 × 844 the open conversation's own title must stay visible and readable next to the
+  // Snipe toggle, for a member (Members only) and for the owner (Invite and Members). Before the fix the title
+  // was 0 px wide and the header 374 px tall (tmp/tools/snipe-transport-evidence/mobile-header-before-fix.png).
+  for (const { student, role, actions } of [
+    { student: 2, role: 'member', actions: ['Members'] },
+    { student: 1, role: 'owner', actions: ['Invite', 'Members'] },
+  ]) {
+    const phonePage = pages[`mobileHeader-${role}`] = await signIn(student, phone);
+    await phonePage.goto(`${base}/messages/${group}`);
+    const open = phonePage.getByRole('region', { name: 'Conversation', exact: true });
+    await open.waitFor();
+    const toggle = open.getByRole('button', { name: /^Snipe/ });
+    await toggle.waitFor();
+    // The group's actions only appear once its details have loaded (the owner's Invite too).
+    for (const action of actions) await open.getByRole('button', { name: action, exact: true }).waitFor();
+    // Actual geometry of the header and its parts, recorded before any visibility assertion.
+    const geometry = await phonePage.evaluate((actions: string[]) => {
+      const size = (el: Element | null) => {
+        if (!el) return null;
+        const rect = el.getBoundingClientRect();
+        return { x: Math.round(rect.x), y: Math.round(rect.y), width: Math.round(rect.width * 100) / 100, height: Math.round(rect.height * 100) / 100 };
+      };
+      const region = document.querySelector('section[aria-label="Conversation"]');
+      const header = region?.querySelector('header') || null;
+      const title = header?.querySelector('h2') || null;
+      const buttons = [...(header?.querySelectorAll('button') ?? [])];
+      return {
+        document: { scrollWidth: document.documentElement.scrollWidth, innerWidth },
+        region: size(region), header: size(header), title: size(title), titleParent: size(title?.parentElement || null),
+        back: size(header?.querySelector('a[aria-label="Back to Messages"]') || null),
+        actions: Object.fromEntries(actions.map(action => [action, size(buttons.find(b => b.textContent?.trim() === action) || null)])),
+      };
+    }, actions);
+    console.log(`mobile-conversation-header-${role}`, JSON.stringify(geometry));
+    await screenshot(phonePage, `mobile-conversation-header-${role}-after-fix`);
+    const heading = open.getByRole('heading', { level: 2, name: /Group chat/ });
+    expect(await heading.isVisible()).toBe(true);
+    // A real line of text, not one letter per line.
+    const titleBox = await heading.boundingBox();
+    expect(titleBox?.width ?? 0).toBeGreaterThan(40);
+    expect(titleBox?.height ?? Infinity).toBeLessThan(120);
+    const headerBox = await open.locator('header').first().boundingBox();
+    expect(headerBox?.height ?? Infinity).toBeLessThan(260);
+    for (const action of actions) {
+      const button = open.getByRole('button', { name: action, exact: true });
+      expect(await button.isVisible()).toBe(true);
+      const box = await button.boundingBox();
+      expect((box?.x ?? Infinity) + (box?.width ?? 0)).toBeLessThanOrEqual(phone.width);
+    }
+    expect(await toggle.isVisible()).toBe(true);
+    expect(await phonePage.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await phonePage.context().close();
+  }
+});
+
 it('uploads, reviews, approves, persists, withdraws and then blocks the photo', async () => {
   // A real JPEG with embedded metadata; the stored copy must be re-encoded without it.
   const photo = await sharp({ create: { width: 900, height: 600, channels: 3, background: '#000000', noise: { type: 'gaussian', mean: 120, sigma: 50 } } })
     .withExif({ IFD0: { Copyright: 'SocialU acceptance owner' } }).jpeg().toBuffer();
 
   const photographer = pages.photographer = await openSnipes(await signIn(1));
+  await snipeOnlyInConversation(photographer);
   await balance(photographer).getByText('0 points', { exact: true }).waitFor();
   await photographer.getByRole('button', { name: 'New Snipe' }).click();
   // SRS-528.2: reward, sharing, expiry and cooldown rules are shown before submission.
@@ -303,9 +383,12 @@ it('uploads, reviews, approves, persists, withdraws and then blocks the photo', 
 
   const [pending] = await snipeRows();
   expect(pending.status).toBe('pending');
-  const stored = [...objects.entries()].filter(([key]) => key.startsWith(`snipe/${testUid(1)}/`));
+  const stored = [...objects.entries()].filter(([key]) => key.startsWith(`${SNIPE_BUCKET}/snipe/${testUid(1)}/`));
   expect(stored).toHaveLength(1);
   expect((await sharp(stored[0][1].bytes).metadata()).exif).toBeUndefined();
+  // The original went to staging through the upload URL and was deleted once the re-encoded copy was accepted.
+  expect(storage.log.signedUploads.map(({ bytes, type, status }) => ({ bytes, type, status }))).toEqual([{ bytes: photo.length, type: 'image/jpeg', status: 200 }]);
+  expect([...objects.keys()].filter((key) => key.startsWith(`${SNIPE_STAGING_BUCKET}/`))).toEqual([]);
   const photoPath = `/api/conversations/${group}/snipes/${pending.id}/photo`;
 
   // SRS-512.2: the untagged member sees no request, placeholder or photo while it is pending.
@@ -317,6 +400,7 @@ it('uploads, reviews, approves, persists, withdraws and then blocks the photo', 
   // SRS-511.2 to 511.4 on a phone: two separate questions, nothing preselected; one saved answer never fills the other.
   const tagged = pages.tagged = await openSnipes(await signIn(2, phone));
   await tagged.getByRole('button', { name: /^Snipe.*1 to review/ }).waitFor();
+  await snipeOnlyInConversation(tagged);
   expect(await photoBlob(tagged)).toMatch(/^blob:/);
   const identity = card(tagged).getByRole('group', { name: 'Is this you?' });
   const sharing = card(tagged).getByRole('group', { name: 'Do you approve sharing this photo in this conversation?' });
@@ -444,9 +528,7 @@ it('uploads, reviews, approves, persists, withdraws and then blocks the photo', 
 
   expect((await snipeRows()).map(row => row.status)).toEqual(['removed']);
   expect(await reportRows()).toEqual([{ reporter: 4, reason: 'Posted without asking me.', status: 'unresolved' }]);
-  expect(signedSnipeKeys).toEqual([]);
-  expect(otherBucketRequests).toEqual([]);
-  expect(leakedKeys).toEqual([]);
+  transportClean();
   for (const page of [photographer, returning, member]) await page.context().close();
 });
 
@@ -459,7 +541,7 @@ it('returns the saved Snipe when the response is lost after commit, without a se
   await photographer.getByLabel(/^Photo/).setInputFiles({ name: 'retry.png', mimeType: 'image/png',
     buffer: await sharp({ create: { width: 320, height: 240, channels: 3, background: '#c0ddcb' } }).png().toBuffer() });
   await photographer.getByRole('checkbox', { name: /Dorm Student 3/ }).check();
-  dropNextCreate = true;
+  dropNextAccept = true;
   await photographer.getByRole('button', { name: 'Submit Snipe' }).click();
   await photographer.getByRole('button', { name: 'Try again' }).waitFor();
   expect(await snipeRows()).toHaveLength(before + 1);
@@ -472,8 +554,7 @@ it('returns the saved Snipe when the response is lost after commit, without a se
   await screenshot(tagged, 'mobile-retry-review');
   // A pending (unpublished) retry earns nothing.
   expect(await ledgerRows()).toEqual([{ student: 1, points: 25 }]);
-  expect(otherBucketRequests).toEqual([]);
-  expect(leakedKeys).toEqual([]);
+  transportClean();
   for (const page of [photographer, tagged]) await page.context().close();
 });
 
@@ -572,8 +653,7 @@ it('lets the group owner review reports: dismiss, a fresh report, then remove wi
   const repeat = await api(owner, `/api/conversations/${group}/snipes/${id}/admin-removal`, 'POST');
   expect([repeat.status, JSON.parse(repeat.text).snipe.status]).toEqual([200, 'removed']);
   expect(await ledgerRows()).toEqual([{ student: 1, points: 25 }, { student: 2, points: 25 }]);
-  expect(signedSnipeKeys).toEqual([]);
-  expect(leakedKeys).toEqual([]);
+  transportClean();
   for (const page of [owner, ownerPhone, member, tagged, photographer]) await page.context().close();
 });
 
@@ -612,7 +692,7 @@ it('keeps direct-message Snipes free of report and administrator controls', asyn
   for (const page of [photographer, tagged]) expect((await api(page, `/api/conversations/${dm}/snipes/${id}/photo`)).status).toBe(404);
   await screenshot(photographer, 'desktop-dm-photographer-removed');
   expect(await ledgerRows()).toEqual([{ student: 1, points: 25 }, { student: 2, points: 25 }, { student: 3, points: 25 }]);
-  expect(leakedKeys).toEqual([]);
+  transportClean();
   for (const page of [photographer, tagged]) await page.context().close();
 });
 
@@ -686,9 +766,7 @@ it('lets a tagged friend who left the group withdraw sharing from the Messages h
   expect([await removed.count(), await approved.count()]).toEqual([1, 0]);
   expect(await tagState(id, 1)).toEqual({ status: 'removed', withdrawn: true });
   expect(await ledgerRows()).toEqual(credited);
-  expect(signedSnipeKeys).toEqual([]);
-  expect(otherBucketRequests).toEqual([]);
-  expect(leakedKeys).toEqual([]);
+  transportClean();
   for (const page of [photographer, former, viewer, owner]) await page.context().close();
 });
 
@@ -760,8 +838,69 @@ it('lets a photographer who left the group remove their Snipe from the Messages 
   for (const path of denied) expect((await api(departed, path)).status, path).toBe(404);
   // SRS-524.4: the photographer keeps the points awarded at publication.
   expect(await ledgerRows()).toEqual(credited);
-  expect(signedSnipeKeys).toEqual([]);
-  expect(otherBucketRequests).toEqual([]);
-  expect(leakedKeys).toEqual([]);
+  transportClean();
   for (const page of [tagged, owner, departed]) await page.context().close();
+});
+
+it('uploads a full-size photo larger than the 4.5 MB function limit directly to private storage', async () => {
+  // > 4.5 MB (the hosted function request cap) and within the approved 10,000,000 bytes and 4096 × 4096 pixels.
+  const photo = await noisePng(1800, 1200);
+  expect(photo.length).toBeGreaterThan(4_500_000);
+  expect(photo.length).toBeLessThanOrEqual(10_000_000);
+  // Students 2 and 3 are in their pair cooldown from the scenarios above; student 4 becomes a friend now.
+  await befriend(db, 1, 4);
+  const before = (await snipeRows()).length;
+  const uploadsBefore = storage.log.signedUploads.length;
+
+  const photographer = pages.photographer = await openSnipes(await signIn(1));
+  const appRequests = recordAppRequests(photographer);
+  await photographer.getByRole('button', { name: 'New Snipe' }).click();
+  await photographer.getByLabel(/^Photo/).setInputFiles({ name: 'full-size.png', mimeType: 'image/png', buffer: photo });
+  await photographer.getByRole('img', { name: 'Selected Snipe photo preview' }).waitFor();
+  await photographer.getByRole('checkbox', { name: /Dorm Student 4/ }).check();
+  await photographer.getByRole('button', { name: 'Submit Snipe' }).click();
+  await photographer.getByText('Snipe submitted.', { exact: false }).waitFor();
+  await card(photographer).getByText('Pending', { exact: true }).waitFor();
+  await screenshot(photographer, 'desktop-photographer-large-photo');
+
+  // The app only received small JSON: begin and finalize. No multipart and no image body ever reached it.
+  const writes = appRequests.filter((request) => request.method !== 'GET' && request.path.includes('/snipes'));
+  expect(writes.map((request) => request.path)).toEqual([`/api/conversations/${group}/snipes/uploads`, `/api/conversations/${group}/snipes/uploads/finalize`]);
+  for (const request of writes) {
+    expect(request.type).toMatch(/^application\/json/);
+    expect(request.bytes).toBeLessThan(1024);
+  }
+  expect(appRequests.some((request) => /multipart|image\//.test(request.type) || request.bytes > 1024)).toBe(false);
+  // The original crossed the network once, straight to the staging bucket, through its upload-only URL.
+  expect(storage.log.signedUploads.slice(uploadsBefore)).toEqual([{ path: expect.stringMatching(new RegExp(`^${SNIPE_STAGING_BUCKET}/stage/${testUid(1)}/[0-9a-f-]{36}\\.png$`)),
+    bytes: photo.length, type: 'image/png', status: 200 }]);
+  const stagedPath = storage.log.signedUploads[uploadsBefore].path;
+  expect(objects.has(stagedPath)).toBe(false);
+
+  const rows = await snipeRows();
+  expect(rows).toHaveLength(before + 1);
+  const newest = rows[rows.length - 1];
+  expect(newest.status).toBe('pending');
+  const committed = await committedObject(newest.id);
+  expect(committed.key).toMatch(new RegExp(`^snipe/${testUid(1)}/[0-9a-f-]{36}/[0-9a-f]{64}/[0-9a-f-]{36}\\.png$`));
+  expect(committed.object!.bytes.length).toBeGreaterThan(4_500_000);
+  expect(await sharp(committed.object!.bytes).metadata()).toMatchObject({ format: 'png', width: 1800, height: 1200 });
+
+  // The tagged friend's private read is a stream from the authorized route: no Content-Length, no caching.
+  const tagged = pages.tagged = await openSnipes(await signIn(4));
+  expect(await photoBlob(tagged)).toMatch(/^blob:/);
+  const photoPath = `/api/conversations/${group}/snipes/${newest.id}/photo`;
+  const read = await tagged.evaluate(async (path: string) => {
+    const response = await fetch(path, { cache: 'no-store', headers: { Authorization: `Bearer ${localStorage.getItem('access_token') || sessionStorage.getItem('access_token') || ''}` } });
+    const bytes = (await response.arrayBuffer()).byteLength;
+    return { status: response.status, type: response.headers.get('content-type'), length: response.headers.get('content-length'),
+      cache: response.headers.get('cache-control'), nosniff: response.headers.get('x-content-type-options'), corp: response.headers.get('cross-origin-resource-policy'), bytes };
+  }, photoPath);
+  expect(read).toEqual({ status: 200, type: 'image/png', length: null, cache: 'private, no-store, max-age=0', nosniff: 'nosniff', corp: 'same-origin', bytes: committed.object!.bytes.length });
+  await screenshot(tagged, 'desktop-tagged-large-photo');
+  // A member who was not tagged still cannot read the pending photo.
+  const member = pages.member = await openSnipes(await signIn(2));
+  expect((await api(member, photoPath)).status).toBe(404);
+  transportClean();
+  for (const page of [photographer, tagged, member]) await page.context().close();
 });

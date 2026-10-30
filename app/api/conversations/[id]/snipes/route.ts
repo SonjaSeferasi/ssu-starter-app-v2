@@ -18,6 +18,9 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
 }
 
 // SRS-510.1 to 510.11: submit exactly one validated photo and one or more eligible friends.
+// LEGACY multipart submission, kept on purpose so a browser still running the previous bundle keeps working
+// during a deploy; same checks and cleanup as before. The UI uses only uploads/ (begin) + uploads/finalize,
+// because a hosted function request body is capped at 4.5 MB, below the approved 10 MB photo policy.
 export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
     const user = await snipeUser(request);

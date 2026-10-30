@@ -31,9 +31,10 @@ export function snipeIdParam(value: string) {
   return value;
 }
 
-type RpcError = { code?: string; message?: string; details?: string | null };
+export type RpcError = { code?: string | null; message?: string | null; details?: string | null };
 
-function snipeError(error: RpcError): SnipeError {
+// Also used for errors the staging bridge reports as data (a rejected ticket commits its terminal state).
+export function snipeError(error: RpcError): SnipeError {
   const definite = Boolean(error.code);
   const known = (status: number, code?: string, extra?: Record<string, unknown>) => new SnipeError(error.message || 'Snipe request failed.', status, definite, code, extra);
   switch (error.code) {
@@ -58,6 +59,12 @@ function snipeError(error: RpcError): SnipeError {
     case 'SM400': return known(400, 'SNIPE_DECISION_INVALID');
     case 'SM403': return known(403, 'SNIPE_MODERATION_NOT_ALLOWED');
     case 'SR404': return new SnipeError(SNIPE_REPORT_NOT_AVAILABLE, 404, true);
+    // Direct photo upload tickets (20261030034841_snipe_photo_transport.sql).
+    case 'SP404': return known(404, 'SNIPE_UPLOAD_NOT_AVAILABLE');
+    case 'SP409': return known(409, 'SNIPE_UPLOAD_BUSY');
+    case 'SP410': return known(410, 'SNIPE_UPLOAD_EXPIRED');
+    case 'SP422': return known(400, 'SNIPE_PHOTO_INVALID');
+    case 'SP429': return known(429, 'SNIPE_UPLOAD_LIMIT');
     case '42501': return new SnipeError('A verified, active university account is required.', 403, true);
     case 'PGRST202': return new SnipeError('Snipe needs its database update before it can be used.', 503, true, 'SNIPE_SETUP_REQUIRED');
   }
@@ -100,16 +107,43 @@ export async function snipeModeration<T = any>(authId: string, action: SnipeMode
 // denies anon/authenticated every row here, so only this server (service_role) uploads or downloads.
 // No public or signed URL is ever created; photos are streamed through the authorized photo route.
 export const SNIPE_BUCKET = 'socialu-snipe-photos';
+// Unvalidated originals uploaded by the browser (20261030034841_snipe_photo_transport.sql). Same restrictive
+// policy, separate bucket: only upload-only signed URLs for one staging key are issued here, it is never
+// read by participants, and cleanup in this bucket can never reach a committed photo.
+export const SNIPE_STAGING_BUCKET = 'socialu-snipe-staging';
 
 export function snipeStorage() {
   return accountClient().storage.from(SNIPE_BUCKET);
 }
 
+export function snipeStagingStorage() {
+  return accountClient().storage.from(SNIPE_STAGING_BUCKET);
+}
+
 // Snipe uploads refuse a public bucket, because a public object URL could be fetched without any of the checks below.
-export async function requirePrivateSnipeBucket() {
-  const { data, error } = await accountClient().storage.getBucket(SNIPE_BUCKET);
+export async function requirePrivateSnipeBucket(bucket = SNIPE_BUCKET) {
+  const { data, error } = await accountClient().storage.getBucket(bucket);
   if (error || !data) throw new AccountError('Snipe photo storage is not set up yet.', 503, 'SNIPE_STORAGE_SETUP_REQUIRED');
   if (data.public) throw new AccountError('Snipe uploads are paused: the Snipe storage bucket must be private.', 503, 'SNIPE_STORAGE_PUBLIC');
+}
+
+// Reads one private object as a stream with the server key, never through a public or signed read URL.
+// The same request the SDK's download() makes; the caller reads the body (bounded). `missing` is a
+// definite "no such object"; anything else is an unavailable store.
+export async function snipeObject(bucket: string, key: string, signal?: AbortSignal):
+  Promise<{ body: ReadableStream<Uint8Array>; missing?: never } | { body?: never; missing: boolean }> {
+  accountClient();
+  const base = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/+$/, '');
+  const serverKey = process.env.SUPABASE_SERVICE_ROLE_KEY as string;
+  const path = [bucket, ...key.split('/')].map(encodeURIComponent).join('/');
+  let response: Response;
+  try {
+    response = await fetch(`${base}/storage/v1/object/${path}`, { headers: { apikey: serverKey, Authorization: `Bearer ${serverKey}` }, cache: 'no-store', signal });
+  } catch { return { missing: false }; }
+  if (response.ok && response.body) return { body: response.body };
+  await response.body?.cancel().catch(() => {});
+  // Storage has answered a missing object both as 404 and as 400 with statusCode "404".
+  return { missing: response.status === 404 || response.status === 400 };
 }
 
 export function snipeResponse(error: unknown) {
