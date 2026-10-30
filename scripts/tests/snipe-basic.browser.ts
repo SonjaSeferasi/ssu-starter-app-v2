@@ -81,6 +81,8 @@ async function photoBlob(page: any) {
   return image.getAttribute('src') as Promise<string>;
 }
 const snipeRows = async () => (await db.query<any>('SELECT snipe_id::text AS id, status FROM socialu.snipe_requests ORDER BY snipe_id')).rows;
+const reportRows = async () => (await db.query<any>('SELECT reporter_id::int AS reporter, reason, status FROM socialu.snipe_reports ORDER BY report_id')).rows;
+const receipt = (page: any) => card(page).getByRole('status', { name: 'Report receipt' });
 
 beforeAll(async () => {
   mkdirSync(artifacts, { recursive: true });
@@ -269,6 +271,57 @@ it('uploads, reviews, approves, persists, withdraws and then blocks the photo', 
   const image = await api(member, photoPath);
   expect([image.status, image.type, image.cache]).toEqual([200, 'image/jpeg', 'private, no-store, max-age=0']);
 
+  // SRS-514.8, 514.9, 514.11: the untagged member reports the published Snipe with a required reason (keyboard),
+  // sees a receipt only once it is stored, and the photo stays published for everyone while it waits for review.
+  // Any current member may report it, the photographer included, who also keeps the separate Remove action.
+  expect(await card(photographer).getByRole('button', { name: 'Report Snipe' }).count()).toBe(1);
+  expect(await card(photographer).getByRole('button', { name: 'Remove Snipe' }).count()).toBe(1);
+  await card(member).getByRole('button', { name: 'Report Snipe' }).press('Enter');
+  const reportForm = card(member).getByRole('form', { name: 'Report this Snipe' });
+  const reasonBox = reportForm.getByLabel('Why are you reporting this Snipe?');
+  await expect.poll(() => reasonBox.evaluate((el: Element) => el === document.activeElement)).toBe(true);
+  // Escape cancels without sending anything and returns focus to Report.
+  await member.keyboard.press('Escape');
+  const reportButton = card(member).getByRole('button', { name: 'Report Snipe' });
+  await expect.poll(() => reportButton.evaluate((el: Element) => el === document.activeElement)).toBe(true);
+  await reportButton.press('Enter');
+  const send = reportForm.getByRole('button', { name: 'Send report' });
+  expect(await send.isDisabled()).toBe(true);
+  await reasonBox.fill('   ');
+  expect(await send.isDisabled()).toBe(true);
+  expect(await reportRows()).toEqual([]);
+  await reasonBox.fill('  Posted without asking me.  ');
+  await send.click();
+  await receipt(member).getByText('Report received. Thank you.').waitFor();
+  await receipt(member).getByText('Your reason: Posted without asking me.').waitFor();
+  expect(await reportRows()).toEqual([{ reporter: 4, reason: 'Posted without asking me.', status: 'unresolved' }]);
+  expect(await card(member).getByRole('button', { name: 'Report Snipe' }).count()).toBe(0);
+  await card(member).getByText('Approved', { exact: true }).waitFor();
+  expect(await photoBlob(member)).toMatch(/^blob:/);
+  await screenshot(member, 'desktop-member-report-receipt');
+  // The receipt comes from the stored report: it survives a reload and a new phone session.
+  await member.reload(); await openSnipes(member);
+  await receipt(member).getByText('Your reason: Posted without asking me.').waitFor();
+  expect(await photoBlob(member)).toMatch(/^blob:/);
+  const memberPhone = pages.memberPhone = await openSnipes(await signIn(4, phone));
+  await receipt(memberPhone).getByText('Waiting for review by a group administrator', { exact: false }).waitFor();
+  expect(await memberPhone.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await screenshot(memberPhone, 'mobile-member-report-receipt');
+  await memberPhone.context().close();
+  // A repeated report (lost response, double submit) returns the same stored report; nothing is duplicated.
+  const reportPath = `/api/conversations/${group}/snipes/${pending.id}/report`;
+  const again = await api(member, reportPath, 'POST', { reason: 'Posted without asking me.' });
+  expect([again.status, JSON.parse(again.text).created]).toEqual([200, false]);
+  const changed = await api(member, reportPath, 'POST', { reason: 'Something else' });
+  expect([changed.status, JSON.parse(changed.text).code]).toEqual([409, 'SNIPE_ALREADY_REPORTED']);
+  expect(await reportRows()).toHaveLength(1);
+  // Reporting changed nothing for the photographer: still Approved, same photo, same reward, no report details.
+  await photographer.reload(); await openSnipes(photographer);
+  await card(photographer).getByText('Approved', { exact: true }).waitFor();
+  expect(await photoBlob(photographer)).toMatch(/^blob:/);
+  expect(await receipt(photographer).count()).toBe(0);
+  expect(await ledgerRows()).toEqual([{ student: 1, points: 25 }]);
+
   // SRS-511.12, 514.4 to 514.7: confirmed withdrawal removes the Snipe for everyone; bytes stop being served.
   await card(returning).getByRole('button', { name: 'Withdraw sharing permission' }).click();
   await card(returning).getByRole('group', { name: 'Confirm' }).getByRole('button', { name: 'Confirm' }).click();
@@ -279,6 +332,9 @@ it('uploads, reviews, approves, persists, withdraws and then blocks the photo', 
   await member.reload(); await openSnipes(member);
   await card(member).getByText('Snipe removed', { exact: true }).waitFor();
   expect(await card(member).getByRole('img', { name: 'Snipe by Dorm Student 1' }).count()).toBe(0);
+  // The member's receipt stays on the removed Snipe; Report is no longer offered.
+  await receipt(member).getByText('Your reason: Posted without asking me.').waitFor();
+  expect(await card(member).getByRole('button', { name: 'Report Snipe' }).count()).toBe(0);
   await photographer.reload(); await openSnipes(photographer);
   await card(photographer).getByText('Reason: Sharing permission withdrawn').waitFor();
   // SRS-524.4, 527.7: removal keeps the awarded points and the reward explanation, without the photo.
@@ -291,6 +347,7 @@ it('uploads, reviews, approves, persists, withdraws and then blocks the photo', 
   expect(await photographer.getByRole('checkbox', { name: /Dorm Student 2/ }).isDisabled()).toBe(true);
 
   expect((await snipeRows()).map(row => row.status)).toEqual(['removed']);
+  expect(await reportRows()).toEqual([{ reporter: 4, reason: 'Posted without asking me.', status: 'unresolved' }]);
   expect(signedSnipeKeys).toEqual([]);
   expect(otherBucketRequests).toEqual([]);
   expect(leakedKeys).toEqual([]);

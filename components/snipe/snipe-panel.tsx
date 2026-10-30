@@ -9,6 +9,7 @@ import styles from './snipe.module.css';
 // UR-510 to UR-514 and UR-525: a private, conversation-only Snipe panel. Pending requests are only
 // returned to the photographer and tagged friends, so other members never see a placeholder for them.
 // Points come from the shared ledger; only the photographer sees a Snipe's reward result.
+// Group members can report a published Snipe (SRS-514.8 to 514.14); direct messages never offer it.
 type Person = { id: string; name: string; username: string };
 type Target = Person & { next_eligible_at: string | null };
 type Answers = { identity: boolean | null; sharing: boolean | null; withdrawn: boolean };
@@ -16,6 +17,8 @@ type Status = 'pending' | 'approved' | 'rejected' | 'expired' | 'canceled' | 'cl
 // Frozen ledger outcome for a published Snipe; `awarded: false` means no credit was ever recorded for it.
 type Reward = { awarded: true; verified_friends: number; points_per_friend: number; points: number; recorded_at: string; balance_after: number }
   | { awarded: false };
+// The signed-in student's own stored group report (SRS-514.9). Administrator review comes in a later phase.
+type Receipt = { id: string; snipe_id: string; reason: string; status: 'unresolved' | 'dismissed' | 'removed' };
 export type SnipeView = {
   id: string; status: Status; viewer_role: 'photographer' | 'tagged' | 'member';
   submitted_at: string; expires_at: string; published_at: string | null; terminal_reason: string | null;
@@ -23,6 +26,8 @@ export type SnipeView = {
   tags: (Person & Answers)[] | null; my_answers: Answers | null;
   can_answer: boolean; can_withdraw: boolean; can_remove: boolean;
   reward?: Reward | null;
+  // Absent only if the server predates group reporting.
+  can_report?: boolean; my_report?: Receipt | null;
 };
 type Rewards = { points_per_friend: number | null; balance: number };
 // `rewards` is absent only if the server predates the rewards migration.
@@ -30,6 +35,10 @@ type SnipeList = { student_id: string; kind: 'private' | 'group'; rewards?: Rewa
 type Cooldown = { friend: Person; next_eligible_at: string };
 
 const POLL_MS = 20_000;
+const REPORT_REASON_MAX = 500;
+const reportStatusLabels: Record<Receipt['status'], string> = {
+  unresolved: 'Waiting for review by a group administrator', dismissed: 'Reviewed: dismissed', removed: 'Reviewed: Snipe removed',
+};
 const statusLabels: Record<Status, string> = {
   pending: 'Pending', approved: 'Approved', rejected: 'Rejected', expired: 'Expired', canceled: 'Canceled', closed: 'Closed', removed: 'Removed',
 };
@@ -141,7 +150,7 @@ export function SnipePanel({ conversationId }: { conversationId: string }) {
               {list.snipes.length === 0
                 ? <p className={styles.muted}>No Snipes to show in this conversation yet.</p>
                 : <ul className={styles.cards}>{list.snipes.map((snipe) => (
-                    <li key={snipe.id}><SnipeCard base={base} snipe={snipe} onChange={replaceSnipe} /></li>
+                    <li key={snipe.id}><SnipeCard base={base} snipe={snipe} group={list.kind === 'group'} onChange={replaceSnipe} /></li>
                   ))}</ul>}
             </>
           )}
@@ -279,7 +288,7 @@ function Composer({ base, targets, pointsPerFriend, onSubmitted }: {
   );
 }
 
-function SnipeCard({ base, snipe, onChange }: { base: string; snipe: SnipeView; onChange: (snipe: SnipeView) => void }) {
+function SnipeCard({ base, snipe, group, onChange }: { base: string; snipe: SnipeView; group: boolean; onChange: (snipe: SnipeView) => void }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [confirming, setConfirming] = useState<'withdraw' | 'remove' | null>(null);
@@ -352,7 +361,90 @@ function SnipeCard({ base, snipe, onChange }: { base: string; snipe: SnipeView; 
         )
       )}
       {error && <p className={chat.error} role="alert">{error}</p>}
+      {/* SRS-514.14: group reporting is never offered in a direct message. */}
+      {group && (snipe.can_report || snipe.my_report) && <SnipeReport base={base} snipe={snipe} onChange={onChange} />}
     </article>
+  );
+}
+
+// SRS-514.8, 514.9, 514.11: a group member reports a published Snipe with a required reason. The receipt is
+// shown only once the server confirms the report is stored, and comes from the stored report, so it is still
+// there after a refresh. Reporting never hides the photo; only an authorized removal does.
+function SnipeReport({ base, snipe, onChange }: { base: string; snipe: SnipeView; onChange: (snipe: SnipeView) => void }) {
+  const [open, setOpen] = useState(false);
+  const [reason, setReason] = useState('');
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
+  const field = useId();
+  const opener = useRef<HTMLButtonElement>(null);
+  const textarea = useRef<HTMLTextAreaElement>(null);
+  const trimmed = reason.trim();
+
+  useEffect(() => { if (open) textarea.current?.focus(); }, [open]);
+
+  function cancel() {
+    setOpen(false); setReason(''); setError('');
+    // Return keyboard focus to the control that opened the form.
+    window.setTimeout(() => opener.current?.focus(), 0);
+  }
+
+  async function submit(event: FormEvent) {
+    event.preventDefault();
+    if (sending || !trimmed) return;
+    setSending(true); setError(''); setNotice('');
+    try {
+      const { response, data } = await snipeFetch(`${base}/${encodeURIComponent(snipe.id)}/report`, { method: 'POST', json: { reason: trimmed } });
+      if (data.snipe) onChange(data.snipe);
+      if (!response.ok) throw new Error(data.error || 'Your report could not be sent. Please try again.');
+      setOpen(false); setReason('');
+      setNotice(data.created ? 'Report received. Thank you.' : 'You already reported this Snipe. Your report is still waiting for review.');
+    } catch (err) {
+      setError(err instanceof TypeError
+        ? 'Connection problem. Your report may not have been sent. Try again: it won’t be sent twice.'
+        : failure(err, 'Your report could not be sent. Please try again.'));
+    } finally {
+      setSending(false);
+    }
+  }
+
+  const receipt = snipe.my_report;
+  // The form closes on its own if the Snipe stops being reportable (for example, a report is already on file).
+  const showForm = Boolean(snipe.can_report) && open;
+  return (
+    <div className={styles.report}>
+      {receipt && (
+        <div className={styles.receipt} role="status" aria-label="Report receipt">
+          {notice && <p className={styles.tight}><strong>{notice}</strong></p>}
+          <p className={styles.tight}><strong>You reported this Snipe</strong> · Report #{receipt.id}</p>
+          <p className={styles.tight}>Your reason: {receipt.reason}</p>
+          <p className={styles.muted}>{reportStatusLabels[receipt.status] ?? receipt.status}. The Snipe stays visible unless it’s removed.</p>
+        </div>
+      )}
+      {error && !showForm && <p className={chat.error} role="alert">{error}</p>}
+      {snipe.can_report && !open && (
+        <div className={styles.actions}>
+          <button type="button" ref={opener} className={styles.secondary} onClick={() => { setNotice(''); setError(''); setOpen(true); }}>Report Snipe</button>
+        </div>
+      )}
+      {showForm && (
+        <form className={styles.fieldset} onSubmit={submit} aria-label="Report this Snipe"
+          onKeyDown={(event) => { if (event.key === 'Escape' && !sending) cancel(); }}>
+          <label className={styles.label} htmlFor={field}>Why are you reporting this Snipe?</label>
+          <p className={styles.muted} id={`${field}-help`}>Group administrators will review your report. The Snipe stays visible while it waits for review.</p>
+          <textarea id={field} ref={textarea} className={styles.textarea} value={reason} required maxLength={REPORT_REASON_MAX}
+            aria-describedby={`${field}-help ${field}-count`} disabled={sending} onChange={(event) => setReason(event.target.value)} />
+          <p className={styles.muted} id={`${field}-count`}>{reason.length}/{REPORT_REASON_MAX} characters</p>
+          {error && <p className={chat.error} role="alert">{error}</p>}
+          <div className={styles.actions}>
+            <button type="submit" className={styles.danger} disabled={sending || !trimmed}>
+              {sending ? 'Sending report…' : error ? 'Try again' : 'Send report'}
+            </button>
+            <button type="button" className={chat.retry} disabled={sending} onClick={cancel}>Cancel</button>
+          </div>
+        </form>
+      )}
+    </div>
   );
 }
 
