@@ -2,7 +2,7 @@ import { afterAll, afterEach, beforeAll, expect, it } from 'vitest';
 import { createServer, type Server } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { spawn, type ChildProcess } from 'node:child_process';
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, readFileSync } from 'node:fs';
 import type { PGlite } from '@electric-sql/pglite';
 import sharp from 'sharp';
 import { befriend, friendship, testUid } from '../../__tests__/helpers/dormspace-db';
@@ -11,7 +11,8 @@ import { createGroup, createSnipeDatabase } from '../../__tests__/helpers/snipe-
 // SRS-510 to 514 and 525 acceptance: the real Next UI and API run against the real schema and functions in
 // PGlite. Only the provider's Auth, Storage and PostgREST HTTP transport is replaced, on loopback; no hosted
 // accounts, keys or data. Students: 1 photographer and group owner, 2 and 3 tagged friends (also friends of
-// each other, with a direct message), 4 an untagged group member.
+// each other, with a direct message), 4 an untagged group member. The sharing-permission tests add fresh groups
+// owned by 4 (group membership has no friendship rule) with 1, 2 and 3, and use the unused pairs 3→1 and 2→1.
 let db: PGlite, service: Server, next: ChildProcess, browser: any;
 let base = '', nextLog = '', group = '', dm = '', dropNextCreate = false;
 const pages: Record<string, any> = {};
@@ -21,6 +22,10 @@ const signedSnipeKeys: string[] = [];
 const leakedKeys: string[] = [];
 // Must match SNIPE_BUCKET in lib/snipe.ts and the migration (not imported: lib/snipe pulls in server modules).
 const SNIPE_BUCKET = 'socialu-snipe-photos';
+// Additive migrations on top of the shared Snipe fixture, in filename order: the real group-leave bridge and
+// original-actor sharing permissions (SRS-511.12, 514.1).
+const ADDITIVE_MIGRATIONS = ['supabase/migrations/20261028120300_chat_leave_group.sql', 'supabase/migrations/20261030040044_snipe_withdrawal_access.sql'];
+const SHARING_RECORD_KEYS = ['action', 'id', 'published_at', 'role', 'sharing', 'status', 'submitted_at'];
 const otherBucketRequests: string[] = [];
 const artifacts = process.env.SNIPE_EVIDENCE_DIR || 'tmp/snipe-basic';
 const desktop = { width: 1280, height: 900 }, phone = { width: 390, height: 844 };
@@ -118,10 +123,63 @@ async function reportSnipe(page: any, student: number, reason: string) {
   await cardBy(page, student).getByRole('status', { name: 'Report receipt' }).getByText('Report received. Thank you.').waitFor();
 }
 const receipt = (page: any) => card(page).getByRole('status', { name: 'Report receipt' });
+// The only Snipe in a fresh group. No .first(): a second card fails strictly instead of being skipped.
+const soleCard = (page: any, student: number) => page.getByRole('article', { name: `Snipe by Dorm Student ${student}` });
+async function solePhoto(page: any, student: number) {
+  const image = soleCard(page, student).getByRole('img', { name: `Snipe by Dorm Student ${student}` });
+  await image.waitFor();
+  await page.waitForFunction((el: HTMLImageElement) => el.complete && el.naturalWidth > 0, await image.elementHandle());
+  return image.getAttribute('src') as Promise<string>;
+}
+const tagState = async (id: string, student: number) => (await db.query<any>('SELECT r.status, t.sharing_withdrawn AS withdrawn FROM socialu.snipe_requests r JOIN socialu.snipe_tags t USING (snipe_id) WHERE r.snipe_id = $1 AND t.student_id = $2', [id, student])).rows[0];
+// SRS-511.12, 514.1: "Your Snipe sharing permissions" on the Messages home. Records carry no name or ID, so one is
+// found by the student's role and its status; older Removed records for the same role stay in the list.
+const sharingPanel = (page: any) => page.getByRole('region', { name: 'Your Snipe sharing permissions', exact: true });
+const sharingRecords = (page: any, role: 'photographer' | 'tagged', status: 'Approved' | 'Removed') => sharingPanel(page).getByRole('listitem')
+  .filter({ hasText: role === 'photographer' ? 'You took this Snipe' : 'You were tagged and approved sharing' })
+  .filter({ has: page.getByText(status, { exact: true }) });
+async function openSharing(page: any) {
+  await page.goto(`${base}/messages`);
+  const toggle = sharingPanel(page).getByRole('button', { name: 'Your Snipe sharing permissions', exact: true });
+  await toggle.waitFor();
+  expect(await toggle.getAttribute('aria-expanded')).toBe('false');
+  await toggle.click();
+  await sharingPanel(page).getByText('Photos and messages are not shown here.', { exact: false }).waitFor();
+  await sharingPanel(page).getByRole('list').waitFor();
+  return page;
+}
+// Metadata only, in the panel and in the list response: no photo, link, names or conversation.
+async function sharingMetadata(page: any) {
+  const panel = sharingPanel(page);
+  expect(await panel.getByRole('img').count()).toBe(0);
+  expect(await panel.getByRole('link').count()).toBe(0);
+  expect(await panel.getByText(/Dorm Student|dorm\d/).count()).toBe(0);
+  const listed = await api(page, '/api/snipes/sharing');
+  const data = JSON.parse(listed.text);
+  expect([listed.status, listed.cache, Object.keys(data).sort()]).toEqual([200, 'no-store', ['next_cursor', 'records']]);
+  for (const record of data.records) expect(Object.keys(record).sort()).toEqual(SHARING_RECORD_KEYS);
+  return data.records as any[];
+}
+// The record's control through the real UI: Cancel first (checked by `unchanged`), then Confirm.
+async function cancelThenConfirm(page: any, record: any, control: string, warning: string, shot: string, unchanged: () => Promise<void>) {
+  await record.getByRole('button', { name: control, exact: true }).click();
+  const confirm = record.getByRole('group', { name: 'Confirm', exact: true });
+  await confirm.getByText(warning, { exact: false }).waitFor();
+  await confirm.getByText('This cannot be undone.', { exact: false }).waitFor();
+  expect(await noOverflow(page)).toBe(true);
+  await screenshot(page, shot);
+  await confirm.getByRole('button', { name: 'Cancel', exact: true }).click();
+  await record.getByRole('button', { name: control, exact: true }).waitFor();
+  expect(await confirm.count()).toBe(0);
+  await unchanged();
+  await record.getByRole('button', { name: control, exact: true }).click();
+  await confirm.getByRole('button', { name: 'Confirm', exact: true }).click();
+}
 
 beforeAll(async () => {
   mkdirSync(artifacts, { recursive: true });
   db = await createSnipeDatabase(4);
+  for (const file of ADDITIVE_MIGRATIONS) await db.exec(readFileSync(file, 'utf8'));
   await befriend(db, 1, 2); await befriend(db, 1, 3); await befriend(db, 2, 3);
   group = await createGroup(db, 1, [2, 3, 4]);
   dm = (await friendship(db, 2, 'message', 3)).conversation_id;
@@ -556,4 +614,154 @@ it('keeps direct-message Snipes free of report and administrator controls', asyn
   expect(await ledgerRows()).toEqual([{ student: 1, points: 25 }, { student: 2, points: 25 }, { student: 3, points: 25 }]);
   expect(leakedKeys).toEqual([]);
   for (const page of [photographer, tagged]) await page.context().close();
+});
+
+it('lets a tagged friend who left the group withdraw sharing from the Messages home, metadata only', async () => {
+  // SRS-511.12, 514.1 to 514.7, 514.15, 524.4 in a fresh group owned by 4: 3 photographs 1, who approves.
+  const fresh = await createGroup(db, 4, [1, 2, 3]);
+  const photographer = pages.photographer = await openSnipes(await signIn(3), fresh);
+  const id = await submitSnipe(photographer, 1, '#b4a7d6');
+  const former = pages.former = await signIn(1, phone);
+  const answered = await api(former, `/api/conversations/${fresh}/snipes/${id}`, 'PATCH', { action: 'respond', identity: true, sharing: true });
+  expect([answered.status, JSON.parse(answered.text).snipe.status]).toEqual([200, 'approved']);
+  const credited = [{ student: 1, points: 25 }, { student: 2, points: 25 }, { student: 3, points: 25 }, { student: 3, points: 25 }];
+  expect(await ledgerRows()).toEqual(credited);
+  const photoPath = `/api/conversations/${fresh}/snipes/${id}/photo`;
+  const viewer = pages.viewer = await openSnipes(await signIn(2), fresh);
+  await soleCard(viewer, 3).getByText('Approved', { exact: true }).waitFor();
+  expect(await solePhoto(viewer, 3)).toMatch(/^blob:/);
+  const owner = pages.owner = await signIn(4);
+  expect((await api(owner, photoPath)).status).toBe(200);
+
+  // 1 leaves through the real group-leave bridge. The published Snipe stays for the remaining members, and the
+  // former member gets no Snipe list, photo or chat history.
+  const left = await api(former, `/api/conversations/${fresh}/leave`, 'POST');
+  expect([left.status, JSON.parse(left.text).left_role]).toEqual([200, 'member']);
+  expect(await tagState(id, 1)).toEqual({ status: 'approved', withdrawn: false });
+  const denied = [`/api/conversations/${fresh}/snipes`, photoPath, `/api/conversations/${fresh}/messages`];
+  for (const path of denied) expect((await api(former, path)).status, path).toBe(404);
+  for (const page of [viewer, owner, photographer]) expect((await api(page, photoPath)).status).toBe(200);
+
+  // On a phone, the Messages home lists the Snipe as metadata only, with the tagged student's own control.
+  await openSharing(former);
+  const approved = sharingRecords(former, 'tagged', 'Approved');
+  await approved.waitFor();
+  expect(await approved.count()).toBe(1);
+  await approved.getByText('Original conversation', { exact: true }).waitFor();
+  await approved.getByText('Your sharing permission: Approved', { exact: true }).waitFor();
+  const records = await sharingMetadata(former);
+  expect(records.find(record => record.id === id)).toMatchObject({ status: 'approved', role: 'tagged', sharing: 'approved', action: 'withdraw' });
+  expect(await noOverflow(former)).toBe(true);
+  await screenshot(former, 'mobile-sharing-former-tagged');
+
+  // Cancel changes nothing; Confirm withdraws and removes the Snipe for everyone left in the group.
+  await cancelThenConfirm(former, approved, 'Withdraw sharing permission', 'Points already awarded to the photographer are kept.', 'mobile-sharing-withdraw-confirm', async () => {
+    expect(await tagState(id, 1)).toEqual({ status: 'approved', withdrawn: false });
+    expect((await api(viewer, photoPath)).status).toBe(200);
+  });
+  const removed = sharingRecords(former, 'tagged', 'Removed');
+  await removed.waitFor();
+  expect(await removed.count()).toBe(1);
+  expect(await approved.count()).toBe(0);
+  await removed.getByText('Your sharing permission: Withdrawn', { exact: true }).waitFor();
+  await removed.getByText('This Snipe was removed and its photo is no longer shown.', { exact: true }).waitFor();
+  expect(await removed.getByRole('button').count()).toBe(0);
+  expect(await noOverflow(former)).toBe(true);
+  await screenshot(former, 'mobile-sharing-withdrawn');
+  expect(await tagState(id, 1)).toEqual({ status: 'removed', withdrawn: true });
+  for (const page of [viewer, owner, photographer, former]) expect((await api(page, photoPath)).status).toBe(404);
+  for (const path of denied) expect((await api(former, path)).status, path).toBe(404);
+  await viewer.reload(); await openSnipes(viewer, fresh);
+  await soleCard(viewer, 3).getByText('Snipe removed', { exact: true }).waitFor();
+  expect(await soleCard(viewer, 3).getByRole('img').count()).toBe(0);
+  await photographer.reload(); await openSnipes(photographer, fresh);
+  await soleCard(photographer, 3).getByText('Reason: Sharing permission withdrawn').waitFor();
+  await soleCard(photographer, 3).getByRole('group', { name: 'Snipe reward' }).getByText('Removing a Snipe doesn’t take its points back.', { exact: false }).waitFor();
+
+  // A repeat (lost response, double submit) and a fresh panel load return the same stored state.
+  const repeat = await api(former, `/api/snipes/sharing/${id}`, 'PATCH', { action: 'withdraw' });
+  expect([repeat.status, JSON.parse(repeat.text).changed, JSON.parse(repeat.text).snipe]).toEqual([200, false, expect.objectContaining({ id, status: 'removed', sharing: 'withdrawn', action: null })]);
+  await openSharing(former);
+  await removed.waitFor();
+  expect([await removed.count(), await approved.count()]).toEqual([1, 0]);
+  expect(await tagState(id, 1)).toEqual({ status: 'removed', withdrawn: true });
+  expect(await ledgerRows()).toEqual(credited);
+  expect(signedSnipeKeys).toEqual([]);
+  expect(otherBucketRequests).toEqual([]);
+  expect(leakedKeys).toEqual([]);
+  for (const page of [photographer, former, viewer, owner]) await page.context().close();
+});
+
+it('lets a photographer who left the group remove their Snipe from the Messages home, metadata only', async () => {
+  // SRS-514.1 to 514.7, 514.15, 524.4 in another fresh group owned by 4: 2 photographs 1, who approves.
+  const fresh = await createGroup(db, 4, [1, 2, 3]);
+  const photographer = pages.photographer = await openSnipes(await signIn(2), fresh);
+  const id = await submitSnipe(photographer, 1, '#ffe599');
+  const tagged = pages.tagged = await openSnipes(await signIn(1), fresh);
+  const answered = await api(tagged, `/api/conversations/${fresh}/snipes/${id}`, 'PATCH', { action: 'respond', identity: true, sharing: true });
+  expect([answered.status, JSON.parse(answered.text).snipe.status]).toEqual([200, 'approved']);
+  const credited = [{ student: 1, points: 25 }, { student: 2, points: 25 }, { student: 3, points: 25 }, { student: 3, points: 25 }, { student: 2, points: 25 }];
+  expect(await ledgerRows()).toEqual(credited);
+  const photoPath = `/api/conversations/${fresh}/snipes/${id}/photo`;
+  await tagged.reload(); await openSnipes(tagged, fresh);
+  expect(await solePhoto(tagged, 2)).toMatch(/^blob:/);
+  const owner = pages.owner = await signIn(4);
+  expect((await api(owner, photoPath)).status).toBe(200);
+
+  // The photographer leaves through the real bridge; the Snipe stays published, their old access is gone.
+  const left = await api(photographer, `/api/conversations/${fresh}/leave`, 'POST');
+  expect([left.status, JSON.parse(left.text).left_role]).toEqual([200, 'member']);
+  expect(await tagState(id, 1)).toEqual({ status: 'approved', withdrawn: false });
+  const denied = [`/api/conversations/${fresh}/snipes`, photoPath, `/api/conversations/${fresh}/messages`];
+  for (const path of denied) expect((await api(photographer, path)).status, path).toBe(404);
+  for (const page of [tagged, owner]) expect((await api(page, photoPath)).status).toBe(200);
+  await photographer.context().close();
+
+  // On a phone, the departed photographer's own Approved record; their admin-removed Snipe from earlier stays Removed.
+  const departed = pages.departed = await openSharing(await signIn(2, phone));
+  const approved = sharingRecords(departed, 'photographer', 'Approved');
+  await approved.waitFor();
+  expect(await approved.count()).toBe(1);
+  const removedBefore = await sharingRecords(departed, 'photographer', 'Removed').count();
+  expect(removedBefore).toBe(1);
+  expect(await approved.getByText(/Your sharing permission/).count()).toBe(0);
+  const records = await sharingMetadata(departed);
+  expect(records.find(record => record.id === id)).toMatchObject({ status: 'approved', role: 'photographer', sharing: null, action: 'remove' });
+  expect(await noOverflow(departed)).toBe(true);
+  await screenshot(departed, 'mobile-sharing-departed-photographer');
+  // Only the matching action is accepted for the role, and an unrelated member cannot act at all.
+  const wrongRole = await api(departed, `/api/snipes/sharing/${id}`, 'PATCH', { action: 'withdraw' });
+  expect(wrongRole.status).toBe(400);
+  const unrelated = await api(owner, `/api/snipes/sharing/${id}`, 'PATCH', { action: 'remove' });
+  expect([unrelated.status, JSON.parse(unrelated.text).error]).toEqual([404, 'Snipe not available.']);
+  expect(await tagState(id, 1)).toEqual({ status: 'approved', withdrawn: false });
+
+  await cancelThenConfirm(departed, approved, 'Remove Snipe', 'Points already awarded are kept.', 'mobile-sharing-remove-confirm', async () => {
+    expect(await tagState(id, 1)).toEqual({ status: 'approved', withdrawn: false });
+    expect((await api(tagged, photoPath)).status).toBe(200);
+  });
+  await expect.poll(() => approved.count()).toBe(0);
+  await expect.poll(() => sharingRecords(departed, 'photographer', 'Removed').count()).toBe(removedBefore + 1);
+  expect(await sharingPanel(departed).getByRole('listitem').filter({ hasText: 'You took this Snipe' }).getByRole('button').count()).toBe(0);
+  expect(await noOverflow(departed)).toBe(true);
+  await screenshot(departed, 'mobile-sharing-photographer-removed');
+  // The photographer's removal leaves the tagged friend's own permission untouched.
+  expect(await tagState(id, 1)).toEqual({ status: 'removed', withdrawn: false });
+  for (const page of [tagged, owner, departed]) expect((await api(page, photoPath)).status).toBe(404);
+  await tagged.reload(); await openSnipes(tagged, fresh);
+  await soleCard(tagged, 2).getByText('Snipe removed', { exact: true }).waitFor();
+  expect(await soleCard(tagged, 2).getByRole('img').count()).toBe(0);
+
+  const repeat = await api(departed, `/api/snipes/sharing/${id}`, 'PATCH', { action: 'remove' });
+  expect([repeat.status, JSON.parse(repeat.text).changed, JSON.parse(repeat.text).snipe]).toEqual([200, false, expect.objectContaining({ id, status: 'removed', role: 'photographer', action: null })]);
+  await openSharing(departed);
+  await expect.poll(() => sharingRecords(departed, 'photographer', 'Removed').count()).toBe(removedBefore + 1);
+  expect(await approved.count()).toBe(0);
+  for (const path of denied) expect((await api(departed, path)).status, path).toBe(404);
+  // SRS-524.4: the photographer keeps the points awarded at publication.
+  expect(await ledgerRows()).toEqual(credited);
+  expect(signedSnipeKeys).toEqual([]);
+  expect(otherBucketRequests).toEqual([]);
+  expect(leakedKeys).toEqual([]);
+  for (const page of [tagged, owner, departed]) await page.context().close();
 });
