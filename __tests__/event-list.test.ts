@@ -5,6 +5,7 @@ const { renderToStaticMarkup } = createRequire(import.meta.url)('react-dom/serve
 import { describe, expect, it } from 'vitest';
 import { EventList, FeaturedEvent, NO_ACTIVE_EVENTS, TrendingEvents, WeekStrip, type CampusEvent } from '../components/events/EventList';
 import { goingNames } from '../components/events/EventActions';
+import { splitByTime } from '../lib/events';
 import { formatWhen, goingTo, hostedBy, trendingEvents, weekDays } from '../lib/events';
 
 const event: CampusEvent = {
@@ -142,5 +143,14 @@ describe('Event engagement on the page', () => {
     expect(html).toContain('Dress code: Costumes encouraged');
     expect(html).toContain('href="/events/42"');
     expect(render([event])).not.toContain('Dress code');
+  });
+
+  it('keeps past events, splitting upcoming (soonest first) from past (most recent first)', () => {
+    const now = Date.parse('2026-10-29T12:00:00Z');
+    const at = (iso: string, id: string) => ({ ...event, event_id: id, starts_at: iso });
+    const { upcoming, past } = splitByTime([at('2026-10-20T12:00:00Z', 'old'), at('2026-11-02T12:00:00Z', 'later'),
+      at('2026-10-28T12:00:00Z', 'yesterday'), at('2026-10-30T12:00:00Z', 'tomorrow')], now);
+    expect(upcoming.map((e) => e.event_id)).toEqual(['tomorrow', 'later']);
+    expect(past.map((e) => e.event_id)).toEqual(['yesterday', 'old']);
   });
 });

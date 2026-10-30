@@ -70,11 +70,12 @@ await assert.rejects(call('socialu_event_invite_candidates',uid(2),event,''),cod
 await assert.rejects(invite(5,event,['3']),code('42501'));
 await assert.rejects(invite(1,'999',['3']),code('SE404'));
 
-// Cancelled events disappear from invitations; started events cannot take new invitations.
+// Cancelled events disappear from invitations; past events stay; started events cannot take new invitations.
 await db.query("UPDATE socialu.events SET status='cancelled' WHERE event_id=$1",[event]);
 assert.deepEqual(await call('socialu_my_event_invitations',uid(3)),[]);
 await assert.rejects(invite(1,event,['3']),code('SE404'));
 await db.query("UPDATE socialu.events SET status='active', starts_at=now()-interval '1 hour' WHERE event_id=$1",[event]);
+assert.equal((await call('socialu_my_event_invitations',uid(3))).length,1);
 await db.query('DELETE FROM socialu.event_invitations WHERE invitee_id=4');
 await assert.rejects(invite(1,event,['4']),code('SE409'));
 

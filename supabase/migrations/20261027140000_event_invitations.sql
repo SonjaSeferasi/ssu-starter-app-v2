@@ -118,7 +118,7 @@ $$;
 REVOKE ALL ON FUNCTION public.socialu_event_invitations(UUID, BIGINT) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.socialu_event_invitations(UUID, BIGINT) TO service_role;
 
--- SRS-402.4: the signed-in student's invitations to active events that have not started more than a day ago.
+-- SRS-402.4: the signed-in student's invitations to active events, upcoming first, then past.
 CREATE OR REPLACE FUNCTION public.socialu_my_event_invitations(p_auth_id UUID)
 RETURNS JSONB LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = '' AS $$
 DECLARE
@@ -127,11 +127,11 @@ BEGIN
   me := socialu.event_student(p_auth_id);
   RETURN coalesce((
     SELECT jsonb_agg(jsonb_build_object('event_id', e.event_id::text, 'title', e.title, 'location', e.location,
-        'starts_at', e.starts_at, 'creator_username', c.username, 'rsvp', i.rsvp) ORDER BY e.starts_at, e.event_id)
+        'starts_at', e.starts_at, 'creator_username', c.username, 'rsvp', i.rsvp) ORDER BY e.starts_at < now(), CASE WHEN e.starts_at >= now() THEN e.starts_at END, e.starts_at DESC, e.event_id)
     FROM socialu.event_invitations i
     JOIN socialu.events e ON e.event_id = i.event_id
     JOIN socialu.students c ON c.student_id = e.creator_id
-    WHERE i.invitee_id = me.student_id AND e.status = 'active' AND e.starts_at >= now() - interval '1 day'
+    WHERE i.invitee_id = me.student_id AND e.status = 'active'
   ), '[]'::jsonb);
 END;
 $$;

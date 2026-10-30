@@ -89,6 +89,14 @@ await assert.rejects(call('socialu_event_react',uid(3),event,'going'),code('SE40
 await assert.rejects(call('socialu_event_react',uid(2),event,'not_going'),code('SE409'));
 assert.equal((await call('socialu_event_react',uid(3),event,'like')).like_count,2);
 
+// Events stay listed after they start: upcoming soonest first, then past events, most recent first.
+const later=(await call('socialu_create_event',uid(1),'Later','Soon.','Gym',new Date(Date.now()+2*86400000).toISOString())).event_id;
+const soon=(await call('socialu_create_event',uid(1),'Soon','Sooner.','Gym',new Date(Date.now()+3600000).toISOString())).event_id;
+const old=(await call('socialu_create_event',uid(1),'Old','Long ago.','Gym',new Date(Date.now()+3600000).toISOString())).event_id;
+await db.query("UPDATE socialu.events SET starts_at=now()-interval '30 days' WHERE event_id=$1",[old]);
+assert.deepEqual((await call('socialu_list_events',uid(2))).map((e:any)=>e.event_id),[soon,later,event,old]);
+await db.query('DELETE FROM socialu.events WHERE event_id = ANY($1)',[[later,soon,old]]);
+
 // Deleting an event removes its likes, comments and attendees.
 await db.query('DELETE FROM socialu.events WHERE event_id=$1',[event]);
 for (const table of ['event_likes','event_comments','event_attendees'])

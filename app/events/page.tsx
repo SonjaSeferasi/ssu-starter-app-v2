@@ -10,7 +10,7 @@ import { useNavigationSession } from '../../components/navigation/social-shell';
 import { SessionNotice } from '../../components/navigation/section-page';
 import { EventList, FeaturedEvent, TrendingEvents, WeekStrip, type CampusEvent } from '../../components/events/EventList';
 import { InvitationList, useMyInvitations } from '../../components/events/MyInvitations';
-import { goingTo, hostedBy, trendingEvents, type EventEngagement } from '../../lib/events';
+import { goingTo, hostedBy, splitByTime, trendingEvents, type EventEngagement } from '../../lib/events';
 
 type Tab = 'discover' | 'rsvps' | 'hosting';
 const TABS: { id: Tab; label: string }[] = [
@@ -82,7 +82,8 @@ export default function EventsPage() {
 
   if (session !== 'signed-in') return <SessionNotice state={session} />;
 
-  const [featured, ...upcoming] = events;
+  const { upcoming: upcomingAll, past } = splitByTime(events);
+  const [featured, ...upcoming] = upcomingAll;
   const hosting = hostedBy(events, studentId);
   const attending = goingTo(events);
 
@@ -120,17 +121,27 @@ export default function EventsPage() {
             ) : error && events.length === 0 ? (
               <p className={styles.empty}>Events will appear here once they can be loaded.</p>
             ) : tab === 'discover' ? (
-              featured ? (
+              events.length === 0 ? (
+                <EventList events={[]} />
+              ) : (
                 <>
-                  <FeaturedEvent event={featured} onEngagement={updateEngagement} {...cover} />
+                  {featured ? <FeaturedEvent event={featured} onEngagement={updateEngagement} {...cover} /> : null}
                   <div className={styles.sectionHeader}>
                     <h2 className={styles.sectionTitle}>Upcoming events</h2>
-                    <span className={styles.count}>{events.length} {events.length === 1 ? 'event' : 'events'}</span>
+                    <span className={styles.count}>{upcomingAll.length} {upcomingAll.length === 1 ? 'event' : 'events'}</span>
                   </div>
-                  <EventList events={upcoming} onEngagement={updateEngagement} {...cover} emptyMessage="No other events yet." emptyHint="Create one to give students more to do." />
+                  <EventList events={upcoming} onEngagement={updateEngagement} {...cover}
+                    emptyMessage={featured ? 'No other upcoming events yet.' : 'No upcoming events yet.'} emptyHint="Create one to give students more to do." />
+                  {past.length > 0 ? (
+                    <>
+                      <div className={styles.sectionHeader}>
+                        <h2 className={styles.sectionTitle}>Past events</h2>
+                        <span className={styles.count}>{past.length} {past.length === 1 ? 'event' : 'events'}</span>
+                      </div>
+                      <EventList events={past} onEngagement={updateEngagement} {...cover} />
+                    </>
+                  ) : null}
                 </>
-              ) : (
-                <EventList events={[]} />
               )
             ) : tab === 'hosting' ? (
               <EventList events={hosting} onEngagement={updateEngagement} {...cover} emptyMessage="You aren’t hosting any active events."

@@ -72,3 +72,12 @@ export function weekDays(today: Date, events: Pick<CampusEvent, 'starts_at'>[]) 
 export function hostedBy(events: CampusEvent[], studentId: string | null) {
   return studentId ? events.filter((event) => event.creator_id === studentId) : [];
 }
+
+// Events stay listed after they start: upcoming ones (soonest first) and past ones (most recent first).
+export function splitByTime<T extends Pick<CampusEvent, 'starts_at'>>(events: T[], now = Date.now()) {
+  const upcoming = events.filter((event) => Date.parse(event.starts_at) > now)
+    .sort((a, b) => Date.parse(a.starts_at) - Date.parse(b.starts_at));
+  const past = events.filter((event) => Date.parse(event.starts_at) <= now)
+    .sort((a, b) => Date.parse(b.starts_at) - Date.parse(a.starts_at));
+  return { upcoming, past };
+}
