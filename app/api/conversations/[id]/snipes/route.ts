@@ -7,13 +7,18 @@ export const dynamic = 'force-dynamic';
 
 type SnipeResult = { created: boolean; snipe: unknown; same_upload?: boolean };
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const SNIPE_CURSOR = /^[1-9]\d{0,17}$/;
 
-// SRS-510.4, 512.1, 512.2: the student's private Snipe view for this conversation and the friends they may tag.
+// SRS-510.4, 512.1, 512.2, 512.11: the student's private Snipe view for this conversation and the friends they may
+// tag, newest first in pages of 50. Only `before` (the previous page's next_cursor, a Snipe ID) is read from the
+// query; the student comes from the verified token and the page position from the stored request.
 export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
     const user = await snipeUser(request);
     const conversationId = conversationIdParam((await context.params).id);
-    return Response.json(await snipeOperation(user.id, 'list', conversationId), { headers: NO_STORE });
+    const before = new URL(request.url).searchParams.get('before');
+    if (before !== null && !SNIPE_CURSOR.test(before)) throw new AccountError('These Snipes could not be loaded. Refresh and try again.', 400);
+    return Response.json(await snipeOperation(user.id, 'list', conversationId, null, before === null ? {} : { before }), { headers: NO_STORE });
   } catch (error) { return snipeResponse(error); }
 }
 

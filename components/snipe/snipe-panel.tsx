@@ -1,7 +1,8 @@
 'use client';
 
-import { type FormEvent, useCallback, useEffect, useId, useRef, useState } from 'react';
+import { type FormEvent, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { accessToken } from '../../lib/account/session';
+import { SnipeListRequestError, snipeListPager } from '../../lib/snipe-list-pagination';
 import { SNIPE_PHOTO_POLICY, SNIPE_POLICY_TEXT, isSnipeMimeType } from '../../lib/snipe-policy';
 import chat from '../../app/messages/messages.module.css';
 import styles from './snipe.module.css';
@@ -39,8 +40,10 @@ type QueueReport = { id: string; reason: string; status: Receipt['status']; repo
   snipe: { id: string; status: Status; published_at: string | null; photographer: Person; visible: boolean; photo_available: boolean } };
 type Decision = 'dismissed' | 'removed';
 type Rewards = { points_per_friend: number | null; balance: number };
-// `rewards` is absent only if the server predates the rewards migration.
-type SnipeList = { student_id: string; kind: 'private' | 'group'; rewards?: Rewards; targets: Target[]; snipes: SnipeView[] };
+// `rewards` is absent only if the server predates the rewards migration; `next_cursor` only if it predates
+// pagination (SRS-512.11). It is set only when an older visible request exists.
+type SnipeList = { student_id: string; kind: 'private' | 'group'; rewards?: Rewards; targets: Target[]; snipes: SnipeView[]; next_cursor?: string | null };
+type OlderState = 'idle' | 'loading' | 'failed';
 type Cooldown = { friend: Person; next_eligible_at: string };
 
 const POLL_MS = 20_000;
@@ -70,6 +73,15 @@ async function snipeFetch(path: string, init: { method?: string; body?: BodyInit
   return { response, data };
 }
 
+// One page of this conversation's list: the first page without `before`, an older page after a cursor.
+function snipeListFetch(base: string) {
+  return async (before: string | null, signal: AbortSignal): Promise<SnipeList> => {
+    const { response, data } = await snipeFetch(before ? `${base}?before=${encodeURIComponent(before)}` : base, { signal });
+    if (!response.ok) throw new SnipeListRequestError(data.error || 'Snipes could not be loaded.', response.status);
+    return data;
+  };
+}
+
 export function SnipePanel({ conversationId }: { conversationId: string }) {
   const base = `/api/conversations/${encodeURIComponent(conversationId)}/snipes`;
   const panelId = useId();
@@ -77,45 +89,73 @@ export function SnipePanel({ conversationId }: { conversationId: string }) {
   const [list, setList] = useState<SnipeList | null>(null);
   const [state, setState] = useState<'loading' | 'loaded' | 'failed' | 'denied'>('loading');
   const [loadError, setLoadError] = useState('');
+  const [older, setOlder] = useState<OlderState>('idle');
+  const [olderError, setOlderError] = useState('');
   // Bumped after every successful list load, so the report queue refreshes with the list (including after
   // a decision, a removal or a role change).
   const [revision, setRevision] = useState(0);
-  const inFlight = useRef<AbortController | null>(null);
+  // SRS-512.11: one pager per conversation, so nothing requested for another conversation reaches this list.
+  const pager = useMemo(() => snipeListPager(snipeListFetch(base), setList), [base]);
+  // Older pages are appended to the current first page; automatic updates are paused until the next one.
+  const [showingOlder, setShowingOlder] = useState(false);
 
-  // One list request at a time: polls skip while one is running; explicit refreshes replace it.
-  const load = useCallback(async (replace = true) => {
-    if (inFlight.current && !replace) return;
-    inFlight.current?.abort();
-    const controller = new AbortController();
-    inFlight.current = controller;
+  // Another conversation: its Snipes, photos and cursor are never shown here, not even until the first page loads.
+  const [shownBase, setShownBase] = useState(base);
+  if (shownBase !== base) {
+    setShownBase(base); setList(null); setState('loading'); setLoadError(''); setOlder('idle'); setOlderError(''); setShowingOlder(false);
+  }
+
+  // A 404 means the student is no longer a participant: the list (and its photos) is hidden at once.
+  const deny = useCallback(() => { pager.stop(); setShowingOlder(false); setList(null); setState('denied'); }, [pager]);
+
+  // One first-page request at a time: automatic updates skip while one is running or while older pages are shown
+  // or loading; explicit refreshes (Refresh, retry, after a change) replace it. Every first page replaces the
+  // list and its cursor, and cancels any "Show older" in flight.
+  const load = useCallback(async (automatic = false) => {
+    const request = automatic ? pager.poll() : pager.refresh();
+    if (!request) return;
+    setOlder('idle'); setOlderError('');
     try {
-      const { response, data } = await snipeFetch(base, { signal: controller.signal });
-      if (controller.signal.aborted) return;
-      if (response.status === 404) { setState('denied'); return; }
-      if (!response.ok) throw new Error(data.error || 'Snipes could not be loaded.');
-      setList(data); setState('loaded'); setLoadError(''); setRevision((n) => n + 1);
+      if (!(await request)) return;
+      setShowingOlder(false);
+      setState('loaded'); setLoadError(''); setRevision((n) => n + 1);
     } catch (error) {
-      if (controller.signal.aborted) return;
+      if (error instanceof SnipeListRequestError && error.status === 404) { deny(); return; }
       setState((current) => current === 'loaded' ? current : 'failed');
       setLoadError(failure(error, 'Snipes could not be loaded.'));
-    } finally {
-      if (inFlight.current === controller) inFlight.current = null;
     }
-  }, [base]);
+  }, [pager, deny]);
 
   useEffect(() => {
     void load();
-    return () => { inFlight.current?.abort(); inFlight.current = null; };
-  }, [load]);
+    return () => pager.stop();
+  }, [load, pager]);
 
-  // Modest polling, only while the panel is open and the tab is visible.
+  // Modest polling, only while the panel is open and the tab is visible, and paused while older pages are shown
+  // or loading. Closing cancels "Show older"; reopening after older pages were shown loads a fresh first page.
   useEffect(() => {
     if (!open) return;
-    const refresh = () => { if (document.visibilityState === 'visible') void load(false); };
+    if (pager.extended) void load();
+    const refresh = () => { if (document.visibilityState === 'visible') void load(true); };
     const timer = window.setInterval(refresh, POLL_MS);
     document.addEventListener('visibilitychange', refresh);
-    return () => { window.clearInterval(timer); document.removeEventListener('visibilitychange', refresh); };
-  }, [open, load]);
+    return () => {
+      window.clearInterval(timer); document.removeEventListener('visibilitychange', refresh);
+      pager.cancelOlder(); setOlder('idle');
+    };
+  }, [open, load, pager]);
+
+  async function loadOlder() {
+    const cursor = list?.next_cursor;
+    if (!cursor || older === 'loading') return;
+    setOlder('loading'); setOlderError('');
+    try {
+      if (await pager.older(cursor)) { setShowingOlder(true); setOlder('idle'); }
+    } catch (error) {
+      if (error instanceof SnipeListRequestError && error.status === 404) { deny(); return; }
+      setOlder('failed'); setOlderError(failure(error, 'Older Snipes could not be loaded.'));
+    }
+  }
 
   const replaceSnipe = useCallback((snipe: SnipeView | null | undefined) => {
     if (!snipe) return;
@@ -161,16 +201,36 @@ export function SnipePanel({ conversationId }: { conversationId: string }) {
                 <h3 className={styles.heading}>Your Snipes here</h3>
                 <button type="button" className={chat.retry} onClick={() => void load()}>Refresh</button>
               </div>
+              {showingOlder && (
+                <p className={styles.muted} role="status">Older Snipes are shown, so this list won’t update on its own. Select Refresh to check for updates.</p>
+              )}
               {list.snipes.length === 0
                 ? <p className={styles.muted}>No Snipes to show in this conversation yet.</p>
                 : <ul className={styles.cards}>{list.snipes.map((snipe) => (
                     <li key={snipe.id}><SnipeCard base={base} snipe={snipe} group={list.kind === 'group'} onChange={replaceSnipe} onReload={() => void load()} /></li>
                   ))}</ul>}
+              <SnipeOlderControl cursor={list.next_cursor} state={older} error={olderError} onLoad={() => void loadOlder()} />
             </>
           )}
         </div>
       )}
     </section>
+  );
+}
+
+// SRS-512.1, 512.11: shown only while the server reports an older visible request, so older Pending requests stay
+// reachable. Nothing about requests hidden from this student (how many, or that any exist) is shown.
+export function SnipeOlderControl({ cursor, state, error, onLoad }: {
+  cursor?: string | null; state: OlderState; error: string; onLoad: () => void;
+}) {
+  if (!cursor) return null;
+  return (
+    <div className={styles.older}>
+      <button type="button" className={styles.secondary} disabled={state === 'loading'} aria-busy={state === 'loading'} onClick={onLoad}>
+        {state === 'loading' ? 'Loading older Snipes…' : state === 'failed' ? 'Try again' : 'Show older Snipes'}
+      </button>
+      {state === 'failed' && <p className={chat.error} role="alert">{error || 'Older Snipes could not be loaded.'}</p>}
+    </div>
   );
 }
 

@@ -55,6 +55,8 @@
 .receipt { display: grid; gap: 4px; padding: 10px 12px; border-left: 4px solid #39775e; border-radius: 10px; background: #e6efe9; color: #102c30; font-size: 14px; }
 /* SRS-514.10, 514.12 administrator report queue, shown only to current group managers. */
 .queue { display: grid; gap: 10px; padding: 14px; border: 2px solid #c0ddcb; border-radius: 14px; background: #ffffff; }
+/* SRS-512.11 "Show older Snipes" after the newest page. */
+.older { display: grid; justify-items: center; gap: 8px; }
 @media (max-width: 700px) {
   .toggle { padding: 10px 16px; }
   .body { padding: 4px 12px 16px; }
