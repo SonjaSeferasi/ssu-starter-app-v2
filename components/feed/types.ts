@@ -1,3 +1,5 @@
+import type { Reaction } from '../../lib/reactions';
+
 export type FeedPhoto = {
   assetId: number;
   url: string;
@@ -46,6 +48,8 @@ export type FeedPost = {
   repostOf: RepostOf | null;
   likeCount: number;
   isLikedByViewer: boolean;
+  reactionCounts: Record<Reaction, number>;
+  myReaction: Reaction | null;
   commentCount: number;
 };
 
@@ -61,4 +65,6 @@ export type Comment = {
   parentCommentId: number | null;
   deletedAt: string | null;
   mentions: Mention[];
+  reactionCounts: Record<Reaction, number>;
+  myReaction: Reaction | null;
 };

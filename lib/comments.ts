@@ -1,6 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { resolveMediaUrl } from './media';
 import { shapeMentions, type Mention, type RawMention } from './posts';
+import type { Reaction } from './reactions';
 
 /** Row shape returned by socialu_list_comments/socialu_create_comment/socialu_update_comment. */
 export type RawCommentRow = {
@@ -15,6 +16,8 @@ export type RawCommentRow = {
   author_name: string;
   author_photo_key: string | null;
   mentions?: RawMention[];
+  reaction_counts: Record<Reaction, number>;
+  my_reaction: Reaction | null;
 };
 
 export type Comment = {
@@ -29,6 +32,8 @@ export type Comment = {
   parentCommentId: number | null;
   deletedAt: string | null;
   mentions: Mention[];
+  reactionCounts: Record<Reaction, number>;
+  myReaction: Reaction | null;
 };
 
 export async function shapeComments(supabase: SupabaseClient<any, any, any>, rows: RawCommentRow[]): Promise<Comment[]> {
@@ -45,6 +50,8 @@ export async function shapeComments(supabase: SupabaseClient<any, any, any>, row
       parentCommentId: row.parent_comment_id,
       deletedAt: row.deleted_at,
       mentions: await shapeMentions(supabase, row.mentions),
+      reactionCounts: row.reaction_counts,
+      myReaction: row.my_reaction,
     }))
   );
 }

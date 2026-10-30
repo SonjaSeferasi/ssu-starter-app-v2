@@ -1,0 +1,182 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { accessToken } from '../../lib/account/session';
+import { CHAT_ACTIVITY_EVENT } from '../../lib/chat-events';
+import styles from './messages.module.css';
+
+export type GroupMember = {
+  student_id: string;
+  username: string;
+  name: string;
+  role: 'owner' | 'administrator' | 'member';
+};
+
+const roleLabels: Record<GroupMember['role'], string> = { owner: 'Owner', administrator: 'Admin', member: '' };
+
+// SRS-204.1 (#883): the group's current members, so the owner can select one for administrator assignment.
+// SRS-204.2: choosing Make admin gives that member the administrator role. Only the owner sees the buttons, and
+// only one member can hold the role, so they disappear once the group has an administrator.
+// SRS-204.6 (#884): Remove admin beside that administrator takes the role back, returning them to a regular
+// member, which frees the position for someone else.
+// SRS-205.10 (#885): the owner and the administrator also see Remove beside each regular member, which ends that
+// student's membership.
+// SRS-207.1 (#886): Leave group at the foot of the panel ends the student's own membership. The owner sees why
+// they cannot leave until the group has an administrator (SRS-208.1).
+// SRS-208.2 (#887): once there is one, the owner can leave too, and that administrator becomes the new owner.
+export function GroupMemberList({ conversationId, viewerRole, onClose }: {
+  conversationId: string;
+  viewerRole: string | null;
+  onClose: () => void;
+}) {
+  const router = useRouter();
+  const [leaving, setLeaving] = useState(false);
+  // SRS-204.5 / SRS-204.8: only the owner assigns or revokes the administrator.
+  const canManage = viewerRole === 'owner';
+  // SRS-205.10 / SRS-206.9: the owner and the administrator can both remove regular members.
+  const canRemove = canManage || viewerRole === 'administrator';
+  const [members, setMembers] = useState<GroupMember[] | null>(null);
+  const [error, setError] = useState('');
+  const [saving, setSaving] = useState('');
+
+  const load = useCallback(async () => {
+    try {
+      const token = await accessToken();
+      const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/members`, {
+        headers: { Authorization: `Bearer ${token ?? ''}` }, cache: 'no-store',
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || 'Members could not be loaded.');
+      setMembers(data.members ?? []);
+      setError('');
+    } catch (reason) {
+      setMembers((current) => current ?? []);
+      setError(reason instanceof Error && !(reason instanceof TypeError) ? reason.message : 'Members could not be loaded.');
+    }
+  }, [conversationId]);
+
+  useEffect(() => { void load(); }, [load]);
+
+  // SRS-204.2 / SRS-204.6: give or take back the administrator role. Only one request runs at a time, so a
+  // double-click cannot assign twice before the disabled state shows, and the list is reloaded either way.
+  async function setRole(member: GroupMember, role: 'administrator' | 'member') {
+    if (saving) return;
+    const trouble = role === 'administrator'
+      ? 'That member could not be made an administrator.'
+      : 'That administrator could not be changed back to a member.';
+    setSaving(member.username);
+    setError('');
+    try {
+      const token = await accessToken();
+      const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/members`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token ?? ''}` },
+        body: JSON.stringify({ username: member.username, role }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || trouble);
+    } catch (reason) {
+      setError(reason instanceof Error && !(reason instanceof TypeError) ? reason.message : trouble);
+    } finally {
+      setSaving('');
+      await load();
+    }
+  }
+
+  // SRS-205.10: end a regular member's membership, then show the group's remaining members.
+  async function remove(member: GroupMember) {
+    if (saving) return;
+    setSaving(member.username);
+    setError('');
+    try {
+      const token = await accessToken();
+      const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/members?username=${encodeURIComponent(member.username)}`, {
+        method: 'DELETE', headers: { Authorization: `Bearer ${token ?? ''}` },
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || 'That member could not be removed.');
+    } catch (reason) {
+      setError(reason instanceof Error && !(reason instanceof TypeError) ? reason.message : 'That member could not be removed.');
+    } finally {
+      setSaving('');
+      await load();
+    }
+  }
+
+  // SRS-207.1 / SRS-207.2: leave the group, then go back to the Messages list, which no longer lists it.
+  async function leave() {
+    if (leaving || saving) return;
+    setLeaving(true);
+    setError('');
+    try {
+      const token = await accessToken();
+      const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/leave`, {
+        method: 'POST', headers: { Authorization: `Bearer ${token ?? ''}` },
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || 'You could not leave this group.');
+      window.dispatchEvent(new Event(CHAT_ACTIVITY_EVENT));
+      router.push('/messages');
+    } catch (reason) {
+      setError(reason instanceof Error && !(reason instanceof TypeError) ? reason.message : 'You could not leave this group.');
+      setLeaving(false);
+      await load();
+    }
+  }
+
+  const admin = (members ?? []).find((member) => member.role === 'administrator');
+  const hasAdmin = Boolean(admin);
+  const adminName = admin?.name ?? 'Your administrator';
+
+  return (
+    <div className={styles.memberPanel} role="dialog" aria-labelledby="group-members-title"
+      onKeyDown={(event) => { if (event.key === 'Escape') onClose(); }}>
+      <div className={styles.invitePanelTop}>
+        <h3 id="group-members-title" className={styles.stepTitle}>Members</h3>
+        <button type="button" className={styles.retry} onClick={onClose}>Close</button>
+      </div>
+      {error && <p className={styles.listError} role="alert">{error}</p>}
+      {!members ? <p className={styles.pickerHint}>Loading members…</p> : (
+        <ul className={styles.memberList}>
+          {members.map((member) => (
+            <li key={member.student_id} className={styles.memberItem}>
+              <span className={styles.itemText}>
+                <span className={styles.itemName}>{member.name}</span>
+                <span className={styles.itemPreview}>@{member.username}</span>
+              </span>
+              {roleLabels[member.role] && <span className={styles.roleBadge}>{roleLabels[member.role]}</span>}
+              {canManage && !hasAdmin && member.role === 'member' && (
+                <button type="button" className={styles.inviteAction} onClick={() => void setRole(member, 'administrator')} disabled={Boolean(saving)}>
+                  {saving === member.username ? 'Saving…' : 'Make admin'}
+                </button>
+              )}
+              {canManage && member.role === 'administrator' && (
+                <button type="button" className={styles.retry} onClick={() => void setRole(member, 'member')} disabled={Boolean(saving)}>
+                  {saving === member.username ? 'Saving…' : 'Remove admin'}
+                </button>
+              )}
+              {canRemove && member.role === 'member' && (
+                <button type="button" className={styles.retry} onClick={() => void remove(member)} disabled={Boolean(saving)}
+                  aria-label={`Remove ${member.name} from the group`}>
+                  {saving === member.username ? 'Saving…' : 'Remove'}
+                </button>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+      {canManage && hasAdmin && <p className={styles.pickerHint}>A group can have one administrator at a time. Remove this one to choose someone else.</p>}
+      {/* SRS-207.1 / SRS-207.2: anyone but the owner can leave. SRS-208.1 / SRS-208.2: the owner needs an
+          administrator first, and that administrator becomes the new owner when the owner goes. */}
+      {members && canManage && (hasAdmin
+        ? <p className={styles.pickerHint}>{adminName} becomes the owner when you leave.</p>
+        : <p className={styles.pickerHint}>Assign an administrator before you leave the group.</p>)}
+      {members && (!canManage || hasAdmin) && (
+        <button type="button" className={styles.leaveGroup} onClick={() => void leave()} disabled={leaving || Boolean(saving)}>
+          {leaving ? 'Leaving…' : 'Leave group'}
+        </button>
+      )}
+    </div>
+  );
+}

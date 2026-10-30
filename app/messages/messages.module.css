@@ -198,3 +198,15 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 @media (max-width: 700px) {
   :global([data-navigation='bottom']) .footer { bottom: 73px; }
 }
+
+/* SRS-204.1 (#883): the group's members, with the owner's Make admin buttons. */
+.memberPanel { position: absolute; right: 16px; top: calc(100% + 8px); z-index: 3; display: flex; flex-direction: column; gap: 8px; width: min(340px, calc(100vw - 32px)); max-height: min(380px, 55vh); padding: 16px; border: 1px solid #d3e2da; border-radius: 14px; background: #ffffff; box-shadow: 0 12px 32px rgba(16, 44, 48, .16); overflow-y: auto; }
+.memberList { display: flex; flex-direction: column; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.memberItem { display: flex; align-items: center; gap: 10px; padding: 8px 4px; border-top: 1px solid #e3ece6; }
+.memberItem:first-child { border-top: 0; }
+.memberItem .itemText { flex: 1; min-width: 0; }
+/* SRS-207.1 (#886): leaving the group, at the foot of the Members panel. */
+.leaveGroup { align-self: flex-start; min-height: 36px; margin-top: 4px; padding: 8px 14px; border: 1px solid #e0c2bc; border-radius: 10px; background: #fdf4f2; color: #a32d2d; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+.leaveGroup:hover:not(:disabled) { background: #f8e7e3; }
+.leaveGroup:disabled { opacity: .6; cursor: progress; }
+.leaveGroup:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
