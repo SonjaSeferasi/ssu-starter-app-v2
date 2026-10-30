@@ -61,6 +61,17 @@ describe('Event creation API', () => {
     });
   });
 
+  it('saves an optional dress code, trimmed, up to 100 characters', async () => {
+    await POST(createRequest({ ...validBody, dressCode: '  Costumes encouraged  ' }));
+    expect(rpc.mock.calls.find(([fn]) => fn === 'socialu_create_event')![1].p_dress_code).toBe('Costumes encouraged');
+
+    rpc.mockClear();
+    const response = await POST(createRequest({ ...validBody, dressCode: 'x'.repeat(101) }));
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ error: 'dress code must be 100 characters or fewer.' });
+    expect(rpc.mock.calls.find(([fn]) => fn === 'socialu_create_event')).toBeUndefined();
+  });
+
   it('ignores creator IDs supplied by the browser', async () => {
     await POST(createRequest({ ...validBody, creator_id: 999, p_auth_id: 'victim' }));
     const args = rpc.mock.calls.find(([fn]) => fn === 'socialu_create_event')![1];
@@ -119,7 +130,7 @@ describe('Event discovery API', () => {
     const response = await GET(listRequest());
 
     expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ events: listed });
+    expect(await response.json()).toEqual({ events: listed.map((e) => ({ ...e, cover_url: null })), trending: [] });
     expect(rpc).toHaveBeenCalledWith('socialu_list_events', { p_auth_id: user.id });
   });
 
@@ -133,9 +144,21 @@ describe('Event discovery API', () => {
     expect((await (await GET(listRequest())).json()).events[0].location).toBe('South Lawn');
   });
 
+  it('ranks liked events as trending, most liked first, leaving out events with no likes', async () => {
+    const popular = [
+      { ...saved, event_id: '1', like_count: 5 },
+      { ...saved, event_id: '2', like_count: 0 },
+      { ...saved, event_id: '3', like_count: 12 },
+      { ...saved, event_id: '4', like_count: 1 },
+    ];
+    rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : { data: popular, error: null });
+    const { trending } = await (await GET(listRequest())).json();
+    expect(trending.map((event: { event_id: string }) => event.event_id)).toEqual(['3', '1', '4']);
+  });
+
   it('returns an empty list when there are no events', async () => {
     rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : { data: [], error: null });
-    expect(await (await GET(listRequest())).json()).toEqual({ events: [] });
+    expect(await (await GET(listRequest())).json()).toEqual({ events: [], trending: [] });
   });
 
   it('requires sign-in', async () => {

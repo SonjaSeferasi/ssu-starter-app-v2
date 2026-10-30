@@ -27,14 +27,26 @@ function hash(value: string) {
   return result;
 }
 
-export function EventArt({ id, title, className }: { id: string; title: string; className?: string }) {
+export function EventArt({ id, title, className, coverUrl, children }:
+  { id: string; title: string; className?: string; coverUrl?: string | null; children?: React.ReactNode }) {
+  // The host's cover photo replaces the generated art.
+  if (coverUrl) {
+    return (
+      <div className={`${styles.art} ${className ?? ''}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element -- short-lived signed Storage URL */}
+        <img src={coverUrl} alt="" className={styles.coverImage} />
+        {children}
+      </div>
+    );
+  }
   const [deep, bright] = SCENES[hash(id) % SCENES.length];
   const Icon = THEMES.find(([pattern]) => pattern.test(title))?.[1] ?? Sparkles;
   return (
-    <div className={`${styles.art} ${className ?? ''}`} style={{ background: `linear-gradient(160deg, ${deep} 0%, ${deep} 45%, ${bright} 140%)` }} aria-hidden="true">
-      <span className={styles.artSun} style={{ background: bright }} />
-      <span className={styles.artHill} style={{ background: deep }} />
-      <Icon className={styles.artIcon} strokeWidth={1.6} />
+    <div className={`${styles.art} ${className ?? ''}`} style={{ background: `linear-gradient(160deg, ${deep} 0%, ${deep} 45%, ${bright} 140%)` }}>
+      <span className={styles.artSun} style={{ background: bright }} aria-hidden="true" />
+      <span className={styles.artHill} style={{ background: deep }} aria-hidden="true" />
+      <Icon className={styles.artIcon} strokeWidth={1.6} aria-hidden="true" />
+      {children}
     </div>
   );
 }

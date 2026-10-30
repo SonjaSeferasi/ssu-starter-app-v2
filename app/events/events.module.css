@@ -64,7 +64,6 @@
 .sideCard { padding: 20px 22px; border: 1px solid #d7e5da; border-radius: 18px; background: #ffffff; }
 .sideTitle { display: flex; align-items: center; gap: 8px; margin: 0; color: #102c30; font-size: 19px; font-weight: 800; }
 .sideBody { margin: 8px 0 0; color: #536963; font-size: 14px; line-height: 1.6; }
-.flame { width: 20px; height: 20px; color: #c2410c; }
 .week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin: 16px 0 0; padding: 0; list-style: none; text-align: center; }
 .week li { display: grid; justify-items: center; gap: 4px; padding: 8px 0; border-radius: 12px; color: #102c30; }
 .weekday { font-size: 12px; font-weight: 600; text-transform: uppercase; }
@@ -95,3 +94,103 @@
 textarea.input { resize: none; }
 .formFooter { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-top: 16px; border-top: 1px solid #e0ebe0; }
 .hint { margin: 0; color: #536963; font-size: 13px; }
+
+/* Likes, comments and "I'm going" */
+.titleLink { color: inherit; text-decoration: none; }
+.titleLink:hover { text-decoration: underline; }
+.titleLink:focus-visible, .action:focus-visible, .goingButton:focus-visible, .secondaryButton:focus-visible, .trendingItem:focus-visible, .attendee:focus-visible { outline: 3px solid #28634e; outline-offset: 3px; }
+.secondaryButton { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; margin-top: 16px; padding: 10px 24px; border-radius: 12px; background: #c0ddcb; color: #102c30; font-weight: 700; text-decoration: none; }
+.secondaryButton:hover { background: #a8ceb8; }
+.goingSummary { display: flex; align-items: center; gap: 10px; margin: 14px 0 0; color: #536963; font-size: 14px; }
+.goingSummary strong { color: #102c30; }
+.avatars { display: flex; }
+.avatars .avatar + .avatar { margin-left: -8px; }
+.avatar { display: inline-grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; border: 2px solid #ffffff; border-radius: 50%; background: #dcebe1; color: #1f6b4f; font-size: 11px; font-weight: 800; }
+.avatars .avatar:nth-child(2) { background: #dde7f3; color: #2d5a8a; }
+.avatars .avatar:nth-child(3) { background: #f6e3c8; color: #8a5a1f; }
+.actionsWrap { margin-top: 14px; padding-top: 12px; border-top: 1px solid #e0ebe0; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.action { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 8px 12px; border: 0; border-radius: 10px; background: none; color: #536963; font-size: 15px; text-decoration: none; cursor: pointer; }
+.action:hover { background: #edf5ef; color: #102c30; }
+.action svg { width: 19px; height: 19px; }
+.action[aria-pressed='true'] { color: #c0392b; }
+.goingButton { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; margin-left: auto; padding: 8px 16px; border: 1px solid #a8ceb8; border-radius: 10px; background: #ffffff; color: #1f6b4f; font-size: 15px; font-weight: 700; cursor: pointer; }
+.goingButton:hover { background: #edf5ef; }
+.goingButton svg { width: 18px; height: 18px; }
+.goingOn { border-color: #c0ddcb; background: #c0ddcb; color: #102c30; }
+.goingOn:hover { background: #a8ceb8; }
+.action:disabled, .goingButton:disabled { cursor: not-allowed; opacity: .6; }
+.actionError { margin: 8px 0 0; color: #9b2c2c; font-size: 13px; }
+
+/* Trending on campus */
+.sideEmpty { margin: 12px 0 0; color: #536963; font-size: 14px; line-height: 1.6; }
+.trending { display: grid; margin: 12px 0 0; padding: 0; list-style: none; }
+.trending li + li { border-top: 1px solid #e0ebe0; }
+.trendingItem { display: flex; align-items: center; gap: 12px; padding: 12px 0; color: #102c30; text-decoration: none; }
+.trendingItem:hover strong { text-decoration: underline; }
+.rank { width: 18px; color: #1f6b4f; font-size: 20px; font-weight: 800; }
+.trendingArt { width: 52px; height: 52px; flex-shrink: 0; border-radius: 10px; }
+.trendingArt svg { width: 50%; }
+.trendingText { display: grid; flex: 1; min-width: 0; font-size: 13px; color: #536963; }
+.trendingText strong { overflow: hidden; color: #102c30; font-size: 15px; text-overflow: ellipsis; white-space: nowrap; }
+.trendingLikes { display: inline-flex; align-items: center; gap: 4px; color: #c2410c; font-size: 14px; font-weight: 800; }
+.trendingLikes svg { width: 14px; height: 14px; }
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Event details page */
+.sectionBlock { margin-top: 28px; padding: 20px 22px; border: 1px solid #d7e5da; border-radius: 18px; background: #ffffff; }
+.comments { display: grid; gap: 16px; margin: 16px 0 0; padding: 0; list-style: none; }
+.comment { display: flex; gap: 12px; }
+.commentMeta { margin: 0; color: #536963; font-size: 13px; }
+.commentMeta strong { color: #102c30; }
+.commentText { margin: 4px 0 0; color: #18362f; font-size: 15px; line-height: 1.55; white-space: pre-line; overflow-wrap: anywhere; }
+.commentForm { display: grid; gap: 10px; margin-top: 18px; }
+.attendees { display: grid; gap: 4px; margin: 12px 0 0; padding: 0; list-style: none; }
+.attendee { display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 10px; color: #536963; font-size: 13px; text-decoration: none; }
+.attendee:hover { background: #edf5ef; }
+.attendee > span:last-child { display: grid; }
+.attendee strong { color: #102c30; font-size: 15px; }
+
+/* Event invitations (UR-402) */
+.subheading { margin: 24px 0 0; color: #102c30; font-size: 17px; font-weight: 800; }
+.searchField { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding: 0 14px; border: 1px solid #d3e2da; border-radius: 12px; background: #f8fbf8; color: #536963; }
+.searchField:focus-within { border-color: #39775e; box-shadow: 0 0 0 3px #c0ddcb; }
+.searchField svg { width: 18px; height: 18px; flex-shrink: 0; }
+.searchInput { flex: 1; min-width: 0; padding: 12px 0; border: 0; background: none; color: #102c30; font-size: 15px; outline: none; }
+.candidates { display: grid; gap: 4px; max-height: 320px; margin: 12px 0 16px; padding: 0; overflow-y: auto; list-style: none; }
+.candidate { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 10px; color: #536963; font-size: 13px; cursor: pointer; }
+.candidate:hover { background: #edf5ef; }
+.candidateInvited { cursor: default; opacity: .75; }
+.candidateInvited:hover { background: none; }
+.candidateName { display: grid; flex: 1; min-width: 0; }
+.candidateName strong { color: #102c30; font-size: 15px; }
+.checkbox { width: 18px; height: 18px; flex-shrink: 0; accent-color: #1f6b4f; }
+.invitedTag, .rsvpTag { display: inline-flex; align-items: center; gap: 4px; margin-left: auto; padding: 3px 10px; border-radius: 999px; background: #dcebe1; color: #1f6b4f; font-size: 12px; font-weight: 700; }
+.invitedTag svg { width: 14px; height: 14px; }
+.invitationList { display: grid; gap: 4px; margin: 12px 0 0; padding: 0; list-style: none; }
+.invitationItem { display: grid; padding: 8px 10px; margin: 0 -10px; border-radius: 10px; text-decoration: none; }
+.invitationItem:hover { background: #edf5ef; }
+.invitationItem:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+.invitationTitle { color: #102c30; font-size: 15px; font-weight: 700; }
+.invitationMeta { color: #536963; font-size: 13px; }
+
+/* Event cover photos */
+.coverImage { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.coverControl { position: absolute; right: 12px; bottom: 12px; display: grid; justify-items: end; gap: 6px; }
+.coverButton { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 6px 12px; border: 0; border-radius: 999px; background: rgb(255 255 255 / .92); color: #102c30; font-size: 13px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgb(0 0 0 / .2); }
+.coverButton:hover { background: #ffffff; }
+.coverButton:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+.coverButton:disabled { cursor: wait; opacity: .8; }
+.coverButton svg { width: 16px; height: 16px; }
+.coverError { max-width: 240px; margin: 0; padding: 6px 10px; border-radius: 8px; background: #fdf1f1; color: #9b2c2c; font-size: 12px; }
+
+/* Whole event cards open the event: the title link stretches over the card, controls stay on top. */
+.card, .featured { position: relative; }
+.card .titleLink::after, .featured .titleLink::after { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
+.card:hover, .featured:hover { border-color: #a8ceb8; box-shadow: 0 10px 28px #325e3d14; }
+.card:focus-within, .featured:focus-within { border-color: #39775e; }
+.actionsWrap, .goingLink, .secondaryButton, .coverControl { position: relative; z-index: 2; }
+.coverControl { position: absolute; }
+.goingLink { color: #102c30; text-decoration: none; }
+.goingLink:hover span:last-child { text-decoration: underline; }
+.goingLink:focus-visible { outline: 3px solid #28634e; outline-offset: 3px; border-radius: 8px; }

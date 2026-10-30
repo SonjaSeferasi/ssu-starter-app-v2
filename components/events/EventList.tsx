@@ -1,8 +1,21 @@
 import React from 'react';
-import { CalendarDays, MapPin, UserRound } from 'lucide-react';
+import Link from 'next/link';
+import { CalendarDays, Heart, MapPin, Shirt, UserRound } from 'lucide-react';
 import styles from '../../app/events/events.module.css';
 import { EventArt } from './EventArt';
-import { formatWhen, monthFormat, weekDays, weekdayFormat, type CampusEvent } from '../../lib/events';
+import { EventActions, GoingSummary } from './EventActions';
+import { CoverPhotoButton } from './CoverPhotoButton';
+import { formatWhen, monthFormat, weekDays, weekdayFormat, type CampusEvent, type EventEngagement } from '../../lib/events';
+
+type OnEngagement = (eventId: string, engagement: EventEngagement) => void;
+const ignore: OnEngagement = () => {};
+// Hosts can add or change a cover photo on their own events.
+type CoverProps = { hostId?: string | null; onCover?: (eventId: string, url: string | null) => void };
+
+function HostCover({ event, hostId, onCover }: { event: CampusEvent } & CoverProps) {
+  if (!hostId || hostId !== event.creator_id || !onCover) return null;
+  return <CoverPhotoButton eventId={event.event_id} hasCover={Boolean(event.cover_url)} onChange={(url) => onCover(event.event_id, url)} />;
+}
 
 export type { CampusEvent } from '../../lib/events';
 
@@ -19,6 +32,12 @@ function EventDetails({ event }: { event: CampusEvent }) {
         <dt><MapPin aria-label="Location" /></dt>
         <dd>{event.location}</dd>
       </div>
+      {event.dress_code ? (
+        <div className={styles.metaRow}>
+          <dt><Shirt aria-label="Dress code" /></dt>
+          <dd>Dress code: {event.dress_code}</dd>
+        </div>
+      ) : null}
       <div className={styles.metaRow}>
         <dt><UserRound aria-label="Host" /></dt>
         <dd>Hosted by @{event.creator_username}</dd>
@@ -28,15 +47,22 @@ function EventDetails({ event }: { event: CampusEvent }) {
 }
 
 // The soonest event, shown large at the top of Discover.
-export function FeaturedEvent({ event }: { event: CampusEvent }) {
+export function FeaturedEvent({ event, onEngagement = ignore, hostId, onCover }: { event: CampusEvent; onEngagement?: OnEngagement } & CoverProps) {
   return (
     <article className={styles.featured} aria-labelledby={`featured-${event.event_id}`}>
-      <EventArt id={event.event_id} title={event.title} className={styles.featuredArt} />
+      <EventArt id={event.event_id} title={event.title} className={styles.featuredArt} coverUrl={event.cover_url}>
+        <HostCover event={event} hostId={hostId} onCover={onCover} />
+      </EventArt>
       <div className={styles.featuredBody}>
         <p className={styles.kicker}>Next up</p>
-        <h2 id={`featured-${event.event_id}`} className={styles.featuredTitle}>{event.title}</h2>
+        <h2 id={`featured-${event.event_id}`} className={styles.featuredTitle}>
+          <Link href={`/events/${event.event_id}`} className={styles.titleLink}>{event.title}</Link>
+        </h2>
         <EventDetails event={event} />
         <p className={styles.description}>{event.description}</p>
+        <GoingSummary event={event} />
+        <EventActions event={event} onChange={(engagement) => onEngagement(event.event_id, engagement)} />
+        <Link href={`/events/${event.event_id}`} className={styles.secondaryButton}>View details</Link>
       </div>
     </article>
   );
@@ -44,8 +70,8 @@ export function FeaturedEvent({ event }: { event: CampusEvent }) {
 
 // SRS-401.1-.6: each active event with its current title, description, location, date, and time,
 // or a message when no active events are available.
-export function EventList({ events, emptyMessage = NO_ACTIVE_EVENTS, emptyHint = 'Check back later, or create an event for your campus.' }:
-  { events: CampusEvent[]; emptyMessage?: string; emptyHint?: string }) {
+export function EventList({ events, emptyMessage = NO_ACTIVE_EVENTS, emptyHint = 'Check back later, or create an event for your campus.', onEngagement = ignore, hostId, onCover }:
+  { events: CampusEvent[]; emptyMessage?: string; emptyHint?: string; onEngagement?: OnEngagement } & CoverProps) {
   if (events.length === 0) {
     return (
       <div className={styles.empty}>
@@ -62,15 +88,21 @@ export function EventList({ events, emptyMessage = NO_ACTIVE_EVENTS, emptyHint =
         return (
           <li key={event.event_id} id={`event-${event.event_id}`} className={styles.card}>
             <div className={styles.cardArtWrap}>
-              <EventArt id={event.event_id} title={event.title} className={styles.cardArt} />
+              <EventArt id={event.event_id} title={event.title} className={styles.cardArt} coverUrl={event.cover_url}>
+                <HostCover event={event} hostId={hostId} onCover={onCover} />
+              </EventArt>
               <p className={styles.dateBadge} aria-hidden="true">
                 <span>{monthFormat.format(startsAt)}</span>{startsAt.getDate()}
               </p>
             </div>
             <div className={styles.cardBody}>
-              <h3 className={styles.cardTitle}>{event.title}</h3>
+              <h3 className={styles.cardTitle}>
+                <Link href={`/events/${event.event_id}`} className={styles.titleLink}>{event.title}</Link>
+              </h3>
               <EventDetails event={event} />
               <p className={`${styles.description} ${styles.clamp}`}>{event.description}</p>
+              <GoingSummary event={event} />
+              <EventActions event={event} onChange={(engagement) => onEngagement(event.event_id, engagement)} />
             </div>
           </li>
         );
@@ -93,6 +125,35 @@ export function WeekStrip({ events, today = new Date() }: { events: CampusEvent[
           </li>
         ))}
       </ol>
+    </section>
+  );
+}
+
+// UR-405: liked events ranked by likes; the more likes, the higher.
+export function TrendingEvents({ events }: { events: CampusEvent[] }) {
+  return (
+    <section className={styles.sideCard} aria-labelledby="trending-title">
+      <h2 id="trending-title" className={styles.sideTitle}>Trending on campus</h2>
+      <p className={styles.sideBody}>Ranked by likes · the more likes, the higher</p>
+      {events.length === 0 ? (
+        <p className={styles.sideEmpty}>No trending events yet. Like an event to get it trending.</p>
+      ) : (
+        <ol className={styles.trending}>
+          {events.map((event, index) => (
+            <li key={event.event_id}>
+              <Link href={`/events/${event.event_id}`} className={styles.trendingItem}>
+                <span className={styles.rank}>{index + 1}</span>
+                <EventArt id={event.event_id} title={event.title} className={styles.trendingArt} coverUrl={event.cover_url} />
+                <span className={styles.trendingText}>
+                  <strong>{event.title}</strong>
+                  <span>{formatWhen(event.starts_at)}</span>
+                </span>
+                <span className={styles.trendingLikes}><Heart aria-hidden="true" fill="currentColor" />{event.like_count}<span className={styles.srOnly}> likes</span></span>
+              </Link>
+            </li>
+          ))}
+        </ol>
+      )}
     </section>
   );
 }
