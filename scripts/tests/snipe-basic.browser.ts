@@ -183,7 +183,9 @@ beforeAll(async () => {
   const reservation = createServer(); const nextPort = await listen(reservation);
   await new Promise<void>(resolve => reservation.close(() => resolve()));
   base = `http://127.0.0.1:${nextPort}`;
-  next = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'dev', '--hostname', '127.0.0.1', '--port', String(nextPort)], {
+  // Webpack, as the production build already supports: Turbopack infers its root from lockfiles above this
+  // checkout and watches sibling checkouts too, so edits elsewhere recompile and reload pages without end.
+  next = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'dev', '--webpack', '--hostname', '127.0.0.1', '--port', String(nextPort)], {
     cwd: process.env.SNIPE_APP_ROOT || process.cwd(),
     env: { ...process.env, SUPABASE_URL: `http://127.0.0.1:${servicePort}`, NEXT_PUBLIC_SUPABASE_URL: `http://127.0.0.1:${servicePort}`, SUPABASE_SERVICE_ROLE_KEY: 'isolated-test-service-key', SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_TELEMETRY_DISABLED: '1' }, stdio: ['ignore', 'pipe', 'pipe'],
   });
