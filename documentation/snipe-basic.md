@@ -5,6 +5,8 @@ not the full Snipe feature. This slice did not include group reporting, administ
 administrator removal. Reward points were added later; see [`snipe-rewards.md`](snipe-rewards.md). Group
 reporting with its receipt (SRS-514.8), then administrator review and group administrator removal
 (SRS-514.10), were added on later branches; see [`snipe-moderation.md`](snipe-moderation.md).
+Published-Snipe withdrawal/removal for original actors who have since left or unfriended was added later
+(parent #645, tasks #969–#971); see [`snipe-sharing-permissions.md`](snipe-sharing-permissions.md).
 
 ## Decision record: Snipe photo policy (Appendix B-06)
 
@@ -135,14 +137,14 @@ skips overlapping polls and aborts stale requests. Normal chat behavior is uncha
 | 511.1 private review access | Done | `snipe_viewer_role`, photo action |
 | 511.2 – 511.5 separate answers, ownership | Done | `respond`, AnswerForm |
 | 511.6 – 511.10 outcomes | Done | existing `apply_snipe_consent` / `check_snipe_consent` |
-| 511.11 / 511.12 withdrawal | Done | `withdraw` |
+| 511.11 / 511.12 withdrawal | Done | `withdraw`; published withdrawal by former participants: `snipe-sharing-permissions.md` (#969–#971) |
 | 511.13 terminal response rejection | Done | `respond` returns closed/expired (409) |
 | 512.1 – 512.3 private status, invisibility | Done | list view |
 | 512.4 – 512.6 deadline and expiry | Done | `snipe_settle` before every read/action |
 | 512.7 / 512.8 eligibility cancellation | Done | existing triggers + `snipe_settle` (also blocks/deactivation) |
 | 512.9 – 512.12 reasons, durability | Done | stored outcome, view |
 | 513.1 – 513.9 cooldowns | Done | create checks + trigger; SN429 names friend and next time |
-| 514.1 removal roles | Done (group administrators on a later branch) | Photographer and tagged friends here; current group owner/administrator in `snipe-moderation.md` |
+| 514.1 removal roles | Done (group administrators on a later branch) | Photographer and tagged friends here, also after leaving or unfriending (`snipe-sharing-permissions.md`, #969–#971); current group owner/administrator in `snipe-moderation.md` |
 | 514.2 – 514.7 removal | Done | `remove`, `withdraw`, placeholder, photo route |
 | 514.8, 514.9, 514.11, 514.14 group reporting and receipt | Done (later branch) | `snipe-moderation.md` |
 | 514.10, 514.12, 514.13 admin review and decisions | Done (later branch) | `snipe-moderation.md` |
@@ -222,8 +224,13 @@ npx vitest run --config vitest.snipe-basic.config.ts
 - A reconciliation job for Snipe objects without a `media_assets` row (kept after uncertain outcomes). A
   retention decision for the private bytes of Removed / unpublished Snipes, which are never served but not
   yet deleted.
-- Changing an answer while pending is not offered (each answer is saved once; withdrawal is separate). A
-  tagged friend who has left the conversation cannot reach the panel to withdraw; both need team decisions.
+- Changing an answer while pending is not offered (each answer is saved once; withdrawal is separate) and still
+  needs a team decision. Former participants still can't reach the conversation panel. For a **published**
+  Snipe, though, the photographer and every originally tagged friend who approved sharing can now remove or
+  withdraw it from *Your Snipe sharing permissions* on the Messages home. That works after leaving the group or
+  after the friendship ends, and gives no photo or chat access; see
+  [`snipe-sharing-permissions.md`](snipe-sharing-permissions.md). A pending request is already canceled when a
+  required participant leaves or a friendship ends, so nothing is left to withdraw.
 - LP/team confirmation of B-06 (only DP's approval is recorded).
 
 ## Hosted large-photo transport
