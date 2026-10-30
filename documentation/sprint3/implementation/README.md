@@ -1,5 +1,7 @@
 # Sprint 3 implementation — Linh Nguyen — October 29, 2026
 
+> **Latest integration check:** main’s newer event work is included in the final feature branch. All 1,072 tests in 126 files and the integrated production build pass. PR merges and board completion remain pending because GitHub writes and browser control are unavailable. See [merge-readiness.md](merge-readiness.md).
+
 The five selected Login Activity items have implementation commits on their own pre-created SRS branches. All five PRs target main and remain **drafts awaiting review and merge**. This is implementation/evidence progress, not a declaration that the sprint, attendance or Canvas submission is complete.
 
 | SRS / parent | Implementation PR | Branch | Focused commit |

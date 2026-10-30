@@ -51,6 +51,8 @@ assert.equal((await call('socialu_list_events',uid(3)))[0].liked_by_me,false);
 
 // I'm going: who is attending, in the order they joined.
 await call('socialu_event_react',uid(3),event,'going');
+// Give the chronological-order fixture distinct timestamps; fast calls can otherwise tie.
+await db.query("UPDATE socialu.event_attendees SET joined_at=now()-interval '1 minute' WHERE event_id=$1 AND student_id=(SELECT student_id FROM socialu.students WHERE auth_user_id=$2)",[event,uid(3)]);
 const going=await call('socialu_event_react',uid(2),event,'going');
 assert.equal(going.going_count,2); assert.equal(going.going_by_me,true);
 assert.deepEqual(going.attendee_preview,['student3','student2']);
