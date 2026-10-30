@@ -49,6 +49,10 @@ function snipeError(error: RpcError): SnipeError {
     }
     // The publishing answer and its reward roll back together (no current Snipe reward rule); retry later.
     case 'SN503': return known(503, 'SNIPE_REWARDS_UNAVAILABLE');
+    // Group reporting (SRS-514.8, 514.14): invalid reason, not reportable here, or no longer published.
+    case 'SR400': return known(400, 'SNIPE_REPORT_INVALID');
+    case 'SR403': return known(403, 'SNIPE_REPORT_NOT_ALLOWED');
+    case 'SR409': return known(409, 'SNIPE_NOT_PUBLISHED');
     case '42501': return new SnipeError('A verified, active university account is required.', 403, true);
     case 'PGRST202': return new SnipeError('Snipe needs its database update before it can be used.', 503, true, 'SNIPE_SETUP_REQUIRED');
   }
@@ -61,6 +65,17 @@ export async function snipeOperation<T = any>(authId: string, action: SnipeActio
   const { data, error } = await accountClient().rpc('socialu_snipe', { p_auth_id: authId, p_action: action, p_conversation_id: conversationId, p_snipe_id: snipeId, p_payload: payload });
   if (error) throw snipeError(error);
   return data as T;
+}
+
+// SRS-514.8 to 514.11: a group member's report of a published Snipe. Only the trimmed reason is forwarded;
+// the reporter comes from the verified token and status/resolution never come from the browser.
+export const SNIPE_REPORT_REASON_MAX = 500;
+export type SnipeReportResult = { result: 'created' | 'existing' | 'conflict'; report: unknown; snipe: unknown };
+
+export async function snipeReport(authId: string, conversationId: string, snipeId: string, reason: string) {
+  const { data, error } = await accountClient().rpc('socialu_snipe_report', { p_auth_id: authId, p_conversation_id: conversationId, p_snipe_id: snipeId, p_payload: { reason } });
+  if (error) throw snipeError(error);
+  return data as SnipeReportResult;
 }
 
 // Dedicated private bucket, provisioned by the Snipe migration. A restrictive storage.objects policy

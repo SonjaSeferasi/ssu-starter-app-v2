@@ -3,7 +3,8 @@
 Branch: `feature/srs-510-1-basic-snipe`. This is a basic, usable Snipe inside existing conversations. It is
 not the full Snipe feature. Group reporting, administrator report review and administrator removal are
 **not** implemented and are not advertised in the UI. Reward points were added later; see
-[`snipe-rewards.md`](snipe-rewards.md).
+[`snipe-rewards.md`](snipe-rewards.md). Group reporting and its receipt were added later; see
+[`snipe-moderation.md`](snipe-moderation.md).
 
 ## Decision record: Snipe photo policy (Appendix B-06)
 
@@ -143,7 +144,8 @@ skips overlapping polls and aborts stale requests. Normal chat behavior is uncha
 | 513.1 – 513.9 cooldowns | Done | create checks + trigger; SN429 names friend and next time |
 | 514.1 removal roles | Partial | Photographer and tagged friends. Group administrator removal: later |
 | 514.2 – 514.7 removal | Done | `remove`, `withdraw`, placeholder, photo route |
-| 514.8 – 514.14 group reporting and admin review | Later | `snipe_reports` table exists, unused |
+| 514.8, 514.9, 514.11, 514.14 group reporting and receipt | Done (later branch) | `snipe-moderation.md` |
+| 514.10, 514.12, 514.13 admin review and decisions | Later | Next phase, see `snipe-moderation.md` |
 | 514.15 repeat removal | Done | idempotent `remove` / `withdraw` |
 | 525.x Snipe rewards | Done (B-01, DP) | `snipe-rewards.md` |
 
@@ -214,8 +216,8 @@ npx vitest run --config vitest.snipe-basic.config.ts
 
 ## Remaining full-SRS work
 
-- Group reporting, report receipt, administrator report review and decisions (SRS-514.8 to 514.14), and
-  group administrator removal (rest of SRS-514.1).
+- Administrator report review and decisions (SRS-514.10, 514.12, 514.13) and group administrator removal
+  (rest of SRS-514.1). Group reporting and the receipt are done; see [`snipe-moderation.md`](snipe-moderation.md).
 - Live updates and notifications for new requests and outcomes (the basic panel polls while open).
 - A reconciliation job for Snipe objects without a `media_assets` row (kept after uncertain outcomes). A
   retention decision for the private bytes of Removed / unpublished Snipes, which are never served but not
