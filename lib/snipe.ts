@@ -4,6 +4,7 @@ import { CONVERSATION_NOT_AVAILABLE } from './chat-access';
 // Server-only Snipe bridge (UR-510 to UR-514, UR-525). The acting student always comes from the verified
 // token; the database function performs every participant, friendship, consent and reward check.
 export const SNIPE_NOT_AVAILABLE = 'Snipe not available.';
+export const SNIPE_REPORT_NOT_AVAILABLE = 'Report not available.';
 export const NO_STORE = { 'Cache-Control': 'no-store' };
 
 export type SnipeAction = 'list' | 'prepare' | 'create' | 'respond' | 'withdraw' | 'remove' | 'photo';
@@ -53,6 +54,10 @@ function snipeError(error: RpcError): SnipeError {
     case 'SR400': return known(400, 'SNIPE_REPORT_INVALID');
     case 'SR403': return known(403, 'SNIPE_REPORT_NOT_ALLOWED');
     case 'SR409': return known(409, 'SNIPE_NOT_PUBLISHED');
+    // Administrator review (SRS-514.1, 514.10, 514.12): not a current manager, invalid decision, unknown report.
+    case 'SM400': return known(400, 'SNIPE_DECISION_INVALID');
+    case 'SM403': return known(403, 'SNIPE_MODERATION_NOT_ALLOWED');
+    case 'SR404': return new SnipeError(SNIPE_REPORT_NOT_AVAILABLE, 404, true);
     case '42501': return new SnipeError('A verified, active university account is required.', 403, true);
     case 'PGRST202': return new SnipeError('Snipe needs its database update before it can be used.', 503, true, 'SNIPE_SETUP_REQUIRED');
   }
@@ -76,6 +81,19 @@ export async function snipeReport(authId: string, conversationId: string, snipeI
   const { data, error } = await accountClient().rpc('socialu_snipe_report', { p_auth_id: authId, p_conversation_id: conversationId, p_snipe_id: snipeId, p_payload: { reason } });
   if (error) throw snipeError(error);
   return data as SnipeReportResult;
+}
+
+// SRS-514.1, 514.10, 514.12, 514.13, 514.15: a current group owner or administrator reviews the group's
+// unresolved reports, decides each one, or removes a published Snipe directly. The database derives the actor
+// and rechecks the account, participant, school and manager role on every call; only the decision is forwarded.
+export type SnipeModerationAction = 'queue' | 'resolve' | 'remove';
+export type SnipeDecision = 'dismissed' | 'removed';
+export const SNIPE_DECISIONS: readonly SnipeDecision[] = ['dismissed', 'removed'];
+
+export async function snipeModeration<T = any>(authId: string, action: SnipeModerationAction, conversationId: string, targetId: string | null = null, payload: { decision?: SnipeDecision } = {}): Promise<T> {
+  const { data, error } = await accountClient().rpc('socialu_snipe_moderation', { p_auth_id: authId, p_action: action, p_conversation_id: conversationId, p_target_id: targetId, p_payload: payload });
+  if (error) throw snipeError(error);
+  return data as T;
 }
 
 // Dedicated private bucket, provisioned by the Snipe migration. A restrictive storage.objects policy

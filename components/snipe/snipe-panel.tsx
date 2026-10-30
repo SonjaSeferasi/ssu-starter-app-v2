@@ -9,7 +9,9 @@ import styles from './snipe.module.css';
 // UR-510 to UR-514 and UR-525: a private, conversation-only Snipe panel. Pending requests are only
 // returned to the photographer and tagged friends, so other members never see a placeholder for them.
 // Points come from the shared ledger; only the photographer sees a Snipe's reward result.
-// Group members can report a published Snipe (SRS-514.8 to 514.14); direct messages never offer it.
+// Group members can report a published Snipe (SRS-514.8 to 514.14); direct messages never offer it. Current
+// group owners and administrators also get the group's report queue and can remove published Snipes (SRS-514.1,
+// 514.10, 514.12, 514.13); the server decides who that is on every request.
 type Person = { id: string; name: string; username: string };
 type Target = Person & { next_eligible_at: string | null };
 type Answers = { identity: boolean | null; sharing: boolean | null; withdrawn: boolean };
@@ -17,7 +19,7 @@ type Status = 'pending' | 'approved' | 'rejected' | 'expired' | 'canceled' | 'cl
 // Frozen ledger outcome for a published Snipe; `awarded: false` means no credit was ever recorded for it.
 type Reward = { awarded: true; verified_friends: number; points_per_friend: number; points: number; recorded_at: string; balance_after: number }
   | { awarded: false };
-// The signed-in student's own stored group report (SRS-514.9). Administrator review comes in a later phase.
+// The signed-in student's own stored group report (SRS-514.9); its status shows the administrator's decision.
 type Receipt = { id: string; snipe_id: string; reason: string; status: 'unresolved' | 'dismissed' | 'removed' };
 export type SnipeView = {
   id: string; status: Status; viewer_role: 'photographer' | 'tagged' | 'member';
@@ -28,7 +30,14 @@ export type SnipeView = {
   reward?: Reward | null;
   // Absent only if the server predates group reporting.
   can_report?: boolean; my_report?: Receipt | null;
+  // Absent only if the server predates administrator review.
+  can_admin_remove?: boolean;
 };
+// SRS-514.10: one unresolved report as a current manager sees it. `visible` is false for a Snipe published
+// before the manager joined: they can decide the report but are never shown its photo.
+type QueueReport = { id: string; reason: string; status: Receipt['status']; reporter: Person;
+  snipe: { id: string; status: Status; published_at: string | null; photographer: Person; visible: boolean; photo_available: boolean } };
+type Decision = 'dismissed' | 'removed';
 type Rewards = { points_per_friend: number | null; balance: number };
 // `rewards` is absent only if the server predates the rewards migration.
 type SnipeList = { student_id: string; kind: 'private' | 'group'; rewards?: Rewards; targets: Target[]; snipes: SnipeView[] };
@@ -68,6 +77,9 @@ export function SnipePanel({ conversationId }: { conversationId: string }) {
   const [list, setList] = useState<SnipeList | null>(null);
   const [state, setState] = useState<'loading' | 'loaded' | 'failed' | 'denied'>('loading');
   const [loadError, setLoadError] = useState('');
+  // Bumped after every successful list load, so the report queue refreshes with the list (including after
+  // a decision, a removal or a role change).
+  const [revision, setRevision] = useState(0);
   const inFlight = useRef<AbortController | null>(null);
 
   // One list request at a time: polls skip while one is running; explicit refreshes replace it.
@@ -81,7 +93,7 @@ export function SnipePanel({ conversationId }: { conversationId: string }) {
       if (controller.signal.aborted) return;
       if (response.status === 404) { setState('denied'); return; }
       if (!response.ok) throw new Error(data.error || 'Snipes could not be loaded.');
-      setList(data); setState('loaded'); setLoadError('');
+      setList(data); setState('loaded'); setLoadError(''); setRevision((n) => n + 1);
     } catch (error) {
       if (controller.signal.aborted) return;
       setState((current) => current === 'loaded' ? current : 'failed');
@@ -143,6 +155,8 @@ export function SnipePanel({ conversationId }: { conversationId: string }) {
               {loadError && (
                 <p className={chat.error} role="alert">Couldn’t refresh Snipes. <button type="button" className={chat.retry} onClick={() => void load()}>Retry</button></p>
               )}
+              {/* SRS-514.14: no report queue in direct messages. */}
+              {list.kind === 'group' && <ReportQueue base={base} revision={revision} onDecided={() => void load()} />}
               <div className={styles.listHeading}>
                 <h3 className={styles.heading}>Your Snipes here</h3>
                 <button type="button" className={chat.retry} onClick={() => void load()}>Refresh</button>
@@ -150,7 +164,7 @@ export function SnipePanel({ conversationId }: { conversationId: string }) {
               {list.snipes.length === 0
                 ? <p className={styles.muted}>No Snipes to show in this conversation yet.</p>
                 : <ul className={styles.cards}>{list.snipes.map((snipe) => (
-                    <li key={snipe.id}><SnipeCard base={base} snipe={snipe} group={list.kind === 'group'} onChange={replaceSnipe} /></li>
+                    <li key={snipe.id}><SnipeCard base={base} snipe={snipe} group={list.kind === 'group'} onChange={replaceSnipe} onReload={() => void load()} /></li>
                   ))}</ul>}
             </>
           )}
@@ -288,18 +302,27 @@ function Composer({ base, targets, pointsPerFriend, onSubmitted }: {
   );
 }
 
-function SnipeCard({ base, snipe, group, onChange }: { base: string; snipe: SnipeView; group: boolean; onChange: (snipe: SnipeView) => void }) {
+function SnipeCard({ base, snipe, group, onChange, onReload }: {
+  base: string; snipe: SnipeView; group: boolean; onChange: (snipe: SnipeView) => void; onReload: () => void;
+}) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
-  const [confirming, setConfirming] = useState<'withdraw' | 'remove' | null>(null);
+  const [confirming, setConfirming] = useState<'withdraw' | 'remove' | 'admin-remove' | null>(null);
   const mine = snipe.viewer_role === 'photographer';
 
   async function act(body: Record<string, unknown>) {
     setBusy(true); setError('');
     try {
-      const { response, data } = await snipeFetch(`${base}/${encodeURIComponent(snipe.id)}`, { method: 'PATCH', json: body });
+      const path = `${base}/${encodeURIComponent(snipe.id)}`;
+      // SRS-514.1: a group manager's removal goes through its own route; the server checks the role again.
+      const { response, data } = body.action === 'admin-remove'
+        ? await snipeFetch(`${path}/admin-removal`, { method: 'POST' })
+        : await snipeFetch(path, { method: 'PATCH', json: body });
       if (data.snipe) onChange(data.snipe);
+      if (response.status === 403) onReload();
       if (!response.ok) throw new Error(data.error || 'That change could not be saved. Please try again.');
+      // A removal can also close reports, so the list and the report queue are refreshed.
+      if (body.action !== 'respond') onReload();
       setConfirming(null);
       return true;
     } catch (err) {
@@ -340,11 +363,13 @@ function SnipeCard({ base, snipe, group, onChange }: { base: string; snipe: Snip
 
       {snipe.can_answer && snipe.my_answers && <AnswerForm answers={snipe.my_answers} busy={busy} onSave={(answer) => act({ action: 'respond', ...answer })} />}
 
-      {(snipe.can_withdraw || snipe.can_remove) && (
+      {(snipe.can_withdraw || snipe.can_remove || snipe.can_admin_remove) && (
         confirming ? (
           <div className={styles.confirm} role="group" aria-label="Confirm">
             <p className={styles.tight}>{confirming === 'remove'
               ? 'Remove this Snipe for everyone in this conversation? This cannot be undone.'
+              : confirming === 'admin-remove'
+              ? 'Remove this Snipe for everyone in this group as a group administrator? Its photo stops being shown. This cannot be undone.'
               : snipe.status === 'approved'
                 ? 'Withdraw your sharing permission? The Snipe will be removed for everyone in this conversation.'
                 : 'Withdraw your sharing permission? This cancels the whole Snipe.'}</p>
@@ -357,6 +382,7 @@ function SnipeCard({ base, snipe, group, onChange }: { base: string; snipe: Snip
           <div className={styles.actions}>
             {snipe.can_withdraw && <button type="button" className={styles.secondary} onClick={() => setConfirming('withdraw')}>Withdraw sharing permission</button>}
             {snipe.can_remove && <button type="button" className={styles.secondary} onClick={() => setConfirming('remove')}>Remove Snipe</button>}
+            {snipe.can_admin_remove && <button type="button" className={styles.secondary} onClick={() => setConfirming('admin-remove')}>Remove as group admin</button>}
           </div>
         )
       )}
@@ -444,6 +470,137 @@ function SnipeReport({ base, snipe, onChange }: { base: string; snipe: SnipeView
           </div>
         </form>
       )}
+    </div>
+  );
+}
+
+// SRS-514.10: the group's unresolved reports, shown only to a current owner or administrator. Every request is
+// checked by the server; anyone else (including a manager whose role was just revoked) gets a refusal and sees
+// nothing here. Refreshed with the Snipe list and after every decision.
+function ReportQueue({ base, revision, onDecided }: { base: string; revision: number; onDecided: () => void }) {
+  const [reports, setReports] = useState<QueueReport[] | null>(null);
+  const [state, setState] = useState<'loading' | 'loaded' | 'failed' | 'hidden'>('loading');
+  const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
+  const [attempt, setAttempt] = useState(0);
+  // Whether the server has confirmed this student manages the group; only then is a load failure shown.
+  const [isManager, setIsManager] = useState(false);
+  const manager = useRef(false);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setState((current) => current === 'hidden' ? current : 'loading');
+    (async () => {
+      try {
+        const { response, data } = await snipeFetch(`${base}/reports`, { signal: controller.signal });
+        if (controller.signal.aborted) return;
+        if (response.status === 403 || response.status === 404) {
+          if (manager.current) setNotice('You’re no longer an owner or administrator of this group, so its reports are hidden.');
+          manager.current = false; setIsManager(false); setReports(null); setState('hidden'); return;
+        }
+        if (!response.ok) throw new Error(data.error || 'Reports could not be loaded.');
+        manager.current = true; setIsManager(true); setReports(data.reports); setState('loaded'); setError('');
+      } catch (err) {
+        if (controller.signal.aborted) return;
+        setState('failed'); setError(failure(err, 'Reports could not be loaded.'));
+      }
+    })();
+    return () => controller.abort();
+  }, [base, revision, attempt]);
+
+  if (!isManager) {
+    return state === 'hidden' && notice ? <p className={styles.muted} role="status">{notice}</p> : null;
+  }
+  const decided = (message: string) => { setNotice(message); onDecided(); };
+  return (
+    <section className={styles.queue} aria-label="Reports to review" aria-busy={state === 'loading'}>
+      <div className={styles.listHeading}>
+        <h3 className={styles.heading}>Reports to review</h3>
+        <button type="button" className={chat.retry} disabled={state === 'loading'} onClick={() => { setNotice(''); setAttempt((n) => n + 1); }}>
+          {state === 'loading' ? 'Refreshing…' : 'Refresh reports'}
+        </button>
+      </div>
+      <p className={styles.muted}>Only this group’s owner and administrator see this. Reported Snipes stay visible until you remove them.</p>
+      {notice && <p className={styles.success} role="status">{notice}</p>}
+      {state === 'failed' && (
+        <p className={chat.error} role="alert">{error} <button type="button" className={chat.retry} onClick={() => setAttempt((n) => n + 1)}>Try again</button></p>
+      )}
+      {reports && (reports.length === 0
+        ? <p className={styles.muted}>No reports are waiting for review in this group.</p>
+        : <ul className={styles.cards}>{reports.map((report) => (
+            <li key={report.id}><ReportReview base={base} report={report} onDecided={decided} /></li>
+          ))}</ul>)}
+    </section>
+  );
+}
+
+// SRS-514.12, 514.13: resolve one report as Dismissed or Removed. Removal asks for confirmation first and then
+// applies the same published removal as the photographer's (photo withdrawn for everyone, points kept).
+function ReportReview({ base, report, onDecided }: { base: string; report: QueueReport; onDecided: (message: string) => void }) {
+  const [busy, setBusy] = useState<Decision | null>(null);
+  const [confirming, setConfirming] = useState(false);
+  const [error, setError] = useState('');
+  const [failed, setFailed] = useState<Decision | null>(null);
+  const { snipe } = report;
+  const removed = snipe.status === 'removed';
+
+  async function decide(decision: Decision) {
+    setBusy(decision); setError(''); setFailed(null);
+    try {
+      const { response, data } = await snipeFetch(`${base}/reports/${encodeURIComponent(report.id)}`, { method: 'PATCH', json: { decision } });
+      if (!response.ok) {
+        // Already decided, no longer a manager, or gone: refresh so the queue shows the current state.
+        if ([403, 404, 409].includes(response.status)) { onDecided(data.error || 'This report changed. The list was refreshed.'); return; }
+        throw new Error(data.error || 'That decision could not be saved. Please try again.');
+      }
+      setConfirming(false);
+      onDecided(decision === 'removed' ? `Report #${report.id} resolved: Snipe removed.` : `Report #${report.id} dismissed. The Snipe stays visible.`);
+    } catch (err) {
+      setFailed(decision);
+      setError(err instanceof TypeError
+        ? 'Connection problem. Your decision may not have been saved. Try again: it won’t be applied twice.'
+        : failure(err, 'That decision could not be saved. Please try again.'));
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  return (
+    <div className={styles.card} role="group" aria-label={`Report #${report.id}`}>
+      <header className={styles.cardHeader}>
+        <strong>Report #{report.id}</strong>
+        <span className={`${styles.badge} ${styles[snipe.status] ?? ''}`}>{statusLabels[snipe.status]}</span>
+      </header>
+      <p className={styles.muted}>Snipe by {snipe.photographer.name}{snipe.published_at && <> · published {when(snipe.published_at)}</>}</p>
+      <p className={styles.tight}>Reported by <strong>{report.reporter.name}</strong> <span className={styles.muted}>@{report.reporter.username}</span></p>
+      <p className={styles.tight}>Reason: {report.reason}</p>
+      {snipe.photo_available
+        ? <SnipePhoto path={`${base}/${encodeURIComponent(snipe.id)}/photo`} alt={`Reported Snipe by ${snipe.photographer.name}`} />
+        : <p className={styles.placeholder}>{removed ? 'Snipe removed' : 'Photo not shown: this Snipe was published before you joined the group.'}</p>}
+      {confirming ? (
+        <div className={styles.confirm} role="group" aria-label="Confirm removal">
+          <p className={styles.tight}>Remove this Snipe for everyone in this group? Its photo stops being shown and this cannot be undone. Points already awarded are kept.</p>
+          <div className={styles.actions}>
+            <button type="button" className={styles.danger} disabled={busy !== null} onClick={() => void decide('removed')}>
+              {busy === 'removed' ? 'Removing…' : failed === 'removed' ? 'Try again' : 'Confirm removal'}
+            </button>
+            <button type="button" className={chat.retry} disabled={busy !== null} onClick={() => { setConfirming(false); setError(''); }}>Keep it</button>
+          </div>
+        </div>
+      ) : (
+        <div className={styles.actions}>
+          <button type="button" className={styles.secondary} disabled={busy !== null} onClick={() => void decide('dismissed')}>
+            {busy === 'dismissed' ? 'Dismissing…' : failed === 'dismissed' ? 'Try dismissing again' : 'Dismiss report'}
+          </button>
+          {removed
+            // Already removed by someone else: recording the decision changes nothing else, so no confirmation.
+            ? <button type="button" className={styles.secondary} disabled={busy !== null} onClick={() => void decide('removed')}>
+                {busy === 'removed' ? 'Saving…' : 'Resolve as removed'}
+              </button>
+            : <button type="button" className={styles.secondary} disabled={busy !== null} onClick={() => { setError(''); setConfirming(true); }}>Remove Snipe</button>}
+        </div>
+      )}
+      {error && <p className={chat.error} role="alert">{error}</p>}
     </div>
   );
 }

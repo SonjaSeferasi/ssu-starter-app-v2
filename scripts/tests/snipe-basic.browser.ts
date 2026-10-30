@@ -5,14 +5,15 @@ import { spawn, type ChildProcess } from 'node:child_process';
 import { mkdirSync } from 'node:fs';
 import type { PGlite } from '@electric-sql/pglite';
 import sharp from 'sharp';
-import { befriend, testUid } from '../../__tests__/helpers/dormspace-db';
+import { befriend, friendship, testUid } from '../../__tests__/helpers/dormspace-db';
 import { createGroup, createSnipeDatabase } from '../../__tests__/helpers/snipe-db';
 
 // SRS-510 to 514 and 525 acceptance: the real Next UI and API run against the real schema and functions in
 // PGlite. Only the provider's Auth, Storage and PostgREST HTTP transport is replaced, on loopback; no hosted
-// accounts, keys or data. Students: 1 photographer, 2 and 3 tagged friends, 4 an untagged group member.
+// accounts, keys or data. Students: 1 photographer and group owner, 2 and 3 tagged friends (also friends of
+// each other, with a direct message), 4 an untagged group member.
 let db: PGlite, service: Server, next: ChildProcess, browser: any;
-let base = '', nextLog = '', group = '', dropNextCreate = false;
+let base = '', nextLog = '', group = '', dm = '', dropNextCreate = false;
 const pages: Record<string, any> = {};
 const sessions = new Map<string, any>();
 const objects = new Map<string, { bytes: Buffer; type: string }>();
@@ -43,7 +44,7 @@ async function signIn(student: number, viewport = desktop) {
   page.on('response', async (response: any) => {
     if (!response.url().includes('/api/')) return;
     const text = await response.text().catch(() => '');
-    if (text.includes('snipe/' + testUid(1)) || text.includes('storage_key')) leakedKeys.push(response.url());
+    if (/snipe\/00000000-0000-4000-8000-/.test(text) || text.includes('storage_key')) leakedKeys.push(response.url());
   });
   await page.goto(base + '/login', { waitUntil: 'networkidle' });
   await page.waitForFunction(() => { const form = document.querySelector('form'); return form && Object.keys(form).some(key => key.startsWith('__reactProps$')); });
@@ -56,17 +57,25 @@ async function signIn(student: number, viewport = desktop) {
   await page.waitForFunction(() => Boolean(localStorage.getItem('access_token') || sessionStorage.getItem('access_token')));
   return page;
 }
-async function openSnipes(page: any) {
-  await page.goto(`${base}/messages/${group}`);
-  await page.getByRole('heading', { name: /Group chat/ }).waitFor();
-  const toggle = page.getByRole('button', { name: /^Snipe/ });
+async function openSnipes(page: any, conversation = group, heading: RegExp = /Group chat/) {
+  await page.goto(`${base}/messages/${conversation}`);
+  // The open conversation's own header (its "Conversation" region), not the Messages list or sidebar, which
+  // can hold the same names and stay in the DOM, hidden, on phones.
+  const open = page.getByRole('region', { name: 'Conversation', exact: true });
+  await open.getByRole('heading', { level: 2, name: heading }).waitFor();
+  const toggle = open.getByRole('button', { name: /^Snipe/ });
   await toggle.waitFor();
   // Keyboard: the panel opens from the focused toggle.
   await toggle.focus(); await page.keyboard.press('Enter');
   await page.getByText('Snipes stay in this conversation only.', { exact: false }).waitFor();
   return page;
 }
-const card = (page: any) => page.getByRole('article', { name: 'Snipe by Dorm Student 1' }).first();
+const cardBy = (page: any, student: number) => page.getByRole('article', { name: `Snipe by Dorm Student ${student}` }).first();
+const card = (page: any) => cardBy(page, 1);
+// SRS-514.10: the manager-only report queue and one report in it.
+const queue = (page: any) => page.getByRole('region', { name: 'Reports to review' });
+const queued = (page: any) => queue(page).getByRole('group', { name: /^Report #\d+$/ });
+const noOverflow = (page: any) => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth);
 // SRS-521.1: the signed-in student's confirmed shared balance inside the Snipe panel.
 const balance = (page: any) => page.getByRole('status').filter({ hasText: /shared (points )?balance/ });
 const ledgerRows = async () => (await db.query<any>('SELECT student_id::int AS student, points_change::int AS points FROM socialu.point_transactions ORDER BY transaction_id')).rows;
@@ -82,13 +91,40 @@ async function photoBlob(page: any) {
 }
 const snipeRows = async () => (await db.query<any>('SELECT snipe_id::text AS id, status FROM socialu.snipe_requests ORDER BY snipe_id')).rows;
 const reportRows = async () => (await db.query<any>('SELECT reporter_id::int AS reporter, reason, status FROM socialu.snipe_reports ORDER BY report_id')).rows;
+const resolvedBy = async () => (await db.query<any>('SELECT status, resolved_by::int AS resolver FROM socialu.snipe_reports ORDER BY report_id')).rows;
+async function photoBlobBy(page: any, student: number) {
+  const image = cardBy(page, student).getByRole('img', { name: `Snipe by Dorm Student ${student}` });
+  await image.waitFor();
+  await page.waitForFunction((el: HTMLImageElement) => el.complete && el.naturalWidth > 0, await image.elementHandle());
+  return image.getAttribute('src') as Promise<string>;
+}
+// Submits one Snipe through the real composer (photo upload, friend selection).
+async function submitSnipe(page: any, friend: number, color: string) {
+  await page.getByRole('button', { name: 'New Snipe' }).click();
+  await page.getByLabel(/^Photo/).setInputFiles({ name: 'snipe.png', mimeType: 'image/png',
+    buffer: await sharp({ create: { width: 480, height: 360, channels: 3, background: color } }).png().toBuffer() });
+  await page.getByRole('img', { name: 'Selected Snipe photo preview' }).waitFor();
+  await page.getByRole('checkbox', { name: new RegExp(`Dorm Student ${friend}`) }).check();
+  await page.getByRole('button', { name: 'Submit Snipe' }).click();
+  await page.getByText('Snipe submitted.', { exact: false }).waitFor();
+  return (await snipeRows()).at(-1)!.id as string;
+}
+// The real report form, as a member uses it.
+async function reportSnipe(page: any, student: number, reason: string) {
+  await cardBy(page, student).getByRole('button', { name: 'Report Snipe' }).click();
+  const form = cardBy(page, student).getByRole('form', { name: 'Report this Snipe' });
+  await form.getByLabel('Why are you reporting this Snipe?').fill(reason);
+  await form.getByRole('button', { name: 'Send report' }).click();
+  await cardBy(page, student).getByRole('status', { name: 'Report receipt' }).getByText('Report received. Thank you.').waitFor();
+}
 const receipt = (page: any) => card(page).getByRole('status', { name: 'Report receipt' });
 
 beforeAll(async () => {
   mkdirSync(artifacts, { recursive: true });
   db = await createSnipeDatabase(4);
-  await befriend(db, 1, 2); await befriend(db, 1, 3);
+  await befriend(db, 1, 2); await befriend(db, 1, 3); await befriend(db, 2, 3);
   group = await createGroup(db, 1, [2, 3, 4]);
+  dm = (await friendship(db, 2, 'message', 3)).conversation_id;
   service = createServer(async (request, response) => {
     const url = new URL(request.url!, 'http://localhost');
     const path = decodeURIComponent(url.pathname);
@@ -147,7 +183,9 @@ beforeAll(async () => {
   const reservation = createServer(); const nextPort = await listen(reservation);
   await new Promise<void>(resolve => reservation.close(() => resolve()));
   base = `http://127.0.0.1:${nextPort}`;
-  next = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'dev', '--hostname', '127.0.0.1', '--port', String(nextPort)], {
+  // Webpack, as the production build already supports: Turbopack infers its root from lockfiles above this
+  // checkout and watches sibling checkouts too, so edits elsewhere recompile and reload pages without end.
+  next = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'dev', '--webpack', '--hostname', '127.0.0.1', '--port', String(nextPort)], {
     cwd: process.env.SNIPE_APP_ROOT || process.cwd(),
     env: { ...process.env, SUPABASE_URL: `http://127.0.0.1:${servicePort}`, NEXT_PUBLIC_SUPABASE_URL: `http://127.0.0.1:${servicePort}`, SUPABASE_SERVICE_ROLE_KEY: 'isolated-test-service-key', SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_TELEMETRY_DISABLED: '1' }, stdio: ['ignore', 'pipe', 'pipe'],
   });
@@ -377,6 +415,145 @@ it('returns the saved Snipe when the response is lost after commit, without a se
   // A pending (unpublished) retry earns nothing.
   expect(await ledgerRows()).toEqual([{ student: 1, points: 25 }]);
   expect(otherBucketRequests).toEqual([]);
+  expect(leakedKeys).toEqual([]);
+  for (const page of [photographer, tagged]) await page.context().close();
+});
+
+it('lets the group owner review reports: dismiss, a fresh report, then remove with confirmation', async () => {
+  // SRS-514.10: the owner's queue already holds member 4's report from the first test, on a Snipe the tagged
+  // friend withdrew since; it shows the removed state and can be closed without another confirmation.
+  const owner = pages.owner = await openSnipes(await signIn(1));
+  await queue(owner).waitFor();
+  await expect.poll(() => queued(owner).count()).toBe(1);
+  await queued(owner).getByText('Reason: Posted without asking me.').waitFor();
+  await queued(owner).getByText('Snipe removed', { exact: true }).waitFor();
+  expect(await queued(owner).getByRole('img').count()).toBe(0);
+  await screenshot(owner, 'desktop-owner-queue-removed-snipe');
+  await queued(owner).getByRole('button', { name: 'Resolve as removed' }).click();
+  await queue(owner).getByText(/resolved: Snipe removed\./).waitFor();
+  await queue(owner).getByText('No reports are waiting for review in this group.').waitFor();
+  expect(await resolvedBy()).toEqual([{ status: 'removed', resolver: 1 }]);
+
+  // A new published Snipe: photographer 2 tags 3 through the composer; 3 approves both questions.
+  const photographer = pages.photographer = await openSnipes(await signIn(2));
+  const id = await submitSnipe(photographer, 3, '#9fc5e8');
+  const tagged = pages.tagged = await openSnipes(await signIn(3));
+  const answered = await api(tagged, `/api/conversations/${group}/snipes/${id}`, 'PATCH', { action: 'respond', identity: true, sharing: true });
+  expect([answered.status, JSON.parse(answered.text).snipe.status]).toEqual([200, 'approved']);
+  expect(await ledgerRows()).toEqual([{ student: 1, points: 25 }, { student: 2, points: 25 }]);
+  const photoPath = `/api/conversations/${group}/snipes/${id}/photo`;
+
+  // Ordinary members and tagged friends never get the queue, a decision or an admin removal.
+  const member = pages.member = await openSnipes(await signIn(4));
+  expect(await photoBlobBy(member, 2)).toMatch(/^blob:/);
+  expect(await cardBy(member, 2).getByRole('button', { name: /Remove|Withdraw/ }).count()).toBe(0);
+  for (const page of [member, tagged]) {
+    expect(await queue(page).count()).toBe(0);
+    expect((await api(page, `/api/conversations/${group}/snipes/reports`)).status).toBe(403);
+    expect((await api(page, `/api/conversations/${group}/snipes/${id}/admin-removal`, 'POST')).status).toBe(403);
+  }
+  await reportSnipe(member, 2, 'Taken at a private party.');
+  const memberDecision = await api(member, `/api/conversations/${group}/snipes/reports/2`, 'PATCH', { decision: 'removed' });
+  expect([memberDecision.status, JSON.parse(memberDecision.text).code]).toEqual([403, 'SNIPE_MODERATION_NOT_ALLOWED']);
+
+  // SRS-514.10, 514.12: the owner sees the reason and the photo, and dismisses. The Snipe stays published.
+  // Refreshing the Snipe list refreshes the queue with it.
+  await owner.getByRole('region', { name: 'Snipe', exact: true }).getByRole('button', { name: 'Refresh', exact: true }).click();
+  await queued(owner).getByText('Reason: Taken at a private party.').waitFor();
+  await queued(owner).getByText('Reported by Dorm Student 4', { exact: false }).waitFor();
+  await queued(owner).getByRole('img', { name: 'Reported Snipe by Dorm Student 2' }).waitFor();
+  // The owner can also remove it directly from its card (SRS-514.1); here the report is decided instead.
+  await cardBy(owner, 2).getByRole('button', { name: 'Remove as group admin' }).waitFor();
+  await screenshot(owner, 'desktop-owner-report-queue');
+  await queued(owner).getByRole('button', { name: 'Dismiss report' }).click();
+  await queue(owner).getByText(/dismissed\. The Snipe stays visible\./).waitFor();
+  await queue(owner).getByText('No reports are waiting for review in this group.').waitFor();
+  expect((await resolvedBy()).at(-1)).toEqual({ status: 'dismissed', resolver: 1 });
+  for (const page of [owner, member, tagged, photographer]) expect((await api(page, photoPath)).status).toBe(200);
+  // The reporter sees the decision after a refresh, the photo is still shown, and they can report again.
+  await member.reload(); await openSnipes(member);
+  await cardBy(member, 2).getByRole('status', { name: 'Report receipt' }).getByText('Reviewed: dismissed', { exact: false }).waitFor();
+  expect(await photoBlobBy(member, 2)).toMatch(/^blob:/);
+  await reportSnipe(member, 2, 'Still unwanted after review.');
+
+  // SRS-514.13 on a phone: the owner removes through the queue, after confirming.
+  const ownerPhone = pages.ownerPhone = await openSnipes(await signIn(1, phone));
+  await queued(ownerPhone).getByText('Reason: Still unwanted after review.').waitFor();
+  await queued(ownerPhone).getByRole('button', { name: 'Remove Snipe' }).click();
+  const confirm = queued(ownerPhone).getByRole('group', { name: 'Confirm removal' });
+  await confirm.getByText('Points already awarded are kept.', { exact: false }).waitFor();
+  expect(await noOverflow(ownerPhone)).toBe(true);
+  await screenshot(ownerPhone, 'mobile-owner-confirm-removal');
+  // Keep it backs out without changing anything.
+  await confirm.getByRole('button', { name: 'Keep it' }).click();
+  expect((await snipeRows()).at(-1)!.status).toBe('approved');
+  await queued(ownerPhone).getByRole('button', { name: 'Remove Snipe' }).click();
+  await queued(ownerPhone).getByRole('group', { name: 'Confirm removal' }).getByRole('button', { name: 'Confirm removal' }).click();
+  await queue(ownerPhone).getByText(/resolved: Snipe removed\./).waitFor();
+  await queue(ownerPhone).getByText('No reports are waiting for review in this group.').waitFor();
+  // The refreshed list shows the placeholder; no photo (or blob) stays on the owner's card.
+  await cardBy(ownerPhone, 2).getByText('Snipe removed', { exact: true }).waitFor();
+  expect(await cardBy(ownerPhone, 2).getByRole('img').count()).toBe(0);
+  expect(await noOverflow(ownerPhone)).toBe(true);
+  await screenshot(ownerPhone, 'mobile-owner-report-removed');
+
+  // SRS-514.6: the photo is no longer served to anyone; SRS-514.7: members see the placeholder.
+  for (const page of [owner, ownerPhone, member, tagged, photographer]) expect((await api(page, photoPath)).status).toBe(404);
+  expect((await snipeRows()).at(-1)!.status).toBe('removed');
+  expect((await resolvedBy()).at(-1)).toEqual({ status: 'removed', resolver: 1 });
+  await member.reload(); await openSnipes(member);
+  await cardBy(member, 2).getByText('Snipe removed', { exact: true }).waitFor();
+  await cardBy(member, 2).getByRole('status', { name: 'Report receipt' }).getByText('Reviewed: Snipe removed', { exact: false }).waitFor();
+  expect(await cardBy(member, 2).getByRole('button', { name: 'Report Snipe' }).count()).toBe(0);
+  await screenshot(member, 'desktop-member-report-removed');
+  // SRS-524.4: the photographer keeps the points; repeating the decision changes nothing.
+  await photographer.reload(); await openSnipes(photographer);
+  await cardBy(photographer, 2).getByText('Reason: Removed by a group administrator').waitFor();
+  await cardBy(photographer, 2).getByRole('group', { name: 'Snipe reward' }).getByText('Removing a Snipe doesn’t take its points back.', { exact: false }).waitFor();
+  await balance(photographer).getByText('25 points', { exact: true }).waitFor();
+  const repeat = await api(owner, `/api/conversations/${group}/snipes/${id}/admin-removal`, 'POST');
+  expect([repeat.status, JSON.parse(repeat.text).snipe.status]).toEqual([200, 'removed']);
+  expect(await ledgerRows()).toEqual([{ student: 1, points: 25 }, { student: 2, points: 25 }]);
+  expect(signedSnipeKeys).toEqual([]);
+  expect(leakedKeys).toEqual([]);
+  for (const page of [owner, ownerPhone, member, tagged, photographer]) await page.context().close();
+});
+
+it('keeps direct-message Snipes free of report and administrator controls', async () => {
+  // SRS-510.1, 514.3, 514.14 in a real direct message: 3 photographs 2; 2 answers on a phone.
+  const photographer = pages.photographer = await openSnipes(await signIn(3), dm, /Dorm Student 2|Conversation/);
+  const id = await submitSnipe(photographer, 2, '#f6b26b');
+  const tagged = pages.tagged = await openSnipes(await signIn(2, phone), dm, /Dorm Student 3|Conversation/);
+  // The ordinary message layout stays in place under the panel.
+  await tagged.getByText(/Send a message to start the conversation|No messages to show yet/).waitFor();
+  for (const question of ['Is this you?', 'Do you approve sharing this photo in this conversation?']) {
+    const fieldset = cardBy(tagged, 3).getByRole('group', { name: question });
+    await fieldset.getByRole('radio', { name: 'Yes' }).check();
+    await fieldset.getByRole('button', { name: 'Save answer' }).click();
+  }
+  await cardBy(tagged, 3).getByText('Approved', { exact: true }).waitFor();
+  expect(await photoBlobBy(tagged, 3)).toMatch(/^blob:/);
+  expect(await ledgerRows()).toEqual([{ student: 1, points: 25 }, { student: 2, points: 25 }, { student: 3, points: 25 }]);
+  // No report, queue or administrator controls for either participant, and the API refuses them too.
+  for (const page of [tagged, photographer]) {
+    if (page === photographer) { await page.reload(); await openSnipes(page, dm, /Dorm Student 2|Conversation/); }
+    expect(await queue(page).count()).toBe(0);
+    expect(await cardBy(page, 3).getByRole('button', { name: /Report|group admin/ }).count()).toBe(0);
+    for (const [path, method, body] of [['/reports', 'GET', undefined], [`/${id}/report`, 'POST', { reason: 'spam' }], [`/${id}/admin-removal`, 'POST', undefined]] as const) {
+      const res = await api(page, `/api/conversations/${dm}/snipes${path}`, method, body);
+      expect([res.status, JSON.parse(res.text).code], `${path}`).toEqual([403, 'SNIPE_REPORT_NOT_ALLOWED']);
+    }
+  }
+  expect(await noOverflow(tagged)).toBe(true);
+  await screenshot(tagged, 'mobile-dm-tagged-approved');
+  // SRS-514.3: the photographer removes it with confirmation; the photo stops for both, points are kept.
+  await cardBy(photographer, 3).getByRole('button', { name: 'Remove Snipe' }).click();
+  await cardBy(photographer, 3).getByRole('group', { name: 'Confirm' }).getByRole('button', { name: 'Confirm' }).click();
+  await cardBy(photographer, 3).getByText('Snipe removed', { exact: true }).waitFor();
+  await cardBy(photographer, 3).getByRole('group', { name: 'Snipe reward' }).getByText('Removing a Snipe doesn’t take its points back.', { exact: false }).waitFor();
+  for (const page of [photographer, tagged]) expect((await api(page, `/api/conversations/${dm}/snipes/${id}/photo`)).status).toBe(404);
+  await screenshot(photographer, 'desktop-dm-photographer-removed');
+  expect(await ledgerRows()).toEqual([{ student: 1, points: 25 }, { student: 2, points: 25 }, { student: 3, points: 25 }]);
   expect(leakedKeys).toEqual([]);
   for (const page of [photographer, tagged]) await page.context().close();
 });
