@@ -129,6 +129,8 @@ or non-participant read gets the same 404 as a missing one. Each read holds at m
 
 ## Verification (local only)
 
+Final local release results, including the large-photo browser scenario: [`snipe-sprint-3.md`](snipe-sprint-3.md).
+
 ```bash
 npx tsc --noEmit
 npx vitest run __tests__/api/snipe-uploads.test.ts __tests__/api/snipes.test.ts __tests__/database/snipe-photo-transport.test.ts \

@@ -1,6 +1,7 @@
 import { createServer, type Server } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { spawn, type ChildProcess } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import type { PGlite } from '@electric-sql/pglite';
 import { befriend, testUid } from '../../__tests__/helpers/dormspace-db';
 import { createGroup, createSnipeDatabase } from '../../__tests__/helpers/snipe-db';
@@ -18,13 +19,23 @@ const SERVICE_KEY = 'isolated-test-service-key';
 // Both private Snipe buckets, including upload-only URLs for direct photo uploads (same stand-in as the browser test).
 const storage = createSnipeStorage(SERVICE_KEY);
 const PASSWORD = 'SnipeTest123!';
+// The same additive migrations as scripts/tests/snipe-basic.browser.ts, each applied once in filename order on top
+// of the shared Snipe fixture, plus the group-members bridge the Members dialog needs before it offers Leave group:
+// group members, the real group-leave bridge, original-actor sharing permissions and request pagination.
+const ADDITIVE_MIGRATIONS = ['supabase/migrations/20261028120000_chat_assign_group_admin.sql', 'supabase/migrations/20261028120300_chat_leave_group.sql',
+  'supabase/migrations/20261030040044_snipe_withdrawal_access.sql', 'supabase/migrations/20261030093802_snipe_request_pagination.sql'];
+// Bridges the Snipe, report, administrator review, personal sharing, group-members and group-leave controls call
+// (lib/snipe.ts, lib/snipe-transport.ts, lib/snipe-sharing.ts, the Members dialog, app/api/conversations/[id]/leave);
+// startup fails if one is missing.
+const SNIPE_BRIDGES = ['socialu_snipe', 'socialu_snipe_report', 'socialu_snipe_moderation', 'socialu_snipe_photo', 'socialu_snipe_photo_reap',
+  'socialu_snipe_sharing', 'socialu_group_members', 'socialu_assign_group_admin', 'socialu_leave_group'];
 // Explicit allowlist of RPCs the login, conversation and Snipe pages reach; anything else is refused.
 const RPCS = new Set([
   'socialu_auth_guard', 'socialu_session_guard', 'socialu_session', 'socialu_account', 'socialu_account_lifecycle',
   'socialu_conversation_list', 'socialu_conversation_messages', 'socialu_mark_conversation_read', 'socialu_send_message',
-  'socialu_friend_conversation', 'socialu_snipe', 'socialu_snipe_photo', 'socialu_snipe_photo_reap', 'socialu_friendships', 'socialu_notifications',
+  'socialu_friend_conversation', 'socialu_friendships', 'socialu_notifications',
   'socialu_mark_notifications_read', 'socialu_game_room', 'socialu_avatar_customization', 'socialu_dorm',
-  'socialu_dormspace_live', 'socialu_profile_view',
+  'socialu_dormspace_live', 'socialu_profile_view', ...SNIPE_BRIDGES,
 ]);
 const user = (student: number) => ({ id: testUid(student), email: `dorm${student}@salemstate.edu`, email_confirmed_at: '2026-10-19T12:00:00Z', aud: 'authenticated', role: 'authenticated', user_metadata: { full_name: `Dorm Student ${student}`, username: `dorm${student}` } });
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -54,6 +65,12 @@ async function main() {
   process.once('SIGTERM', () => void shutdown(0));
 
   db = await createSnipeDatabase(4);
+  for (const file of ADDITIVE_MIGRATIONS) await db.exec(readFileSync(file, 'utf8'));
+  const present = (await db.query<{ name: string }>("SELECT DISTINCT proname::text AS name FROM pg_proc WHERE pronamespace = 'public'::regnamespace AND proname::text = ANY($1::text[])", [SNIPE_BRIDGES])).rows.map(row => row.name);
+  const missing = SNIPE_BRIDGES.filter(name => !present.includes(name));
+  if (missing.length) throw new Error('Missing Snipe bridges: ' + missing.join(', '));
+  const bridge = await db.query<any>("SELECT pg_get_functiondef('public.socialu_snipe(uuid,text,bigint,bigint,jsonb)'::regprocedure) AS def");
+  if (!bridge.rows[0].def.includes("'next_cursor'")) throw new Error('The Snipe pagination migration was not applied.');
   await befriend(db, 1, 2); await befriend(db, 1, 3);
   const group = await createGroup(db, 1, [2, 3, 4]);
   const database = db;
@@ -96,7 +113,8 @@ async function main() {
   const reservation = createServer(); const nextPort = await listen(reservation);
   await new Promise<void>(resolve => reservation.close(() => resolve()));
   const base = `http://127.0.0.1:${nextPort}`;
-  next = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'dev', '--hostname', '127.0.0.1', '--port', String(nextPort)], {
+  // Webpack, not Turbopack, for the dev server: avoids Turbopack's known project-root watch problem.
+  next = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'dev', '--webpack', '--hostname', '127.0.0.1', '--port', String(nextPort)], {
     cwd: process.env.SNIPE_APP_ROOT || process.cwd(),
     env: { ...process.env, SUPABASE_URL: `http://127.0.0.1:${servicePort}`, NEXT_PUBLIC_SUPABASE_URL: `http://127.0.0.1:${servicePort}`, SUPABASE_SERVICE_ROLE_KEY: SERVICE_KEY, SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_TELEMETRY_DISABLED: '1' }, stdio: ['ignore', 'pipe', 'pipe'],
   });

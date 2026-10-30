@@ -1,12 +1,12 @@
 import { afterAll, afterEach, beforeAll, expect, it } from 'vitest';
 import { createServer, type Server } from 'node:http';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { spawn, type ChildProcess } from 'node:child_process';
-import { mkdirSync, readFileSync } from 'node:fs';
+import { createWriteStream, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import type { PGlite } from '@electric-sql/pglite';
 import sharp from 'sharp';
 import { befriend, friendship, testUid } from '../../__tests__/helpers/dormspace-db';
-import { createGroup, createSnipeDatabase } from '../../__tests__/helpers/snipe-db';
+import { createGroup, createSnipeDatabase, snipeCall, snipeUpload } from '../../__tests__/helpers/snipe-db';
 import { SNIPE_BUCKET, SNIPE_STAGING_BUCKET, createSnipeStorage } from './snipe-local-storage';
 
 // SRS-510 to 514 and 525 acceptance: the real Next UI and API run against the real schema and functions in
@@ -15,23 +15,34 @@ import { SNIPE_BUCKET, SNIPE_STAGING_BUCKET, createSnipeStorage } from './snipe-
 // each other, with a direct message), 4 an untagged group member (and, in the final large-photo scenario, a newly
 // added friend of 1). The sharing-permission tests add fresh groups owned by 4 (group membership has no friendship
 // rule) with 1, 2 and 3, and use the unused pairs 3→1 and 2→1. Photos go from the browser straight to the Storage
-// stand-in through an upload-only URL (SRS-510.2 direct transport); the app only receives small JSON.
+// stand-in through an upload-only URL (SRS-510.2 direct transport); the app only receives small JSON. The last
+// scenario alone adds disposable students 5 to 55 (new friends of 1, in a fresh group owned by 1) for pagination.
 const SERVICE_KEY = 'isolated-test-service-key';
-let db: PGlite, service: Server, next: ChildProcess, browser: any;
+// Separate bound for the real production compile in beforeAll; functional test and locator timeouts are unchanged.
+const BUILD_TIMEOUT = 300000;
+let db: PGlite, service: Server, build: ChildProcess | undefined, next: ChildProcess, browser: any;
 let base = '', nextLog = '', group = '', dm = '', dropNextAccept = false;
 const pages: Record<string, any> = {};
 const sessions = new Map<string, any>();
 const storage = createSnipeStorage(SERVICE_KEY);
 const objects = storage.objects;
 const leakedKeys: string[] = [];
-// Additive migrations on top of the shared Snipe fixture, in filename order: the real group-leave bridge and
-// original-actor sharing permissions (SRS-511.12, 514.1).
-const ADDITIVE_MIGRATIONS = ['supabase/migrations/20261028120300_chat_leave_group.sql', 'supabase/migrations/20261030040044_snipe_withdrawal_access.sql'];
+// Additive migrations on top of the shared Snipe fixture, each applied once in filename order: the real group-leave
+// bridge, original-actor sharing permissions (SRS-511.12, 514.1) and request pagination (SRS-512.1, 512.11).
+const ADDITIVE_MIGRATIONS = ['supabase/migrations/20261028120300_chat_leave_group.sql', 'supabase/migrations/20261030040044_snipe_withdrawal_access.sql',
+  'supabase/migrations/20261030093802_snipe_request_pagination.sql'];
 const SHARING_RECORD_KEYS = ['action', 'id', 'published_at', 'role', 'sharing', 'status', 'submitted_at'];
 const artifacts = process.env.SNIPE_EVIDENCE_DIR || 'tmp/snipe-basic';
 const desktop = { width: 1280, height: 900 }, phone = { width: 390, height: 844 };
 const user = (student: number) => ({ id: testUid(student), email: `dorm${student}@salemstate.edu`, email_confirmed_at: '2026-10-19T12:00:00Z', aud: 'authenticated', role: 'authenticated', user_metadata: { full_name: `Dorm Student ${student}`, username: `dorm${student}` } });
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+// SIGTERM, then SIGKILL if the child (build or server) has not exited within 5 s.
+async function stop(child?: ChildProcess) {
+  if (!child || child.exitCode !== null || child.signalCode !== null) return;
+  const exited = new Promise<boolean>(resolve => child.once('exit', () => resolve(true)));
+  child.kill('SIGTERM');
+  if (!(await Promise.race([exited, delay(5000).then(() => false)]))) child.kill('SIGKILL');
+}
 async function listen(server: Server) {
   await new Promise<void>((resolve, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', resolve); });
   return (server.address() as { port: number }).port;
@@ -43,16 +54,42 @@ async function api(page: any, path: string, method = 'GET', body?: unknown) {
     return { status: response.status, type: response.headers.get('content-type'), cache: response.headers.get('cache-control'), text };
   }, { path, method, body });
 }
+// Per-page evidence printed with a failure (and before the tagged friend's explicit return): main-frame navigations,
+// console errors, warnings and reload messages, page errors, and the shell's session re-checks. A Snipe panel
+// only closes through its toggle, so a closed one means a remount: a new document (the production server has no
+// dev reloads, so a navigation) or the shell leaving the signed-in state.
+const diagnostics = new WeakMap<any, string[]>();
+function watch(page: any) {
+  const events: string[] = [];
+  diagnostics.set(page, events);
+  const note = (entry: string) => { events.push(`${new Date().toISOString().slice(11, 23)} ${entry}`); if (events.length > 80) events.shift(); };
+  page.on('framenavigated', (frame: any) => { if (frame === page.mainFrame()) note(`navigated ${frame.url().replace(base, '')}`); });
+  page.on('console', (message: any) => {
+    if (['error', 'warning'].includes(message.type()) || /fast refresh|hmr|reload/i.test(message.text())) note(`console.${message.type()} ${message.text().slice(0, 300)}`);
+  });
+  page.on('pageerror', (error: Error) => note(`pageerror ${error.message.slice(0, 300)}`));
+  page.on('response', (response: any) => { if (response.url().includes('/api/auth/session')) note(`session check ${response.status()}`); });
+}
+// Disposable students for the last scenario only, created exactly as the shared fixture creates students 1 to 4.
+async function addStudents(from: number, to: number) {
+  for (let student = from; student <= to; student++) {
+    await db.query('INSERT INTO auth.users VALUES ($1,$2,now())', [testUid(student), `dorm${student}@salemstate.edu`]);
+    await db.query(`INSERT INTO socialu.students(full_name,username,university_email,auth_user_id,email_verified_at)
+      VALUES($1,$2,$3,$4,now())`, [`Dorm Student ${student}`, `dorm${student}`, `dorm${student}@salemstate.edu`, testUid(student)]);
+    await db.query('INSERT INTO socialu.student_profiles(student_id) VALUES($1)', [student]);
+  }
+}
 async function signIn(student: number, viewport = desktop) {
   const context = await browser.newContext({ viewport, hasTouch: viewport.width < 600 });
   const page = await context.newPage();
+  watch(page);
   // Nothing returned to the browser may contain a private storage reference.
   page.on('response', async (response: any) => {
     if (!response.url().includes('/api/')) return;
     const text = await response.text().catch(() => '');
     if (/snipe\/00000000-0000-4000-8000-/.test(text) || text.includes('storage_key')) leakedKeys.push(response.url());
   });
-  // Not 'networkidle': cold-start compiles and app polling can keep the network busy. The hydration wait
+  // Not 'networkidle': app polling can keep the network busy. The hydration wait
   // below is the real readiness check before any field is touched.
   await page.goto(base + '/login', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => { const form = document.querySelector('form'); return form && Object.keys(form).some(key => key.startsWith('__reactProps$')); });
@@ -223,6 +260,8 @@ beforeAll(async () => {
   mkdirSync(artifacts, { recursive: true });
   db = await createSnipeDatabase(4);
   for (const file of ADDITIVE_MIGRATIONS) await db.exec(readFileSync(file, 'utf8'));
+  const bridge = await db.query<any>("SELECT pg_get_functiondef('public.socialu_snipe(uuid,text,bigint,bigint,jsonb)'::regprocedure) AS def");
+  if (!bridge.rows[0].def.includes("'next_cursor'")) throw new Error('The Snipe pagination migration was not applied.');
   await befriend(db, 1, 2); await befriend(db, 1, 3); await befriend(db, 2, 3);
   group = await createGroup(db, 1, [2, 3, 4]);
   dm = (await friendship(db, 2, 'message', 3)).conversation_id;
@@ -235,7 +274,7 @@ beforeAll(async () => {
     try {
       if (path === '/auth/v1/token') {
         const body = JSON.parse(raw.toString() || '{}');
-        const student = Number(/^dorm([1-4])@salemstate.edu$/.exec(body.email || '')?.[1]);
+        const student = Number(/^dorm([1-9][0-9]?)@salemstate.edu$/.exec(body.email || '')?.[1]);
         if (!student || body.password !== 'SnipeTest123!') { reply(400, { message: 'Invalid credentials' }); return; }
         const id = randomUUID(), iat = Math.floor(Date.now() / 1000);
         const token = 'e30.' + Buffer.from(JSON.stringify({ sub: testUid(student), iat, exp: iat + 3600, session_id: id })).toString('base64url') + '.local-test';
@@ -261,14 +300,36 @@ beforeAll(async () => {
     } catch (error: any) { reply(400, { code: error.code || 'TEST', message: error.message, details: error.detail ?? null }); }
   });
   const servicePort = await listen(service);
+  const serviceUrl = `http://127.0.0.1:${servicePort}`;
+  // A real production build and server, not `next dev`: no HMR or dev reloads can replace a page mid-scenario.
+  // The build runs once the service port is known, because NEXT_PUBLIC_ values are inlined into the browser
+  // bundle; `next start` then gets the exact same values. Webpack, as the production build already uses.
+  // NODE_ENV is set explicitly because Vitest's 'test' is not a valid Next build mode.
+  const appRoot = process.env.SNIPE_APP_ROOT || process.cwd();
+  const appEnv: NodeJS.ProcessEnv = { ...process.env, NODE_ENV: 'production', SUPABASE_URL: serviceUrl, NEXT_PUBLIC_SUPABASE_URL: serviceUrl, SUPABASE_SERVICE_ROLE_KEY: SERVICE_KEY, SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_TELEMETRY_DISABLED: '1' };
+  const buildLog = createWriteStream(`${artifacts}/next-build.log`);
+  let buildTail = '';
+  const buildChild = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'build', '--webpack'], { cwd: appRoot, env: appEnv, stdio: ['ignore', 'pipe', 'pipe'] });
+  build = buildChild;
+  for (const stream of [buildChild.stdout, buildChild.stderr]) stream?.on('data', chunk => { buildLog.write(chunk); buildTail = (buildTail + chunk.toString()).slice(-4000); });
+  const failure = await new Promise<string>(resolve => {
+    const timer = setTimeout(() => { resolve(`timed out after ${BUILD_TIMEOUT / 1000} s`); }, BUILD_TIMEOUT);
+    buildChild.once('error', error => { clearTimeout(timer); resolve(error.message); });
+    buildChild.once('exit', (code, signal) => { clearTimeout(timer); resolve(code === 0 ? '' : `exited with ${signal ?? code}`); });
+  });
+  await stop(buildChild);
+  await new Promise(resolve => buildLog.end(resolve));
+  if (failure) throw new Error(`Production build ${failure} (full log: ${artifacts}/next-build.log):\n${buildTail}`);
+  // The browser bundle must point at this loopback service, never at a value from elsewhere.
+  const staticDir = `${appRoot}/.next/static`;
+  const bundled = (readdirSync(staticDir, { recursive: true }) as string[])
+    .some(file => file.endsWith('.js') && readFileSync(`${staticDir}/${file}`, 'utf8').includes(serviceUrl));
+  if (!bundled) throw new Error(`The production browser bundle does not contain ${serviceUrl}.`);
   const reservation = createServer(); const nextPort = await listen(reservation);
   await new Promise<void>(resolve => reservation.close(() => resolve()));
   base = `http://127.0.0.1:${nextPort}`;
-  // Webpack, as the production build already supports: Turbopack infers its root from lockfiles above this
-  // checkout and watches sibling checkouts too, so edits elsewhere recompile and reload pages without end.
-  next = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'dev', '--webpack', '--hostname', '127.0.0.1', '--port', String(nextPort)], {
-    cwd: process.env.SNIPE_APP_ROOT || process.cwd(),
-    env: { ...process.env, SUPABASE_URL: `http://127.0.0.1:${servicePort}`, NEXT_PUBLIC_SUPABASE_URL: `http://127.0.0.1:${servicePort}`, SUPABASE_SERVICE_ROLE_KEY: SERVICE_KEY, SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_TELEMETRY_DISABLED: '1' }, stdio: ['ignore', 'pipe', 'pipe'],
+  next = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'start', '--hostname', '127.0.0.1', '--port', String(nextPort)], {
+    cwd: appRoot, env: appEnv, stdio: ['ignore', 'pipe', 'pipe'],
   });
   next.stdout?.on('data', chunk => { nextLog += chunk.toString(); });
   next.stderr?.on('data', chunk => { nextLog += chunk.toString(); });
@@ -281,19 +342,23 @@ beforeAll(async () => {
   if (!ready) throw new Error('Local Next test app did not start: ' + nextLog.slice(-3000));
   const playwright = await import(/* @vite-ignore */ process.env.SOCIALU_PLAYWRIGHT_MODULE || 'playwright');
   browser = await playwright.chromium.launch({ headless: true, ...(process.env.SNIPE_BROWSER_EXECUTABLE ? { executablePath: process.env.SNIPE_BROWSER_EXECUTABLE } : {}) });
-}, 120000);
+}, BUILD_TIMEOUT + 120000);
 
 afterEach(async context => {
   if (context.task.result?.state === 'fail') {
     for (const [name, page] of Object.entries(pages)) if (page && !page.isClosed()) {
       await page.screenshot({ path: `${artifacts}/failure-${name}.png`, fullPage: true }).catch(() => {});
       console.error(name, await page.locator('body').innerText().catch(() => 'Page closed'));
+      console.error(`${name} events\n${(diagnostics.get(page) ?? []).join('\n')}`);
     }
     console.error(nextLog.slice(-2500));
   }
 });
 afterAll(async () => {
-  await browser?.close(); next?.kill('SIGTERM');
+  await browser?.close();
+  // Also covers a build still running when beforeAll timed out.
+  await stop(build); await stop(next);
+  if (nextLog) writeFileSync(`${artifacts}/next-start.log`, nextLog);
   await new Promise<void>(resolve => service ? service.close(() => resolve()) : resolve());
   await db?.close();
 });
@@ -443,6 +508,8 @@ it('uploads, reviews, approves, persists, withdraws and then blocks the photo', 
   await tagged.context().close();
   const returning = pages.tagged = await openSnipes(await signIn(2, phone));
   await card(returning).getByText('Approved', { exact: true }).waitFor();
+  // Marks this document, so the explicit return below shows whether it was replaced while it sat idle.
+  await returning.evaluate(() => { (window as any).__snipeReviewDocument = true; });
   await member.reload(); await openSnipes(member);
   await card(member).getByText('Verified: Dorm Student 2').waitFor();
   expect(await photoBlob(member)).toMatch(/^blob:/);
@@ -501,6 +568,23 @@ it('uploads, reviews, approves, persists, withdraws and then blocks the photo', 
   expect(await photoBlob(photographer)).toMatch(/^blob:/);
   expect(await receipt(photographer).count()).toBe(0);
   expect(await ledgerRows()).toEqual([{ student: 1, points: 25 }]);
+
+  // The tagged friend comes back to the review. Their phone page sat idle through the report flow above, and a run
+  // found its Snipe panel collapsed here, which only a remount does: record what happened to that document, then
+  // return explicitly and check the freshly loaded, persisted state before withdrawing.
+  const idleToggle = returning.getByRole('region', { name: 'Conversation', exact: true }).getByRole('button', { name: /^Snipe/ });
+  console.log('returning-review-before-withdraw', JSON.stringify({
+    expanded: await idleToggle.getAttribute('aria-expanded').catch(() => null),
+    sameDocument: await returning.evaluate(() => Boolean((window as any).__snipeReviewDocument)),
+    events: diagnostics.get(returning),
+  }));
+  await returning.reload(); await openSnipes(returning);
+  await card(returning).getByText('Approved', { exact: true }).waitFor();
+  await card(returning).getByText('Verified: Dorm Student 2').waitFor();
+  expect(await photoBlob(returning)).toMatch(/^blob:/);
+  expect(await card(returning).getByRole('group', { name: 'Snipe reward' }).count()).toBe(0);
+  await balance(returning).getByText('0 points', { exact: true }).waitFor();
+  expect(await card(returning).getByRole('button', { name: 'Withdraw sharing permission' }).count()).toBe(1);
 
   // SRS-511.12, 514.4 to 514.7: confirmed withdrawal removes the Snipe for everyone; bytes stop being served.
   await card(returning).getByRole('button', { name: 'Withdraw sharing permission' }).click();
@@ -903,4 +987,111 @@ it('uploads a full-size photo larger than the 4.5 MB function limit directly to 
   expect((await api(member, photoPath)).status).toBe(404);
   transportClean();
   for (const page of [photographer, tagged, member]) await page.context().close();
+});
+
+it('reaches and answers a Pending request older than the newest 50 through Show older Snipes', async () => {
+  // SRS-512.1, 512.3, 512.11 in a fresh group owned by 1: 51 disposable photographers (5 to 55), each a new friend
+  // of 1, tag 1 once. 5 submits first through the real composer, so its request is the oldest of 51 visible to 1.
+  const photographers = Array.from({ length: 51 }, (_, n) => 5 + n);
+  await addStudents(5, 55);
+  for (const student of photographers) await befriend(db, student, 1);
+  const fresh = await createGroup(db, 1, photographers);
+  const ledgerBefore = await ledgerRows();
+  // Exact names: "Dorm Student 5" is also a prefix of 50 to 55.
+  const by = (page: any, student: number) => page.getByRole('article', { name: `Snipe by Dorm Student ${student}`, exact: true });
+  // SHA-256 of the bytes behind a card's displayed blob image.
+  const shownDigest = async (page: any, student: number) => {
+    const image = by(page, student).getByRole('img', { name: `Snipe by Dorm Student ${student}`, exact: true });
+    await image.waitFor();
+    await page.waitForFunction((el: HTMLImageElement) => el.complete && el.naturalWidth > 0, await image.elementHandle());
+    return image.evaluate(async (el: HTMLImageElement) => Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', await (await fetch(el.src)).arrayBuffer())),
+      (b) => b.toString(16).padStart(2, '0')).join(''));
+  };
+  const sha256 = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
+
+  const oldestPage = pages.photographer = await openSnipes(await signIn(5), fresh);
+  const oldest = await submitSnipe(oldestPage, 1, '#38761d');
+  await by(oldestPage, 5).getByText('Pending', { exact: true }).waitFor();
+  await oldestPage.context().close();
+  const oldestPhoto = sha256((await committedObject(oldest)).object!.bytes);
+
+  // The 50 newer requests through the real bridge, each with its committed photo in the private bucket.
+  const seeded = await sharp({ create: { width: 320, height: 240, channels: 3, background: '#cfe2f3' } }).png().toBuffer();
+  const newer: string[] = [];
+  for (const student of photographers.slice(1)) {
+    const key = randomUUID();
+    const upload = snipeUpload(student, key, 'png', sha256(seeded));
+    objects.set(`${SNIPE_BUCKET}/${upload.storage_key}`, { bytes: seeded, type: 'image/png' });
+    newer.push((await snipeCall(db, student, 'create', fresh, null, { submission_key: key, targets: ['1'], ...upload, byte_count: seeded.length })).snipe.id);
+  }
+  const ordered = (await db.query<any>('SELECT snipe_id::text AS id FROM socialu.snipe_requests WHERE conversation_id = $1 ORDER BY submitted_at, snipe_id', [fresh])).rows.map((row) => row.id);
+  expect(ordered).toEqual([oldest, ...newer]);
+
+  // The first page holds the newest 50, all to review; the oldest is not among them and no count of it is shown.
+  const reviewer = pages.reviewer = await openSnipes(await signIn(1), fresh);
+  await reviewer.getByRole('button', { name: /^Snipe.*50 to review/ }).waitFor();
+  const panel = reviewer.getByRole('region', { name: 'Snipe', exact: true });
+  expect(await panel.getByRole('article').count()).toBe(50);
+  expect(await by(reviewer, 5).count()).toBe(0);
+  expect(await shownDigest(reviewer, 55)).toBe(sha256(seeded));
+  const showOlder = panel.getByRole('button', { name: 'Show older Snipes', exact: true });
+  await showOlder.waitFor();
+  expect(await noOverflow(reviewer)).toBe(true);
+
+  // The real control appends the older page: the oldest request, last, with its own photo and both questions open.
+  await showOlder.click();
+  const target = by(reviewer, 5);
+  await target.getByText('Pending', { exact: true }).waitFor();
+  await panel.getByText('Older Snipes are shown, so this list won’t update on its own.', { exact: false }).waitFor();
+  expect(await panel.getByRole('article').count()).toBe(51);
+  expect(await panel.getByRole('article').last().getAttribute('aria-label')).toBe('Snipe by Dorm Student 5');
+  expect(await showOlder.count()).toBe(0);
+  expect(await shownDigest(reviewer, 5)).toBe(oldestPhoto);
+  await screenshot(reviewer, 'desktop-reviewer-older-pending');
+
+  const identity = target.getByRole('group', { name: 'Is this you?' });
+  const sharing = target.getByRole('group', { name: 'Do you approve sharing this photo in this conversation?' });
+  await identity.getByRole('radio', { name: 'Yes' }).check();
+  await identity.getByRole('button', { name: 'Save answer' }).click();
+  await target.getByText('Is this you? Yes', { exact: true }).waitFor();
+  await target.getByText('Pending', { exact: true }).waitFor();
+  await sharing.getByRole('radio', { name: 'Yes' }).check();
+  await sharing.getByRole('button', { name: 'Save answer' }).click();
+  await target.getByText('Approved', { exact: true }).waitFor();
+  await target.getByText('Verified: Dorm Student 1', { exact: true }).waitFor();
+  // The answered card stays in place in the extended list, still with its own photo.
+  expect(await panel.getByRole('article').count()).toBe(51);
+  expect(await shownDigest(reviewer, 5)).toBe(oldestPhoto);
+
+  // SRS-525.1: publication credited photographer 5 once; the reviewer earns nothing and the 50 newer stay Pending.
+  expect(await ledgerRows()).toEqual([...ledgerBefore, { student: 5, points: 25 }]);
+  expect(await target.getByRole('group', { name: 'Snipe reward' }).count()).toBe(0);
+  const reviewerPoints = ledgerBefore.filter((row) => row.student === 1).reduce((sum, row) => sum + row.points, 0);
+  await balance(reviewer).getByText(`${reviewerPoints} points`, { exact: true }).waitFor();
+  const statuses = (await db.query<any>('SELECT snipe_id::text AS id, status FROM socialu.snipe_requests WHERE conversation_id = $1', [fresh])).rows;
+  expect(Object.fromEntries(statuses.map((row) => [row.id, row.status]))).toEqual(Object.fromEntries([[oldest, 'approved'], ...newer.map((id) => [id, 'pending'])]));
+  await screenshot(reviewer, 'desktop-reviewer-older-approved');
+
+  // Refresh returns to a fresh first page (the newest 50, still to review); Show older reaches the stored outcome.
+  await panel.getByRole('button', { name: 'Refresh', exact: true }).click();
+  await showOlder.waitFor();
+  expect(await panel.getByRole('article').count()).toBe(50);
+  expect(await by(reviewer, 5).count()).toBe(0);
+  await showOlder.click();
+  await target.getByText('Approved', { exact: true }).waitFor();
+  expect(await target.getByRole('group', { name: 'Is this you?' }).count()).toBe(0);
+  expect(await shownDigest(reviewer, 5)).toBe(oldestPhoto);
+
+  // The photographer's new session shows the frozen reward and the balance; the photo is the one they submitted.
+  const photographer = pages.photographer = await openSnipes(await signIn(5), fresh);
+  const own = by(photographer, 5);
+  await own.getByText('Approved', { exact: true }).waitFor();
+  const reward = own.getByRole('group', { name: 'Snipe reward' });
+  await reward.getByText('Reward: 25 points', { exact: true }).waitFor();
+  await reward.getByText('1 verified friend × 25 points per friend = 25 points', { exact: true }).waitFor();
+  await balance(photographer).getByText('25 points', { exact: true }).waitFor();
+  expect(await shownDigest(photographer, 5)).toBe(oldestPhoto);
+  expect(await ledgerRows()).toEqual([...ledgerBefore, { student: 5, points: 25 }]);
+  transportClean();
+  for (const page of [reviewer, photographer]) await page.context().close();
 });

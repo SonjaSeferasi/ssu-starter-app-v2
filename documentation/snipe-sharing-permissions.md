@@ -155,8 +155,9 @@ Final evidence, run by Codex under Node v24.22.1:
   was attempted but couldn't connect: no local Postgres was running at `127.0.0.1:54322` (`ECONNREFUSED`). No
   hosted advisor, migration, deploy or push was run. The available evidence for grants and security settings is
   the PGlite real-schema test below.
-- **Browser: not run here.** The root runs integrated browser acceptance of the former-participant controls and
-  the final production validation after merging the sibling branches.
+- **Browser: not run on this branch.** Integrated browser acceptance of the former-participant controls, the
+  full suite and the production build later passed on the merged branch; see
+  [`snipe-sprint-3.md`](snipe-sprint-3.md).
 
 **What the tests prove.** SQL behavior against the real schema in PGlite, the static role and confirmation
 markup, and the list's request and pagination ordering. They don't prove DOM clicks, focus/visibility events or
@@ -238,8 +239,9 @@ There is no DOM in the test environment, so the focus and visibility listeners t
 
 ### Browser acceptance
 
-No browser acceptance test was added, and `scripts/tests/snipe-basic.browser.ts` and its config are unchanged.
-The root runs the full browser suite after the branches merge; it hasn't been run for this branch.
+This branch added no browser acceptance test. After the merge, `scripts/tests/snipe-basic.browser.ts` gained
+former-participant scenarios (tagged friend and photographer); they passed in the final run described in
+[`snipe-sprint-3.md`](snipe-sprint-3.md).
 
 Nothing has been applied to a hosted database. Apply this migration after
 `20261029184238_snipe_group_reporting.sql`.

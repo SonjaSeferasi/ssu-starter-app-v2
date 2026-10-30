@@ -133,7 +133,8 @@ an older `submitted_at`. A cursor that was already handed out never reaches it, 
 
 First focused run (Codex): 35 of 36 passed (database 1, API 22, pager file 12 of 13); one pager test failed because an overlapping
 older page that repeated ID 100 within itself kept the duplicate. The pager now deduplicates against both the
-shown list and the incoming page, and a cursor-mismatch regression test was added. Not re-run after that fix.
+shown list and the incoming page, and a cursor-mismatch regression test was added. The focused checks passed
+after that fix in the final verification ([`snipe-sprint-3.md`](snipe-sprint-3.md)).
 
 - `__tests__/database/snipe-pagination.test.ts`: real migrations in PGlite (`createSnipeDatabase(61)`, then the
   sharing migration, then this one).
@@ -186,5 +187,5 @@ npx tsc --noEmit
 
 - No hosted migration, Supabase advisor run, deployment or other external change. The local Supabase advisor is
   unavailable (no local Postgres on 54322).
-- No full-repository suite, production build or browser run is claimed here. The existing network-font build
-  issue is already recorded elsewhere.
+- This branch made no claim about the full suite, production build or browser run. Those later passed on the
+  merged branch, including a **Show older Snipes** browser scenario; see [`snipe-sprint-3.md`](snipe-sprint-3.md).

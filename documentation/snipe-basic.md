@@ -169,6 +169,9 @@ skips overlapping polls and aborts stale requests. Polls pause while older Snipe
 
 ## Verification recorded by Codex on October 25 2026
 
+This is the basic slice's own record. The final verified release results are in
+[`snipe-sprint-3.md`](snipe-sprint-3.md).
+
 - A clean dependency install succeeded with the declared Next.js, React and Sharp versions.
 - Full regression suite: **722 tests passed across 72 files**, including the new Snipe tests.
 - Focused API/image/peer checks: 41 tests passed. All three real-schema Snipe database tests passed,

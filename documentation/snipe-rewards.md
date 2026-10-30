@@ -71,7 +71,10 @@ with SRS-525.1–525.6, 521.1, 524.1–524.4, 528.2 and NFR-49. Builds on the ba
 | 527.5 / 527.7 frozen amounts, removed history | Done (ledger). The general points-history page belongs to UR-527 and isn't built here |
 | 528.2 rules before submission | Done |
 
-## Verification (to be run by Codex; not run while writing this)
+## Verification
+
+These commands were later run as part of the final release verification; see
+[`snipe-sprint-3.md`](snipe-sprint-3.md).
 
 ```bash
 npx tsc --noEmit

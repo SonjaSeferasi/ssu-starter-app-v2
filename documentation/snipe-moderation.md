@@ -124,7 +124,10 @@ no navbar entry.
 | API | `GET /api/conversations/[id]/snipes/reports` (queue). `PATCH /api/conversations/[id]/snipes/reports/[reportId]` (decision; reads only `decision`). `POST /api/conversations/[id]/snipes/[snipeId]/admin-removal` (reads no body). Each one runs `snipeUser` (`verifiedUser` + `accountOperation('read')`), validates the IDs first, and responds `no-store` |
 | UI | `components/snipe/snipe-panel.tsx` and `snipe.module.css`. **Reports to review** (`ReportQueue`) appears in group panels only when the server confirms a current manager. A 403 or 404 hides it, with a note if the role was just lost. Each report shows the reporter, reason, Snipe status and photo, or *Snipe removed*, or *Photo not shown: this Snipe was published before you joined the group*. **Dismiss report** saves straight away. **Remove Snipe** asks for confirmation (**Confirm removal** / **Keep it**). Buttons show *Dismissing…*, *Removing…* or *Saving…* while busy. Errors have a retry, and a lost connection says the retry won't apply twice. The empty state reads *No reports are waiting for review in this group.* The queue refreshes with the Snipe list, including its polling and Refresh button, and after every decision or removal. So role changes and removals show up, and a removed photo's card unmounts and releases its blob URL. Member reporting, receipts and the message layout are unchanged |
 
-## Verification (for Codex to run; I didn't run any of this while writing it)
+## Verification
+
+These commands were later run as part of the final release verification; see
+[`snipe-sprint-3.md`](snipe-sprint-3.md).
 
 ```bash
 npx tsc --noEmit
