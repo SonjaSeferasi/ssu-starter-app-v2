@@ -2,14 +2,15 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Flame, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { storedAccessToken } from '../../lib/account/session';
 import shellStyles from '../../components/navigation/social-shell.module.css';
 import styles from './events.module.css';
 import { useNavigationSession } from '../../components/navigation/social-shell';
 import { SessionNotice } from '../../components/navigation/section-page';
-import { EventList, FeaturedEvent, WeekStrip, type CampusEvent } from '../../components/events/EventList';
-import { hostedBy } from '../../lib/events';
+import { EventList, FeaturedEvent, TrendingEvents, WeekStrip, type CampusEvent } from '../../components/events/EventList';
+import { InvitationList, useMyInvitations } from '../../components/events/MyInvitations';
+import { goingTo, hostedBy, splitByTime, trendingEvents, type EventEngagement } from '../../lib/events';
 
 type Tab = 'discover' | 'rsvps' | 'hosting';
 const TABS: { id: Tab; label: string }[] = [
@@ -27,9 +28,13 @@ export default function EventsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [created, setCreated] = useState(false);
+  const [coverFailed, setCoverFailed] = useState(false);
+  const invitations = useMyInvitations();
 
   useEffect(() => {
-    setCreated(new URLSearchParams(window.location.search).get('created') === '1');
+    const params = new URLSearchParams(window.location.search);
+    setCreated(params.get('created') === '1');
+    setCoverFailed(params.get('cover') === 'failed');
     let controller: AbortController | null = null;
 
     // Always read the saved events from the server, so updated event details appear the next time the student looks.
@@ -65,10 +70,22 @@ export default function EventsPage() {
     };
   }, []);
 
+  // After a like or "I'm going", the server's updated counts replace that event's counts.
+  function updateEngagement(eventId: string, engagement: EventEngagement) {
+    setEvents((current) => current.map((event) => event.event_id === eventId ? { ...event, ...engagement } : event));
+  }
+
+  function updateCover(eventId: string, coverUrl: string | null) {
+    setEvents((current) => current.map((event) => event.event_id === eventId ? { ...event, cover_url: coverUrl } : event));
+  }
+  const cover = { hostId: studentId, onCover: updateCover };
+
   if (session !== 'signed-in') return <SessionNotice state={session} />;
 
-  const [featured, ...upcoming] = events;
+  const { upcoming: upcomingAll, past } = splitByTime(events);
+  const [featured, ...upcoming] = upcomingAll;
   const hosting = hostedBy(events, studentId);
+  const attending = goingTo(events);
 
   return (
     <main className={shellStyles.page}>
@@ -95,6 +112,7 @@ export default function EventsPage() {
           </div>
 
           {created ? <p role="status" className={styles.notice}>Your event was created and is now visible to other students.</p> : null}
+          {coverFailed ? <p role="alert" className={styles.alert}>The cover photo could not be saved. Use “Add cover photo” on your event to try again.</p> : null}
           {error ? <p role="alert" className={styles.alert}>{error}</p> : null}
 
           <div id="events-panel" role="tabpanel" aria-labelledby={`tab-${tab}`} aria-busy={loading}>
@@ -103,36 +121,48 @@ export default function EventsPage() {
             ) : error && events.length === 0 ? (
               <p className={styles.empty}>Events will appear here once they can be loaded.</p>
             ) : tab === 'discover' ? (
-              featured ? (
+              events.length === 0 ? (
+                <EventList events={[]} />
+              ) : (
                 <>
-                  <FeaturedEvent event={featured} />
+                  {featured ? <FeaturedEvent event={featured} onEngagement={updateEngagement} {...cover} /> : null}
                   <div className={styles.sectionHeader}>
                     <h2 className={styles.sectionTitle}>Upcoming events</h2>
-                    <span className={styles.count}>{events.length} {events.length === 1 ? 'event' : 'events'}</span>
+                    <span className={styles.count}>{upcomingAll.length} {upcomingAll.length === 1 ? 'event' : 'events'}</span>
                   </div>
-                  <EventList events={upcoming} emptyMessage="No other events yet." emptyHint="Create one to give students more to do." />
+                  <EventList events={upcoming} onEngagement={updateEngagement} {...cover}
+                    emptyMessage={featured ? 'No other upcoming events yet.' : 'No upcoming events yet.'} emptyHint="Create one to give students more to do." />
+                  {past.length > 0 ? (
+                    <>
+                      <div className={styles.sectionHeader}>
+                        <h2 className={styles.sectionTitle}>Past events</h2>
+                        <span className={styles.count}>{past.length} {past.length === 1 ? 'event' : 'events'}</span>
+                      </div>
+                      <EventList events={past} onEngagement={updateEngagement} {...cover} />
+                    </>
+                  ) : null}
                 </>
-              ) : (
-                <EventList events={[]} />
               )
             ) : tab === 'hosting' ? (
-              <EventList events={hosting} emptyMessage="You aren’t hosting any active events."
+              <EventList events={hosting} onEngagement={updateEngagement} {...cover} emptyMessage="You aren’t hosting any active events."
                 emptyHint="Events you create will appear here." />
             ) : (
-              <div className={styles.empty}>
-                <h2>RSVPs are coming soon</h2>
-                <p>Once event invitations are ready, events you’re attending will appear here.</p>
-              </div>
+              <EventList events={attending} onEngagement={updateEngagement} {...cover} emptyMessage="You haven’t said you’re going to any events yet."
+                emptyHint="Tap “I’m going” on an event and it will appear here." />
             )}
           </div>
         </div>
 
         <aside className={styles.sideColumn}>
           <WeekStrip events={events} />
-          <section className={styles.sideCard} aria-labelledby="trending-title">
-            <h2 id="trending-title" className={styles.sideTitle}><Flame aria-hidden="true" className={styles.flame} /> Trending on campus</h2>
-            <p className={styles.sideBody}>Coming soon — trending campus posts and events will be ranked here.</p>
+          <section className={styles.sideCard} aria-labelledby="invited-title">
+            <h2 id="invited-title" className={styles.sideTitle}>You’re invited</h2>
+            <InvitationList invitations={invitations} classNames={{
+              list: styles.invitationList, item: styles.invitationItem, title: styles.invitationTitle,
+              meta: styles.invitationMeta, empty: styles.sideEmpty,
+            }} />
           </section>
+          <TrendingEvents events={trendingEvents(events)} />
         </aside>
       </div>
     </main>
