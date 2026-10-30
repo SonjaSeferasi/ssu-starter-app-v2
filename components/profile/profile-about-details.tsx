@@ -12,7 +12,7 @@ export const interestIcons = {
 };
 export const promptIcons = { building: Laptop, up_for: Heart, ask_me: MessageCircle, find_me: MapPin, fun_fact: Sparkles };
 
-function SpotifyPlayer({ url }: { url: string }) {
+export function SpotifyPlayer({ url }: { url: string }) {
   const music = spotifyMusic(url);
   const [playing, setPlaying] = useState(false);
   useEffect(() => setPlaying(false), [url]);

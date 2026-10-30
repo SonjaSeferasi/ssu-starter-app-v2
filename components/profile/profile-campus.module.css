@@ -193,3 +193,4 @@
 @container campusProfile (max-width:580px){.masthead .hero{grid-template-columns:100px minmax(0,1fr);gap:18px;padding-inline:0}.masthead{margin-bottom:22px}.sidebar{grid-template-columns:minmax(0,1fr)}.photoEdit{width:32px;height:32px;right:-4px}.nameLine h1{font-size:clamp(23px,6cqi,29px)}.masthead .actions{margin-top:16px}}
 @media(prefers-reduced-motion:reduce){.photoEdit{transition:none}}
 
+.layout[data-board=true]>.mainColumn{grid-column:1/-1}

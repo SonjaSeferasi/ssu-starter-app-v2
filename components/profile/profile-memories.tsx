@@ -71,7 +71,7 @@ export function ProfileMemories({ profile }: { profile: StudentProfile }) {
   </section>;
 }
 
-function MemoryEditor({ onClose, onSaved }: { onClose: () => void; onSaved: (memories: ProfileMemory[]) => void }) {
+export function MemoryEditor({ onClose, onSaved }: { onClose: () => void; onSaved: (memories: ProfileMemory[]) => void }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [photo, setPhoto] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);

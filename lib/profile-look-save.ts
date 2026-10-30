@@ -1,9 +1,10 @@
+import { boardInput } from './profile-board';
 import { cornerArtworkFor } from './profile-corner-artwork';
 import { areaStickers, DECORATION_AREAS, stickerPosition, profileLookInput, type ProfileLook } from './profile-space';
 
 export function sameProfileLook(a: ProfileLook, b: ProfileLook) {
   const firstArt=cornerArtworkFor(a),secondArt=cornerArtworkFor(b);
-  return (a.homeCountry??'') === (b.homeCountry??'') && (a.hometown??'') === (b.hometown??'') && a.theme === b.theme && a.coverKey === b.coverKey && a.palette === b.palette && a.frame === b.frame && a.cover === b.cover && a.layout === b.layout
+  return JSON.stringify(boardInput(a.board??{items:[]}))===JSON.stringify(boardInput(b.board??{items:[]})) && (a.homeCountry??'') === (b.homeCountry??'') && (a.hometown??'') === (b.hometown??'') && a.theme === b.theme && a.coverKey === b.coverKey && a.palette === b.palette && a.frame === b.frame && a.cover === b.cover && a.layout === b.layout
     && (a.cardFinishes?.about??'clean') === (b.cardFinishes?.about??'clean') && (a.cardFinishes?.notes??'clean') === (b.cardFinishes?.notes??'clean')
     && firstArt.plan===secondArt.plan && firstArt.poll[0]===secondArt.poll[0] && firstArt.poll[1]===secondArt.poll[1]
     && DECORATION_AREAS.every(area=>{

@@ -24,6 +24,7 @@ import spaceStyles from './profile-space.module.css';
 import { ProfileCover } from './profile-cover';
 import { useProfileSpace } from './use-profile-space';
 import { ProfileCorner } from './profile-corner';
+import { ProfileBoard } from './profile-board';
 import { ProfileMemories } from './profile-memories';
 import { ProfilePortrait } from './profile-portrait';
 import { ProfileContentTabs, type ProfileCategory } from './profile-content-tabs';
@@ -258,6 +259,7 @@ function ProfileContent({ username }: { username?: string }) {
   const [socialError, setSocialError] = useState('');
   const [socialRetry, setSocialRetry] = useState(0);
   const [contentCount, setContentCount] = useState<number | null>(null);
+  const [boardDirty,setBoardDirty]=useState(false);
   const [lookSaved,setLookSaved]=useState(false);
   const photoRetried=useRef(false);
   const [photoUnavailable,setPhotoUnavailable]=useState(false);
@@ -349,17 +351,17 @@ function ProfileContent({ username }: { username?: string }) {
           <Link href="/profile/edit" className={styles.button}>Complete profile</Link>
         </div>}
     </div>
-    <div className={campus.layout}>
+    <div className={campus.layout} data-board={category==='board'}>
       <div className={campus.mainColumn}>
-        <ProfileContentTabs value={category} onChange={setCategory} own={profile.is_own} />
+        <ProfileContentTabs value={category} onChange={next=>{if(category==='board'&&boardDirty&&!window.confirm('Leave without saving your board?'))return;setCategory(next);}} own={profile.is_own} />
         {category === 'saved' && <p className={styles.savedNote}><Lock size={12} />Only you can see your saved posts.</p>}
         <div id="profile-posts" role="tabpanel" aria-labelledby={`profile-tab-${category}`} tabIndex={0}>
-          {category === 'posts'
+          {category === 'board' ? <ProfileBoard profile={profile} look={space.look} status={space.status} onSaved={space.updateLook} onDirtyChange={setBoardDirty}/> : category === 'posts'
             ? <><ProfileCorner key={profile.username} profile={profile} look={space.look} artworkReady={space.status==='ready'} onArtworkSaved={updated=>space.updateLook(current=>({...current,cornerArtwork:updated.cornerArtwork}))} /><ProfileMemories key={`memories-${profile.username}`} profile={profile} /><ProfileJournal key={profile.username} profile={profile} onPostCountChange={delta => setProfile(current => current ? { ...current, post_count: Math.max(0, current.post_count + delta) } : current)} /></>
             : <><div className={campus.sectionHeading}><h2>{category === 'saved' ? 'Saved posts' : 'Tagged posts'}</h2><span>{contentCount === null ? 'Loading…' : `${contentCount} ${contentCount === 1 ? 'post' : 'posts'}`}</span></div><PostGrid key={`${profile.username}-${category}`} username={profile.username} category={category} own={profile.is_own} onCount={setContentCount} /></>}
         </div>
       </div>
-      <ProfileCampusSidebar profile={profile} onViewFriends={() => setPeople('friends')} space={space} />
+      {category!=='board'&&<ProfileCampusSidebar profile={profile} onViewFriends={() => setPeople('friends')} space={space} />}
     </div>
     {people && <PeopleDialog profile={profile} initial={people} onClose={() => setPeople(null)} />}
   </main>;
