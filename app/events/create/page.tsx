@@ -17,6 +17,7 @@ type EventForm = {
   location: string;
   date: string;
   time: string;
+  dressCode: string;
 };
 
 const emptyForm: EventForm = {
@@ -25,6 +26,7 @@ const emptyForm: EventForm = {
   location: '',
   date: '',
   time: '',
+  dressCode: '',
 };
 
 export default function CreateEventPage() {
@@ -162,6 +164,12 @@ export default function CreateEventPage() {
               />
             </label>
           </div>
+
+          <label className={styles.label}>
+            Dress code (optional)
+            <input type="text" value={form.dressCode} onChange={(event) => updateField('dressCode', event.target.value)}
+              maxLength={100} placeholder="e.g. Costumes encouraged, Business casual" className={styles.input} />
+          </label>
 
           <label className={styles.label}>
             Cover photo (optional)

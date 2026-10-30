@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 const { renderToStaticMarkup } = createRequire(import.meta.url)('react-dom/server') as { renderToStaticMarkup(node: ReactNode): string };
 import { describe, expect, it } from 'vitest';
 import { EventList, FeaturedEvent, NO_ACTIVE_EVENTS, TrendingEvents, WeekStrip, type CampusEvent } from '../components/events/EventList';
+import { goingNames } from '../components/events/EventActions';
 import { formatWhen, goingTo, hostedBy, trendingEvents, weekDays } from '../lib/events';
 
 const event: CampusEvent = {
@@ -110,7 +111,8 @@ describe('Event engagement on the page', () => {
     expect(html).toContain('href="/events/42#comments"');
     expect(html).toContain('>6<');
     expect(html).toContain('>2<');
-    expect(html).toContain('3 going');
+    expect(html).toContain('@sonja, @darrin and @linh are going');
+    expect(html).toContain('href="/events/42#going"');
     expect(html).toContain('>SO<');
     expect(html).toContain('Going');
     expect(html).toContain('href="/events/42"');
@@ -126,5 +128,19 @@ describe('Event engagement on the page', () => {
     expect(html).toContain('7<span');
     expect(html).toContain('href="/events/42"');
     expect(renderToStaticMarkup(createElement(TrendingEvents, { events: [] }))).toContain('Events with 5 or more likes show up here.');
+  });
+
+  it('names who is going, with a count for everyone else', () => {
+    expect(goingNames(['sonja'], 1)).toBe('@sonja is going');
+    expect(goingNames(['sonja', 'darrin'], 2)).toBe('@sonja and @darrin are going');
+    expect(goingNames(['sonja', 'darrin', 'linh'], 4)).toBe('@sonja, @darrin, @linh and 1 other are going');
+    expect(goingNames(['sonja', 'darrin', 'linh'], 214)).toBe('@sonja, @darrin, @linh and 211 others are going');
+  });
+
+  it('shows the dress code only when the event has one, and the whole card opens the event', () => {
+    const html = render([{ ...event, dress_code: 'Costumes encouraged' }]);
+    expect(html).toContain('Dress code: Costumes encouraged');
+    expect(html).toContain('href="/events/42"');
+    expect(render([event])).not.toContain('Dress code');
   });
 });

@@ -9,7 +9,7 @@ const db=new PGlite();
 await db.exec(`CREATE ROLE anon;CREATE ROLE authenticated;CREATE ROLE service_role;
 CREATE SCHEMA auth;CREATE TABLE auth.users(id uuid PRIMARY KEY,email text,email_confirmed_at timestamptz);`);
 await db.exec(readFileSync(root+'/supabase/schema.sql','utf8'));
-for(const file of ['20261008000100_link_supabase_accounts.sql','20261013150000_create_event.sql','20261015120000_list_events.sql','20261027130000_event_engagement.sql','20261027140000_event_invitations.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
+for(const file of ['20261008000100_link_supabase_accounts.sql','20261013150000_create_event.sql','20261015120000_list_events.sql','20261027125000_event_dress_code.sql','20261027130000_event_engagement.sql','20261027140000_event_invitations.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
 await db.exec(readFileSync(root+'/supabase/migrations/20261027140000_event_invitations.sql','utf8'));
 
 // Student 1 creates the event; 2-4 are registered classmates (not friends); 5 has not verified their email.

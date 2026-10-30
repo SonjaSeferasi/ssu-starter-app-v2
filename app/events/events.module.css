@@ -183,3 +183,14 @@ textarea.input { resize: none; }
 .coverButton:disabled { cursor: wait; opacity: .8; }
 .coverButton svg { width: 16px; height: 16px; }
 .coverError { max-width: 240px; margin: 0; padding: 6px 10px; border-radius: 8px; background: #fdf1f1; color: #9b2c2c; font-size: 12px; }
+
+/* Whole event cards open the event: the title link stretches over the card, controls stay on top. */
+.card, .featured { position: relative; }
+.card .titleLink::after, .featured .titleLink::after { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
+.card:hover, .featured:hover { border-color: #a8ceb8; box-shadow: 0 10px 28px #325e3d14; }
+.card:focus-within, .featured:focus-within { border-color: #39775e; }
+.actionsWrap, .goingLink, .secondaryButton, .coverControl { position: relative; z-index: 2; }
+.coverControl { position: absolute; }
+.goingLink { color: #102c30; text-decoration: none; }
+.goingLink:hover span:last-child { text-decoration: underline; }
+.goingLink:focus-visible { outline: 3px solid #28634e; outline-offset: 3px; border-radius: 8px; }

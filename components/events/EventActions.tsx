@@ -9,17 +9,26 @@ import styles from '../../app/events/events.module.css';
 
 const initials = (username: string) => username.slice(0, 2).toUpperCase();
 
-// Up to three attendee initials and the number of students going.
+export function goingNames(preview: string[], count: number) {
+  const names = preview.map((username) => '@' + username);
+  const others = count - names.length;
+  if (others > 0) names.push(others === 1 ? '1 other' : `${others} others`);
+  if (names.length <= 1) return `${names[0] ?? ''} ${count === 1 ? 'is' : 'are'} going`;
+  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]} are going`;
+}
+
+// Who clicked "I'm going": up to three attendees by name, linking to the full list on the event page.
 export function GoingSummary({ event }: { event: CampusEvent }) {
   const count = event.going_count ?? 0;
   if (count === 0) return <p className={styles.goingSummary}>Be the first to say you’re going</p>;
+  const preview = event.attendee_preview ?? [];
   return (
-    <p className={styles.goingSummary}>
+    <Link href={`/events/${event.event_id}#going`} className={`${styles.goingSummary} ${styles.goingLink}`}>
       <span className={styles.avatars} aria-hidden="true">
-        {(event.attendee_preview ?? []).map((username) => <span key={username} className={styles.avatar}>{initials(username)}</span>)}
+        {preview.map((username) => <span key={username} className={styles.avatar}>{initials(username)}</span>)}
       </span>
-      <strong>{count} going</strong>
-    </p>
+      <span>{preview.length > 0 ? goingNames(preview, count) : `${count} going`}</span>
+    </Link>
   );
 }
 

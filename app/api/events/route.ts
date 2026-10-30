@@ -10,12 +10,14 @@ function validateEvent(body: Record<string, unknown>) {
   const location = typeof body.location === 'string' ? body.location.trim() : '';
   const date = typeof body.date === 'string' ? body.date.trim() : '';
   const time = typeof body.time === 'string' ? body.time.trim() : '';
+  const dressCode = typeof body.dressCode === 'string' ? body.dressCode.trim() : '';
 
   if (!title) return { error: 'title is required.' };
   if (!description) return { error: 'description is required.' };
   if (!location) return { error: 'location is required.' };
   if (!date) return { error: 'date is required.' };
   if (!time) return { error: 'time is required.' };
+  if (dressCode.length > 100) return { error: 'dress code must be 100 characters or fewer.' };
 
   // The browser sends its UTC offset (Date#getTimezoneOffset) so the event keeps the time the student picked,
   // whatever time zone the server runs in.
@@ -25,7 +27,7 @@ function validateEvent(body: Record<string, unknown>) {
   if (Number.isNaN(startsAt.getTime())) return { error: 'date and time must be valid.' };
   if (hasOffset) startsAt.setUTCMinutes(startsAt.getUTCMinutes() + offset);
 
-  return { event: { title, description, location, starts_at: startsAt.toISOString() } };
+  return { event: { title, description, location, starts_at: startsAt.toISOString(), dress_code: dressCode || null } };
 }
 
 // SRS-401.1-.6: list upcoming campus events for the signed-in student, plus trending events (UR-405).
@@ -45,9 +47,9 @@ export async function POST(request: Request) {
     const validation = validateEvent(body);
     if ('error' in validation) throw new AccountError(validation.error!, 400);
 
-    const { title, description, location, starts_at } = validation.event;
+    const { title, description, location, starts_at, dress_code } = validation.event;
     const event = await eventOperation('socialu_create_event', {
-      p_auth_id: user.id, p_title: title, p_description: description, p_location: location, p_starts_at: starts_at,
+      p_auth_id: user.id, p_title: title, p_description: description, p_location: location, p_starts_at: starts_at, p_dress_code: dress_code,
     });
     return Response.json({ event }, { status: 201, headers: { 'Cache-Control': 'no-store' } });
   } catch (error) { return accountResponse(error); }

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { CalendarDays, Heart, MapPin, UserRound } from 'lucide-react';
+import { CalendarDays, Heart, MapPin, Shirt, UserRound } from 'lucide-react';
 import styles from '../../app/events/events.module.css';
 import { EventArt } from './EventArt';
 import { EventActions, GoingSummary } from './EventActions';
@@ -32,6 +32,12 @@ function EventDetails({ event }: { event: CampusEvent }) {
         <dt><MapPin aria-label="Location" /></dt>
         <dd>{event.location}</dd>
       </div>
+      {event.dress_code ? (
+        <div className={styles.metaRow}>
+          <dt><Shirt aria-label="Dress code" /></dt>
+          <dd>Dress code: {event.dress_code}</dd>
+        </div>
+      ) : null}
       <div className={styles.metaRow}>
         <dt><UserRound aria-label="Host" /></dt>
         <dd>Hosted by @{event.creator_username}</dd>

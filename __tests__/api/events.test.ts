@@ -58,7 +58,19 @@ describe('Event creation API', () => {
       p_description: 'Clean up the campus.',
       p_location: 'North Hall',
       p_starts_at: new Date('2026-10-09T10:00:00').toISOString(),
+      p_dress_code: null,
     });
+  });
+
+  it('saves an optional dress code, trimmed, up to 100 characters', async () => {
+    await POST(createRequest({ ...validBody, dressCode: '  Costumes encouraged  ' }));
+    expect(rpc.mock.calls.find(([fn]) => fn === 'socialu_create_event')![1].p_dress_code).toBe('Costumes encouraged');
+
+    rpc.mockClear();
+    const response = await POST(createRequest({ ...validBody, dressCode: 'x'.repeat(101) }));
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ error: 'dress code must be 100 characters or fewer.' });
+    expect(rpc.mock.calls.find(([fn]) => fn === 'socialu_create_event')).toBeUndefined();
   });
 
   it('ignores creator IDs supplied by the browser', async () => {

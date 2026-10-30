@@ -9,9 +9,9 @@ const db=new PGlite();
 await db.exec(`CREATE ROLE anon;CREATE ROLE authenticated;CREATE ROLE service_role;
 CREATE SCHEMA auth;CREATE TABLE auth.users(id uuid PRIMARY KEY,email text,email_confirmed_at timestamptz);`);
 await db.exec(readFileSync(root+'/supabase/schema.sql','utf8'));
-for(const file of ['20261008000100_link_supabase_accounts.sql','20261013150000_create_event.sql','20261015120000_list_events.sql','20261027130000_event_engagement.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
-// Applying the engagement migration twice is harmless.
-await db.exec(readFileSync(root+'/supabase/migrations/20261027130000_event_engagement.sql','utf8'));
+for(const file of ['20261008000100_link_supabase_accounts.sql','20261013150000_create_event.sql','20261015120000_list_events.sql','20261027125000_event_dress_code.sql','20261027130000_event_engagement.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
+// Applying the dress code and engagement migrations twice is harmless.
+for(const file of ['20261027125000_event_dress_code.sql','20261027130000_event_engagement.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
 
 const uid=(n:number)=>`00000000-0000-0000-0000-00000000000${n}`;
 // Students 1-3 are verified; student 4 has not verified their university email.
@@ -24,6 +24,16 @@ const call=async(fn:string,...args:unknown[])=>(await db.query<any>(`SELECT publ
 const code=(expected:string)=>(error:any)=>error.code===expected;
 const tomorrow=new Date(Date.now()+86400000).toISOString();
 const event=(await call('socialu_create_event',uid(1),'Halloween Parade','Costumes and floats.','Main Quad',tomorrow)).event_id;
+
+// Dress code: optional, trimmed, blank means none, at most 100 characters; shown in the list and details.
+const costume=(await call('socialu_create_event',uid(1),'Costume Ball','Dress up.','Ballroom',tomorrow,'  Costumes required  '));
+assert.equal(costume.dress_code,'Costumes required');
+assert.equal((await call('socialu_create_event',uid(1),'Movie','Bring snacks.','Quad',tomorrow,'   ')).dress_code,null);
+assert.equal((await call('socialu_create_event',uid(1),'Study','Bring notes.','Library',tomorrow)).dress_code,null);
+await assert.rejects(call('socialu_create_event',uid(1),'Gala','Fancy.','Hall',tomorrow,'x'.repeat(101)),code('22023'));
+assert.equal((await call('socialu_list_events',uid(2))).find((e:any)=>e.event_id===costume.event_id).dress_code,'Costumes required');
+assert.equal((await call('socialu_event_detail',uid(2),costume.event_id)).dress_code,'Costumes required');
+await db.exec("DELETE FROM socialu.events WHERE title IN ('Costume Ball','Movie','Study')");
 
 // A new event starts with no engagement.
 const [listed]=await call('socialu_list_events',uid(2));

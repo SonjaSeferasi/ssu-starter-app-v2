@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { ArrowLeft, CalendarDays, MapPin, UserRound } from 'lucide-react';
+import { ArrowLeft, CalendarDays, MapPin, Shirt, UserRound } from 'lucide-react';
 import { storedAccessToken } from '../../../lib/account/session';
 import shellStyles from '../../../components/navigation/social-shell.module.css';
 import styles from '../events.module.css';
@@ -107,6 +107,7 @@ export default function EventDetailPage() {
                 <dl className={styles.meta}>
                   <div className={styles.metaRow}><dt><CalendarDays aria-label="Date and time" /></dt><dd>{formatWhen(event.starts_at)}</dd></div>
                   <div className={styles.metaRow}><dt><MapPin aria-label="Location" /></dt><dd>{event.location}</dd></div>
+                  {event.dress_code ? <div className={styles.metaRow}><dt><Shirt aria-label="Dress code" /></dt><dd>Dress code: {event.dress_code}</dd></div> : null}
                   <div className={styles.metaRow}><dt><UserRound aria-label="Host" /></dt><dd>Hosted by @{event.creator_username}</dd></div>
                 </dl>
                 <p className={styles.description}>{event.description}</p>
@@ -151,7 +152,7 @@ export default function EventDetailPage() {
           </div>
 
           <aside className={styles.sideColumn}>
-            <section className={styles.sideCard} aria-labelledby="going-title">
+            <section id="going" className={styles.sideCard} aria-labelledby="going-title">
               <h2 id="going-title" className={styles.sideTitle}>Who’s going ({event.going_count})</h2>
               {event.attendees.length === 0 ? (
                 <p className={styles.sideEmpty}>Nobody yet. Tap “I’m going” to be the first.</p>

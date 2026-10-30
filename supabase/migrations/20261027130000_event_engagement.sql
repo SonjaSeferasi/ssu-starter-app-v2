@@ -1,7 +1,7 @@
 -- Events engagement: like events, comment on them, say "I'm going", see who's attending, and trending events.
 -- Supports UR-401 (discover), UR-403 (attend) and UR-405 (trending, ranked here by event likes).
 -- Additive: three new tables and server-only functions; socialu_list_events is replaced to add the counts.
--- Apply once after 20261015120000_list_events.sql. Safe to re-run.
+-- Apply once after 20261027125000_event_dress_code.sql. Safe to re-run.
 
 -- Error codes returned to the API (mapped in lib/event-engagement.ts):
 --   42501 verified, active account required     SE404 event not available (missing, cancelled or another university)
@@ -95,7 +95,7 @@ BEGIN
   RETURN coalesce((
     SELECT jsonb_agg(jsonb_build_object('event_id', e.event_id::text, 'creator_id', e.creator_id::text,
         'creator_username', c.username, 'title', e.title, 'description', e.description,
-        'location', e.location, 'starts_at', e.starts_at, 'status', e.status)
+        'location', e.location, 'starts_at', e.starts_at, 'status', e.status, 'dress_code', e.dress_code)
         || socialu.event_engagement(e.event_id, s.student_id) ORDER BY e.starts_at, e.event_id)
     FROM (
       SELECT ev.* FROM socialu.events ev
@@ -127,7 +127,7 @@ BEGIN
 
   SELECT jsonb_build_object('event_id', e.event_id::text, 'creator_id', e.creator_id::text,
       'creator_username', c.username, 'title', e.title, 'description', e.description,
-      'location', e.location, 'starts_at', e.starts_at, 'status', e.status)
+      'location', e.location, 'starts_at', e.starts_at, 'status', e.status, 'dress_code', e.dress_code)
     || socialu.event_engagement(e.event_id, s.student_id)
     || jsonb_build_object(
       'attendees', coalesce((SELECT jsonb_agg(jsonb_build_object('student_id', st.student_id::text,

@@ -8,6 +8,8 @@ export type CampusEvent = {
   description: string;
   location: string;
   starts_at: string;
+  // Optional dress code (20261027125000_event_dress_code.sql).
+  dress_code?: string | null;
   // Engagement (20261027130000_event_engagement.sql); optional so older responses still render.
   like_count?: number;
   liked_by_me?: boolean;
