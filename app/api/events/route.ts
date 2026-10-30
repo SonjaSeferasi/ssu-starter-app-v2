@@ -49,7 +49,9 @@ export async function POST(request: Request) {
 
     const { title, description, location, starts_at, dress_code } = validation.event;
     const event = await eventOperation('socialu_create_event', {
-      p_auth_id: user.id, p_title: title, p_description: description, p_location: location, p_starts_at: starts_at, p_dress_code: dress_code,
+      p_auth_id: user.id, p_title: title, p_description: description, p_location: location, p_starts_at: starts_at,
+      // Only sent when given, so creating events keeps working before 20261027125000_event_dress_code.sql is applied.
+      ...(dress_code ? { p_dress_code: dress_code } : {}),
     });
     return Response.json({ event }, { status: 201, headers: { 'Cache-Control': 'no-store' } });
   } catch (error) { return accountResponse(error); }

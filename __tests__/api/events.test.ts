@@ -58,7 +58,6 @@ describe('Event creation API', () => {
       p_description: 'Clean up the campus.',
       p_location: 'North Hall',
       p_starts_at: new Date('2026-10-09T10:00:00').toISOString(),
-      p_dress_code: null,
     });
   });
 
