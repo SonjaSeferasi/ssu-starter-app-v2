@@ -54,3 +54,9 @@ The live account has fewer than 25 entries, so larger multi-page history is prov
 ## Remaining review and submission work
 
 Review and merge the five implementation PRs in order, add closing references only for tasks whose full acceptance is satisfied, and update the board as that happens. Keep parents open until acceptance, evidence and the team's Definition of Done are met. The per-SRS evidence is linked from the GitHub cards. If the instructor requires a real multi-page or two-session ended-state demonstration, arrange authorized sessions and capture it separately; do not label isolated tests as that live demonstration. Demo attendance and Canvas submission remain Linh's responsibility.
+
+## Board checkpoint
+
+After implementation on October 29, the saved Sprint 3 view contains four future Product Backlog items and 25 In progress items (five selected parents plus 20 child tasks). None is marked Done. All five cards link the approved real screenshots and draft PRs.
+
+![Sprint 3 implementation checkpoint](sprint3-board-in-progress.png)
