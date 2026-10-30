@@ -1,0 +1,13 @@
+Source: actual local prototype run in /private/tmp/socialu-profile-polish.
+Command: npm test
+
+ Test Files  124 passed (124)
+      Tests  1077 passed (1077)
+   Start at  01:49:42
+   Duration  62.02s (transform 5.09s, setup 0ms, collect 15.06s, tests 354.80s, environment 23ms, prepare 11.32s)
+
+
+Command: npm run build
+Result: exit code 0; compiled, type-checked and generated production routes successfully.
+
+Live browser acceptance and screenshot: not performed; browser connection timed out.
