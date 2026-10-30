@@ -174,3 +174,22 @@
   .contentTabs svg { width: 16px; }
   .stats span { font-size: 10px; }
 }
+
+/* Keep identity above both content columns, with the same rhythm as the cards. */
+.page{max-width:1360px;margin-inline:auto}
+.masthead{min-width:0;margin-bottom:28px}
+.masthead .hero{grid-template-columns:150px minmax(0,1fr);gap:28px;padding:4px 4px 24px}
+.masthead .stats{margin:0}
+.portraitWrap{position:relative;min-width:0;width:100%;align-self:start}
+.portraitWrap .portrait{display:block}
+.photoEdit{position:absolute;right:-6px;bottom:4px;z-index:2;display:grid;place-items:center;width:36px;height:36px;border:3px solid var(--space-bg,#fafbf8);border-radius:50%;background:var(--accent);color:#fff;box-shadow:0 1px 5px #17372518;transition:background-color 150ms ease}
+.photoEdit:hover{background:#173e2c}.photoEdit:focus-visible,.photoHelp:focus-visible{outline:3px solid #7d9b78;outline-offset:4px}
+.photoHelp{display:block;margin-top:10px;color:var(--accent);font-size:12px;text-align:center;text-underline-offset:3px}
+.layout{gap:24px;align-items:start;grid-template-columns:minmax(0,1fr) minmax(270px,31%)}
+.mainColumn .contentTabs{margin-top:0}
+.sidebar{gap:18px}
+.masthead .handle{margin-bottom:14px}
+@container campusProfile (max-width:960px){.layout{grid-template-columns:minmax(0,1fr)}.masthead .hero{grid-template-columns:140px minmax(0,1fr)}.sidebar{grid-row:1;grid-template-columns:repeat(2,minmax(0,1fr))}}
+@container campusProfile (max-width:580px){.masthead .hero{grid-template-columns:100px minmax(0,1fr);gap:18px;padding-inline:0}.masthead{margin-bottom:22px}.sidebar{grid-template-columns:minmax(0,1fr)}.photoEdit{width:32px;height:32px;right:-4px}.nameLine h1{font-size:clamp(23px,6cqi,29px)}.masthead .actions{margin-top:16px}}
+@media(prefers-reduced-motion:reduce){.photoEdit{transition:none}}
+

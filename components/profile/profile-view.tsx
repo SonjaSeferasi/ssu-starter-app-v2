@@ -259,14 +259,19 @@ function ProfileContent({ username }: { username?: string }) {
   const [socialRetry, setSocialRetry] = useState(0);
   const [contentCount, setContentCount] = useState<number | null>(null);
   const [lookSaved,setLookSaved]=useState(false);
+  const photoRetried=useRef(false);
+  const [photoUnavailable,setPhotoUnavailable]=useState(false);
   const space = useProfileSpace(profile?.username ?? null);
   useEffect(()=>{setLookSaved(new URLSearchParams(window.location.search).get('look')==='saved');},[]);
 
   useEffect(() => {
     const refresh = () => setSocialRetry(value => value + 1);
+    // Signed photo links last one hour. Renew while a profile remains open.
+    const timer=window.setInterval(()=>{if(document.visibilityState==='visible')refresh();},45*60_000);
     window.addEventListener('socialu-connections-changed', refresh);
     window.addEventListener('focus', refresh);
     return () => {
+      window.clearInterval(timer);
       window.removeEventListener('socialu-connections-changed', refresh);
       window.removeEventListener('focus', refresh);
     };
@@ -282,7 +287,7 @@ function ProfileContent({ username }: { username?: string }) {
   }, [username, socialRetry]);
 
   useEffect(() => {
-    setProfile(null); setSocial(null); setError(''); setMissing(false); setCategory('posts');
+    setProfile(null); setSocial(null); setError(''); setMissing(false); setCategory('posts'); photoRetried.current=false;setPhotoUnavailable(false);
   }, [username]);
 
   useEffect(() => {
@@ -307,12 +312,19 @@ function ProfileContent({ username }: { username?: string }) {
 
   return <main className={`${styles.page} ${campus.page} ${spaceStyles.theme}`} data-palette={space.look.palette} data-design-theme={space.look.theme} data-frame={space.look.frame}>
     {lookSaved&&<p className={spaceStyles.savedLookNotice} role="status"><Check size={16}/>Your look is saved to your profile.</p>}
-    <div className={campus.layout}>
-      <div className={campus.mainColumn}>
+    <div className={campus.masthead}>
         {profile.is_own && <div className={spaceStyles.spaceToolbar}><p>Your profile, your way.</p><Link href="/profile/decorate" className={spaceStyles.decorateLink}><Palette size={15} />Decorate profile</Link></div>}
         <ProfileCover look={space.look} coverUrl={space.coverUrl} />
         <section className={campus.hero} aria-label={`${profile.name}'s profile`}>
-          <ProfilePortrait className={campus.portrait} frame={space.look.frame}><Avatar url={profile.photo_url} name={profile.name} /></ProfilePortrait>
+          <div className={campus.portraitWrap}>
+            <ProfilePortrait className={campus.portrait} frame={space.look.frame}>
+              <Avatar url={profile.photo_url} name={profile.name}
+                onPhotoError={()=>{setPhotoUnavailable(true);if(!photoRetried.current){photoRetried.current=true;setSocialRetry(value=>value+1);}}}
+                onPhotoLoad={()=>{photoRetried.current=false;setPhotoUnavailable(false);}}/>
+            </ProfilePortrait>
+            {profile.is_own&&<Link href="/profile/edit" className={campus.photoEdit} aria-label="Change profile photo"><Camera size={17}/></Link>}
+            {photoUnavailable&&profile.is_own&&<Link href="/profile/edit" className={campus.photoHelp}>Update photo</Link>}
+          </div>
           <div className={campus.identity}>
             <div className={campus.nameLine}>
               <h1>{profile.name}</h1>
@@ -336,6 +348,9 @@ function ProfileContent({ username }: { username?: string }) {
           <p><strong>Complete your profile.</strong> Add your profile photo, major, and class year.</p>
           <Link href="/profile/edit" className={styles.button}>Complete profile</Link>
         </div>}
+    </div>
+    <div className={campus.layout}>
+      <div className={campus.mainColumn}>
         <ProfileContentTabs value={category} onChange={setCategory} own={profile.is_own} />
         {category === 'saved' && <p className={styles.savedNote}><Lock size={12} />Only you can see your saved posts.</p>}
         <div id="profile-posts" role="tabpanel" aria-labelledby={`profile-tab-${category}`} tabIndex={0}>

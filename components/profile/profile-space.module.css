@@ -3,7 +3,7 @@
 .theme[data-palette=peach] { --space-accent:#8b5b42; --space-soft:#f6e6da; --space-paper:#fffbf5; --space-bg:#fcf9f5; --space-line:#eadfd4; }
 .theme[data-palette=sky] { --space-accent:#416880; --space-soft:#e3edf4; --space-paper:#f9fcff; --space-bg:#f6fafc; --space-line:#d8e5ec; }
 .theme[data-palette=rose] { --space-accent:#86586b; --space-soft:#f4e6eb; --space-paper:#fffbfc; --space-bg:#fcf8fa; --space-line:#eadce2; }
-.cover { position:relative; height:220px; margin-bottom:24px; border:1px solid var(--space-line); border-radius:12px; overflow:hidden; background:var(--space-soft); isolation:isolate; }
+.cover { position:relative; height:clamp(150px,18vw,230px); margin-bottom:24px; border:1px solid var(--space-line); border-radius:12px; overflow:hidden; background:var(--space-soft); isolation:isolate; }
 .artwork { display:block; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; pointer-events:none; }
 .decorations { z-index:2; position:absolute; inset:0; pointer-events:none; }
 .placedSticker { position:absolute; width:calc(92px * var(--scale,1)); max-width:calc(18% * var(--scale,1)); aspect-ratio:1; }
