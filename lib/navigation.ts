@@ -3,10 +3,10 @@
 // feature (visual only, per MS's SRS-301-304 work) — not real routes.
 // `tag: 'soon'` on a `status: 'live'` entry keeps the real, working route
 // clickable but visually marks it as a teammate's feature, not MS's.
+// Snipe is deliberately absent: it is played inside DMs and group chats, not from the navbar.
 export const navigationDestinations = [
   { label: 'Campus Feed', href: '/', icon: 'home', status: 'live', tag: undefined },
   { label: 'Messages', href: '/messages', icon: 'messages', status: 'live', tag: 'soon' },
-  { label: 'Sniping', href: '#', icon: 'sniping', status: 'soon', tag: undefined },
   { label: 'Game Room', href: '/game-room', icon: 'game', status: 'live', tag: 'soon' },
   { label: 'Invitations', href: '#', icon: 'invitations', status: 'soon', tag: undefined },
   { label: 'Events', href: '/events', icon: 'events', status: 'live', tag: 'soon' },

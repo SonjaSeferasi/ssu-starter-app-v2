@@ -29,10 +29,18 @@ describe('UR-600 navigation', () => {
     const html = renderToStaticMarkup(createElement(SocialNavigation, { pathname: '/game-room' }));
     const disabledText = [...html.matchAll(/<span\b[^>]*aria-disabled="true"[^>]*>(.*?)<\/span>/g)]
       .map(([, body]) => body.replace(/<[^>]+>/g, ''));
-    expect(disabledText.join(' ')).toContain('Sniping');
     expect(disabledText.join(' ')).toContain('Invitations');
     expect(html).not.toContain('Study Hub');
     expect(html).not.toMatch(/<a\b[^>]*href="#"/);
+  });
+
+  // Snipe is a DM/group-chat game, so it never appears as a navbar destination.
+  it.each(['side', 'bottom'] as const)('has no Snipe destination with %s placement', (position) => {
+    const html = renderToStaticMarkup(createElement(NavigationFrame, { pathname: '/', position, children: null }));
+    const nav = html.match(/<nav\b[^>]*aria-label="Main navigation"[^>]*>[\s\S]*?<\/nav>/)?.[0] ?? '';
+    expect(nav).not.toBe('');
+    expect(nav).not.toMatch(/snip/i);
+    expect(nav).toContain('Invitations');
   });
 
   it.each(['/', '/messages', '/game-room', '/events', '/messages/conversation-123'])
