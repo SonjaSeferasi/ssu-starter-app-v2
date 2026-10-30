@@ -7820,12 +7820,12 @@ TBD means a team decision is still required. These are explicit dependencies, no
 
 | Decision | Owner | Required decision | Traces |
 | --- | --- | --- | --- |
-| B-01 | DP | Snipe points per positively identified target; no extra daily photographer cap. | SRS-525.2; SRS-525.6; UR-528 |
+| B-01 | DP | Snipe points per positively identified target; no extra daily photographer cap. Approved by DP on 29 October 2026 for the Snipe implementation: 25 shared points per verified friend (an originally tagged friend whose identity answer is Yes at publication), credited once to the photographer only; no photographer-wide daily cap (see documentation/snipe-rewards.md). This records DP's approval only; team review is not recorded, and every other reward amount and catalog price stays open. | SRS-525.2; SRS-525.6; UR-528 |
 | B-02 | DP + SS | Daily participation amount and separate 7/14/30-day milestone amounts. | SRS-526.5; SRS-526.17; SRS-528.5 |
 | B-03 | DP + SS | Normal Game 1 rewards, coin conversion, completion proof, and reduced replay reward rules; Wordle reward rules only if included. | SRS-520.3 to SRS-520.5; SRS-528.6 |
 | B-04 | DP | Catalog entries, point prices, eligibility, and initial/purchasable wall and floor appearances. | UR-500; UR-522; UR-529 |
 | B-05 | DP | Room dimensions, protected cells, item footprints, allowed surfaces, overlap compatibility and fixed orientations. | SRS-500.2; SRS-500.8 to SRS-500.10; SRS-529.7 |
-| B-06 | DP + LP | Snipe-specific image formats, byte limit and pixel limits. SS avatar and feed limits do not automatically define the Snipe policy. | SRS-510.2; SRS-510.3 |
+| B-06 | DP + LP | Snipe-specific image formats, byte limit and pixel limits. SS avatar and feed limits do not automatically define the Snipe policy. Approved by DP on 25 October 2026 for the Snipe implementation: JPEG and PNG only; at most 10,000,000 bytes; at most 4096 pixels wide and 4096 pixels high (see documentation/snipe-basic.md). This records DP's approval only; LP and team review are not recorded. | SRS-510.2; SRS-510.3 |
 | B-07 | DP | DormSpace movement speed, interaction range, touch-editing behavior and exact release devices/browser versions. | UR-504; SRS-NFR-52 to SRS-NFR-57 |
 | B-08 | SS + DP | Maximum trusted participation-event delivery delay and correction of earlier days after late delivery. | SRS-613.12; SRS-613.13; SRS-526.3 |
 | B-09 | All feature owners | Define concurrency, device/browser versions, network, data sizes, samples and pass thresholds for timing claims using normal operating conditions; distinguish server email dispatch from inbox delivery. | SRS-NFR-1 to SRS-NFR-13; SRS-NFR-25; SRS-NFR-27; SRS-NFR-28; SRS-NFR-38 to SRS-NFR-40; SRS-NFR-42; SRS-NFR-44 |

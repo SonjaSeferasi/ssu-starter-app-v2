@@ -187,13 +187,19 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 .backLink:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
 /* Phones: the list page shows the list; a conversation page shows the conversation. */
 @media (max-width: 900px) {
-  .page { grid-template-columns: 1fr; padding: 16px; }
+  .page { grid-template-columns: minmax(0, 1fr); padding: 16px; }
   .withConversation .listPanel, .emptyConversation { display: none; }
   /* Phones show the list and the conversation on separate pages, so the list scrolls with the page. */
   .listPanel, :global([data-navigation='bottom']) .listPanel { position: static; height: auto; min-height: 0; }
   .conversationList { overflow: visible; }
   .backButton { display: grid; }
   .closeButton { display: none; }
+  /* SRS-510.1 (#622): measured at 390 × 844 beside the side rail, one header row left the title 0 px wide (one
+     letter per line). The header wraps instead: back, avatar and title share the first row and the Invite /
+     Members buttons move to the next row, on the right. */
+  .header { flex-wrap: wrap; justify-content: flex-end; gap: 10px; padding: 14px 16px; }
+  .headerText { flex: 1 1 120px; }
+  .header .inviteButton { margin-left: 0; }
 }
 @media (max-width: 700px) {
   :global([data-navigation='bottom']) .footer { bottom: 73px; }
