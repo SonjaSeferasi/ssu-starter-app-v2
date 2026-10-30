@@ -33,8 +33,10 @@ with SRS-525.1–525.6, 521.1, 524.1–524.4, 528.2 and NFR-49. Builds on the ba
   The ledger `action_key` is the Snipe's own `submission_key`.
 - **No backfill.** Only the transition fires the award. A Snipe approved before this migration has no ledger
   row, and the photographer sees it as **Not awarded**. Reading or removing it credits nothing.
-- **Removal.** Points and the ledger row are kept (`immutable_points`). The reward stays visible on the Removed
-  card without the photo.
+- **Removal.** Points and the ledger row are kept (`immutable_points`) however the Snipe is removed: by the
+  photographer, by a tagged friend's withdrawal, or by a group owner/administrator directly or through a
+  report decision (see [`snipe-moderation.md`](snipe-moderation.md)). No removal path writes to the ledger.
+  The reward stays visible on the Removed card without the photo.
 - **Failure.** If no current Snipe rule exists, the publishing answer fails with `SN503`. The API returns 503
   `SNIPE_REWARDS_UNAVAILABLE`, nothing is saved and the request stays Pending, so a later retry can succeed.
   There is no phantom balance.
@@ -65,7 +67,7 @@ with SRS-525.1–525.6, 521.1, 524.1–524.4, 528.2 and NFR-49. Builds on the ba
 | 525.6 reward explanation | Done |
 | 521.1 / 521.4 balance in Snipe result, last-confirmed label | Done |
 | 523.3 / 523.7 / 523.8, NFR-49 | Done |
-| 524.1 / 524.4 persistence, removal keeps points | Done |
+| 524.1 / 524.4 persistence, removal keeps points | Done (all removal paths, including group administrators) |
 | 527.5 / 527.7 frozen amounts, removed history | Done (ledger). The general points-history page belongs to UR-527 and isn't built here |
 | 528.2 rules before submission | Done |
 
