@@ -4,6 +4,7 @@ import { spawn, type ChildProcess } from 'node:child_process';
 import type { PGlite } from '@electric-sql/pglite';
 import { befriend, testUid } from '../../__tests__/helpers/dormspace-db';
 import { createGroup, createSnipeDatabase } from '../../__tests__/helpers/snipe-db';
+import { createSnipeStorage } from '../tests/snipe-local-storage';
 
 // DEVELOPMENT-ONLY local preview of the Snipe UI. Not a route, not imported by the app, never deployed.
 // Same isolation as scripts/tests/snipe-basic.browser.ts: the real Next UI and API run against the real schema
@@ -13,15 +14,15 @@ import { createGroup, createSnipeDatabase } from '../../__tests__/helpers/snipe-
 let db: PGlite | undefined, service: Server | undefined, next: ChildProcess | undefined;
 let nextLog = '', stopping = false;
 const sessions = new Map<string, any>();
-const objects = new Map<string, { bytes: Buffer; type: string }>();
-// Must match SNIPE_BUCKET in lib/snipe.ts and the migration (not imported: lib/snipe pulls in server modules).
-const SNIPE_BUCKET = 'socialu-snipe-photos';
+const SERVICE_KEY = 'isolated-test-service-key';
+// Both private Snipe buckets, including upload-only URLs for direct photo uploads (same stand-in as the browser test).
+const storage = createSnipeStorage(SERVICE_KEY);
 const PASSWORD = 'SnipeTest123!';
 // Explicit allowlist of RPCs the login, conversation and Snipe pages reach; anything else is refused.
 const RPCS = new Set([
   'socialu_auth_guard', 'socialu_session_guard', 'socialu_session', 'socialu_account', 'socialu_account_lifecycle',
   'socialu_conversation_list', 'socialu_conversation_messages', 'socialu_mark_conversation_read', 'socialu_send_message',
-  'socialu_friend_conversation', 'socialu_snipe', 'socialu_friendships', 'socialu_notifications',
+  'socialu_friend_conversation', 'socialu_snipe', 'socialu_snipe_photo', 'socialu_snipe_photo_reap', 'socialu_friendships', 'socialu_notifications',
   'socialu_mark_notifications_read', 'socialu_game_room', 'socialu_avatar_customization', 'socialu_dorm',
   'socialu_dormspace_live', 'socialu_profile_view',
 ]);
@@ -78,24 +79,8 @@ async function main() {
         const account = sessions.get(request.headers.authorization?.slice(7) || '');
         reply(account ? 200 : 401, account || { message: 'Expired session' }); return;
       }
-      // Private Storage stand-in for the dedicated Snipe bucket only; no public or signed Snipe URLs exist.
-      if (path === `/storage/v1/bucket/${SNIPE_BUCKET}`) { reply(200, { id: SNIPE_BUCKET, name: SNIPE_BUCKET, public: false }); return; }
-      if (path.startsWith('/storage/v1/object/sign/')) { reply(404, { statusCode: '404', error: 'not_found', message: 'Object not found' }); return; }
-      if (path === `/storage/v1/object/${SNIPE_BUCKET}` && request.method === 'DELETE') {
-        for (const key of JSON.parse(raw.toString()).prefixes) objects.delete(key);
-        reply(200, []); return;
-      }
-      if (path.startsWith(`/storage/v1/object/${SNIPE_BUCKET}/`)) {
-        const key = path.slice(`/storage/v1/object/${SNIPE_BUCKET}/`.length);
-        if (request.method === 'POST') {
-          if (objects.has(key)) { reply(409, { statusCode: '409', error: 'Duplicate', message: 'The resource already exists' }); return; }
-          objects.set(key, { bytes: raw, type: String(request.headers['content-type']) });
-          reply(200, { Key: `${SNIPE_BUCKET}/${key}`, Id: randomUUID() }); return;
-        }
-        const object = objects.get(key);
-        if (!object) { reply(404, { statusCode: '404', error: 'not_found', message: 'Object not found' }); return; }
-        response.writeHead(200, { 'Content-Type': object.type }); response.end(object.bytes); return;
-      }
+      // Private Storage stand-in for the two Snipe buckets only; no public or signed READ URLs exist.
+      if (storage.handle(request, response, path, url, raw)) return;
       const fn = path.match(/^\/rest\/v1\/rpc\/(socialu_[a-z_]+)$/)?.[1];
       const body = raw.length ? JSON.parse(raw.toString()) : {};
       if (!fn || !RPCS.has(fn) || !Object.keys(body).every(key => /^p_[a-z_]+$/.test(key))) {
@@ -113,7 +98,7 @@ async function main() {
   const base = `http://127.0.0.1:${nextPort}`;
   next = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'dev', '--hostname', '127.0.0.1', '--port', String(nextPort)], {
     cwd: process.env.SNIPE_APP_ROOT || process.cwd(),
-    env: { ...process.env, SUPABASE_URL: `http://127.0.0.1:${servicePort}`, NEXT_PUBLIC_SUPABASE_URL: `http://127.0.0.1:${servicePort}`, SUPABASE_SERVICE_ROLE_KEY: 'isolated-test-service-key', SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_TELEMETRY_DISABLED: '1' }, stdio: ['ignore', 'pipe', 'pipe'],
+    env: { ...process.env, SUPABASE_URL: `http://127.0.0.1:${servicePort}`, NEXT_PUBLIC_SUPABASE_URL: `http://127.0.0.1:${servicePort}`, SUPABASE_SERVICE_ROLE_KEY: SERVICE_KEY, SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_TELEMETRY_DISABLED: '1' }, stdio: ['ignore', 'pipe', 'pipe'],
   });
   next.stdout?.on('data', chunk => { nextLog = (nextLog + chunk.toString()).slice(-20000); });
   next.stderr?.on('data', chunk => { nextLog = (nextLog + chunk.toString()).slice(-20000); });

@@ -1,8 +1,8 @@
-import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import sharp from 'sharp';
 import { createHash } from 'node:crypto';
-const { getClient, getUser, rpc, getBucket, upload, download, remove, buckets } = vi.hoisted(() => ({
-  getClient: vi.fn(), getUser: vi.fn(), rpc: vi.fn(), getBucket: vi.fn(), upload: vi.fn(), download: vi.fn(), remove: vi.fn(), buckets: [] as string[],
+const { getClient, getUser, rpc, getBucket, upload, download, remove, storageFetch, buckets } = vi.hoisted(() => ({
+  getClient: vi.fn(), getUser: vi.fn(), rpc: vi.fn(), getBucket: vi.fn(), upload: vi.fn(), download: vi.fn(), remove: vi.fn(), storageFetch: vi.fn(), buckets: [] as string[],
 }));
 vi.mock('../../lib/supabase', () => ({ getSupabaseClient: getClient }));
 import { GET as list, POST as submit } from '../../app/api/conversations/[id]/snipes/route';
@@ -103,7 +103,8 @@ describe('Snipe list (SRS-510.4, 512.1, 512.2)', () => {
   });
 });
 
-describe('Snipe submission (SRS-510.2 to 510.11, 513.9)', () => {
+// The legacy multipart route is kept for already-loaded clients; the UI uses direct upload (snipe-uploads.test.ts).
+describe('Legacy multipart Snipe submission (SRS-510.2 to 510.11, 513.9)', () => {
   it('validates, uploads privately with an attempt-specific key, then creates one pending request', async () => {
     const res = await submit(form({ extra: { p_auth_id: 'victim', submitter_id: '99' } }), ctx());
     expect(res.status).toBe(201);
@@ -259,38 +260,113 @@ describe('Snipe answers, withdrawal and removal (SRS-511, 514)', () => {
 
 describe('Snipe photo reads (SRS-511.1, 514.6)', () => {
   const get = (auth = token) => new Request(base + '/5/photo', { headers: headers(auth) });
-  it('streams an allowed photo through the authorized no-store route', async () => {
-    snipe = () => ({ data: { storage_key: `snipe/${AUTH_ID}/${KEY}/a.jpg`, mime_type: 'image/jpeg', byte_count: jpeg.length } });
-    download.mockResolvedValue({ data: new Blob([jpeg], { type: 'application/octet-stream' }), error: null });
+  const committed = `snipe/${AUTH_ID}/${KEY}/${'a'.repeat(64)}/${KEY}.jpg`;
+  // Private Storage answers with a chunked stream; `cancelled` records whether the route abandoned it and
+  // `drained` whether it read to the end. `midway`, when set, runs (and is awaited) after the first chunk,
+  // while the body is still being read and its headers have long arrived.
+  let cancelled = false, drained = false;
+  let midway: (() => Promise<void>) | null = null;
+  const storageStream = (bytes: Uint8Array) => {
+    let offset = 0;
+    return new ReadableStream<Uint8Array>({
+      async pull(controller) {
+        if (offset >= bytes.length) { drained = true; controller.close(); return; }
+        if (offset > 0 && midway) { const run = midway; midway = null; await run(); }
+        controller.enqueue(bytes.subarray(offset, offset + 64));
+        offset += 64;
+      },
+      cancel() { cancelled = true; },
+    });
+  };
+  beforeEach(() => {
+    cancelled = false; drained = false; midway = null;
+    vi.stubEnv('SUPABASE_URL', 'http://storage.test');
+    storageFetch.mockImplementation(async (url: string) => String(url).endsWith(`/object/${BUCKET}/${committed}`)
+      ? new Response(storageStream(jpeg), { status: 200, headers: { 'Content-Type': 'application/octet-stream' } })
+      : new Response(JSON.stringify({ statusCode: '404', error: 'not_found' }), { status: 400 }));
+    vi.stubGlobal('fetch', storageFetch);
+  });
+  afterEach(() => { vi.unstubAllGlobals(); });
+
+  it('streams an allowed photo, checked again after the whole object was read, with no Content-Length', async () => {
+    const drainedAtCheck: boolean[] = [];
+    snipe = () => { drainedAtCheck.push(drained); return { data: { storage_key: committed, mime_type: 'image/jpeg', byte_count: jpeg.length } }; };
     const res = await photo(get(), snipeCtx());
     expect(res.status).toBe(200);
-    expect(Buffer.from(await res.arrayBuffer())).toEqual(jpeg);
+    expect(res.body).toBeInstanceOf(ReadableStream);
+    expect(res.headers.get('Content-Length')).toBeNull();
+    // The response is its own chunked stream, not Storage's body handed on.
+    const reader = res.body!.getReader();
+    const chunks: Uint8Array[] = [];
+    for (let next = await reader.read(); !next.done; next = await reader.read()) chunks.push(next.value);
+    expect(chunks.length).toBeGreaterThan(0);
+    expect(Buffer.concat(chunks)).toEqual(jpeg);
+    expect(drainedAtCheck).toEqual([false, true]);
     expect(res.headers.get('Content-Type')).toBe('image/jpeg');
-    expect(res.headers.get('Cache-Control')).toContain('no-store');
+    expect(res.headers.get('Cache-Control')).toBe('private, no-store, max-age=0');
     expect(res.headers.get('X-Content-Type-Options')).toBe('nosniff');
-    expect(download).toHaveBeenCalledWith(`snipe/${AUTH_ID}/${KEY}/a.jpg`);
-    expect(buckets).toEqual([BUCKET]);
+    expect(res.headers.get('Cross-Origin-Resource-Policy')).toBe('same-origin');
+    // One server-key read of the committed object in the private bucket; never a public or signed read URL.
+    expect(storageFetch).toHaveBeenCalledTimes(1);
+    const [url, init] = storageFetch.mock.calls[0];
+    expect(url).toBe(`http://storage.test/storage/v1/object/${BUCKET}/${committed}`);
+    expect(init.headers).toEqual({ apikey: 'test-server-key', Authorization: 'Bearer test-server-key' });
+    expect(String(url)).not.toMatch(/\/sign\/|\/public\//);
     expect([...res.headers.values()].join(' ')).not.toContain('snipe/');
-    // Checked before the download and again after it.
+    // Checked before the read and again after the whole object was read, before any byte is sent.
     expect(actions()).toEqual(['photo', 'photo']);
     expect(snipeCalls()[0]).toMatchObject({ p_auth_id: AUTH_ID, p_action: 'photo', p_snipe_id: '5' });
   });
-  it('sends nothing when the Snipe was withdrawn while its bytes were downloading', async () => {
-    let checks = 0;
-    snipe = () => (++checks === 1 ? { data: { storage_key: `snipe/${AUTH_ID}/${KEY}/a.jpg`, mime_type: 'image/jpeg' } }
-      : { error: { code: 'SN404', message: 'Snipe not available.' } });
-    download.mockResolvedValue({ data: new Blob([jpeg]), error: null });
+  it('sends no photo bytes when the Snipe is withdrawn after Storage answered, while the body is still arriving', async () => {
+    let withdrawn = false;
+    snipe = () => (withdrawn ? { error: { code: 'SN404', message: 'Snipe not available.' } } : { data: { storage_key: committed, mime_type: 'image/jpeg' } });
+    // Headers are already back (the route holds the body); the withdrawal commits before the rest of the body.
+    midway = async () => { await new Promise((resolve) => setTimeout(resolve, 5)); withdrawn = true; };
     const res = await photo(get(), snipeCtx());
-    expect(res.status).toBe(404); expect(await res.json()).toEqual({ error: 'Snipe not available.' });
-    expect(download).toHaveBeenCalledTimes(1); expect(checks).toBe(2);
+    expect(res.status).toBe(404);
+    expect(res.headers.get('Content-Type')).not.toBe('image/jpeg');
+    const sent = Buffer.from(await res.arrayBuffer());
+    expect(JSON.parse(sent.toString('utf8'))).toEqual({ error: 'Snipe not available.' });
+    expect(sent.includes(jpeg.subarray(0, 64))).toBe(false);
+    expect(withdrawn).toBe(true); expect(drained).toBe(true);
+    expect(storageFetch).toHaveBeenCalledTimes(1); expect(actions()).toEqual(['photo', 'photo']);
   });
-  it('rechecks access on every read: hidden, removed and missing photos look the same', async () => {
+  it('sends nothing for an object over the photo policy, a broken Storage stream, or a removed photo key', async () => {
+    const quiet = vi.spyOn(console, 'error').mockImplementation(() => {});
+    snipe = () => ({ data: { storage_key: committed, mime_type: 'image/jpeg' } });
+    // Over 10,000,000 bytes: the read stops (and cancels Storage) as soon as the cap is passed; no second check.
+    let sentBytes = 0;
+    storageFetch.mockImplementationOnce(async () => new Response(new ReadableStream<Uint8Array>({
+      pull(controller) { sentBytes += 1_000_000; controller.enqueue(new Uint8Array(1_000_000)); },
+      cancel() { cancelled = true; },
+    })));
+    const big = await photo(get(), snipeCtx());
+    expect(big.status).toBe(404); expect(await big.json()).toEqual({ error: 'Snipe not available.' });
+    expect(cancelled).toBe(true); expect(sentBytes).toBeLessThanOrEqual(12_000_000); expect(actions()).toEqual(['photo']);
+    rpc.mockClear();
+    storageFetch.mockImplementationOnce(async () => new Response(new ReadableStream({ pull(c) { c.error(new TypeError('terminated')); } })));
+    const broken = await photo(get(), snipeCtx());
+    expect(broken.status).toBe(404); expect(await broken.json()).toEqual({ error: 'Snipe not available.' });
+    expect(actions()).toEqual(['photo']);
+    // The Snipe now points at another object (the photo was replaced or removed while reading).
+    rpc.mockClear();
+    let checks = 0;
+    snipe = () => ({ data: { storage_key: ++checks === 1 ? committed : `snipe/${AUTH_ID}/${KEY}/other.jpg`, mime_type: 'image/jpeg' } });
+    const moved = await photo(get(), snipeCtx());
+    expect(moved.status).toBe(404); expect(await moved.json()).toEqual({ error: 'Snipe not available.' });
+    expect(checks).toBe(2);
+    expect(JSON.stringify(quiet.mock.calls)).not.toContain('snipe/');
+    quiet.mockRestore();
+  });
+  it('rechecks access on every read: hidden, removed, nonparticipant and missing photos look the same', async () => {
     const res = await photo(get(), snipeCtx());
     expect(res.status).toBe(404); expect(await res.json()).toEqual({ error: 'Snipe not available.' });
-    expect(download).not.toHaveBeenCalled();
+    expect(storageFetch).not.toHaveBeenCalled();
+    snipe = () => ({ error: { code: 'SC404', message: 'Conversation not available.' } });
+    expect((await photo(get(), snipeCtx())).status).toBe(404);
+    expect(storageFetch).not.toHaveBeenCalled();
     const quiet = vi.spyOn(console, 'error').mockImplementation(() => {});
-    snipe = () => ({ data: { storage_key: 'snipe/gone.jpg', mime_type: 'image/jpeg' } });
-    download.mockResolvedValue({ data: null, error: { message: 'Object not found' } });
+    snipe = () => ({ data: { storage_key: `snipe/${AUTH_ID}/${KEY}/gone.jpg`, mime_type: 'image/jpeg' } });
     const gone = await photo(get(), snipeCtx());
     expect(gone.status).toBe(404); expect(await gone.json()).toEqual({ error: 'Snipe not available.' });
     quiet.mockRestore();
@@ -299,6 +375,6 @@ describe('Snipe photo reads (SRS-511.1, 514.6)', () => {
     expect((await photo(get(''), snipeCtx())).status).toBe(401);
     sessionValid = false;
     expect((await photo(get(), snipeCtx())).status).toBe(401);
-    expect(download).not.toHaveBeenCalled(); expect(snipeCalls()).toHaveLength(0);
+    expect(storageFetch).not.toHaveBeenCalled(); expect(snipeCalls()).toHaveLength(0);
   });
 });

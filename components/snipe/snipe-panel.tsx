@@ -161,6 +161,7 @@ function Composer({ base, targets, pointsPerFriend, onSubmitted }: {
   const [size, setSize] = useState<{ width: number; height: number } | null>(null);
   const [selected, setSelected] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
+  const [phase, setPhase] = useState('');
   const [error, setError] = useState('');
   const [cooldowns, setCooldowns] = useState<Cooldown[]>([]);
   const [notice, setNotice] = useState('');
@@ -192,15 +193,29 @@ function Composer({ base, targets, pointsPerFriend, onSubmitted }: {
     if (submitting || !file || selected.length === 0 || photoProblem) return;
     submissionKey.current ??= crypto.randomUUID();
     setSubmitting(true); setError(''); setCooldowns([]); setNotice('');
+    const fail = (data: { error?: string; cooldowns?: Cooldown[] }) => {
+      if (Array.isArray(data.cooldowns)) setCooldowns(data.cooldowns);
+      return new Error(data.error || 'Your Snipe could not be submitted. Please try again.');
+    };
     try {
-      const form = new FormData();
-      form.append('photo', file);
-      form.append('submissionKey', submissionKey.current);
-      for (const id of selected) form.append('target', id);
-      const { response, data } = await snipeFetch(base, { method: 'POST', body: form });
-      if (!response.ok) {
-        if (Array.isArray(data.cooldowns)) setCooldowns(data.cooldowns);
-        throw new Error(data.error || 'Your Snipe could not be submitted. Please try again.');
+      // SRS-510.2: the original photo goes straight to private storage through a one-time upload URL; this app
+      // only receives small JSON. The server checks the stored bytes against this SHA-256, type and size.
+      setPhase('Checking photo…');
+      const digest = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', await file.arrayBuffer())), (b) => b.toString(16).padStart(2, '0')).join('');
+      const begin = await snipeFetch(`${base}/uploads`, { method: 'POST',
+        json: { submissionKey: submissionKey.current, targets: selected, digest, mimeType: file.type, byteCount: file.size } });
+      if (!begin.response.ok) throw fail(begin.data);
+      let data = begin.data;
+      if (!data.snipe) {
+        if (data.upload) {
+          setPhase('Uploading photo…');
+          // A refused upload (for example, the photo is already stored from an earlier try) is settled by finalize.
+          await fetch(data.upload.url, { method: data.upload.method, headers: data.upload.headers, body: file, cache: 'no-store' });
+        }
+        setPhase('Submitting…');
+        const finalize = await snipeFetch(`${base}/uploads/finalize`, { method: 'POST', json: { ticket: data.ticket } });
+        if (!finalize.response.ok) throw fail(finalize.data);
+        data = finalize.data;
       }
       reset(); setComposing(false);
       setNotice(data.created === false ? 'This Snipe was already submitted.' : 'Snipe submitted. Your tagged friends can now review it privately.');
@@ -210,7 +225,7 @@ function Composer({ base, targets, pointsPerFriend, onSubmitted }: {
         ? 'Connection problem. Your Snipe may not have been saved. Try again: it will not be submitted twice.'
         : failure(err, 'Your Snipe could not be submitted. Please try again.'));
     } finally {
-      setSubmitting(false);
+      setSubmitting(false); setPhase('');
     }
   }
 
@@ -271,7 +286,7 @@ function Composer({ base, targets, pointsPerFriend, onSubmitted }: {
       )}
       <div className={styles.actions}>
         <button type="submit" className={chat.newGroup} disabled={submitting || !file || selected.length === 0 || Boolean(photoProblem)}>
-          {submitting ? 'Submitting…' : error ? 'Try again' : 'Submit Snipe'}
+          {submitting ? phase || 'Submitting…' : error ? 'Try again' : 'Submit Snipe'}
         </button>
         <button type="button" className={chat.retry} disabled={submitting} onClick={() => { reset(); setComposing(false); }}>Cancel</button>
       </div>
