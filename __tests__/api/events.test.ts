@@ -144,15 +144,16 @@ describe('Event discovery API', () => {
     expect((await (await GET(listRequest())).json()).events[0].location).toBe('South Lawn');
   });
 
-  it('includes events with 5 or more likes as trending, most liked first', async () => {
+  it('ranks liked events as trending, most liked first, leaving out events with no likes', async () => {
     const popular = [
       { ...saved, event_id: '1', like_count: 5 },
-      { ...saved, event_id: '2', like_count: 4 },
+      { ...saved, event_id: '2', like_count: 0 },
       { ...saved, event_id: '3', like_count: 12 },
+      { ...saved, event_id: '4', like_count: 1 },
     ];
     rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : { data: popular, error: null });
     const { trending } = await (await GET(listRequest())).json();
-    expect(trending.map((event: { event_id: string }) => event.event_id)).toEqual(['3', '1']);
+    expect(trending.map((event: { event_id: string }) => event.event_id)).toEqual(['3', '1', '4']);
   });
 
   it('returns an empty list when there are no events', async () => {

@@ -5,7 +5,7 @@ import styles from '../../app/events/events.module.css';
 import { EventArt } from './EventArt';
 import { EventActions, GoingSummary } from './EventActions';
 import { CoverPhotoButton } from './CoverPhotoButton';
-import { TRENDING_MIN_LIKES, formatWhen, monthFormat, weekDays, weekdayFormat, type CampusEvent, type EventEngagement } from '../../lib/events';
+import { formatWhen, monthFormat, weekDays, weekdayFormat, type CampusEvent, type EventEngagement } from '../../lib/events';
 
 type OnEngagement = (eventId: string, engagement: EventEngagement) => void;
 const ignore: OnEngagement = () => {};
@@ -129,14 +129,14 @@ export function WeekStrip({ events, today = new Date() }: { events: CampusEvent[
   );
 }
 
-// UR-405: events with 5 or more likes, most liked first.
+// UR-405: liked events ranked by likes; the more likes, the higher.
 export function TrendingEvents({ events }: { events: CampusEvent[] }) {
   return (
     <section className={styles.sideCard} aria-labelledby="trending-title">
       <h2 id="trending-title" className={styles.sideTitle}>Trending on campus</h2>
-      <p className={styles.sideBody}>Ranked by likes · {TRENDING_MIN_LIKES}+ likes to trend</p>
+      <p className={styles.sideBody}>Ranked by likes · the more likes, the higher</p>
       {events.length === 0 ? (
-        <p className={styles.sideEmpty}>No trending events yet. Events with {TRENDING_MIN_LIKES} or more likes show up here.</p>
+        <p className={styles.sideEmpty}>No trending events yet. Like an event to get it trending.</p>
       ) : (
         <ol className={styles.trending}>
           {events.map((event, index) => (

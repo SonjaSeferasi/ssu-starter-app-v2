@@ -87,17 +87,18 @@ describe('Events page helpers', () => {
     expect(hostedBy([event, other], null)).toEqual([]);
   });
 
-  it('trends events with 5 or more likes, most liked first, soonest first on a tie, top 5', () => {
+  it('trends every liked event, most liked first, soonest first on a tie, top 5', () => {
     const at = (day: number) => new Date(2026, 9, day, 12).toISOString();
     const events = [
-      { ...event, event_id: 'a', like_count: 4, starts_at: at(28) },
+      { ...event, event_id: 'a', like_count: 1, starts_at: at(28) },
       { ...event, event_id: 'b', like_count: 5, starts_at: at(30) },
       { ...event, event_id: 'c', like_count: 9, starts_at: at(29) },
       { ...event, event_id: 'd', like_count: 5, starts_at: at(28) },
-      { ...event, event_id: 'e', starts_at: at(28) },
+      { ...event, event_id: 'e', like_count: 0, starts_at: at(28) },
+      { ...event, event_id: 'f', starts_at: at(28) },
     ];
-    expect(trendingEvents(events).map((e) => e.event_id)).toEqual(['c', 'd', 'b']);
-    expect(trendingEvents(Array.from({ length: 8 }, (_, i) => ({ ...event, event_id: String(i), like_count: 5 + i })))).toHaveLength(5);
+    expect(trendingEvents(events).map((e) => e.event_id)).toEqual(['c', 'd', 'b', 'a']);
+    expect(trendingEvents(Array.from({ length: 8 }, (_, i) => ({ ...event, event_id: String(i), like_count: 1 + i }))).map((e) => e.like_count)).toEqual([8, 7, 6, 5, 4]);
   });
 
   it('lists only events the student is going to on My RSVPs', () => {
@@ -128,7 +129,7 @@ describe('Event engagement on the page', () => {
     expect(html).toContain('Campus Cleanup');
     expect(html).toContain('7<span');
     expect(html).toContain('href="/events/42"');
-    expect(renderToStaticMarkup(createElement(TrendingEvents, { events: [] }))).toContain('Events with 5 or more likes show up here.');
+    expect(renderToStaticMarkup(createElement(TrendingEvents, { events: [] }))).toContain('Like an event to get it trending.');
   });
 
   it('names who is going, with a count for everyone else', () => {
