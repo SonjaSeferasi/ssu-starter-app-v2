@@ -4,10 +4,18 @@ import { CalendarDays, Heart, MapPin, UserRound } from 'lucide-react';
 import styles from '../../app/events/events.module.css';
 import { EventArt } from './EventArt';
 import { EventActions, GoingSummary } from './EventActions';
+import { CoverPhotoButton } from './CoverPhotoButton';
 import { TRENDING_MIN_LIKES, formatWhen, monthFormat, weekDays, weekdayFormat, type CampusEvent, type EventEngagement } from '../../lib/events';
 
 type OnEngagement = (eventId: string, engagement: EventEngagement) => void;
 const ignore: OnEngagement = () => {};
+// Hosts can add or change a cover photo on their own events.
+type CoverProps = { hostId?: string | null; onCover?: (eventId: string, url: string | null) => void };
+
+function HostCover({ event, hostId, onCover }: { event: CampusEvent } & CoverProps) {
+  if (!hostId || hostId !== event.creator_id || !onCover) return null;
+  return <CoverPhotoButton eventId={event.event_id} hasCover={Boolean(event.cover_url)} onChange={(url) => onCover(event.event_id, url)} />;
+}
 
 export type { CampusEvent } from '../../lib/events';
 
@@ -33,10 +41,12 @@ function EventDetails({ event }: { event: CampusEvent }) {
 }
 
 // The soonest event, shown large at the top of Discover.
-export function FeaturedEvent({ event, onEngagement = ignore }: { event: CampusEvent; onEngagement?: OnEngagement }) {
+export function FeaturedEvent({ event, onEngagement = ignore, hostId, onCover }: { event: CampusEvent; onEngagement?: OnEngagement } & CoverProps) {
   return (
     <article className={styles.featured} aria-labelledby={`featured-${event.event_id}`}>
-      <EventArt id={event.event_id} title={event.title} className={styles.featuredArt} />
+      <EventArt id={event.event_id} title={event.title} className={styles.featuredArt} coverUrl={event.cover_url}>
+        <HostCover event={event} hostId={hostId} onCover={onCover} />
+      </EventArt>
       <div className={styles.featuredBody}>
         <p className={styles.kicker}>Next up</p>
         <h2 id={`featured-${event.event_id}`} className={styles.featuredTitle}>
@@ -54,8 +64,8 @@ export function FeaturedEvent({ event, onEngagement = ignore }: { event: CampusE
 
 // SRS-401.1-.6: each active event with its current title, description, location, date, and time,
 // or a message when no active events are available.
-export function EventList({ events, emptyMessage = NO_ACTIVE_EVENTS, emptyHint = 'Check back later, or create an event for your campus.', onEngagement = ignore }:
-  { events: CampusEvent[]; emptyMessage?: string; emptyHint?: string; onEngagement?: OnEngagement }) {
+export function EventList({ events, emptyMessage = NO_ACTIVE_EVENTS, emptyHint = 'Check back later, or create an event for your campus.', onEngagement = ignore, hostId, onCover }:
+  { events: CampusEvent[]; emptyMessage?: string; emptyHint?: string; onEngagement?: OnEngagement } & CoverProps) {
   if (events.length === 0) {
     return (
       <div className={styles.empty}>
@@ -72,7 +82,9 @@ export function EventList({ events, emptyMessage = NO_ACTIVE_EVENTS, emptyHint =
         return (
           <li key={event.event_id} id={`event-${event.event_id}`} className={styles.card}>
             <div className={styles.cardArtWrap}>
-              <EventArt id={event.event_id} title={event.title} className={styles.cardArt} />
+              <EventArt id={event.event_id} title={event.title} className={styles.cardArt} coverUrl={event.cover_url}>
+                <HostCover event={event} hostId={hostId} onCover={onCover} />
+              </EventArt>
               <p className={styles.dateBadge} aria-hidden="true">
                 <span>{monthFormat.format(startsAt)}</span>{startsAt.getDate()}
               </p>
@@ -125,7 +137,7 @@ export function TrendingEvents({ events }: { events: CampusEvent[] }) {
             <li key={event.event_id}>
               <Link href={`/events/${event.event_id}`} className={styles.trendingItem}>
                 <span className={styles.rank}>{index + 1}</span>
-                <EventArt id={event.event_id} title={event.title} className={styles.trendingArt} />
+                <EventArt id={event.event_id} title={event.title} className={styles.trendingArt} coverUrl={event.cover_url} />
                 <span className={styles.trendingText}>
                   <strong>{event.title}</strong>
                   <span>{formatWhen(event.starts_at)}</span>

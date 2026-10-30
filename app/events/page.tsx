@@ -28,10 +28,13 @@ export default function EventsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [created, setCreated] = useState(false);
+  const [coverFailed, setCoverFailed] = useState(false);
   const invitations = useMyInvitations();
 
   useEffect(() => {
-    setCreated(new URLSearchParams(window.location.search).get('created') === '1');
+    const params = new URLSearchParams(window.location.search);
+    setCreated(params.get('created') === '1');
+    setCoverFailed(params.get('cover') === 'failed');
     let controller: AbortController | null = null;
 
     // Always read the saved events from the server, so updated event details appear the next time the student looks.
@@ -72,6 +75,11 @@ export default function EventsPage() {
     setEvents((current) => current.map((event) => event.event_id === eventId ? { ...event, ...engagement } : event));
   }
 
+  function updateCover(eventId: string, coverUrl: string | null) {
+    setEvents((current) => current.map((event) => event.event_id === eventId ? { ...event, cover_url: coverUrl } : event));
+  }
+  const cover = { hostId: studentId, onCover: updateCover };
+
   if (session !== 'signed-in') return <SessionNotice state={session} />;
 
   const [featured, ...upcoming] = events;
@@ -103,6 +111,7 @@ export default function EventsPage() {
           </div>
 
           {created ? <p role="status" className={styles.notice}>Your event was created and is now visible to other students.</p> : null}
+          {coverFailed ? <p role="alert" className={styles.alert}>The cover photo could not be saved. Use “Add cover photo” on your event to try again.</p> : null}
           {error ? <p role="alert" className={styles.alert}>{error}</p> : null}
 
           <div id="events-panel" role="tabpanel" aria-labelledby={`tab-${tab}`} aria-busy={loading}>
@@ -113,21 +122,21 @@ export default function EventsPage() {
             ) : tab === 'discover' ? (
               featured ? (
                 <>
-                  <FeaturedEvent event={featured} onEngagement={updateEngagement} />
+                  <FeaturedEvent event={featured} onEngagement={updateEngagement} {...cover} />
                   <div className={styles.sectionHeader}>
                     <h2 className={styles.sectionTitle}>Upcoming events</h2>
                     <span className={styles.count}>{events.length} {events.length === 1 ? 'event' : 'events'}</span>
                   </div>
-                  <EventList events={upcoming} onEngagement={updateEngagement} emptyMessage="No other events yet." emptyHint="Create one to give students more to do." />
+                  <EventList events={upcoming} onEngagement={updateEngagement} {...cover} emptyMessage="No other events yet." emptyHint="Create one to give students more to do." />
                 </>
               ) : (
                 <EventList events={[]} />
               )
             ) : tab === 'hosting' ? (
-              <EventList events={hosting} onEngagement={updateEngagement} emptyMessage="You aren’t hosting any active events."
+              <EventList events={hosting} onEngagement={updateEngagement} {...cover} emptyMessage="You aren’t hosting any active events."
                 emptyHint="Events you create will appear here." />
             ) : (
-              <EventList events={attending} onEngagement={updateEngagement} emptyMessage="You haven’t said you’re going to any events yet."
+              <EventList events={attending} onEngagement={updateEngagement} {...cover} emptyMessage="You haven’t said you’re going to any events yet."
                 emptyHint="Tap “I’m going” on an event and it will appear here." />
             )}
           </div>

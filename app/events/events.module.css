@@ -173,3 +173,13 @@ textarea.input { resize: none; }
 .invitationItem:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
 .invitationTitle { color: #102c30; font-size: 15px; font-weight: 700; }
 .invitationMeta { color: #536963; font-size: 13px; }
+
+/* Event cover photos */
+.coverImage { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.coverControl { position: absolute; right: 12px; bottom: 12px; display: grid; justify-items: end; gap: 6px; }
+.coverButton { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 6px 12px; border: 0; border-radius: 999px; background: rgb(255 255 255 / .92); color: #102c30; font-size: 13px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgb(0 0 0 / .2); }
+.coverButton:hover { background: #ffffff; }
+.coverButton:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+.coverButton:disabled { cursor: wait; opacity: .8; }
+.coverButton svg { width: 16px; height: 16px; }
+.coverError { max-width: 240px; margin: 0; padding: 6px 10px; border-radius: 8px; background: #fdf1f1; color: #9b2c2c; font-size: 12px; }

@@ -12,6 +12,7 @@ import { SessionNotice } from '../../../components/navigation/section-page';
 import { EventArt } from '../../../components/events/EventArt';
 import { EventActions } from '../../../components/events/EventActions';
 import { InviteStudents } from '../../../components/events/InviteStudents';
+import { CoverPhotoButton } from '../../../components/events/CoverPhotoButton';
 import { formatWhen, type EventDetail } from '../../../lib/events';
 
 const commentTime = new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
@@ -95,7 +96,12 @@ export default function EventDetailPage() {
         <div className={styles.layout}>
           <div className={styles.mainColumn}>
             <article className={styles.featured} aria-labelledby="event-title">
-              <EventArt id={event.event_id} title={event.title} className={styles.featuredArt} />
+              <EventArt id={event.event_id} title={event.title} className={styles.featuredArt} coverUrl={event.cover_url}>
+                {studentId && studentId === event.creator_id ? (
+                  <CoverPhotoButton eventId={event.event_id} hasCover={Boolean(event.cover_url)}
+                    onChange={(url) => setEvent((current) => current && { ...current, cover_url: url })} />
+                ) : null}
+              </EventArt>
               <div className={styles.featuredBody}>
                 <h1 id="event-title" className={styles.featuredTitle}>{event.title}</h1>
                 <dl className={styles.meta}>

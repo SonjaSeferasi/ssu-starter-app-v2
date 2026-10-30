@@ -7,6 +7,7 @@ import { storedAccessToken } from '../../../lib/account/session';
 import { ArrowLeft, Plus } from 'lucide-react';
 import shellStyles from '../../../components/navigation/social-shell.module.css';
 import styles from '../events.module.css';
+import { COVER_ACCEPT, uploadCover } from '../../../components/events/CoverPhotoButton';
 import { useNavigationSession } from '../../../components/navigation/social-shell';
 import { SessionNotice } from '../../../components/navigation/section-page';
 
@@ -33,6 +34,7 @@ export default function CreateEventPage() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [cover, setCover] = useState<File | null>(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -70,7 +72,12 @@ export default function CreateEventPage() {
         setError(data.error || 'The event could not be created.');
         return;
       }
-      router.push('/events?created=1');
+      // The optional cover photo is uploaded once the event exists; the event is kept even if this fails.
+      let coverSaved = true;
+      if (cover) {
+        try { await uploadCover(data.event.event_id, cover); } catch { coverSaved = false; }
+      }
+      router.push(coverSaved ? '/events?created=1' : '/events?created=1&cover=failed');
     } catch {
       setError('Unable to create the event. Please try again.');
     } finally {
@@ -155,6 +162,13 @@ export default function CreateEventPage() {
               />
             </label>
           </div>
+
+          <label className={styles.label}>
+            Cover photo (optional)
+            <input type="file" accept={COVER_ACCEPT} className={styles.input}
+              onChange={(event) => setCover(event.target.files?.[0] ?? null)} />
+            <span className={styles.hint}>JPEG, PNG or WebP, up to 10 MB. Without one, the event gets colorful generated art.</span>
+          </label>
 
           <div className={styles.formFooter}>
             <p className={styles.hint}>Once created, your event appears on the Events page for other students.</p>

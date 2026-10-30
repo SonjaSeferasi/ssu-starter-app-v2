@@ -119,7 +119,7 @@ describe('Event discovery API', () => {
     const response = await GET(listRequest());
 
     expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ events: listed, trending: [] });
+    expect(await response.json()).toEqual({ events: listed.map((e) => ({ ...e, cover_url: null })), trending: [] });
     expect(rpc).toHaveBeenCalledWith('socialu_list_events', { p_auth_id: user.id });
   });
 

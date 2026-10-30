@@ -95,7 +95,7 @@ describe('Event detail API', () => {
     const response = await getDetail(request('GET'), ctx());
 
     expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ event: detail });
+    expect(await response.json()).toEqual({ event: { ...detail, cover_url: null } });
     expect(callTo('socialu_event_detail')?.[1]).toEqual({ p_auth_id: user.id, p_event_id: '42' });
   });
 });

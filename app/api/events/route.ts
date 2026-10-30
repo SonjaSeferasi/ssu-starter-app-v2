@@ -1,6 +1,7 @@
 import { AccountError, accountResponse, jsonBody, verifiedUser } from '../../../lib/socialu-account';
 import { eventOperation } from '../../../lib/event-engagement';
-import { trendingEvents } from '../../../lib/events';
+import { trendingEvents, type CampusEvent } from '../../../lib/events';
+import { withCoverUrls } from '../../../lib/event-covers';
 export const dynamic = 'force-dynamic';
 
 function validateEvent(body: Record<string, unknown>) {
@@ -31,7 +32,7 @@ function validateEvent(body: Record<string, unknown>) {
 export async function GET(request: Request) {
   try {
     const user = await verifiedUser(request);
-    const events = (await eventOperation('socialu_list_events', { p_auth_id: user.id })) ?? [];
+    const events = await withCoverUrls(((await eventOperation('socialu_list_events', { p_auth_id: user.id })) ?? []) as CampusEvent[]);
     return Response.json({ events, trending: trendingEvents(events) }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) { return accountResponse(error); }
 }
