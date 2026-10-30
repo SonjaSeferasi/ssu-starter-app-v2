@@ -1,5 +1,7 @@
 # Sprint 3 planning — Linh Nguyen (LN)
 
+> **Implementation update — October 29, 2026:** the five selected items now have code on their SRS branches and draft PRs [#963](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/963), [#964](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/964), [#965](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/965), [#966](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/966) and [#967](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/967). All 1,028 tests and the production build pass. The approved database setup is installed and real signed-in screenshots are linked on each SRS card. Review and merge remain pending; the five parents and 20 tasks are In progress and open. See the [implementation and evidence record](https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/linh/srs-107.6-active-session-status/documentation/sprint3/implementation/README.md). The dated planning tables below preserve the pre-implementation plan and are not the current board status.
+
 Prepared October 27; scope reviewed October 28, 2026 from the professor's CSC 351 Sprint 3 assignment. **Planning only: no new Sprint 3 implementation or completion is claimed.**
 
 ## Review this first

@@ -141,6 +141,14 @@
       "number": 918
     }
   ],
-  "status": "Planning only; all open. Five selected parents and 20 tasks in Sprint Backlog; four future parents in Product Backlog.",
-  "scope_review_date": "2026-10-28"
+  "status": "Implementation published as draft PRs #963\u2013#967; review and merge pending. Five selected parents and 20 tasks In progress; four future parents in Product Backlog. All remain open.",
+  "scope_review_date": "2026-10-28",
+  "implementation_date": "2026-10-29",
+  "implementation_prs": [
+    963,
+    964,
+    965,
+    966,
+    967
+  ]
 }
