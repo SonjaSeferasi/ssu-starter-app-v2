@@ -1,0 +1,63 @@
+{
+  "scope": "Phase A review increment, not a finished 47-country release",
+  "baseCommit": "6a0e0ba",
+  "tests": {
+    "files": 96,
+    "passed": 958,
+    "result": "passed",
+    "scope": "Isolated branch with fresh npm ci; excludes separate uncommitted avatar and South America work"
+  },
+  "productionBuild": "passed",
+  "terrainSurfaceTests": {
+    "cases": 9,
+    "result": "passed",
+    "maximumSurfaceDifferenceWorldUnits": 0.04
+  },
+  "browser": {
+    "countries": 5,
+    "desktopScreenshots": 20,
+    "emulatedMobileScreenshots": 5,
+    "pageExceptions": 0,
+    "allNormalAndReviewRoutesHttp200": true,
+    "emulatedControlsPassed": true
+  },
+  "knownConsoleIssue": "Missing /favicon.ico returns 404; no scene exception was observed",
+  "performance": {
+    "renderer": "Headless Edge / ANGLE SwiftShader",
+    "hardwareDesktopBenchmark": "not-run",
+    "physicalMobileBenchmark": "not-run",
+    "target60Desktop30MobileApproved": false
+  },
+  "humanPlaytest": "not-run",
+  "accountSaveWithRealSession": "not-run",
+  "visualApproval": false,
+  "releasedCountries": 0,
+  "remainingNewCountryDesigns": 42,
+  "screenshots": [
+    "chn-start.png",
+    "chn-mechanic.png",
+    "chn-landmark.png",
+    "chn-overview.png",
+    "chn-mobile.png",
+    "jpn-start.png",
+    "jpn-mechanic.png",
+    "jpn-landmark.png",
+    "jpn-overview.png",
+    "jpn-mobile.png",
+    "mng-start.png",
+    "mng-mechanic.png",
+    "mng-landmark.png",
+    "mng-overview.png",
+    "mng-mobile.png",
+    "prk-start.png",
+    "prk-mechanic.png",
+    "prk-landmark.png",
+    "prk-overview.png",
+    "prk-mobile.png",
+    "kor-start.png",
+    "kor-mechanic.png",
+    "kor-landmark.png",
+    "kor-overview.png",
+    "kor-mobile.png"
+  ]
+}
