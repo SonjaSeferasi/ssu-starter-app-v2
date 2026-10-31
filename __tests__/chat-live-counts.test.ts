@@ -234,4 +234,50 @@ describe('SRS-212.9 one shared copy of the message notifications', () => {
     expect(count()).toBe(2);
     stop();
   });
+
+  // SRS-205.6 / SRS-205.8: an invitation accepted or declined anywhere in the tab must not stay on screen.
+  it('drops an answered invitation at once, and a load that started earlier cannot bring it back', async () => {
+    const stop = store.watchMessageNotifications(() => {});
+    await vi.waitFor(() => expect(count()).toBe(2));
+    // A load is already on its way with the invitation still pending when the student accepts it.
+    let finish!: () => void;
+    const late = new Promise<void>((resolve) => { finish = resolve; });
+    const original = fetchMock.getMockImplementation()!;
+    fetchMock.mockImplementation(async (path: string, init: RequestInit) => { await late; return original(path, init); });
+    const reload = store.reloadMessageNotifications();
+    store.forgetInvitation('4');
+    expect(store.messageNotificationsSnapshot().invitations).toEqual([]);
+    expect(count()).toBe(1);
+    finish();
+    await reload;
+    await vi.waitFor(() => expect(fetchMock.mock.calls.length).toBeGreaterThanOrEqual(6));
+    expect(store.messageNotificationsSnapshot().invitations).toEqual([]);
+    expect(count()).toBe(1);
+    stop();
+  });
+
+  it('keeps invitations correct when only the messages part fails', async () => {
+    const stop = store.watchMessageNotifications(() => {});
+    await vi.waitFor(() => expect(count()).toBe(2));
+    fetchMock.mockImplementation(async (path: string) => path === '/api/message-notifications'
+      ? new Response(JSON.stringify({ error: 'Chat is unavailable.' }), { status: 503 })
+      : new Response(JSON.stringify({ invitations: [] })));
+    await store.reloadMessageNotifications();
+    expect(store.messageNotificationsSnapshot().invitations).toEqual([]);
+    expect(store.messageNotificationsSnapshot().messages).toHaveLength(1);
+    expect(store.messageNotificationsSnapshot().error).toBe('Chat is unavailable.');
+    stop();
+  });
+
+  it('forgets everything when nobody is shown the notifications any more (for example, after signing out)', async () => {
+    const stop = store.watchMessageNotifications(() => {});
+    await vi.waitFor(() => expect(count()).toBe(2));
+    store.forgetInvitation('4');
+    stop();
+    expect(store.messageNotificationsSnapshot()).toEqual({ messages: null, invitations: [], error: '' });
+    // A new student on the same tab starts fresh, and an old answer doesn't hide their invitations.
+    const again = store.watchMessageNotifications(() => {});
+    await vi.waitFor(() => expect(count()).toBe(2));
+    again();
+  });
 });
