@@ -1,0 +1,543 @@
+{
+  "id": "cn-level-01",
+  "countryId": "CN",
+  "legacyCode": "CHN",
+  "title": "Wulingyuan: Sandstone Skywalk",
+  "environmentId": "china-wulingyuan",
+  "spawn": {
+    "platformId": "cn-start",
+    "offset": 2
+  },
+  "platforms": [
+    {
+      "id": "cn-start",
+      "x": 0,
+      "y": 0,
+      "width": 9,
+      "depth": 3.2,
+      "thickness": 1.1,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 5,
+      "terrain": "ground",
+      "route": "main"
+    },
+    {
+      "id": "cn-step",
+      "x": 10.8,
+      "y": 0.9,
+      "width": 4,
+      "depth": 3.2,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 5,
+      "terrain": "cliff",
+      "route": "main"
+    },
+    {
+      "id": "cn-spur",
+      "x": 16.7,
+      "y": 1.8,
+      "width": 4.5,
+      "depth": 3.2,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 5,
+      "terrain": "cliff",
+      "route": "main"
+    },
+    {
+      "id": "cn-lift",
+      "x": 23,
+      "y": 2.4,
+      "width": 3.5,
+      "depth": 3.2,
+      "thickness": 1.1,
+      "type": "moving",
+      "motion": "vertical",
+      "amplitude": 0.6,
+      "phase": 0,
+      "period": 5.8,
+      "terrain": "mechanical",
+      "route": "main",
+      "pause": 0.5
+    },
+    {
+      "id": "cn-rest",
+      "x": 28,
+      "y": 3.1,
+      "width": 8,
+      "depth": 3.2,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 5,
+      "terrain": "cliff",
+      "route": "main"
+    },
+    {
+      "id": "cn-crumble",
+      "x": 38,
+      "y": 4.1,
+      "width": 4.5,
+      "depth": 3.2,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 5,
+      "terrain": "cliff",
+      "route": "main",
+      "collapse": {
+        "delay": 2.1,
+        "respawn": 4
+      }
+    },
+    {
+      "id": "cn-crest",
+      "x": 44.3,
+      "y": 4.9,
+      "width": 8,
+      "depth": 3.2,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 5,
+      "terrain": "cliff",
+      "route": "main"
+    },
+    {
+      "id": "cn-low",
+      "x": 52.3,
+      "y": 2.1,
+      "width": 10,
+      "depth": 3.2,
+      "thickness": 1.1,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 5,
+      "terrain": "ground",
+      "route": "main"
+    },
+    {
+      "id": "cn-end",
+      "x": 64,
+      "y": 2.4,
+      "width": 9,
+      "depth": 3.2,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 5,
+      "terrain": "cliff",
+      "route": "main"
+    },
+    {
+      "id": "cn-bonus-a",
+      "x": 53.4,
+      "y": 5.9,
+      "width": 3.5,
+      "depth": 3.2,
+      "thickness": 0.4,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 5,
+      "terrain": "rock",
+      "route": "bonus"
+    },
+    {
+      "id": "cn-bonus-b",
+      "x": 58.7,
+      "y": 5.5,
+      "width": 3.1,
+      "depth": 3.2,
+      "thickness": 0.35,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 5,
+      "terrain": "rock",
+      "route": "bonus"
+    }
+  ],
+  "mainRoute": [
+    "cn-start",
+    "cn-step",
+    "cn-spur",
+    "cn-lift",
+    "cn-rest",
+    "cn-crumble",
+    "cn-crest",
+    "cn-low",
+    "cn-end"
+  ],
+  "upperRoute": [
+    "cn-start",
+    "cn-step",
+    "cn-spur",
+    "cn-lift",
+    "cn-rest",
+    "cn-crumble",
+    "cn-crest",
+    "cn-bonus-a",
+    "cn-bonus-b",
+    "cn-end"
+  ],
+  "coins": [
+    {
+      "id": "cn-coin-1",
+      "platformId": "cn-step",
+      "offset": 1.2,
+      "height": 1.35
+    },
+    {
+      "id": "cn-coin-2",
+      "platformId": "cn-step",
+      "offset": 2.8,
+      "height": 1.35
+    },
+    {
+      "id": "cn-coin-3",
+      "platformId": "cn-spur",
+      "offset": 1.35,
+      "height": 1.1
+    },
+    {
+      "id": "cn-coin-4",
+      "platformId": "cn-spur",
+      "offset": 3.15,
+      "height": 1.1
+    },
+    {
+      "id": "cn-coin-5",
+      "platformId": "cn-lift",
+      "offset": 1.05,
+      "height": 1.1
+    },
+    {
+      "id": "cn-coin-6",
+      "platformId": "cn-lift",
+      "offset": 2.45,
+      "height": 1.1
+    },
+    {
+      "id": "cn-coin-7",
+      "platformId": "cn-rest",
+      "offset": 2.4,
+      "height": 1.35
+    },
+    {
+      "id": "cn-coin-8",
+      "platformId": "cn-rest",
+      "offset": 5.6,
+      "height": 1.35
+    },
+    {
+      "id": "cn-coin-9",
+      "platformId": "cn-crumble",
+      "offset": 1.35,
+      "height": 1.1
+    },
+    {
+      "id": "cn-coin-10",
+      "platformId": "cn-crumble",
+      "offset": 3.15,
+      "height": 1.1
+    },
+    {
+      "id": "cn-coin-11",
+      "platformId": "cn-crest",
+      "offset": 2.4,
+      "height": 1.1
+    },
+    {
+      "id": "cn-coin-12",
+      "platformId": "cn-crest",
+      "offset": 5.6,
+      "height": 1.1
+    },
+    {
+      "id": "cn-coin-13",
+      "platformId": "cn-low",
+      "offset": 3,
+      "height": 1.35
+    },
+    {
+      "id": "cn-coin-14",
+      "platformId": "cn-low",
+      "offset": 7,
+      "height": 1.35
+    },
+    {
+      "id": "cn-coin-15",
+      "platformId": "cn-end",
+      "offset": 2.7,
+      "height": 1.1
+    },
+    {
+      "id": "cn-coin-16",
+      "platformId": "cn-end",
+      "offset": 6.3,
+      "height": 1.1
+    },
+    {
+      "id": "cn-coin-17",
+      "platformId": "cn-bonus-a",
+      "offset": 1.75,
+      "height": 1.3
+    },
+    {
+      "id": "cn-coin-18",
+      "platformId": "cn-bonus-b",
+      "offset": 1.55,
+      "height": 1.3
+    }
+  ],
+  "stars": [
+    {
+      "id": "cn-star-1",
+      "platformId": "cn-bonus-a",
+      "offset": 1.75,
+      "height": 1
+    },
+    {
+      "id": "cn-star-2",
+      "platformId": "cn-crest",
+      "offset": 3.2,
+      "height": 2.3
+    },
+    {
+      "id": "cn-star-3",
+      "platformId": "cn-end",
+      "offset": 3,
+      "height": 2.3
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "cn-checkpoint-1",
+      "platformId": "cn-rest",
+      "offset": 1.1
+    },
+    {
+      "id": "cn-checkpoint-2",
+      "platformId": "cn-low",
+      "offset": 1.1
+    }
+  ],
+  "discovery": {
+    "id": "cn-discovery",
+    "platformId": "cn-rest",
+    "offset": 4.16,
+    "factId": "cn-discovery"
+  },
+  "finish": {
+    "platformId": "cn-end",
+    "offset": 7
+  },
+  "hazards": [],
+  "zones": [],
+  "gates": [],
+  "switches": [],
+  "enemies": [],
+  "discoveryBlocks": [],
+  "routeGraph": {
+    "nodes": [
+      {
+        "id": "cn-start",
+        "platformId": "cn-start",
+        "type": "START"
+      },
+      {
+        "id": "cn-step",
+        "platformId": "cn-step",
+        "type": "SAFE_PLATFORM"
+      },
+      {
+        "id": "cn-spur",
+        "platformId": "cn-spur",
+        "type": "SAFE_PLATFORM"
+      },
+      {
+        "id": "cn-lift",
+        "platformId": "cn-lift",
+        "type": "MOVING_PLATFORM"
+      },
+      {
+        "id": "cn-rest",
+        "platformId": "cn-rest",
+        "type": "CHECKPOINT"
+      },
+      {
+        "id": "cn-crumble",
+        "platformId": "cn-crumble",
+        "type": "SAFE_PLATFORM"
+      },
+      {
+        "id": "cn-crest",
+        "platformId": "cn-crest",
+        "type": "SAFE_PLATFORM"
+      },
+      {
+        "id": "cn-low",
+        "platformId": "cn-low",
+        "type": "CHECKPOINT"
+      },
+      {
+        "id": "cn-end",
+        "platformId": "cn-end",
+        "type": "FINISH"
+      },
+      {
+        "id": "cn-bonus-a",
+        "platformId": "cn-bonus-a",
+        "type": "OPTIONAL_REWARD"
+      },
+      {
+        "id": "cn-bonus-b",
+        "platformId": "cn-bonus-b",
+        "type": "OPTIONAL_REWARD"
+      }
+    ],
+    "edges": [
+      {
+        "from": "cn-start",
+        "to": "cn-step",
+        "mandatory": true,
+        "action": "JUMP"
+      },
+      {
+        "from": "cn-step",
+        "to": "cn-spur",
+        "mandatory": true,
+        "action": "JUMP"
+      },
+      {
+        "from": "cn-spur",
+        "to": "cn-lift",
+        "mandatory": true,
+        "action": "RIDE_PLATFORM"
+      },
+      {
+        "from": "cn-lift",
+        "to": "cn-rest",
+        "mandatory": true,
+        "action": "JUMP"
+      },
+      {
+        "from": "cn-rest",
+        "to": "cn-crumble",
+        "mandatory": true,
+        "action": "JUMP"
+      },
+      {
+        "from": "cn-crumble",
+        "to": "cn-crest",
+        "mandatory": true,
+        "action": "JUMP"
+      },
+      {
+        "from": "cn-crest",
+        "to": "cn-low",
+        "mandatory": true,
+        "action": "DROP"
+      },
+      {
+        "from": "cn-low",
+        "to": "cn-end",
+        "mandatory": true,
+        "action": "JUMP"
+      },
+      {
+        "from": "cn-crest",
+        "to": "cn-bonus-a",
+        "mandatory": false,
+        "action": "JUMP"
+      },
+      {
+        "from": "cn-bonus-a",
+        "to": "cn-bonus-b",
+        "mandatory": false,
+        "action": "JUMP"
+      },
+      {
+        "from": "cn-bonus-b",
+        "to": "cn-end",
+        "mandatory": false,
+        "action": "JUMP"
+      }
+    ]
+  },
+  "difficultyTier": 4,
+  "design": {
+    "archetype": "sandstone-spire-ascent",
+    "signatureMechanic": "lift-to-crumbling-ridge",
+    "mechanics": [
+      "vertical-lift",
+      "collapsing-ledge"
+    ],
+    "terrain": [
+      "cliff",
+      "rock",
+      "mechanical"
+    ],
+    "verticality": "high",
+    "enemyProfile": "none",
+    "targetDurationSeconds": 45,
+    "seed": 7000
+  },
+  "environment": {
+    "biome": "forest",
+    "locationReference": "Wulingyuan, Hunan; a fictional route among quartz-sandstone peaks",
+    "terrainMaterial": "weathered-stone",
+    "vegetationPack": "broadleaf-cliff-forest",
+    "architecturePack": "natural-sandstone-arches",
+    "landmarkAssets": [
+      "china-wulingyuan",
+      "regional-landforms",
+      "country-specific-settlement"
+    ],
+    "lightingPreset": "daylight-atmosphere",
+    "skyPreset": "layered-sky"
+  },
+  "camera": {
+    "height": 2.8,
+    "look": 1.6,
+    "follow": 1,
+    "maxRise": 5,
+    "distance": 20.5
+  },
+  "physics": {
+    "gravity": 20,
+    "jumpSpeed": 9,
+    "runSpeed": 6,
+    "acceleration": 25,
+    "airControl": 0.65,
+    "coyoteTime": 0.12,
+    "jumpBuffer": 0.12,
+    "playerRadius": 0.2,
+    "playerHeight": 1.83,
+    "killY": -12,
+    "stepHeight": 0.4
+  }
+}

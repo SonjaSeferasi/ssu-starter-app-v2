@@ -9,7 +9,9 @@ function names(root:T.Object3D,name:string){const found:T.Object3D[]=[];root.tra
 
 describe('Profile-led architectural districts',()=>{
  it('distinguishes the imperial courtyard axis from a European palace',()=>{
-  const root=build('CHN');expect(names(root,'hall-timber-body')).toHaveLength(3);expect(names(root,'curved-eaves-roof').length).toBeGreaterThan(3);
+  // Test this architectural family independently of China's current Wulingyuan adventure.
+  const root=new T.Group();expect(addProfileDistrict(root,{...countryProfile('CHN')!,landmarkName:'Imperial Palaces of the Ming and Qing Dynasties'})).toBe(true);root.updateMatrixWorld(true);
+  expect(names(root,'hall-timber-body')).toHaveLength(3);expect(names(root,'curved-eaves-roof').length).toBeGreaterThan(3);
   expect(names(root,'central-processional-axis')).toHaveLength(1);expect(names(root,'courtyard-side-hall')).toHaveLength(2);
   const wings=names(root,'courtyard-side-hall');expect(wings[0].position.x).toBe(-wings[1].position.x);
  });

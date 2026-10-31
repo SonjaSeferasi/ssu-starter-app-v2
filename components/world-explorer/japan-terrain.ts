@@ -1,4 +1,5 @@
 import * as T from 'three';
+import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {hash,random,matte,mesh} from './scenic-kit';
 
 export type JapanTerrainDefinition={id:string;x:number;y:number;width:number;depth:number;thickness:number;type:string};
@@ -7,23 +8,39 @@ export type JapanScenicCliffOptions={x:number;y:number;z:number;width:number;dep
 
 const palette={granite:'#c3c0ae',darkRock:'#a8a693',moss:'#638f35',grass:'#6eac28',fern:'#3f812e',vine:'#4b8033',pink:'#f3a9c7',white:'#fff7ec',pollen:'#e4c574'};
 const clamp=(value:number,min:number,max:number)=>Math.max(min,Math.min(max,value));
-export const japanTerrainInfo={id:'japan-mossy-stone-terraces',license:'Original procedural geometry and textures created for SocialU; no external assets.',representation:'Fictional Japanese mountain-garden terraces, not a geological reconstruction of the Mount Fuji trail.',capHeight:.015,clearCorridorHalfDepth:.55,maximumEffectiveVertices:{standard:22000,low:6000},rockTextures:{standard:256,low:128,kind:'cellular-granite-with-layered-fissures'}};
+export const japanTerrainInfo={id:'japan-suspended-granite-islands',license:'Original procedural geometry and textures created for SocialU; no external assets.',representation:'Fictional Japanese mountain-garden islands, not a geological reconstruction of the Mount Fuji trail.',capHeight:.015,clearCorridorHalfDepth:.55,maximumEffectiveVertices:{standard:12500,low:4500},maximumMeshes:12,rockTextures:{standard:256,low:128,kind:'cellular-granite-with-layered-fissures'}};
 
-/** Local perimeter of a rounded terrace. The cap remains exactly flat, and
- * its z=0 endpoints stay at +/-width/2, matching the existing walking collider. */
-function perimeter(angle:number,width:number,depth:number,t=0){
- const c=Math.cos(angle),s=Math.sin(angle),scale=1-.11*t-.32*t*t*t;
- return new T.Vector3(Math.sign(c)*Math.pow(Math.abs(c),.69)*width*.5*scale,0,Math.sign(s)*Math.pow(Math.abs(s),.69)*depth*.5*scale);
+/** Rounded shoulders surround a full-width, flat walking strip. Keeping the
+ * short end faces straight through |z| <= .68 prevents the sculpted outline
+ * from visually removing land supported by the simple gameplay collider. */
+function perimeter(angle:number,width:number,depth:number,t=0,seed=0){
+ const c=Math.cos(angle),s=Math.sin(angle),halfDepth=depth*.5,safe=Math.min(.68,halfDepth*.75);
+ let z=Math.sign(s)*Math.pow(Math.abs(s),.86)*halfDepth;
+ const shoulder=clamp((Math.abs(z)-safe)/(halfDepth-safe),0,1),phase=(seed%193)*.071;
+ const x=Math.sign(c)*width*.5*Math.sqrt(Math.max(0,1-shoulder*shoulder));
+ // The irregularity lives beyond the safe strip; the two landing endpoints
+ // and the entire walking corridor retain their authored dimensions.
+ const freedom=shoulder*shoulder,wave=Math.sin(angle*3+phase)*.055+Math.sin(angle*7-phase)*.025;
+ z*=1+wave*freedom;
+ const scale=1-t*.78;
+ return new T.Vector3(x*(1+wave*freedom)*scale,0,z*scale);
 }
 
-function graniteGeometry(width:number,depth:number,thickness:number,seed:number,low:boolean){
- const segments=low?36:52,rings=low?8:11,positions:number[]=[],colors:number[]=[],uv:number[]=[],indices:number[]=[];
+/** One closed shell replaces the old column and its many attached slabs.
+ * Its shoulders bulge, fracture bands turn independently, and the underside
+ * contracts into an off-centre point instead of ending in a flat cylinder. */
+function graniteGeometry(width:number,depth:number,visualDepth:number,seed:number,low:boolean){
+ const segments=low?32:48,rings=low?7:10,positions:number[]=[],colors:number[]=[],uv:number[]=[],indices:number[]=[],phase=(seed%193)*.071;
  const base=new T.Color('#ffffff'),dark=new T.Color('#dddacb'),moss=new T.Color('#a8b78d');
  for(let row=0;row<=rings;row++)for(let i=0;i<=segments;i++){
-  const a=i/segments*Math.PI*2,t=row/rings,point=perimeter(a,width,depth,t),edge=Math.sin(t*Math.PI);
-  const strata=Math.sin(t*23+Math.sin(a*3+seed)*.6),fissure=Math.sin(a*13+Math.floor(t*5)*1.7+seed),bulge=(strata*.055+fissure*.045)*edge;
-  point.x*=1+bulge;point.z*=1+bulge;point.y=-thickness*t+Math.sin(a*8+row*.9+seed)*.045*edge;
-  positions.push(point.x,point.y,point.z);uv.push(i/segments*width*.3,t*thickness*.42);
+  const a=i/segments*Math.PI*2,t=row/rings*.94,point=perimeter(a,width,depth,0,seed),edge=Math.sin(t*Math.PI);
+  const strata=Math.sin(t*23+Math.sin(a*3+phase)*.8),fissure=Math.sin(a*9+Math.floor(t*5)*1.7+phase);
+  const taper=1-.94*smooth(.08,1,t),fracture=(strata*.065+fissure*.075+Math.sin(a*3+phase)*.065)*edge;
+  point.x=point.x*(taper+fracture)+width*.045*Math.sin(phase)*t*t;
+  point.z=point.z*(taper+fracture)+depth*.075*Math.cos(phase)*t*t;
+  const brokenBase=(Math.sin(a*3+phase)*.11+Math.sin(a*7-phase)*.055)*smooth(.12,.8,t);
+  point.y=-visualDepth*t*(1+brokenBase);
+  positions.push(point.x,point.y,point.z);uv.push(i/segments*width*.3,t*visualDepth*.42);
   const seam=Math.abs(Math.sin(t*12+Math.sin(a*2.2)*.18)),shade=.96+.035*Math.sin(a*2+seed)+.025*strata-(seam<.12?.055:0);
   const color=base.clone().lerp(dark,.06+t*.12).multiplyScalar(shade);
   const drip=(Math.sin(a*7+seed)+Math.sin(a*17+seed*.2))*.5,mossDepth=.1+Math.max(0,drip)*.33;
@@ -31,13 +48,15 @@ function graniteGeometry(width:number,depth:number,thickness:number,seed:number,
   colors.push(color.r,color.g,color.b);
  }
  for(let row=0;row<rings;row++)for(let i=0;i<segments;i++){const a=row*(segments+1)+i,b=a+1,c=a+segments+1;indices.push(a,b,c,b,c+1,c);}
- const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.setAttribute('color',new T.Float32BufferAttribute(colors,3));geometry.setAttribute('uv',new T.Float32BufferAttribute(uv,2));geometry.setIndex(indices);geometry.computeVertexNormals();return geometry;
+ const bottom=positions.length/3;positions.push(width*.055*Math.sin(phase),-visualDepth*1.13,depth*.09*Math.cos(phase));colors.push(.77,.76,.72);uv.push(.5,visualDepth*.47);
+ for(let i=0;i<segments;i++)indices.push(rings*(segments+1)+i,rings*(segments+1)+i+1,bottom);
+ const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.setAttribute('color',new T.Float32BufferAttribute(colors,3));geometry.setAttribute('uv',new T.Float32BufferAttribute(uv,2));geometry.setIndex(indices);geometry.computeVertexNormals();geometry.userData={visualDepth,radialSegments:segments,sideRings:rings+1,closedUnderside:true};return geometry;
 }
 
-function capGeometry(low:boolean){
+function capGeometry(width:number,depth:number,seed:number,low:boolean){
  const n=low?48:72,positions=[0,0,0],uv=[.5,.5],indices:number[]=[];
- for(let i=0;i<n;i++){const p=perimeter(i/n*Math.PI*2,2,2);positions.push(p.x,p.z,0);uv.push(p.x*.5+.5,p.z*.5+.5);}
- for(let i=0;i<n;i++)indices.push(0,i+1,(i+1)%n+1);
+ for(let i=0;i<n;i++){const p=perimeter(i/n*Math.PI*2,width,depth,0,seed);positions.push(p.x,-p.z,0);uv.push(p.x/width+.5,.5-p.z/depth);}
+ for(let i=0;i<n;i++)indices.push(0,(i+1)%n+1,i+1);
  const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.setAttribute('uv',new T.Float32BufferAttribute(uv,2));geometry.setIndex(indices);geometry.computeVertexNormals();return geometry;
 }
 
@@ -126,12 +145,12 @@ function fernGeometry(){
 }
 
 function addRim(root:T.Group,width:number,depth:number,r:()=>number,low:boolean,lush=false){
- const dummy=new T.Object3D(),count=Math.min(low?20:lush?120:42,Math.ceil(width*(low?2.8:lush?13:6.3)));
+ const dummy=new T.Object3D(),count=Math.min(low?16:lush?44:30,Math.ceil(width*(low?2:lush?5:3.6)));
  const moss=new T.InstancedMesh(new T.SphereGeometry(1,6,low?3:4),new T.MeshStandardMaterial({color:'#ffffff',roughness:1}),count);moss.name='japan-irregular-moss-rim';moss.castShadow=false;root.add(moss);
  for(let i=0;i<count;i++){
   const a=i/count*Math.PI*2,point=perimeter(a,width,depth),s=.1+r()*.12,sy=.035+r()*.045;dummy.position.set(point.x*.98,Math.abs(point.z)<.9?-sy-.02:.012,point.z*.98);dummy.scale.set(s*(1.4+r()),sy,s);dummy.rotation.set(0,a,0);dummy.updateMatrix();moss.setMatrixAt(i,dummy.matrix);moss.setColorAt(i,new T.Color(i%3?palette.moss:palette.grass).multiplyScalar(.82+r()*.35));
  }
- const bladesCount=Math.min(low?40:lush?500:135,Math.ceil(width*depth*(low?1.1:lush?11:4.8))),blades=new T.InstancedMesh(bladeGeometry(low),new T.MeshStandardMaterial({color:'#ffffff',roughness:1,side:T.DoubleSide}),bladesCount);blades.name='japan-instanced-grass-blades';blades.castShadow=false;root.add(blades);
+ const bladesCount=Math.min(low?30:lush?120:74,Math.ceil(width*depth*(low?.8:lush?4:2.7))),blades=new T.InstancedMesh(bladeGeometry(low),new T.MeshStandardMaterial({color:'#ffffff',roughness:1,side:T.DoubleSide}),bladesCount);blades.name='japan-instanced-grass-blades';blades.castShadow=false;root.add(blades);
  for(let i=0;i<bladesCount;i++){
   const a=r()*Math.PI*2,edge=perimeter(a,width,depth),point=edge.multiplyScalar(.8+r()*.15);if(Math.abs(point.z)<.84)point.z=Math.sign(point.z||1)*.84;
   const remaining=clamp(1-Math.pow(Math.abs(point.z)/(depth*.5),2/.69),0,1),edgeX=width*.5*Math.pow(remaining,.69/2);point.x=clamp(point.x,-edgeX*.97,edgeX*.97);
@@ -139,8 +158,8 @@ function addRim(root:T.Group,width:number,depth:number,r:()=>number,low:boolean,
  }
 }
 
-function addRockChunks(root:T.Group,width:number,depth:number,thickness:number,r:()=>number,low:boolean,textures:RockTextures){
- const geometry=new T.SphereGeometry(1,low?8:14,low?6:10),position=geometry.getAttribute('position'),colors:number[]=[];
+function addRockChunks(root:T.Group,width:number,depth:number,r:()=>number,low:boolean,textures:RockTextures){
+ const geometry=new T.IcosahedronGeometry(1,low?0:1),position=geometry.getAttribute('position'),colors:number[]=[];
  for(let i=0;i<position.count;i++){
   const v=new T.Vector3().fromBufferAttribute(position,i),jitter=1+Math.sin(v.x*13+v.y*19+v.z*17)*.035,round=(value:number)=>Math.sign(value)*Math.pow(Math.abs(value),.6);
   position.setXYZ(i,round(v.x)*jitter,round(v.y)*jitter,round(v.z)*jitter);
@@ -148,33 +167,34 @@ function addRockChunks(root:T.Group,width:number,depth:number,thickness:number,r
  }
  geometry.setAttribute('color',new T.Float32BufferAttribute(colors,3));geometry.computeVertexNormals();
  const material=new T.MeshStandardMaterial({color:'#ffffff',roughness:.95,vertexColors:true,map:textures.map,bumpMap:textures.bump,bumpScale:.13,roughnessMap:textures.roughness});
- const count=Math.min(low?6:16,Math.ceil(width*(low?.85:1.8))),rocks=new T.InstancedMesh(geometry,material,count),dummy=new T.Object3D();rocks.name='japan-weathered-granite-slabs';rocks.receiveShadow=rocks.castShadow=true;root.add(rocks);
+ const count=Math.min(low?2:5,Math.ceil(width*(low?.3:.6))),rocks=new T.InstancedMesh(geometry,material,count),dummy=new T.Object3D();rocks.name='japan-weathered-granite-slabs';rocks.receiveShadow=rocks.castShadow=true;root.add(rocks);
  for(let i=0;i<count;i++){
-  const a=.08*Math.PI+r()*.84*Math.PI,t=.12+r()*.64,point=perimeter(a,width,depth,t);point.y=-.44-t*Math.max(.7,thickness-.5);point.z+=.035;
-  dummy.position.copy(point);dummy.scale.set(.29+r()*.4,.18+r()*.16,.15+r()*.17);dummy.rotation.set((r()-.5)*.3,r()*.8,(r()-.5)*.3);dummy.updateMatrix();rocks.setMatrixAt(i,dummy.matrix);rocks.setColorAt(i,new T.Color(i%4===0?'#d7dfc4':'#ffffff').multiplyScalar(.93+r()*.11));
+  const a=(.19+r()*.62)*Math.PI,point=perimeter(a,width,depth).multiplyScalar(.88);point.y=-.04;point.z=-Math.max(.91,Math.abs(point.z));
+  dummy.position.copy(point);dummy.scale.set(.17+r()*.22,.11+r()*.09,.12+r()*.1);dummy.rotation.set((r()-.5)*.18,r()*.8,(r()-.5)*.18);dummy.updateMatrix();rocks.setMatrixAt(i,dummy.matrix);rocks.setColorAt(i,new T.Color(i%4===0?'#d7dfc4':'#ffffff').multiplyScalar(.93+r()*.11));
  }
 }
 
 function addFlowersAndFerns(root:T.Group,width:number,depth:number,r:()=>number,low:boolean,lush=false){
- const count=Math.min(low?8:lush?100:26,Math.ceil(width*(low?.9:lush?8:3))),flowers=new T.InstancedMesh(flowerGeometry(),new T.MeshStandardMaterial({color:'#ffffff',roughness:.95,side:T.DoubleSide}),count),centers=new T.InstancedMesh(new T.SphereGeometry(.018,6,4),matte(palette.pollen),count),stems=new T.InstancedMesh(new T.CylinderGeometry(.006,.009,.18,5),matte(palette.fern),count),dummy=new T.Object3D();
+ const count=Math.min(low?5:lush?22:14,Math.ceil(width*(low?.6:lush?2.2:1.6))),flowers=new T.InstancedMesh(flowerGeometry(),new T.MeshStandardMaterial({color:'#ffffff',roughness:.95,side:T.DoubleSide}),count),centers=new T.InstancedMesh(new T.SphereGeometry(.018,5,3),matte(palette.pollen),count),stems=new T.InstancedMesh(new T.CylinderGeometry(.006,.009,.18,4),matte(palette.fern),count),dummy=new T.Object3D();
  flowers.name='japan-pink-and-white-flowers';flowers.castShadow=false;centers.name='japan-flower-centres';centers.castShadow=false;stems.name='japan-flower-stems';stems.castShadow=false;root.add(flowers,centers,stems);
  for(let i=0;i<count;i++){
   const a=(i%4===0?.2:.64)*Math.PI+r()*.28*Math.PI,point=perimeter(a,width,depth).multiplyScalar(.77+r()*.1);if(i%4!==0)point.z=-Math.abs(point.z);point.z=Math.sign(point.z)*Math.max(.82,Math.abs(point.z));
   const size=.65+r()*.65,height=.18*size;dummy.position.set(point.x,height+.025,point.z);dummy.rotation.set((r()-.5)*.7,(r()-.5)*.5,r()*Math.PI);dummy.scale.setScalar(size);dummy.updateMatrix();flowers.setMatrixAt(i,dummy.matrix);flowers.setColorAt(i,new T.Color(i%3?palette.white:palette.pink));
   dummy.position.z+=.006;dummy.rotation.set(0,0,0);dummy.updateMatrix();centers.setMatrixAt(i,dummy.matrix);dummy.position.set(point.x,height*.5+.02,point.z);dummy.scale.set(1,size,1);dummy.updateMatrix();stems.setMatrixAt(i,dummy.matrix);
  }
- const fernCount=Math.min(low?2:7,Math.max(2,Math.ceil(width/(low?3.5:1.4)))),ferns=new T.InstancedMesh(fernGeometry(),new T.MeshStandardMaterial({color:'#ffffff',side:T.DoubleSide,roughness:1}),fernCount);ferns.name='japan-rear-terrace-ferns';ferns.castShadow=false;root.add(ferns);
+ const fernCount=Math.min(low?1:lush?4:3,Math.max(1,Math.ceil(width/(low?5:3)))),ferns=new T.InstancedMesh(fernGeometry(),new T.MeshStandardMaterial({color:'#ffffff',side:T.DoubleSide,roughness:1}),fernCount);ferns.name='japan-rear-terrace-ferns';ferns.castShadow=false;root.add(ferns);
  for(let i=0;i<fernCount;i++){const size=Math.min(.7+r()*.4,Math.max(.3,(depth*.5-.12-.66)/.52));dummy.position.set((i+.5)/fernCount*width*.76-width*.38,.03,-(.66+.52*size));dummy.scale.setScalar(size);dummy.rotation.set(0,r()*Math.PI*2,0);dummy.updateMatrix();ferns.setMatrixAt(i,dummy.matrix);ferns.setColorAt(i,new T.Color(i%2?palette.fern:'#568e48'));}
 }
 
 function addVines(root:T.Group,width:number,depth:number,thickness:number,r:()=>number,low:boolean,lush=false){
- const count=Math.min(low?3:lush?18:6,Math.max(2,Math.ceil(width/(low?2.5:lush?.65:1.2)))),leafCount=count*(low?5:9),leaves=new T.InstancedMesh(vineLeafGeometry(),new T.MeshStandardMaterial({color:'#698a46',roughness:1,side:T.DoubleSide}),leafCount),dummy=new T.Object3D();leaves.name='japan-hanging-vine-leaves';leaves.castShadow=false;root.add(leaves);
- const stemMaterial=matte(palette.vine);let leafIndex=0;
+ const count=Math.min(low?2:lush?6:4,Math.max(2,Math.ceil(width/(low?4:lush?2:3)))),leafCount=count*(low?4:7),leaves=new T.InstancedMesh(vineLeafGeometry(),new T.MeshStandardMaterial({color:'#698a46',roughness:1,side:T.DoubleSide}),leafCount),dummy=new T.Object3D();leaves.name='japan-hanging-vine-leaves';leaves.castShadow=false;root.add(leaves);
+ const stems:T.BufferGeometry[]=[];let leafIndex=0;
  for(let i=0;i<count;i++){
-  const a=(.14+.72*(i+.5)/count)*Math.PI,point=perimeter(a,width,depth),length=Math.min(thickness*.72,.65+r()*(lush?3.5:1.05)),curve=new T.CatmullRomCurve3([new T.Vector3(point.x,-.04,point.z+.025),new T.Vector3(point.x+.08,-length*.33,point.z*.92+.05),new T.Vector3(point.x-.1,-length*.7,point.z*.8+.1),new T.Vector3(point.x+.02,-length,point.z*.7+.12)]);
-  const stem=mesh(root,new T.TubeGeometry(curve,low?7:11,.012,4,false),stemMaterial);stem.name='japan-draping-vine';stem.castShadow=false;
-  for(let j=0;j<(low?5:9);j++){const t=(j+.5)/(low?5:9),p=curve.getPoint(t),side=j%2?1:-1;dummy.position.set(p.x+side*.045,p.y,p.z+.012);dummy.rotation.set(-.15,side*.25,side*.55);dummy.scale.setScalar((lush?1.6:.8)+r()*.35);dummy.updateMatrix();leaves.setMatrixAt(leafIndex++,dummy.matrix);}
+  const a=(.14+.72*(i+.5)/count)*Math.PI,point=perimeter(a,width,depth),length=Math.min(thickness*.65,.48+r()*(lush?1.2:.85)),curve=new T.CatmullRomCurve3([new T.Vector3(point.x,-.04,point.z+.025),new T.Vector3(point.x+.08,-length*.33,point.z*.94+.05),new T.Vector3(point.x-.1,-length*.7,point.z*.85+.1),new T.Vector3(point.x+.02,-length,point.z*.78+.12)]);
+  stems.push(new T.TubeGeometry(curve,low?5:8,.012,4,false));
+  for(let j=0;j<(low?4:7);j++){const t=(j+.5)/(low?4:7),p=curve.getPoint(t),side=j%2?1:-1;dummy.position.set(p.x+side*.045,p.y,p.z+.012);dummy.rotation.set(-.15,side*.25,side*.55);dummy.scale.setScalar((lush?1.1:.8)+r()*.3);dummy.updateMatrix();leaves.setMatrixAt(leafIndex++,dummy.matrix);}
  }
+ const geometry=mergeGeometries(stems);stems.forEach(stem=>stem.dispose());if(geometry){const stem=mesh(root,geometry,matte(palette.vine));stem.name='japan-draping-vine';stem.castShadow=false;}
 }
 
 /** root is already centered at (definition.x+width/2,definition.y,0).
@@ -189,22 +209,27 @@ export function dressJapanPlatform(root:T.Group,definition:JapanTerrainDefinitio
   if(!(object instanceof T.Mesh)||object.name||object.geometry.type!=='SphereGeometry'||Math.abs(object.position.y-.025)>.000001||object.scale.y>.14)continue;
   object.geometry.dispose();for(const material of Array.isArray(object.material)?object.material:[object.material])material.dispose();object.removeFromParent();
  }
- const low=options.quality==='low',seed=hash(definition.id),r=random(seed),width=clamp(definition.width,2.8,30),depth=clamp(definition.depth,2,15),thickness=clamp(definition.thickness,.3,30);
+ const low=options.quality==='low',seed=hash(definition.id),r=random(seed),width=definition.width,depth=definition.depth,thickness=definition.thickness;
  const details=new T.Group();details.name='japan-platform-dressing';details.userData.quality=low?'low':'standard';details.userData.nonColliding=true;details.userData.walkingCorridor=.55;root.add(details);
  if(definition.type!=='stone'){addVines(details,width,depth,Math.max(.6,thickness*.45),r,low);details.userData.style='wood-and-trailing-vines';return details;}
  const cliff=root.getObjectByName('country-platform-cliff') as T.Mesh|undefined,cap=root.getObjectByName('country-platform-cap') as T.Mesh|undefined;
- const rocks=rockTextures(seed,low);
- if(cliff){replaceGeometry(cliff,graniteGeometry(width,depth,thickness,seed,low));const material=materialFor(cliff);material.color.set('#ffffff');material.vertexColors=true;material.roughness=.95;material.metalness=0;replaceTexture(material,'map',rocks.map);replaceTexture(material,'bumpMap',rocks.bump);replaceTexture(material,'roughnessMap',rocks.roughness);material.bumpScale=.2;material.needsUpdate=true;}
- if(cap){replaceGeometry(cap,capGeometry(low));const material=materialFor(cap),textures=surfaceTextures(seed,depth,low);material.color.set('#ffffff');material.vertexColors=false;material.roughness=.94;material.metalness=0;replaceTexture(material,'map',textures.map);replaceTexture(material,'bumpMap',textures.bump);material.bumpScale=.025;material.needsUpdate=true;}
- addRockChunks(details,width,depth,thickness,r,low,rocks);addRim(details,width,depth,r,low,options.lush);addFlowersAndFerns(details,width,depth,r,low,options.lush);addVines(details,width,depth,thickness,r,low,options.lush);
- details.userData.style='mossy-weathered-granite-terrace';details.userData.originalProceduralArt=true;return details;
+ // Most visible depths are independent from collision thickness. Explicitly
+ // thin overhead stones must keep their underside inside the collider so a
+ // lower-route player never appears to walk through decorative rock.
+ const compactDepth=clamp((.85+Math.sqrt(width*depth)*.29)*(.94+(seed%17)/120),1.15,3.7);
+ const visualDepth=root.userData.japanScenicCliff?thickness:thickness<.5?Math.min(compactDepth,thickness/1.13):compactDepth,rocks=rockTextures(seed,low);
+ details.userData.visualDepth=visualDepth;details.userData.colliderThickness=thickness;
+ if(cliff){replaceGeometry(cliff,graniteGeometry(width,depth,visualDepth,seed,low));const material=materialFor(cliff);material.color.set('#ffffff');material.vertexColors=true;material.roughness=.95;material.metalness=0;replaceTexture(material,'map',rocks.map);replaceTexture(material,'bumpMap',rocks.bump);replaceTexture(material,'roughnessMap',rocks.roughness);material.bumpScale=.16;material.needsUpdate=true;}
+ if(cap){replaceGeometry(cap,capGeometry(width,depth,seed,low));cap.scale.set(1,1,1);const material=materialFor(cap),textures=surfaceTextures(seed,depth,low);material.color.set('#ffffff');material.vertexColors=false;material.roughness=.94;material.metalness=0;replaceTexture(material,'map',textures.map);replaceTexture(material,'bumpMap',textures.bump);material.bumpScale=.025;material.needsUpdate=true;}
+ addRockChunks(details,width,depth,r,low,rocks);addRim(details,width,depth,r,low,options.lush);addFlowersAndFerns(details,width,depth,r,low,options.lush);addVines(details,width,depth,visualDepth,r,low,options.lush);
+ details.userData.style='suspended-mossy-granite-island';details.userData.originalProceduralArt=true;return details;
 }
 
 /** Decorative counterpart for the near-background cliffs. x/z are the
  * terrace centre and y is its top surface. This helper never adds colliders. */
 export function createJapanScenicCliff(parent:T.Object3D,options:JapanScenicCliffOptions){
  if(![options.x,options.y,options.z,options.width,options.depth,options.thickness].every(Number.isFinite)||options.width<=0||options.depth<=0||options.thickness<=0)throw new Error('Invalid Japan scenic cliff dimensions.');
- const root=new T.Group();root.name='japan-scenic-granite-cliff';root.position.set(options.x,options.y,options.z);root.userData.nonColliding=true;parent.add(root);
+ const root=new T.Group();root.name='japan-scenic-granite-cliff';root.position.set(options.x,options.y,options.z);root.userData.nonColliding=true;root.userData.japanScenicCliff=true;parent.add(root);
  const cliff=mesh(root,new T.CylinderGeometry(1,1,1,8),matte(palette.granite));cliff.name='country-platform-cliff';const cap=mesh(root,new T.CircleGeometry(1,8),matte(palette.moss),0,.015,0);cap.name='country-platform-cap';cap.rotation.x=-Math.PI/2;cap.scale.set(options.width/2,options.depth/2,1);
  dressJapanPlatform(root,{id:'scenic-'+(options.seed??hash(`${options.x}:${options.z}`)),x:options.x-options.width/2,y:options.y,width:options.width,depth:options.depth,thickness:options.thickness,type:'stone'},{quality:options.quality});return root;
 }

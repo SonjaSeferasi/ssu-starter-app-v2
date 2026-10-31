@@ -1,0 +1,468 @@
+{
+  "id": "kr-level-01",
+  "countryId": "KR",
+  "legacyCode": "KOR",
+  "title": "Seoul: Skyline Lift Relay",
+  "environmentId": "south-korea-seoul",
+  "spawn": {
+    "platformId": "kr-start",
+    "offset": 2
+  },
+  "platforms": [
+    {
+      "id": "kr-start",
+      "x": 0,
+      "y": 0,
+      "width": 10,
+      "depth": 3.2,
+      "thickness": 1.1,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 5,
+      "terrain": "rooftop",
+      "route": "main"
+    },
+    {
+      "id": "kr-stairs",
+      "x": 10,
+      "y": 0,
+      "width": 9,
+      "depth": 3.2,
+      "thickness": 1.1,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 5,
+      "terrain": "stairs",
+      "route": "main",
+      "slope": 1.2,
+      "steps": 6
+    },
+    {
+      "id": "kr-wall",
+      "x": 19,
+      "y": 1.2,
+      "width": 9,
+      "depth": 3.2,
+      "thickness": 1.1,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 5,
+      "terrain": "rooftop",
+      "route": "main"
+    },
+    {
+      "id": "kr-lift",
+      "x": 29.8,
+      "y": 1.6,
+      "width": 3.8,
+      "depth": 3.2,
+      "thickness": 1.1,
+      "type": "moving",
+      "motion": "vertical",
+      "amplitude": 0.45,
+      "phase": 0,
+      "period": 5.2,
+      "terrain": "mechanical",
+      "route": "main",
+      "pause": 0.5
+    },
+    {
+      "id": "kr-watch",
+      "x": 35.3,
+      "y": 2.4,
+      "width": 11,
+      "depth": 3.2,
+      "thickness": 1.1,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 5,
+      "terrain": "rooftop",
+      "route": "main"
+    },
+    {
+      "id": "kr-down",
+      "x": 46.3,
+      "y": 2.4,
+      "width": 9,
+      "depth": 3.2,
+      "thickness": 1.1,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 5,
+      "terrain": "stairs",
+      "route": "main",
+      "slope": -1.2,
+      "steps": 6
+    },
+    {
+      "id": "kr-gap",
+      "x": 59,
+      "y": 1.2,
+      "width": 7,
+      "depth": 3.2,
+      "thickness": 1.1,
+      "type": "moving",
+      "motion": "horizontal",
+      "amplitude": 0.35,
+      "phase": 0,
+      "period": 4.5,
+      "terrain": "mechanical",
+      "route": "main"
+    },
+    {
+      "id": "kr-end",
+      "x": 66.5,
+      "y": 0.8,
+      "width": 13,
+      "depth": 3.2,
+      "thickness": 1.1,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 5,
+      "terrain": "rooftop",
+      "route": "main"
+    },
+    {
+      "id": "kr-bonus",
+      "x": 28.1,
+      "y": 0,
+      "width": 1.6,
+      "depth": 3.2,
+      "thickness": 0.3,
+      "type": "moving",
+      "motion": "vertical",
+      "amplitude": 1,
+      "phase": 0,
+      "period": 5,
+      "terrain": "mechanical",
+      "route": "bonus"
+    }
+  ],
+  "mainRoute": [
+    "kr-start",
+    "kr-stairs",
+    "kr-wall",
+    "kr-lift",
+    "kr-watch",
+    "kr-down",
+    "kr-gap",
+    "kr-end"
+  ],
+  "upperRoute": [
+    "kr-start",
+    "kr-stairs",
+    "kr-wall",
+    "kr-bonus",
+    "kr-lift"
+  ],
+  "coins": [
+    {
+      "id": "kr-coin-1",
+      "platformId": "kr-stairs",
+      "offset": 2.7,
+      "height": 1.35
+    },
+    {
+      "id": "kr-coin-2",
+      "platformId": "kr-stairs",
+      "offset": 6.3,
+      "height": 1.35
+    },
+    {
+      "id": "kr-coin-3",
+      "platformId": "kr-wall",
+      "offset": 2.7,
+      "height": 1.1
+    },
+    {
+      "id": "kr-coin-4",
+      "platformId": "kr-wall",
+      "offset": 6.3,
+      "height": 1.1
+    },
+    {
+      "id": "kr-coin-5",
+      "platformId": "kr-lift",
+      "offset": 1.14,
+      "height": 1.1
+    },
+    {
+      "id": "kr-coin-6",
+      "platformId": "kr-lift",
+      "offset": 2.66,
+      "height": 1.1
+    },
+    {
+      "id": "kr-coin-7",
+      "platformId": "kr-watch",
+      "offset": 3.3,
+      "height": 1.35
+    },
+    {
+      "id": "kr-coin-8",
+      "platformId": "kr-watch",
+      "offset": 7.7,
+      "height": 1.35
+    },
+    {
+      "id": "kr-coin-9",
+      "platformId": "kr-down",
+      "offset": 2.7,
+      "height": 1.1
+    },
+    {
+      "id": "kr-coin-10",
+      "platformId": "kr-down",
+      "offset": 6.3,
+      "height": 1.1
+    },
+    {
+      "id": "kr-coin-11",
+      "platformId": "kr-gap",
+      "offset": 2.1,
+      "height": 1.1
+    },
+    {
+      "id": "kr-coin-12",
+      "platformId": "kr-gap",
+      "offset": 4.9,
+      "height": 1.1
+    },
+    {
+      "id": "kr-coin-13",
+      "platformId": "kr-end",
+      "offset": 3.9,
+      "height": 1.35
+    },
+    {
+      "id": "kr-coin-14",
+      "platformId": "kr-end",
+      "offset": 9.1,
+      "height": 1.35
+    },
+    {
+      "id": "kr-coin-15",
+      "platformId": "kr-bonus",
+      "offset": 0.8,
+      "height": 1.3
+    }
+  ],
+  "stars": [
+    {
+      "id": "kr-star-1",
+      "platformId": "kr-bonus",
+      "offset": 0.75,
+      "height": 0.9
+    },
+    {
+      "id": "kr-star-2",
+      "platformId": "kr-watch",
+      "offset": 7,
+      "height": 2.3
+    },
+    {
+      "id": "kr-star-3",
+      "platformId": "kr-end",
+      "offset": 4.2,
+      "height": 2.3
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "kr-checkpoint-1",
+      "platformId": "kr-wall",
+      "offset": 1.1
+    },
+    {
+      "id": "kr-checkpoint-2",
+      "platformId": "kr-down",
+      "offset": 1.1
+    }
+  ],
+  "discovery": {
+    "id": "kr-discovery",
+    "platformId": "kr-watch",
+    "offset": 5.720000000000001,
+    "factId": "kr-discovery"
+  },
+  "finish": {
+    "platformId": "kr-end",
+    "offset": 11
+  },
+  "hazards": [],
+  "zones": [],
+  "gates": [],
+  "switches": [],
+  "enemies": [],
+  "discoveryBlocks": [],
+  "routeGraph": {
+    "nodes": [
+      {
+        "id": "kr-start",
+        "platformId": "kr-start",
+        "type": "START"
+      },
+      {
+        "id": "kr-stairs",
+        "platformId": "kr-stairs",
+        "type": "SAFE_PLATFORM"
+      },
+      {
+        "id": "kr-wall",
+        "platformId": "kr-wall",
+        "type": "CHECKPOINT"
+      },
+      {
+        "id": "kr-lift",
+        "platformId": "kr-lift",
+        "type": "MOVING_PLATFORM"
+      },
+      {
+        "id": "kr-watch",
+        "platformId": "kr-watch",
+        "type": "DISCOVERY"
+      },
+      {
+        "id": "kr-down",
+        "platformId": "kr-down",
+        "type": "CHECKPOINT"
+      },
+      {
+        "id": "kr-gap",
+        "platformId": "kr-gap",
+        "type": "MOVING_PLATFORM"
+      },
+      {
+        "id": "kr-end",
+        "platformId": "kr-end",
+        "type": "FINISH"
+      },
+      {
+        "id": "kr-bonus",
+        "platformId": "kr-bonus",
+        "type": "OPTIONAL_REWARD"
+      }
+    ],
+    "edges": [
+      {
+        "from": "kr-start",
+        "to": "kr-stairs",
+        "mandatory": true,
+        "action": "WALK"
+      },
+      {
+        "from": "kr-stairs",
+        "to": "kr-wall",
+        "mandatory": true,
+        "action": "WALK"
+      },
+      {
+        "from": "kr-wall",
+        "to": "kr-lift",
+        "mandatory": true,
+        "action": "RIDE_PLATFORM"
+      },
+      {
+        "from": "kr-lift",
+        "to": "kr-watch",
+        "mandatory": true,
+        "action": "JUMP"
+      },
+      {
+        "from": "kr-watch",
+        "to": "kr-down",
+        "mandatory": true,
+        "action": "WALK"
+      },
+      {
+        "from": "kr-down",
+        "to": "kr-gap",
+        "mandatory": true,
+        "action": "RIDE_PLATFORM"
+      },
+      {
+        "from": "kr-gap",
+        "to": "kr-end",
+        "mandatory": true,
+        "action": "JUMP"
+      },
+      {
+        "from": "kr-wall",
+        "to": "kr-bonus",
+        "mandatory": false,
+        "action": "RIDE_PLATFORM"
+      },
+      {
+        "from": "kr-bonus",
+        "to": "kr-lift",
+        "mandatory": false,
+        "action": "RIDE_PLATFORM"
+      }
+    ]
+  },
+  "difficultyTier": 2,
+  "design": {
+    "archetype": "urban-rooftop-skybridge",
+    "signatureMechanic": "rooftop-lifts-and-skybridge",
+    "mechanics": [
+      "stairs-and-slopes",
+      "vertical-lift",
+      "horizontal-moving-platform"
+    ],
+    "terrain": [
+      "rooftop",
+      "stairs",
+      "mechanical"
+    ],
+    "verticality": "medium",
+    "enemyProfile": "none",
+    "targetDurationSeconds": 42,
+    "seed": 7003
+  },
+  "environment": {
+    "biome": "temperate",
+    "locationReference": "Seoul skyline and Namsan; fictional rooftop training course, not a walkable real-world roof route",
+    "terrainMaterial": "weathered-stone",
+    "vegetationPack": "urban-park-trees",
+    "architecturePack": "modern-seoul-rooftops",
+    "landmarkAssets": [
+      "south-korea-seoul",
+      "regional-landforms",
+      "country-specific-settlement"
+    ],
+    "lightingPreset": "daylight-atmosphere",
+    "skyPreset": "layered-sky"
+  },
+  "camera": {
+    "height": 2.8,
+    "look": 1.6,
+    "follow": 1,
+    "maxRise": 5,
+    "distance": 20.5
+  },
+  "physics": {
+    "gravity": 20,
+    "jumpSpeed": 9,
+    "runSpeed": 6,
+    "acceleration": 25,
+    "airControl": 0.65,
+    "coyoteTime": 0.12,
+    "jumpBuffer": 0.12,
+    "playerRadius": 0.2,
+    "playerHeight": 1.83,
+    "killY": -12,
+    "stepHeight": 0.4
+  }
+}

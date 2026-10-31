@@ -1,7 +1,7 @@
 import * as T from 'three';
 import {batchStatic,matte,mesh,random} from './scenic-kit';
 
-export type JapanEnemyVisualState='IDLE'|'PATROL_LEFT'|'PATROL_RIGHT'|'ALERT'|'DISABLED';
+export type JapanEnemyVisualState='IDLE'|'PATROL_LEFT'|'PATROL_RIGHT'|'TURN'|'ALERT'|'STUNNED'|'DISABLED';
 
 function ellipsoid(parent:T.Object3D,material:T.Material,x:number,y:number,z:number,sx:number,sy:number,sz:number,segments=14){
  const object=mesh(parent,new T.SphereGeometry(1,segments,Math.max(6,Math.floor(segments*.67))),material,x,y,z);object.scale.set(sx,sy,sz);return object;
@@ -73,7 +73,9 @@ export function createJapanEnemy(parent:T.Object3D){
  const update=(time:number,facing:1|-1,state:JapanEnemyVisualState)=>{
   const clock=Number.isFinite(time)?Math.max(0,time):0,moving=state==='PATROL_LEFT'||state==='PATROL_RIGHT';
   lastFacing=facing===-1?-1:1;root.visible=state!=='DISABLED';root.userData.state=state;
-  figure.rotation.y=lastFacing*1.08;figure.position.y=moving?Math.abs(Math.sin(clock*7))*.013:0;
+  // The simulation supplies a stationary TURN interval before patrol resumes.
+  // Approach the new facing angle during that interval rather than snapping.
+  figure.rotation.y=T.MathUtils.lerp(figure.rotation.y,lastFacing*1.08,state==='TURN'?.12:.22);figure.position.y=moving?Math.abs(Math.sin(clock*7))*.013:Math.sin(clock*2)*.003;
   for(let i=0;i<feet.length;i++)feet[i].rotation.x=moving?Math.sin(clock*7+i*Math.PI)*.24:0;
   head.rotation.z=state==='ALERT'?-lastFacing*.09:Math.sin(clock*1.8)*.012;
   scarf.rotation.z=moving?Math.sin(clock*7+.9)*.018:0;

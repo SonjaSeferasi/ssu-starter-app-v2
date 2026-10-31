@@ -1,0 +1,864 @@
+{
+ "id": "br-level-01",
+ "countryId": "BR",
+ "legacyCode": "BRA",
+ "title": "Amazon Canopy Run",
+ "environmentId": "brazil-amazon-canopy",
+ "difficulty": "medium",
+ "difficultyTier": 3,
+ "design": {
+  "archetype": "canopy-river-traversal",
+  "signatureMechanic": "vine-swings",
+  "mechanics": [
+   "vine-swings",
+   "bromeliad-bounce",
+   "drifting-rafts",
+   "river-hazard",
+   "root-stairs",
+   "seed-pod-patrol",
+   "high-canopy-branches"
+  ],
+  "terrain": [
+   "ground",
+   "canopy",
+   "water-raft",
+   "stairs",
+   "cliff"
+  ],
+  "verticality": "high",
+  "enemyProfile": "light",
+  "targetDurationSeconds": 60,
+  "seed": 2026102
+ },
+ "environment": {
+  "biome": "tropical-rainforest-river",
+  "locationReference": "Central Amazon várzea forest on a river channel, Amazonas, Brazil",
+  "terrainMaterial": "river-mud-buttress-roots-and-mossy-branches",
+  "vegetationPack": "kapok-emergents-palms-bromeliads-lianas",
+  "architecturePack": "liana-swings-and-balsa-rafts",
+  "landmarkAssets": [
+   "emergent-kapok-trees",
+   "amazon-river-channel",
+   "animated-waterfall"
+  ],
+  "lightingPreset": "humid-filtered-sun",
+  "skyPreset": "humid-haze",
+  "weatherPreset": "canopy-mist"
+ },
+ "sections": [
+  {
+   "id": "A",
+   "label": "Riverbank",
+   "x": 0
+  },
+  {
+   "id": "B",
+   "label": "Bromeliad launch and canopy",
+   "x": 13
+  },
+  {
+   "id": "C",
+   "label": "Vine swings",
+   "x": 35
+  },
+  {
+   "id": "D",
+   "label": "Canopy fork",
+   "x": 49
+  },
+  {
+   "id": "E",
+   "label": "River rafts",
+   "x": 62
+  },
+  {
+   "id": "F",
+   "label": "Far bank",
+   "x": 78
+  },
+  {
+   "id": "G",
+   "label": "Root stairs and waterfall",
+   "x": 92
+  },
+  {
+   "id": "H",
+   "label": "Lookout",
+   "x": 107
+  }
+ ],
+ "camera": {
+  "height": 2.6,
+  "look": 1.75,
+  "follow": 1,
+  "maxRise": 0,
+  "distance": 20.5
+ },
+ "spawn": {
+  "platformId": "br-start",
+  "offset": 7
+ },
+ "platforms": [
+  {
+   "id": "br-start",
+   "x": -6,
+   "y": 0,
+   "width": 20,
+   "depth": 6,
+   "thickness": 12,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "ground"
+  },
+  {
+   "id": "br-bromeliad",
+   "x": 14,
+   "y": 0,
+   "width": 1.6,
+   "depth": 6,
+   "thickness": 12,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "bromeliad",
+   "terrain": "ground",
+   "bounce": 14
+  },
+  {
+   "id": "br-canopy-1",
+   "x": 20,
+   "y": 3.6,
+   "width": 7,
+   "depth": 2.6,
+   "thickness": 0.8,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "branch",
+   "terrain": "canopy"
+  },
+  {
+   "id": "br-canopy-2",
+   "x": 30.2,
+   "y": 4,
+   "width": 4,
+   "depth": 2.6,
+   "thickness": 0.8,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "branch",
+   "terrain": "canopy"
+  },
+  {
+   "id": "br-swing-1",
+   "x": 37.6,
+   "y": 3,
+   "width": 1.8,
+   "depth": 2.6,
+   "thickness": 0.3,
+   "type": "moving",
+   "motion": "pendulum",
+   "amplitude": 2.2,
+   "phase": 0,
+   "period": 4.4,
+   "route": "main",
+   "style": "vine-swing",
+   "terrain": "canopy",
+   "length": 5
+  },
+  {
+   "id": "br-swing-2",
+   "x": 44.4,
+   "y": 3,
+   "width": 1.8,
+   "depth": 2.6,
+   "thickness": 0.3,
+   "type": "moving",
+   "motion": "pendulum",
+   "amplitude": 2.2,
+   "phase": 3.141592653589793,
+   "period": 4.4,
+   "route": "main",
+   "style": "vine-swing",
+   "terrain": "canopy",
+   "length": 5
+  },
+  {
+   "id": "br-canopy-3",
+   "x": 50,
+   "y": 4,
+   "width": 5,
+   "depth": 2.6,
+   "thickness": 0.8,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "branch",
+   "terrain": "canopy"
+  },
+  {
+   "id": "br-mud-bank",
+   "x": 55.6,
+   "y": 0.8,
+   "width": 6.4,
+   "depth": 6,
+   "thickness": 12,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "mud",
+   "terrain": "ground"
+  },
+  {
+   "id": "br-raft-1",
+   "x": 63.8,
+   "y": 0,
+   "width": 2.6,
+   "depth": 3.4,
+   "thickness": 0.4,
+   "type": "moving",
+   "motion": "horizontal",
+   "amplitude": 1.4,
+   "phase": 0,
+   "period": 6.4,
+   "route": "main",
+   "style": "raft",
+   "pause": 1.2,
+   "bob": 0.06,
+   "terrain": "water-raft"
+  },
+  {
+   "id": "br-raft-2",
+   "x": 71.4,
+   "y": 0,
+   "width": 2.6,
+   "depth": 3.4,
+   "thickness": 0.4,
+   "type": "moving",
+   "motion": "horizontal",
+   "amplitude": 1.4,
+   "phase": 3.141592653589793,
+   "period": 6.4,
+   "route": "main",
+   "style": "raft",
+   "pause": 1.2,
+   "bob": 0.06,
+   "terrain": "water-raft"
+  },
+  {
+   "id": "br-far-bank",
+   "x": 78.2,
+   "y": 0.8,
+   "width": 13.8,
+   "depth": 6,
+   "thickness": 12,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "mud",
+   "terrain": "ground"
+  },
+  {
+   "id": "br-root-stairs",
+   "x": 92,
+   "y": 0.8,
+   "width": 5,
+   "depth": 4.6,
+   "thickness": 12,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "roots",
+   "terrain": "stairs",
+   "slope": 1.6,
+   "steps": 5
+  },
+  {
+   "id": "br-falls-ledge",
+   "x": 100.4,
+   "y": 3.2,
+   "width": 4,
+   "depth": 3.8,
+   "thickness": 13,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "falls-rock",
+   "terrain": "cliff"
+  },
+  {
+   "id": "br-lookout",
+   "x": 107.8,
+   "y": 3.2,
+   "width": 12,
+   "depth": 6,
+   "thickness": 13,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "ground"
+  },
+  {
+   "id": "br-high-1",
+   "x": 58.4,
+   "y": 4.4,
+   "width": 3,
+   "depth": 2.6,
+   "thickness": 0.6,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper",
+   "style": "branch",
+   "terrain": "canopy"
+  },
+  {
+   "id": "br-high-2",
+   "x": 64.6,
+   "y": 4.8,
+   "width": 2.6,
+   "depth": 2.6,
+   "thickness": 0.6,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper",
+   "style": "branch",
+   "terrain": "canopy"
+  },
+  {
+   "id": "br-high-3",
+   "x": 70.4,
+   "y": 4.4,
+   "width": 2.6,
+   "depth": 2.6,
+   "thickness": 0.6,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper",
+   "style": "branch",
+   "terrain": "canopy"
+  },
+  {
+   "id": "br-high-4",
+   "x": 75.8,
+   "y": 4.2,
+   "width": 2.4,
+   "depth": 2.6,
+   "thickness": 0.6,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper",
+   "style": "branch",
+   "terrain": "canopy"
+  }
+ ],
+ "coins": [
+  {
+   "id": "br-coin-01",
+   "platformId": "br-start",
+   "offset": 9,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-02",
+   "platformId": "br-start",
+   "offset": 11,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-03",
+   "platformId": "br-start",
+   "offset": 13,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-04",
+   "platformId": "br-canopy-1",
+   "offset": 1.5,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-05",
+   "platformId": "br-canopy-1",
+   "offset": 3.5,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-06",
+   "platformId": "br-canopy-1",
+   "offset": 5.5,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-07",
+   "platformId": "br-canopy-1",
+   "offset": 7.6,
+   "height": 1.9
+  },
+  {
+   "id": "br-coin-08",
+   "platformId": "br-canopy-2",
+   "offset": 1.5,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-09",
+   "platformId": "br-canopy-2",
+   "offset": 3,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-10",
+   "platformId": "br-swing-1",
+   "offset": 0.9,
+   "height": 1
+  },
+  {
+   "id": "br-coin-11",
+   "platformId": "br-swing-2",
+   "offset": 0.9,
+   "height": 1
+  },
+  {
+   "id": "br-coin-12",
+   "platformId": "br-canopy-3",
+   "offset": 2,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-13",
+   "platformId": "br-canopy-3",
+   "offset": 3.5,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-14",
+   "platformId": "br-mud-bank",
+   "offset": 3,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-15",
+   "platformId": "br-mud-bank",
+   "offset": 4.6,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-16",
+   "platformId": "br-raft-1",
+   "offset": 1.3,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-17",
+   "platformId": "br-raft-2",
+   "offset": 1.3,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-18",
+   "platformId": "br-far-bank",
+   "offset": 2,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-19",
+   "platformId": "br-far-bank",
+   "offset": 8,
+   "height": 2.2
+  },
+  {
+   "id": "br-coin-20",
+   "platformId": "br-far-bank",
+   "offset": 12,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-21",
+   "platformId": "br-root-stairs",
+   "offset": 2.5,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-22",
+   "platformId": "br-root-stairs",
+   "offset": 3.8,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-23",
+   "platformId": "br-falls-ledge",
+   "offset": 2,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-24",
+   "platformId": "br-lookout",
+   "offset": 2,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-25",
+   "platformId": "br-lookout",
+   "offset": 5,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-26",
+   "platformId": "br-high-1",
+   "offset": 1.5,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-27",
+   "platformId": "br-high-2",
+   "offset": 0.8,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-28",
+   "platformId": "br-high-3",
+   "offset": 1.3,
+   "height": 1.1
+  },
+  {
+   "id": "br-coin-29",
+   "platformId": "br-high-4",
+   "offset": 1.2,
+   "height": 1.1
+  }
+ ],
+ "stars": [
+  {
+   "id": "br-star-01",
+   "platformId": "br-canopy-1",
+   "offset": 1,
+   "height": 2.7
+  },
+  {
+   "id": "br-star-02",
+   "platformId": "br-swing-2",
+   "offset": 0.9,
+   "height": 2.6
+  },
+  {
+   "id": "br-star-03",
+   "platformId": "br-high-2",
+   "offset": 1.8,
+   "height": 1.2
+  }
+ ],
+ "checkpoints": [
+  {
+   "id": "br-checkpoint-01",
+   "platformId": "br-canopy-3",
+   "offset": 1
+  },
+  {
+   "id": "br-checkpoint-02",
+   "platformId": "br-far-bank",
+   "offset": 1.4
+  }
+ ],
+ "discovery": {
+  "id": "br-discovery",
+  "platformId": "br-lookout",
+  "offset": 4,
+  "factId": "br-discovery"
+ },
+ "finish": {
+  "platformId": "br-lookout",
+  "offset": 8.5
+ },
+ "hazards": [
+  {
+   "id": "br-river",
+   "x": 62,
+   "y": -1.6,
+   "width": 16.2,
+   "height": 0.9
+  }
+ ],
+ "enemies": [
+  {
+   "id": "br-seed-pod",
+   "platformId": "br-far-bank",
+   "minOffset": 5.5,
+   "maxOffset": 10.5,
+   "speed": 1.1,
+   "turnPause": 0.4,
+   "height": 0.95
+  }
+ ],
+ "discoveryBlocks": [
+  {
+   "id": "br-discovery-block",
+   "x": 89.8,
+   "y": 3.45,
+   "width": 0.75,
+   "height": 0.8,
+   "factId": "br-discovery"
+  }
+ ],
+ "routeGraph": {
+  "nodes": [
+   {
+    "id": "br-start",
+    "type": "START",
+    "platformId": "br-start"
+   },
+   {
+    "id": "br-bromeliad",
+    "type": "JUMP_PLATFORM",
+    "platformId": "br-bromeliad"
+   },
+   {
+    "id": "br-canopy-1",
+    "type": "JUMP_PLATFORM",
+    "platformId": "br-canopy-1"
+   },
+   {
+    "id": "br-canopy-2",
+    "type": "JUMP_PLATFORM",
+    "platformId": "br-canopy-2"
+   },
+   {
+    "id": "br-swing-1",
+    "type": "MOVING_PLATFORM",
+    "platformId": "br-swing-1"
+   },
+   {
+    "id": "br-swing-2",
+    "type": "MOVING_PLATFORM",
+    "platformId": "br-swing-2"
+   },
+   {
+    "id": "br-canopy-3",
+    "type": "CHECKPOINT",
+    "platformId": "br-canopy-3"
+   },
+   {
+    "id": "br-mud-bank",
+    "type": "SAFE_PLATFORM",
+    "platformId": "br-mud-bank"
+   },
+   {
+    "id": "br-raft-1",
+    "type": "MOVING_PLATFORM",
+    "platformId": "br-raft-1"
+   },
+   {
+    "id": "br-raft-2",
+    "type": "MOVING_PLATFORM",
+    "platformId": "br-raft-2"
+   },
+   {
+    "id": "br-far-bank",
+    "type": "ENEMY_AREA",
+    "platformId": "br-far-bank"
+   },
+   {
+    "id": "br-root-stairs",
+    "type": "SAFE_PLATFORM",
+    "platformId": "br-root-stairs"
+   },
+   {
+    "id": "br-falls-ledge",
+    "type": "JUMP_PLATFORM",
+    "platformId": "br-falls-ledge"
+   },
+   {
+    "id": "br-lookout",
+    "type": "FINISH",
+    "platformId": "br-lookout"
+   },
+   {
+    "id": "br-high-1",
+    "type": "OPTIONAL_REWARD",
+    "platformId": "br-high-1"
+   },
+   {
+    "id": "br-high-2",
+    "type": "OPTIONAL_REWARD",
+    "platformId": "br-high-2"
+   },
+   {
+    "id": "br-high-3",
+    "type": "OPTIONAL_REWARD",
+    "platformId": "br-high-3"
+   },
+   {
+    "id": "br-high-4",
+    "type": "OPTIONAL_REWARD",
+    "platformId": "br-high-4"
+   }
+  ],
+  "edges": [
+   {
+    "from": "br-start",
+    "to": "br-bromeliad",
+    "action": "WALK",
+    "mandatory": true
+   },
+   {
+    "from": "br-bromeliad",
+    "to": "br-canopy-1",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "br-canopy-1",
+    "to": "br-canopy-2",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "br-canopy-2",
+    "to": "br-swing-1",
+    "action": "RIDE_PLATFORM",
+    "mandatory": true
+   },
+   {
+    "from": "br-swing-1",
+    "to": "br-swing-2",
+    "action": "RIDE_PLATFORM",
+    "mandatory": true
+   },
+   {
+    "from": "br-swing-2",
+    "to": "br-canopy-3",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "br-canopy-3",
+    "to": "br-mud-bank",
+    "action": "DROP",
+    "mandatory": true
+   },
+   {
+    "from": "br-mud-bank",
+    "to": "br-raft-1",
+    "action": "RIDE_PLATFORM",
+    "mandatory": true
+   },
+   {
+    "from": "br-raft-1",
+    "to": "br-raft-2",
+    "action": "RIDE_PLATFORM",
+    "mandatory": true
+   },
+   {
+    "from": "br-raft-2",
+    "to": "br-far-bank",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "br-far-bank",
+    "to": "br-root-stairs",
+    "action": "CLIMB",
+    "mandatory": true
+   },
+   {
+    "from": "br-root-stairs",
+    "to": "br-falls-ledge",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "br-falls-ledge",
+    "to": "br-lookout",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "br-canopy-3",
+    "to": "br-high-1",
+    "action": "JUMP",
+    "mandatory": false
+   },
+   {
+    "from": "br-high-1",
+    "to": "br-high-2",
+    "action": "JUMP",
+    "mandatory": false
+   },
+   {
+    "from": "br-high-2",
+    "to": "br-high-3",
+    "action": "JUMP",
+    "mandatory": false
+   },
+   {
+    "from": "br-high-3",
+    "to": "br-high-4",
+    "action": "JUMP",
+    "mandatory": false
+   },
+   {
+    "from": "br-high-4",
+    "to": "br-far-bank",
+    "action": "DROP",
+    "mandatory": false
+   }
+  ]
+ },
+ "physics": {
+  "gravity": 20,
+  "jumpSpeed": 9,
+  "runSpeed": 6,
+  "acceleration": 25,
+  "airControl": 0.65,
+  "coyoteTime": 0.12,
+  "jumpBuffer": 0.12,
+  "playerRadius": 0.2,
+  "playerHeight": 1.83,
+  "killY": -7,
+  "iceGrip": 0.3,
+  "stepHeight": 0.4
+ }
+}

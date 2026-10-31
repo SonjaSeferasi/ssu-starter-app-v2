@@ -1,5 +1,6 @@
 import snapshot from '../public/world-explorer/data/discoveries.json';
 import {countryByCode} from './world-explorer/catalog';
+import {eastAsiaPlaces,type NewEastAsiaCode} from './world-explorer/east-asia';
 
 export type Discovery={
  title:string;landmark:string;text:string;sourceUrl:string;
@@ -25,6 +26,8 @@ export const discoveryAttribution='UNESCO World Heritage Centre via UNESCO Datah
 
 export function discoveryFor(code:string):Discovery|undefined{
  const key=code.toUpperCase();
+ const east=eastAsiaPlaces[key as NewEastAsiaCode];
+ if(east)return{title:east.landmark,landmark:east.landmark,text:east.fact,sourceUrl:east.source,challengeQuestion:east.question,answer:east.answer,kind:'showcase'};
  if(showcases[key])return showcases[key];
  return countryByCode(key)?discoveries.get(key):undefined;
 }

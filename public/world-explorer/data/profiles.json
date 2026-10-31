@@ -171,24 +171,24 @@
     },
     {
       "code": "AUS",
-      "levelTitle": "Harbour Island Crossing",
-      "landmarkName": "Sydney Opera House",
-      "landmarkKind": "palace",
+      "levelTitle": "Great Barrier Reef: Tropical Coast Adventure",
+      "landmarkName": "Great Barrier Reef",
+      "landmarkKind": "island",
       "palette": {
-        "stone": "#c1bba8",
-        "roof": "#bd7858",
-        "accent": "#7bd8df",
-        "foliage": "#4c8d61"
+        "stone": "#d8c9a3",
+        "roof": "#8f6a48",
+        "accent": "#2fc2c9",
+        "foliage": "#3f9a48"
       },
       "features": [
-        "Interlocking shell roof forms",
-        "Waterfront podium",
-        "Performing arts halls"
+        "Coral reef ecosystem",
+        "Tropical islands",
+        "Shallow turquoise water"
       ],
       "biome": "coastal",
-      "sourceUrl": "https://whc.unesco.org/en/list/166/",
+      "sourceUrl": "https://whc.unesco.org/en/list/154/",
       "representation": "stylized",
-      "mediaSearch": "Sydney Opera House Australia"
+      "mediaSearch": "Great Barrier Reef Australia"
     },
     {
       "code": "AUT",
@@ -479,7 +479,7 @@
     },
     {
       "code": "BRA",
-      "levelTitle": "Amazon Canopy Crossing",
+      "levelTitle": "Amazon Rainforest Expedition",
       "landmarkName": "Central Amazon Conservation Complex",
       "landmarkKind": "rainforest",
       "palette": {
@@ -651,7 +651,7 @@
     },
     {
       "code": "CAN",
-      "levelTitle": "Rocky Mountain Crossing",
+      "levelTitle": "Rocky Mountains: Alpine Adventure",
       "landmarkName": "Canadian Rocky Mountain Parks",
       "landmarkKind": "mountain",
       "palette": {
@@ -1041,7 +1041,7 @@
     },
     {
       "code": "EGY",
-      "levelTitle": "Pyramid Sands",
+      "levelTitle": "Pyramids of Giza: Desert Adventure",
       "landmarkName": "Pyramids of Giza",
       "landmarkKind": "pyramid",
       "palette": {
@@ -1234,7 +1234,7 @@
     },
     {
       "code": "FRA",
-      "levelTitle": "Paris Rooftop Gardens",
+      "levelTitle": "Paris: Eiffel Tower Rooftop Adventure",
       "landmarkName": "Eiffel Tower",
       "landmarkKind": "tower",
       "palette": {
@@ -1568,7 +1568,7 @@
     },
     {
       "code": "IND",
-      "levelTitle": "Taj Mahal Gardens",
+      "levelTitle": "Taj Mahal: Garden Journey",
       "landmarkName": "Taj Mahal",
       "landmarkKind": "palace",
       "palette": {
@@ -1697,7 +1697,7 @@
     },
     {
       "code": "ITA",
-      "levelTitle": "Colosseum Route",
+      "levelTitle": "Ancient Rome: Colosseum Adventure",
       "landmarkName": "Colosseum",
       "landmarkKind": "ruins",
       "palette": {
@@ -2647,8 +2647,8 @@
     },
     {
       "code": "NOR",
-      "levelTitle": "Bryggen Route",
-      "landmarkName": "Bryggen",
+      "levelTitle": "Northern Fjords: Mountain and Ice Adventure",
+      "landmarkName": "Lofoten Islands",
       "landmarkKind": "harbour",
       "palette": {
         "stone": "#b2b9be",
@@ -2657,13 +2657,14 @@
         "foliage": "#65836a"
       },
       "features": [
-        "Timber structures",
-        "Wharf setting"
+        "Steep coastal mountains",
+        "Fishing villages",
+        "Glacier-carved peaks"
       ],
       "biome": "alpine",
-      "sourceUrl": "https://whc.unesco.org/en/list/59/",
+      "sourceUrl": "https://snl.no/Lofoten",
       "representation": "stylized",
-      "mediaSearch": "Bryggen Norway"
+      "mediaSearch": "Lofoten Islands Norway"
     },
     {
       "code": "OMN",
@@ -3309,7 +3310,7 @@
     },
     {
       "code": "ZAF",
-      "levelTitle": "Kruger Savanna Adventure",
+      "levelTitle": "Savanna Wildlife Adventure",
       "landmarkName": "Kruger National Park",
       "landmarkKind": "savanna",
       "palette": {
@@ -3829,7 +3830,7 @@
     },
     {
       "code": "USA",
-      "levelTitle": "Harbor Rooftop Run",
+      "levelTitle": "New York Harbor Adventure",
       "landmarkName": "Statue of Liberty",
       "landmarkKind": "tower",
       "palette": {

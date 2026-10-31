@@ -1,0 +1,209 @@
+{
+  "capturedAt": "2026-10-30T17:35:23.360Z",
+  "records": [
+    {
+      "code": "CHN",
+      "url": "http://127.0.0.1:3004/world-explorer?country=CHN&play=1&review=1",
+      "httpStatus": 200,
+      "viewport": {
+        "width": 1600,
+        "height": 900
+      },
+      "renderer": "Headless Edge / ANGLE SwiftShader software rendering; not representative device performance",
+      "mechanic": "vertical lift and crumbling ridge",
+      "mechanicCameraX": 39,
+      "errors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "location": {
+            "url": "http://127.0.0.1:3004/favicon.ico",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        },
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "location": {
+            "url": "http://127.0.0.1:3004/favicon.ico",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        }
+      ],
+      "failedRequests": [],
+      "httpErrors": [],
+      "counters": [
+        "0/18",
+        "0/3",
+        "0:01"
+      ],
+      "screenshots": [
+        "chn-gameplay.png",
+        "chn-overview.png",
+        "chn-mechanic.png"
+      ],
+      "inputSmoke": "Scripted right, jump and left input only; not a human playthrough",
+      "humanPlaytest": "not-run",
+      "mobileHardware": "not-available",
+      "released": false
+    },
+    {
+      "code": "JPN",
+      "url": "http://127.0.0.1:3004/world-explorer?country=JPN&play=1&review=1",
+      "httpStatus": 200,
+      "viewport": {
+        "width": 1600,
+        "height": 900
+      },
+      "renderer": "Headless Edge / ANGLE SwiftShader software rendering; not representative device performance",
+      "mechanic": "lower rope bridge and upper island route",
+      "mechanicCameraX": 25,
+      "errors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "location": {
+            "url": "http://127.0.0.1:3004/favicon.ico",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        }
+      ],
+      "failedRequests": [],
+      "httpErrors": [],
+      "counters": [
+        "3/30",
+        "0/3",
+        "0:01"
+      ],
+      "screenshots": [
+        "jpn-gameplay.png",
+        "jpn-overview.png",
+        "jpn-mechanic.png"
+      ],
+      "inputSmoke": "Scripted right, jump and left input only; not a human playthrough",
+      "humanPlaytest": "not-run",
+      "mobileHardware": "not-available",
+      "released": false
+    },
+    {
+      "code": "MNG",
+      "url": "http://127.0.0.1:3004/world-explorer?country=MNG&play=1&review=1",
+      "httpStatus": 200,
+      "viewport": {
+        "width": 1600,
+        "height": 900
+      },
+      "renderer": "Headless Edge / ANGLE SwiftShader software rendering; not representative device performance",
+      "mechanic": "wind corridor and windsock",
+      "mechanicCameraX": 21,
+      "errors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "location": {
+            "url": "http://127.0.0.1:3004/favicon.ico",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        }
+      ],
+      "failedRequests": [],
+      "httpErrors": [],
+      "counters": [
+        "0/13",
+        "0/3",
+        "0:07"
+      ],
+      "screenshots": [
+        "mng-gameplay.png",
+        "mng-overview.png",
+        "mng-mechanic.png"
+      ],
+      "inputSmoke": "Scripted right, jump and left input only; not a human playthrough",
+      "humanPlaytest": "not-run",
+      "mobileHardware": "not-available",
+      "released": false
+    },
+    {
+      "code": "PRK",
+      "url": "http://127.0.0.1:3004/world-explorer?country=PRK&play=1&review=1",
+      "httpStatus": 200,
+      "viewport": {
+        "width": 1600,
+        "height": 900
+      },
+      "renderer": "Headless Edge / ANGLE SwiftShader software rendering; not representative device performance",
+      "mechanic": "warned steam vent and volcanic terraces",
+      "mechanicCameraX": 45,
+      "errors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "location": {
+            "url": "http://127.0.0.1:3004/favicon.ico",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        }
+      ],
+      "failedRequests": [],
+      "httpErrors": [],
+      "counters": [
+        "0/15",
+        "0/3",
+        "0:07"
+      ],
+      "screenshots": [
+        "prk-gameplay.png",
+        "prk-overview.png",
+        "prk-mechanic.png"
+      ],
+      "inputSmoke": "Scripted right, jump and left input only; not a human playthrough",
+      "humanPlaytest": "not-run",
+      "mobileHardware": "not-available",
+      "released": false
+    },
+    {
+      "code": "KOR",
+      "url": "http://127.0.0.1:3004/world-explorer?country=KOR&play=1&review=1",
+      "httpStatus": 200,
+      "viewport": {
+        "width": 1600,
+        "height": 900
+      },
+      "renderer": "Headless Edge / ANGLE SwiftShader software rendering; not representative device performance",
+      "mechanic": "urban rooftop stairs and maintenance lift",
+      "mechanicCameraX": 31,
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "httpErrors": [],
+      "counters": [
+        "0/15",
+        "0/3",
+        "0:01"
+      ],
+      "screenshots": [
+        "kor-gameplay.png",
+        "kor-overview.png",
+        "kor-mechanic.png"
+      ],
+      "inputSmoke": "Scripted right, jump and left input only; not a human playthrough",
+      "humanPlaytest": "not-run",
+      "mobileHardware": "not-available",
+      "released": false
+    }
+  ]
+}

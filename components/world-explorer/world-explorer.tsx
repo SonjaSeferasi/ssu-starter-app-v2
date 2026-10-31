@@ -13,11 +13,30 @@ import {LandmarkPhoto} from './landmark-photo';
 import {CountryRun,type RunOutcome} from './country-run';
 import {PreferencesControls} from './preferences-panel';
 import {defaultExplorerPreferences,loadExplorerPreferences,saveExplorerPreferences,type ExplorerPreferences} from '../../lib/world-explorer/preferences';
-import {levelAvailability} from '../../lib/world-explorer/level-manifest';
+import {authoredDifficulty,isAuthoredLevel,levelAvailability} from '../../lib/world-explorer/level-manifest';
+import {cardStatus,designRecord,type CardStatus} from '../../lib/world-explorer/design-manifest';
+import {tierName} from '../../lib/world-explorer/difficulty';
+import {asiaRegions,asiaRegionFor,type AsiaRegionId} from '../../lib/world-explorer/asia-regions';
 import styles from './world-explorer.module.css';
 
 const order:ContinentId[]=['north-america','south-america','europe','africa','asia','oceania','antarctica'];
+const playableCount=countries.filter(country=>isAuthoredLevel(country.code)).length;
+/** One-line route summaries for the playable country levels. */
+const levelBlurbs:Record<string,string>={
+ JPN:'Follow the cherry blossom trail, collect three stars and discover Mount Fuji.',
+ ITA:'Cross a Roman arch bridge, climb broken masonry to a star column and ride a sliding stone slab below the Colosseum.',
+ EGY:'Climb sandstone stairs, wait out the canyon gusts, then step on the pressure plate to open the Sun Gate before it closes.',
+ BRA:'Launch off a giant bromeliad into the canopy, swing across on vines and ride rafts over the river to a waterfall lookout.',
+ CAN:'Cross a timber gorge bridge, climb snowy rocks and keep your footing on a frozen ledge.',
+ AUS:'Run a boardwalk over a turquoise lagoon, hop coastal rocks and ride a raft on the waves.',
+ IND:'Cross carved bridges over garden channels and ride a moving garden platform with the Taj Mahal in view.',
+ ZAF:'Cross a river valley, climb granite kopjes and ride a cable-hung platform while wildlife grazes below.',
+ NOR:'Climb a sea cliff, cross ice ledges that crumble underfoot, time the ridge gusts and run the rorbu rooftops to the harbour.',
+ FRA:'Climb Paris rooftops to a roof garden and take the maintenance lift with the Eiffel Tower ahead.',
+ USA:'Cross the harbor docks, climb brick terraces and ride a dock gantry with the Statue of Liberty in view.',
+};
 const labels=['Discovery','Adventure','Hard','Expert'];
+const statusLabels:Record<CardStatus,string>={completed:'Completed',playable:'Playable','under-development':'Under development'};
 const featured:Record<ContinentId,string>={'north-america':'USA','south-america':'BRA',europe:'FRA',africa:'EGY',asia:'JPN',oceania:'AUS',antarctica:'ANTARCTICA'};
 const introductions:Record<string,string>={
  'north-america':'From northern mountain trails to Central America and the Caribbean.',
@@ -31,7 +50,9 @@ const introductions:Record<string,string>={
 const antarctica:Country={code:'ANTARCTICA',iso2:'',name:'Antarctica',officialName:'Antarctica expedition',continent:'antarctica',subregion:'Antarctic region',capital:[],languages:[],currencies:[],lat:-80,lng:0,flag:'❄',biome:'alpine',landmark:'Antarctic ice sheet',description:'Antarctica is a continent devoted to peace and scientific cooperation under the Antarctic Treaty. This expedition is separate from the 193 country levels.',sources:['https://www.ats.aq/e/antarctictreaty.html']};
 type AtlasController={select:(id:string|null)=>void;locate?:(lat:number,lng:number)=>void;destroy:()=>void};
 
-function difficultyFor(index:number,total:number):1|2|3|4{
+function difficultyFor(index:number,total:number,code?:string):1|2|3|4{
+ // Playable country levels keep their designed difficulty; previews scale along the route.
+ const designed=code?authoredDifficulty(code):undefined;if(designed)return designed;
  if(total===1)return 3;
  const portion=index/Math.max(1,total-1);
  return portion>.84?4:portion>.52?3:portion>.18?2:1;
@@ -49,6 +70,7 @@ export default function WorldExplorer(){
  const accountEpoch=useRef(0);
  const latestSave=useRef('');
  const [continent,setContinent]=useState<ContinentId>('asia');
+ const [asiaRegion,setAsiaRegion]=useState<AsiaRegionId|'all'>('all');
  const [selected,setSelected]=useState<Country|null>(null),[playing,setPlaying]=useState<Country|null>(null);
  const [progress,setProgress]=useState<ExplorerProgress>({version:1,countries:{}});
  const [panel,setPanel]=useState<'journey'|'passport'|'sources'|'settings'|'achievements'|null>(null),[query,setQuery]=useState('');
@@ -96,10 +118,15 @@ export default function WorldExplorer(){
  atlasCountry.current=active;
  const current=continents.find(c=>c.id===continent)!,done=continentProgress(progress,continent),overall=overallProgress(progress);
  const index=active?list.findIndex(c=>c.code===active.code):0;
- const difficulty=challenge?4:difficultyFor(index,list.length);
+ const difficulty=challenge?4:difficultyFor(index,list.length,active?.code);
+ // Tier and status come from the design manifest. Every built level is open
+ // from the start; the tier only tells a player how demanding the route is.
+ const completedCodes=new Set(Object.keys(progress.countries).filter(code=>progress.countries[code]?.completed));
+ const statusOf=(code:string)=>cardStatus(code,completedCodes);
+ const activeRecord=active?designRecord(active.code):undefined,activeStatus=active?statusOf(active.code):undefined;
  const activeLevel=active?levelAvailability(active.code):undefined;
  const totalStars=Object.values(progress.countries).reduce((sum,item)=>sum+item.starsEarned,0),totalCoins=Object.values(progress.countries).reduce((sum,item)=>sum+item.bestCoins,0),totalDiscoveries=Object.values(progress.countries).reduce((sum,item)=>sum+item.discoveredFactIds.length,0);
- const filtered=list.filter(c=>(c.name+' '+c.code).toLocaleLowerCase().includes(query.toLocaleLowerCase()));
+ const filtered=list.filter(c=>(continent!=='asia'||asiaRegion==='all'||asiaRegionFor(c.code)?.id===asiaRegion)&&(c.name+' '+c.code).toLocaleLowerCase().includes(query.toLocaleLowerCase()));
  useEffect(()=>{if(active)atlas.current?.locate?.(active.lat,active.lng);},[active?.code]);
  useEffect(()=>{if(playing||!panel)return;const close=(event:KeyboardEvent)=>{if(event.code==='Escape')setPanel(null);};window.addEventListener('keydown',close);return()=>window.removeEventListener('keydown',close);},[playing,panel]);
  useEffect(()=>{
@@ -129,8 +156,8 @@ export default function WorldExplorer(){
    <div className={styles.brand}><span><Globe2 size={28}/> World Explorer</span><p>LEARN THROUGH ADVENTURE</p></div>
    <nav aria-label="Explorer tools"><button onClick={()=>setPanel(panel==='passport'?null:'passport')} disabled={!!playing}><BookOpen size={20}/><span>Passport</span></button><button onClick={()=>setPanel(panel==='achievements'?null:'achievements')} disabled={!!playing}><Trophy size={20}/><span>Milestones</span></button><button onClick={()=>setPanel(panel==='settings'?null:'settings')} disabled={!!playing}><Settings size={20}/><span>Settings</span></button><button onClick={()=>setPanel(panel==='sources'?null:'sources')} disabled={!!playing}><Compass size={20}/><span>Field guide</span></button></nav>
   </header>
-  {playing?<CountryRun key={playing.code+'-'+replay} country={playing} preferences={preferences} saveStatus={saveMessage} onPreferences={updatePreferences} difficulty={challenge?4:difficultyFor(countryList(playing.continent).findIndex(c=>c.code===playing.code),countryList(playing.continent).length)} onExit={()=>{setPlaying(null);setPanel('journey');}} onResult={(completed,coins,result,runId)=>saveResult(playing,completed,coins,result,runId)} onRetry={()=>setReplay(v=>v+1)} onNext={nextCountry}/>:<>
-   <section className={styles.intro} aria-label="World Explorer introduction"><p className={styles.eyebrow}>JUMPYLAND · WORLD EXPLORER</p><h1>A world of<br/>discovery.</h1><p>Begin in Japan’s spring mountains.<br/>A real 3D adventure, one country at a time.</p><button className={styles.playButton} onClick={()=>launch(countryByCode('JPN')!)}><Play size={17}/>Play Japan prototype<ArrowRight size={17}/></button><span className={styles.edition}><span/> 193 country profiles · Japan prototype · country previews</span></section>
+  {playing?<CountryRun key={playing.code+'-'+replay} country={playing} preferences={preferences} saveStatus={saveMessage} onPreferences={updatePreferences} difficulty={challenge?4:difficultyFor(countryList(playing.continent).findIndex(c=>c.code===playing.code),countryList(playing.continent).length,playing.code)} onExit={()=>{setPlaying(null);setPanel('journey');}} onResult={(completed,coins,result,runId)=>saveResult(playing,completed,coins,result,runId)} onRetry={()=>setReplay(v=>v+1)} onNext={nextCountry}/>:<>
+   <section className={styles.intro} aria-label="World Explorer introduction"><p className={styles.eyebrow}>JUMPYLAND · WORLD EXPLORER</p><h1>A world of<br/>discovery.</h1><p>Eleven playable countries, from Japan’s spring mountains to New York Harbor.<br/>A real 3D adventure, one country at a time.</p><button className={styles.playButton} onClick={()=>launch(countryByCode('JPN')!)}><Play size={17}/>Start in Japan<ArrowRight size={17}/></button><span className={styles.edition}><span/> 193 country profiles · {playableCount} playable levels · country previews</span></section>
    <div className={styles.mapHint}><MapPin size={15}/> Choose a continent on the map</div>
    {atlasError&&<p role="alert" className={styles.atlasError}>{atlasError}</p>}
    <section className={styles.travelDeck} aria-label="Choose a continent">
@@ -145,9 +172,10 @@ export default function WorldExplorer(){
    <p className={styles.eyebrow}>CHOOSE YOUR NEXT DESTINATION</p><h2 id="journey-heading">{current.name}</h2><p className={styles.journeyIntro}>{introductions[continent]}</p>
    <div className={styles.routeProgress}><span>{done.completed} / {done.total} {continent==='antarctica'?'expedition':'countries'}</span><progress value={done.completed} max={done.total||1}/></div>
    <label className={styles.search}><Search size={17}/><input type="search" placeholder="Find a country…" aria-label="Find a country" value={query} onChange={e=>setQuery(e.target.value)}/></label>
-   <div className={styles.countryList} aria-label={current.name+' levels'}>{filtered.map(country=>{const n=list.findIndex(c=>c.code===country.code),complete=progress.countries[country.code]?.completed,availability=levelAvailability(country.code);return <button key={country.code} className={active?.code===country.code?styles.selectedCountry:undefined} onClick={()=>setSelected(country)} aria-pressed={active?.code===country.code}><span className={styles.levelNumber}>{complete?<Check size={16}/>:String(n+1).padStart(2,'0')}</span><span><strong>{country.name}</strong><small>{availability?.stage==='prototype'?'1 playable prototype':'Environment preview'} · {labels[difficultyFor(n,list.length)-1]}</small></span><span className={styles.countryCode}><CountryFlag iso2={country.iso2} name={country.name} size={23}/></span></button>;})}{!filtered.length&&<p>No countries match your search.</p>}</div>
-   {active&&<section className={styles.countryDetail} aria-label="Selected destination"><div className={styles.countryHeading}><CountryFlag iso2={active.iso2} name={active.name} size={40}/><div><h3>{active.name}</h3><p>{activeLevel?.title||active.subregion} · {labels[difficulty-1]}</p><small className={styles.prototypeBadge}>{activeLevel?.stage==='prototype'?'PLAYABLE PROTOTYPE · VISUAL REVIEW PENDING':'DEVELOPMENT PREVIEW'}</small></div></div>
-    <p className={styles.developmentNote}>{activeLevel?.stage==='prototype'?'Follow the cherry blossom trail, collect three stars and discover Mount Fuji. This prototype is still awaiting browser and device review.':'Explore this country’s sourced scenery concept. Its final level design, visual review and device testing remain in development.'}</p>
+   {continent==='asia'&&<nav className={styles.asiaRegions} aria-label="Asia geographic regions">{[{id:'all' as const,name:'All Asia',codes:countriesForContinent('asia').map(c=>c.code)},...asiaRegions].map(region=><button key={region.id} aria-pressed={asiaRegion===region.id} onClick={()=>{setAsiaRegion(region.id);setSelected(list.find(c=>region.id==='all'||(region.codes as readonly string[]).includes(c.code))||null);}}>{region.name}<span>{region.codes.length}</span></button>)}</nav>}
+   <div className={styles.countryList} aria-label={current.name+' levels'}>{filtered.map(country=>{const n=list.findIndex(c=>c.code===country.code),complete=progress.countries[country.code]?.completed,availability=levelAvailability(country.code);return <button key={country.code} className={active?.code===country.code?styles.selectedCountry:undefined} onClick={()=>setSelected(country)} aria-pressed={active?.code===country.code}><span className={styles.levelNumber}>{complete?<Check size={16}/>:String(n+1).padStart(2,'0')}</span><span><strong>{country.name}</strong><small data-status={statusOf(country.code)}>{statusLabels[statusOf(country.code)]}{availability?.stage!=='prototype'&&statusOf(country.code)==='completed'?' preview':''} · Tier {designRecord(country.code)?.difficultyTier??'–'} {designRecord(country.code)?tierName(designRecord(country.code)!.difficultyTier):''}</small></span><span className={styles.countryCode}><CountryFlag iso2={country.iso2} name={country.name} size={23}/></span></button>;})}{!filtered.length&&<p>No countries match your search.</p>}</div>
+   {active&&<section className={styles.countryDetail} aria-label="Selected destination"><div className={styles.countryHeading}><CountryFlag iso2={active.iso2} name={active.name} size={40}/><div><h3>{active.name}</h3><p>{activeLevel?.title||active.subregion} · {activeRecord?`Tier ${activeRecord.difficultyTier} · ${tierName(activeRecord.difficultyTier)}`:labels[difficulty-1]}</p><small className={styles.prototypeBadge} data-status={activeStatus}>{activeLevel?.stage==='prototype'?(progress.countries[active.code]?.completed?'COMPLETED · VISUAL REVIEW PENDING':activeRecord?.status==='template'?'PLAYABLE · FIRST-TEMPLATE LEVEL, REDESIGN PLANNED':'PLAYABLE LEVEL · VISUAL REVIEW PENDING'):'UNDER DEVELOPMENT · SCENERY PREVIEW'}</small></div></div>
+    <p className={styles.developmentNote}>{activeLevel?.stage==='prototype'?`${levelBlurbs[active.code]||'Collect three stars and unlock the country discovery.'} This playable level is still awaiting human visual and device review.`:'Explore this country’s sourced scenery concept. Its final level design, visual review and device testing remain in development.'}</p>
     <p>{active.description}</p>
     {continent!=='antarctica'&&<dl><div><dt>Capital / seat</dt><dd>{active.capital.join(' · ')||'No official capital listed'}</dd></div><div><dt>Languages</dt><dd>{active.languages.slice(0,4).join(' · ')||'See country sources'}</dd></div><div><dt>Currency</dt><dd>{active.currencies.map(currencyLabel).join(' · ')||'See country sources'}</dd></div></dl>}
     {countryProfile(active.code)&&<p className={styles.landmarkNote}><MapPin size={12}/> {countryProfile(active.code)?.landmarkName}</p>}
@@ -155,7 +183,7 @@ export default function WorldExplorer(){
     <details className={styles.sourceDetail}><summary>Country sources{liveStatus==='available'?' · World Bank refreshed':''}</summary><a href={countryProfile(active.code)?.sourceUrl||active.sources[0]} target="_blank" rel="noreferrer">View source for this destination</a>{liveFacts&&<p>World Bank lists {liveFacts.capital||'no capital in its record'}. Retrieved {new Date(liveFacts.retrievedAt).toLocaleDateString('en-US',{timeZone:'UTC'})}. This is the provider’s administrative listing; the country snapshot retains multi-capital notes. <a href={liveFacts.sourceUrl} target="_blank" rel="noreferrer">API record</a></p>}{countryApi&&<p>countries.dev lists {countryApi.capital||'no capital in its record'}. Retrieved {new Date(countryApi.retrievedAt).toLocaleDateString('en-US',{timeZone:'UTC'})}. <a href={countryApi.sourceUrl} target="_blank" rel="noreferrer">Country API record</a></p>}</details>
     <LandmarkPhoto key={active.code} code={active.code}/>
     <label className={styles.challenge}><input type="checkbox" checked={challenge} onChange={e=>setChallenge(e.target.checked)}/><span><strong>Expert challenge</strong><small>A tougher route with tighter jumps</small></span><Trophy size={18}/></label>
-    <button className={styles.playButton} onClick={()=>launch(active)}><Play size={17} fill="currentColor"/> {activeLevel?.stage==='prototype'?(progress.countries[active.code]?.completed?'Replay Japan prototype':'Play Japan prototype'):'Explore environment preview'} <ArrowRight size={19}/></button>
+    <button className={styles.playButton} onClick={()=>launch(active)}><Play size={17} fill="currentColor"/> {activeLevel?.stage==='prototype'?(progress.countries[active.code]?.completed?'Replay level':'Play level'):'Explore environment preview'} <ArrowRight size={19}/></button>
     <small className={styles.factStatus}>{continent==='antarctica'?'Antarctic Treaty reference':liveStatus==='loading'?'Checking optional country metadata…':liveStatus==='available'?'World Bank metadata available · sourced country snapshot':'Bundled country facts · external services are optional'}</small>
    </section>}
   </aside>}

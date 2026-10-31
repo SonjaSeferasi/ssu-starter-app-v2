@@ -1,6 +1,6 @@
 import {describe,it,expect} from 'vitest';
 import * as T from 'three';
-import {createFujiVista} from '../components/world-explorer/japan-vista';
+import {createFujiVista,addJapanCloudBanks,createJapanCloudTexture,addJapanRidges} from '../components/world-explorer/japan-vista';
 import {createJapanPagoda,createJapanHouse} from '../components/world-explorer/japan-architecture';
 import {mountJapanEnvironment} from '../components/world-explorer/japan-environment';
 import {cameraFrame} from '../lib/world-explorer/simulation';
@@ -39,9 +39,22 @@ describe('Japan landmark visibility and outward surfaces',()=>{
   const level=levelDefinitionFor('JPN',1),scene=new T.Scene(),environment=mountJapanEnvironment(scene,{platforms:level.platforms,finish:137.8,quality:'low'});
   environment.root.updateMatrixWorld(true);const placed=environment.root.getObjectByName('spring-pagoda')!;expect(placed).toBeDefined();
   const fresh=createJapanPagoda({tiers:5,low:true}),bounds=new T.Box3().setFromObject(fresh).applyMatrix4(placed.matrixWorld),camera=cameraAt(1.2),frustum=new T.Frustum().setFromProjectionMatrix(new T.Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse));
-  expect(frustum.intersectsBox(bounds)).toBe(true);expect(bounds.max.y-bounds.min.y).toBeGreaterThan(10);
+  expect(frustum.intersectsBox(bounds)).toBe(true);expect(bounds.max.y-bounds.min.y).toBeGreaterThan(8);expect(bounds.max.y-bounds.min.y).toBeLessThan(10);expect(placed.position.z).toBeLessThan(-40);
   const centre=bounds.getCenter(new T.Vector3()).project(camera);expect(centre.x).toBeGreaterThan(.15);expect(centre.x).toBeLessThan(.95);expect(Math.abs(centre.y)).toBeLessThan(.9);
+  // Frustum inclusion alone missed a foreground escarpment hiding the facade.
+  // Compare three actual tier sightlines with the same unoccluded model.
+  fresh.applyMatrix4(placed.matrixWorld);fresh.updateMatrixWorld(true);
+  for(const tier of [1,2,3]){const width=3.9-tier*.48,target=new T.Vector3(0,.42+tier*1.55+.65,width*.74*.5+.08).applyMatrix4(placed.matrixWorld),ray=new T.Raycaster(camera.position,target.clone().sub(camera.position).normalize()),expected=ray.intersectObject(fresh,true)[0],actual=ray.intersectObject(environment.root.getObjectByName('japan-near-background')!,true)[0];expect(expected).toBeDefined();expect(actual).toBeDefined();expect(actual.distance).toBeCloseTo(expected.distance,2);}
   environment.dispose();
+ });
+ it('uses feathered organic clouds with bounded geometry and transparent outer texels',()=>{
+  const root=addJapanCloudBanks(new T.Group(),60,false),cloud=root.getObjectByName('japan-instanced-clouds') as T.InstancedMesh<T.PlaneGeometry,T.MeshBasicMaterial>,texture=createJapanCloudTexture(),{width,height}=texture.image,data=texture.image.data as Uint8Array;
+  expect(cloud.geometry.type).toBe('PlaneGeometry');expect(cloud.count).toBe(24);expect(cloud.material.depthWrite).toBe(false);expect(cloud.material.forceSinglePass).toBe(true);expect(cloud.material.map).toBeDefined();
+  for(let x=0;x<width;x++){expect(data[x*4+3]).toBe(0);expect(data[((height-1)*width+x)*4+3]).toBe(0);}
+  let soft=0,opaque=0;for(let i=3;i<data.length;i+=4){if(data[i]>0&&data[i]<200)soft++;if(data[i]>=200)opaque++;}expect(soft).toBeGreaterThan(400);expect(opaque).toBeGreaterThan(200);texture.dispose();
+ });
+ it('builds three distinct landscape depths with surface-anchored forests',()=>{
+  const root=addJapanRidges(new T.Group(),60,true),forest=root.getObjectByName('surface-anchored-ridge-canopies') as T.InstancedMesh;expect(root.userData.depthBands).toBe(3);expect(forest.count).toBeGreaterThan(60);const bounds=new T.Box3().setFromObject(root);expect(bounds.min.z).toBeLessThan(-165);expect(bounds.max.z).toBeGreaterThan(-65);
  });
  it('keeps the upper tiled roof shells facing upward on both pagodas and village houses',()=>{
   for(const root of [createJapanPagoda(),createJapanHouse()]){

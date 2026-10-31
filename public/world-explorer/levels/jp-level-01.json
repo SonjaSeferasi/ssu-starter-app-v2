@@ -26,7 +26,7 @@
     {
       "id": "jp-lower-bridge",
       "x": 13.5,
-      "y": -1.8,
+      "y": -0.8,
       "width": 16.5,
       "depth": 3.4,
       "thickness": 0.24,
@@ -35,7 +35,8 @@
       "amplitude": 0,
       "phase": 0,
       "period": 7.2,
-      "route": "main"
+      "route": "main",
+      "sagDepth": 0.22
     },
     {
       "id": "jp-upper-01",
@@ -43,7 +44,7 @@
       "y": 1.2,
       "width": 3,
       "depth": 3.4,
-      "thickness": 1,
+      "thickness": 0.15,
       "type": "stone",
       "motion": null,
       "amplitude": 0,
@@ -54,10 +55,10 @@
     {
       "id": "jp-upper-02",
       "x": 20.2,
-      "y": 2.35,
+      "y": 2.3,
       "width": 3,
       "depth": 3.4,
-      "thickness": 1.8,
+      "thickness": 0.65,
       "type": "stone",
       "motion": null,
       "amplitude": 0,
@@ -68,10 +69,10 @@
     {
       "id": "jp-star-terrace",
       "x": 24.1,
-      "y": 3.5,
+      "y": 3.4,
       "width": 3.4,
       "depth": 3.4,
-      "thickness": 2.6,
+      "thickness": 1.25,
       "type": "stone",
       "motion": null,
       "amplitude": 0,
@@ -82,10 +83,10 @@
     {
       "id": "jp-descent",
       "x": 27.8,
-      "y": 2,
+      "y": 2.05,
       "width": 1.7,
       "depth": 3.4,
-      "thickness": 0.9,
+      "thickness": 0.75,
       "type": "stone",
       "motion": null,
       "amplitude": 0,
@@ -95,9 +96,9 @@
     },
     {
       "id": "jp-bridge-exit",
-      "x": 30.5,
-      "y": -0.7,
-      "width": 3,
+      "x": 30,
+      "y": -0.8,
+      "width": 3.5,
       "depth": 3.4,
       "thickness": 1.1,
       "type": "stone",
@@ -110,7 +111,7 @@
     {
       "id": "jp-enemy-island",
       "x": 33.5,
-      "y": 0,
+      "y": 0.3,
       "width": 10,
       "depth": 3.4,
       "thickness": 4,
@@ -237,25 +238,25 @@
       "id": "jp-coin-03",
       "platformId": "jp-start",
       "offset": 12.8,
-      "height": 1.8
+      "height": 1.45
     },
     {
       "id": "jp-coin-04",
       "platformId": "jp-lower-bridge",
       "offset": 1.2,
-      "height": 3.1
+      "height": 1.1
     },
     {
       "id": "jp-coin-05",
       "platformId": "jp-lower-bridge",
       "offset": 2.5,
-      "height": 4.2
+      "height": 1.25
     },
     {
       "id": "jp-coin-06",
       "platformId": "jp-lower-bridge",
       "offset": 3.8,
-      "height": 4.6
+      "height": 1.35
     },
     {
       "id": "jp-coin-07",
@@ -321,7 +322,7 @@
       "id": "jp-coin-17",
       "platformId": "jp-enemy-island",
       "offset": 4.4,
-      "height": 1.45
+      "height": 2.35
     },
     {
       "id": "jp-coin-18",
@@ -449,9 +450,11 @@
     {
       "id": "jp-red-wayfinder",
       "platformId": "jp-enemy-island",
-      "minOffset": 0.5,
-      "maxOffset": 1.7,
-      "speed": 1.2
+      "minOffset": 4,
+      "maxOffset": 7.5,
+      "speed": 1.2,
+      "turnPause": 0.24,
+      "height": 1.25
     }
   ],
   "discoveryBlocks": [

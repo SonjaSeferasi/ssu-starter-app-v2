@@ -1,5 +1,6 @@
 import snapshot from '../../public/world-explorer/data/profiles.json';
 import {countryByCode,type Biome} from './catalog';
+import {eastAsiaPlaces,type NewEastAsiaCode} from './east-asia';
 
 /** A scene-building archetype, not a formal classification of a monument. */
 export type LandmarkKind='mountain'|'pyramid'|'tower'|'palace'|'castle'|'pagoda'|'mosque'|'cathedral'|'old-town'|'harbour'|'bridge'|'ruins'|'rainforest'|'forest'|'glacier'|'savanna'|'wetland'|'desert'|'island'|'research-station'|'civic';
@@ -18,5 +19,6 @@ export const profileSnapshotDate=snapshot.reviewed;
 export function countryProfile(code:string):CountryProfile|undefined{
  const key=code.toUpperCase();
  if(key==='ANTARCTICA')return byCode.get(key);
- return countryByCode(key)?byCode.get(key):undefined;
+ const base=countryByCode(key)?byCode.get(key):undefined,place=eastAsiaPlaces[key as NewEastAsiaCode];
+ return base&&place?{...base,levelTitle:place.title,landmarkName:place.landmark,landmarkKind:key==='KOR'?'tower':key==='CHN'||key==='PRK'?'mountain':base.landmarkKind,sourceUrl:place.source,mediaSearch:place.landmark,referenceFile:undefined,features:[...place.features],biome:place.biome}:base;
 }
