@@ -15,7 +15,7 @@ import { GroupNameForm } from '../group-name';
 import { GroupMemberList } from '../group-members';
 import { InvitePicker } from '../invite-picker';
 import { ReactionChips, ReactionPicker } from '../message-reactions';
-import { canSelectForReply, findReplyTarget, keepReplyTarget, replyPreview, toggleReplyTarget } from '../../../lib/chat-reply';
+import { canSelectForReply, findReplyTarget, keepReplyTarget, replyPreview, replyQuote, toggleReplyTarget, type ReplyTargets } from '../../../lib/chat-reply';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -78,6 +78,8 @@ function Conversation() {
   const sendersRef = useRef<Record<string, { name: string; username: string }> | null>(null);
   // SRS-210.4 (#811, #812): each message's reactions by message ID, from the history and then live.
   const [reactions, setReactions] = useState<Record<string, ChatReaction[]>>({});
+  // SRS-209.5 (#997): the message each reply answers, as the history reports it.
+  const [replyTargets, setReplyTargets] = useState<ReplyTargets>({});
 
   // SRS-212.5: mark the messages shown here as read, again when a message arrives while the student is looking
   // at this conversation, and when they come back to the tab. Nothing is marked while the page is hidden.
@@ -135,6 +137,9 @@ function Conversation() {
           for (const message of loaded) next[message.id] = data.reactions?.[message.id] ?? [];
           return next;
         });
+        // SRS-209.5: merged rather than replaced, so a target learned earlier survives a reload that no
+        // longer lists it among the fifty most recent messages.
+        if (data.replies) setReplyTargets((current) => ({ ...current, ...data.replies }));
         setMessages((current) => mergeMessages(current, loaded));
         setHistory('loaded');
         shownRef.current = true;
@@ -440,13 +445,23 @@ function Conversation() {
               // SRS-209.1 (#986): a group message can be chosen as the target of a reply.
               const canReply = canSelectForReply(info?.kind, message);
               const replying = replyingTo === message.id;
+              // SRS-209.5 (#998): what this message replies to, if anything still visible to this student.
+              const quoted = replyQuote(message, replyTargets, messages, senders, myStudentId);
               return (
                 <li key={message.id} aria-current={replying ? 'true' : undefined}
                   className={`${mine ? `${styles.message} ${styles.messageOwn}` : styles.message}${replying ? ` ${styles.messageReplyTarget}` : ''}`}>
                   {showName && <span className={styles.senderName} aria-hidden="true">{sender}</span>}
+                  {quoted && (
+                    <span className={styles.quoted}>
+                      <span className={styles.quotedWho}>{quoted.sender}</span>
+                      <span className={styles.quotedText}>{quoted.kind === 'emoji' ? quoted.text : replyPreview(quoted.text, 60)}</span>
+                    </span>
+                  )}
                   <div className={styles.bubbleRow}>
                     <p className={bubble}>
-                      <span className={styles.srOnly}>{sender}: </span>{message.text}
+                      <span className={styles.srOnly}>
+                        {quoted ? `${sender}, replying to ${quoted.sender}: ` : `${sender}: `}
+                      </span>{message.text}
                     </p>
                     <button ref={(button) => { reactButtons.current[message.id] = button; }} type="button" className={styles.reactButton}
                       onClick={() => setReactingTo(picking ? null : message.id)} aria-expanded={picking}
