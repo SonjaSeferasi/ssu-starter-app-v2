@@ -15,6 +15,7 @@ import { GroupNameForm } from '../group-name';
 import { GroupMemberList } from '../group-members';
 import { InvitePicker } from '../invite-picker';
 import { ReactionChips, ReactionPicker } from '../message-reactions';
+import { SnipePanel } from '../../../components/snipe/snipe-panel';
 import { canSelectForReply, findReplyTarget, keepReplyTarget, replyIndication, replyPreview, replyQuote, toggleReplyTarget, type ReplyTargets } from '../../../lib/chat-reply';
 import styles from '../messages.module.css';
 
@@ -428,6 +429,9 @@ function Conversation() {
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
           </Link>
         </header>
+
+        {/* Snipe is available only after the server confirms group membership. */}
+        {myStudentId !== null && info?.kind === 'group' && <SnipePanel conversationId={conversationId} />}
 
         <ol className={styles.messages} aria-live="polite">
           {messages.length === 0
