@@ -19,7 +19,7 @@ function driveJapan(route:'main'|'upper',difficulty:1|2|3|4=1,collectLaterStars=
    const align=!jumped&&s.grounded&&Math.abs(distance)>Math.max(.16,stopping),shouldJump=!jumped&&s.grounded&&Math.abs(s.vx)<.1&&Math.abs(distance)<.4;
    if(shouldJump)jumped=true;simulation.setInput({left:align&&distance<0,right:align&&distance>0,jump:shouldJump});if(jumped&&s.grounded&&simulation.collectedStars.has(optional)){optional=null;jumped=false;}
   }else{
-   let jump=false;if(s.grounded&&current){const index=path.indexOf(current.id),next=simulation.platforms.find(platform=>platform.id===path[index+1]);if(next){const gap=next.x-current.x-current.width,walkDown=route==='upper'&&next.y<current.y-.5;jump=!walkDown&&(next.y>current.y+.05||gap>.25)&&s.x>current.x+current.width-.7;}if(simulation.enemies.some(enemy=>enemy.x>s.x-.1&&enemy.x-s.x<2.7))jump=true;}
+   let jump=false;if(s.grounded&&current){const index=path.indexOf(current.id),next=simulation.platforms.find(platform=>platform.id===path[index+1]);if(next){const gap=next.x-current.x-current.width,rise=platformSurfaceY(next,next.x)-platformSurfaceY(current,current.x+current.width),walkDown=route==='upper'&&rise<-.5;jump=!walkDown&&(rise>.05||gap>.25)&&s.x>current.x+current.width-.7;}if(simulation.enemies.some(enemy=>enemy.x>s.x-.1&&enemy.x-s.x<2.7))jump=true;}
    // Release horizontal input to settle onto the reward terrace and its
    // descending rocks rather than blindly running off their narrow edges.
    const settle=route==='upper'&&!s.grounded&&((lastStanding==='jp-upper-02'&&simulation.collectedStars.has('jp-star-01'))||lastStanding==='jp-star-terrace'||lastStanding==='jp-descent');
@@ -57,7 +57,7 @@ describe('Japan authored level pipeline and deterministic physics',()=>{
  });
  it('bounds bridge sag, shares deck heights with pickups, and preserves sufficient lower-route headroom',()=>{
   const level=levelDefinitionFor('JPN'),bridge=level.platforms.find(p=>p.id==='jp-lower-bridge')!;
-  expect(bridge.y).toBeGreaterThan(-1);expect(bridge.sagDepth).toBe(.22);
+  expect(bridge.y).toBeGreaterThan(-2);expect(bridge.sagDepth).toBe(.22);
   expect(platformSurfaceY(bridge,bridge.x)).toBe(bridge.y);expect(platformSurfaceY(bridge,bridge.x+bridge.width)).toBe(bridge.y);
   expect(platformSurfaceY(bridge,bridge.x+bridge.width/2)).toBeCloseTo(bridge.y-bridge.sagDepth!,8);
   expect(platformSurfaceY(bridge,bridge.x-1)).toBe(bridge.y);

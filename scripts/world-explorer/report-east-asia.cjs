@@ -42,7 +42,7 @@ const fs=require('node:fs');const path=require('node:path');const crypto=require
   const baseline=['JPN','ITA','EGY','BRA','CAN','AUS','IND','ZAF','NOR','FRA','USA','CHN','MNG','PRK','KOR'];
   const all=baseline.map(levelDefinitionFor),pairs=similarityMatrix(all).filter(p=>records.some(r=>levelDefinitionFor(r.code).id===p.a||levelDefinitionFor(r.code).id===p.b));
   const eastAsiaSimilarity=similarityMatrix(['CHN','JPN','MNG','PRK','KOR'].map(levelDefinitionFor));
-  const target=path.resolve('public/world-explorer/data/east-asia-evidence.json');fs.writeFileSync(target,JSON.stringify({scope:'Four new East Asia prototypes plus Japan regression audit; no country is release-approved.',records,japanAudit:{automatedPassed:true,runs:japanRuns,humanPlaytest:'not-run',released:false},eastAsiaSimilarity,similarity:pairs},null,2)+'\n');
+  const target=path.resolve('public/world-explorer/data/east-asia-evidence.json');fs.writeFileSync(target,JSON.stringify({scope:'Revised East Asia Phase A mechanics and measured tiers; no country is release-approved.',records,japanAudit:{automatedPassed:true,runs:japanRuns,difficulty:analyzeDifficulty(japan),humanPlaytest:'not-run',released:false},eastAsiaSimilarity,similarity:pairs},null,2)+'\n');
   console.log(JSON.stringify({countries:records.length,runs:records.reduce((n,r)=>n+r.runs.length,0),edgeChecks:records.reduce((n,r)=>n+r.edgeChecks,0),similarityFlags:pairs.filter(p=>p.review).length,target}));
  }finally{await server.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

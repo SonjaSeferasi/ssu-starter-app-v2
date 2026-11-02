@@ -25,9 +25,9 @@
     },
     {
       "id": "jp-lower-bridge",
-      "x": 13.5,
-      "y": -0.8,
-      "width": 16.5,
+      "x": 14,
+      "y": -1.7,
+      "width": 16,
       "depth": 3.4,
       "thickness": 0.24,
       "type": "wooden-bridge",
@@ -97,7 +97,7 @@
     {
       "id": "jp-bridge-exit",
       "x": 30,
-      "y": -0.8,
+      "y": -1.7,
       "width": 3.5,
       "depth": 3.4,
       "thickness": 1.1,
@@ -106,7 +106,10 @@
       "amplitude": 0,
       "phase": 0,
       "period": 7.2,
-      "route": "main"
+      "route": "main",
+      "slope": 2,
+      "steps": 6,
+      "terrain": "stairs"
     },
     {
       "id": "jp-enemy-island",
@@ -244,7 +247,7 @@
       "id": "jp-coin-04",
       "platformId": "jp-lower-bridge",
       "offset": 1.2,
-      "height": 1.1
+      "height": 2
     },
     {
       "id": "jp-coin-05",
@@ -499,6 +502,8 @@
     "jumpBuffer": 0.12,
     "playerRadius": 0.2,
     "playerHeight": 1.83,
-    "killY": -7
-  }
+    "killY": -7,
+    "stepHeight": 0.42
+  },
+  "difficultyTier": 1
 }

@@ -43,17 +43,19 @@
     {
       "id": "mn-stream-stone",
       "x": 28,
-      "y": 0.5,
+      "y": 0.3,
       "width": 6.7,
       "depth": 3.2,
-      "thickness": 1.1,
-      "type": "stone",
-      "motion": null,
-      "amplitude": 0,
+      "thickness": 0.55,
+      "type": "wooden-moving",
+      "motion": "vertical",
+      "amplitude": 0.12,
       "phase": 0,
-      "period": 5,
-      "terrain": "rock",
-      "route": "main"
+      "period": 5.5,
+      "terrain": "water-raft",
+      "route": "main",
+      "pause": 0.6,
+      "style": "river-ferry"
     },
     {
       "id": "mn-shelter",
@@ -89,7 +91,7 @@
     {
       "id": "mn-ford",
       "x": 68,
-      "y": -0.3,
+      "y": 0.5,
       "width": 7,
       "depth": 3.2,
       "thickness": 1.1,
@@ -343,7 +345,7 @@
         "from": "mn-bank",
         "to": "mn-stream-stone",
         "mandatory": true,
-        "action": "WALK"
+        "action": "RIDE_PLATFORM"
       },
       {
         "from": "mn-stream-stone",
@@ -383,13 +385,14 @@
       }
     ]
   },
-  "difficultyTier": 1,
+  "difficultyTier": 2,
   "design": {
     "archetype": "open-steppe-river-expedition",
-    "signatureMechanic": "gust-shelter-long-traverse",
+    "signatureMechanic": "gust-shelter-and-wooden-river-ferry",
     "mechanics": [
       "wind-gusts",
-      "stairs-and-slopes"
+      "stairs-and-slopes",
+      "moving-platform"
     ],
     "terrain": [
       "ground",

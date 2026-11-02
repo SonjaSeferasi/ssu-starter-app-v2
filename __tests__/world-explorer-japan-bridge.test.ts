@@ -62,16 +62,16 @@ describe('Japan bridge visible geometry and physical walking surface',()=>{
    expect(Math.min(...support.map(hit=>Math.abs(hit.point.y-s.y-.015)))).toBeLessThan(.022);supportedFrames++;
   }
   expect(supportedFrames).toBeGreaterThan(120);expect([...visited]).toEqual(expect.arrayContaining([start.id,bridge.id,exit.id]));expect(simulation.state.hearts).toBe(3);expect(simulation.state.checkpointId).toBe('jp-checkpoint-01');
-  expect(simulation.state.grounded).toBe(true);expect(simulation.state.standing).toBe(exit.id);expect(simulation.state.y).toBe(exit.y);
+  expect(simulation.state.grounded).toBe(true);expect(simulation.state.standing).toBe(exit.id);expect(simulation.state.y).toBeCloseTo(platformSurfaceY(exit,simulation.state.x),5);
   dispose(visible);
  });
 
- it('keeps the visible entrance drop small and the final plank level with the grassy exit',()=>{
+ it('keeps the entrance safely connected and the final plank level with the beginner exit ramp',()=>{
   const level=levelDefinitionFor('JPN'),start=level.platforms.find(p=>p.id==='jp-start')!,bridge=level.platforms.find(p=>p.id==='jp-lower-bridge')!,exit=level.platforms.find(p=>p.id==='jp-bridge-exit')!,definitions=[start,bridge,exit],roots=definitions.map(build);
   roots.forEach((root,i)=>{dressJapanPlatform(root,definitions[i]);batchStatic(root);root.updateMatrixWorld(true);});
-  expect(bridge.x).toBeLessThan(start.x+start.width);expect(exit.x).toBe(bridge.x+bridge.width);
+  expect(bridge.x).toBeLessThanOrEqual(start.x+start.width);expect(exit.x).toBe(bridge.x+bridge.width);
   const count=Math.ceil(bridge.width/.27),entryX=Array.from({length:count},(_,i)=>bridge.x+(i+.5)*bridge.width/count).find(x=>x>start.x+start.width)!,startTop=deckHit(roots[0],start.x+start.width-.02)!.point.y,entryTop=deckHit(roots[1],entryX)!.point.y;
-  expect(startTop-entryTop).toBeGreaterThan(.8);expect(startTop-entryTop).toBeLessThan(.9);
+  expect(startTop-entryTop).toBeGreaterThan(1.7);expect(startTop-entryTop).toBeLessThan(1.9);
   for(const z of [-.54,0,.54]){
    const finalPlank=deckHit(roots[1],bridge.x+bridge.width-.02,z),grass=deckHit(roots[2],exit.x+.02,z);expect(finalPlank).toBeDefined();expect(grass).toBeDefined();expect(Math.abs(finalPlank.point.y-grass.point.y)).toBeLessThan(.002);
   }

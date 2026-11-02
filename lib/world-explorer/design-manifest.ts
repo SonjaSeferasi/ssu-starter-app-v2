@@ -82,7 +82,7 @@ export type DesignRecord={
 
 const hash=(text:string)=>[...text].reduce((n,c)=>(Math.imul(n,31)+c.charCodeAt(0))>>>0,17);
 /** Measured tiers of the template levels (see difficulty.ts; tested). */
-const templateTiers:Record<string,DifficultyTier>={JPN:2,ITA:3,CAN:3,AUS:3,IND:3,ZAF:3,FRA:2,USA:3};
+const templateTiers:Record<string,DifficultyTier>={JPN:1,ITA:3,CAN:3,AUS:3,IND:3,ZAF:3,FRA:2,USA:3};
 export const tierQuota:Record<DifficultyTier,number>={1:39,2:39,3:39,4:38,5:38};
 
 let cache:DesignRecord[]|null=null;

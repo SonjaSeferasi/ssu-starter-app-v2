@@ -38,3 +38,22 @@ describe('Paektu scenic reveal',()=>{
   expect(back-front).toBeGreaterThan(8);mounted.dispose();
  });
 });
+
+describe('Phase A country-specific repairs',()=>{
+ it('plants Seoul street trees on the visible pavement, including their planter rims',()=>{
+  const level=levelDefinitionFor('KOR'),scene=new T.Scene(),mounted=createEastAsiaEnvironment('KOR').mount({scene,level,finish:80,low:true,reducedMotion:true});mounted.root.updateMatrixWorld(true);
+  const pavement=mounted.root.getObjectByName('seoul-grounded-riverfront-pavement')!,grove=mounted.root.getObjectByName('seoul-street-trees')!;let checked=0;
+  grove.traverse(o=>{if(!(o instanceof T.InstancedMesh))return;const matrix=new T.Matrix4(),point=new T.Vector3();for(let i=0;i<o.count;i++){o.getMatrixAt(i,matrix);point.setFromMatrixPosition(matrix).applyMatrix4(o.matrixWorld);const hits=new T.Raycaster(new T.Vector3(point.x,point.y+.05,point.z),new T.Vector3(0,-1,0)).intersectObject(pavement);expect(hits.length).toBeGreaterThan(0);expect(Math.abs(hits[0].point.y-point.y)).toBeLessThan(.03);checked++;}});
+  expect(checked).toBeGreaterThan(10);mounted.dispose();
+ });
+ it('puts a planted optional garden on Seoul’s service lift without changing its collision cap',()=>{
+  const p=levelDefinitionFor('KOR').platforms.find(p=>p.style==='roof-garden-lift')!,root=new T.Group();eastAsiaTerrain(root,p,'KOR',true);expect(root.userData.optionalRoofGarden).toBe(true);expect(root.getObjectByName('country-moving-lift')).toBeDefined();disposeTree(root);
+ });
+ it('keeps the revised measured tiers and required mechanics in the actual authored routes',async()=>{
+  const {analyzeDifficulty}=await import('../lib/world-explorer/difficulty');
+  for(const [code,tier]of Object.entries({CHN:5,JPN:1,MNG:2,PRK:4,KOR:3})){const level=levelDefinitionFor(code);expect(level.difficultyTier).toBe(tier);expect(analyzeDifficulty(level).measuredTier).toBe(tier);}
+  expect(levelDefinitionFor('CHN').zones?.length).toBeGreaterThan(0);expect(levelDefinitionFor('MNG').platforms.some(p=>p.style==='river-ferry'&&p.motion)).toBe(true);
+  const paektu=levelDefinitionFor('PRK');expect(paektu.hazards.every(h=>h.style==='rockfall'&&h.cycle!.warning>=1.5)).toBe(true);expect(paektu.zones?.length).toBeGreaterThan(0);
+  expect(levelDefinitionFor('KOR').gates?.length).toBeGreaterThan(0);
+ });
+});

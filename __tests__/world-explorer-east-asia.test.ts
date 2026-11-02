@@ -43,7 +43,7 @@ describe.each(Object.keys(eastAsiaPlaces) as NewEastAsiaCode[])('%s East Asia au
     const fixture=structuredClone(level);fixture.spawn={platformId:spawn.id,offset:Math.max(.5,spawn.width-2.2)};
     const run=playAsiaRoute(fixture,previous?[previous,edge.from,edge.to]:[edge.from,edge.to],{wait,stopAt:edge.to,maxFrames:1800});
     expect(run.visited.has(edge.to),`${code}: ${edge.from} → ${edge.to} at ${wait}s`).toBe(true);
-    expect(run.simulation.state.hearts).toBe(3);
+    expect(run.simulation.state.hearts,`${code}: ${edge.from} → ${edge.to} at ${wait}s, x=${run.simulation.state.x}`).toBe(3);
    }
   }
  });

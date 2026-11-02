@@ -27,7 +27,7 @@
     {
       "id": "cn-step",
       "x": 10.8,
-      "y": 0.9,
+      "y": 1.22,
       "width": 4,
       "depth": 3.2,
       "thickness": 3,
@@ -42,7 +42,7 @@
     {
       "id": "cn-spur",
       "x": 16.7,
-      "y": 1.8,
+      "y": 2.45,
       "width": 4.5,
       "depth": 3.2,
       "thickness": 3,
@@ -57,7 +57,7 @@
     {
       "id": "cn-lift",
       "x": 23,
-      "y": 2.4,
+      "y": 2.9,
       "width": 3.5,
       "depth": 3.2,
       "thickness": 1.1,
@@ -73,7 +73,7 @@
     {
       "id": "cn-rest",
       "x": 28,
-      "y": 3.1,
+      "y": 4.2,
       "width": 8,
       "depth": 3.2,
       "thickness": 3,
@@ -88,7 +88,7 @@
     {
       "id": "cn-crumble",
       "x": 38,
-      "y": 4.1,
+      "y": 5.5,
       "width": 4.5,
       "depth": 3.2,
       "thickness": 3,
@@ -107,7 +107,7 @@
     {
       "id": "cn-crest",
       "x": 44.3,
-      "y": 4.9,
+      "y": 6.65,
       "width": 8,
       "depth": 3.2,
       "thickness": 3,
@@ -122,7 +122,7 @@
     {
       "id": "cn-low",
       "x": 52.3,
-      "y": 2.1,
+      "y": 3.5,
       "width": 10,
       "depth": 3.2,
       "thickness": 1.1,
@@ -137,7 +137,7 @@
     {
       "id": "cn-end",
       "x": 64,
-      "y": 2.4,
+      "y": 3.8,
       "width": 9,
       "depth": 3.2,
       "thickness": 3,
@@ -152,7 +152,7 @@
     {
       "id": "cn-bonus-a",
       "x": 53.4,
-      "y": 5.9,
+      "y": 7.65,
       "width": 3.5,
       "depth": 3.2,
       "thickness": 0.4,
@@ -167,7 +167,7 @@
     {
       "id": "cn-bonus-b",
       "x": 58.7,
-      "y": 5.5,
+      "y": 7.25,
       "width": 3.1,
       "depth": 3.2,
       "thickness": 0.35,
@@ -356,7 +356,21 @@
     "offset": 7
   },
   "hazards": [],
-  "zones": [],
+  "zones": [
+    {
+      "id": "cn-exposed-ridge",
+      "type": "wind",
+      "x": 37,
+      "width": 16,
+      "bottom": 3.8,
+      "top": 11,
+      "force": 0.8,
+      "period": 8,
+      "warning": 1.5,
+      "duration": 1.8,
+      "phase": 0.4
+    }
+  ],
   "gates": [],
   "switches": [],
   "enemies": [],
@@ -488,13 +502,14 @@
       }
     ]
   },
-  "difficultyTier": 4,
+  "difficultyTier": 5,
   "design": {
     "archetype": "sandstone-spire-ascent",
-    "signatureMechanic": "lift-to-crumbling-ridge",
+    "signatureMechanic": "warned-wind-lift-and-crumbling-ridge",
     "mechanics": [
       "vertical-lift",
-      "collapsing-ledge"
+      "collapsing-ledge",
+      "wind-gusts"
     ],
     "terrain": [
       "cliff",

@@ -11,11 +11,11 @@ import {skyEnvironment} from './kit/sky';
 import {createGate,createPressurePlate,createSwingRopes} from './kit/mechanisms';
 import {createTimedHazard} from './kit/hazards';
 import {levelDefinitionFor} from '../../lib/world-explorer/level-manifest';
-import {LevelSimulation,cameraFrame,hazardAt,solidPlatform,windAt} from '../../lib/world-explorer/simulation';
+import {FIXED_STEP,LevelSimulation,cameraFrame,hazardAt,solidPlatform,windAt} from '../../lib/world-explorer/simulation';
 import {cameraTrackingHeight} from '../../lib/world-explorer/game-camera';
 import {explorerAssist} from '../../lib/world-explorer/difficulty';
 import {createExplorerAudio} from '../../lib/world-explorer/audio';
-import type {CountryCallbacks,ExplorerRunPreferences,PlatformDefinition} from '../../lib/world-explorer/game-types';
+import type {CountryCallbacks,ExplorerRunPreferences,PlatformDefinition,SimulationEvent,SimulationInput} from '../../lib/world-explorer/game-types';
 import type {CountryEnvironment,EnvironmentContext} from './countries/types';
 export type {CountryCallbacks} from '../../lib/world-explorer/game-types';
 
@@ -54,7 +54,16 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
  canvas.dataset.countryCode=country.code;canvas.dataset.levelId=level.id;canvas.dataset.landmarkName=profile.landmarkName;canvas.dataset.landmarkKind=profile.landmarkKind;canvas.dataset.representation='stylized';canvas.dataset.developmentStage=authored?'prototype':'preview';canvas.dataset.environment=environment?.id||'preview';
  const camera=new T.PerspectiveCamera(44,1,.1,190),r=random(hash(country.code)),finish=simulation.position(level.finish).x;
  const context:EnvironmentContext={scene,renderer,level,finish,low,reducedMotion};
- let reviewView:'gameplay'|'overview'|'scan'='gameplay',scanX=0,performanceStart=performance.now(),performanceFrames=0;
+ let reviewView:'gameplay'|'overview'|'scan'|'camera'='gameplay',scanX=0,scanY:number|undefined,performanceStart=performance.now(),performanceFrames=0;
+ // Review playthroughs: with ?review=1&autoplay=1 the run waits at its start
+ // until an input script arrives, then replays it one fixed step at a time,
+ // so the in-page run follows the analysed route exactly. Events are tallied.
+ const holdForAutoplay=new URLSearchParams(window.location.search).get('review')==='1'&&new URLSearchParams(window.location.search).get('autoplay')==='1',reviewTally:Record<string,number>={};
+ let autoplay:{inputs:SimulationInput[];index:number;carry:number}|null=null;
+ // Review-only: an explicit camera for landmark captures, and recent frame
+ // times so a capture can report average FPS and 1% lows, not only a counter.
+ let reviewCamera:{position:[number,number,number];target:[number,number,number];fov?:number}|null=null;const frameTimes:number[]=[];
+ const groundAt=(x:number)=>{const under=level.platforms.filter(p=>p.route!=='upper'&&x>=p.x-.5&&x<=p.x+p.width+.5);return under.length?Math.max(...under.map(p=>p.y+(p.slope||0)*Math.max(0,Math.min(1,(x-p.x)/p.width)))):level.platforms.reduce((best,p)=>Math.abs(p.x+p.width/2-x)<Math.abs(best.x+best.width/2-x)?p:best).y;};
  const platforms=level.platforms.map((p,i)=>{
   const root=island(scene,p.x+p.width/2,p.y,p.width,p.depth,biome,i+hash(country.code),p.thickness);
   if(environment)environment.dressPlatform(root,p,context);
@@ -157,7 +166,8 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
   // terraces and long falls; the camera itself eases into the new elevation.
   cameraGroundY=cameraTrackingHeight(cameraGroundY,s.y,s.grounded||s.status==='respawning');
   const target=cameraFrame(level,s.x,level.countryId==='JP'||level.camera?.distance?cameraGroundY:s.y,camera.aspect),blend=1-Math.exp(-dt*4);
- if(reviewView==='scan'){const frame=cameraFrame(level,scanX,1,camera.aspect);camera.position.set(frame.x,frame.y,frame.z);camera.lookAt(frame.x,frame.lookY,-1);}
+ if(reviewView==='scan'){const frame=cameraFrame(level,scanX,scanY??groundAt(scanX),camera.aspect);camera.position.set(frame.x,frame.y,frame.z);camera.lookAt(frame.x,frame.lookY,-1);}
+  else if(reviewView==='camera'&&reviewCamera){camera.far=600;camera.fov=reviewCamera.fov??44;camera.position.set(...reviewCamera.position);camera.lookAt(...reviewCamera.target);camera.updateProjectionMatrix();}
   else if(reviewView==='overview'){const distance=(finish+18)/(2*Math.tan(T.MathUtils.degToRad(44)/2)*camera.aspect)+18;camera.far=Math.max(300,distance+200);camera.fov=44;camera.position.set(finish/2,19,distance);camera.lookAt(finish/2,1,-14);camera.updateProjectionMatrix();}
   else{camera.position.lerp(new T.Vector3(target.x,target.y,target.z),blend);cameraLookY=T.MathUtils.lerp(cameraLookY,target.lookY,blend);camera.lookAt(camera.position.x,cameraLookY,-1);const fov=44;if(Math.abs(camera.fov-fov)>.02){camera.fov=T.MathUtils.damp(camera.fov,fov,3,dt);camera.updateProjectionMatrix();}}
   scenery?.frame(camera.position.x);sun.position.set(s.x-8,18,12);sun.target.position.set(s.x,0,0);
@@ -165,11 +175,21 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
   if(!reducedMotion){flag.tick(visualTime);portal.rotation.z=Math.sin(visualTime*.7)*.025;discoveryOrb.rotation.y=visualTime*.6;}
   renderer.render(scene,camera);
  };
+ const replay=(dt:number)=>{
+  const run=autoplay!,out:SimulationEvent[]=[];if(run.index>=run.inputs.length)return simulation.advance(dt);
+  run.carry=Math.min(.25,run.carry+dt);
+  while(run.carry+1e-9>=FIXED_STEP&&run.index<run.inputs.length){
+   if(['paused','discovery','completed','failed'].includes(simulation.state.status)){run.carry=0;break;}
+   run.carry-=FIXED_STEP;simulation.setInput(run.inputs[run.index++]);out.push(...simulation.advance(FIXED_STEP));
+   if(out.some(event=>event.type==='discovery'||event.type==='finish'||event.type==='failed'))break;
+  }
+  return out;
+ };
  const loop=(stamp:number)=>{
   if(dead||graphicsFailed)return;
   try{
    const dt=Math.min(.25,Math.max(0,(stamp-previous)/1000));previous=stamp;
-   const events=simulation.advance(dt);
+   const events=autoplay?replay(dt):holdForAutoplay?[]:simulation.advance(dt);for(const event of events)reviewTally[event.type]=(reviewTally[event.type]||0)+1;
    for(const event of events){
     if(event.type==='coin'||event.type==='star'||event.type==='block'){
      const item=event.type==='coin'?level.coins.find(item=>item.id===event.id):event.type==='star'?level.stars.find(item=>item.id===event.id):undefined;
@@ -186,9 +206,9 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
     if(event.type==='failed'&&!finishedReported){finishedReported=true;clear();audio.pause();callbacks.onFail?.();}
     if(event.type==='finish'&&!finishedReported){finishedReported=true;clear();notify();callbacks.onFinish(simulation.state.coins,{stars:simulation.state.stars,elapsedMs:Math.round(simulation.state.elapsedSeconds*1000),discoveryFound:simulation.state.discoveryFound});}
    }
-   notify();render(dt);performanceFrames++;if(stamp-performanceStart>=1000){callbacks.onPerformance?.({fps:Math.round(performanceFrames*1000/(stamp-performanceStart)),drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles});performanceStart=stamp;performanceFrames=0;}frame=requestAnimationFrame(loop);
+   notify();render(dt);performanceFrames++;frameTimes.push(dt*1000);if(frameTimes.length>1200)frameTimes.shift();if(stamp-performanceStart>=1000){callbacks.onPerformance?.({fps:Math.round(performanceFrames*1000/(stamp-performanceStart)),drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles});performanceStart=stamp;performanceFrames=0;}frame=requestAnimationFrame(loop);
   }catch(error){graphicsFailure(error instanceof Error?error.message:'The 3D scene could not continue. Please retry.');}
  };
  frame=requestAnimationFrame(loop);canvas.dataset.ready='true';callbacks.onReady();focus();
- return{pause(){simulation.pause();clear();audio.pause();},resume(){if(finishedReported||graphicsFailed)return;simulation.resume();clear();previous=performance.now();audio.resume();focus();},setReviewView(view:'gameplay'|'overview'|'scan',x=0){reviewView=view;scanX=x;clear();scenery?.setView?.(view==='overview'?'overview':'gameplay');if(view!=='gameplay'){simulation.pause();audio.pause();}else{simulation.resume();audio.resume();const position=cameraFrame(level,simulation.state.x,simulation.state.y,camera.aspect);camera.position.set(position.x,position.y,position.z);cameraLookY=position.lookY;cameraGroundY=simulation.state.y;camera.far=190;camera.updateProjectionMatrix();focus();}render(0);},setPreferences(preferences:ExplorerRunPreferences){audio.setVolumes({musicVolume:preferences.musicVolume,effectsVolume:preferences.effectsVolume});if(preferences.reducedMotion!==undefined){reducedMotion=preferences.reducedMotion;context.reducedMotion=reducedMotion;scenery?.setReducedMotion(reducedMotion);}},destroy(){if(dead)return;dead=true;cancelAnimationFrame(frame);observer.disconnect();window.removeEventListener('keydown',keydown);window.removeEventListener('keyup',keyup);window.removeEventListener('blur',clear);window.removeEventListener('pointerdown',unlock);parent.removeEventListener('explorer-input',control);canvas.removeEventListener('pointerdown',focus);canvas.removeEventListener('webglcontextlost',contextLost);bursts.forEach(burst=>burst.effect.dispose());haloMaterial.map?.dispose();haloMaterial.dispose();audio.dispose();flag.dispose();finalized?.dispose();scenery?.dispose();scene.environment=null;reflections?.dispose();dispose(renderer,scene);}};
+ return{autoplay(inputs:SimulationInput[]){autoplay={inputs,index:0,carry:0};clear();focus();},reviewState(){const s=simulation.state;return{...simulation.stats(),status:s.status,x:s.x,y:s.y,standing:s.standing,elapsed:s.elapsedSeconds,discoveryFound:s.discoveryFound,coinIds:[...simulation.collectedCoins].sort(),starIds:[...simulation.collectedStars].sort(),autoplayIndex:autoplay?.index??0,autoplayLength:autoplay?.inputs.length??0,tally:{...reviewTally}};},pause(){simulation.pause();clear();audio.pause();},resume(){if(finishedReported||graphicsFailed)return;simulation.resume();clear();previous=performance.now();audio.resume();focus();},reviewStats(){const memory=renderer.info.memory;return{frameTimes:[...frameTimes],calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:memory.geometries,textures:memory.textures};},setReviewCamera(view:{position:[number,number,number];target:[number,number,number];fov?:number}){reviewCamera=view;reviewView='camera';clear();scenery?.setView?.('gameplay');simulation.pause();audio.pause();render(0);},setReviewView(view:'gameplay'|'overview'|'scan',x=0,y?:number){reviewView=view;scanX=x;scanY=y;clear();scenery?.setView?.(view==='overview'?'overview':'gameplay');if(view!=='gameplay'){simulation.pause();audio.pause();}else{simulation.resume();audio.resume();const position=cameraFrame(level,simulation.state.x,simulation.state.y,camera.aspect);camera.position.set(position.x,position.y,position.z);cameraLookY=position.lookY;cameraGroundY=simulation.state.y;camera.far=190;camera.updateProjectionMatrix();focus();}render(0);},setPreferences(preferences:ExplorerRunPreferences){audio.setVolumes({musicVolume:preferences.musicVolume,effectsVolume:preferences.effectsVolume});if(preferences.reducedMotion!==undefined){reducedMotion=preferences.reducedMotion;context.reducedMotion=reducedMotion;scenery?.setReducedMotion(reducedMotion);}},destroy(){if(dead)return;dead=true;cancelAnimationFrame(frame);observer.disconnect();window.removeEventListener('keydown',keydown);window.removeEventListener('keyup',keyup);window.removeEventListener('blur',clear);window.removeEventListener('pointerdown',unlock);parent.removeEventListener('explorer-input',control);canvas.removeEventListener('pointerdown',focus);canvas.removeEventListener('webglcontextlost',contextLost);bursts.forEach(burst=>burst.effect.dispose());haloMaterial.map?.dispose();haloMaterial.dispose();audio.dispose();flag.dispose();finalized?.dispose();scenery?.dispose();scene.environment=null;reflections?.dispose();dispose(renderer,scene);}};
 }

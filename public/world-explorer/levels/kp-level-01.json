@@ -2,7 +2,7 @@
   "id": "kp-level-01",
   "countryId": "KP",
   "legacyCode": "PRK",
-  "title": "Mount Paektu: Caldera Steam Trail",
+  "title": "Mount Paektu: Volcanic Ridge Trail",
   "environmentId": "north-korea-paektu",
   "spawn": {
     "platformId": "kp-start",
@@ -74,7 +74,7 @@
     {
       "id": "kp-rock-shelf",
       "x": 53,
-      "y": 1.4,
+      "y": 1.8,
       "width": 6,
       "depth": 3.2,
       "thickness": 3,
@@ -84,12 +84,16 @@
       "phase": 0,
       "period": 5,
       "terrain": "cliff",
-      "route": "main"
+      "route": "main",
+      "collapse": {
+        "delay": 3.5,
+        "respawn": 5
+      }
     },
     {
       "id": "kp-rim",
       "x": 61,
-      "y": 2.4,
+      "y": 2.9,
       "width": 10,
       "depth": 3.2,
       "thickness": 3,
@@ -298,35 +302,49 @@
   },
   "hazards": [
     {
-      "id": "kp-steam-a",
+      "id": "kp-loose-rock-a",
       "x": 24,
       "y": -0.2,
       "width": 0.8,
       "height": 2.4,
-      "style": "steam",
+      "style": "rockfall",
       "cycle": {
         "period": 7,
-        "warning": 1.2,
+        "warning": 1.6,
         "active": 1.5,
         "phase": 0
       }
     },
     {
-      "id": "kp-steam-b",
+      "id": "kp-loose-rock-b",
       "x": 45.5,
       "y": 0.6,
       "width": 0.8,
-      "height": 2.5,
-      "style": "steam",
+      "height": 2.4,
+      "style": "rockfall",
       "cycle": {
         "period": 8,
-        "warning": 1.4,
+        "warning": 1.6,
         "active": 1.6,
         "phase": 1
       }
     }
   ],
-  "zones": [],
+  "zones": [
+    {
+      "id": "kp-ridge-wind",
+      "type": "wind",
+      "x": 52,
+      "width": 20,
+      "bottom": 0.5,
+      "top": 8,
+      "force": 0.65,
+      "period": 9,
+      "warning": 1.5,
+      "duration": 1.7,
+      "phase": 2
+    }
+  ],
   "gates": [],
   "switches": [],
   "enemies": [],
@@ -436,12 +454,14 @@
       }
     ]
   },
-  "difficultyTier": 3,
+  "difficultyTier": 4,
   "design": {
     "archetype": "volcanic-terrace-timing",
-    "signatureMechanic": "warned-steam-and-caldera-descent",
+    "signatureMechanic": "warned-loose-rock-and-caldera-ridge-wind",
     "mechanics": [
       "timed-hazard",
+      "wind-gusts",
+      "collapsing-ledge",
       "stairs-and-slopes"
     ],
     "terrain": [

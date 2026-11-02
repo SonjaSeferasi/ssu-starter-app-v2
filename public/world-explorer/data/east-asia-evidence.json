@@ -1,9 +1,9 @@
 {
-  "scope": "Four new East Asia prototypes plus Japan regression audit; no country is release-approved.",
+  "scope": "Revised East Asia Phase A mechanics and measured tiers; no country is release-approved.",
   "records": [
     {
       "code": "CHN",
-      "sourceSha256": "345d87719ef3e5c463e90fd55d0988c051d783f5622cd3068e82ff2dec1e0ae3",
+      "sourceSha256": "2766ed74180b84bbf72d113c2a5fb539a7e8e5169fe8552b14c2da9f61030388",
       "automatedPassed": true,
       "staticChecks": [
         {
@@ -64,13 +64,13 @@
           "id": 10,
           "name": "Every mandatory jump fits the measured jump envelope",
           "ok": true,
-          "detail": "Dmax 5.40, Hmax 1.95; hardest gap 37%, step 51%."
+          "detail": "Dmax 5.40, Hmax 1.95; hardest gap 37%, step 67%."
         },
         {
           "id": 11,
           "name": "Measured tier matches the declared tier",
           "ok": true,
-          "detail": "Declared 4, measured 4 (score 3.57)."
+          "detail": "Declared 5, measured 5 (score 5.36)."
         },
         {
           "id": 12,
@@ -91,27 +91,27 @@
             "to": "cn-step",
             "action": "JUMP",
             "gap": 1.8000000000000007,
-            "rise": 0.9,
+            "rise": 1.22,
             "gapPercent": 33.333333333333464,
-            "stepPercent": 46.15384615384614,
-            "tier": 3
+            "stepPercent": 62.56410256410254,
+            "tier": 5
           },
           {
             "from": "cn-step",
             "to": "cn-spur",
             "action": "JUMP",
             "gap": 1.8999999999999986,
-            "rise": 0.9,
+            "rise": 1.2300000000000002,
             "gapPercent": 35.18518518518528,
-            "stepPercent": 46.15384615384614,
-            "tier": 3
+            "stepPercent": 63.076923076923066,
+            "tier": 5
           },
           {
             "from": "cn-spur",
             "to": "cn-lift",
             "action": "RIDE_PLATFORM",
             "gap": 1.8000000000000007,
-            "rise": -2.220446049250313e-16,
+            "rise": -0.15000000000000036,
             "gapPercent": 33.333333333333464,
             "stepPercent": 0,
             "tier": 1
@@ -121,30 +121,30 @@
             "to": "cn-rest",
             "action": "JUMP",
             "gap": 1.5,
-            "rise": 0.10000000000000009,
+            "rise": 0.7000000000000002,
             "gapPercent": 27.777777777777878,
-            "stepPercent": 5.12820512820513,
-            "tier": 1
+            "stepPercent": 35.8974358974359,
+            "tier": 2
           },
           {
             "from": "cn-rest",
             "to": "cn-crumble",
             "action": "JUMP",
             "gap": 2,
-            "rise": 0.9999999999999996,
+            "rise": 1.2999999999999998,
             "gapPercent": 37.037037037037166,
-            "stepPercent": 51.28205128205124,
-            "tier": 4
+            "stepPercent": 66.66666666666664,
+            "tier": 5
           },
           {
             "from": "cn-crumble",
             "to": "cn-crest",
             "action": "JUMP",
             "gap": 1.7999999999999972,
-            "rise": 0.8000000000000007,
+            "rise": 1.1500000000000004,
             "gapPercent": 33.3333333333334,
-            "stepPercent": 41.02564102564104,
-            "tier": 3
+            "stepPercent": 58.97435897435898,
+            "tier": 4
           },
           {
             "from": "cn-low",
@@ -159,18 +159,19 @@
         ],
         "mechanics": [
           "moving",
-          "collapsing"
+          "collapsing",
+          "wind"
         ],
-        "measuredTier": 4,
-        "declaredTier": 4,
-        "score": 3.5733333333333333,
+        "measuredTier": 5,
+        "declaredTier": 5,
+        "score": 5.36,
         "warnings": []
       },
       "runs": [
         {
           "route": "main",
           "startDelay": 0,
-          "seconds": 14.93,
+          "seconds": 14.82,
           "coins": 16,
           "stars": 2,
           "hearts": 3
@@ -178,7 +179,7 @@
         {
           "route": "bonus",
           "startDelay": 0,
-          "seconds": 14.92,
+          "seconds": 14.82,
           "coins": 16,
           "stars": 3,
           "hearts": 3
@@ -186,7 +187,7 @@
         {
           "route": "main",
           "startDelay": 0.7,
-          "seconds": 15.72,
+          "seconds": 18.38,
           "coins": 16,
           "stars": 2,
           "hearts": 3
@@ -194,7 +195,7 @@
         {
           "route": "bonus",
           "startDelay": 0.7,
-          "seconds": 15.67,
+          "seconds": 18.37,
           "coins": 16,
           "stars": 3,
           "hearts": 3
@@ -202,7 +203,7 @@
         {
           "route": "main",
           "startDelay": 1.9,
-          "seconds": 17.97,
+          "seconds": 18.37,
           "coins": 16,
           "stars": 2,
           "hearts": 3
@@ -210,7 +211,7 @@
         {
           "route": "bonus",
           "startDelay": 1.9,
-          "seconds": 17.95,
+          "seconds": 18.38,
           "coins": 16,
           "stars": 3,
           "hearts": 3
@@ -218,7 +219,7 @@
         {
           "route": "main",
           "startDelay": 3.1,
-          "seconds": 19.1,
+          "seconds": 19.13,
           "coins": 16,
           "stars": 2,
           "hearts": 3
@@ -226,7 +227,7 @@
         {
           "route": "bonus",
           "startDelay": 3.1,
-          "seconds": 19.07,
+          "seconds": 19.13,
           "coins": 16,
           "stars": 3,
           "hearts": 3
@@ -239,7 +240,7 @@
     },
     {
       "code": "MNG",
-      "sourceSha256": "6e336d7b222ba265d5faa9f9b78ecfe687819cb68fc3f75182c776ae156b9e09",
+      "sourceSha256": "b4a50b678a800639f8f58893b483b93c9edd21af3bcbd36cffa6d909c8787973",
       "automatedPassed": true,
       "staticChecks": [
         {
@@ -300,13 +301,13 @@
           "id": 10,
           "name": "Every mandatory jump fits the measured jump envelope",
           "ok": true,
-          "detail": "Dmax 5.40, Hmax 1.95; hardest gap 33%, step 15%."
+          "detail": "Dmax 5.40, Hmax 1.95; hardest gap 33%, step 41%."
         },
         {
           "id": 11,
           "name": "Measured tier matches the declared tier",
           "ok": true,
-          "detail": "Declared 1, measured 1 (score 1.12)."
+          "detail": "Declared 2, measured 2 (score 1.91)."
         },
         {
           "id": 12,
@@ -323,11 +324,21 @@
         },
         "jumps": [
           {
+            "from": "mn-bank",
+            "to": "mn-stream-stone",
+            "action": "RIDE_PLATFORM",
+            "gap": 0,
+            "rise": -0.6200000000000001,
+            "gapPercent": 0,
+            "stepPercent": 0,
+            "tier": 0
+          },
+          {
             "from": "mn-stream-stone",
             "to": "mn-shelter",
             "action": "JUMP",
             "gap": 1.7999999999999972,
-            "rise": -0.3,
+            "rise": -0.21999999999999997,
             "gapPercent": 33.3333333333334,
             "stepPercent": 0,
             "tier": 1
@@ -337,35 +348,36 @@
             "to": "mn-ford",
             "action": "JUMP",
             "gap": 1.5,
-            "rise": 0,
+            "rise": 0.8,
             "gapPercent": 27.777777777777878,
-            "stepPercent": 0,
-            "tier": 1
+            "stepPercent": 41.025641025641015,
+            "tier": 3
           },
           {
             "from": "mn-ford",
             "to": "mn-end",
             "action": "JUMP",
             "gap": 1.7999999999999972,
-            "rise": 0.3,
+            "rise": -0.5,
             "gapPercent": 33.3333333333334,
-            "stepPercent": 15.38461538461538,
+            "stepPercent": 0,
             "tier": 1
           }
         ],
         "mechanics": [
+          "moving",
           "wind"
         ],
-        "measuredTier": 1,
-        "declaredTier": 1,
-        "score": 1.12,
+        "measuredTier": 2,
+        "declaredTier": 2,
+        "score": 1.9066666666666667,
         "warnings": []
       },
       "runs": [
         {
           "route": "main",
           "startDelay": 0,
-          "seconds": 17.65,
+          "seconds": 17.62,
           "coins": 12,
           "stars": 2,
           "hearts": 3
@@ -381,7 +393,7 @@
         {
           "route": "main",
           "startDelay": 0.7,
-          "seconds": 18.35,
+          "seconds": 18.33,
           "coins": 12,
           "stars": 2,
           "hearts": 3
@@ -397,7 +409,7 @@
         {
           "route": "main",
           "startDelay": 1.9,
-          "seconds": 19.55,
+          "seconds": 19.52,
           "coins": 12,
           "stars": 2,
           "hearts": 3
@@ -413,7 +425,7 @@
         {
           "route": "main",
           "startDelay": 3.1,
-          "seconds": 20.72,
+          "seconds": 20.68,
           "coins": 12,
           "stars": 2,
           "hearts": 3
@@ -434,7 +446,7 @@
     },
     {
       "code": "PRK",
-      "sourceSha256": "b6724bc4931ec9aa0c114500faf19e56dd7a0dd567663ad91812ad964f63b8fb",
+      "sourceSha256": "0dcbe1cb794b29272434ae81d00c6f2b262b038813d2d99bfad1c5574bbbcb06",
       "automatedPassed": true,
       "staticChecks": [
         {
@@ -495,13 +507,13 @@
           "id": 10,
           "name": "Every mandatory jump fits the measured jump envelope",
           "ok": true,
-          "detail": "Dmax 5.40, Hmax 1.95; hardest gap 37%, step 51%."
+          "detail": "Dmax 5.40, Hmax 1.95; hardest gap 37%, step 62%."
         },
         {
           "id": 11,
           "name": "Measured tier matches the declared tier",
           "ok": true,
-          "detail": "Declared 3, measured 3 (score 2.79)."
+          "detail": "Declared 4, measured 4 (score 3.69)."
         },
         {
           "id": 12,
@@ -522,19 +534,19 @@
             "to": "kp-rock-shelf",
             "action": "JUMP",
             "gap": 2,
-            "rise": 0.7999999999999999,
+            "rise": 1.2000000000000002,
             "gapPercent": 37.037037037037166,
-            "stepPercent": 41.02564102564101,
-            "tier": 3
+            "stepPercent": 61.53846153846153,
+            "tier": 5
           },
           {
             "from": "kp-rock-shelf",
             "to": "kp-rim",
             "action": "JUMP",
             "gap": 2,
-            "rise": 1,
+            "rise": 1.0999999999999999,
             "gapPercent": 37.037037037037166,
-            "stepPercent": 51.28205128205126,
+            "stepPercent": 56.41025641025639,
             "tier": 4
           },
           {
@@ -549,18 +561,20 @@
           }
         ],
         "mechanics": [
+          "collapsing",
+          "wind",
           "timed-hazard"
         ],
-        "measuredTier": 3,
-        "declaredTier": 3,
-        "score": 2.7866666666666666,
+        "measuredTier": 4,
+        "declaredTier": 4,
+        "score": 3.6933333333333334,
         "warnings": []
       },
       "runs": [
         {
           "route": "main",
           "startDelay": 0,
-          "seconds": 26.43,
+          "seconds": 26.42,
           "coins": 14,
           "stars": 2,
           "hearts": 3
@@ -568,7 +582,7 @@
         {
           "route": "bonus",
           "startDelay": 0,
-          "seconds": 26.45,
+          "seconds": 26.43,
           "coins": 15,
           "stars": 3,
           "hearts": 3
@@ -576,7 +590,7 @@
         {
           "route": "main",
           "startDelay": 0.7,
-          "seconds": 26.43,
+          "seconds": 26.42,
           "coins": 14,
           "stars": 2,
           "hearts": 3
@@ -584,7 +598,7 @@
         {
           "route": "bonus",
           "startDelay": 0.7,
-          "seconds": 26.45,
+          "seconds": 26.43,
           "coins": 15,
           "stars": 3,
           "hearts": 3
@@ -592,7 +606,7 @@
         {
           "route": "main",
           "startDelay": 1.9,
-          "seconds": 26.43,
+          "seconds": 26.42,
           "coins": 14,
           "stars": 2,
           "hearts": 3
@@ -600,7 +614,7 @@
         {
           "route": "bonus",
           "startDelay": 1.9,
-          "seconds": 26.45,
+          "seconds": 26.43,
           "coins": 15,
           "stars": 3,
           "hearts": 3
@@ -608,7 +622,7 @@
         {
           "route": "main",
           "startDelay": 3.1,
-          "seconds": 26.43,
+          "seconds": 26.42,
           "coins": 14,
           "stars": 2,
           "hearts": 3
@@ -616,7 +630,7 @@
         {
           "route": "bonus",
           "startDelay": 3.1,
-          "seconds": 26.45,
+          "seconds": 26.43,
           "coins": 15,
           "stars": 3,
           "hearts": 3
@@ -629,7 +643,7 @@
     },
     {
       "code": "KOR",
-      "sourceSha256": "df3aab731eb31e637e32bd81d2ff3b1c2a9cdeda8bfc1b95e815507517eec722",
+      "sourceSha256": "b216b2223f6feb6657b37f5c74405ba6ad5f1dcd96916f04c36e5c7ed2f525ed",
       "automatedPassed": true,
       "staticChecks": [
         {
@@ -690,19 +704,19 @@
           "id": 10,
           "name": "Every mandatory jump fits the measured jump envelope",
           "ok": true,
-          "detail": "Dmax 5.40, Hmax 1.95; hardest gap 62%, step 18%."
+          "detail": "Dmax 5.40, Hmax 1.95; hardest gap 62%, step 56%."
         },
         {
           "id": 11,
           "name": "Measured tier matches the declared tier",
           "ok": true,
-          "detail": "Declared 2, measured 2 (score 1.79)."
+          "detail": "Declared 3, measured 3 (score 2.91)."
         },
         {
           "id": 12,
           "name": "Every gate is opened by a plate placed before it",
           "ok": true,
-          "detail": "0 gate(s) paired."
+          "detail": "1 gate(s) paired."
         }
       ],
       "edgeChecks": 36,
@@ -717,9 +731,9 @@
             "to": "kr-lift",
             "action": "RIDE_PLATFORM",
             "gap": 1.8000000000000007,
-            "rise": -0.04999999999999982,
+            "rise": 0.3500000000000001,
             "gapPercent": 33.333333333333464,
-            "stepPercent": 0,
+            "stepPercent": 17.94871794871795,
             "tier": 1
           },
           {
@@ -727,19 +741,19 @@
             "to": "kr-watch",
             "action": "JUMP",
             "gap": 1.6999999999999957,
-            "rise": 0.34999999999999964,
+            "rise": 1.0999999999999996,
             "gapPercent": 31.481481481481516,
-            "stepPercent": 17.948717948717924,
-            "tier": 1
+            "stepPercent": 56.41025641025637,
+            "tier": 4
           },
           {
             "from": "kr-down",
             "to": "kr-gap",
             "action": "RIDE_PLATFORM",
             "gap": 3.3500000000000014,
-            "rise": 0,
+            "rise": 2.220446049250313e-16,
             "gapPercent": 62.03703703703728,
-            "stepPercent": 0,
+            "stepPercent": 1.1386902816668268e-14,
             "tier": 3
           },
           {
@@ -754,18 +768,19 @@
           }
         ],
         "mechanics": [
-          "moving"
+          "moving",
+          "timed-gate"
         ],
-        "measuredTier": 2,
-        "declaredTier": 2,
-        "score": 1.7866666666666666,
+        "measuredTier": 3,
+        "declaredTier": 3,
+        "score": 2.9066666666666663,
         "warnings": []
       },
       "runs": [
         {
           "route": "main",
           "startDelay": 0,
-          "seconds": 16.97,
+          "seconds": 15.93,
           "coins": 14,
           "stars": 2,
           "hearts": 3
@@ -773,23 +788,23 @@
         {
           "route": "bonus",
           "startDelay": 0,
-          "seconds": 16.73,
+          "seconds": 15.95,
           "coins": 15,
           "stars": 3,
           "hearts": 3
         },
         {
           "route": "main",
+          "startDelay": 0.7,
+          "seconds": 15.97,
+          "coins": 14,
+          "stars": 2,
+          "hearts": 3
+        },
+        {
+          "route": "bonus",
           "startDelay": 0.7,
           "seconds": 15.98,
-          "coins": 14,
-          "stars": 2,
-          "hearts": 3
-        },
-        {
-          "route": "bonus",
-          "startDelay": 0.7,
-          "seconds": 16.25,
           "coins": 15,
           "stars": 3,
           "hearts": 3
@@ -797,7 +812,7 @@
         {
           "route": "main",
           "startDelay": 1.9,
-          "seconds": 16.12,
+          "seconds": 16.08,
           "coins": 14,
           "stars": 2,
           "hearts": 3
@@ -805,7 +820,7 @@
         {
           "route": "bonus",
           "startDelay": 1.9,
-          "seconds": 16.28,
+          "seconds": 20.85,
           "coins": 15,
           "stars": 3,
           "hearts": 3
@@ -813,7 +828,7 @@
         {
           "route": "main",
           "startDelay": 3.1,
-          "seconds": 17.38,
+          "seconds": 20.2,
           "coins": 14,
           "stars": 2,
           "hearts": 3
@@ -821,7 +836,7 @@
         {
           "route": "bonus",
           "startDelay": 3.1,
-          "seconds": 21.23,
+          "seconds": 21.2,
           "coins": 15,
           "stars": 3,
           "hearts": 3
@@ -838,862 +853,978 @@
     "runs": [
       {
         "route": "main",
-        "seconds": 17.850000000000268,
-        "coins": 23,
+        "seconds": 17.750000000000274,
+        "coins": 24,
         "stars": 2,
         "hearts": 3
       },
       {
         "route": "bonus",
-        "seconds": 17.966666666666928,
+        "seconds": 18.216666666666914,
         "coins": 22,
         "stars": 3,
         "hearts": 3
       }
     ],
+    "difficulty": {
+      "envelope": {
+        "dmax": 5.399999999999981,
+        "hmax": 1.9500000000000006
+      },
+      "jumps": [
+        {
+          "from": "jp-start",
+          "to": "jp-lower-bridge",
+          "action": "JUMP",
+          "gap": 0,
+          "rise": -1.7,
+          "gapPercent": 0,
+          "stepPercent": 0,
+          "tier": 0
+        },
+        {
+          "from": "jp-lower-bridge",
+          "to": "jp-bridge-exit",
+          "action": "JUMP",
+          "gap": 0,
+          "rise": 0,
+          "gapPercent": 0,
+          "stepPercent": 0,
+          "tier": 0
+        },
+        {
+          "from": "jp-bridge-exit",
+          "to": "jp-enemy-island",
+          "action": "JUMP",
+          "gap": 0,
+          "rise": -5.551115123125783e-17,
+          "gapPercent": 0,
+          "stepPercent": 0,
+          "tier": 0
+        },
+        {
+          "from": "jp-enemy-island",
+          "to": "jp-main-05",
+          "action": "JUMP",
+          "gap": 1.6000000000000014,
+          "rise": 0.04999999999999999,
+          "gapPercent": 29.62962962962976,
+          "stepPercent": 2.5641025641025625,
+          "tier": 1
+        },
+        {
+          "from": "jp-main-05",
+          "to": "jp-main-06",
+          "action": "JUMP",
+          "gap": 1.5,
+          "rise": -0.19999999999999998,
+          "gapPercent": 27.777777777777878,
+          "stepPercent": 0,
+          "tier": 1
+        },
+        {
+          "from": "jp-main-06",
+          "to": "jp-main-07",
+          "action": "RIDE_PLATFORM",
+          "gap": 1.279999999999994,
+          "rise": 0.5,
+          "gapPercent": 23.703703703703678,
+          "stepPercent": 25.64102564102563,
+          "tier": 1
+        },
+        {
+          "from": "jp-main-07",
+          "to": "jp-main-08",
+          "action": "JUMP",
+          "gap": 1.2800000000000011,
+          "rise": 0.25,
+          "gapPercent": 23.70370370370381,
+          "stepPercent": 12.820512820512816,
+          "tier": 1
+        },
+        {
+          "from": "jp-main-08",
+          "to": "jp-main-09",
+          "action": "RIDE_PLATFORM",
+          "gap": 1.7999999999999972,
+          "rise": -0.65,
+          "gapPercent": 33.3333333333334,
+          "stepPercent": 0,
+          "tier": 1
+        },
+        {
+          "from": "jp-main-09",
+          "to": "jp-main-10",
+          "action": "JUMP",
+          "gap": 1.6000000000000085,
+          "rise": -0.050000000000000044,
+          "gapPercent": 29.629629629629896,
+          "stepPercent": 0,
+          "tier": 1
+        },
+        {
+          "from": "jp-main-10",
+          "to": "jp-finish",
+          "action": "JUMP",
+          "gap": 1.7999999999999972,
+          "rise": -0.24999999999999994,
+          "gapPercent": 33.3333333333334,
+          "stepPercent": 0,
+          "tier": 1
+        }
+      ],
+      "mechanics": [
+        "moving",
+        "patrol"
+      ],
+      "measuredTier": 1,
+      "declaredTier": 1,
+      "score": 1.24,
+      "warnings": []
+    },
     "humanPlaytest": "not-run",
     "released": false
   },
   "eastAsiaSimilarity": [
     {
-      "a": "kp-level-01",
+      "a": "jp-level-01",
       "b": "kr-level-01",
-      "score": 0.43308384808257694,
+      "score": 0.425677917222569,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0.3333333333333333,
+        "mechanics": 0.5,
+        "terrain": 0.4,
+        "rhythm": 0.4,
+        "shape": 0.7827116688902758
+      },
+      "review": false
+    },
+    {
+      "a": "cn-level-01",
+      "b": "kp-level-01",
+      "score": 0.4145867487438043,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.4,
+        "terrain": 0.5,
+        "rhythm": 0.5,
+        "shape": 0.6703469949752173
+      },
+      "review": false
+    },
+    {
+      "a": "kp-level-01",
+      "b": "kr-level-01",
+      "score": 0.40178176474924365,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.16666666666666666,
         "terrain": 0.14285714285714285,
         "rhythm": 0.5714285714285714,
-        "shape": 0.8637639637588793
+        "shape": 0.858555630425546
+      },
+      "review": false
+    },
+    {
+      "a": "mn-level-01",
+      "b": "kr-level-01",
+      "score": 0.38433285127327965,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.2,
+        "terrain": 0,
+        "rhythm": 0.5714285714285714,
+        "shape": 0.8219028336645471
+      },
+      "review": false
+    },
+    {
+      "a": "jp-level-01",
+      "b": "mn-level-01",
+      "score": 0.3818502066419299,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.2,
+        "terrain": 0.14285714285714285,
+        "rhythm": 0.5,
+        "shape": 0.8262579694248626
+      },
+      "review": false
+    },
+    {
+      "a": "cn-level-01",
+      "b": "mn-level-01",
+      "score": 0.3594665484631545,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.5,
+        "terrain": 0.3333333333333333,
+        "rhythm": 0.25,
+        "shape": 0.6945328605192848
       },
       "review": false
     },
     {
       "a": "mn-level-01",
       "b": "kp-level-01",
-      "score": 0.406238586524036,
+      "score": 0.3410748960478456,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.3333333333333333,
-        "rhythm": 0.5714285714285714,
-        "shape": 0.9201924413342393
+        "mechanics": 0.16666666666666666,
+        "terrain": 0.2857142857142857,
+        "rhythm": 0.2857142857142857,
+        "shape": 0.8442995841913822
       },
       "review": false
     },
     {
-      "a": "mn-level-01",
-      "b": "kr-level-01",
-      "score": 0.37664386317804155,
+      "a": "jp-level-01",
+      "b": "kp-level-01",
+      "score": 0.3222673645945374,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0,
-        "terrain": 0,
-        "rhythm": 0.7142857142857143,
-        "shape": 0.7922897384264518
+        "mechanics": 0.16666666666666666,
+        "terrain": 0.2857142857142857,
+        "rhythm": 0.30000000000000004,
+        "shape": 0.7547837440924354
+      },
+      "review": false
+    },
+    {
+      "a": "cn-level-01",
+      "b": "kr-level-01",
+      "score": 0.31094225687929133,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.2,
+        "terrain": 0.16666666666666666,
+        "rhythm": 0.375,
+        "shape": 0.6581023608504987
       },
       "review": false
     },
     {
       "a": "cn-level-01",
       "b": "jp-level-01",
-      "score": 0.37474255935369216,
+      "score": 0.2833988093536921,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0.3333333333333333,
-        "terrain": 0.4,
-        "rhythm": 0.30000000000000004,
-        "shape": 0.7989702374147685
-      },
-      "review": false
-    },
-    {
-      "a": "jp-level-01",
-      "b": "kr-level-01",
-      "score": 0.3707300005559022,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0.3333333333333333,
-        "terrain": 0.2,
-        "rhythm": 0.4,
-        "shape": 0.762920002223609
-      },
-      "review": false
-    },
-    {
-      "a": "cn-level-01",
-      "b": "kp-level-01",
-      "score": 0.349097165410471,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.5,
-        "rhythm": 0.5,
-        "shape": 0.6963886616418841
-      },
-      "review": false
-    },
-    {
-      "a": "cn-level-01",
-      "b": "kr-level-01",
-      "score": 0.3380672568792913,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0.3333333333333333,
-        "terrain": 0.16666666666666666,
-        "rhythm": 0.375,
-        "shape": 0.6706023608504986
-      },
-      "review": false
-    },
-    {
-      "a": "jp-level-01",
-      "b": "mn-level-01",
-      "score": 0.2997043733085966,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.2,
-        "rhythm": 0.4,
-        "shape": 0.7188174932343865
-      },
-      "review": false
-    },
-    {
-      "a": "jp-level-01",
-      "b": "kp-level-01",
-      "score": 0.26964831697548985,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.14285714285714285,
-        "rhythm": 0.30000000000000004,
-        "shape": 0.7214504107591021
-      },
-      "review": false
-    },
-    {
-      "a": "cn-level-01",
-      "b": "mn-level-01",
-      "score": 0.26656393602929207,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.4,
-        "rhythm": 0.25,
-        "shape": 0.6562557441171684
+        "mechanics": 0.2,
+        "terrain": 0.3333333333333333,
+        "rhythm": 0.09999999999999998,
+        "shape": 0.7562619040814351
       },
       "review": false
     }
   ],
   "similarity": [
     {
-      "a": "kp-level-01",
-      "b": "kr-level-01",
-      "score": 0.43308384808257694,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0.3333333333333333,
-        "terrain": 0.14285714285714285,
-        "rhythm": 0.5714285714285714,
-        "shape": 0.8637639637588793
-      },
-      "review": false
-    },
-    {
-      "a": "mn-level-01",
-      "b": "kp-level-01",
-      "score": 0.406238586524036,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.3333333333333333,
-        "rhythm": 0.5714285714285714,
-        "shape": 0.9201924413342393
-      },
-      "review": false
-    },
-    {
-      "a": "it-level-01",
-      "b": "cn-level-01",
-      "score": 0.3843568495978351,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0.3333333333333333,
-        "terrain": 0.4,
-        "rhythm": 0.41666666666666663,
-        "shape": 0.7207607317246739
-      },
-      "review": false
-    },
-    {
-      "a": "mn-level-01",
-      "b": "kr-level-01",
-      "score": 0.37664386317804155,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0,
-        "terrain": 0,
-        "rhythm": 0.7142857142857143,
-        "shape": 0.7922897384264518
-      },
-      "review": false
-    },
-    {
-      "a": "jp-level-01",
-      "b": "cn-level-01",
-      "score": 0.37474255935369216,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0.3333333333333333,
-        "terrain": 0.4,
-        "rhythm": 0.30000000000000004,
-        "shape": 0.7989702374147685
-      },
-      "review": false
-    },
-    {
       "a": "jp-level-01",
       "b": "kr-level-01",
-      "score": 0.3707300005559022,
+      "score": 0.425677917222569,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0.3333333333333333,
-        "terrain": 0.2,
+        "mechanics": 0.5,
+        "terrain": 0.4,
         "rhythm": 0.4,
-        "shape": 0.762920002223609
-      },
-      "review": false
-    },
-    {
-      "a": "in-level-01",
-      "b": "cn-level-01",
-      "score": 0.3552668573247469,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0.3333333333333333,
-        "terrain": 0.4,
-        "rhythm": 0.3076923076923077,
-        "shape": 0.7133751216066798
-      },
-      "review": false
-    },
-    {
-      "a": "au-level-01",
-      "b": "cn-level-01",
-      "score": 0.3533605658999625,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0.3333333333333333,
-        "terrain": 0.4,
-        "rhythm": 0.3076923076923077,
-        "shape": 0.7057499559075423
-      },
-      "review": false
-    },
-    {
-      "a": "eg-level-01",
-      "b": "mn-level-01",
-      "score": 0.35201181158398004,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0.4,
-        "terrain": 0.25,
-        "rhythm": 0.375,
-        "shape": 0.6450472463359201
+        "shape": 0.7827116688902758
       },
       "review": false
     },
     {
       "a": "cn-level-01",
       "b": "kp-level-01",
-      "score": 0.349097165410471,
+      "score": 0.4145867487438043,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0,
+        "mechanics": 0.4,
         "terrain": 0.5,
         "rhythm": 0.5,
-        "shape": 0.6963886616418841
+        "shape": 0.6703469949752173
       },
       "review": false
     },
     {
-      "a": "us-level-01",
-      "b": "cn-level-01",
-      "score": 0.3438227114906215,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0.3333333333333333,
-        "terrain": 0.4,
-        "rhythm": 0.25,
-        "shape": 0.7252908459624858
-      },
-      "review": false
-    },
-    {
-      "a": "za-level-01",
-      "b": "cn-level-01",
-      "score": 0.3421687804481607,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0.3333333333333333,
-        "terrain": 0.4,
-        "rhythm": 0.25,
-        "shape": 0.7186751217926426
-      },
-      "review": false
-    },
-    {
-      "a": "eg-level-01",
-      "b": "kp-level-01",
-      "score": 0.3382970345837535,
+      "a": "kp-level-01",
+      "b": "kr-level-01",
+      "score": 0.40178176474924365,
       "parts": {
         "archetype": 0,
         "signature": 0,
         "mechanics": 0.16666666666666666,
-        "terrain": 0.3333333333333333,
-        "rhythm": 0.375,
-        "shape": 0.7248548050016808
-      },
-      "review": false
-    },
-    {
-      "a": "cn-level-01",
-      "b": "kr-level-01",
-      "score": 0.3380672568792913,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0.3333333333333333,
-        "terrain": 0.16666666666666666,
-        "rhythm": 0.375,
-        "shape": 0.6706023608504986
-      },
-      "review": false
-    },
-    {
-      "a": "fr-level-01",
-      "b": "cn-level-01",
-      "score": 0.3289067601833846,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0.3333333333333333,
-        "terrain": 0.4,
-        "rhythm": 0.2142857142857143,
-        "shape": 0.7013413264478242
-      },
-      "review": false
-    },
-    {
-      "a": "br-level-01",
-      "b": "kr-level-01",
-      "score": 0.3152909651118152,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0.4,
         "terrain": 0.14285714285714285,
-        "rhythm": 0.3076923076923077,
-        "shape": 0.6083286956120958
+        "rhythm": 0.5714285714285714,
+        "shape": 0.858555630425546
+      },
+      "review": false
+    },
+    {
+      "a": "mn-level-01",
+      "b": "kr-level-01",
+      "score": 0.38433285127327965,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.2,
+        "terrain": 0,
+        "rhythm": 0.5714285714285714,
+        "shape": 0.8219028336645471
       },
       "review": false
     },
     {
       "a": "jp-level-01",
       "b": "mn-level-01",
-      "score": 0.2997043733085966,
+      "score": 0.3818502066419299,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.2,
-        "rhythm": 0.4,
-        "shape": 0.7188174932343865
+        "mechanics": 0.2,
+        "terrain": 0.14285714285714285,
+        "rhythm": 0.5,
+        "shape": 0.8262579694248626
       },
       "review": false
     },
     {
-      "a": "ca-level-01",
-      "b": "cn-level-01",
-      "score": 0.2949613291723219,
+      "a": "cn-level-01",
+      "b": "mn-level-01",
+      "score": 0.3594665484631545,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.6,
-        "rhythm": 0.2727272727272727,
-        "shape": 0.6671180439620148
+        "mechanics": 0.5,
+        "terrain": 0.3333333333333333,
+        "rhythm": 0.25,
+        "shape": 0.6945328605192848
       },
       "review": false
     },
     {
       "a": "eg-level-01",
-      "b": "kr-level-01",
-      "score": 0.2930591686440337,
+      "b": "kp-level-01",
+      "score": 0.34566310601232497,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0.16666666666666666,
-        "terrain": 0.25,
+        "mechanics": 0.2857142857142857,
+        "terrain": 0.3333333333333333,
         "rhythm": 0.3125,
-        "shape": 0.6397366745761349
+        "shape": 0.7311048050016807
       },
       "review": false
     },
     {
-      "a": "br-level-01",
-      "b": "cn-level-01",
-      "score": 0.28691246809222753,
+      "a": "mn-level-01",
+      "b": "kp-level-01",
+      "score": 0.3410748960478456,
       "parts": {
         "archetype": 0,
         "signature": 0,
         "mechanics": 0.16666666666666666,
         "terrain": 0.2857142857142857,
-        "rhythm": 0.3076923076923077,
-        "shape": 0.6056718503908882
+        "rhythm": 0.2857142857142857,
+        "shape": 0.8442995841913822
       },
       "review": false
     },
     {
-      "a": "no-level-01",
-      "b": "mn-level-01",
-      "score": 0.2848272673351161,
+      "a": "it-level-01",
+      "b": "cn-level-01",
+      "score": 0.33940893293116847,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0.4,
-        "terrain": 0.2,
-        "rhythm": 0.3125,
-        "shape": 0.45880906934046445
+        "mechanics": 0.25,
+        "terrain": 0.4,
+        "rhythm": 0.33333333333333337,
+        "shape": 0.6843023983913407
       },
       "review": false
     },
     {
       "a": "br-level-01",
-      "b": "kp-level-01",
-      "score": 0.2698867179562968,
+      "b": "kr-level-01",
+      "score": 0.3285113176759177,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0.16666666666666666,
-        "terrain": 0.42857142857142855,
-        "rhythm": 0.3076923076923077,
-        "shape": 0.4804259927043083
+        "mechanics": 0.3333333333333333,
+        "terrain": 0.14285714285714285,
+        "rhythm": 0.3846153846153846,
+        "shape": 0.6322870289454291
       },
       "review": false
     },
     {
       "a": "jp-level-01",
       "b": "kp-level-01",
-      "score": 0.26964831697548985,
+      "score": 0.3222673645945374,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.14285714285714285,
+        "mechanics": 0.16666666666666666,
+        "terrain": 0.2857142857142857,
         "rhythm": 0.30000000000000004,
-        "shape": 0.7214504107591021
-      },
-      "review": false
-    },
-    {
-      "a": "cn-level-01",
-      "b": "mn-level-01",
-      "score": 0.26656393602929207,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.4,
-        "rhythm": 0.25,
-        "shape": 0.6562557441171684
-      },
-      "review": false
-    },
-    {
-      "a": "no-level-01",
-      "b": "kr-level-01",
-      "score": 0.25600483272850316,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0.16666666666666666,
-        "terrain": 0.3333333333333333,
-        "rhythm": 0.3125,
-        "shape": 0.45818599758067924
-      },
-      "review": false
-    },
-    {
-      "a": "no-level-01",
-      "b": "cn-level-01",
-      "score": 0.2547818283644082,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0.16666666666666666,
-        "terrain": 0.3,
-        "rhythm": 0.25,
-        "shape": 0.529127313457633
+        "shape": 0.7547837440924354
       },
       "review": false
     },
     {
       "a": "no-level-01",
       "b": "kp-level-01",
-      "score": 0.25442688427428356,
+      "score": 0.3170310509409502,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0.16666666666666666,
+        "mechanics": 0.5,
         "terrain": 0.2727272727272727,
         "rhythm": 0.25,
-        "shape": 0.5386166280062252
+        "shape": 0.5490332946728919
+      },
+      "review": false
+    },
+    {
+      "a": "eg-level-01",
+      "b": "mn-level-01",
+      "score": 0.31193641475858325,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.3333333333333333,
+        "terrain": 0.2222222222222222,
+        "rhythm": 0.3125,
+        "shape": 0.606356770145444
+      },
+      "review": false
+    },
+    {
+      "a": "in-level-01",
+      "b": "cn-level-01",
+      "score": 0.3119215047606443,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.25,
+        "terrain": 0.4,
+        "rhythm": 0.23076923076923073,
+        "shape": 0.6769167882733466
+      },
+      "review": false
+    },
+    {
+      "a": "cn-level-01",
+      "b": "kr-level-01",
+      "score": 0.31094225687929133,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.2,
+        "terrain": 0.16666666666666666,
+        "rhythm": 0.375,
+        "shape": 0.6581023608504987
+      },
+      "review": false
+    },
+    {
+      "a": "au-level-01",
+      "b": "cn-level-01",
+      "score": 0.3100152133358599,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.25,
+        "terrain": 0.4,
+        "rhythm": 0.23076923076923073,
+        "shape": 0.669291622574209
+      },
+      "review": false
+    },
+    {
+      "a": "eg-level-01",
+      "b": "kr-level-01",
+      "score": 0.3076945853107004,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.3333333333333333,
+        "terrain": 0.25,
+        "rhythm": 0.25,
+        "shape": 0.6407783412428016
+      },
+      "review": false
+    },
+    {
+      "a": "fr-level-01",
+      "b": "cn-level-01",
+      "score": 0.30479217685005133,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.25,
+        "terrain": 0.4,
+        "rhythm": 0.2142857142857143,
+        "shape": 0.664882993114491
+      },
+      "review": false
+    },
+    {
+      "a": "us-level-01",
+      "b": "cn-level-01",
+      "score": 0.29887479482395474,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.25,
+        "terrain": 0.4,
+        "rhythm": 0.16666666666666663,
+        "shape": 0.6888325126291525
+      },
+      "review": false
+    },
+    {
+      "a": "za-level-01",
+      "b": "cn-level-01",
+      "score": 0.297220863781494,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.25,
+        "terrain": 0.4,
+        "rhythm": 0.16666666666666663,
+        "shape": 0.6822167884593093
+      },
+      "review": false
+    },
+    {
+      "a": "jp-level-01",
+      "b": "cn-level-01",
+      "score": 0.2833988093536921,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.2,
+        "terrain": 0.3333333333333333,
+        "rhythm": 0.09999999999999998,
+        "shape": 0.7562619040814351
+      },
+      "review": false
+    },
+    {
+      "a": "br-level-01",
+      "b": "cn-level-01",
+      "score": 0.2735121704731799,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.14285714285714285,
+        "terrain": 0.2857142857142857,
+        "rhythm": 0.3076923076923077,
+        "shape": 0.5692135170575549
+      },
+      "review": false
+    },
+    {
+      "a": "us-level-01",
+      "b": "mn-level-01",
+      "score": 0.27052884328710936,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.25,
+        "terrain": 0.16666666666666666,
+        "rhythm": 0.33333333333333337,
+        "shape": 0.5021153731484372
+      },
+      "review": false
+    },
+    {
+      "a": "za-level-01",
+      "b": "mn-level-01",
+      "score": 0.2699165789113152,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.25,
+        "terrain": 0.16666666666666666,
+        "rhythm": 0.33333333333333337,
+        "shape": 0.49966631564526076
+      },
+      "review": false
+    },
+    {
+      "a": "it-level-01",
+      "b": "mn-level-01",
+      "score": 0.26939631472765635,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.25,
+        "terrain": 0.16666666666666666,
+        "rhythm": 0.33333333333333337,
+        "shape": 0.4975852589106254
+      },
+      "review": false
+    },
+    {
+      "a": "no-level-01",
+      "b": "cn-level-01",
+      "score": 0.26733391169774157,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.3333333333333333,
+        "terrain": 0.3,
+        "rhythm": 0.1875,
+        "shape": 0.5218356467909663
+      },
+      "review": false
+    },
+    {
+      "a": "br-level-01",
+      "b": "kp-level-01",
+      "score": 0.2649908846229635,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.125,
+        "terrain": 0.42857142857142855,
+        "rhythm": 0.3076923076923077,
+        "shape": 0.49084265937097493
+      },
+      "review": false
+    },
+    {
+      "a": "ca-level-01",
+      "b": "cn-level-01",
+      "score": 0.2631194731117158,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0,
+        "terrain": 0.6,
+        "rhythm": 0.18181818181818177,
+        "shape": 0.6306597106286815
+      },
+      "review": false
+    },
+    {
+      "a": "in-level-01",
+      "b": "mn-level-01",
+      "score": 0.26218132245456804,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.25,
+        "terrain": 0.16666666666666666,
+        "rhythm": 0.3076923076923077,
+        "shape": 0.494366315459298
+      },
+      "review": false
+    },
+    {
+      "a": "au-level-01",
+      "b": "mn-level-01",
+      "score": 0.2613166976964504,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.25,
+        "terrain": 0.16666666666666666,
+        "rhythm": 0.3076923076923077,
+        "shape": 0.4909078164268271
+      },
+      "review": false
+    },
+    {
+      "a": "br-level-01",
+      "b": "mn-level-01",
+      "score": 0.2610012965438249,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.14285714285714285,
+        "terrain": 0.2857142857142857,
+        "rhythm": 0.3076923076923077,
+        "shape": 0.5191700213401349
+      },
+      "review": false
+    },
+    {
+      "a": "no-level-01",
+      "b": "kr-level-01",
+      "score": 0.2577087017761222,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.14285714285714285,
+        "terrain": 0.3333333333333333,
+        "rhythm": 0.3125,
+        "shape": 0.4821443309140126
+      },
+      "review": false
+    },
+    {
+      "a": "no-level-01",
+      "b": "mn-level-01",
+      "score": 0.25091979980264856,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.3333333333333333,
+        "terrain": 0.18181818181818182,
+        "rhythm": 0.25,
+        "shape": 0.4409519264833216
       },
       "review": false
     },
     {
       "a": "us-level-01",
       "b": "kr-level-01",
-      "score": 0.25293163503657945,
+      "score": 0.2439212183699128,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0.3333333333333333,
+        "mechanics": 0.25,
         "terrain": 0.2,
         "rhythm": 0.25,
-        "shape": 0.4417265401463178
-      },
-      "review": false
-    },
-    {
-      "a": "za-level-01",
-      "b": "kr-level-01",
-      "score": 0.25231937066078536,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0.3333333333333333,
-        "terrain": 0.2,
-        "rhythm": 0.25,
-        "shape": 0.4392774826431413
+        "shape": 0.46568487347965115
       },
       "review": false
     },
     {
       "a": "it-level-01",
       "b": "kr-level-01",
-      "score": 0.2517991064771265,
+      "score": 0.2427886898104598,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0.3333333333333333,
+        "mechanics": 0.25,
         "terrain": 0.2,
         "rhythm": 0.25,
-        "shape": 0.437196425908506
+        "shape": 0.4611547592418393
       },
       "review": false
     },
     {
       "a": "in-level-01",
       "b": "kr-level-01",
-      "score": 0.2461866783066023,
+      "score": 0.23717626163993566,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0.3333333333333333,
+        "mechanics": 0.25,
         "terrain": 0.2,
         "rhythm": 0.23076923076923073,
-        "shape": 0.43397748245717854
+        "shape": 0.4579358157905119
       },
       "review": false
     },
     {
       "a": "au-level-01",
       "b": "kr-level-01",
-      "score": 0.24532205354848458,
+      "score": 0.23631163688181794,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0.3333333333333333,
+        "mechanics": 0.25,
         "terrain": 0.2,
         "rhythm": 0.23076923076923073,
-        "shape": 0.4305189834247077
+        "shape": 0.45447731675804104
+      },
+      "review": false
+    },
+    {
+      "a": "fr-level-01",
+      "b": "mn-level-01",
+      "score": 0.23477955864653915,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.25,
+        "terrain": 0.16666666666666666,
+        "rhythm": 0.2142857142857143,
+        "shape": 0.4781658536337757
       },
       "review": false
     },
     {
       "a": "fr-level-01",
       "b": "kr-level-01",
-      "score": 0.23801568372934262,
+      "score": 0.229005267062676,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0.3333333333333333,
+        "mechanics": 0.25,
         "terrain": 0.2,
         "rhythm": 0.2142857142857143,
-        "shape": 0.4177770206316563
+        "shape": 0.4417353539649896
+      },
+      "review": false
+    },
+    {
+      "a": "za-level-01",
+      "b": "kr-level-01",
+      "score": 0.22247562066078533,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.25,
+        "terrain": 0.2,
+        "rhythm": 0.16666666666666663,
+        "shape": 0.4632358159764747
       },
       "review": false
     },
     {
       "a": "ca-level-01",
       "b": "mn-level-01",
-      "score": 0.2319650800164288,
+      "score": 0.2208341276354764,
       "parts": {
         "archetype": 0,
         "signature": 0,
         "mechanics": 0,
-        "terrain": 0.4,
+        "terrain": 0.3333333333333333,
         "rhythm": 0.2727272727272727,
-        "shape": 0.4951330473384425
+        "shape": 0.47727590448129964
       },
       "review": false
     },
     {
       "a": "eg-level-01",
       "b": "cn-level-01",
-      "score": 0.20904970594660552,
+      "score": 0.2100244083275579,
       "parts": {
         "archetype": 0,
         "signature": 0,
-        "mechanics": 0,
+        "mechanics": 0.14285714285714285,
         "terrain": 0.375,
-        "rhythm": 0.1875,
-        "shape": 0.49869882378642205
+        "rhythm": 0.125,
+        "shape": 0.4622404904530887
       },
       "review": false
     },
     {
       "a": "ca-level-01",
       "b": "kp-level-01",
-      "score": 0.20784246524176353,
+      "score": 0.20940496524176355,
       "parts": {
         "archetype": 0,
         "signature": 0,
         "mechanics": 0,
         "terrain": 0.2857142857142857,
         "rhythm": 0.18181818181818177,
-        "shape": 0.5352659648631581
-      },
-      "review": false
-    },
-    {
-      "a": "us-level-01",
-      "b": "kp-level-01",
-      "score": 0.2007864316426472,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.14285714285714285,
-        "rhythm": 0.25,
-        "shape": 0.4960028694277316
+        "shape": 0.5415159648631581
       },
       "review": false
     },
     {
       "a": "it-level-01",
       "b": "kp-level-01",
-      "score": 0.19965390308319425,
+      "score": 0.2022580697498609,
       "parts": {
         "archetype": 0,
         "signature": 0,
         "mechanics": 0,
         "terrain": 0.14285714285714285,
         "rhythm": 0.25,
-        "shape": 0.49147275518991984
+        "shape": 0.5018894218565865
       },
       "review": false
     },
     {
       "a": "us-level-01",
-      "b": "mn-level-01",
-      "score": 0.19646748797575403,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.2,
-        "rhythm": 0.25,
-        "shape": 0.45586995190301605
-      },
-      "review": false
-    },
-    {
-      "a": "za-level-01",
-      "b": "mn-level-01",
-      "score": 0.19585522359995988,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.2,
-        "rhythm": 0.25,
-        "shape": 0.45342089439983957
-      },
-      "review": false
-    },
-    {
-      "a": "it-level-01",
-      "b": "mn-level-01",
-      "score": 0.19533495941630102,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.2,
-        "rhythm": 0.25,
-        "shape": 0.45133983766520414
-      },
-      "review": false
-    },
-    {
-      "a": "in-level-01",
       "b": "kp-level-01",
-      "score": 0.19518616355735868,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.14285714285714285,
-        "rhythm": 0.23076923076923073,
-        "shape": 0.4928325663173469
-      },
-      "review": false
-    },
-    {
-      "a": "au-level-01",
-      "b": "kp-level-01",
-      "score": 0.194321538799241,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.14285714285714285,
-        "rhythm": 0.23076923076923073,
-        "shape": 0.4893740672848761
-      },
-      "review": false
-    },
-    {
-      "a": "in-level-01",
-      "b": "mn-level-01",
-      "score": 0.1908672198904655,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.2,
-        "rhythm": 0.23076923076923073,
-        "shape": 0.45269964879263125
-      },
-      "review": false
-    },
-    {
-      "a": "au-level-01",
-      "b": "mn-level-01",
-      "score": 0.1900025951323478,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.2,
-        "rhythm": 0.23076923076923073,
-        "shape": 0.44924114976016044
-      },
-      "review": false
-    },
-    {
-      "a": "fr-level-01",
-      "b": "kp-level-01",
-      "score": 0.18800723247216253,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.14285714285714285,
-        "rhythm": 0.2142857142857143,
-        "shape": 0.48060035846007865
-      },
-      "review": false
-    },
-    {
-      "a": "fr-level-01",
-      "b": "mn-level-01",
-      "score": 0.18368828880526933,
-      "parts": {
-        "archetype": 0,
-        "signature": 0,
-        "mechanics": 0,
-        "terrain": 0.2,
-        "rhythm": 0.2142857142857143,
-        "shape": 0.44046744093536294
-      },
-      "review": false
-    },
-    {
-      "a": "za-level-01",
-      "b": "kp-level-01",
-      "score": 0.1793408339335197,
+      "score": 0.18255726497598052,
       "parts": {
         "archetype": 0,
         "signature": 0,
         "mechanics": 0,
         "terrain": 0.14285714285714285,
         "rhythm": 0.16666666666666663,
-        "shape": 0.4935538119245551
+        "shape": 0.5064195360943983
       },
       "review": false
     },
     {
-      "a": "br-level-01",
-      "b": "mn-level-01",
-      "score": 0.17647290826543663,
+      "a": "in-level-01",
+      "b": "kp-level-01",
+      "score": 0.17855956099325615,
       "parts": {
         "archetype": 0,
         "signature": 0,
         "mechanics": 0,
         "terrain": 0.14285714285714285,
-        "rhythm": 0.23076923076923073,
-        "shape": 0.4179795451496586
+        "rhythm": 0.15384615384615385,
+        "shape": 0.5032492329840136
+      },
+      "review": false
+    },
+    {
+      "a": "au-level-01",
+      "b": "kp-level-01",
+      "score": 0.17769493623513843,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0,
+        "terrain": 0.14285714285714285,
+        "rhythm": 0.15384615384615385,
+        "shape": 0.4997907339515427
+      },
+      "review": false
+    },
+    {
+      "a": "fr-level-01",
+      "b": "kp-level-01",
+      "score": 0.17275425628168634,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0,
+        "terrain": 0.14285714285714285,
+        "rhythm": 0.1428571428571429,
+        "shape": 0.4910170251267453
       },
       "review": false
     },
     {
       "a": "ca-level-01",
       "b": "kr-level-01",
-      "score": 0.16634297999100717,
+      "score": 0.16660339665767382,
       "parts": {
         "archetype": 0,
         "signature": 0,
         "mechanics": 0,
         "terrain": 0.16666666666666666,
         "rhythm": 0.18181818181818177,
-        "shape": 0.4168870714791802
+        "shape": 0.41792873814584686
+      },
+      "review": false
+    },
+    {
+      "a": "za-level-01",
+      "b": "kp-level-01",
+      "score": 0.16111166726685308,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0,
+        "terrain": 0.14285714285714285,
+        "rhythm": 0.08333333333333337,
+        "shape": 0.5039704785912218
       },
       "review": false
     }

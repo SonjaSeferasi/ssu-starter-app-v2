@@ -59,7 +59,7 @@
     {
       "id": "kr-lift",
       "x": 29.8,
-      "y": 1.6,
+      "y": 2,
       "width": 3.8,
       "depth": 3.2,
       "thickness": 1.1,
@@ -75,7 +75,7 @@
     {
       "id": "kr-watch",
       "x": 35.3,
-      "y": 2.4,
+      "y": 3.55,
       "width": 11,
       "depth": 3.2,
       "thickness": 1.1,
@@ -90,7 +90,7 @@
     {
       "id": "kr-down",
       "x": 46.3,
-      "y": 2.4,
+      "y": 3.55,
       "width": 9,
       "depth": 3.2,
       "thickness": 1.1,
@@ -101,8 +101,8 @@
       "period": 5,
       "terrain": "stairs",
       "route": "main",
-      "slope": -1.2,
-      "steps": 6
+      "slope": -2.35,
+      "steps": 7
     },
     {
       "id": "kr-gap",
@@ -147,7 +147,8 @@
       "phase": 0,
       "period": 5,
       "terrain": "mechanical",
-      "route": "bonus"
+      "route": "bonus",
+      "style": "roof-garden-lift"
     }
   ],
   "mainRoute": [
@@ -303,8 +304,26 @@
   },
   "hazards": [],
   "zones": [],
-  "gates": [],
-  "switches": [],
+  "gates": [
+    {
+      "id": "kr-skywalk-gate",
+      "x": 44.2,
+      "y": 3.55,
+      "width": 0.35,
+      "height": 2.3,
+      "openSeconds": 7
+    }
+  ],
+  "switches": [
+    {
+      "id": "kr-crossing-switch",
+      "platformId": "kr-watch",
+      "offset": 1.2,
+      "gateIds": [
+        "kr-skywalk-gate"
+      ]
+    }
+  ],
   "enemies": [],
   "discoveryBlocks": [],
   "routeGraph": {
@@ -412,14 +431,16 @@
       }
     ]
   },
-  "difficultyTier": 2,
+  "difficultyTier": 3,
   "design": {
     "archetype": "urban-rooftop-skybridge",
-    "signatureMechanic": "rooftop-lifts-and-skybridge",
+    "signatureMechanic": "rooftop-garden-lift-and-timed-skywalk",
     "mechanics": [
       "stairs-and-slopes",
       "vertical-lift",
-      "horizontal-moving-platform"
+      "horizontal-moving-platform",
+      "pressure-plate",
+      "timed-gate"
     ],
     "terrain": [
       "rooftop",

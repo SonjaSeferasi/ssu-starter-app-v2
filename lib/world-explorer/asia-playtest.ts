@@ -31,6 +31,9 @@ export function playAsiaRoute(level:LevelDefinition,path:string[],options:{wait?
    const currentEnd=here.x+here.width,gap=next.x-currentEnd,rise=platformSurfaceY(next,next.x)-platformSurfaceY(here,currentEnd);
    if(s.x>currentEnd-.72&&(gap>.15||rise>.4))jump=true;
    if(next.motion&&rise>1.65&&s.x>currentEnd-1.3){right=false;jump=false;}
+   // Ride an ascending lift until its exit fits a normal jump. This is input
+   // waiting, never a change to the platform phase or player position.
+   if(here.motion==='vertical'&&rise>1.4&&s.x>currentEnd-1.3){right=false;jump=false;}
    if(here.climbable&&rise>1.7)jump=true;
   }
   if(!s.grounded&&next){

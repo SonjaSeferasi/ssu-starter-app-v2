@@ -32,16 +32,20 @@ export function eastAsiaTerrain(root:T.Group,p:PlatformDefinition,code:NewEastAs
   b.add(new T.BoxGeometry(p.width,.24,p.depth),code==='CHN'?'#9b9a87':'#657b88',[0,-.12,0]);
   for(const z of [-p.depth*.47,p.depth*.47]){b.add(new T.BoxGeometry(p.width,.075,.065),'#b7c5c9',[0,.78,z]);for(let i=0;i<=Math.ceil(p.width);i++)b.add(new T.BoxGeometry(.045,.8,.045),'#6e8490',[-p.width/2+p.width*i/Math.ceil(p.width),.4,z]);}
   for(const x of [-p.width*.38,p.width*.38])b.add(new T.CylinderGeometry(.035,.035,4.2,5),'#576d77',[x,2.85,-p.depth*.48]);
+  if(code==='KOR'&&p.style==='roof-garden-lift'){
+   for(const x of [-p.width*.32,p.width*.32]){b.add(new T.BoxGeometry(.36,.25,.6),'#77715d',[x,.12,-p.depth*.3]);plantGrove(root,'flowering-shrub',[{x,y:.25,z:-p.depth*.3,scale:.45}],{low,shadows:false});}
+   root.userData.optionalRoofGarden=true;
+  }
   b.mesh(root,vertexMaterial(.75),'country-moving-lift');root.userData.surface=p.type;return;
  }
  if(code==='KOR'){
   // A deliberately architectural silhouette: roof terraces and recessed
   // window strips, not a rock body recolored gray.
   dressLandmass(root,{...p,thickness:12}, {top:colors.top,topAlt:'#d6dddf',edge:colors.edge,face:colors.rock,faceDark:colors.deep,band:colors.rock,rough:.025,strata:2.5},{low,kind:p.steps?'stairs':'ground'});
-  const b=new Builder(),d=p.depth/2+.05;
+  const b=new Builder(),glass=new Builder(),d=p.depth/2+.05;
   for(let row=0;row<7;row++){
    const yy=-1.15-row*1.4;
-   b.add(new T.BoxGeometry(p.width-.2,.86,.05),'#304c61',[0,yy,d]);
+   glass.add(new T.BoxGeometry(p.width-.2,.86,.05),'#304c61',[0,yy,d]);
    for(let col=0;col<Math.ceil(p.width/.95);col++)b.add(new T.BoxGeometry(.075,.9,.12),'#b1c1c8',[-p.width/2+.2+col*.95,yy,d+.04]);
   }
   b.add(new T.BoxGeometry(p.width,.15,.16),'#d1dce0',[0,-.12,d+.05]);
@@ -51,6 +55,7 @@ export function eastAsiaTerrain(root:T.Group,p:PlatformDefinition,code:NewEastAs
   }
   // Planter boxes sit outside the clear player lane.
   if(p.width>7){b.add(new T.BoxGeometry(2,.28,.55),'#616f6e',[p.width*.2,surface(p.width*.2)+.13,-1.15]);plantGrove(root,'shrub',[{x:p.width*.2,y:surface(p.width*.2)+.3,z:-1.15,scale:.45}],{low,shadows:false});}
+  glass.mesh(root,vertexMaterial(.24,{metalness:.3,envMapIntensity:.8}),'seoul-glass-window-strips');
   b.mesh(root,vertexMaterial(.82),'seoul-recessed-facade-and-rooftop-services');return;
  }
  if(p.steps){
@@ -60,7 +65,7 @@ export function eastAsiaTerrain(root:T.Group,p:PlatformDefinition,code:NewEastAs
   const w=p.width,d=Math.max(p.depth,code==='CHN'?4.3:3.6),height=thin?p.thickness:code==='MNG'?3.4:code==='PRK'?5.8:7.5+(seed%4),segments=low?32:48,rings=low?7:11;
   const positions:number[]=[],uv:number[]=[],indices:number[]=[],vertexColors:number[]=[],base=new T.Color(colors.rock),deep=new T.Color(colors.deep);
   const outline=(a:number,t:number)=>{const c=Math.cos(a),s=Math.sin(a),end=1-Math.pow(t,1.7)*(code==='MNG'?-.13:.34),fracture=Math.sin(a*9+seed+Math.floor(t*6)*.7)*.12+Math.sin(a*17-seed+Math.floor(t*9))*.065;
-   return{x:Math.sign(c)*Math.pow(Math.abs(c),.43)*w*.5*end*(1+fracture*Math.sin(t*Math.PI)),z:Math.sign(s)*Math.pow(Math.abs(s),.55)*d*.5*end*(1+fracture*Math.sin(t*Math.PI))};};
+   return{x:Math.sign(c)*Math.pow(Math.abs(c),.43)*w*.5*end*(1+fracture*Math.sin(t*Math.PI)),z:Math.sign(s)*Math.pow(Math.abs(s),.55)*d*.5*end*(1+fracture*(.5+Math.sin(t*Math.PI)*.5))};};
   for(let row=0;row<=rings;row++)for(let i=0;i<=segments;i++){
    const a=i/segments*Math.PI*2,t=row/rings,v=outline(a,t),top=surface(Math.max(-w/2,Math.min(w/2,v.x))),fold=fbm(v.x*.8,t*7,seed,3);
    const y=top-height*t-(thin?0:Math.sin(a*5+seed)*.14*Math.sin(t*Math.PI));positions.push(v.x,y,v.z);uv.push(i/segments*w*.45,t*height*.6);
@@ -78,7 +83,7 @@ export function eastAsiaTerrain(root:T.Group,p:PlatformDefinition,code:NewEastAs
   for(let i=0;i<segments;i++)capIndices.push(0,(i+1)%segments+1,i+1);
   const capGeometry=new T.BufferGeometry();capGeometry.setAttribute('position',new T.Float32BufferAttribute(capPositions,3));capGeometry.setAttribute('uv',new T.Float32BufferAttribute(capUV,2));capGeometry.setIndex(capIndices);capGeometry.computeVertexNormals();
   const capMap=pixelTexture(128,(u,v)=>{const n=fbm(u*48,v*48,seed+11,3),line=Math.sin(u*180+v*35)*.06,grain=175+60*n+line*50;return[grain,grain,grain];});
-  const cap=new T.Mesh(capGeometry,new T.MeshStandardMaterial({color:colors.top,map:capMap,roughness:.98}));cap.name='organic-country-terrain-cap';cap.receiveShadow=true;root.add(cap);
+  const cap=new T.Mesh(capGeometry,new T.MeshStandardMaterial({color:colors.top,map:capMap,bumpMap:capMap,bumpScale:.055,roughness:.98}));cap.name='organic-country-terrain-cap';cap.receiveShadow=true;root.add(cap);
   root.userData.landmass='organic-'+code;root.userData.collisionUnchanged=true;
  }
  // Thin cutout ledges deliberately get no bulky dressing under the low route.
