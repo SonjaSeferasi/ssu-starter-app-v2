@@ -85,6 +85,20 @@ export function replyQuote(
   return { id: onScreen.id, sender: named(onScreen.sender_id, 'A member'), text: onScreen.text, kind: onScreen.kind };
 }
 
+// SRS-209.6 (#1000, #1001): what the page shows above a message, given whatever quote could be resolved.
+//   'quote'       - the target is available and is shown;
+//   'unavailable' - the message is a reply, but its target cannot be shown to this student;
+//   'none'        - the message is not a reply at all.
+// The stored relationship is never changed by any of this: a target that cannot be shown is still recorded on
+// the row, so the reply keeps pointing at it for anyone who can see it.
+export function replyIndication(
+  message: { reply_to_id?: string | null },
+  quote: ReplyQuote | null,
+): 'quote' | 'unavailable' | 'none' {
+  if (quote) return 'quote';
+  return message.reply_to_id ? 'unavailable' : 'none';
+}
+
 // How the chosen message is named to screen readers, so the choice is announced rather than only outlined.
 export function describeReplyTarget(sender: string, message: ReplyCandidate | null | undefined): string {
   return message ? `Replying to ${sender}: ${message.text}` : '';
