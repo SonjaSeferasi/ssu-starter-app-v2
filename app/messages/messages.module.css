@@ -143,7 +143,7 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 
 /* SRS-209.5 (#998): the message a reply answers, shown above the reply itself. */
 .quoted { display: flex; gap: 6px; max-width: 100%; margin: 0 0 2px; padding: 3px 8px; border-left: 3px solid #9ab8a8; border-radius: 6px; background: #eef4f0; font-size: .78rem; }
-.messageOwn .quoted { flex-direction: row-reverse; border-left: 0; border-right: 3px solid #9ab8a8; }
+.messageOwn .quoted { border-left: 0; border-right: 3px solid #9ab8a8; }
 .quotedWho { flex-shrink: 0; font-weight: 700; color: #28634e; }
 .quotedText { overflow: hidden; color: #536963; text-overflow: ellipsis; white-space: nowrap; }
 
