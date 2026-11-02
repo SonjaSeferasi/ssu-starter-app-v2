@@ -140,6 +140,16 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 .replyButton:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; opacity: 1; }
 @media (hover: none) { .replyButton { opacity: .7; } }
 .messageReplyTarget .bubble { outline: 2px solid #28634e; outline-offset: 2px; }
+
+/* SRS-209.2 (#988): the bar above the message box naming the message the reply answers. */
+.replyBar { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; padding: 8px 10px; border-left: 3px solid #28634e; border-radius: 8px; background: #eef4f0; }
+.replyBarMark { display: grid; place-items: center; flex-shrink: 0; color: #28634e; }
+.replyBarText { display: flex; flex-direction: column; min-width: 0; gap: 1px; }
+.replyBarWho { font-size: .78rem; font-weight: 700; color: #28634e; }
+.replyBarQuote { overflow: hidden; font-size: .84rem; color: #536963; text-overflow: ellipsis; white-space: nowrap; }
+.replyCancel { display: grid; place-items: center; flex-shrink: 0; margin-left: auto; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #536963; cursor: pointer; }
+.replyCancel:hover { background: #dfeae3; color: #28634e; }
+.replyCancel:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
 /* SRS-210.2 (#805): the approved reaction set, under the chosen message (kept clear of the sticky header and
    message box when it scrolls into view). */
 .reactionPicker { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 6px; padding: 4px; border: 1px solid #d3e2da; border-radius: 999px; background: #ffffff; box-shadow: 0 6px 18px #102c3026; scroll-margin: 180px 0 140px; }
