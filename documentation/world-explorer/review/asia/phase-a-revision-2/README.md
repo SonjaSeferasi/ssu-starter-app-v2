@@ -1,5 +1,7 @@
 # East Asia Phase A — revised review candidate
 
+[Focused follow-up: Mongolia seam correction and pending human playtests](mongolia-seam/README.md). Revision 2 remains the testing candidate; the original captures and automated evidence below are preserved.
+
 **Return for review; no expansion and no release approval.** Account-save verification and physical-phone testing remain pending at the user’s explicit request. The other 42 Asia designs remain PROPOSED, and all 47 release flags remain false.
 
 [Open actual game captures](index.html) · [47-country tracker](asia-tracker.csv) · [Validation](validation.json) · [Rendered playthroughs and GPU timings](desktop-playthroughs.json)

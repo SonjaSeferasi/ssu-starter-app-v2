@@ -1,0 +1,133 @@
+{
+  "scope": "Mongolia presentation-only seam patch on the revision 2 testing candidate; not a human playtest",
+  "records": [
+    {
+      "view": {
+        "id": "desktop",
+        "width": 1600,
+        "height": 900,
+        "mobile": false
+      },
+      "buildId": "vYkkB-c3zNeg70POZnLAY",
+      "url": "http://127.0.0.1:3011/world-explorer?country=MNG&play=1",
+      "httpStatus": 200,
+      "heading": {
+        "text": "Mongolia",
+        "fits": true,
+        "rect": {
+          "x": 153,
+          "y": 31,
+          "width": 257.375,
+          "height": 41.796875,
+          "top": 31,
+          "right": 410.375,
+          "bottom": 72.796875,
+          "left": 153
+        }
+      },
+      "horizontalOverflow": false,
+      "errors": [],
+      "screenshots": [
+        "desktop-start-after.png",
+        "desktop-riverbank-after.png",
+        "desktop-far-bank-after.png"
+      ],
+      "physicalPhone": false
+    },
+    {
+      "view": {
+        "id": "phone",
+        "width": 390,
+        "height": 844,
+        "mobile": true
+      },
+      "buildId": "vYkkB-c3zNeg70POZnLAY",
+      "url": "http://127.0.0.1:3011/world-explorer?country=MNG&play=1",
+      "httpStatus": 200,
+      "heading": {
+        "text": "Mongolia",
+        "fits": true,
+        "rect": {
+          "x": 95,
+          "y": 20,
+          "width": 183.84375,
+          "height": 22.421875,
+          "top": 20,
+          "right": 278.84375,
+          "bottom": 42.421875,
+          "left": 95
+        }
+      },
+      "horizontalOverflow": false,
+      "errors": [],
+      "screenshots": [
+        "phone-start-after.png",
+        "phone-riverbank-after.png",
+        "phone-far-bank-after.png"
+      ],
+      "physicalPhone": false
+    },
+    {
+      "view": {
+        "id": "small-phone",
+        "width": 320,
+        "height": 693,
+        "mobile": true
+      },
+      "buildId": "vYkkB-c3zNeg70POZnLAY",
+      "url": "http://127.0.0.1:3011/world-explorer?country=MNG&play=1",
+      "httpStatus": 200,
+      "heading": {
+        "text": "Mongolia",
+        "fits": true,
+        "rect": {
+          "x": 57,
+          "y": 20.65625,
+          "width": 183.84375,
+          "height": 20.6875,
+          "top": 20.65625,
+          "right": 240.84375,
+          "bottom": 41.34375,
+          "left": 57
+        }
+      },
+      "horizontalOverflow": false,
+      "errors": [],
+      "screenshots": [
+        "small-phone-start-after.png"
+      ],
+      "physicalPhone": false
+    },
+    {
+      "view": {
+        "id": "landscape-phone",
+        "width": 844,
+        "height": 390,
+        "mobile": true
+      },
+      "buildId": "vYkkB-c3zNeg70POZnLAY",
+      "url": "http://127.0.0.1:3011/world-explorer?country=MNG&play=1",
+      "httpStatus": 200,
+      "heading": {
+        "text": "Mongolia",
+        "fits": true,
+        "rect": {
+          "x": 123,
+          "y": 26,
+          "width": 147.0625,
+          "height": 23.09375,
+          "top": 26,
+          "right": 270.0625,
+          "bottom": 49.09375,
+          "left": 123
+        }
+      },
+      "horizontalOverflow": false,
+      "errors": [],
+      "screenshots": [
+        "landscape-phone-start-after.png"
+      ],
+      "physicalPhone": false
+    }
+  ]
+}

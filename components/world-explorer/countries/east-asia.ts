@@ -81,7 +81,10 @@ export function createEastAsiaEnvironment(code:NewEastAsiaCode):CountryEnvironme
     const river=createWaterSurface(root,{x:finish/2,y:-2.55,z:-6.2,width:finish+80,depth:5,shallow:'#7caa99',deep:'#355f74',segments:64,name:'orkhon-river',edge:'near'});
     const rp=river.surface.geometry.getAttribute('position');for(let i=0;i<rp.count;i++)rp.setY(i,rp.getY(i)+Math.sin(rp.getX(i)*.047)*2.2);river.surface.geometry.computeVertexNormals();animations.push(time=>river.update(time));
     createHeightfield(root,{name:'orkhon-continuous-near-bank',x:finish/2,y:-3,z:-10,width:finish+110,depth:9,segments:[64,12],height:(u,v)=>.25+Math.sin(u*8)*.16+Math.pow(v,2)*.2,color:()=>new T.Color('#89945a')});
-    createHeightfield(root,{name:'orkhon-foreground-ground-transition',x:finish/2,y:-3.45,z:9,width:finish+110,depth:12,segments:[64,12],height:(u,v)=>Math.sin(u*11)*.08+v*.12,color:()=>new T.Color('#7f8e57')});
+    // The apron starts beneath the flared bank foot, outside the z=0 walking
+    // lane. Its raised rear edge closes the sky-colored slit in both camera
+    // aspects; it grades down into the existing foreground grass.
+    createHeightfield(root,{name:'orkhon-foreground-ground-transition',x:finish/2,y:-3.45,z:8,width:finish+110,depth:14,segments:[64,12],height:(u,v)=>Math.sin(u*11)*.08+(1-v)*1.1+v*.12,color:(_h,_s,_u,v)=>new T.Color('#8f9865').lerp(new T.Color('#7f8e57'),v)});
    }else if(code==='PRK'){
     root.userData.landform='paektu-volcanic-caldera-and-lava-terraces';
     // The near side is a low scenic cutaway. It exposes the lake instead of
