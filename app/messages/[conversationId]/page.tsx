@@ -227,7 +227,7 @@ function Conversation() {
   // Text (SRS-201.1) and emoji (SRS-201.8) messages are sent the same way; the ref stops double-sends
   // before the disabled state shows. Returns whether the message was sent.
   const sendingRef = useRef(false);
-  async function deliver(body: { text: string } | { kind: 'emoji'; emoji: string }) {
+  async function deliver(body: { text: string; replyTo?: string } | { kind: 'emoji'; emoji: string }) {
     if (sendingRef.current) return false;
     sendingRef.current = true;
     setSending(true);
@@ -257,7 +257,12 @@ function Conversation() {
   async function send(event: FormEvent) {
     event.preventDefault();
     if (!text.trim()) return;
-    if (await deliver({ text })) setText('');
+    // SRS-209.3 (#992): a chosen message is sent with the reply, so the two are associated (SRS-209.4).
+    // The choice is only cleared once the reply is actually sent, so a failed send keeps it for a retry.
+    if (await deliver(replyingTo ? { text, replyTo: replyingTo } : { text })) {
+      setText('');
+      setReplyingTo(null);
+    }
   }
 
   // SRS-201.8 (#797): the emoji picker beside the message box; a chosen emoji is sent straight away.
