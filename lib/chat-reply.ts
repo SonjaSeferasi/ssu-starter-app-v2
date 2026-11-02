@@ -31,6 +31,27 @@ export function keepReplyTarget(current: string | null, messages: readonly { id:
   return messages.some((message) => message.id === current) ? current : null;
 }
 
+// SRS-209.2 (#988): once a message is chosen, the composer shows which message the reply answers while the
+// student writes it.
+
+export const REPLY_PREVIEW_LIMIT = 80;
+
+// A one-line summary of the chosen message for the bar above the composer. Runs of whitespace collapse so a
+// multi-line message stays one line, and a long message is cut so the bar never grows and push the conversation
+// off screen.
+export function replyPreview(text: string | null | undefined, limit = REPLY_PREVIEW_LIMIT): string {
+  const flat = (text ?? '').replace(/\s+/g, ' ').trim();
+  if (flat.length <= limit) return flat;
+  return flat.slice(0, limit - 1).trimEnd() + '…';
+}
+
+// The chosen message itself, or null when the choice names nothing the page is currently showing. The page uses
+// this to decide whether to show the bar at all, so a stale choice shows nothing rather than an empty bar.
+export function findReplyTarget<T extends { id: string }>(messages: readonly T[], current: string | null): T | null {
+  if (!current) return null;
+  return messages.find((message) => message.id === current) ?? null;
+}
+
 // How the chosen message is named to screen readers, so the choice is announced rather than only outlined.
 export function describeReplyTarget(sender: string, message: ReplyCandidate | null | undefined): string {
   return message ? `Replying to ${sender}: ${message.text}` : '';

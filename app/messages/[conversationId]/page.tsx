@@ -15,7 +15,7 @@ import { GroupNameForm } from '../group-name';
 import { GroupMemberList } from '../group-members';
 import { InvitePicker } from '../invite-picker';
 import { ReactionChips, ReactionPicker } from '../message-reactions';
-import { canSelectForReply, keepReplyTarget, toggleReplyTarget } from '../../../lib/chat-reply';
+import { canSelectForReply, findReplyTarget, keepReplyTarget, replyPreview, toggleReplyTarget } from '../../../lib/chat-reply';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -297,6 +297,15 @@ function Conversation() {
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [replyingTo]);
+
+  // SRS-209.2 (#988): choosing a message moves the cursor to the message box, so the reply can be written at once.
+  const messageInput = useRef<HTMLInputElement>(null);
+  useEffect(() => { if (replyingTo) messageInput.current?.focus(); }, [replyingTo]);
+  // The chosen message itself, and who sent it, for the bar above the composer.
+  const replyTarget = findReplyTarget(messages, replyingTo);
+  const replyTargetSender = replyTarget
+    ? (replyTarget.sender_id === myStudentId ? 'you' : senders[replyTarget.sender_id]?.name ?? 'a member')
+    : '';
   function clearReply() {
     if (replyingTo) replyButtons.current[replyingTo]?.focus();
     setReplyingTo(null);
@@ -471,14 +480,30 @@ function Conversation() {
             </p>
           )}
           {picking && <EmojiPicker disabled={sending} onPick={sendEmoji} onClose={closePicker} />}
+          {/* SRS-209.2 (#988): while a message is chosen, the composer says which message the reply answers.
+              The choice can be abandoned here as well as with Escape. */}
+          {replyTarget && (
+            <div className={styles.replyBar}>
+              <span className={styles.replyBarMark} aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 17l-5-5 5-5" /><path d="M4 12h11a5 5 0 0 1 5 5v2" /></svg>
+              </span>
+              <span className={styles.replyBarText}>
+                <span className={styles.replyBarWho}>Replying to {replyTargetSender}</span>
+                <span className={styles.replyBarQuote}>{replyPreview(replyTarget.text)}</span>
+              </span>
+              <button type="button" className={styles.replyCancel} onClick={clearReply} aria-label="Cancel reply" title="Cancel reply">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+              </button>
+            </div>
+          )}
           <form className={styles.composer} onSubmit={send}>
             <button ref={emojiButton} type="button" className={styles.emojiToggle} onClick={() => setPicking((open) => !open)}
               aria-expanded={picking} aria-label="Choose an emoji">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><path d="M9 9h.01" /><path d="M15 9h.01" /></svg>
             </button>
             <label htmlFor="message-text" className={styles.srOnly}>Message</label>
-            <input id="message-text" className={styles.input} value={text} onChange={(event) => setText(event.target.value)}
-              placeholder="Message…" maxLength={500} autoComplete="off" disabled={sending} />
+            <input ref={messageInput} id="message-text" className={styles.input} value={text} onChange={(event) => setText(event.target.value)}
+              placeholder={replyTarget ? `Reply to ${replyTargetSender}…` : 'Message…'} maxLength={500} autoComplete="off" disabled={sending} />
             <button type="submit" className={styles.send} disabled={sending || !text.trim()} aria-label="Send message">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 2 11 13" /><path d="M22 2 15 22l-4-9-9-4 20-7Z" /></svg>
             </button>
