@@ -101,7 +101,7 @@ A proposed target is measurable draft text awaiting agreement. A conditional fea
 | --- | --- |
 | Registration and sign-in | Create and verify a university account, sign in, recover credentials, and manage access. |
 | Home | Open Campus Feed; switch to Friends Feed under the audience and blocking rules. |
-| Messages | Private and group conversations, incoming non-friend requests, and conversation-only Snipes. |
+| Messages | Private and group conversations, incoming non-friend requests, and group-conversation-only Snipes. |
 | Game Room | Avatar preview, face/outfit editing, shared participation status and descriptions/opening controls for included activities. |
 | Game 1 | Three platform levels, movement, optional coins, hazards, finish flags, pause, retries and protected exit. A fourth level is optional. |
 | Daily word game | Optional five-letter daily puzzle with six accepted guesses, instructions and today's result; no history statistics. |
@@ -125,7 +125,7 @@ Typical journey: verify an account -> sign in -> Home -> connect or message -> d
 | Group owner / administrator | Has only the group-management powers defined by Chat. |
 | Event creator / invitee | Manages their event or answers an invitation. |
 | Dorm owner / visitor | Decorates their own dorm or visits as an eligible current friend. |
-| Snipe photographer / tagged participant | Submits a conversation photo or separately answers identity and sharing questions. |
+| Snipe photographer / tagged participant | Submits a group-conversation photo or separately answers identity and sharing questions. |
 
 <a id="2-2-feature-ownership"></a>
 
@@ -151,7 +151,7 @@ Typical journey: verify an account -> sign in -> Home -> connect or message -> d
 | Complete outfit / available outfit | One provided clothing combination; available means entitled to use. |
 | Saved / committed | Durable storage has been confirmed; a preview or pending operation is not a confirmed save. |
 | Level coins / shared points | Level coins describe an attempt. Spendable account points and any conversion are owned by DP. |
-| Snipe | A conversation photo requiring separate identity and sharing answers before publication. |
+| Snipe | A group-conversation photo requiring separate identity and sharing answers before publication. |
 | Authoritative time | The system-assigned time for accepted activity, not a manually altered device clock. |
 | 24 elapsed hours | 86,400 seconds, independent of midnight and daylight-saving changes. |
 | Character count in DP | Unicode code points, including spaces and line breaks; this may count an emoji as multiple characters. |
@@ -4714,15 +4714,17 @@ Traces to: UR-509.
 
 ### Snipe
 
+Scope correction (31 October 2026): the stakeholder (DP) corrected Snipe to be group-only. Snipe is offered only inside group conversations; direct messages offer no Snipe submission, review, reporting or removal. Requirements below that previously named direct messages were reworded to match; their numbers and titles are kept for traceability. See documentation/snipe-group-only.md.
+
 <a id="ur-510"></a>
 
 #### UR-510, DP - Submit Snipes Inside Chat
 
-User requirement: As a student, I want to submit a photograph of a friend through an eligible direct message or group chat when the friend did not expect the photograph to be taken, so that Snipe feels like a natural game inside conversations I already use.
+User requirement: As a student, I want to submit a photograph of a friend through a group chat I belong to when the friend did not expect the photograph to be taken, so that Snipe feels like a natural game inside conversations I already use.
 
 ##### SRS-510.1, DP — Chat submission entry.
 
-When a signed-in participant opens an eligible direct message or group conversation, the system shall provide a Snipe submission action within that conversation.
+When a signed-in participant opens a group conversation they currently belong to, the system shall provide a Snipe submission action within that conversation; direct messages shall not provide one.
 
 Traces to: UR-510.
 
@@ -4958,7 +4960,7 @@ Traces to: UR-512.
 
 #### UR-513, DP - Avoid Excessive Snipe Submissions
 
-User requirement: As a student, I want submission cooldowns to limit how frequently Snipes can be submitted, so that Snipe does not overwhelm direct messages or group chats.
+User requirement: As a student, I want submission cooldowns to limit how frequently Snipes can be submitted, so that Snipe does not overwhelm group chats.
 
 ##### SRS-513.1, DP — Pair cooldown start.
 
@@ -5034,7 +5036,7 @@ Traces to: UR-514.
 
 ##### SRS-514.3, DP — Direct message removal.
 
-When the submitter or an originally tagged person removes a published Snipe from a direct message, the system shall apply the same photograph-removal behavior used in group chats.
+When the submitter or an originally tagged person removes a published Snipe, the system shall apply the same photograph-removal behavior used for a group administrator's removal. Because Snipe is group-only (31 October 2026 scope correction), no direct-message Snipe exists to remove.
 
 Traces to: UR-514.
 
@@ -5100,7 +5102,7 @@ Traces to: UR-514.
 
 ##### SRS-514.14, DP — No DM reporting.
 
-When a student views a Snipe in a direct message, the system shall omit group-reporting controls.
+When a student opens a direct message, the system shall omit all Snipe controls, including submission, review, reporting and removal, and shall deny Snipe requests for that conversation.
 
 Traces to: UR-514.
 

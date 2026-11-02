@@ -44,6 +44,10 @@ let loading = false;
 let loadAgain = false;
 let stopLive: (() => void) | null = null;
 let connecting = false;
+// Invitations answered in this tab (here or on the Messages page). IDs are never reused, so a load that started
+// before the answer cannot bring one back.
+const answered = new Set<string>();
+const unanswered = (invitations: PendingInvitation[]) => invitations.filter((invitation) => !answered.has(invitation.id));
 
 function publish(next: Snapshot) {
   snapshot = next;
@@ -55,8 +59,14 @@ async function loadOnce() {
   if (!(await accessToken())) return;
   try {
     const [notes, invites] = await Promise.all([chatFetch('/api/message-notifications'), chatFetch('/api/group-invitations')]);
-    if (!notes.response.ok) throw new Error(notes.data.error || 'Unable to load message notifications.');
-    publish({ messages: notes.data.notifications ?? [], invitations: invites.response.ok ? invites.data.invitations ?? [] : [], error: '' });
+    // Invitations come from their own list, so they stay correct even if the messages part fails (and stay as they
+    // were if their own list fails).
+    const invitations = unanswered(invites.response.ok ? invites.data.invitations ?? [] : snapshot.invitations);
+    if (!notes.response.ok) {
+      publish({ messages: snapshot.messages ?? [], invitations, error: notes.data.error || 'Unable to load message notifications.' });
+      return;
+    }
+    publish({ messages: notes.data.notifications ?? [], invitations, error: '' });
   } catch (reason) {
     publish({ ...snapshot, messages: snapshot.messages ?? [], error: reason instanceof Error && !(reason instanceof TypeError) ? reason.message : 'Unable to load message notifications.' });
   }
@@ -93,6 +103,14 @@ export async function reloadMessageNotifications() {
 
 function onActivity() { void reloadMessageNotifications(); }
 
+// SRS-205.6 / SRS-205.8: an invitation was accepted or declined (or turned out to be answered already). It leaves the
+// bell, the Messages link and the Messages tab at once, and the rest is loaded again.
+export function forgetInvitation(id: string) {
+  answered.add(id);
+  publish({ ...snapshot, invitations: unanswered(snapshot.invitations) });
+  void reloadMessageNotifications();
+}
+
 // The store itself, for React (useMessageNotifications) and for tests.
 export function messageNotificationsSnapshot() { return snapshot; }
 
@@ -110,6 +128,10 @@ export function watchMessageNotifications(onChange: () => void) {
     window.removeEventListener(CHAT_ACTIVITY_EVENT, onActivity);
     stopLive?.();
     stopLive = null;
+    // Nobody is shown the notifications any more (for example, after signing out): forget them, so the next
+    // student on this tab never sees them.
+    snapshot = EMPTY;
+    answered.clear();
   };
 }
 
@@ -163,9 +185,11 @@ function InvitationRow({ invitation, onAnswered }: { invitation: PendingInvitati
     setBusy(true); setError('');
     try {
       const { response, data } = await chatFetch(`/api/group-invitations/${encodeURIComponent(invitation.id)}/${choice}`, { method: 'POST' });
+      // Already answered (on the Messages page, in another tab or on another device): it simply leaves the list.
+      if (response.status === 404) { forgetInvitation(invitation.id); return; }
       if (!response.ok) throw new Error(data.error || 'Unable to answer this invitation.');
+      forgetInvitation(invitation.id);
       if (choice === 'accept') router.push(`/messages/${encodeURIComponent(data.conversation_id)}`);
-      else onAnswered();
     } catch (reason) {
       setError(reason instanceof Error && !(reason instanceof TypeError) ? reason.message : 'Unable to answer this invitation.');
       setBusy(false);

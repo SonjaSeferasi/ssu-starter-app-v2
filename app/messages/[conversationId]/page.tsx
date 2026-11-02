@@ -16,6 +16,7 @@ import { GroupMemberList } from '../group-members';
 import { InvitePicker } from '../invite-picker';
 import { ReactionChips, ReactionPicker } from '../message-reactions';
 import { SnipePanel } from '../../../components/snipe/snipe-panel';
+import { canSelectForReply, findReplyTarget, keepReplyTarget, replyIndication, replyPreview, replyQuote, toggleReplyTarget, type ReplyTargets } from '../../../lib/chat-reply';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -78,6 +79,8 @@ function Conversation() {
   const sendersRef = useRef<Record<string, { name: string; username: string }> | null>(null);
   // SRS-210.4 (#811, #812): each message's reactions by message ID, from the history and then live.
   const [reactions, setReactions] = useState<Record<string, ChatReaction[]>>({});
+  // SRS-209.5 (#997): the message each reply answers, as the history reports it.
+  const [replyTargets, setReplyTargets] = useState<ReplyTargets>({});
 
   // SRS-212.5: mark the messages shown here as read, again when a message arrives while the student is looking
   // at this conversation, and when they come back to the tab. Nothing is marked while the page is hidden.
@@ -135,6 +138,9 @@ function Conversation() {
           for (const message of loaded) next[message.id] = data.reactions?.[message.id] ?? [];
           return next;
         });
+        // SRS-209.5: merged rather than replaced, so a target learned earlier survives a reload that no
+        // longer lists it among the fifty most recent messages.
+        if (data.replies) setReplyTargets((current) => ({ ...current, ...data.replies }));
         setMessages((current) => mergeMessages(current, loaded));
         setHistory('loaded');
         shownRef.current = true;
@@ -227,7 +233,7 @@ function Conversation() {
   // Text (SRS-201.1) and emoji (SRS-201.8) messages are sent the same way; the ref stops double-sends
   // before the disabled state shows. Returns whether the message was sent.
   const sendingRef = useRef(false);
-  async function deliver(body: { text: string } | { kind: 'emoji'; emoji: string }) {
+  async function deliver(body: { text: string; replyTo?: string } | { kind: 'emoji'; emoji: string }) {
     if (sendingRef.current) return false;
     sendingRef.current = true;
     setSending(true);
@@ -257,7 +263,12 @@ function Conversation() {
   async function send(event: FormEvent) {
     event.preventDefault();
     if (!text.trim()) return;
-    if (await deliver({ text })) setText('');
+    // SRS-209.3 (#992): a chosen message is sent with the reply, so the two are associated (SRS-209.4).
+    // The choice is only cleared once the reply is actually sent, so a failed send keeps it for a retry.
+    if (await deliver(replyingTo ? { text, replyTo: replyingTo } : { text })) {
+      setText('');
+      setReplyingTo(null);
+    }
   }
 
   // SRS-201.8 (#797): the emoji picker beside the message box; a chosen emoji is sent straight away.
@@ -284,6 +295,32 @@ function Conversation() {
   // any other emoji adds it or replaces theirs. The ref stops double-clicks before the disabled state shows.
   const reactingRef = useRef(false);
   const [reactionBusy, setReactionBusy] = useState(false);
+
+  // SRS-209.1 (#986): the group message the student has chosen to reply to. Only the choice lives here; the
+  // composer shows it in SRS-209.2 and the reply is sent in SRS-209.3.
+  const [replyingTo, setReplyingTo] = useState<string | null>(null);
+  const replyButtons = useRef<Record<string, HTMLButtonElement | null>>({});
+  useEffect(() => { setReplyingTo((current) => keepReplyTarget(current, messages)); }, [messages]);
+  // Escape abandons the choice and puts focus back on the message's Reply button, as the reaction picker does.
+  useEffect(() => {
+    if (!replyingTo) return;
+    function onKeyDown(event: KeyboardEvent) { if (event.key === 'Escape') clearReply(); }
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [replyingTo]);
+
+  // SRS-209.2 (#988): choosing a message moves the cursor to the message box, so the reply can be written at once.
+  const messageInput = useRef<HTMLInputElement>(null);
+  useEffect(() => { if (replyingTo) messageInput.current?.focus(); }, [replyingTo]);
+  // The chosen message itself, and who sent it, for the bar above the composer.
+  const replyTarget = findReplyTarget(messages, replyingTo);
+  const replyTargetSender = replyTarget
+    ? (replyTarget.sender_id === myStudentId ? 'you' : senders[replyTarget.sender_id]?.name ?? 'a member')
+    : '';
+  function clearReply() {
+    if (replyingTo) replyButtons.current[replyingTo]?.focus();
+    setReplyingTo(null);
+  }
   async function react(messageId: string, emoji: string) {
     if (reactingRef.current) return;
     reactingRef.current = true;
@@ -409,18 +446,49 @@ function Conversation() {
               const showName = info?.kind === 'group' && !mine && messages[index - 1]?.sender_id !== message.sender_id;
               const chips = sortReactions(reactions[message.id] ?? []);
               const picking = reactingTo === message.id;
+              // SRS-209.1 (#986): a group message can be chosen as the target of a reply.
+              const canReply = canSelectForReply(info?.kind, message);
+              const replying = replyingTo === message.id;
+              // SRS-209.5 (#998): what this message replies to, if anything still visible to this student.
+              const quoted = replyQuote(message, replyTargets, messages, senders, myStudentId);
+              const shows = replyIndication(message, quoted);
               return (
-                <li key={message.id} className={mine ? `${styles.message} ${styles.messageOwn}` : styles.message}>
+                <li key={message.id} aria-current={replying ? 'true' : undefined}
+                  className={`${mine ? `${styles.message} ${styles.messageOwn}` : styles.message}${replying ? ` ${styles.messageReplyTarget}` : ''}`}>
                   {showName && <span className={styles.senderName} aria-hidden="true">{sender}</span>}
+                  {shows === 'quote' && quoted && (
+                    <span className={styles.quoted}>
+                      <span className={styles.quotedWho}>{quoted.sender}</span>
+                      <span className={styles.quotedText}>{quoted.kind === 'emoji' ? quoted.text : replyPreview(quoted.text, 60)}</span>
+                    </span>
+                  )}
+                  {/* SRS-209.6 (#1001): the message is a reply, but its target cannot be shown to this student.
+                      Saying so is clearer than leaving the reply looking like an ordinary message, and it
+                      reveals nothing about a message they are not allowed to read. */}
+                  {shows === 'unavailable' && (
+                    <span className={`${styles.quoted} ${styles.quotedGone}`}>
+                      <span className={styles.quotedText}>Original message unavailable</span>
+                    </span>
+                  )}
                   <div className={styles.bubbleRow}>
                     <p className={bubble}>
-                      <span className={styles.srOnly}>{sender}: </span>{message.text}
+                      <span className={styles.srOnly}>
+                        {quoted ? `${sender}, replying to ${quoted.sender}: ` : `${sender}: `}
+                      </span>{message.text}
                     </p>
                     <button ref={(button) => { reactButtons.current[message.id] = button; }} type="button" className={styles.reactButton}
                       onClick={() => setReactingTo(picking ? null : message.id)} aria-expanded={picking}
                       aria-label={mine ? 'React to your message' : `React to ${sender}’s message`} title="React">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 11v1a10 10 0 1 1-9-10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><path d="M9 9h.01" /><path d="M15 9h.01" /><path d="M16 5h6" /><path d="M19 2v6" /></svg>
                     </button>
+                    {canReply && (
+                      <button ref={(button) => { replyButtons.current[message.id] = button; }} type="button" className={styles.replyButton}
+                        onClick={() => setReplyingTo((current) => toggleReplyTarget(current, message.id))} aria-pressed={replying}
+                        aria-label={mine ? 'Reply to your message' : `Reply to ${sender}’s message`}
+                        title={replying ? 'Chosen for reply' : 'Reply'}>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 17l-5-5 5-5" /><path d="M4 12h11a5 5 0 0 1 5 5v2" /></svg>
+                      </button>
+                    )}
                   </div>
                   {chips.length > 0 && <ReactionChips reactions={chips} disabled={reactionBusy} onPick={(emoji) => void react(message.id, emoji)} />}
                   {picking && (
@@ -445,14 +513,30 @@ function Conversation() {
             </p>
           )}
           {picking && <EmojiPicker disabled={sending} onPick={sendEmoji} onClose={closePicker} />}
+          {/* SRS-209.2 (#988): while a message is chosen, the composer says which message the reply answers.
+              The choice can be abandoned here as well as with Escape. */}
+          {replyTarget && (
+            <div className={styles.replyBar}>
+              <span className={styles.replyBarMark} aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 17l-5-5 5-5" /><path d="M4 12h11a5 5 0 0 1 5 5v2" /></svg>
+              </span>
+              <span className={styles.replyBarText}>
+                <span className={styles.replyBarWho}>Replying to {replyTargetSender}</span>
+                <span className={styles.replyBarQuote}>{replyPreview(replyTarget.text)}</span>
+              </span>
+              <button type="button" className={styles.replyCancel} onClick={clearReply} aria-label="Cancel reply" title="Cancel reply">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+              </button>
+            </div>
+          )}
           <form className={styles.composer} onSubmit={send}>
             <button ref={emojiButton} type="button" className={styles.emojiToggle} onClick={() => setPicking((open) => !open)}
               aria-expanded={picking} aria-label="Choose an emoji">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><path d="M9 9h.01" /><path d="M15 9h.01" /></svg>
             </button>
             <label htmlFor="message-text" className={styles.srOnly}>Message</label>
-            <input id="message-text" className={styles.input} value={text} onChange={(event) => setText(event.target.value)}
-              placeholder="Message…" maxLength={500} autoComplete="off" disabled={sending} />
+            <input ref={messageInput} id="message-text" className={styles.input} value={text} onChange={(event) => setText(event.target.value)}
+              placeholder={replyTarget ? `Reply to ${replyTargetSender}…` : 'Message…'} maxLength={500} autoComplete="off" disabled={sending} />
             <button type="submit" className={styles.send} disabled={sending || !text.trim()} aria-label="Send message">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 2 11 13" /><path d="M22 2 15 22l-4-9-9-4 20-7Z" /></svg>
             </button>

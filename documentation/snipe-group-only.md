@@ -106,11 +106,14 @@ For focused browser acceptance, set SNIPE_BROWSER_DEV=1 and SNIPE_FOCUSED_ACCEPT
 
 ## Evidence
 
-- [Passing focused browser tests](/Users/therealrinrin/Desktop/Schoolwork/CSC351/ssu-starter-app-v2/tmp/tools/snipe-group-only-evidence/socialu-group-snipe-browser-focused.log)
-- [Unit/API/database regression](/Users/therealrinrin/Desktop/Schoolwork/CSC351/ssu-starter-app-v2/tmp/tools/snipe-group-only-evidence/socialu-group-snipe-regression.log)
-- [Navigation checks](/Users/therealrinrin/Desktop/Schoolwork/CSC351/ssu-starter-app-v2/tmp/tools/snipe-group-only-evidence/socialu-group-snipe-navigation.log)
-- [Approved group Snipe](/Users/therealrinrin/Desktop/Schoolwork/CSC351/ssu-starter-app-v2/tmp/tools/snipe-group-only-evidence/mobile-group-snipe-approved.png)
-- [Withdrawn group Snipe](/Users/therealrinrin/Desktop/Schoolwork/CSC351/ssu-starter-app-v2/tmp/tools/snipe-group-only-evidence/mobile-group-snipe-withdrawn.png)
-- [Direct message without Snipe](/Users/therealrinrin/Desktop/Schoolwork/CSC351/ssu-starter-app-v2/tmp/tools/snipe-group-only-evidence/mobile-dm-no-snipe.png)
+Screenshots checked in under [`sprint-3-evidence/snipe/`](sprint-3-evidence/snipe/). The test logs from the
+validation runs above were not committed.
+
+- [Approved group Snipe](sprint-3-evidence/snipe/mobile-group-snipe-approved.png)
+- [Withdrawn group Snipe](sprint-3-evidence/snipe/mobile-group-snipe-withdrawn.png)
+- [Direct message without Snipe (phone)](sprint-3-evidence/snipe/mobile-dm-no-snipe.png)
+- [Direct message without Snipe (desktop)](sprint-3-evidence/snipe/desktop-dm-no-snipe.png)
+- [Take photo camera preview](sprint-3-evidence/snipe/mobile-camera-preview.png)
+- [Camera-captured Snipe submitted](sprint-3-evidence/snipe/mobile-camera-snipe-submitted.png)
 
 The uploaded /mnt/data/schema.sql was not accessible on this host; repository schema files and the connected database were used.
