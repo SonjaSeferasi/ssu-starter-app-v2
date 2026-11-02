@@ -146,6 +146,10 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 .messageOwn .quoted { border-left: 0; border-right: 3px solid #9ab8a8; }
 .quotedWho { flex-shrink: 0; font-weight: 700; color: #28634e; }
 .quotedText { overflow: hidden; color: #536963; text-overflow: ellipsis; white-space: nowrap; }
+/* SRS-209.6 (#1001): a reply whose target this student cannot be shown. */
+.quotedGone { border-left-color: #c2cec8; background: #f1f4f2; }
+.messageOwn .quotedGone { border-right-color: #c2cec8; }
+.quotedGone .quotedText { font-style: italic; color: #76867f; }
 
 /* SRS-209.2 (#988): the bar above the message box naming the message the reply answers. */
 .replyBar { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; padding: 8px 10px; border-left: 3px solid #28634e; border-radius: 8px; background: #eef4f0; }

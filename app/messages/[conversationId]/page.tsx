@@ -15,7 +15,7 @@ import { GroupNameForm } from '../group-name';
 import { GroupMemberList } from '../group-members';
 import { InvitePicker } from '../invite-picker';
 import { ReactionChips, ReactionPicker } from '../message-reactions';
-import { canSelectForReply, findReplyTarget, keepReplyTarget, replyPreview, replyQuote, toggleReplyTarget, type ReplyTargets } from '../../../lib/chat-reply';
+import { canSelectForReply, findReplyTarget, keepReplyTarget, replyIndication, replyPreview, replyQuote, toggleReplyTarget, type ReplyTargets } from '../../../lib/chat-reply';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -447,14 +447,23 @@ function Conversation() {
               const replying = replyingTo === message.id;
               // SRS-209.5 (#998): what this message replies to, if anything still visible to this student.
               const quoted = replyQuote(message, replyTargets, messages, senders, myStudentId);
+              const shows = replyIndication(message, quoted);
               return (
                 <li key={message.id} aria-current={replying ? 'true' : undefined}
                   className={`${mine ? `${styles.message} ${styles.messageOwn}` : styles.message}${replying ? ` ${styles.messageReplyTarget}` : ''}`}>
                   {showName && <span className={styles.senderName} aria-hidden="true">{sender}</span>}
-                  {quoted && (
+                  {shows === 'quote' && quoted && (
                     <span className={styles.quoted}>
                       <span className={styles.quotedWho}>{quoted.sender}</span>
                       <span className={styles.quotedText}>{quoted.kind === 'emoji' ? quoted.text : replyPreview(quoted.text, 60)}</span>
+                    </span>
+                  )}
+                  {/* SRS-209.6 (#1001): the message is a reply, but its target cannot be shown to this student.
+                      Saying so is clearer than leaving the reply looking like an ordinary message, and it
+                      reveals nothing about a message they are not allowed to read. */}
+                  {shows === 'unavailable' && (
+                    <span className={`${styles.quoted} ${styles.quotedGone}`}>
+                      <span className={styles.quotedText}>Original message unavailable</span>
                     </span>
                   )}
                   <div className={styles.bubbleRow}>
