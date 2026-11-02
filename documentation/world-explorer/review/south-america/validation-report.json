@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-02T00:56:37.863Z",
+ "generatedAt": "2026-11-02T15:28:25.170Z",
  "levels": [
   {
    "code": "BRA",
@@ -60,9 +60,62 @@
     "targetSeconds": 60
    },
    "collectibles": {
+    "runtimeDifficulty": 2,
     "coins": "29/29",
     "stars": "3/3",
-    "damage": 0
+    "missingCoins": [],
+    "runs": [
+     {
+      "route": "main",
+      "wait": 0,
+      "status": "completed",
+      "damage": 1,
+      "coins": 25,
+      "stars": 1
+     },
+     {
+      "route": "bonus",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 22,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 25,
+      "stars": 1
+     },
+     {
+      "route": "bonus",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 22,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 25,
+      "stars": 0
+     },
+     {
+      "route": "bonus",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 22,
+      "stars": 3
+     }
+    ],
+    "damagedRuns": 1,
+    "incompleteRuns": 0
    },
    "strategies": {
     "forward": {
@@ -148,9 +201,62 @@
     "targetSeconds": 70
    },
    "collectibles": {
+    "runtimeDifficulty": 1,
     "coins": "33/33",
     "stars": "3/3",
-    "damage": 0
+    "missingCoins": [],
+    "runs": [
+     {
+      "route": "main",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 33,
+      "stars": 3
+     },
+     {
+      "route": "bonus",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 31,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 33,
+      "stars": 3
+     },
+     {
+      "route": "bonus",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 31,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 33,
+      "stars": 3
+     },
+     {
+      "route": "bonus",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 31,
+      "stars": 3
+     }
+    ],
+    "damagedRuns": 0,
+    "incompleteRuns": 0
    },
    "strategies": {
     "forward": {
@@ -233,9 +339,62 @@
     "targetSeconds": 55
    },
    "collectibles": {
+    "runtimeDifficulty": 1,
     "coins": "35/35",
     "stars": "3/3",
-    "damage": 0
+    "missingCoins": [],
+    "runs": [
+     {
+      "route": "main",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 33,
+      "stars": 0
+     },
+     {
+      "route": "bonus",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 33,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 33,
+      "stars": 0
+     },
+     {
+      "route": "bonus",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 33,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 33,
+      "stars": 0
+     },
+     {
+      "route": "bonus",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 33,
+      "stars": 3
+     }
+    ],
+    "damagedRuns": 0,
+    "incompleteRuns": 0
    },
    "strategies": {
     "forward": {
@@ -320,9 +479,62 @@
     "targetSeconds": 85
    },
    "collectibles": {
+    "runtimeDifficulty": 3,
     "coins": "28/28",
     "stars": "3/3",
-    "damage": 0
+    "missingCoins": [],
+    "runs": [
+     {
+      "route": "main",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 26,
+      "stars": 1
+     },
+     {
+      "route": "bonus",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 26,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 26,
+      "stars": 1
+     },
+     {
+      "route": "bonus",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 26,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 26,
+      "stars": 1
+     },
+     {
+      "route": "bonus",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 26,
+      "stars": 3
+     }
+    ],
+    "damagedRuns": 0,
+    "incompleteRuns": 0
    },
    "strategies": {
     "forward": {
@@ -404,9 +616,62 @@
     "targetSeconds": 70
    },
    "collectibles": {
+    "runtimeDifficulty": 2,
     "coins": "27/27",
     "stars": "3/3",
-    "damage": 0
+    "missingCoins": [],
+    "runs": [
+     {
+      "route": "main",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 25,
+      "stars": 2
+     },
+     {
+      "route": "bonus",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 26,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 25,
+      "stars": 2
+     },
+     {
+      "route": "bonus",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 26,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 25,
+      "stars": 2
+     },
+     {
+      "route": "bonus",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 26,
+      "stars": 3
+     }
+    ],
+    "damagedRuns": 0,
+    "incompleteRuns": 0
    },
    "strategies": {
     "forward": {
@@ -486,9 +751,62 @@
     "targetSeconds": 55
    },
    "collectibles": {
+    "runtimeDifficulty": 3,
     "coins": "24/24",
     "stars": "3/3",
-    "damage": 0
+    "missingCoins": [],
+    "runs": [
+     {
+      "route": "main",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 20,
+      "stars": 1
+     },
+     {
+      "route": "bonus",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 19,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 21,
+      "stars": 1
+     },
+     {
+      "route": "bonus",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 20,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 21,
+      "stars": 1
+     },
+     {
+      "route": "bonus",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 20,
+      "stars": 3
+     }
+    ],
+    "damagedRuns": 0,
+    "incompleteRuns": 0
    },
    "strategies": {
     "forward": {
@@ -566,9 +884,62 @@
     "targetSeconds": 55
    },
    "collectibles": {
+    "runtimeDifficulty": 3,
     "coins": "21/21",
     "stars": "3/3",
-    "damage": 0
+    "missingCoins": [],
+    "runs": [
+     {
+      "route": "main",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 18,
+      "stars": 2
+     },
+     {
+      "route": "bonus",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 19,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 16,
+      "stars": 2
+     },
+     {
+      "route": "bonus",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 17,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 16,
+      "stars": 2
+     },
+     {
+      "route": "bonus",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 17,
+      "stars": 3
+     }
+    ],
+    "damagedRuns": 0,
+    "incompleteRuns": 0
    },
    "strategies": {
     "forward": {
@@ -647,9 +1018,62 @@
     "targetSeconds": 50
    },
    "collectibles": {
+    "runtimeDifficulty": 2,
     "coins": "19/19",
     "stars": "3/3",
-    "damage": 0
+    "missingCoins": [],
+    "runs": [
+     {
+      "route": "main",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 17,
+      "stars": 2
+     },
+     {
+      "route": "bonus",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 19,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 17,
+      "stars": 2
+     },
+     {
+      "route": "bonus",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 19,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 17,
+      "stars": 2
+     },
+     {
+      "route": "bonus",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 19,
+      "stars": 3
+     }
+    ],
+    "damagedRuns": 0,
+    "incompleteRuns": 0
    },
    "strategies": {
     "forward": {
@@ -729,9 +1153,62 @@
     "targetSeconds": 48
    },
    "collectibles": {
+    "runtimeDifficulty": 1,
     "coins": "25/25",
     "stars": "3/3",
-    "damage": 0
+    "missingCoins": [],
+    "runs": [
+     {
+      "route": "main",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 23,
+      "stars": 0
+     },
+     {
+      "route": "bonus",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 21,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 22,
+      "stars": 1
+     },
+     {
+      "route": "bonus",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 21,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 23,
+      "stars": 1
+     },
+     {
+      "route": "bonus",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 22,
+      "stars": 3
+     }
+    ],
+    "damagedRuns": 0,
+    "incompleteRuns": 0
    },
    "strategies": {
     "forward": {
@@ -811,9 +1288,62 @@
     "targetSeconds": 55
    },
    "collectibles": {
+    "runtimeDifficulty": 1,
     "coins": "27/27",
     "stars": "3/3",
-    "damage": 0
+    "missingCoins": [],
+    "runs": [
+     {
+      "route": "main",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 24,
+      "stars": 1
+     },
+     {
+      "route": "bonus",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 23,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 24,
+      "stars": 1
+     },
+     {
+      "route": "bonus",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 23,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 24,
+      "stars": 1
+     },
+     {
+      "route": "bonus",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 24,
+      "stars": 3
+     }
+    ],
+    "damagedRuns": 0,
+    "incompleteRuns": 0
    },
    "strategies": {
     "forward": {
@@ -895,9 +1425,62 @@
     "targetSeconds": 65
    },
    "collectibles": {
+    "runtimeDifficulty": 1,
     "coins": "25/25",
     "stars": "3/3",
-    "damage": 0
+    "missingCoins": [],
+    "runs": [
+     {
+      "route": "main",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 23,
+      "stars": 2
+     },
+     {
+      "route": "bonus",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 23,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 23,
+      "stars": 2
+     },
+     {
+      "route": "bonus",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 23,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 23,
+      "stars": 2
+     },
+     {
+      "route": "bonus",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 23,
+      "stars": 3
+     }
+    ],
+    "damagedRuns": 0,
+    "incompleteRuns": 0
    },
    "strategies": {
     "forward": {
@@ -982,9 +1565,62 @@
     "targetSeconds": 65
    },
    "collectibles": {
+    "runtimeDifficulty": 3,
     "coins": "24/24",
     "stars": "3/3",
-    "damage": 0
+    "missingCoins": [],
+    "runs": [
+     {
+      "route": "main",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 22,
+      "stars": 2
+     },
+     {
+      "route": "bonus",
+      "wait": 0,
+      "status": "completed",
+      "damage": 0,
+      "coins": 21,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 23,
+      "stars": 1
+     },
+     {
+      "route": "bonus",
+      "wait": 1.8,
+      "status": "completed",
+      "damage": 0,
+      "coins": 20,
+      "stars": 3
+     },
+     {
+      "route": "main",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 23,
+      "stars": 1
+     },
+     {
+      "route": "bonus",
+      "wait": 3.6,
+      "status": "completed",
+      "damage": 0,
+      "coins": 21,
+      "stars": 3
+     }
+    ],
+    "damagedRuns": 0,
+    "incompleteRuns": 0
    },
    "strategies": {
     "forward": {

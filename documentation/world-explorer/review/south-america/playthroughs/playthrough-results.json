@@ -1,6 +1,6 @@
 {
  "base": "http://localhost:3100",
- "startedAt": "2026-11-02T01:20:48.884Z",
+ "startedAt": "2026-11-02T14:36:35.775Z",
  "browser": "Edg/156.0.4314.50",
  "countries": {
   "BOL": {
@@ -168,7 +168,7 @@
      "screens/bol-complete-bonus-discovery.jpg",
      "screens/bol-complete-bonus-result.jpg"
     ],
-    "readyMs": 7865,
+    "readyMs": 9725,
     "resultScreen": [
      "PASSPORT STAMP EARNED",
      "Bolivia explored!",
@@ -268,7 +268,7 @@
      "screens/bol-hazard-respawn-1.jpg",
      "screens/bol-hazard-after-respawn.jpg"
     ],
-    "readyMs": 6845,
+    "readyMs": 3694,
     "final": {
      "status": "playing",
      "hearts": 2,
@@ -277,7 +277,7 @@
      "discoveryFound": false,
      "x": 51.4,
      "standing": "bo-flat-3",
-     "elapsed": 15.55,
+     "elapsed": 15.57,
      "replayed": "880/880"
     },
     "ok": true
@@ -450,7 +450,7 @@
      "screens/bol-complete-main-discovery.jpg",
      "screens/bol-complete-main-result.jpg"
     ],
-    "readyMs": 7084,
+    "readyMs": 3292,
     "resultScreen": [
      "PASSPORT STAMP EARNED",
      "Bolivia explored!",
@@ -479,12 +479,12 @@
      {
       "check": "ArrowRight moves the player right",
       "ok": true,
-      "actual": 14.1
+      "actual": 14.5
      },
      {
       "check": "Space makes the player jump",
       "ok": true,
-      "actual": 1.93
+      "actual": 1.94
      }
     ],
     "ok": true,
@@ -501,7 +501,7 @@
      {
       "check": "holding the right button moves the player",
       "ok": true,
-      "actual": 4.73
+      "actual": 4.83
      },
      {
       "check": "the jump button makes the player jump",
@@ -515,7 +515,7 @@
       "buttons": true,
       "pointerEventsReachedPage": 2,
       "status": "playing",
-      "moved": 4.73,
+      "moved": 4.83,
       "jumped": 1.93
      }
     ],
@@ -671,7 +671,7 @@
      "screens/bra-complete-bonus-discovery.jpg",
      "screens/bra-complete-bonus-result.jpg"
     ],
-    "readyMs": 2229,
+    "readyMs": 2865,
     "resultScreen": [
      "PASSPORT STAMP EARNED",
      "Brazil explored!",
@@ -769,7 +769,7 @@
      "screens/bra-hazard-respawn-1.jpg",
      "screens/bra-hazard-after-respawn.jpg"
     ],
-    "readyMs": 1209,
+    "readyMs": 1938,
     "final": {
      "status": "playing",
      "hearts": 2,
@@ -778,7 +778,7 @@
      "discoveryFound": false,
      "x": 51,
      "standing": "br-canopy-3",
-     "elapsed": 18.3,
+     "elapsed": 18.47,
      "replayed": "1050/1050"
     },
     "ok": true
@@ -935,7 +935,7 @@
      "screens/bra-complete-main-discovery.jpg",
      "screens/bra-complete-main-result.jpg"
     ],
-    "readyMs": 1216,
+    "readyMs": 1690,
     "resultScreen": [
      "PASSPORT STAMP EARNED",
      "Brazil explored!",
@@ -964,7 +964,7 @@
      {
       "check": "ArrowRight moves the player right",
       "ok": true,
-      "actual": 14.39
+      "actual": 14.69
      },
      {
       "check": "Space makes the player jump",
@@ -991,7 +991,7 @@
      {
       "check": "the jump button makes the player jump",
       "ok": true,
-      "actual": 1.93
+      "actual": 1.94
      }
     ],
     "attempts": [
@@ -1001,7 +1001,7 @@
       "pointerEventsReachedPage": 2,
       "status": "playing",
       "moved": 4.83,
-      "jumped": 1.93
+      "jumped": 1.94
      }
     ],
     "ok": true,
@@ -1158,7 +1158,7 @@
      "screens/ven-complete-bonus-checkpoint-2.jpg",
      "screens/ven-complete-bonus-result.jpg"
     ],
-    "readyMs": 1875,
+    "readyMs": 2388,
     "resultScreen": [
      "PASSPORT STAMP EARNED",
      "Venezuela explored!",
@@ -1262,7 +1262,7 @@
      "screens/ven-hazard-respawn-1.jpg",
      "screens/ven-hazard-after-respawn.jpg"
     ],
-    "readyMs": 1820,
+    "readyMs": 1758,
     "final": {
      "status": "playing",
      "hearts": 2,
@@ -1271,7 +1271,7 @@
      "discoveryFound": true,
      "x": 28.9,
      "standing": "ve-terrace-1",
-     "elapsed": 13.62,
+     "elapsed": 13.58,
      "replayed": "759/759"
     },
     "ok": true
@@ -1422,7 +1422,7 @@
      "screens/ven-complete-main-checkpoint-2.jpg",
      "screens/ven-complete-main-result.jpg"
     ],
-    "readyMs": 1737,
+    "readyMs": 1677,
     "resultScreen": [
      "PASSPORT STAMP EARNED",
      "Venezuela explored!",
@@ -1451,7 +1451,7 @@
      {
       "check": "ArrowRight moves the player right",
       "ok": true,
-      "actual": 14.59
+      "actual": 15.19
      },
      {
       "check": "Space makes the player jump",
@@ -1473,12 +1473,12 @@
      {
       "check": "holding the right button moves the player",
       "ok": true,
-      "actual": 4.73
+      "actual": 4.83
      },
      {
       "check": "the jump button makes the player jump",
       "ok": true,
-      "actual": 1.95
+      "actual": 1.94
      }
     ],
     "attempts": [
@@ -1487,8 +1487,8 @@
       "buttons": true,
       "pointerEventsReachedPage": 2,
       "status": "playing",
-      "moved": 4.73,
-      "jumped": 1.95
+      "moved": 4.83,
+      "jumped": 1.94
      }
     ],
     "ok": true,
@@ -1510,7 +1510,7 @@
     "discoveredFactIds": [
      "bo-discovery"
     ],
-    "completedAt": "2026-11-02T01:21:27.734Z",
+    "completedAt": "2026-11-02T14:37:16.581Z",
     "bestTimeMs": 28400
    },
    "BRA": {
@@ -1521,7 +1521,7 @@
     "discoveredFactIds": [
      "br-discovery"
     ],
-    "completedAt": "2026-11-02T01:23:47.665Z",
+    "completedAt": "2026-11-02T14:39:27.236Z",
     "bestTimeMs": 25650
    },
    "VEN": {
@@ -1532,7 +1532,7 @@
     "discoveredFactIds": [
      "ve-discovery"
     ],
-    "completedAt": "2026-11-02T01:25:58.164Z",
+    "completedAt": "2026-11-02T14:41:35.986Z",
     "bestTimeMs": 31483
    }
   }
@@ -1560,7 +1560,7 @@
     "discoveredFactIds": [
      "bo-discovery"
     ],
-    "completedAt": "2026-11-02T01:21:27.734Z",
+    "completedAt": "2026-11-02T14:37:16.581Z",
     "bestTimeMs": 28400
    },
    "screens": [
@@ -1590,7 +1590,7 @@
     "discoveredFactIds": [
      "br-discovery"
     ],
-    "completedAt": "2026-11-02T01:23:47.665Z",
+    "completedAt": "2026-11-02T14:39:27.236Z",
     "bestTimeMs": 25650
    },
    "screens": [
@@ -1620,7 +1620,7 @@
     "discoveredFactIds": [
      "ve-discovery"
     ],
-    "completedAt": "2026-11-02T01:25:58.164Z",
+    "completedAt": "2026-11-02T14:41:35.986Z",
     "bestTimeMs": 31483
    },
    "screens": [
@@ -1633,11 +1633,7 @@
   "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
   "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
   "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
-  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
-  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
-  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
   "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico"
  ],
- "finishedAt": "2026-11-02T01:27:49.587Z",
- "touchRerunAt": "2026-11-02T01:33:19.458Z"
+ "finishedAt": "2026-11-02T14:43:21.609Z"
 }

@@ -11,6 +11,7 @@ import {playRoute} from '../../lib/world-explorer/level-analysis';
 import {criticalPlatforms,optionalPath,routeGraphFor} from '../../lib/world-explorer/route-graph';
 import {similarityMatrix} from '../../lib/world-explorer/level-similarity';
 import {southAmerica} from '../../lib/world-explorer/south-america';
+import {collectibleAcceptance} from '../../lib/world-explorer/collectible-acceptance';
 import {readFileSync} from 'node:fs';
 import {designRecord,mechanics,productionSummary} from '../../lib/world-explorer/design-manifest';
 
@@ -32,8 +33,7 @@ function refreshDesignManifest(){
 it('South America report',()=>{
  const rows=southAmerica.filter(entry=>entry.levelBuilt).map(entry=>{
   const level=levelDefinitionFor(entry.code),graph=routeGraphFor(level),report=validateLevelDesign(level),difficulty=analyzeDifficulty(level);
-  const main=playRoute(level,criticalPlatforms(graph),{collectCoins:true}),bonus=playRoute(level,optionalPath(graph),{collectStars:true,collectCoins:true});
-  const coins=new Set([...main.simulation.collectedCoins,...bonus.simulation.collectedCoins]);
+  const acceptance=collectibleAcceptance(entry.code);
   const strategy=(detours:'backtrack'|'pause'|null,assist=false)=>{const subject=assist?explorerAssist(level):level,run=playRoute(subject,criticalPlatforms(graph),detours?{detours:level.checkpoints.map(c=>({platformId:c.platformId,kind:detours,seconds:detours==='pause'?2.3:1.5}))}:{});return{status:run.simulation.state.status,damage:run.damage,seconds:Math.round(run.simulation.state.elapsedSeconds*10)/10};};
   return{
    code:entry.code,levelId:level.id,title:level.title,batch:entry.batch,tier:level.difficultyTier,tierName:tierName(level.difficultyTier!),measuredTier:difficulty.measuredTier,score:Math.round(difficulty.score*100)/100,
@@ -41,7 +41,8 @@ it('South America report',()=>{
    archetype:level.design!.archetype,signature:level.design!.signatureMechanic,designMechanics:level.design!.mechanics,
    platforms:level.platforms.length,criticalPath:criticalPlatforms(graph),optionalPlatforms:level.platforms.filter(p=>p.route==='upper').map(p=>p.id),
    validator:{passed:report.checks.filter(c=>c.ok).length,total:report.checks.length,failed:report.checks.filter(c=>!c.ok).map(c=>`${c.name}: ${c.detail}`),botSeconds:report.completionSeconds,targetSeconds:level.design!.targetDurationSeconds},
-   collectibles:{coins:`${coins.size}/${level.coins.length}`,stars:`${bonus.simulation.state.stars}/3`,damage:main.damage+bonus.damage},
+   // Collectibles at the difficulty the game plays, on both routes at several timings.
+   collectibles:{runtimeDifficulty:acceptance.difficulty,coins:acceptance.coins,stars:acceptance.stars,missingCoins:acceptance.missingCoins,runs:acceptance.runs,damagedRuns:acceptance.damaged.length,incompleteRuns:acceptance.incomplete.length},
    strategies:{forward:strategy(null),assist:strategy(null,true),backtrack:strategy('backtrack'),pause:strategy('pause')},
   };
  });

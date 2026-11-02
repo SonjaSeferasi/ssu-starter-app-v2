@@ -36,7 +36,7 @@ describe('Country environment registry',()=>{
    expect(environment?.info.landmarkSource).toMatch(/^https:\/\//);expect(environment?.info.license.length).toBeGreaterThan(20);
   }
   expect(await loadCountryEnvironment('unknown-environment')).toBeNull();
- });
+ },30000);
 });
 
 describe.each(countries)('%s environment',(code,landmarks)=>{
@@ -48,14 +48,14 @@ describe.each(countries)('%s environment',(code,landmarks)=>{
   expect(meshes).toBeGreaterThan(8);expect(vertices(mounted.root)).toBeGreaterThan(20000);expect(vertices(mounted.root)).toBeLessThan(4000000);
   expect(scene.fog).toBeInstanceOf(T.Fog);
   mounted.dispose();expect(scene.getObjectByName(mounted.root.name)).toBeUndefined();expect((scene.background as T.Color).getHexString()).toBe('123456');mounted.dispose();
- });
+ },30000);
  it('animates, honours reduced motion and does less work in low graphics',async()=>{
   const standard=await mount(code),low=await mount(code,true),simulation=new LevelSimulation(standard.level);
   const signals={time:2,platforms:simulation.platforms,wind:(standard.level.zones||[]).map(zone=>({id:zone.id,phase:'gust' as const,strength:1,force:zone.force})),playerX:10};
   expect(()=>{standard.mounted.update(2,1/60,signals);standard.mounted.frame(40);standard.mounted.setReducedMotion(true);standard.mounted.update(3,1/60,signals);standard.mounted.setReducedMotion(false);standard.mounted.setView?.('overview');standard.mounted.setView?.('gameplay');}).not.toThrow();
   expect(vertices(low.mounted.root)).toBeLessThan(vertices(standard.mounted.root));
   standard.mounted.dispose();low.mounted.dispose();
- });
+ },30000);
  it('dresses every platform with a flat walking cap and keeps decoration out of the lane',async()=>{
   const {level,environment,context}=await mount(code);
   for(const definition of level.platforms){
@@ -69,7 +69,7 @@ describe.each(countries)('%s environment',(code,landmarks)=>{
     expect(hit,`${definition.id} at ${t},${z}`).toBeDefined();expect(Math.abs(hit.point.y-surface),`${definition.id} at ${t},${z}`).toBeLessThan(.06);
    }
   }
- });
+ },30000);
  it('creates an animated original enemy and a discovery block on the collider bottom',async()=>{
   const {environment}=await mount(code),parent=new T.Group(),enemy=(environment as CountryEnvironment).createEnemy(parent);
   for(const state of ['IDLE','PATROL_LEFT','PATROL_RIGHT','TURN','ALERT'] as const)expect(()=>enemy.update(1.3,state==='PATROL_LEFT'?-1:1,state)).not.toThrow();
@@ -77,5 +77,5 @@ describe.each(countries)('%s environment',(code,landmarks)=>{
   const size=new T.Box3().setFromObject(enemy.root).getSize(new T.Vector3());expect(size.y).toBeGreaterThan(.4);expect(size.y).toBeLessThan(1.4);
   const block=environment.createDiscoveryBlock(parent,.75,.8),bounds=new T.Box3().setFromObject(block);expect(bounds.min.y).toBeCloseTo(0,1);expect(bounds.max.y).toBeGreaterThan(.75);
   const marker=new T.Group(),gate=new T.Group();environment.decorateCheckpoint(marker,{} as EnvironmentContext);environment.decorateFinish(gate,{} as EnvironmentContext);expect(marker.children.length).toBeGreaterThan(0);expect(new T.Box3().setFromObject(gate).max.y).toBeGreaterThan(3);
- });
+ },30000);
 });

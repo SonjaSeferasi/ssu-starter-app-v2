@@ -72,7 +72,21 @@ Shared improvements now available to every country:
 
 After the refinement pass, Bolivia, Brazil and Venezuela were played through completely in the production build. Results, screenshots and the method are in [review/south-america/playthroughs/README.md](review/south-america/playthroughs/README.md). All three remain at **TESTING**: a person still needs to review them and play them on a real phone.
 
-One finding from these runs: the game plays each built level at the difficulty its data names. Bolivia plays at 1, Brazil at 2 ("medium" in its JSON, so its patrols are 10% faster) and Venezuela at 3 (patrols 20% faster). The validator and most tests use difficulty 1; a separate test plays every critical route at difficulties 1, 2 and 4 with no damage. The playthroughs were recorded at the difficulty the game uses.
+The game plays each built level at the difficulty its data names: difficulty 1 for Bolivia, Uruguay, Guyana, Paraguay and Suriname; 2 for Brazil, Argentina and Ecuador; 3 for Peru, Chile, Colombia and Venezuela. For route-graph levels this only speeds up patrols. The collectible acceptance test now plays every country at that runtime difficulty, on both routes, at start delays of 0, 1.8 and 3.6 s; all twelve pass. The zero-damage critical-route test also includes each runtime difficulty. Method, data and findings: [review/south-america/acceptance/README.md](review/south-america/acceptance/README.md).
+
+**Stage A, still open:**
+
+- human desktop playthroughs and real-phone play of all three
+- a person's judgement of Bolivia's landing edges
+- a person's judgement of Brazil's far-bank patrol
+
+Venezuela's missing coin (reachable at difficulty 3) and the black shards in its falling view (fixed) are closed.
+
+**Found for Stage B and C, not yet addressed:**
+
+- Guyana's bonus route can fail at one timing, on the slick spray ledge in a gust.
+- Ecuador's and Suriname's routes each take a hit at one timing.
+- Argentina's `ar-coin-20` needs a step back at difficulty 2.
 
 ## Validation results
 

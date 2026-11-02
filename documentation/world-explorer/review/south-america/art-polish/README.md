@@ -50,6 +50,10 @@ Requested after the first review: keep the Stage A improvements, and refine thre
 - **Cliff silhouettes.** The rims are broken by notches and a few collapsed sections, the walls flare into an uneven talus skirt, and the escarpment below the route gains buttresses, joints, bedding recesses and a scree apron. Collapses only ever lower the rim, so it never rises into the route.
 - **Clouds.** Flat cloud caps cling to the tepui rims and bands wrap their walls, drifting slowly. The valley holds a three-layer cloud sea that scrolls gently. One instanced draw serves the caps, and three planes the sea.
 
+### Venezuela follow-up: the falling view
+
+When the camera follows a fall, the cliff showed hard black shards. Most were sun shadows cast by the ledges onto the escarpment; the rest were near-black joint shading. The escarpment no longer receives shadows. Joints and stains shade in proportion to depth (at most about 11% darker on the tepuis and 17% on the escarpment, instead of 45–50%), and ledge undersides are lighter. The `after/ven-*` captures and `compare-ven.jpg` show the current state.
+
 ### Bolivia: landing edges against the bright salt
 
 Every salt platform (flats, blocks, piles, the hotel) gets brine-stained edges: a dark outer line and a stained band along both ends and the front, and a shadowed lip on the faces below. The rims lie a few millimetres above the walking cap, well inside the 0.06 tolerance of the walking-surface test. The first version's face lips were too dark and read as black rails, so they were lightened. From the very low start camera the flush ground-level edges are still subtle; the raised blocks and pool edges, where landings matter, read clearly.

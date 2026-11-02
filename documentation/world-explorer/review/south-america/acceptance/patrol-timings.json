@@ -1,0 +1,1272 @@
+{
+ "venezuela": {
+  "coin": "ve-coin-01",
+  "difficulty": 3,
+  "runs": [
+   {
+    "route": "main",
+    "wait": 0,
+    "status": "completed",
+    "damage": 0,
+    "collected": false
+   },
+   {
+    "route": "main",
+    "wait": 0.36,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "main",
+    "wait": 0.72,
+    "status": "completed",
+    "damage": 0,
+    "collected": false
+   },
+   {
+    "route": "main",
+    "wait": 1.09,
+    "status": "completed",
+    "damage": 0,
+    "collected": false
+   },
+   {
+    "route": "main",
+    "wait": 1.45,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "main",
+    "wait": 1.81,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "main",
+    "wait": 2.17,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "main",
+    "wait": 2.54,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "main",
+    "wait": 2.9,
+    "status": "completed",
+    "damage": 0,
+    "collected": false
+   },
+   {
+    "route": "main",
+    "wait": 3.26,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "main",
+    "wait": 3.63,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "main",
+    "wait": 3.99,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "main",
+    "wait": 4.35,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "main",
+    "wait": 4.71,
+    "status": "completed",
+    "damage": 0,
+    "collected": false
+   },
+   {
+    "route": "main",
+    "wait": 5.08,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "main",
+    "wait": 5.44,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "bonus",
+    "wait": 0,
+    "status": "completed",
+    "damage": 0,
+    "collected": false
+   },
+   {
+    "route": "bonus",
+    "wait": 0.36,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "bonus",
+    "wait": 0.72,
+    "status": "completed",
+    "damage": 0,
+    "collected": false
+   },
+   {
+    "route": "bonus",
+    "wait": 1.09,
+    "status": "completed",
+    "damage": 0,
+    "collected": false
+   },
+   {
+    "route": "bonus",
+    "wait": 1.45,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "bonus",
+    "wait": 1.81,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "bonus",
+    "wait": 2.17,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "bonus",
+    "wait": 2.54,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "bonus",
+    "wait": 2.9,
+    "status": "completed",
+    "damage": 0,
+    "collected": false
+   },
+   {
+    "route": "bonus",
+    "wait": 3.26,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "bonus",
+    "wait": 3.63,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "bonus",
+    "wait": 3.99,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "bonus",
+    "wait": 4.35,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "bonus",
+    "wait": 4.71,
+    "status": "completed",
+    "damage": 0,
+    "collected": false
+   },
+   {
+    "route": "bonus",
+    "wait": 5.08,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   },
+   {
+    "route": "bonus",
+    "wait": 5.44,
+    "status": "completed",
+    "damage": 0,
+    "collected": true
+   }
+  ]
+ },
+ "brazil": {
+  "platform": "br-far-bank",
+  "runtimeDifficulty": 2,
+  "runs": [
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 0,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 0.28,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 0.57,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 0.85,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 1.13,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 1.42,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 1.7,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 1.98,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 2.27,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 2.55,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 2.83,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 3.12,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 3.4,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 3.68,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 3.97,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 4.25,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 4.53,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 4.82,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 5.1,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 5.38,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 5.67,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 5.95,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 6.23,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 6.52,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 6.8,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 7.08,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 7.36,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 7.65,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 7.93,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 8.21,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 8.5,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": true,
+    "wait": 8.78,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 0,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 0.28,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 0.57,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 0.85,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 1.13,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 1.42,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 1.7,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 1.98,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 2.27,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 2.55,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 2.83,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 3.12,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 3.4,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 3.68,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 3.97,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 4.25,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 4.53,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 4.82,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 5.1,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 5.38,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 5.67,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 5.95,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 6.23,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 6.52,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 6.8,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 7.08,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 7.36,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 7.65,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 7.93,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 8.21,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 8.5,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 1,
+    "collectCoins": false,
+    "wait": 8.78,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 0,
+    "status": "completed",
+    "damage": 1,
+    "hits": [
+     {
+      "x": 86.67,
+      "on": "br-far-bank"
+     }
+    ]
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 0.28,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 0.57,
+    "status": "completed",
+    "damage": 1,
+    "hits": [
+     {
+      "x": 86.67,
+      "on": "br-far-bank"
+     }
+    ]
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 0.85,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 1.13,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 1.42,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 1.7,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 1.98,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 2.27,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 2.55,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 2.83,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 3.12,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 3.4,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 3.68,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 3.97,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 4.25,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 4.53,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 4.82,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 5.1,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 5.38,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 5.67,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 5.95,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 6.23,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 6.52,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 6.8,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 7.08,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 7.36,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 7.65,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 7.93,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 8.21,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 8.5,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": true,
+    "wait": 8.78,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 0,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 0.28,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 0.57,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 0.85,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 1.13,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 1.42,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 1.7,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 1.98,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 2.27,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 2.55,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 2.83,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 3.12,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 3.4,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 3.68,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 3.97,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 4.25,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 4.53,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 4.82,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 5.1,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 5.38,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 5.67,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 5.95,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 6.23,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 6.52,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 6.8,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 7.08,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 7.36,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 7.65,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 7.93,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 8.21,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 8.5,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   },
+   {
+    "difficulty": 2,
+    "collectCoins": false,
+    "wait": 8.78,
+    "status": "completed",
+    "damage": 0,
+    "hits": []
+   }
+  ]
+ }
+}

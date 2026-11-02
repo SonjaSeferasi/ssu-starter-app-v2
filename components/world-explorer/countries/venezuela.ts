@@ -26,9 +26,9 @@ const info={
  assets:['angel-falls','auyan-tepui-plateau','tepui-escarpment','canaima-rainforest','neighbouring-tepuis','tepui-bromeliads','cloud-sea','swifts','falls-spray','escarpment-banners'],
 };
 /** Tepui rock: weathered black quartzite skin over pink-orange sandstone. */
-const quartzite:LandmassPalette={top:'#4a4a3a',topAlt:'#5f7a42',edge:'#9a7a6a',face:'#7a5652',faceDark:'#2e2624',band:'#b07a62',maps:{set:'sandstone-cliff',tint:'#d9b8a8',repeat:.55},rough:.3,strata:.42};
+const quartzite:LandmassPalette={top:'#4a4a3a',topAlt:'#5f7a42',edge:'#9a7a6a',face:'#7a5652',faceDark:'#4e3c38',band:'#b07a62',maps:{set:'sandstone-cliff',tint:'#d9b8a8',repeat:.55},rough:.3,strata:.42};
 const summitRock:LandmassPalette={...quartzite,top:'#5a5a42',topAlt:'#6f8a4a'};
-const wetRock:LandmassPalette={...quartzite,top:'#3a3c3a',topAlt:'#4a6a4a',face:'#5a4c4c',faceDark:'#1f1c1c'};
+const wetRock:LandmassPalette={...quartzite,top:'#3a3c3a',topAlt:'#4a6a4a',face:'#5a4c4c',faceDark:'#3e3434'};
 const lookout:LandmassPalette={...quartzite,top:'#5f8a3f',topAlt:'#7aa04a'};
 
 /** The height of the route at x, read from the main-route platforms. */
@@ -52,8 +52,8 @@ function tepui(parent:T.Object3D,name:string,o:{x:number;z:number;width:number;d
   const skirt=1+Math.pow(t,3)*(.3+fbm(a*2,1,o.seed+3,2)*.35),radius=(1+flute+joint+bed)*skirt,drop=rimDrop(a)*(1-Math.min(1,t*5));
   const x=Math.cos(a)*o.width/2*radius,z=Math.sin(a)*o.depth/2*radius,y=o.top-height*t-drop;positions.push(x,y,z);
   const streak=fbm(a*9,t*3,o.seed+4,3),runoff=fbm(a*26,t*.7,o.seed+6,2),ledge=bed<0||Math.abs(Math.sin(t*14+a))<.08;
-  const c=dark.clone().lerp(streak>.55?rust:pink,Math.max(0,streak-.35)*1.2);if(runoff>.62)c.lerp(stain,.55);else if(runoff<.3)c.lerp(lichen,.35);
-  if(joint<-.01)c.multiplyScalar(.55);if(ledge)c.lerp(green,.45);if(t>.82)c.lerp(green,(t-.82)*3.5);colors.push(c.r,c.g,c.b);}}
+  const c=dark.clone().lerp(streak>.55?rust:pink,Math.max(0,streak-.35)*1.2);if(runoff>.62)c.lerp(stain,.3);else if(runoff<.3)c.lerp(lichen,.35);
+  c.multiplyScalar(1-Math.min(.22,-joint*2.2));if(ledge)c.lerp(green,.45);if(t>.82)c.lerp(green,(t-.82)*3.5);colors.push(c.r,c.g,c.b);}}
  for(let j=0;j<rows;j++)for(let i=0;i<segments;i++){const a=j*(segments+1)+i,b=a+1,c=a+segments+1;indices.push(a,b,c,b,c+1,c);}
  const top=positions.length/3;positions.push(0,o.top+.4,0);colors.push(.3,.36,.24);for(let i=0;i<segments;i++)indices.push(top,i+1,i);
  const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(positions,3));g.setAttribute('color',new T.Float32BufferAttribute(colors,3));g.setIndex(indices);g.computeVertexNormals();
@@ -77,12 +77,15 @@ function escarpment(parent:T.Object3D,level:LevelDefinition,finish:number,low:bo
   const z=-6.8-flute-Math.pow(t,1.6)*6-valueNoise(x*.08,1,5)*3+buttress*Math.min(1,t*6)-joint-(bed?.45:0)+talus;
   positions.push(x,y,z);
   const streak=fbm(x*.9,y*.08,11,3),runoff=fbm(x*2.4,y*.02,23,2),c=rock.clone().lerp(streak>.52?rust:pink,Math.max(0,streak-.38)*1.1);
-  if(runoff>.64)c.lerp(stain,.5);else if(runoff<.28)c.lerp(lichen,.3);if(joint>.2)c.multiplyScalar(.5);
+  if(runoff>.64)c.lerp(stain,.28);else if(runoff<.28)c.lerp(lichen,.3);
+  // Joints shade in proportion to their depth, never to black, so a close
+  // view (following a fall) shows clefts rather than hard dark shards.
+  c.multiplyScalar(1-Math.min(.25,joint*.12));
   if(bed||t<.03)c.lerp(moss,.55);if(talus>0)c.lerp(scree,Math.min(.7,talus*.12));if(t>.88)c.lerp(moss,(t-.88)*4);colors.push(c.r,c.g,c.b);
  }}
  for(let j=0;j<rows;j++)for(let i=0;i<cols;i++){const a=j*(cols+1)+i,b=a+1,c=a+cols+1;indices.push(a,c,b,b,c,c+1);}
  const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(positions,3));g.setAttribute('color',new T.Float32BufferAttribute(colors,3));g.setIndex(indices);g.computeVertexNormals();
- const mesh=new T.Mesh(g,vertexMaterial(.95));mesh.name='tepui-escarpment';mesh.receiveShadow=true;parent.add(mesh);
+ const mesh=new T.Mesh(g,vertexMaterial(.95));mesh.name='tepui-escarpment';mesh.receiveShadow=false;parent.add(mesh);
  // The summit plateau behind the start, so the route begins on a real tabletop.
  const summit=level.platforms.find(p=>p.id==='ve-summit')!;
  createHeightfield(parent,{name:'auyan-tepui-plateau',x:summit.x+summit.width/2-6,y:summit.y-.6,z:-16,width:summit.width+30,depth:26,segments:[low?20:44,low?10:22],height:(u,v)=>valueNoise(u*12,v*10,4)*.7*Math.min(1,v*3)+(u>.78?-(u-.78)*30:0),color:(h,s)=>new T.Color(s>.5?'#3a302e':h>.3?'#5f6a42':'#4a4a3a').multiplyScalar(.9+valueNoise(h*3,s*4,2)*.25)});

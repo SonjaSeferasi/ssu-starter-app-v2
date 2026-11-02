@@ -1,103 +1,11 @@
 {
- "capturedAt": "2026-11-02T00:11:57.054Z",
+ "capturedAt": "2026-11-02T14:33:50.683Z",
  "browser": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
  "base": "http://localhost:3000",
  "renderer": "hardware (ANGLE D3D11) in headless Edge",
  "frameRate": "browser default (capped)",
  "note": "Measured on the development laptop in a headless browser while the level idles at its start. The phone figures emulate an 844x390 viewport on the laptop GPU; they are not a phone. Real-device testing is still required.",
  "results": [
-  {
-   "code": "BOL",
-   "shots": {
-    "b": {
-     "x": 40,
-     "label": "salt blocks in the first brine channel"
-    },
-    "c": {
-     "position": [
-      118,
-      3.5,
-      15
-     ],
-     "target": [
-      136,
-      4,
-      -16
-     ],
-     "label": "Isla Incahuasi"
-    }
-   },
-   "desktop": {
-    "readyMs": 23368,
-    "frames": 600,
-    "averageFps": 120,
-    "onePercentLowFps": 102,
-    "worstFrameMs": 11.8,
-    "drawCalls": 86,
-    "triangles": 89322,
-    "geometries": 48,
-    "textures": 8,
-    "jsHeapMB": 96
-   },
-   "phone": {
-    "readyMs": 6242,
-    "frames": 600,
-    "averageFps": 119,
-    "onePercentLowFps": 78,
-    "worstFrameMs": 17.1,
-    "drawCalls": 101,
-    "triangles": 92822,
-    "geometries": 49,
-    "textures": 9,
-    "jsHeapMB": 121
-   }
-  },
-  {
-   "code": "BRA",
-   "shots": {
-    "b": {
-     "x": 41,
-     "label": "vine swings over the ravine"
-    },
-    "c": {
-     "position": [
-      90,
-      5.5,
-      15
-     ],
-     "target": [
-      102,
-      4,
-      -6
-     ],
-     "label": "waterfall lookout"
-    }
-   },
-   "desktop": {
-    "readyMs": 5214,
-    "frames": 600,
-    "averageFps": 118,
-    "onePercentLowFps": 48,
-    "worstFrameMs": 26.1,
-    "drawCalls": 106,
-    "triangles": 228474,
-    "geometries": 66,
-    "textures": 11,
-    "jsHeapMB": 109
-   },
-   "phone": {
-    "readyMs": 5364,
-    "frames": 600,
-    "averageFps": 120,
-    "onePercentLowFps": 114,
-    "worstFrameMs": 8.8,
-    "drawCalls": 114,
-    "triangles": 229552,
-    "geometries": 68,
-    "textures": 11,
-    "jsHeapMB": 126
-   }
-  },
   {
    "code": "VEN",
    "shots": {
@@ -120,28 +28,28 @@
     }
    },
    "desktop": {
-    "readyMs": 4945,
+    "readyMs": 7661,
     "frames": 600,
     "averageFps": 120,
-    "onePercentLowFps": 114,
-    "worstFrameMs": 8.8,
+    "onePercentLowFps": 115,
+    "worstFrameMs": 9.2,
     "drawCalls": 97,
     "triangles": 220954,
     "geometries": 63,
     "textures": 11,
-    "jsHeapMB": 95
+    "jsHeapMB": 94
    },
    "phone": {
-    "readyMs": 1781,
+    "readyMs": 2670,
     "frames": 600,
     "averageFps": 120,
-    "onePercentLowFps": 115,
-    "worstFrameMs": 8.8,
+    "onePercentLowFps": 116,
+    "worstFrameMs": 8.6,
     "drawCalls": 103,
     "triangles": 227004,
     "geometries": 64,
     "textures": 11,
-    "jsHeapMB": 122
+    "jsHeapMB": 150
    }
   }
  ]

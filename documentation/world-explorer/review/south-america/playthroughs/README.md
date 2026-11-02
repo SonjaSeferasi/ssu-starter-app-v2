@@ -26,7 +26,7 @@ node --experimental-websocket scripts/world-explorer/playthrough.mjs --codes BOL
 
 ## Results
 
-Run on 1 November 2026 against the production build, in Microsoft Edge 156 (headless, ANGLE Direct3D 11), on the development laptop. Full data: `playthrough-results.json` (page outcomes and every check), `scripts-summary.json` (recorded outcomes), and the input scripts `<code>-{complete-bonus,complete-main,hazard}.json`.
+Run on 2 November 2026 against the production build (rebuilt after the Venezuela rock change below), in Microsoft Edge 156 (headless, ANGLE Direct3D 11), on the development laptop. Full data: `playthrough-results.json` (page outcomes and every check), `scripts-summary.json` (recorded outcomes), and the input scripts `<code>-{complete-bonus,complete-main,hazard}.json`.
 
 **All 9 scripted playthroughs passed.** In every run the page reached exactly the recorded outcome: status, hearts, coins and their ids, stars, discovery, and event counts.
 
@@ -53,12 +53,12 @@ What each part covered:
 
 Findings for review:
 
-1. **Brazil's main route loses a heart.** At difficulty 2, which the game uses for Brazil, patrols are 10% faster, and the bot, detouring for coins, is caught once by the seed pod on `br-far-bank`. The bonus route passes the same patrol without damage, and the critical-route test at difficulties 1, 2 and 4 takes none. This is a bot timing miss rather than a blocked section, but a person should check that the far-bank patrol feels fair.
-2. **One Venezuela coin was not collected by the bot.** `ve-coin-01` sits just past the summit toad's patrol. At difficulty 3 (toad 20% faster) the bot jumps the toad and does not stop for it. At difficulty 1 it collects it, so it is reachable.
+1. **Brazil's main route loses a heart in this recording.** At difficulty 2, which the game uses for Brazil, patrols are 10% faster. Investigated over 32 patrol timings ([../acceptance/README.md](../acceptance/README.md)): the coin detour meets the far-bank seed pod at 2 of 32 timings, never at difficulty 1, and never without the detour. The cause is the bot landing just behind the pod after the pod's alert pause. **The mechanics were left unchanged.** A person should still confirm the patrol feels fair (see the checklist).
+2. **One Venezuela coin was not collected in this recording.** `ve-coin-01` sits just past the summit toad's patrol. Over 16 timings at difficulty 3 the bot collects it with no damage in 11 on each route. The coin is reachable at the game's difficulty. The collectible acceptance test now runs at each country's runtime difficulty over several timings and passes for all twelve.
 3. **The emulated touch check had two harness problems, both fixed in the script.**
    - Headless touch emulation sometimes stopped delivering touches to a tab that had had several, so each touch check now runs in a new tab.
    - The first version jumped after running right, and in Venezuela that jump hit the "?" block and the summit toad. It now jumps in place first.
-4. **Falling view in Venezuela.** When the camera follows a fall (`ven-hazard-damage-1.jpg`), the darkened joints of the escarpment read as heavy black shards up close. Softening the joint and stain colours is a small follow-up; it was not changed after testing so that these results stay valid for the tested build.
+4. **Resolved: falling view in Venezuela.** The black shards seen when the camera follows a fall were mostly sun shadows from the ledges, cast onto the escarpment, where only weak ambient light reaches the dark rock. The escarpment no longer receives shadows. Its joints and stains now shade in proportion to depth instead of turning near-black, and the ledge undersides are a little lighter. The playthroughs above were rerun on the rebuilt production build; compare `ven-hazard-damage-1.jpg` with the previous evidence.
 
 ## Real-phone checklist
 
@@ -72,4 +72,9 @@ Not done: real-phone play is outside what this machine can test. To run it, star
 - [ ] **Discovery:** the discovery dialog appears and **Continue adventure** resumes play.
 - [ ] **Completion:** the result screen shows stars, coins, time and the save message.
 - [ ] **Saved progress:** after closing and reopening the browser, the country card reads Completed.
-- [ ] Readability: landing edges in Bolivia, platform edges in Brazil, the drop and cloud sea in Venezuela.
+- [ ] Readability: landing edges in Bolivia (reference views in `../acceptance/bolivia-edges/`), platform edges in Brazil, the drop and cloud sea in Venezuela.
+- [ ] Brazil: jump the seed pod on the far bank for the high coin above it a few times; the pod pauses when it sees you. Does it feel fair?
+
+## Human desktop acceptance
+
+Not done: it needs a person. On a desktop browser, play each of Bolivia, Brazil and Venezuela from start to finish with the keyboard and tick the same items as the phone checklist below, skipping the touch-button item.

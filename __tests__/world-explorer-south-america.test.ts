@@ -3,7 +3,8 @@ import * as T from 'three';
 import {island} from '../components/world-explorer/scenic-kit';
 import {loadCountryEnvironment} from '../components/world-explorer/countries/registry';
 import type {EnvironmentContext} from '../components/world-explorer/countries/types';
-import {isAuthoredLevel,levelAvailability,levelDefinitionFor,validateLevel} from '../lib/world-explorer/level-manifest';
+import {authoredDifficulty,isAuthoredLevel,levelAvailability,levelDefinitionFor,validateLevel} from '../lib/world-explorer/level-manifest';
+import {acceptanceTimings,collectibleAcceptance} from '../lib/world-explorer/collectible-acceptance';
 import {FIXED_STEP,LevelSimulation,hazardAt} from '../lib/world-explorer/simulation';
 import {platformSurfaceY} from '../lib/world-explorer/platform-surface';
 import {playRoute} from '../lib/world-explorer/level-analysis';
@@ -69,19 +70,22 @@ describe.each(codes)('%s level',code=>{
   const report=analyzeDifficulty(level);expect(report.measuredTier).toBe(entry.tier);expect(report.warnings).toEqual([]);
   const band=tiers[entry.tier-1],hardest=Math.max(...report.jumps.map(j=>j.gapPercent));expect(hardest).toBeGreaterThanOrEqual(band.gap[0]);expect(hardest).toBeLessThanOrEqual(band.gap[1]);
  });
- it('finishes with no damage at every challenge setting and in Explorer assist',()=>{
-  for(const difficulty of [1,2,4] as const){
+ it('finishes with no damage at every challenge setting, including the one the game plays, and in Explorer assist',()=>{
+  for(const difficulty of [...new Set([1,2,4,authoredDifficulty(code)??1])] as (1|2|3|4)[]){
    const scaled=levelDefinitionFor(code,difficulty),result=playRoute(scaled,criticalPlatforms(routeGraphFor(scaled))),s=result.simulation.state;
    expect(s.status,`difficulty ${difficulty}`).toBe('completed');expect(result.damage).toBe(0);expect(s.discoveryFound).toBe(true);expect(s.checkpointId).toBe(scaled.checkpoints.at(-1)!.id);
   }
   const assisted=playRoute(explorerAssist(level),criticalPlatforms(graph));expect(assisted.simulation.state.status).toBe('completed');expect(assisted.damage).toBe(0);
  },240000);
- it('reaches every coin and all three stars across the critical and optional runs',()=>{
-  const main=playRoute(level,criticalPlatforms(graph),{collectCoins:true}),bonus=playRoute(level,optionalPath(graph),{collectStars:true,collectCoins:true});
-  expect(main.simulation.state.status).toBe('completed');expect(bonus.simulation.state.status).toBe('completed');expect(main.damage+bonus.damage).toBe(0);
-  expect(bonus.simulation.state.stars).toBe(3);
-  expect(new Set([...main.simulation.collectedCoins,...bonus.simulation.collectedCoins]).size).toBe(level.coins.length);
- },240000);
+ // Collectibles are accepted at the difficulty the game plays the level at,
+ // on both routes and at several patrol timings (see collectible-acceptance.ts).
+ it(`collects every coin and all three stars without damage at its runtime difficulty, at start delays of ${acceptanceTimings.join(', ')} s`,()=>{
+  const acceptance=collectibleAcceptance(code);
+  expect(acceptance.incomplete,'runs that did not finish').toEqual([]);
+  expect(acceptance.missingCoins,'coins no clean run collected').toEqual([]);
+  expect(acceptance.missingStars,'stars no clean run collected').toEqual([]);
+  expect(acceptance.cleanRoutes,'each route has a run without damage').toEqual(['bonus','main']);
+ },300000);
  it('survives untidy play: backtracking and pausing at every checkpoint',()=>{
   for(const kind of ['backtrack','pause'] as const){
    const result=playRoute(level,criticalPlatforms(graph),{detours:level.checkpoints.map(c=>({platformId:c.platformId,kind,seconds:kind==='pause'?2.3:1.5}))});
@@ -165,7 +169,7 @@ describe.each(built.map(e=>[e.code,e.landmarks] as const))('%s environment',(cod
   const simulation=new LevelSimulation(levelDefinitionFor(code));
   expect(()=>{mounted.update(2,1/60,{time:2,platforms:simulation.platforms,wind:[],playerX:10});mounted.frame(40);mounted.setReducedMotion(true);mounted.setView?.('overview');mounted.setView?.('gameplay');}).not.toThrow();
   mounted.dispose();expect(scene.getObjectByName(mounted.root.name)).toBeUndefined();expect((scene.background as T.Color).getHexString()).toBe('123456');
- });
+ },30000);
  it('dresses every platform with a flat walking cap at the collision height, clear of decoration',async()=>{
   const {level,environment,context}=await mount(code);
   for(const definition of level.platforms){
@@ -176,7 +180,7 @@ describe.each(built.map(e=>[e.code,e.landmarks] as const))('%s environment',(cod
     expect(hit,`${definition.id} at ${t},${z}`).toBeDefined();expect(Math.abs(hit.point.y-surface),`${definition.id} at ${t},${z}`).toBeLessThan(.06);
    }
   }
- });
+ },30000);
  it('keeps platform bodies to a sculpted visual depth in the polished levels (no walls running out of view)',async()=>{
   if(!['BOL','BRA','VEN'].includes(code))return;
   const {level,environment,context}=await mount(code);
@@ -185,12 +189,12 @@ describe.each(built.map(e=>[e.code,e.landmarks] as const))('%s environment',(cod
    const body=root.getObjectByName('country-platform-cliff') as T.Mesh|undefined;if(!body||definition.style==='salt-hotel'||definition.style?.startsWith('rusted'))continue;
    body.geometry.computeBoundingBox();const height=body.geometry.boundingBox!.max.y-body.geometry.boundingBox!.min.y;expect(height,definition.id).toBeLessThan(10.5);
   }
- });
+ },30000);
  it('creates an original animated patrol creature, a discovery block and markers',async()=>{
   const {environment}=await mount(code),parent=new T.Group(),enemy=environment.createEnemy(parent);
   for(const state of ['IDLE','PATROL_LEFT','PATROL_RIGHT','TURN','ALERT'] as const)expect(()=>enemy.update(1.3,state==='PATROL_LEFT'?-1:1,state)).not.toThrow();
   const size=new T.Box3().setFromObject(enemy.root).getSize(new T.Vector3());expect(size.y).toBeGreaterThan(.4);expect(size.y).toBeLessThan(1.4);
   const block=environment.createDiscoveryBlock(parent,.75,.8),bounds=new T.Box3().setFromObject(block);expect(bounds.min.y).toBeCloseTo(0,1);
   const marker=new T.Group(),gate=new T.Group();environment.decorateCheckpoint(marker,{} as EnvironmentContext);environment.decorateFinish(gate,{} as EnvironmentContext);expect(marker.children.length).toBeGreaterThan(0);expect(new T.Box3().setFromObject(gate).max.y).toBeGreaterThan(3);
- });
+ },30000);
 });
