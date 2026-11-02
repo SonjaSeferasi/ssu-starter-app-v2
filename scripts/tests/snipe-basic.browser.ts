@@ -29,8 +29,8 @@ const objects = storage.objects;
 const leakedKeys: string[] = [];
 // Additive migrations on top of the shared Snipe fixture, each applied once in filename order: the real group-leave
 // bridge, original-actor sharing permissions (SRS-511.12, 514.1) and request pagination (SRS-512.1, 512.11).
-const ADDITIVE_MIGRATIONS = ['supabase/migrations/20261028120300_chat_leave_group.sql', 'supabase/migrations/20261030040044_snipe_withdrawal_access.sql',
-  'supabase/migrations/20261030093802_snipe_request_pagination.sql'];
+const ADDITIVE_MIGRATIONS = ['supabase/migrations/20261028120000_chat_assign_group_admin.sql', 'supabase/migrations/20261028120300_chat_leave_group.sql', 'supabase/migrations/20261030040044_snipe_withdrawal_access.sql',
+  'supabase/migrations/20261030093802_snipe_request_pagination.sql', 'supabase/migrations/20261031223558_snipe_group_only.sql'];
 const SHARING_RECORD_KEYS = ['action', 'id', 'published_at', 'role', 'sharing', 'status', 'submitted_at'];
 const artifacts = process.env.SNIPE_EVIDENCE_DIR || 'tmp/snipe-basic';
 const desktop = { width: 1280, height: 900 }, phone = { width: 390, height: 844 };
@@ -82,6 +82,8 @@ async function addStudents(from: number, to: number) {
 async function signIn(student: number, viewport = desktop) {
   const context = await browser.newContext({ viewport, hasTouch: viewport.width < 600 });
   const page = await context.newPage();
+  // Cold Next dev compilation can exceed Playwright's navigation default on this machine.
+  page.setDefaultNavigationTimeout(process.env.SNIPE_BROWSER_DEV === '1' ? 120000 : 30000);
   watch(page);
   // Nothing returned to the browser may contain a private storage reference.
   page.on('response', async (response: any) => {
@@ -91,7 +93,8 @@ async function signIn(student: number, viewport = desktop) {
   });
   // Not 'networkidle': app polling can keep the network busy. The hydration wait
   // below is the real readiness check before any field is touched.
-  await page.goto(base + '/login', { waitUntil: 'domcontentloaded' });
+  // Return directly to chat so the test never races a cold Campus Feed compile against chat navigation.
+  await page.goto(base + '/login?redirect=' + encodeURIComponent(`/messages/${group}`), { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => { const form = document.querySelector('form'); return form && Object.keys(form).some(key => key.startsWith('__reactProps$')); });
   await page.getByRole('textbox', { name: 'University email or username' }).fill(`dorm${student}@salemstate.edu`);
   await page.getByLabel('Password', { exact: true }).fill('SnipeTest123!');
@@ -100,6 +103,7 @@ async function signIn(student: number, viewport = desktop) {
   const login = await loginResponse;
   if (!login.ok()) throw new Error(`Test account sign-in failed: ${login.status()} ${await login.text()}`);
   await page.waitForFunction(() => Boolean(localStorage.getItem('access_token') || sessionStorage.getItem('access_token')));
+  await page.waitForURL(`${base}/messages/${group}`, { waitUntil: 'domcontentloaded' });
   return page;
 }
 async function openSnipes(page: any, conversation = group, heading: RegExp = /Group chat/) {
@@ -306,10 +310,13 @@ beforeAll(async () => {
   // bundle; `next start` then gets the exact same values. Webpack, as the production build already uses.
   // NODE_ENV is set explicitly because Vitest's 'test' is not a valid Next build mode.
   const appRoot = process.env.SNIPE_APP_ROOT || process.cwd();
-  const appEnv: NodeJS.ProcessEnv = { ...process.env, NODE_ENV: 'production', SUPABASE_URL: serviceUrl, NEXT_PUBLIC_SUPABASE_URL: serviceUrl, SUPABASE_SERVICE_ROLE_KEY: SERVICE_KEY, SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_TELEMETRY_DISABLED: '1' };
+  // Opt-in dev acceptance allows focused testing when unrelated app routes block a full production build.
+  const development = process.env.SNIPE_BROWSER_DEV === '1';
+  const appEnv: NodeJS.ProcessEnv = { ...process.env, NODE_ENV: development ? 'development' : 'production', SUPABASE_URL: serviceUrl, NEXT_PUBLIC_SUPABASE_URL: serviceUrl, SUPABASE_SERVICE_ROLE_KEY: SERVICE_KEY, SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'isolated-test-anon-key', NEXT_TELEMETRY_DISABLED: '1' };
+  if (!development) {
   const buildLog = createWriteStream(`${artifacts}/next-build.log`);
   let buildTail = '';
-  const buildChild = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'build', '--webpack'], { cwd: appRoot, env: appEnv, stdio: ['ignore', 'pipe', 'pipe'] });
+  const buildChild = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'build'], { cwd: appRoot, env: appEnv, stdio: ['ignore', 'pipe', 'pipe'] });
   build = buildChild;
   for (const stream of [buildChild.stdout, buildChild.stderr]) stream?.on('data', chunk => { buildLog.write(chunk); buildTail = (buildTail + chunk.toString()).slice(-4000); });
   const failure = await new Promise<string>(resolve => {
@@ -325,10 +332,11 @@ beforeAll(async () => {
   const bundled = (readdirSync(staticDir, { recursive: true }) as string[])
     .some(file => file.endsWith('.js') && readFileSync(`${staticDir}/${file}`, 'utf8').includes(serviceUrl));
   if (!bundled) throw new Error(`The production browser bundle does not contain ${serviceUrl}.`);
+  }
   const reservation = createServer(); const nextPort = await listen(reservation);
   await new Promise<void>(resolve => reservation.close(() => resolve()));
   base = `http://127.0.0.1:${nextPort}`;
-  next = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'start', '--hostname', '127.0.0.1', '--port', String(nextPort)], {
+  next = spawn(process.execPath, ['node_modules/next/dist/bin/next', development ? 'dev' : 'start', '--hostname', '127.0.0.1', '--port', String(nextPort)], {
     cwd: appRoot, env: appEnv, stdio: ['ignore', 'pipe', 'pipe'],
   });
   next.stdout?.on('data', chunk => { nextLog += chunk.toString(); });
@@ -341,7 +349,7 @@ beforeAll(async () => {
   }
   if (!ready) throw new Error('Local Next test app did not start: ' + nextLog.slice(-3000));
   const playwright = await import(/* @vite-ignore */ process.env.SOCIALU_PLAYWRIGHT_MODULE || 'playwright');
-  browser = await playwright.chromium.launch({ headless: true, ...(process.env.SNIPE_BROWSER_EXECUTABLE ? { executablePath: process.env.SNIPE_BROWSER_EXECUTABLE } : {}) });
+  browser = await playwright.chromium.launch({ headless: true, ...(process.env.SNIPE_CAMERA_ACCEPTANCE === '1' ? { args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'] } : {}), ...(process.env.SNIPE_BROWSER_EXECUTABLE ? { executablePath: process.env.SNIPE_BROWSER_EXECUTABLE } : {}) });
 }, BUILD_TIMEOUT + 120000);
 
 afterEach(async context => {
@@ -418,6 +426,104 @@ it('shows the open conversation header on a phone without horizontal overflow', 
     await phonePage.context().close();
   }
 });
+
+// A synthetic camera exercises real capture without using anyone's physical camera or microphone.
+if (process.env.SNIPE_CAMERA_ACCEPTANCE === '1') {
+  it('captures a camera photo, releases the camera, and submits through the private Snipe flow', async () => {
+    const page = pages.camera = await signIn(1, phone);
+    await page.addInitScript(() => {
+      const original = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+      (window as any).__cameraStreams = [];
+      navigator.mediaDevices.getUserMedia = async (constraints) => {
+        const stream = await original(constraints);
+        (window as any).__cameraStreams.push(stream);
+        return stream;
+      };
+    });
+    await openSnipes(page);
+    await page.getByRole('button', { name: 'New Snipe', exact: true }).click();
+    await page.getByRole('button', { name: 'Take photo', exact: true }).click();
+    await page.getByRole('button', { name: 'Capture photo', exact: true }).waitFor();
+    await page.waitForFunction(() => ![...document.querySelectorAll('button')].find(b => b.textContent === 'Capture photo')?.disabled);
+    await page.getByRole('button', { name: 'Cancel camera', exact: true }).click();
+    expect(await page.evaluate(() => (window as any).__cameraStreams.length > 0 && (window as any).__cameraStreams.every((s: MediaStream) => s.getTracks().every(t => t.readyState === 'ended')))).toBe(true);
+    await page.getByRole('button', { name: 'Take photo', exact: true }).click();
+    await page.waitForFunction(() => ![...document.querySelectorAll('button')].find(b => b.textContent === 'Capture photo')?.disabled);
+    await screenshot(page, 'mobile-camera-preview');
+    await page.getByRole('button', { name: 'Capture photo', exact: true }).click();
+    await page.getByRole('img', { name: 'Selected Snipe photo preview', exact: true }).waitFor();
+    expect(await page.getByRole('group', { name: 'Camera', exact: true }).count()).toBe(0);
+    expect(await page.evaluate(() => (window as any).__cameraStreams.every((s: MediaStream) => s.getTracks().every(t => t.readyState === 'ended')))).toBe(true);
+    await page.getByRole('checkbox', { name: /Dorm Student 2/ }).check();
+    await page.getByRole('button', { name: 'Submit Snipe', exact: true }).click();
+    await page.getByText('Snipe submitted.', { exact: false }).waitFor();
+    expect(await snipeRows()).toEqual([{ id: '1', status: 'pending' }]);
+    expect((await snipeCall(db, 4, 'list', group)).snipes).toEqual([]);
+    const stored = await committedObject('1');
+    expect(stored.object?.type).toBe('image/jpeg');
+    expect(await noOverflow(page)).toBe(true);
+    await screenshot(page, 'mobile-camera-snipe-submitted');
+    transportClean();
+    await page.context().close();
+  }, 360000);
+
+  it('handles denied camera permission and keeps photo upload available', async () => {
+    const page = pages.cameraDenied = await signIn(1);
+    await page.addInitScript(() => {
+      navigator.mediaDevices.getUserMedia = async () => { throw new DOMException('Permission denied', 'NotAllowedError'); };
+    });
+    await openSnipes(page);
+    await page.getByRole('button', { name: 'New Snipe', exact: true }).click();
+    await page.getByRole('button', { name: 'Take photo', exact: true }).click();
+    await page.getByRole('alert').filter({ hasText: 'Camera access was blocked.' }).waitFor();
+    expect(await page.getByRole('button', { name: 'Capture photo', exact: true }).isDisabled()).toBe(true);
+    await page.getByRole('button', { name: 'Cancel camera', exact: true }).click();
+    expect(await page.getByLabel(/^Photo/).isEnabled()).toBe(true);
+    expect(await page.getByRole('button', { name: 'Take photo', exact: true }).isEnabled()).toBe(true);
+    await page.context().close();
+  });
+}
+
+// Opt-in acceptance uses the fresh fixture independently of the broader stateful scenarios below.
+if (process.env.SNIPE_FOCUSED_ACCEPTANCE === '1') it('supports group-only consent and confirmed photo withdrawal', async () => {
+  const photographer = pages.photographer = await openSnipes(await signIn(1));
+  await snipeOnlyInConversation(photographer);
+  const id = await submitSnipe(photographer, 2, '#94baa6');
+  const photoPath = `/api/conversations/${group}/snipes/${id}/photo`;
+  expect((await snipeCall(db, 4, 'list', group)).snipes).toEqual([]);
+  const tagged = pages.tagged = await openSnipes(await signIn(2, phone));
+  const identity = card(tagged).getByRole('group', { name: 'Is this you?' });
+  const sharing = card(tagged).getByRole('group', { name: 'Do you approve sharing this photo in this conversation?' });
+  for (const question of [identity, sharing]) {
+    for (const radio of await question.getByRole('radio').all()) expect(await radio.isChecked()).toBe(false);
+    expect(await question.getByRole('button', { name: 'Save answer' }).isDisabled()).toBe(true);
+  }
+  await identity.getByRole('radio', { name: 'Yes' }).check();
+  await identity.getByRole('button', { name: 'Save answer' }).click();
+  await card(tagged).getByText('Is this you? Yes', { exact: true }).waitFor();
+  expect(await sharing.getByRole('radio', { name: 'Yes' }).isChecked()).toBe(false);
+  await card(tagged).getByText('Pending', { exact: true }).waitFor();
+  expect((await snipeCall(db, 4, 'list', group)).snipes).toEqual([]);
+  await sharing.getByRole('radio', { name: 'Yes' }).check();
+  await sharing.getByRole('button', { name: 'Save answer' }).click();
+  await card(tagged).getByText('Approved', { exact: true }).waitFor();
+  expect(await photoBlob(tagged)).toMatch(/^blob:/);
+  expect((await snipeCall(db, 4, 'list', group)).snipes[0].status).toBe('approved');
+  expect(await ledgerRows()).toEqual([{ student: 1, points: 25 }]);
+  expect(await noOverflow(tagged)).toBe(true);
+  await screenshot(tagged, 'mobile-group-snipe-approved');
+  await card(tagged).getByRole('button', { name: 'Withdraw sharing permission' }).click();
+  await card(tagged).getByRole('group', { name: 'Confirm' }).getByRole('button', { name: 'Keep it' }).click();
+  expect((await api(tagged, photoPath)).status).toBe(200);
+  await card(tagged).getByRole('button', { name: 'Withdraw sharing permission' }).click();
+  await card(tagged).getByRole('group', { name: 'Confirm' }).getByRole('button', { name: 'Confirm' }).click();
+  await card(tagged).getByText('Snipe removed', { exact: true }).waitFor();
+  for (const page of [photographer, tagged]) expect((await api(page, photoPath)).status).toBe(404);
+  expect(await ledgerRows()).toEqual([{ student: 1, points: 25 }]);
+  await screenshot(tagged, 'mobile-group-snipe-withdrawn');
+  transportClean();
+  for (const page of [photographer, tagged]) await page.context().close();
+}, 360000);
 
 it('uploads, reviews, approves, persists, withdraws and then blocks the photo', async () => {
   // A real JPEG with embedded metadata; the stored copy must be re-encoded without it.
@@ -741,43 +847,24 @@ it('lets the group owner review reports: dismiss, a fresh report, then remove wi
   for (const page of [owner, ownerPhone, member, tagged, photographer]) await page.context().close();
 });
 
-it('keeps direct-message Snipes free of report and administrator controls', async () => {
-  // SRS-510.1, 514.3, 514.14 in a real direct message: 3 photographs 2; 2 answers on a phone.
-  const photographer = pages.photographer = await openSnipes(await signIn(3), dm, /Dorm Student 2|Conversation/);
-  const id = await submitSnipe(photographer, 2, '#f6b26b');
-  const tagged = pages.tagged = await openSnipes(await signIn(2, phone), dm, /Dorm Student 3|Conversation/);
-  // The ordinary message layout stays in place under the panel.
-  await tagged.getByText(/Send a message to start the conversation|No messages to show yet/).waitFor();
-  for (const question of ['Is this you?', 'Do you approve sharing this photo in this conversation?']) {
-    const fieldset = cardBy(tagged, 3).getByRole('group', { name: question });
-    await fieldset.getByRole('radio', { name: 'Yes' }).check();
-    await fieldset.getByRole('button', { name: 'Save answer' }).click();
+it('never renders Snipe in a direct message and rejects direct API access', async () => {
+  for (const [student, viewport] of [[2, desktop], [3, phone]] as const) {
+    const page = await signIn(student, viewport);
+    await page.goto(`${base}/messages/${dm}`);
+    await page.getByRole('region', { name: 'Conversation', exact: true }).getByRole('heading', { level: 2 }).waitFor();
+    await page.getByText(/Send a message to start the conversation|No messages to show yet/).waitFor();
+    expect(await page.getByRole('button', { name: /^Snipe/ }).count()).toBe(0);
+    expect((await api(page, `/api/conversations/${dm}/snipes`)).status).toBe(404);
+    for (const [path, method, body] of [
+      ['/1/photo', 'GET', undefined],
+      ['/1', 'PATCH', { action: 'respond', identity: true }],
+      ['/uploads', 'POST', { submissionKey: randomUUID(), targets: [String(student === 2 ? 3 : 2)], digest: 'a'.repeat(64), mimeType: 'image/png', byteCount: 100 }],
+    ] as const) expect((await api(page, `/api/conversations/${dm}/snipes${path}`, method, body)).status).toBe(404);
+    expect(await noOverflow(page)).toBe(true);
+    await screenshot(page, viewport.width < 600 ? 'mobile-dm-no-snipe' : 'desktop-dm-no-snipe');
+    await page.context().close();
   }
-  await cardBy(tagged, 3).getByText('Approved', { exact: true }).waitFor();
-  expect(await photoBlobBy(tagged, 3)).toMatch(/^blob:/);
-  expect(await ledgerRows()).toEqual([{ student: 1, points: 25 }, { student: 2, points: 25 }, { student: 3, points: 25 }]);
-  // No report, queue or administrator controls for either participant, and the API refuses them too.
-  for (const page of [tagged, photographer]) {
-    if (page === photographer) { await page.reload(); await openSnipes(page, dm, /Dorm Student 2|Conversation/); }
-    expect(await queue(page).count()).toBe(0);
-    expect(await cardBy(page, 3).getByRole('button', { name: /Report|group admin/ }).count()).toBe(0);
-    for (const [path, method, body] of [['/reports', 'GET', undefined], [`/${id}/report`, 'POST', { reason: 'spam' }], [`/${id}/admin-removal`, 'POST', undefined]] as const) {
-      const res = await api(page, `/api/conversations/${dm}/snipes${path}`, method, body);
-      expect([res.status, JSON.parse(res.text).code], `${path}`).toEqual([403, 'SNIPE_REPORT_NOT_ALLOWED']);
-    }
-  }
-  expect(await noOverflow(tagged)).toBe(true);
-  await screenshot(tagged, 'mobile-dm-tagged-approved');
-  // SRS-514.3: the photographer removes it with confirmation; the photo stops for both, points are kept.
-  await cardBy(photographer, 3).getByRole('button', { name: 'Remove Snipe' }).click();
-  await cardBy(photographer, 3).getByRole('group', { name: 'Confirm' }).getByRole('button', { name: 'Confirm' }).click();
-  await cardBy(photographer, 3).getByText('Snipe removed', { exact: true }).waitFor();
-  await cardBy(photographer, 3).getByRole('group', { name: 'Snipe reward' }).getByText('Removing a Snipe doesn’t take its points back.', { exact: false }).waitFor();
-  for (const page of [photographer, tagged]) expect((await api(page, `/api/conversations/${dm}/snipes/${id}/photo`)).status).toBe(404);
-  await screenshot(photographer, 'desktop-dm-photographer-removed');
-  expect(await ledgerRows()).toEqual([{ student: 1, points: 25 }, { student: 2, points: 25 }, { student: 3, points: 25 }]);
   transportClean();
-  for (const page of [photographer, tagged]) await page.context().close();
 });
 
 it('lets a tagged friend who left the group withdraw sharing from the Messages home, metadata only', async () => {
@@ -788,7 +875,7 @@ it('lets a tagged friend who left the group withdraw sharing from the Messages h
   const former = pages.former = await signIn(1, phone);
   const answered = await api(former, `/api/conversations/${fresh}/snipes/${id}`, 'PATCH', { action: 'respond', identity: true, sharing: true });
   expect([answered.status, JSON.parse(answered.text).snipe.status]).toEqual([200, 'approved']);
-  const credited = [{ student: 1, points: 25 }, { student: 2, points: 25 }, { student: 3, points: 25 }, { student: 3, points: 25 }];
+  const credited = [{ student: 1, points: 25 }, { student: 2, points: 25 }, { student: 3, points: 25 }];
   expect(await ledgerRows()).toEqual(credited);
   const photoPath = `/api/conversations/${fresh}/snipes/${id}/photo`;
   const viewer = pages.viewer = await openSnipes(await signIn(2), fresh);
@@ -862,7 +949,7 @@ it('lets a photographer who left the group remove their Snipe from the Messages 
   const tagged = pages.tagged = await openSnipes(await signIn(1), fresh);
   const answered = await api(tagged, `/api/conversations/${fresh}/snipes/${id}`, 'PATCH', { action: 'respond', identity: true, sharing: true });
   expect([answered.status, JSON.parse(answered.text).snipe.status]).toEqual([200, 'approved']);
-  const credited = [{ student: 1, points: 25 }, { student: 2, points: 25 }, { student: 3, points: 25 }, { student: 3, points: 25 }, { student: 2, points: 25 }];
+  const credited = [{ student: 1, points: 25 }, { student: 2, points: 25 }, { student: 3, points: 25 }, { student: 2, points: 25 }];
   expect(await ledgerRows()).toEqual(credited);
   const photoPath = `/api/conversations/${fresh}/snipes/${id}/photo`;
   await tagged.reload(); await openSnipes(tagged, fresh);

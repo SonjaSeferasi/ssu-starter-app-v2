@@ -73,10 +73,19 @@ export function snipeError(error: RpcError): SnipeError {
 }
 
 export async function snipeOperation<T = any>(authId: string, action: SnipeAction, conversationId: string, snipeId: string | null = null, payload: Record<string, unknown> = {}): Promise<T> {
+  await requireSnipeGroup(authId, conversationId);
   // postgrest-js reports lost connections as `error` with an empty code rather than throwing.
   const { data, error } = await accountClient().rpc('socialu_snipe', { p_auth_id: authId, p_action: action, p_conversation_id: conversationId, p_snipe_id: snipeId, p_payload: payload });
   if (error) throw snipeError(error);
   return data as T;
+}
+
+// Enforce group scope even while a database is still running the older Snipe bridge.
+// This existing chat RPC verifies active membership and rejects DMs with SC404.
+// Never accept the conversation kind or membership from a browser request.
+export async function requireSnipeGroup(authId: string, conversationId: string) {
+  const { error } = await accountClient().rpc('socialu_group_members', { p_auth_id: authId, p_conversation_id: conversationId });
+  if (error) throw snipeError(error);
 }
 
 // SRS-514.8 to 514.11: a group member's report of a published Snipe. Only the trimmed reason is forwarded;

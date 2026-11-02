@@ -39,6 +39,7 @@ beforeEach(() => {
   getClient.mockReturnValue({ auth: { getUser }, rpc, storage: { getBucket, from: () => ({ upload, remove }) } });
   getUser.mockResolvedValue({ data: { user }, error: null });
   rpc.mockImplementation(async (fn: string, args: Record<string, any>) => {
+    if (fn === 'socialu_group_members') return { data: { student_id: '1', members: [] }, error: null };
     if (fn === 'socialu_session_guard') return { data: sessionValid, error: null };
     if (fn === 'socialu_account') return account;
     if (fn === 'socialu_snipe') return { data: null, error: null, ...snipe(args) };

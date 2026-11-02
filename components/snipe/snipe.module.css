@@ -14,6 +14,9 @@
 .label { padding: 0; color: #102c30; font-size: 15px; font-weight: 700; }
 .file { width: 100%; min-width: 0; max-width: 100%; min-height: 44px; font: inherit; font-size: 15px; }
 .file:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+.camera { display: grid; gap: 10px; min-width: 0; padding: 12px; border: 1px solid #d3e2da; border-radius: 12px; background: #f8fbf8; }
+.cameraVideo { display: block; width: 100%; max-height: 360px; border-radius: 10px; object-fit: contain; background: #102c30; }
+.cameraVideo[hidden] { display: none; }
 .fieldset { display: grid; gap: 6px; min-width: 0; margin: 0; padding: 0; border: 0; }
 .option { display: flex; align-items: center; gap: 10px; min-height: 44px; color: #102c30; font-size: 15px; }
 .option input { width: 20px; height: 20px; flex-shrink: 0; accent-color: #39775e; }

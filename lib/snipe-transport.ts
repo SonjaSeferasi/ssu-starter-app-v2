@@ -1,6 +1,6 @@
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
 import { AccountError, accountClient } from './socialu-account';
-import { SNIPE_STAGING_BUCKET, type RpcError, snipeError, snipeStagingStorage, snipeStorage } from './snipe';
+import { SNIPE_STAGING_BUCKET, type RpcError, requireSnipeGroup, snipeError, snipeStagingStorage, snipeStorage } from './snipe';
 import type { SnipeMimeType } from './snipe-policy';
 
 // Server-only. SRS-510.2 direct photo transport (documentation/snipe-photo-transport.md): the browser sends
@@ -27,6 +27,7 @@ export const sha256 = (bytes: Uint8Array | string) => createHash('sha256').updat
 export const stagingKey = (authId: string, mimeType: SnipeMimeType) => `stage/${authId}/${randomUUID()}.${mimeType === 'image/jpeg' ? 'jpg' : 'png'}`;
 
 export async function stageOperation<T = any>(authId: string, action: StageAction, conversationId: string, payload: Record<string, unknown>): Promise<T> {
+  await requireSnipeGroup(authId, conversationId);
   const { data, error } = await accountClient().rpc('socialu_snipe_photo', { p_auth_id: authId, p_action: action, p_conversation_id: conversationId, p_payload: payload });
   if (error) throw snipeError(error);
   return data as T;

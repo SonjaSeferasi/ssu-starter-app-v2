@@ -34,7 +34,7 @@ describe('UR-600 navigation', () => {
     expect(html).not.toMatch(/<a\b[^>]*href="#"/);
   });
 
-  // Snipe is a DM/group-chat game, so it never appears as a navbar destination.
+  // Snipe is a group-chat game, so it never appears as a navbar destination.
   it.each(['side', 'bottom'] as const)('has no Snipe destination with %s placement', (position) => {
     const html = renderToStaticMarkup(createElement(NavigationFrame, { pathname: '/', position, children: null }));
     const nav = html.match(/<nav\b[^>]*aria-label="Main navigation"[^>]*>[\s\S]*?<\/nav>/)?.[0] ?? '';

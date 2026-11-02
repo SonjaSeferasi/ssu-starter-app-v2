@@ -393,9 +393,8 @@ function Conversation() {
           </Link>
         </header>
 
-        {/* SRS-510.1: Snipe lives inside the conversation once the participant check has passed. A later
-            history refresh failure keeps the panel (and any Snipe being composed) in place. */}
-        {myStudentId !== null && <SnipePanel conversationId={conversationId} />}
+        {/* Snipe is available only after the server confirms group membership. */}
+        {myStudentId !== null && info?.kind === 'group' && <SnipePanel conversationId={conversationId} />}
 
         <ol className={styles.messages} aria-live="polite">
           {messages.length === 0

@@ -6,6 +6,7 @@ import { SnipeListRequestError, snipeListPager } from '../../lib/snipe-list-pagi
 import { SNIPE_PHOTO_POLICY, SNIPE_POLICY_TEXT, isSnipeMimeType } from '../../lib/snipe-policy';
 import chat from '../../app/messages/messages.module.css';
 import styles from './snipe.module.css';
+import { SnipeCamera } from './snipe-camera';
 
 // UR-510 to UR-514 and UR-525: a private, conversation-only Snipe panel. Pending requests are only
 // returned to the photographer and tagged friends, so other members never see a placeholder for them.
@@ -77,6 +78,7 @@ async function snipeFetch(path: string, init: { method?: string; body?: BodyInit
 function snipeListFetch(base: string) {
   return async (before: string | null, signal: AbortSignal): Promise<SnipeList> => {
     const { response, data } = await snipeFetch(before ? `${base}?before=${encodeURIComponent(before)}` : base, { signal });
+    if (response.ok && data.kind !== 'group') throw new SnipeListRequestError('Conversation not available.', 404);
     if (!response.ok) throw new SnipeListRequestError(data.error || 'Snipes could not be loaded.', response.status);
     return data;
   };
@@ -249,6 +251,10 @@ function Composer({ base, targets, pointsPerFriend, onSubmitted }: {
   const [cooldowns, setCooldowns] = useState<Cooldown[]>([]);
   const [notice, setNotice] = useState('');
   const input = useRef<HTMLInputElement>(null);
+  const cameraButton = useRef<HTMLButtonElement>(null);
+  const cameraId = useId();
+  const [cameraOpen, setCameraOpen] = useState(false);
+  useEffect(() => { if (!cameraOpen) cameraButton.current?.focus(); }, [cameraOpen]);
   // SRS-510.11: one stable identity per submission. Retrying the same photo and tags reuses it,
   // so a lost response can never create a second request. Any change starts a new submission.
   const submissionKey = useRef<string | null>(null);
@@ -267,13 +273,13 @@ function Composer({ base, targets, pointsPerFriend, onSubmitted }: {
     : tooLarge ? `Photos can be at most ${SNIPE_PHOTO_POLICY.maxWidth} × ${SNIPE_PHOTO_POLICY.maxHeight} pixels.` : '';
 
   function reset() {
-    submissionKey.current = null; setFile(null); setSize(null); setSelected([]); setError(''); setCooldowns([]);
+    submissionKey.current = null; setCameraOpen(false); setFile(null); setSize(null); setSelected([]); setError(''); setCooldowns([]);
     if (input.current) input.current.value = '';
   }
 
   async function submit(event: FormEvent) {
     event.preventDefault();
-    if (submitting || !file || selected.length === 0 || photoProblem) return;
+    if (submitting || cameraOpen || !file || selected.length === 0 || photoProblem) return;
     submissionKey.current ??= crypto.randomUUID();
     setSubmitting(true); setError(''); setCooldowns([]); setNotice('');
     const fail = (data: { error?: string; cooldowns?: Cooldown[] }) => {
@@ -332,11 +338,22 @@ function Composer({ base, targets, pointsPerFriend, onSubmitted }: {
         <p className={styles.tight}>Requests close after 24 hours if not everyone answers. You can Snipe the same friend once every 24 hours.</p>
       </div>
       <label className={styles.label} htmlFor="snipe-photo">Photo <span className={styles.muted}>({SNIPE_POLICY_TEXT})</span></label>
-      <input id="snipe-photo" ref={input} className={styles.file} type="file" accept={SNIPE_PHOTO_POLICY.mimeTypes.join(',')} disabled={submitting}
+      <input id="snipe-photo" ref={input} className={styles.file} type="file" accept={SNIPE_PHOTO_POLICY.mimeTypes.join(',')} disabled={submitting || cameraOpen}
         onChange={(event) => { submissionKey.current = null; setSize(null); setError(''); setFile(event.target.files?.[0] ?? null); }} />
-      {preview && (
-        <img className={styles.photo} src={preview} alt="Selected Snipe photo preview"
-          onLoad={(event) => setSize({ width: event.currentTarget.naturalWidth, height: event.currentTarget.naturalHeight })} />
+      <div className={styles.actions}>
+        <button ref={cameraButton} type="button" className={styles.secondary} disabled={submitting || cameraOpen}
+          aria-expanded={cameraOpen} aria-controls={cameraOpen ? cameraId : undefined} onClick={() => setCameraOpen(true)}>Take photo</button>
+      </div>
+      {cameraOpen && <SnipeCamera id={cameraId} onClose={() => setCameraOpen(false)} onCapture={(photo) => {
+        submissionKey.current = null; setSize(null); setError(''); setFile(photo); setCameraOpen(false);
+        if (input.current) input.current.value = '';
+      }} />}
+      {preview && !cameraOpen && (
+        <>
+          <img className={styles.photo} src={preview} alt="Selected Snipe photo preview"
+            onLoad={(event) => setSize({ width: event.currentTarget.naturalWidth, height: event.currentTarget.naturalHeight })} />
+          <p className={styles.muted} role="status">Photo ready. Review it, then tag friends and submit.</p>
+        </>
       )}
       {photoProblem && <p className={chat.error} role="alert">{photoProblem}</p>}
 
@@ -368,7 +385,7 @@ function Composer({ base, targets, pointsPerFriend, onSubmitted }: {
         </div>
       )}
       <div className={styles.actions}>
-        <button type="submit" className={chat.newGroup} disabled={submitting || !file || selected.length === 0 || Boolean(photoProblem)}>
+        <button type="submit" className={chat.newGroup} disabled={submitting || cameraOpen || !file || selected.length === 0 || Boolean(photoProblem)}>
           {submitting ? phase || 'Submitting…' : error ? 'Try again' : 'Submit Snipe'}
         </button>
         <button type="button" className={chat.retry} disabled={submitting} onClick={() => { reset(); setComposing(false); }}>Cancel</button>
