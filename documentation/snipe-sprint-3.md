@@ -107,8 +107,18 @@ denial) and hosted DM denial checks. Eight broader browser scenarios were exclud
 
 ### Current `main`-integrated results
 
-Not yet recorded. The full suite, browser acceptance and build are to be rerun on the merged branch (Next.js 14
-and React 18 from `main`, plus the Sharp dependency). Results will be added here once those runs finish.
+Verified November 2, 2026 on integration commit `2392f51` (Next.js 14 and React 18 from `main`, plus Sharp):
+
+- **1,330 regression tests passed in 150 files**, including the team's new reply tests and the group-only guards.
+- **Production build and full TypeScript validation passed** (`npm run build`).
+- **Five focused browser scenarios passed across separate fixtures:** phone header layout, synthetic-camera capture and pending submission with stream cleanup, denied-camera fallback, group consent/publication/confirmed withdrawal, and desktop/phone DM UI/API denial.
+- The initial combined browser run passed the first three scenarios, then its consent scenario correctly hit the 24-hour cooldown from the camera scenario's use of the same pair. Consent and DM denial passed on a fresh fixture. No cooldown or consent rule was weakened.
+
+Camera checks: `SNIPE_BROWSER_DEV=1 SNIPE_CAMERA_ACCEPTANCE=1` with the filter `shows the open conversation header|captures a camera photo|handles denied camera`.
+Consent checks: `SNIPE_BROWSER_DEV=1 SNIPE_FOCUSED_ACCEPTANCE=1` with the filter `supports group-only consent|never renders Snipe`.
+Both use `vitest.snipe-basic.config.ts` with the installed Playwright module and Chrome executable. These focused running-app checks use isolated SQL/Auth/Storage fixtures and a development server; the production build is checked separately.
+
+Sprint submission closes the seven vertical-slice parents #622, #623, #645, #647, #675, #677 and #723 plus their 24 task sub-issues, including the group-only and camera follow-ups #1020 and #1021. Other detailed SRS cards remain open for individual acceptance/evidence review; implementation coverage alone is not a claim that every card is Done.
 
 What the local runs do **not** show:
 
