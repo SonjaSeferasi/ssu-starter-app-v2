@@ -2,6 +2,10 @@
 
 World Explorer is a separate geography adventure. The existing Jumpyland mode and its account progress are separate. Country membership uses an explicit list of the **193 UN member states**, rather than interpreting every ISO code, World Bank economy or polygon as a sovereign country.
 
+## South America: the first continental release
+
+All twelve South American countries have individually designed, playable levels, built in three batches on the shared engine. The progress dashboard, validation results, captures, performance figures and outstanding issues are in [SOUTH-AMERICA.md](SOUTH-AMERICA.md). Every level is in TESTING; none is released until a person has reviewed it.
+
 ## Japan-first prototype
 
 The current deliverable follows the supplied specification's immediate priority: **one authored Japan prototype**. The 193-country catalogue and existing scenery previews remain available for planning and inspection. `levelAvailability()` marks Japan as `prototype`, other destinations as `preview`, and every destination as `releaseReady: false` / `visualReviewed: false` until the required human/device review is complete.

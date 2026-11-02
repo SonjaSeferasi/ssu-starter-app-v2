@@ -63,6 +63,73 @@ function bodyGeometry(definition:PlatformDefinition,palette:LandmassPalette,kind
  const flat=geometry.toNonIndexed();geometry.dispose();flat.computeVertexNormals();boxUV(flat,.42);return flat;
 }
 
+/** A sculpted, closed body with limited visual depth, used instead of a wall
+ * that runs straight down out of view. `island` tapers on every side into an
+ * eroded, off-centre keel (a floating rock); `shelf` keeps its back face and
+ * recedes from the front and below, so a ledge reads as part of a cliff behind
+ * it. Rings of the shell follow the walking cap at the top; strata, moss on
+ * the lip and a darker underside are baked into vertex colours. The collider
+ * is untouched: this is visual depth only. */
+export type BodyProfile='wall'|'island'|'shelf'|'mass';
+function sculptedBodyGeometry(definition:PlatformDefinition,palette:LandmassPalette,profile:'island'|'shelf'|'mass',visualDepth:number,seed:number,low:boolean){
+ const w=definition.width,d=Math.max(2,definition.depth),top=(x:number)=>platformSurfaceY({...definition,x:-w/2,y:0},x);
+ const segments=clamp(Math.round((w+d)*(low?2:4)),24,low?48:110),rings=low?6:12,r=random(seed),phase=r()*6.28;
+ const face=new T.Color(palette.face),dark=new T.Color(palette.faceDark),band=new T.Color(palette.band),edge=new T.Color(palette.edge),moss=new T.Color(palette.topAlt);
+ // A rounded rectangle traced once around; the front edge stays straight
+ // across the walking lane so the ledge reads exactly where the cap is.
+ const corner=Math.min(d*.42,w*.3),perimeter=2*(w+d-4*corner)+2*Math.PI*corner;
+ const point=(u:number)=>{
+  let s=u*perimeter;const hw=w/2-corner,hd=d/2-corner,straight=[2*hw,2*hd,2*hw,2*hd],start:[number,number][]=[[-hw,d/2],[w/2,hd],[hw,-d/2],[-w/2,-hd]],dir:[number,number][]=[[1,0],[0,-1],[-1,0],[0,1]],centres:[number,number][]=[[hw,hd],[hw,-hd],[-hw,-hd],[-hw,hd]];
+  for(let k=0;k<4;k++){if(s<=straight[k])return{x:start[k][0]+dir[k][0]*s,z:start[k][1]+dir[k][1]*s,nx:dir[k][1],nz:-dir[k][0]};s-=straight[k];const arc=Math.PI/2*corner;if(s<=arc){const a=Math.PI/2-k*Math.PI/2-s/corner;return{x:centres[k][0]+Math.cos(a)*corner,z:centres[k][1]+Math.sin(a)*corner,nx:Math.cos(a),nz:Math.sin(a)};}s-=arc;}
+  return{x:start[0][0],z:start[0][1],nx:0,nz:1};
+ };
+ const positions:number[]=[],colors:number[]=[],indices:number[]=[];
+ for(let j=0;j<=rings;j++){
+  const t=j/rings;
+  for(let i=0;i<=segments;i++){
+   const u=i/segments,p=point(u%1),a=u*Math.PI*2,lip=smooth(0,.18,t);
+   // Erosion: bulging strata bands and fissures, strongest mid-depth.
+   const fracture=(Math.sin(t*19+Math.sin(a*3+phase)*.9)*.05+Math.sin(a*9+Math.floor(t*5)*1.7+phase)*.06+(fbm(a*1.3,t*3,seed,3)-.5)*.22)*Math.sin(t*Math.PI)*lip;
+   let x=p.x,z=p.z,y=top(Math.max(-w/2,Math.min(w/2,p.x)))-capDepth;
+   if(profile==='island'){
+    const taper=1-.86*smooth(.04,1,t)+fracture;x=p.x*taper+w*.06*Math.sin(phase)*t*t;z=p.z*taper+d*.08*Math.cos(phase)*t*t;
+    y-=visualDepth*t*(1+(Math.sin(a*3+phase)*.12+Math.sin(a*7-phase)*.06)*smooth(.1,.8,t));
+   }else if(profile==='mass'){
+    // A rock mass rising from water or ground: it widens toward its base.
+    const flare=1+.24*smooth(0,1,t)+fracture;x=p.x*flare;z=p.z*flare;
+    y-=visualDepth*t*(1+(fbm(a*2,t*2,seed+9,2)-.5)*.12*lip);
+   }else{
+    // A ledge: the back stays against the cliff, the front and sides recede.
+    const recede=smooth(0,1,t)*.78-fracture*.8;z=-d/2+(p.z+d/2)*(1-recede);x=p.x*(1-recede*.35);
+    y-=visualDepth*t*(1+(fbm(a*2,t,seed+5,2)-.5)*.35*lip);
+   }
+   if(j>0&&j<rings){const push=(fbm(x*.7,y*.7,seed+3,3)-.5)*.28*lip;x+=p.nx*push;z+=p.nz*push;}
+   positions.push(x,y,z);
+   const layer=(y*1.6+fbm(x*.3,y*.2,seed,2)*1.2),seam=1-smooth(.04,.18,Math.abs(layer-Math.floor(layer)-.5)),grain=fbm(x*1.5,y*1.5,seed+7,3);
+   const c=face.clone().lerp(dark,t*.7+(grain-.5)*.3).lerp(band,seam*.3);
+   const drip=(Math.sin(a*7+seed)+Math.sin(a*17+seed*.2))*.5,mossLine=.05+Math.max(0,drip)*.16;if(t<mossLine)c.lerp(moss,.55*(1-t/mossLine));if(t<.02)c.lerp(edge,.5);
+   colors.push(c.r,c.g,c.b);
+  }
+ }
+ for(let j=0;j<rings;j++)for(let i=0;i<segments;i++){const a=j*(segments+1)+i,b=a+1,c=a+segments+1;indices.push(a,c,b,b,c,c+1);}
+ // Close the underside: an off-centre point for an island, a sloped seal for a shelf.
+ const keel=positions.length/3,bottom=top(0)-capDepth-visualDepth*(profile==='island'?1.12:1.02);
+ positions.push(profile==='island'?w*.07*Math.sin(phase):0,bottom,profile==='island'?d*.1*Math.cos(phase):profile==='mass'?0:-d*.42);const k=dark.clone().multiplyScalar(.85);colors.push(k.r,k.g,k.b);
+ for(let i=0;i<segments;i++)indices.push(rings*(segments+1)+i,keel,rings*(segments+1)+i+1);
+ const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.setAttribute('color',new T.Float32BufferAttribute(colors,3));geometry.setIndex(indices);
+ const flat=geometry.toNonIndexed();geometry.dispose();flat.computeVertexNormals();boxUV(flat,.42);flat.userData={profile,visualDepth,closedUnderside:true};return flat;
+}
+
+/** A decorative sculpted rock mass (cliff, outcrop, island) built with the
+ * same shell as the platform bodies. Its top sits at y; it is not a collider. */
+export function createRockMass(parent:T.Object3D,options:{name:string;x:number;y:number;z:number;width:number;depth:number;height:number;palette:LandmassPalette;profile?:'island'|'mass'|'shelf';seed?:number;low:boolean}){
+ const definition={id:options.name,x:-options.width/2,y:0,width:options.width,depth:options.depth,thickness:options.height,type:'stone',motion:null,amplitude:0,phase:0,period:7} as PlatformDefinition;
+ const seed=options.seed??hash(options.name),material=vertexMaterial(.94);if(options.palette.maps)markSurface(material,options.palette.maps.set,options.palette.maps.tint,options.palette.maps.repeat);
+ const body=new T.Mesh(sculptedBodyGeometry(definition,options.palette,options.profile??'mass',options.height,seed,options.low),material);body.name=options.name;body.castShadow=body.receiveShadow=true;
+ const cap=new T.Mesh(capGeometry({...definition,depth:options.depth*.92},options.palette,seed,options.low),vertexMaterial(.9));cap.name=options.name+'-top';cap.receiveShadow=true;
+ const root=new T.Group();root.name=options.name+'-mass';root.position.set(options.x,options.y,options.z);root.add(body,cap);root.userData.nonColliding=true;parent.add(root);return root;
+}
+
 /** Walking cap: follows the collision surface exactly, slightly overhanging
  * the front so the lip reads as a ledge. Stair treads get crisp nosings. */
 function capGeometry(definition:PlatformDefinition,palette:LandmassPalette,seed:number,low:boolean){
@@ -80,11 +147,12 @@ function capGeometry(definition:PlatformDefinition,palette:LandmassPalette,seed:
 
 /** Replace the default island with modeled ground. Returns the details group
  * a country can add plants and props to (keep them outside |z| < .55). */
-export function dressLandmass(root:T.Group,definition:PlatformDefinition,palette:LandmassPalette,options:{low:boolean;kind?:LandmassKind;seed?:number}){
+export function dressLandmass(root:T.Group,definition:PlatformDefinition,palette:LandmassPalette,options:{low:boolean;kind?:LandmassKind;seed?:number;profile?:BodyProfile;visualDepth?:number}){
  clearPlatformRoot(root);
- const seed=options.seed??hash(definition.id),kind=options.kind??'ground';
+ const seed=options.seed??hash(definition.id),kind=options.kind??'ground',profile=options.profile??'wall';
  const bodyMaterial=vertexMaterial(kind==='ice'?.35:.94,kind==='ice'?{metalness:.05}:{});if(palette.maps&&kind!=='ice')markSurface(bodyMaterial,palette.maps.set,palette.maps.tint,palette.maps.repeat);
- const body=new T.Mesh(bodyGeometry(definition,palette,kind,options.low,seed),bodyMaterial);body.name='country-platform-cliff';body.castShadow=body.receiveShadow=true;root.add(body);
+ const visualDepth=Math.min(definition.thickness,options.visualDepth??Math.max(1.6,Math.min(5,definition.width*.45)));
+ const body=new T.Mesh(profile==='wall'?bodyGeometry(definition,palette,kind,options.low,seed):sculptedBodyGeometry(definition,palette,profile,visualDepth,seed,options.low),bodyMaterial);body.name='country-platform-cliff';body.castShadow=body.receiveShadow=true;root.add(body);
  const capMaterial=vertexMaterial(kind==='ice'?.18:.9,kind==='ice'?{metalness:.08}:{});if(palette.capMaps)markSurface(capMaterial,palette.capMaps.set,palette.capMaps.tint,palette.capMaps.repeat);
  const cap=new T.Mesh(capGeometry(definition,palette,seed,options.low),capMaterial);cap.name='country-platform-cap';cap.receiveShadow=true;root.add(cap);
  root.userData.surface=definition.terrain||kind;root.userData.landmass=kind;

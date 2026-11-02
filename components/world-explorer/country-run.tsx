@@ -13,7 +13,7 @@ import {PreferencesControls} from './preferences-panel';
 import styles from './world-explorer.module.css';
 
 type RunStatus='starting'|'running'|'paused'|'discovery'|'complete'|'failed';
-type Controller={pause:()=>void;resume:()=>void;destroy:()=>void;setPreferences?:(preferences:ExplorerRunPreferences)=>void;setReviewView?:(view:'gameplay'|'overview'|'scan',x?:number)=>void};
+type Controller={pause:()=>void;resume:()=>void;destroy:()=>void;setPreferences?:(preferences:ExplorerRunPreferences)=>void;setReviewView?:(view:'gameplay'|'overview'|'scan',x?:number,y?:number)=>void;setReviewCamera?:(view:{position:[number,number,number];target:[number,number,number];fov?:number})=>void;reviewStats?:()=>{frameTimes:number[];calls:number;triangles:number;geometries:number;textures:number}};
 export type RunOutcome=CountryRunResult;
 const initialStats:CountryStats={hearts:3,coins:0,totalCoins:0,stars:0,totalStars:3,checkpointActive:false,timeSeconds:0,discoveryFound:false};
 const labels=['Discovery','Adventure','Hard','Expert'];

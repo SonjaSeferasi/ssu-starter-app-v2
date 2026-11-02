@@ -4,7 +4,7 @@ Generated from `lib/world-explorer/design-manifest.ts` (`designManifest()` and `
 
 Every entry is **unreviewed** (`reviewed: false`). Three levels are validated route-graph levels (`playable`); eight still run on the first shared template (`template`) and are flagged by the similarity checker for redesign; the remaining 182 are design **proposals** generated from each country’s landscape profile and await human review before production.
 
-**Totals:** 193 countries · status planned 182, template 8, playable 3 · tiers T1 39, T2 39, T3 39, T4 38, T5 38 · reviewed 0 · blocked by unimplemented mechanics 0.
+**Totals:** 193 countries · status planned 167, playable 18, template 8 · tiers T1 39, T2 39, T3 39, T4 38, T5 38 · reviewed 0 · blocked by unimplemented mechanics 0.
 
 ## Archetypes in use
 
@@ -45,13 +45,16 @@ Every entry is **unreviewed** (`reviewed: false`). Three levels are validated ro
 | Bounce pad | implemented | `platform.bounce` |
 | Walkable stairs and slopes | implemented | `platform.slope, steps; physics.stepHeight` |
 | Patrol creature (IDLE/PATROL/TURN/ALERT/STUNNED/DISABLED) | implemented | `enemies[]` |
+| Climbable face (hold jump against it) | implemented | `platform.climbable, physics.climbSpeed` |
+| Platform raised by a pressure switch for a window | implemented | `platform.raise={switchId,drop,seconds}` |
+| Warned, periodic hazard (geyser, wave surge, steam) | implemented | `hazards[].cycle, style` |
+| Warned falling debris (calving ice, rockfall) | implemented | `hazards[].cycle, style='calving'|'rockfall'` |
+| Water current that carries a standing player | implemented | `platform.current` |
 | Circular-path platform | planned | `—` |
 | Pushable block | planned | `—` |
 | Breakable obstacle | planned | `—` |
 | Conveyor surface | planned | `—` |
-| Warned falling debris | planned | `—` |
 | Fog or darkness with lanterns | planned | `—` |
-| Water current | planned | `—` |
 
 ## All 193 levels
 
@@ -63,7 +66,7 @@ Every entry is **unreviewed** (`reviewed: false`). Three levels are validated ro
 | 4 | Andorra (AND) | planned | 5 · Master Explorer | mountain-switchback-ascent | stairs-and-slopes | Madriu-Perafita-Claror Valley |
 | 5 | Angola (AGO) | planned | 5 · Master Explorer | canyon-mesa-wind | wind-gusts | Mbanza Kongo, Vestiges of the Capital of the former Kingdom of Kongo |
 | 6 | Antigua and Barbuda (ATG) | planned | 4 · Expert Explorer | coastal-boardwalk-tides | moving-platform | Antigua Naval Dockyard and Related Archaeological Sites |
-| 7 | Argentina (ARG) | planned | 5 · Master Explorer | vertical-cliff-precision | collapsing-ledge | Los Glaciares National Park |
+| 7 | Argentina (ARG) | playable | 3 · Challenger | glacier-valley-descent-and-crossing | calving-ice-and-floes | Los Glaciares National Park |
 | 8 | Armenia (ARM) | planned | 5 · Master Explorer | castle-rampart-climb | timed-gate | Monasteries of Haghpat and Sanahin |
 | 9 | Australia (AUS) | template | 3 · Challenger | island-hopping | moving-platform | Great Barrier Reef |
 | 10 | Austria (AUT) | planned | 5 · Master Explorer | old-town-rooftop-run | bounce-pad | Historic Centre of the City of Salzburg |
@@ -77,7 +80,7 @@ Every entry is **unreviewed** (`reviewed: false`). Three levels are validated ro
 | 18 | Belize (BLZ) | planned | 4 · Expert Explorer | island-hopping | moving-platform | Belize Barrier Reef Reserve System |
 | 19 | Benin (BEN) | planned | 5 · Master Explorer | courtyard-arcades | timed-gate | Royal Palaces of Abomey |
 | 20 | Bhutan (BTN) | planned | 5 · Master Explorer | old-town-rooftop-run | vertical-lift | Paro Taktsang |
-| 21 | Bolivia (BOL) | planned | 5 · Master Explorer | old-town-rooftop-run | vertical-lift | City of Potosí |
+| 21 | Bolivia (BOL) | playable | 2 · Adventurer | salt-flat-switch-puzzle | switch-raised-salt-blocks | City of Potosí |
 | 22 | Bosnia and Herzegovina (BIH) | planned | 5 · Master Explorer | harbour-crane-docks | vertical-lift | Old Bridge Area of the Old City of Mostar |
 | 23 | Botswana (BWA) | planned | 3 · Challenger | glacier-crevasse-crossing | ice-surface | Tsodilo |
 | 24 | Brazil (BRA) | playable | 3 · Challenger | canopy-river-traversal | vine-swings | Central Amazon Conservation Complex |
@@ -91,9 +94,9 @@ Every entry is **unreviewed** (`reviewed: false`). Three levels are validated ro
 | 32 | Canada (CAN) | template | 3 · Challenger | vertical-cliff-precision | collapsing-ledge | Canadian Rocky Mountain Parks |
 | 33 | Central African Republic (CAF) | planned | 1 · Explorer | rolling-hills-meadow | stairs-and-slopes | Manovo-Gounda St Floris National Park |
 | 34 | Chad (TCD) | planned | 3 · Challenger | wetland-stilt-walk | collapsing-ledge | Lakes of Ounianga |
-| 35 | Chile (CHL) | planned | 5 · Master Explorer | island-hopping | bounce-pad | Rapa Nui National Park |
+| 35 | Chile (CHL) | playable | 4 · Expert Explorer | andean-geyser-field | timed-geyser-jets | Rapa Nui National Park |
 | 36 | China (CHN) | planned | 2 · Adventurer | courtyard-arcades | pressure-plate | Imperial Palaces of the Ming and Qing Dynasties in Beijing and Shenyang |
-| 37 | Colombia (COL) | planned | 4 · Expert Explorer | harbour-crane-docks | vertical-lift | Port, Fortresses and Group of Monuments, Cartagena |
+| 37 | Colombia (COL) | playable | 4 · Expert Explorer | cloud-forest-vertical-climb | climbable-walls | Port, Fortresses and Group of Monuments, Cartagena |
 | 38 | Comoros (COM) | planned | 1 · Explorer | courtyard-arcades | stairs-and-slopes | The Medinas of the Historic Sultanates of the Comoros |
 | 39 | Costa Rica (CRI) | planned | 4 · Expert Explorer | island-hopping | bounce-pad | Cocos Island National Park |
 | 40 | Côte d’Ivoire (CIV) | planned | 5 · Master Explorer | canopy-river-traversal | pendulum-swing | Taï National Park |
@@ -106,7 +109,7 @@ Every entry is **unreviewed** (`reviewed: false`). Three levels are validated ro
 | 47 | Djibouti (DJI) | planned | 3 · Challenger | coastal-boardwalk-tides | moving-platform | Lake Assal |
 | 48 | Dominica (DMA) | planned | 5 · Master Explorer | mountain-switchback-ascent | wind-gusts | Morne Trois Pitons National Park |
 | 49 | Dominican Republic (DOM) | planned | 4 · Expert Explorer | old-town-rooftop-run | bounce-pad | Colonial City of Santo Domingo |
-| 50 | Ecuador (ECU) | planned | 4 · Expert Explorer | castle-rampart-climb | pressure-plate | City of Quito |
+| 50 | Ecuador (ECU) | playable | 3 · Challenger | volcanic-coast-tide-timing | wave-surges | City of Quito |
 | 51 | Egypt (EGY) | playable | 2 · Adventurer | desert-ruins-mechanism | pressure-plate-timed-gate | Pyramids of Giza |
 | 52 | El Salvador (SLV) | planned | 4 · Expert Explorer | courtyard-arcades | pressure-plate | Joya de Cerén Archaeological Site |
 | 53 | Equatorial Guinea (GNQ) | planned | 3 · Challenger | old-town-rooftop-run | bounce-pad | Basilica of the Immaculate Conception, Mongomo |
@@ -127,7 +130,7 @@ Every entry is **unreviewed** (`reviewed: false`). Three levels are validated ro
 | 68 | Guatemala (GTM) | planned | 4 · Expert Explorer | courtyard-arcades | stairs-and-slopes | Antigua Guatemala |
 | 69 | Guinea (GIN) | planned | 2 · Adventurer | glacier-crevasse-crossing | wind-gusts | Mount Nimba Strict Nature Reserve |
 | 70 | Guinea-Bissau (GNB) | planned | 5 · Master Explorer | island-hopping | moving-platform | Coastal and Marine Ecosystems of the Bijagós Archipelago – Omatí Minhô |
-| 71 | Guyana (GUY) | planned | 2 · Adventurer | wetland-stilt-walk | moving-platform | Kaieteur Falls |
+| 71 | Guyana (GUY) | playable | 2 · Adventurer | waterfall-cliff-current | river-current-shelves | Kaieteur Falls |
 | 72 | Haiti (HTI) | planned | 4 · Expert Explorer | old-town-rooftop-run | timed-gate | National History Park – Citadel, Sans Souci, Ramiers |
 | 73 | Honduras (HND) | planned | 5 · Master Explorer | canyon-mesa-wind | moving-platform | Maya Site of Copan |
 | 74 | Hungary (HUN) | planned | 1 · Explorer | castle-rampart-climb | timed-gate | Budapest, including the Banks of the Danube, the Buda Castle Quarter and Andrássy Avenue |
@@ -190,8 +193,8 @@ Every entry is **unreviewed** (`reviewed: false`). Three levels are validated ro
 | 131 | Palau (PLW) | planned | 1 · Explorer | island-hopping | moving-platform | Rock Islands Southern Lagoon |
 | 132 | Panama (PAN) | planned | 4 · Expert Explorer | castle-rampart-climb | patrol-enemy | Fortifications on the Caribbean Side of Panama: Portobelo-San Lorenzo |
 | 133 | Papua New Guinea (PNG) | planned | 2 · Adventurer | wetland-stilt-walk | moving-platform | Kuk Early Agricultural Site |
-| 134 | Paraguay (PRY) | planned | 1 · Explorer | palace-garden-terraces | moving-platform | Jesuit Missions of La Santísima Trinidad de Paraná and Jesús de Tavarangue |
-| 135 | Peru (PER) | planned | 5 · Master Explorer | castle-rampart-climb | pressure-plate | City of Cuzco |
+| 134 | Paraguay (PRY) | playable | 1 · Explorer | mission-countryside-crumbling-banks | collapsing-earth-banks | Jesuit Missions of La Santísima Trinidad de Paraná and Jesús de Tavarangue |
+| 135 | Peru (PER) | playable | 4 · Expert Explorer | andean-terrace-ascent | terrace-step-ups-and-frayed-bridge | City of Cuzco |
 | 136 | Philippines (PHL) | planned | 4 · Expert Explorer | old-town-rooftop-run | vertical-lift | Baroque Churches of the Philippines |
 | 137 | Poland (POL) | planned | 2 · Adventurer | old-town-rooftop-run | timed-gate | Historic Centre of Kraków |
 | 138 | Portugal (PRT) | planned | 1 · Explorer | harbour-crane-docks | water-hazard | Central Zone of the Town of Angra do Heroismo in the Azores |
@@ -222,7 +225,7 @@ Every entry is **unreviewed** (`reviewed: false`). Three levels are validated ro
 | 163 | Spain (ESP) | planned | 1 · Explorer | courtyard-arcades | pressure-plate | Alhambra and Generalife |
 | 164 | Sri Lanka (LKA) | planned | 4 · Expert Explorer | courtyard-arcades | timed-gate | Ancient City of Polonnaruwa |
 | 165 | Sudan (SDN) | planned | 3 · Challenger | desert-ruins-mechanism | pressure-plate | Gebel Barkal and the Sites of the Napatan Region |
-| 166 | Suriname (SUR) | planned | 4 · Expert Explorer | canopy-river-traversal | pendulum-swing | Central Suriname Nature Reserve |
+| 166 | Suriname (SUR) | playable | 2 · Adventurer | wooden-waterfront-and-riverboats | riverboat-crossings | Central Suriname Nature Reserve |
 | 167 | Sweden (SWE) | planned | 2 · Adventurer | courtyard-arcades | pressure-plate | Royal Domain of Drottningholm |
 | 168 | Switzerland (CHE) | planned | 5 · Master Explorer | old-town-rooftop-run | vertical-lift | Abbey of St Gall |
 | 169 | Syria (SYR) | planned | 2 · Adventurer | courtyard-arcades | pressure-plate | Ancient City of Damascus |
@@ -242,10 +245,10 @@ Every entry is **unreviewed** (`reviewed: false`). Three levels are validated ro
 | 183 | United Arab Emirates (ARE) | planned | 3 · Challenger | desert-ruins-mechanism | pressure-plate | Cultural Sites of Al Ain (Hafit, Hili, Bidaa Bint Saud and Oases Areas) |
 | 184 | United Kingdom (GBR) | planned | 2 · Adventurer | tower-ascent | moving-platform | Elizabeth Tower and Palace of Westminster |
 | 185 | United States (USA) | template | 3 · Challenger | old-town-rooftop-run | timed-gate | Statue of Liberty |
-| 186 | Uruguay (URY) | planned | 1 · Explorer | old-town-rooftop-run | timed-gate | Historic Quarter of the City of Colonia del Sacramento |
+| 186 | Uruguay (URY) | playable | 1 · Explorer | historic-port-street-walk | city-gate-plate | Historic Quarter of the City of Colonia del Sacramento |
 | 187 | Uzbekistan (UZB) | planned | 3 · Challenger | castle-rampart-climb | patrol-enemy | Itchan Kala |
 | 188 | Vanuatu (VUT) | planned | 1 · Explorer | coastal-boardwalk-tides | bounce-pad | Chief Roi Mata’s Domain |
-| 189 | Venezuela (VEN) | planned | 4 · Expert Explorer | harbour-crane-docks | vertical-lift | Coro and its Port |
+| 189 | Venezuela (VEN) | playable | 5 · Master Explorer | tepui-cliff-descent | descent-with-climb-backs | Coro and its Port |
 | 190 | Vietnam (VNM) | planned | 4 · Expert Explorer | palace-garden-terraces | moving-platform | Complex of Hué Monuments |
 | 191 | Yemen (YEM) | planned | 3 · Challenger | courtyard-arcades | stairs-and-slopes | Old Walled City of Shibam |
 | 192 | Zambia (ZMB) | planned | 1 · Explorer | wetland-stilt-walk | collapsing-ledge | Mosi-oa-Tunya / Victoria Falls |

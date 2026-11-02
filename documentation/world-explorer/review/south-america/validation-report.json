@@ -1,0 +1,1079 @@
+{
+ "generatedAt": "2026-11-02T00:56:37.863Z",
+ "levels": [
+  {
+   "code": "BRA",
+   "levelId": "br-level-01",
+   "title": "Amazon Canopy Run",
+   "batch": "A",
+   "tier": 3,
+   "tierName": "Challenger",
+   "measuredTier": 3,
+   "score": 3.36,
+   "hardestGapPercent": 63,
+   "hardestStepPercent": 41,
+   "mechanics": [
+    "bounce",
+    "swinging",
+    "moving",
+    "patrol"
+   ],
+   "archetype": "canopy-river-traversal",
+   "signature": "vine-swings",
+   "designMechanics": [
+    "vine-swings",
+    "bromeliad-bounce",
+    "drifting-rafts",
+    "river-hazard",
+    "root-stairs",
+    "seed-pod-patrol",
+    "high-canopy-branches"
+   ],
+   "platforms": 18,
+   "criticalPath": [
+    "br-start",
+    "br-bromeliad",
+    "br-canopy-1",
+    "br-canopy-2",
+    "br-swing-1",
+    "br-swing-2",
+    "br-canopy-3",
+    "br-mud-bank",
+    "br-raft-1",
+    "br-raft-2",
+    "br-far-bank",
+    "br-root-stairs",
+    "br-falls-ledge",
+    "br-lookout"
+   ],
+   "optionalPlatforms": [
+    "br-high-1",
+    "br-high-2",
+    "br-high-3",
+    "br-high-4"
+   ],
+   "validator": {
+    "passed": 16,
+    "total": 16,
+    "failed": [],
+    "botSeconds": 28.11666666666635,
+    "targetSeconds": 60
+   },
+   "collectibles": {
+    "coins": "29/29",
+    "stars": "3/3",
+    "damage": 0
+   },
+   "strategies": {
+    "forward": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 28.1
+    },
+    "assist": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 33.4
+    },
+    "backtrack": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 29.7
+    },
+    "pause": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 36.3
+    }
+   }
+  },
+  {
+   "code": "BOL",
+   "levelId": "bo-level-01",
+   "title": "Salar de Uyuni: The Salt Mirror",
+   "batch": "A",
+   "tier": 2,
+   "tierName": "Adventurer",
+   "measuredTier": 2,
+   "score": 2.24,
+   "hardestGapPercent": 48,
+   "hardestStepPercent": 38,
+   "mechanics": [
+    "raised-platform",
+    "patrol"
+   ],
+   "archetype": "salt-flat-switch-puzzle",
+   "signature": "switch-raised-salt-blocks",
+   "designMechanics": [
+    "switch-raised-platforms",
+    "switch-sequence",
+    "brine-pools",
+    "salt-piles",
+    "train-car-roofs",
+    "crust-patrol",
+    "island-terraces"
+   ],
+   "platforms": 22,
+   "criticalPath": [
+    "bo-flat-1",
+    "bo-pile-1",
+    "bo-pile-2",
+    "bo-flat-2",
+    "bo-block-1",
+    "bo-block-2",
+    "bo-block-3",
+    "bo-flat-3",
+    "bo-step-1",
+    "bo-step-2",
+    "bo-ledge",
+    "bo-bridge-1",
+    "bo-bridge-2",
+    "bo-yard",
+    "bo-boxcar-1",
+    "bo-boxcar-2",
+    "bo-yard-2",
+    "bo-island-steps",
+    "bo-island-ledge",
+    "bo-summit"
+   ],
+   "optionalPlatforms": [
+    "bo-high-1",
+    "bo-high-2"
+   ],
+   "validator": {
+    "passed": 16,
+    "total": 16,
+    "failed": [],
+    "botSeconds": 28.033333333333022,
+    "targetSeconds": 70
+   },
+   "collectibles": {
+    "coins": "33/33",
+    "stars": "3/3",
+    "damage": 0
+   },
+   "strategies": {
+    "forward": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 28
+    },
+    "assist": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 27.1
+    },
+    "backtrack": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 31.9
+    },
+    "pause": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 31.8
+    }
+   }
+  },
+  {
+   "code": "URY",
+   "levelId": "uy-level-01",
+   "title": "Colonia del Sacramento: Lighthouse Quarter",
+   "batch": "A",
+   "tier": 1,
+   "tierName": "Explorer",
+   "measuredTier": 1,
+   "score": 1.24,
+   "hardestGapPercent": 37,
+   "hardestStepPercent": 26,
+   "mechanics": [
+    "bounce",
+    "moving",
+    "timed-gate"
+   ],
+   "archetype": "historic-port-street-walk",
+   "signature": "city-gate-plate",
+   "designMechanics": [
+    "pressure-plate",
+    "timed-gate",
+    "awning-bounce",
+    "rooftop-hops",
+    "moored-boat",
+    "drawbridge-moat"
+   ],
+   "platforms": 19,
+   "criticalPath": [
+    "uy-rambla",
+    "uy-drawbridge",
+    "uy-plaza",
+    "uy-car",
+    "uy-suspiros",
+    "uy-street",
+    "uy-awning",
+    "uy-roof-1",
+    "uy-roof-2",
+    "uy-roof-3",
+    "uy-convent",
+    "uy-arch-1",
+    "uy-arch-2",
+    "uy-quay",
+    "uy-boat",
+    "uy-pier",
+    "uy-faro"
+   ],
+   "optionalPlatforms": [
+    "uy-chimney",
+    "uy-belfry"
+   ],
+   "validator": {
+    "passed": 16,
+    "total": 16,
+    "failed": [],
+    "botSeconds": 25.5166666666665,
+    "targetSeconds": 55
+   },
+   "collectibles": {
+    "coins": "35/35",
+    "stars": "3/3",
+    "damage": 0
+   },
+   "strategies": {
+    "forward": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 25.5
+    },
+    "assist": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 27.1
+    },
+    "backtrack": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 29.3
+    },
+    "pause": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 30.1
+    }
+   }
+  },
+  {
+   "code": "PER",
+   "levelId": "pe-level-01",
+   "title": "Inca Trail: Terraces to the Sun Gate",
+   "batch": "A",
+   "tier": 4,
+   "tierName": "Expert Explorer",
+   "measuredTier": 4,
+   "score": 4.45,
+   "hardestGapPercent": 69,
+   "hardestStepPercent": 56,
+   "mechanics": [
+    "collapsing",
+    "moving",
+    "wind",
+    "patrol"
+   ],
+   "archetype": "andean-terrace-ascent",
+   "signature": "terrace-step-ups-and-frayed-bridge",
+   "designMechanics": [
+    "tall-terrace-risers",
+    "collapsing-bridge-planks",
+    "oroya-cable-basket",
+    "sun-gate-headwind",
+    "gorge-lift",
+    "scree-patrol",
+    "stair-descent"
+   ],
+   "platforms": 19,
+   "criticalPath": [
+    "pe-valley",
+    "pe-terrace-1",
+    "pe-terrace-2",
+    "pe-terrace-3",
+    "pe-plank-1",
+    "pe-plank-2",
+    "pe-plank-3",
+    "pe-gorge-far",
+    "pe-oroya",
+    "pe-cliff-ledge",
+    "pe-terrace-4",
+    "pe-sun-gate",
+    "pe-ridge-1",
+    "pe-ridge-2",
+    "pe-overlook",
+    "pe-stairs",
+    "pe-citadel"
+   ],
+   "optionalPlatforms": [
+    "pe-lower",
+    "pe-lift"
+   ],
+   "validator": {
+    "passed": 16,
+    "total": 16,
+    "failed": [],
+    "botSeconds": 36.19999999999923,
+    "targetSeconds": 85
+   },
+   "collectibles": {
+    "coins": "28/28",
+    "stars": "3/3",
+    "damage": 0
+   },
+   "strategies": {
+    "forward": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 36.2
+    },
+    "assist": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 43.7
+    },
+    "backtrack": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 38.3
+    },
+    "pause": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 38.9
+    }
+   }
+  },
+  {
+   "code": "ARG",
+   "levelId": "ar-level-01",
+   "title": "Los Glaciares: Perito Moreno Valley",
+   "batch": "B",
+   "tier": 3,
+   "tierName": "Challenger",
+   "measuredTier": 3,
+   "score": 3.45,
+   "hardestGapPercent": 56,
+   "hardestStepPercent": 46,
+   "mechanics": [
+    "moving",
+    "wind",
+    "patrol",
+    "timed-hazard"
+   ],
+   "archetype": "glacier-valley-descent-and-crossing",
+   "signature": "calving-ice-and-floes",
+   "designMechanics": [
+    "calving-seracs",
+    "drifting-ice-floes",
+    "katabatic-headwind",
+    "snow-crusted-serac-steps",
+    "lake-hazard",
+    "shore-patrol",
+    "moraine-slope"
+   ],
+   "platforms": 16,
+   "criticalPath": [
+    "ar-lookout",
+    "ar-moraine-flat",
+    "ar-boulder-2",
+    "ar-shore",
+    "ar-floe-1",
+    "ar-floe-2",
+    "ar-floe-3",
+    "ar-ice-walk",
+    "ar-ice-step-1",
+    "ar-ice-step-2",
+    "ar-crest",
+    "ar-moraine",
+    "ar-boulder-3",
+    "ar-fitz-roy-view"
+   ],
+   "optionalPlatforms": [
+    "ar-ridge-1",
+    "ar-ridge-2"
+   ],
+   "validator": {
+    "passed": 16,
+    "total": 16,
+    "failed": [],
+    "botSeconds": 35.06666666666596,
+    "targetSeconds": 70
+   },
+   "collectibles": {
+    "coins": "27/27",
+    "stars": "3/3",
+    "damage": 0
+   },
+   "strategies": {
+    "forward": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 35.1
+    },
+    "assist": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 43.4
+    },
+    "backtrack": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 43.1
+    },
+    "pause": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 44.1
+    }
+   }
+  },
+  {
+   "code": "CHL",
+   "levelId": "cl-level-01",
+   "title": "El Tatio: Geysers at Dawn",
+   "batch": "B",
+   "tier": 4,
+   "tierName": "Expert Explorer",
+   "measuredTier": 4,
+   "score": 4.36,
+   "hardestGapPercent": 70,
+   "hardestStepPercent": 56,
+   "mechanics": [
+    "collapsing",
+    "patrol",
+    "timed-hazard"
+   ],
+   "archetype": "andean-geyser-field",
+   "signature": "timed-geyser-jets",
+   "designMechanics": [
+    "timed-geyser-jets",
+    "cracking-sinter-crust",
+    "scree-run",
+    "lava-ledge-step-ups",
+    "ignimbrite-arch",
+    "fragile-sinter",
+    "sinter-patrol"
+   ],
+   "platforms": 15,
+   "criticalPath": [
+    "cl-caldera-rim",
+    "cl-scree",
+    "cl-crust-1",
+    "cl-crust-2",
+    "cl-sinter-mound",
+    "cl-ledge-1",
+    "cl-ledge-2",
+    "cl-arch",
+    "cl-tatio",
+    "cl-sinter-1",
+    "cl-sinter-2",
+    "cl-tatio-lookout"
+   ],
+   "optionalPlatforms": [
+    "cl-pinnacle-1",
+    "cl-pinnacle-2",
+    "cl-pinnacle-3"
+   ],
+   "validator": {
+    "passed": 16,
+    "total": 16,
+    "failed": [],
+    "botSeconds": 22.133333333333358,
+    "targetSeconds": 55
+   },
+   "collectibles": {
+    "coins": "24/24",
+    "stars": "3/3",
+    "damage": 0
+   },
+   "strategies": {
+    "forward": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 22.1
+    },
+    "assist": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 23.9
+    },
+    "backtrack": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 24.9
+    },
+    "pause": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 27.6
+    }
+   }
+  },
+  {
+   "code": "COL",
+   "levelId": "co-level-01",
+   "title": "Cocora Valley: Cloud Forest Climb",
+   "batch": "B",
+   "tier": 4,
+   "tierName": "Expert Explorer",
+   "measuredTier": 4,
+   "score": 4.45,
+   "hardestGapPercent": 70,
+   "hardestStepPercent": 21,
+   "mechanics": [
+    "climbing",
+    "collapsing",
+    "moving",
+    "patrol"
+   ],
+   "archetype": "cloud-forest-vertical-climb",
+   "signature": "climbable-walls",
+   "designMechanics": [
+    "climbable-moss-faces",
+    "crumbling-moss-ledges",
+    "cable-basket",
+    "wax-palm-crowns",
+    "valley-catch-route",
+    "ridge-patrol"
+   ],
+   "platforms": 13,
+   "criticalPath": [
+    "co-valley",
+    "co-wall-1",
+    "co-ledge-1",
+    "co-ledge-2",
+    "co-wall-2",
+    "co-cable",
+    "co-palm-1",
+    "co-palm-2",
+    "co-ridge",
+    "co-wall-3",
+    "co-ledge-3",
+    "co-summit"
+   ],
+   "optionalPlatforms": [
+    "co-stream"
+   ],
+   "validator": {
+    "passed": 16,
+    "total": 16,
+    "failed": [],
+    "botSeconds": 21.30000000000007,
+    "targetSeconds": 55
+   },
+   "collectibles": {
+    "coins": "21/21",
+    "stars": "3/3",
+    "damage": 0
+   },
+   "strategies": {
+    "forward": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 21.3
+    },
+    "assist": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 25.3
+    },
+    "backtrack": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 32.5
+    },
+    "pause": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 39.9
+    }
+   }
+  },
+  {
+   "code": "ECU",
+   "levelId": "ec-level-01",
+   "title": "Galápagos: Lava Coast",
+   "batch": "B",
+   "tier": 3,
+   "tierName": "Challenger",
+   "measuredTier": 3,
+   "score": 3.36,
+   "hardestGapPercent": 59,
+   "hardestStepPercent": 41,
+   "mechanics": [
+    "collapsing",
+    "patrol",
+    "timed-hazard"
+   ],
+   "archetype": "volcanic-coast-tide-timing",
+   "signature": "wave-surges",
+   "designMechanics": [
+    "wave-surges",
+    "cracking-lava-crust",
+    "tide-shelves",
+    "lava-tube",
+    "tuff-steps",
+    "shore-crab-patrol",
+    "spatter-cone-route"
+   ],
+   "platforms": 14,
+   "criticalPath": [
+    "ec-beach",
+    "ec-tide-1",
+    "ec-crust-1",
+    "ec-crust-2",
+    "ec-lava-cliff",
+    "ec-tide-2",
+    "ec-rock-1",
+    "ec-rock-2",
+    "ec-lava-tube",
+    "ec-tuff-1",
+    "ec-tuff-2",
+    "ec-overlook"
+   ],
+   "optionalPlatforms": [
+    "ec-spatter-1",
+    "ec-spatter-2"
+   ],
+   "validator": {
+    "passed": 16,
+    "total": 16,
+    "failed": [],
+    "botSeconds": 22.08333333333336,
+    "targetSeconds": 50
+   },
+   "collectibles": {
+    "coins": "19/19",
+    "stars": "3/3",
+    "damage": 0
+   },
+   "strategies": {
+    "forward": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 22.1
+    },
+    "assist": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 21.1
+    },
+    "backtrack": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 23.5
+    },
+    "pause": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 24.6
+    }
+   }
+  },
+  {
+   "code": "GUY",
+   "levelId": "gy-level-01",
+   "title": "Kaieteur Falls: Potaro Gorge",
+   "batch": "C",
+   "tier": 2,
+   "tierName": "Adventurer",
+   "measuredTier": 2,
+   "score": 2.45,
+   "hardestGapPercent": 48,
+   "hardestStepPercent": 36,
+   "mechanics": [
+    "current",
+    "ice",
+    "wind",
+    "patrol"
+   ],
+   "archetype": "waterfall-cliff-current",
+   "signature": "river-current-shelves",
+   "designMechanics": [
+    "river-current-shelves",
+    "upstream-eddy",
+    "spray-slick-ledges",
+    "falls-gusts",
+    "lookout-patrol",
+    "tank-bromeliad-route"
+   ],
+   "platforms": 15,
+   "criticalPath": [
+    "gy-bank",
+    "gy-shelf-1",
+    "gy-boulder-1",
+    "gy-shelf-2",
+    "gy-boulder-2",
+    "gy-brink",
+    "gy-cliff-path",
+    "gy-ledge-1",
+    "gy-ledge-2",
+    "gy-ledge-3",
+    "gy-gorge-lookout",
+    "gy-steps",
+    "gy-kaieteur-view"
+   ],
+   "optionalPlatforms": [
+    "gy-bromeliad-1",
+    "gy-bromeliad-2"
+   ],
+   "validator": {
+    "passed": 16,
+    "total": 16,
+    "failed": [],
+    "botSeconds": 21.333333333333403,
+    "targetSeconds": 48
+   },
+   "collectibles": {
+    "coins": "25/25",
+    "stars": "3/3",
+    "damage": 0
+   },
+   "strategies": {
+    "forward": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 21.3
+    },
+    "assist": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 21.9
+    },
+    "backtrack": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 24.5
+    },
+    "pause": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 25.1
+    }
+   }
+  },
+  {
+   "code": "PRY",
+   "levelId": "py-level-01",
+   "title": "Trinidad: The Jesuit Mission Trail",
+   "batch": "C",
+   "tier": 1,
+   "tierName": "Explorer",
+   "measuredTier": 1,
+   "score": 1.24,
+   "hardestGapPercent": 41,
+   "hardestStepPercent": 26,
+   "mechanics": [
+    "collapsing",
+    "patrol"
+   ],
+   "archetype": "mission-countryside-crumbling-banks",
+   "signature": "collapsing-earth-banks",
+   "designMechanics": [
+    "collapsing-earth-banks",
+    "dry-arroyo",
+    "earth-steps",
+    "lapacho-crowns",
+    "clearing-patrol",
+    "mission-ruin-walls"
+   ],
+   "platforms": 17,
+   "criticalPath": [
+    "py-trail",
+    "py-bank-1",
+    "py-bank-2",
+    "py-bank-3",
+    "py-clearing",
+    "py-hill-steps",
+    "py-hill",
+    "py-meadow",
+    "py-bank-4",
+    "py-bank-5",
+    "py-mission-steps",
+    "py-mission-plaza",
+    "py-wall-1",
+    "py-wall-2",
+    "py-trinidad"
+   ],
+   "optionalPlatforms": [
+    "py-lapacho-1",
+    "py-lapacho-2"
+   ],
+   "validator": {
+    "passed": 16,
+    "total": 16,
+    "failed": [],
+    "botSeconds": 20.816666666666766,
+    "targetSeconds": 55
+   },
+   "collectibles": {
+    "coins": "27/27",
+    "stars": "3/3",
+    "damage": 0
+   },
+   "strategies": {
+    "forward": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 20.8
+    },
+    "assist": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 20.8
+    },
+    "backtrack": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 24.4
+    },
+    "pause": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 25.5
+    }
+   }
+  },
+  {
+   "code": "SUR",
+   "levelId": "sr-level-01",
+   "title": "Paramaribo: Historic Waterfront",
+   "batch": "C",
+   "tier": 2,
+   "tierName": "Adventurer",
+   "measuredTier": 2,
+   "score": 2.36,
+   "hardestGapPercent": 48,
+   "hardestStepPercent": 31,
+   "mechanics": [
+    "moving",
+    "timed-gate",
+    "patrol"
+   ],
+   "archetype": "wooden-waterfront-and-riverboats",
+   "signature": "riverboat-crossings",
+   "designMechanics": [
+    "river-boats",
+    "cargo-hoist",
+    "fort-gate-plate",
+    "timber-galleries",
+    "market-patrol",
+    "shop-sign-route"
+   ],
+   "platforms": 18,
+   "criticalPath": [
+    "sr-waterkant",
+    "sr-wooden-steps",
+    "sr-gallery-1",
+    "sr-gallery-2",
+    "sr-warehouse-roof",
+    "sr-market",
+    "sr-fort-yard",
+    "sr-jetty",
+    "sr-boat-1",
+    "sr-boat-2",
+    "sr-pontoon",
+    "sr-hoist",
+    "sr-warehouse",
+    "sr-gallery-3",
+    "sr-gallery-4",
+    "sr-cathedral-square"
+   ],
+   "optionalPlatforms": [
+    "sr-sign-1",
+    "sr-sign-2"
+   ],
+   "validator": {
+    "passed": 16,
+    "total": 16,
+    "failed": [],
+    "botSeconds": 28.733333333332983,
+    "targetSeconds": 65
+   },
+   "collectibles": {
+    "coins": "25/25",
+    "stars": "3/3",
+    "damage": 0
+   },
+   "strategies": {
+    "forward": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 28.7
+    },
+    "assist": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 31.3
+    },
+    "backtrack": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 37.2
+    },
+    "pause": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 38
+    }
+   }
+  },
+  {
+   "code": "VEN",
+   "levelId": "ve-level-01",
+   "title": "Angel Falls: The Auyán-tepui Descent",
+   "batch": "C",
+   "tier": 5,
+   "tierName": "Master Explorer",
+   "measuredTier": 5,
+   "score": 5.45,
+   "hardestGapPercent": 81,
+   "hardestStepPercent": 0,
+   "mechanics": [
+    "collapsing",
+    "climbing",
+    "ice",
+    "wind",
+    "patrol"
+   ],
+   "archetype": "tepui-cliff-descent",
+   "signature": "descent-with-climb-backs",
+   "designMechanics": [
+    "long-precise-leaps",
+    "crumbling-sandstone",
+    "climb-back-faces",
+    "escarpment-gusts",
+    "spray-slick-rock",
+    "terrace-patrol",
+    "plunge-pool-crag"
+   ],
+   "platforms": 18,
+   "criticalPath": [
+    "ve-summit",
+    "ve-block-1",
+    "ve-block-2",
+    "ve-terrace-1",
+    "ve-ledge-a",
+    "ve-ledge-b",
+    "ve-ledge-c",
+    "ve-wall-1",
+    "ve-pillar-1",
+    "ve-pillar-2",
+    "ve-terrace-2",
+    "ve-plunge-rim",
+    "ve-spray-1",
+    "ve-spray-2",
+    "ve-ledge-d",
+    "ve-wall-2",
+    "ve-angel-falls-view"
+   ],
+   "optionalPlatforms": [
+    "ve-crag"
+   ],
+   "validator": {
+    "passed": 16,
+    "total": 16,
+    "failed": [],
+    "botSeconds": 32.29999999999945,
+    "targetSeconds": 65
+   },
+   "collectibles": {
+    "coins": "24/24",
+    "stars": "3/3",
+    "damage": 0
+   },
+   "strategies": {
+    "forward": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 32.3
+    },
+    "assist": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 31.1
+    },
+    "backtrack": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 32.3
+    },
+    "pause": {
+     "status": "completed",
+     "damage": 0,
+     "seconds": 33.7
+    }
+   }
+  }
+ ],
+ "similarity": {
+  "flagged": [],
+  "highest": [
+   {
+    "a": "gy-level-01",
+    "b": "py-level-01",
+    "score": 0.51,
+    "review": false
+   },
+   {
+    "a": "cl-level-01",
+    "b": "ec-level-01",
+    "score": 0.48,
+    "review": false
+   },
+   {
+    "a": "sr-level-01",
+    "b": "jp-level-01",
+    "score": 0.46,
+    "review": false
+   },
+   {
+    "a": "bo-level-01",
+    "b": "gy-level-01",
+    "score": 0.45,
+    "review": false
+   },
+   {
+    "a": "bo-level-01",
+    "b": "py-level-01",
+    "score": 0.45,
+    "review": false
+   },
+   {
+    "a": "py-level-01",
+    "b": "sr-level-01",
+    "score": 0.45,
+    "review": false
+   },
+   {
+    "a": "co-level-01",
+    "b": "ve-level-01",
+    "score": 0.44,
+    "review": false
+   },
+   {
+    "a": "pe-level-01",
+    "b": "no-level-01",
+    "score": 0.44,
+    "review": false
+   },
+   {
+    "a": "uy-level-01",
+    "b": "sr-level-01",
+    "score": 0.44,
+    "review": false
+   },
+   {
+    "a": "gy-level-01",
+    "b": "eg-level-01",
+    "score": 0.42,
+    "review": false
+   }
+  ],
+  "pairs": 102
+ }
+}

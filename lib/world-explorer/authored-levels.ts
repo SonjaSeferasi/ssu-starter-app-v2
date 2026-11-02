@@ -13,6 +13,7 @@ import china from '../../public/world-explorer/levels/cn-level-01.json';
 import mongolia from '../../public/world-explorer/levels/mn-level-01.json';
 import northKorea from '../../public/world-explorer/levels/kp-level-01.json';
 import southKorea from '../../public/world-explorer/levels/kr-level-01.json';
+import {southAmericaLevels} from './levels/south-america';
 
 /** Authored country levels, keyed by ISO alpha-3. Each file is a complete,
  * validated level configuration; its scenery lives in the matching lazily
@@ -30,4 +31,5 @@ export const authoredLevels:Record<string,{id:string;countryId:string;title:stri
  FRA:france,
  USA:unitedStates,
  CHN:china,MNG:mongolia,PRK:northKorea,KOR:southKorea,
+ ...southAmericaLevels,
 };

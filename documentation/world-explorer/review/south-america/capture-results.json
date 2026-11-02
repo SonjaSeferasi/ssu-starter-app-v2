@@ -1,0 +1,261 @@
+{
+ "capturedAt": "2026-10-30T18:46:05.008Z",
+ "browser": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+ "base": "http://localhost:3000",
+ "renderer": "hardware (ANGLE D3D11) in headless Edge",
+ "note": "Measured on the development laptop in a headless browser. Phone-landscape figures emulate the viewport only; they are not a phone GPU. Real-device testing is still required.",
+ "results": [
+  {
+   "code": "BRA",
+   "desktop": {
+    "hud": [
+     "Gameplay review · 120 FPS · 125 draws · 277,933 triangles",
+     "Gameplay review · 120 FPS · 125 draws · 277,933 triangles",
+     "Gameplay review · 120 FPS · 125 draws · 277,933 triangles",
+     "Gameplay review · 120 FPS · 125 draws · 277,933 triangles",
+     "Gameplay review · 120 FPS · 125 draws · 277,933 triangles"
+    ]
+   },
+   "phone": {
+    "hud": [
+     "Gameplay review · 120 FPS · 137 draws · 282,863 triangles",
+     "Gameplay review · 120 FPS · 136 draws · 282,623 triangles",
+     "Gameplay review · 120 FPS · 136 draws · 282,623 triangles",
+     "Gameplay review · 120 FPS · 137 draws · 282,863 triangles",
+     "Gameplay review · 120 FPS · 137 draws · 282,863 triangles"
+    ]
+   }
+  },
+  {
+   "code": "BOL",
+   "desktop": {
+    "hud": [
+     "Gameplay review · 120 FPS · 86 draws · 87,372 triangles",
+     "Gameplay review · 120 FPS · 86 draws · 87,372 triangles",
+     "Gameplay review · 120 FPS · 86 draws · 87,372 triangles",
+     "Gameplay review · 120 FPS · 86 draws · 87,372 triangles",
+     "Gameplay review · 120 FPS · 86 draws · 87,372 triangles"
+    ]
+   },
+   "phone": {
+    "hud": [
+     "Gameplay review · 120 FPS · 94 draws · 90,384 triangles",
+     "Gameplay review · 120 FPS · 94 draws · 90,384 triangles",
+     "Gameplay review · 120 FPS · 94 draws · 90,384 triangles",
+     "Gameplay review · 120 FPS · 94 draws · 90,384 triangles",
+     "Gameplay review · 120 FPS · 94 draws · 90,384 triangles"
+    ]
+   }
+  },
+  {
+   "code": "URY",
+   "desktop": {
+    "hud": [
+     "Gameplay review · 120 FPS · 76 draws · 135,020 triangles",
+     "Gameplay review · 120 FPS · 76 draws · 135,020 triangles",
+     "Gameplay review · 120 FPS · 76 draws · 135,020 triangles",
+     "Gameplay review · 120 FPS · 76 draws · 135,020 triangles",
+     "Gameplay review · 120 FPS · 76 draws · 135,020 triangles"
+    ]
+   },
+   "phone": {
+    "hud": [
+     "Gameplay review · 120 FPS · 80 draws · 142,060 triangles",
+     "Gameplay review · 120 FPS · 80 draws · 142,060 triangles",
+     "Gameplay review · 120 FPS · 80 draws · 142,060 triangles",
+     "Gameplay review · 120 FPS · 80 draws · 142,060 triangles",
+     "Gameplay review · 120 FPS · 80 draws · 142,060 triangles"
+    ]
+   }
+  },
+  {
+   "code": "PER",
+   "desktop": {
+    "hud": [
+     "Gameplay review · 120 FPS · 80 draws · 110,556 triangles",
+     "Gameplay review · 120 FPS · 80 draws · 110,556 triangles",
+     "Gameplay review · 120 FPS · 80 draws · 110,556 triangles",
+     "Gameplay review · 120 FPS · 80 draws · 110,556 triangles",
+     "Gameplay review · 120 FPS · 80 draws · 110,556 triangles"
+    ]
+   },
+   "phone": {
+    "hud": [
+     "Gameplay review · 120 FPS · 87 draws · 113,735 triangles",
+     "Gameplay review · 120 FPS · 87 draws · 113,735 triangles",
+     "Gameplay review · 120 FPS · 87 draws · 113,735 triangles",
+     "Gameplay review · 120 FPS · 87 draws · 113,735 triangles",
+     "Gameplay review · 120 FPS · 87 draws · 113,735 triangles"
+    ]
+   }
+  },
+  {
+   "code": "ARG",
+   "desktop": {
+    "hud": [
+     "Gameplay review · 120 FPS · 78 draws · 91,013 triangles",
+     "Gameplay review · 120 FPS · 78 draws · 91,013 triangles",
+     "Gameplay review · 120 FPS · 78 draws · 91,013 triangles",
+     "Gameplay review · 120 FPS · 78 draws · 91,013 triangles",
+     "Gameplay review · 120 FPS · 78 draws · 91,013 triangles"
+    ]
+   },
+   "phone": {
+    "hud": [
+     "Gameplay review · 120 FPS · 89 draws · 92,940 triangles",
+     "Gameplay review · 120 FPS · 89 draws · 92,940 triangles",
+     "Gameplay review · 120 FPS · 90 draws · 93,180 triangles",
+     "Gameplay review · 120 FPS · 89 draws · 92,940 triangles",
+     "Gameplay review · 120 FPS · 89 draws · 92,940 triangles"
+    ]
+   }
+  },
+  {
+   "code": "CHL",
+   "desktop": {
+    "hud": [
+     "Gameplay review · 120 FPS · 76 draws · 86,371 triangles",
+     "Gameplay review · 120 FPS · 76 draws · 86,371 triangles",
+     "Gameplay review · 120 FPS · 76 draws · 86,371 triangles",
+     "Gameplay review · 120 FPS · 76 draws · 86,371 triangles",
+     "Gameplay review · 120 FPS · 76 draws · 86,371 triangles"
+    ]
+   },
+   "phone": {
+    "hud": [
+     "Gameplay review · 120 FPS · 79 draws · 86,735 triangles",
+     "Gameplay review · 120 FPS · 79 draws · 86,735 triangles",
+     "Gameplay review · 120 FPS · 79 draws · 86,735 triangles",
+     "Gameplay review · 120 FPS · 79 draws · 86,735 triangles",
+     "Gameplay review · 120 FPS · 79 draws · 86,735 triangles"
+    ]
+   }
+  },
+  {
+   "code": "COL",
+   "desktop": {
+    "hud": [
+     "Gameplay review · 120 FPS · 84 draws · 173,230 triangles",
+     "Gameplay review · 120 FPS · 84 draws · 173,230 triangles",
+     "Gameplay review · 120 FPS · 84 draws · 173,230 triangles",
+     "Gameplay review · 120 FPS · 84 draws · 173,230 triangles",
+     "Gameplay review · 120 FPS · 84 draws · 173,230 triangles"
+    ]
+   },
+   "phone": {
+    "hud": [
+     "Gameplay review · 120 FPS · 90 draws · 175,470 triangles",
+     "Gameplay review · 120 FPS · 90 draws · 175,470 triangles",
+     "Gameplay review · 120 FPS · 90 draws · 175,470 triangles",
+     "Gameplay review · 120 FPS · 90 draws · 175,470 triangles",
+     "Gameplay review · 120 FPS · 90 draws · 175,470 triangles"
+    ]
+   }
+  },
+  {
+   "code": "ECU",
+   "desktop": {
+    "hud": [
+     "Gameplay review · 120 FPS · 86 draws · 98,658 triangles",
+     "Gameplay review · 120 FPS · 86 draws · 98,658 triangles",
+     "Gameplay review · 120 FPS · 79 draws · 98,078 triangles",
+     "Gameplay review · 120 FPS · 79 draws · 98,078 triangles",
+     "Gameplay review · 120 FPS · 78 draws · 97,838 triangles"
+    ]
+   },
+   "phone": {
+    "hud": [
+     "Gameplay review · 120 FPS · 92 draws · 100,112 triangles",
+     "Gameplay review · 120 FPS · 92 draws · 100,112 triangles",
+     "Gameplay review · 120 FPS · 85 draws · 99,532 triangles",
+     "Gameplay review · 120 FPS · 85 draws · 99,532 triangles",
+     "Gameplay review · 120 FPS · 84 draws · 99,292 triangles"
+    ]
+   }
+  },
+  {
+   "code": "GUY",
+   "desktop": {
+    "hud": [
+     "Gameplay review · 120 FPS · 87 draws · 133,034 triangles",
+     "Gameplay review · 120 FPS · 86 draws · 132,794 triangles",
+     "Gameplay review · 120 FPS · 86 draws · 132,794 triangles",
+     "Gameplay review · 120 FPS · 87 draws · 133,034 triangles",
+     "Gameplay review · 120 FPS · 86 draws · 132,794 triangles"
+    ]
+   },
+   "phone": {
+    "hud": [
+     "Gameplay review · 120 FPS · 93 draws · 133,654 triangles",
+     "Gameplay review · 120 FPS · 92 draws · 133,414 triangles",
+     "Gameplay review · 120 FPS · 93 draws · 133,654 triangles",
+     "Gameplay review · 120 FPS · 93 draws · 133,654 triangles",
+     "Gameplay review · 120 FPS · 92 draws · 133,414 triangles"
+    ]
+   }
+  },
+  {
+   "code": "PRY",
+   "desktop": {
+    "hud": [
+     "Gameplay review · 120 FPS · 87 draws · 144,904 triangles",
+     "Gameplay review · 120 FPS · 87 draws · 144,904 triangles",
+     "Gameplay review · 120 FPS · 87 draws · 144,904 triangles",
+     "Gameplay review · 120 FPS · 87 draws · 144,904 triangles",
+     "Gameplay review · 120 FPS · 87 draws · 144,904 triangles"
+    ]
+   },
+   "phone": {
+    "hud": [
+     "Gameplay review · 120 FPS · 92 draws · 145,548 triangles",
+     "Gameplay review · 120 FPS · 92 draws · 145,548 triangles",
+     "Gameplay review · 120 FPS · 92 draws · 145,548 triangles",
+     "Gameplay review · 120 FPS · 92 draws · 145,548 triangles",
+     "Gameplay review · 120 FPS · 92 draws · 145,548 triangles"
+    ]
+   }
+  },
+  {
+   "code": "SUR",
+   "desktop": {
+    "hud": [
+     "Gameplay review · 120 FPS · 84 draws · 119,076 triangles",
+     "Gameplay review · 120 FPS · 84 draws · 119,076 triangles",
+     "Gameplay review · 120 FPS · 84 draws · 119,076 triangles",
+     "Gameplay review · 120 FPS · 84 draws · 119,076 triangles",
+     "Gameplay review · 120 FPS · 84 draws · 119,076 triangles"
+    ]
+   },
+   "phone": {
+    "hud": [
+     "Gameplay review · 120 FPS · 88 draws · 121,380 triangles",
+     "Gameplay review · 120 FPS · 88 draws · 121,380 triangles",
+     "Gameplay review · 120 FPS · 88 draws · 121,380 triangles",
+     "Gameplay review · 120 FPS · 88 draws · 121,380 triangles",
+     "Gameplay review · 120 FPS · 88 draws · 121,380 triangles"
+    ]
+   }
+  },
+  {
+   "code": "VEN",
+   "desktop": {
+    "hud": [
+     "Gameplay review · 120 FPS · 77 draws · 165,682 triangles",
+     "Gameplay review · 120 FPS · 77 draws · 165,682 triangles",
+     "Gameplay review · 120 FPS · 77 draws · 165,682 triangles",
+     "Gameplay review · 120 FPS · 77 draws · 165,682 triangles",
+     "Gameplay review · 120 FPS · 77 draws · 165,682 triangles"
+    ]
+   },
+   "phone": {
+    "hud": [
+     "Gameplay review · 120 FPS · 82 draws · 167,808 triangles",
+     "Gameplay review · 120 FPS · 82 draws · 167,808 triangles",
+     "Gameplay review · 120 FPS · 82 draws · 167,808 triangles",
+     "Gameplay review · 120 FPS · 82 draws · 167,808 triangles",
+     "Gameplay review · 120 FPS · 82 draws · 167,808 triangles"
+    ]
+   }
+  }
+ ]
+}

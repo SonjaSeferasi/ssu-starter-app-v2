@@ -64,6 +64,6 @@ export function authorLevel(spec:LevelSpec):LevelDefinition{
  * player lands and takes off. Narrow platforms get one coin in the middle. */
 export function spread(p:PlatformDefinition,count:number,height=1.1,range?:[number,number]):[string,number,number][]{
  if((p.width<3.4||count<=1)&&!range)return[[p.id,p.width/2,height]];
- const first=range?.[0]??Math.min(1.6,p.width*.25),last=range?.[1]??p.width-Math.min(1.6,p.width*.25);if(count<=1)return[[p.id,(first+last)/2,height]];
+ const first=range?.[0]??Math.min(3.2,p.width*.3),last=range?.[1]??p.width-Math.min(1.6,p.width*.25);if(count<=1)return[[p.id,(first+last)/2,height]];
  return Array.from({length:count},(_,i)=>[p.id,first+(last-first)*i/(count-1),height]);
 }

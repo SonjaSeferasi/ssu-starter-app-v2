@@ -18,6 +18,18 @@ const loaders:Record<string,()=>Promise<{environment:CountryEnvironment}>>={
  'mongolia-orkhon':()=>import('./mongolia'),
  'north-korea-paektu':()=>import('./north-korea'),
  'south-korea-seoul':()=>import('./south-korea'),
+ // South America (phase 1 continental release).
+ 'uruguay-colonia-waterfront':()=>import('./uruguay'),
+ 'bolivia-uyuni-salt-flat':()=>import('./bolivia'),
+ 'peru-andean-terraces':()=>import('./peru'),
+ 'argentina-los-glaciares':()=>import('./argentina'),
+ 'chile-el-tatio':()=>import('./chile'),
+ 'colombia-cocora-cloud-forest':()=>import('./colombia'),
+ 'ecuador-galapagos-lava-coast':()=>import('./ecuador'),
+ 'guyana-kaieteur-falls':()=>import('./guyana'),
+ 'paraguay-trinidad-mission':()=>import('./paraguay'),
+ 'suriname-paramaribo-waterfront':()=>import('./suriname'),
+ 'venezuela-auyan-tepui':()=>import('./venezuela'),
 };
 export const environmentIds=Object.keys(loaders);
 export async function loadCountryEnvironment(id:string):Promise<CountryEnvironment|null>{const load=loaders[id];return load?(await load()).environment:null;}

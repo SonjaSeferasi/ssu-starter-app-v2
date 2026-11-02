@@ -79,7 +79,8 @@ export function playRoute(level:LevelDefinition,route:string[],options:{collectS
  const detours=new Map((options.detours||[]).map(d=>[d.platformId,d])),detourKind:{value?:Detour['kind']}={};let detourFrames=0;
  // Simulate a plan from now; succeed when standing on a later route platform
  // (or this one, beyond an obstacle) for a settled moment without damage.
- const attempt=(plan:Plan,jump:boolean,from:number,horizon=110)=>{
+ let landedAt=-1;
+ const attempt=(plan:Plan,jump:boolean,from:number,horizon=110)=>{landedAt=-1;
   const copy=simulation.clone(),startX=copy.state.x;let settled=0;
   for(let frame=0;frame<(plan.jumpHold?Math.max(horizon,260):horizon);frame++){
    const right=plan.hold==='right'||frame<plan.release;copy.setInput({left:false,right,jump:jump&&(!!plan.jumpHold||frame<2)});
@@ -90,7 +91,7 @@ export function playRoute(level:LevelDefinition,route:string[],options:{collectS
    const at=copy.state.grounded&&copy.state.standing?index.get(copy.state.standing):undefined;
    // Landing anywhere off this route (another branch) is not this route's move.
    if(copy.state.grounded&&copy.state.standing&&at===undefined&&!copy.state.standing.startsWith('block:'))return false;
-   if(at!==undefined&&(at>from||(at===from&&copy.state.x>startX+.6&&frame>8))){if(++settled>=14)return true;}else if(!copy.state.grounded)settled=0;
+   if(at!==undefined&&(at>from||(at===from&&copy.state.x>startX+.6&&frame>8))){if(++settled>=14){landedAt=at;return true;}}else if(!copy.state.grounded)settled=0;
   }
   return false;
  };
@@ -120,7 +121,8 @@ export function playRoute(level:LevelDefinition,route:string[],options:{collectS
    // Optional collectibles on this platform: walk through low ones before
    // leaving it; reach high or overhanging ones with a proven jump.
    // Enemy avoidance always takes priority over collecting.
-   const threatened=simulation.enemies.some(enemy=>enemy.platformId===s.standing&&enemy.x>s.x-.4&&enemy.x-s.x<4.6);
+   // Enemy avoidance and timed hazards always take priority over collecting.
+   const threatened=simulation.enemies.some(enemy=>enemy.platformId===s.standing&&enemy.x>s.x-.4&&enemy.x-s.x<4.6)||simulation.level.hazards.some(h=>h.cycle&&h.x+h.width>s.x-.4&&h.x-s.x<5.5);
    const wanted=here&&!threatened?[...(options.collectStars?simulation.level.stars.map(item=>({item,collected:simulation.collectedStars,low:1.35})):[]),...(options.collectCoins?simulation.level.coins.map(item=>({item,collected:simulation.collectedCoins,low:1.45})):[])].filter(({item,collected,low})=>item.platformId===here.id&&!collected.has(item.id)&&!skipped.has(item.id)&&simulation.position(item).x>=s.x-(item.height>low?1.5:.3)).sort((a,b)=>a.item.offset-b.item.offset)[0]:undefined;
    const reachableOnFoot=wanted&&here&&wanted.item.height<=wanted.low&&wanted.item.offset<=here.width-.25;
    if(wanted&&reachableOnFoot&&walkSafe(12))input={left:false,right:true,jump:false};
@@ -153,7 +155,13 @@ export function playRoute(level:LevelDefinition,route:string[],options:{collectS
     }
     else if(edge<5.5||enemyAhead||windy||erupting){
      if(!walkSafe(40)||edge<1.6||enemyAhead){
-      const chosen=plans.find(plan=>attempt(plan,true,target));
+      // Follow the route in order: prefer a jump onto the next platform on it
+      // (an optional branch, say) before one that skips ahead to a later one.
+      const landings=new Map<Plan,number>(),landing=(plan:Plan)=>{if(!landings.has(plan))landings.set(plan,attempt(plan,true,target)?landedAt:-1);return landings.get(plan)!;};
+      // Heading for an optional branch, keep walking toward the edge while safe
+      // rather than skipping it with an earlier jump to a later platform.
+      const branch=simulation.platforms.find(p=>p.id===route[target+1]),optional=branch?.route==='upper'||branch?.route==='bonus';
+      const chosen=plans.find(plan=>landing(plan)===target+1)||(optional&&!enemyAhead&&edge>.8&&walkSafe(14)&&!branch?.motion?undefined:plans.find(plan=>landing(plan)>=0));
       if(chosen){input={left:false,right:chosen.hold==='right'||chosen.release>0,jump:true};air=chosen;airFrames=1;}
       // With no safe jump, back away from an approaching enemy, else wait at the edge.
       else if(simulation.enemies.some(enemy=>enemy.platformId===s.standing&&Math.abs(enemy.x-s.x)<2.2))input={left:true,right:false,jump:false};

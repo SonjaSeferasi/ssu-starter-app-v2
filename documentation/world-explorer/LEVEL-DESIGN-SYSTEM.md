@@ -89,7 +89,14 @@ Implemented in the shared simulation, each driven by level data:
 - walkable stairs and slopes, plus opt-in step-up onto low risers
 - patrol enemies
 
-Still only planned (listed as `planned` in the mechanics catalogue): circular platforms, pushable blocks, breakable obstacles, conveyors, falling debris, low visibility and water currents.
+Added for South America (see [SOUTH-AMERICA.md](SOUTH-AMERICA.md)):
+
+- climbable faces (`platform.climbable`)
+- switch-raised platforms (`platform.raise`)
+- warned timed hazards, which also cover falling debris such as calving ice (`hazards[].cycle`)
+- water currents (`platform.current`)
+
+Still only planned (listed as `planned` in the mechanics catalogue): circular platforms, pushable blocks, breakable obstacles, conveyors and low visibility.
 
 ## 5. Route graph and LevelValidator
 
@@ -126,7 +133,7 @@ Dmax and Hmax are measured with the real simulation: a full-speed running jump f
 
 Each mandatory jump gets the lowest tier that holds both its gap and its step up. The level's tier is the mean of its hardest third of jumps (at least three), plus up to 0.45 for timing mechanics on the critical path. Bounce launches are excluded.
 
-On the country cards, tiers 1–2 are always open. A higher tier unlocks once any level of the tier below it is completed. Developer view opens every level.
+There is no tier lock: every built level is playable from the start, in any order. The tier on a card tells a player how demanding the route is.
 
 **Explorer assist** is a preference. It keeps the same route and gentles the timing:
 
@@ -242,7 +249,7 @@ Brazil is the heaviest because of its trees and waterfalls; low-graphics mode re
 ## 12. Known limitations
 
 - None of the three levels has had a human visual or device review, and no level is release-ready.
-- The bot moves only rightward. Content that requires backtracking (for example, going back to the plate after missing it) is fair for players but cannot be bot-verified, so the validator checks routes in forward order.
+- The bot moves rightward. Its `detours` option can backtrack along a platform or pause at it, but it does not replay whole sections backwards. Going back to a plate after a window lapses is tested directly in the mechanics tests.
 - Seven countries (Italy, Canada, Australia, India, South Africa, France, the USA), plus Japan's own reference level, still use the first template and are flagged for redesign.
-- Seven mechanics in the catalogue are planned but not implemented.
+- Five mechanics in the catalogue are planned but not implemented.
 - The remaining 182 manifest entries are generated proposals, not designs.
