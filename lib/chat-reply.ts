@@ -52,6 +52,39 @@ export function findReplyTarget<T extends { id: string }>(messages: readonly T[]
   return messages.find((message) => message.id === current) ?? null;
 }
 
+// SRS-209.5 (#997, #998): the message a reply answers, as the page shows it above the reply.
+export type ReplyQuote = { id: string; sender: string; text: string; kind?: string };
+// What the history returns for each reply, keyed by the replying message's id.
+export type ReplyTargets = Record<string, { id: string; sender_id: string; sender_name: string; text: string; kind?: string }>;
+
+// The quote to show above a message, or null when there is nothing to show.
+// Two sources, because a reply can arrive either way:
+//   - history sends a 'replies' entry with the target's own sender name, which works even when the target is
+//     older than the fifty messages loaded;
+//   - a live reply arrives carrying only reply_to_id, so the target is looked up among the messages on screen.
+// A reply whose target is out of reach (sent before this student joined) appears in neither, and the reply is
+// shown on its own rather than quoting something the student may not see.
+export function replyQuote(
+  message: { id: string; reply_to_id?: string | null },
+  targets: ReplyTargets,
+  shown: readonly { id: string; sender_id: string; text: string; kind?: string }[],
+  senders: Record<string, { name: string }>,
+  myStudentId: string | null,
+): ReplyQuote | null {
+  const named = (senderId: string, fallback: string) =>
+    senderId === myStudentId ? 'You' : senders[senderId]?.name ?? fallback;
+
+  const fromHistory = targets[message.id];
+  if (fromHistory) {
+    return { id: fromHistory.id, sender: named(fromHistory.sender_id, fromHistory.sender_name),
+      text: fromHistory.text, kind: fromHistory.kind };
+  }
+  if (!message.reply_to_id) return null;
+  const onScreen = shown.find((m) => m.id === message.reply_to_id);
+  if (!onScreen) return null;
+  return { id: onScreen.id, sender: named(onScreen.sender_id, 'A member'), text: onScreen.text, kind: onScreen.kind };
+}
+
 // How the chosen message is named to screen readers, so the choice is announced rather than only outlined.
 export function describeReplyTarget(sender: string, message: ReplyCandidate | null | undefined): string {
   return message ? `Replying to ${sender}: ${message.text}` : '';
