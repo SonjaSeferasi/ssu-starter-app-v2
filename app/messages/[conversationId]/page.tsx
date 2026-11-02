@@ -15,6 +15,7 @@ import { GroupNameForm } from '../group-name';
 import { GroupMemberList } from '../group-members';
 import { InvitePicker } from '../invite-picker';
 import { ReactionChips, ReactionPicker } from '../message-reactions';
+import { canSelectForReply, keepReplyTarget, toggleReplyTarget } from '../../../lib/chat-reply';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -283,6 +284,23 @@ function Conversation() {
   // any other emoji adds it or replaces theirs. The ref stops double-clicks before the disabled state shows.
   const reactingRef = useRef(false);
   const [reactionBusy, setReactionBusy] = useState(false);
+
+  // SRS-209.1 (#986): the group message the student has chosen to reply to. Only the choice lives here; the
+  // composer shows it in SRS-209.2 and the reply is sent in SRS-209.3.
+  const [replyingTo, setReplyingTo] = useState<string | null>(null);
+  const replyButtons = useRef<Record<string, HTMLButtonElement | null>>({});
+  useEffect(() => { setReplyingTo((current) => keepReplyTarget(current, messages)); }, [messages]);
+  // Escape abandons the choice and puts focus back on the message's Reply button, as the reaction picker does.
+  useEffect(() => {
+    if (!replyingTo) return;
+    function onKeyDown(event: KeyboardEvent) { if (event.key === 'Escape') clearReply(); }
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [replyingTo]);
+  function clearReply() {
+    if (replyingTo) replyButtons.current[replyingTo]?.focus();
+    setReplyingTo(null);
+  }
   async function react(messageId: string, emoji: string) {
     if (reactingRef.current) return;
     reactingRef.current = true;
@@ -405,8 +423,12 @@ function Conversation() {
               const showName = info?.kind === 'group' && !mine && messages[index - 1]?.sender_id !== message.sender_id;
               const chips = sortReactions(reactions[message.id] ?? []);
               const picking = reactingTo === message.id;
+              // SRS-209.1 (#986): a group message can be chosen as the target of a reply.
+              const canReply = canSelectForReply(info?.kind, message);
+              const replying = replyingTo === message.id;
               return (
-                <li key={message.id} className={mine ? `${styles.message} ${styles.messageOwn}` : styles.message}>
+                <li key={message.id} aria-current={replying ? 'true' : undefined}
+                  className={`${mine ? `${styles.message} ${styles.messageOwn}` : styles.message}${replying ? ` ${styles.messageReplyTarget}` : ''}`}>
                   {showName && <span className={styles.senderName} aria-hidden="true">{sender}</span>}
                   <div className={styles.bubbleRow}>
                     <p className={bubble}>
@@ -417,6 +439,14 @@ function Conversation() {
                       aria-label={mine ? 'React to your message' : `React to ${sender}’s message`} title="React">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 11v1a10 10 0 1 1-9-10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><path d="M9 9h.01" /><path d="M15 9h.01" /><path d="M16 5h6" /><path d="M19 2v6" /></svg>
                     </button>
+                    {canReply && (
+                      <button ref={(button) => { replyButtons.current[message.id] = button; }} type="button" className={styles.replyButton}
+                        onClick={() => setReplyingTo((current) => toggleReplyTarget(current, message.id))} aria-pressed={replying}
+                        aria-label={mine ? 'Reply to your message' : `Reply to ${sender}’s message`}
+                        title={replying ? 'Chosen for reply' : 'Reply'}>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 17l-5-5 5-5" /><path d="M4 12h11a5 5 0 0 1 5 5v2" /></svg>
+                      </button>
+                    )}
                   </div>
                   {chips.length > 0 && <ReactionChips reactions={chips} disabled={reactionBusy} onPick={(emoji) => void react(message.id, emoji)} />}
                   {picking && (

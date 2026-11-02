@@ -131,6 +131,15 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 .reactButton:hover, .reactButton[aria-expanded='true'] { background: #e6efe9; color: #28634e; }
 .reactButton:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; opacity: 1; }
 @media (hover: none) { .reactButton { opacity: .7; } }
+
+/* SRS-209.1 (#986): Reply sits beside React on each group message, and the chosen message stays outlined while
+   the student composes, so it is clear which message the reply answers. */
+.replyButton { display: grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #536963; cursor: pointer; opacity: 0; }
+.message:hover .replyButton, .message:focus-within .replyButton, .replyButton[aria-pressed='true'] { opacity: 1; }
+.replyButton:hover, .replyButton[aria-pressed='true'] { background: #e6efe9; color: #28634e; }
+.replyButton:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; opacity: 1; }
+@media (hover: none) { .replyButton { opacity: .7; } }
+.messageReplyTarget .bubble { outline: 2px solid #28634e; outline-offset: 2px; }
 /* SRS-210.2 (#805): the approved reaction set, under the chosen message (kept clear of the sticky header and
    message box when it scrolls into view). */
 .reactionPicker { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 6px; padding: 4px; border: 1px solid #d3e2da; border-radius: 999px; background: #ffffff; box-shadow: 0 6px 18px #102c3026; scroll-margin: 180px 0 140px; }
