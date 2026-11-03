@@ -1,0 +1,910 @@
+[
+  {
+    "country": "BRN",
+    "file": "southeast/brn-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/southeast/after/brn-landmark.png",
+    "build": "myD0SH3cvn2I2Jm77QMe_",
+    "humanPlaytest": false
+  },
+  {
+    "country": "IDN",
+    "file": "southeast/idn-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/southeast/after/idn-landmark.png",
+    "build": "myD0SH3cvn2I2Jm77QMe_",
+    "humanPlaytest": false
+  },
+  {
+    "country": "KHM",
+    "file": "southeast/khm-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/southeast/after/khm-landmark.png",
+    "build": "myD0SH3cvn2I2Jm77QMe_",
+    "humanPlaytest": false
+  },
+  {
+    "country": "LAO",
+    "file": "southeast/lao-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/southeast/after/lao-landmark.png",
+    "build": "myD0SH3cvn2I2Jm77QMe_",
+    "humanPlaytest": false
+  },
+  {
+    "country": "MMR",
+    "file": "southeast/mmr-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/southeast/after/mmr-landmark.png",
+    "build": "myD0SH3cvn2I2Jm77QMe_",
+    "humanPlaytest": false
+  },
+  {
+    "country": "MYS",
+    "file": "southeast/mys-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/southeast/after/mys-landmark.png",
+    "build": "myD0SH3cvn2I2Jm77QMe_",
+    "humanPlaytest": false
+  },
+  {
+    "country": "PHL",
+    "file": "southeast/phl-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/southeast/after/phl-landmark.png",
+    "build": "myD0SH3cvn2I2Jm77QMe_",
+    "humanPlaytest": false
+  },
+  {
+    "country": "SGP",
+    "file": "southeast/sgp-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/southeast/after/sgp-landmark.png",
+    "build": "myD0SH3cvn2I2Jm77QMe_",
+    "humanPlaytest": false
+  },
+  {
+    "country": "THA",
+    "file": "southeast/tha-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/southeast/after/tha-landmark.png",
+    "build": "myD0SH3cvn2I2Jm77QMe_",
+    "humanPlaytest": false
+  },
+  {
+    "country": "TLS",
+    "file": "southeast/tls-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/southeast/after/tls-landmark.png",
+    "build": "myD0SH3cvn2I2Jm77QMe_",
+    "humanPlaytest": false
+  },
+  {
+    "country": "VNM",
+    "file": "southeast/vnm-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/southeast/after/vnm-landmark.png",
+    "build": "myD0SH3cvn2I2Jm77QMe_",
+    "humanPlaytest": false
+  },
+  {
+    "country": "AFG",
+    "file": "south/afg-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/south/after/afg-landmark.png",
+    "build": "YDK7dtWAoismt666sl8dP",
+    "humanPlaytest": false
+  },
+  {
+    "country": "BGD",
+    "file": "south/bgd-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/south/after/bgd-landmark.png",
+    "build": "YDK7dtWAoismt666sl8dP",
+    "humanPlaytest": false
+  },
+  {
+    "country": "BTN",
+    "file": "south/btn-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/south/after/btn-landmark.png",
+    "build": "YDK7dtWAoismt666sl8dP",
+    "humanPlaytest": false
+  },
+  {
+    "country": "IND",
+    "file": "south/ind-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/south/after/ind-landmark.png",
+    "build": "YDK7dtWAoismt666sl8dP",
+    "humanPlaytest": false
+  },
+  {
+    "country": "IRN",
+    "file": "south/irn-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/south/after/irn-landmark.png",
+    "build": "YDK7dtWAoismt666sl8dP",
+    "humanPlaytest": false
+  },
+  {
+    "country": "LKA",
+    "file": "south/lka-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/south/after/lka-landmark.png",
+    "build": "YDK7dtWAoismt666sl8dP",
+    "humanPlaytest": false
+  },
+  {
+    "country": "MDV",
+    "file": "south/mdv-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/south/after/mdv-landmark.png",
+    "build": "YDK7dtWAoismt666sl8dP",
+    "humanPlaytest": false
+  },
+  {
+    "country": "NPL",
+    "file": "south/npl-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/south/after/npl-landmark.png",
+    "build": "YDK7dtWAoismt666sl8dP",
+    "humanPlaytest": false
+  },
+  {
+    "country": "PAK",
+    "file": "south/pak-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/south/after/pak-landmark.png",
+    "build": "YDK7dtWAoismt666sl8dP",
+    "humanPlaytest": false
+  },
+  {
+    "country": "CHN",
+    "file": "east-central/chn-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/east-central/after/chn-landmark.png",
+    "build": "F5qgKCAWDbvgt6Ro66FwN",
+    "humanPlaytest": false
+  },
+  {
+    "country": "JPN",
+    "file": "east-central/jpn-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/east-central/after/jpn-landmark.png",
+    "build": "F5qgKCAWDbvgt6Ro66FwN",
+    "humanPlaytest": false
+  },
+  {
+    "country": "KAZ",
+    "file": "east-central/kaz-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/east-central/after/kaz-landmark.png",
+    "build": "F5qgKCAWDbvgt6Ro66FwN",
+    "humanPlaytest": false
+  },
+  {
+    "country": "KGZ",
+    "file": "east-central/kgz-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/east-central/after/kgz-landmark.png",
+    "build": "F5qgKCAWDbvgt6Ro66FwN",
+    "humanPlaytest": false
+  },
+  {
+    "country": "KOR",
+    "file": "east-central/kor-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/east-central/after/kor-landmark.png",
+    "build": "F5qgKCAWDbvgt6Ro66FwN",
+    "humanPlaytest": false
+  },
+  {
+    "country": "MNG",
+    "file": "east-central/mng-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/east-central/after/mng-landmark.png",
+    "build": "F5qgKCAWDbvgt6Ro66FwN",
+    "humanPlaytest": false
+  },
+  {
+    "country": "PRK",
+    "file": "east-central/prk-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/east-central/after/prk-landmark.png",
+    "build": "F5qgKCAWDbvgt6Ro66FwN",
+    "humanPlaytest": false
+  },
+  {
+    "country": "TJK",
+    "file": "east-central/tjk-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/east-central/after/tjk-landmark.png",
+    "build": "F5qgKCAWDbvgt6Ro66FwN",
+    "humanPlaytest": false
+  },
+  {
+    "country": "TKM",
+    "file": "east-central/tkm-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/east-central/after/tkm-landmark.png",
+    "build": "F5qgKCAWDbvgt6Ro66FwN",
+    "humanPlaytest": false
+  },
+  {
+    "country": "UZB",
+    "file": "east-central/uzb-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/east-central/after/uzb-landmark.png",
+    "build": "F5qgKCAWDbvgt6Ro66FwN",
+    "humanPlaytest": false
+  },
+  {
+    "country": "ARE",
+    "file": "west/are-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/west/after/are-landmark.png",
+    "build": "b4spftz4ZxSIya5Kh9Aj-",
+    "humanPlaytest": false
+  },
+  {
+    "country": "ARM",
+    "file": "west/arm-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/west/after/arm-landmark.png",
+    "build": "b4spftz4ZxSIya5Kh9Aj-",
+    "humanPlaytest": false
+  },
+  {
+    "country": "AZE",
+    "file": "west/aze-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/west/after/aze-landmark.png",
+    "build": "b4spftz4ZxSIya5Kh9Aj-",
+    "humanPlaytest": false
+  },
+  {
+    "country": "BHR",
+    "file": "west/bhr-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/west/after/bhr-landmark.png",
+    "build": "b4spftz4ZxSIya5Kh9Aj-",
+    "humanPlaytest": false
+  },
+  {
+    "country": "CYP",
+    "file": "west/cyp-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/west/after/cyp-landmark.png",
+    "build": "b4spftz4ZxSIya5Kh9Aj-",
+    "humanPlaytest": false
+  },
+  {
+    "country": "GEO",
+    "file": "west/geo-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/west/after/geo-landmark.png",
+    "build": "b4spftz4ZxSIya5Kh9Aj-",
+    "humanPlaytest": false
+  },
+  {
+    "country": "IRQ",
+    "file": "west/irq-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/west/after/irq-landmark.png",
+    "build": "b4spftz4ZxSIya5Kh9Aj-",
+    "humanPlaytest": false
+  },
+  {
+    "country": "ISR",
+    "file": "west/isr-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/west/after/isr-landmark.png",
+    "build": "b4spftz4ZxSIya5Kh9Aj-",
+    "humanPlaytest": false
+  },
+  {
+    "country": "JOR",
+    "file": "west/jor-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/west/after/jor-landmark.png",
+    "build": "b4spftz4ZxSIya5Kh9Aj-",
+    "humanPlaytest": false
+  },
+  {
+    "country": "KWT",
+    "file": "west/kwt-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/west/after/kwt-landmark.png",
+    "build": "b4spftz4ZxSIya5Kh9Aj-",
+    "humanPlaytest": false
+  },
+  {
+    "country": "LBN",
+    "file": "west/lbn-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/west/after/lbn-landmark.png",
+    "build": "b4spftz4ZxSIya5Kh9Aj-",
+    "humanPlaytest": false
+  },
+  {
+    "country": "OMN",
+    "file": "west/omn-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/west/after/omn-landmark.png",
+    "build": "b4spftz4ZxSIya5Kh9Aj-",
+    "humanPlaytest": false
+  },
+  {
+    "country": "QAT",
+    "file": "west/qat-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/west/after/qat-landmark.png",
+    "build": "b4spftz4ZxSIya5Kh9Aj-",
+    "humanPlaytest": false
+  },
+  {
+    "country": "SAU",
+    "file": "west/sau-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/west/after/sau-landmark.png",
+    "build": "b4spftz4ZxSIya5Kh9Aj-",
+    "humanPlaytest": false
+  },
+  {
+    "country": "SYR",
+    "file": "west/syr-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/west/after/syr-landmark.png",
+    "build": "b4spftz4ZxSIya5Kh9Aj-",
+    "humanPlaytest": false
+  },
+  {
+    "country": "TUR",
+    "file": "west/tur-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/west/after/tur-landmark.png",
+    "build": "b4spftz4ZxSIya5Kh9Aj-",
+    "humanPlaytest": false
+  },
+  {
+    "country": "YEM",
+    "file": "west/yem-landmark.png",
+    "type": "actual running-game scenery scan; gameplay paused",
+    "source": "documentation/world-explorer/review/asia/enhancement/west/after/yem-landmark.png",
+    "build": "b4spftz4ZxSIya5Kh9Aj-",
+    "humanPlaytest": false
+  },
+  {
+    "country": "ALB",
+    "file": "europe/alb-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/alb-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "AND",
+    "file": "europe/and-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/and-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "AUT",
+    "file": "europe/aut-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/aut-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "BEL",
+    "file": "europe/bel-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/bel-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "BGR",
+    "file": "europe/bgr-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/bgr-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "BIH",
+    "file": "europe/bih-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/bih-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "BLR",
+    "file": "europe/blr-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/blr-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "CHE",
+    "file": "europe/che-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/che-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "CZE",
+    "file": "europe/cze-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/cze-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "DEU",
+    "file": "europe/deu-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/deu-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "DNK",
+    "file": "europe/dnk-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/dnk-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "ESP",
+    "file": "europe/esp-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/esp-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "EST",
+    "file": "europe/est-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/est-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "FIN",
+    "file": "europe/fin-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/fin-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "GBR",
+    "file": "europe/gbr-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/gbr-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "GRC",
+    "file": "europe/grc-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/grc-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "HRV",
+    "file": "europe/hrv-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/hrv-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "HUN",
+    "file": "europe/hun-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/hun-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "IRL",
+    "file": "europe/irl-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/irl-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "ISL",
+    "file": "europe/isl-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/isl-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "LIE",
+    "file": "europe/lie-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/lie-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "LTU",
+    "file": "europe/ltu-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/ltu-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "LUX",
+    "file": "europe/lux-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/lux-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "LVA",
+    "file": "europe/lva-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/lva-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "MCO",
+    "file": "europe/mco-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/mco-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "MDA",
+    "file": "europe/mda-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/mda-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "MKD",
+    "file": "europe/mkd-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/mkd-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "MLT",
+    "file": "europe/mlt-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/mlt-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "MNE",
+    "file": "europe/mne-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/mne-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "NLD",
+    "file": "europe/nld-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/nld-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "POL",
+    "file": "europe/pol-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/pol-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "PRT",
+    "file": "europe/prt-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/prt-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "ROU",
+    "file": "europe/rou-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/rou-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "RUS",
+    "file": "europe/rus-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/rus-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "SMR",
+    "file": "europe/smr-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/smr-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "SRB",
+    "file": "europe/srb-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/srb-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "SVK",
+    "file": "europe/svk-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/svk-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "SVN",
+    "file": "europe/svn-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/svn-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "SWE",
+    "file": "europe/swe-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/swe-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "UKR",
+    "file": "europe/ukr-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/europe/captures/ukr-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "FJI",
+    "file": "oceania/fji-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/oceania/captures/fji-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "FSM",
+    "file": "oceania/fsm-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/oceania/captures/fsm-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "KIR",
+    "file": "oceania/kir-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/oceania/captures/kir-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "MHL",
+    "file": "oceania/mhl-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/oceania/captures/mhl-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "NRU",
+    "file": "oceania/nru-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/oceania/captures/nru-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "NZL",
+    "file": "oceania/nzl-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/oceania/captures/nzl-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "PLW",
+    "file": "oceania/plw-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/oceania/captures/plw-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "PNG",
+    "file": "oceania/png-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/oceania/captures/png-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "SLB",
+    "file": "oceania/slb-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/oceania/captures/slb-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "TON",
+    "file": "oceania/ton-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/oceania/captures/ton-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "TUV",
+    "file": "oceania/tuv-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/oceania/captures/tuv-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "VUT",
+    "file": "oceania/vut-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/oceania/captures/vut-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "WSM",
+    "file": "oceania/wsm-c-landmark.jpg",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/oceania/captures/wsm-c-landmark.jpg",
+    "humanPlaytest": false
+  },
+  {
+    "country": "CAN",
+    "file": "north-america/can-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/art-polish/can-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "CRI",
+    "file": "north-america/cri-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/art-polish/cri-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "GTM",
+    "file": "north-america/gtm-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/art-polish/gtm-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "JAM",
+    "file": "north-america/jam-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/art-polish/jam-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "MEX",
+    "file": "north-america/mex-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/art-polish/mex-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "USA",
+    "file": "north-america/usa-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/art-polish/usa-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "ATG",
+    "file": "north-america/atg-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/remaining/atg-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "BHS",
+    "file": "north-america/bhs-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/remaining/bhs-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "BLZ",
+    "file": "north-america/blz-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/remaining/blz-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "BRB",
+    "file": "north-america/brb-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/remaining/brb-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "CUB",
+    "file": "north-america/cub-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/remaining/cub-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "DMA",
+    "file": "north-america/dma-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/remaining/dma-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "DOM",
+    "file": "north-america/dom-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/remaining/dom-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "GRD",
+    "file": "north-america/grd-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/remaining/grd-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "HND",
+    "file": "north-america/hnd-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/remaining/hnd-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "HTI",
+    "file": "north-america/hti-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/remaining/hti-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "KNA",
+    "file": "north-america/kna-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/remaining/kna-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "LCA",
+    "file": "north-america/lca-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/remaining/lca-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "NIC",
+    "file": "north-america/nic-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/remaining/nic-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "PAN",
+    "file": "north-america/pan-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/remaining/pan-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "SLV",
+    "file": "north-america/slv-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/remaining/slv-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "TTO",
+    "file": "north-america/tto-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/remaining/tto-gameplay.png",
+    "humanPlaytest": false
+  },
+  {
+    "country": "VCT",
+    "file": "north-america/vct-gameplay.png",
+    "type": "existing actual game capture from regional review; not a fresh acceptance run of the final branch",
+    "source": "documentation/world-explorer/review/north-america/remaining/vct-gameplay.png",
+    "humanPlaytest": false
+  }
+]
