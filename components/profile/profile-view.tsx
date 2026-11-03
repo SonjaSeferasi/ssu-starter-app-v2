@@ -24,6 +24,7 @@ import spaceStyles from './profile-space.module.css';
 import { ProfileCover } from './profile-cover';
 import { useProfileSpace } from './use-profile-space';
 import { ProfileCorner } from './profile-corner';
+import { ProfileBoard } from './profile-board';
 import { ProfileMemories } from './profile-memories';
 import { ProfilePortrait } from './profile-portrait';
 import { ProfileContentTabs, type ProfileCategory } from './profile-content-tabs';
@@ -258,15 +259,21 @@ function ProfileContent({ username }: { username?: string }) {
   const [socialError, setSocialError] = useState('');
   const [socialRetry, setSocialRetry] = useState(0);
   const [contentCount, setContentCount] = useState<number | null>(null);
+  const [boardDirty,setBoardDirty]=useState(false);
   const [lookSaved,setLookSaved]=useState(false);
+  const photoRetried=useRef(false);
+  const [photoUnavailable,setPhotoUnavailable]=useState(false);
   const space = useProfileSpace(profile?.username ?? null);
   useEffect(()=>{setLookSaved(new URLSearchParams(window.location.search).get('look')==='saved');},[]);
 
   useEffect(() => {
     const refresh = () => setSocialRetry(value => value + 1);
+    // Signed photo links last one hour. Renew while a profile remains open.
+    const timer=window.setInterval(()=>{if(document.visibilityState==='visible')refresh();},45*60_000);
     window.addEventListener('socialu-connections-changed', refresh);
     window.addEventListener('focus', refresh);
     return () => {
+      window.clearInterval(timer);
       window.removeEventListener('socialu-connections-changed', refresh);
       window.removeEventListener('focus', refresh);
     };
@@ -282,7 +289,7 @@ function ProfileContent({ username }: { username?: string }) {
   }, [username, socialRetry]);
 
   useEffect(() => {
-    setProfile(null); setSocial(null); setError(''); setMissing(false); setCategory('posts');
+    setProfile(null); setSocial(null); setError(''); setMissing(false); setCategory('posts'); photoRetried.current=false;setPhotoUnavailable(false);
   }, [username]);
 
   useEffect(() => {
@@ -307,12 +314,19 @@ function ProfileContent({ username }: { username?: string }) {
 
   return <main className={`${styles.page} ${campus.page} ${spaceStyles.theme}`} data-palette={space.look.palette} data-design-theme={space.look.theme} data-frame={space.look.frame}>
     {lookSaved&&<p className={spaceStyles.savedLookNotice} role="status"><Check size={16}/>Your look is saved to your profile.</p>}
-    <div className={campus.layout}>
-      <div className={campus.mainColumn}>
+    <div className={campus.masthead}>
         {profile.is_own && <div className={spaceStyles.spaceToolbar}><p>Your profile, your way.</p><Link href="/profile/decorate" className={spaceStyles.decorateLink}><Palette size={15} />Decorate profile</Link></div>}
         <ProfileCover look={space.look} coverUrl={space.coverUrl} />
         <section className={campus.hero} aria-label={`${profile.name}'s profile`}>
-          <ProfilePortrait className={campus.portrait} frame={space.look.frame}><Avatar url={profile.photo_url} name={profile.name} /></ProfilePortrait>
+          <div className={campus.portraitWrap}>
+            <ProfilePortrait className={campus.portrait} frame={space.look.frame}>
+              <Avatar url={profile.photo_url} name={profile.name}
+                onPhotoError={()=>{setPhotoUnavailable(true);if(!photoRetried.current){photoRetried.current=true;setSocialRetry(value=>value+1);}}}
+                onPhotoLoad={()=>{photoRetried.current=false;setPhotoUnavailable(false);}}/>
+            </ProfilePortrait>
+            {profile.is_own&&<Link href="/profile/edit" className={campus.photoEdit} aria-label="Change profile photo"><Camera size={17}/></Link>}
+            {photoUnavailable&&profile.is_own&&<Link href="/profile/edit" className={campus.photoHelp}>Update photo</Link>}
+          </div>
           <div className={campus.identity}>
             <div className={campus.nameLine}>
               <h1>{profile.name}</h1>
@@ -336,15 +350,18 @@ function ProfileContent({ username }: { username?: string }) {
           <p><strong>Complete your profile.</strong> Add your profile photo, major, and class year.</p>
           <Link href="/profile/edit" className={styles.button}>Complete profile</Link>
         </div>}
-        <ProfileContentTabs value={category} onChange={setCategory} own={profile.is_own} />
+    </div>
+    <div className={campus.layout} data-board={category==='board'}>
+      <div className={campus.mainColumn}>
+        <ProfileContentTabs value={category} onChange={next=>{if(category==='board'&&boardDirty&&!window.confirm('Leave without saving your board?'))return;setCategory(next);}} own={profile.is_own} />
         {category === 'saved' && <p className={styles.savedNote}><Lock size={12} />Only you can see your saved posts.</p>}
         <div id="profile-posts" role="tabpanel" aria-labelledby={`profile-tab-${category}`} tabIndex={0}>
-          {category === 'posts'
+          {category === 'board' ? <ProfileBoard profile={profile} look={space.look} status={space.status} onSaved={space.updateLook} onDirtyChange={setBoardDirty}/> : category === 'posts'
             ? <><ProfileCorner key={profile.username} profile={profile} look={space.look} artworkReady={space.status==='ready'} onArtworkSaved={updated=>space.updateLook(current=>({...current,cornerArtwork:updated.cornerArtwork}))} /><ProfileMemories key={`memories-${profile.username}`} profile={profile} /><ProfileJournal key={profile.username} profile={profile} onPostCountChange={delta => setProfile(current => current ? { ...current, post_count: Math.max(0, current.post_count + delta) } : current)} /></>
             : <><div className={campus.sectionHeading}><h2>{category === 'saved' ? 'Saved posts' : 'Tagged posts'}</h2><span>{contentCount === null ? 'Loading…' : `${contentCount} ${contentCount === 1 ? 'post' : 'posts'}`}</span></div><PostGrid key={`${profile.username}-${category}`} username={profile.username} category={category} own={profile.is_own} onCount={setContentCount} /></>}
         </div>
       </div>
-      <ProfileCampusSidebar profile={profile} onViewFriends={() => setPeople('friends')} space={space} />
+      {category!=='board'&&<ProfileCampusSidebar profile={profile} onViewFriends={() => setPeople('friends')} space={space} />}
     </div>
     {people && <PeopleDialog profile={profile} initial={people} onClose={() => setPeople(null)} />}
   </main>;

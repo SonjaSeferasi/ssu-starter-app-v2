@@ -1,8 +1,17 @@
 'use client';
-import { UserRound } from 'lucide-react';
+import {useState} from 'react';
+import {UserRound} from 'lucide-react';
 import styles from './profile.module.css';
 
-// Shared with navigation and chat; importing an avatar must not load the profile editor.
-export function Avatar({url,name,className=''}:{url:string|null;name:string;className?:string}) {
-  return <span className={`${styles.avatar} ${className}`}>{url?<img src={url} alt={`${name}'s profile photo`}/>:<UserRound aria-label="Default profile avatar"/>}</span>;
+// A failed or expired photo must never leave broken-image text inside a frame.
+export function Avatar({url,name,className='',onPhotoError,onPhotoLoad}:{
+  url:string|null;name:string;className?:string;onPhotoError?:()=>void;onPhotoLoad?:()=>void;
+}){
+  const [failedUrl,setFailedUrl]=useState<string|null>(null);
+  const visible=Boolean(url&&failedUrl!==url);
+  return <span className={`${styles.avatar} ${className}`}>
+    {visible?<img src={url!} alt={`${name}'s profile photo`} decoding="async"
+      onLoad={onPhotoLoad} onError={()=>{setFailedUrl(url);onPhotoError?.();}}/>
+      :<UserRound role="img" aria-label={url?'Profile photo unavailable':'Default profile avatar'}/>}
+  </span>;
 }
