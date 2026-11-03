@@ -1,6 +1,7 @@
 import * as T from 'three';
 import type { AvatarAppearance } from '../../lib/game-room';
 import { completeAvatar, avatarParts, type AvatarGroup } from '../../lib/avatar-collection';
+import { bodyShapes, skinColors as figureSkins } from '../../lib/avatar-figure';
 import { costumes } from './wardrobe';
 
 type Hair = 'waves' | 'curls' | 'coils' | 'fade' | 'locs' | 'long-waves' | 'ponytail' | 'bob' | 'braids' | 'hijab';
@@ -47,6 +48,7 @@ export function characterStyle(appearance?: AvatarAppearance | null) {
         : ['#24282c', '#303e59', '#899b84', '#b77e84', '#d6ccb6', '#753848'][outfit];
     }
     if (group === 'female' && outfit === 5) hairColor = '#75432f';
+    skin = figureSkins.find(color => color.id === appearance?.skinColor)?.hex ?? skin;
   } else if (appearance?.headStyle) {
     const selected = appearance.headStyle;
     if (selected.startsWith('hijab-')) { group = 'hijab'; hairstyle = 'hijab'; }
@@ -59,7 +61,8 @@ export function characterStyle(appearance?: AvatarAppearance | null) {
     const tone = Number(appearance.skinTone?.split('-')[1]);
     if (tone >= 1 && tone <= 6) skin = skinColors[tone - 1];
   }
-  return { group, hairstyle, garment, glasses, scarf, hairColor, shirt, pants, skin };
+  const bodyWidth: number = (avatar && bodyShapes.find(shape => shape.id === appearance?.bodyShape)?.width) || 1;
+  return { group, hairstyle, garment, glasses, scarf, hairColor, shirt, pants, skin, bodyWidth };
 }
 
 /**
@@ -226,6 +229,9 @@ export function characterRig(source: T.Texture, costume: string | null, appearan
       for (const side of [-1, 1]) strand(body, [[side * .075, .91, .13], [side * .092, 1.13, .113], [side * .115, 1.26, .04]], .014, pants, 'overall-strap');
     }
   }
+  // The chosen body shape widens the torso and limbs; the head keeps its size. Width and
+  // depth scale together so the turning head is never skewed.
+  body.scale.set(style.bodyWidth, 1, style.bodyWidth); head.scale.set(1 / style.bodyWidth, 1, 1 / style.bodyWidth);
   let sampled = false, lastTime = 0, stride = 0, run = 0;
   const baseHair = hair.color.clone();
   function applySavedFace(image: HTMLImageElement) {
