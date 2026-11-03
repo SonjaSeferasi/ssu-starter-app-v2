@@ -17,15 +17,22 @@ function formatCount(n: number): string {
 // Now the ONLY panel in the sidebar -- Community Guidelines was removed
 // per explicit instruction, and there's no separate "Popular Categories"
 // panel either.
-export function TrendingConfessions({ accessToken }: { accessToken: string }) {
+//
+// Fetches from its own dedicated socialu_whisper_trending RPC, which
+// already enforces every display rule server-side -- top 3 by engagement
+// score, zero-engagement confessions excluded entirely (never padded in),
+// tie-broken by comments then reactions then recency. This component just
+// renders whatever comes back (0-3 items) and exposes onSelect so the
+// parent can scroll to/highlight the clicked confession in the main list.
+export function TrendingConfessions({ accessToken, onSelect }: { accessToken: string; onSelect: (confessionId: number) => void }) {
   const [confessions, setConfessions] = useState<Confession[] | null>(null);
 
   useEffect(() => {
     if (!accessToken) return;
     let cancelled = false;
-    fetch('/api/whispers?sort=trending&offset=0', { headers: { Authorization: `Bearer ${accessToken}` } })
+    fetch('/api/whispers/trending', { headers: { Authorization: `Bearer ${accessToken}` } })
       .then((res) => res.json())
-      .then((body) => { if (!cancelled) setConfessions((body.confessions ?? []).slice(0, 5)); })
+      .then((body) => { if (!cancelled) setConfessions(body.confessions ?? []); })
       .catch(() => { if (!cancelled) setConfessions([]); });
     return () => { cancelled = true; };
   }, [accessToken]);
@@ -38,18 +45,24 @@ export function TrendingConfessions({ accessToken }: { accessToken: string }) {
       {!confessions ? (
         <p className="mt-2 text-xs text-stone-400">Loading…</p>
       ) : confessions.length === 0 ? (
-        <p className="mt-2 text-xs text-stone-400">Nothing trending yet — be the first to share.</p>
+        <p className="mt-2 text-xs text-stone-400">No trending confessions yet 👻</p>
       ) : (
         <ol className="mt-3 space-y-3">
           {confessions.map((c, i) => (
-            <li key={c.confessionId} className="flex gap-2.5">
-              <span className="shrink-0 text-sm font-semibold text-stone-400">{i + 1}</span>
-              <div className="min-w-0">
-                <p className="line-clamp-2 text-xs text-stone-700">{c.textContent}</p>
-                <p className="mt-0.5 text-[11px] text-stone-400">
-                  {formatCount(totalReactions(c.reactionCounts))} reactions · {c.commentCount} comments
-                </p>
-              </div>
+            <li key={c.confessionId}>
+              <button
+                type="button"
+                onClick={() => onSelect(c.confessionId)}
+                className="flex w-full items-start gap-2.5 text-left transition hover:opacity-75"
+              >
+                <span className="shrink-0 text-sm font-semibold text-stone-400">{i + 1}</span>
+                <div className="min-w-0">
+                  <p className="line-clamp-2 text-xs text-stone-700">{c.textContent}</p>
+                  <p className="mt-0.5 text-[11px] text-stone-400">
+                    {formatCount(totalReactions(c.reactionCounts))} reactions · {c.commentCount} comments
+                  </p>
+                </div>
+              </button>
             </li>
           ))}
         </ol>

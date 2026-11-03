@@ -13,11 +13,14 @@ export function ConfessionCard({
   accessToken,
   onUpdated,
   onDeleted,
+  highlighted,
 }: {
   confession: Confession;
   accessToken: string;
   onUpdated: (updated: Confession) => void;
   onDeleted: (confessionId: number) => void;
+  /** Trending Confessions sidebar click-through target -- same scroll-to/highlight pattern as PostCard's own `highlighted` prop. */
+  highlighted?: boolean;
 }) {
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -59,7 +62,10 @@ export function ConfessionCard({
   }
 
   return (
-    <article className="relative rounded-3xl border border-stone-200 bg-white p-5 shadow-sm transition hover:border-emerald-200">
+    <article
+      id={`confession-${confession.confessionId}`}
+      className={`relative rounded-3xl border border-stone-200 bg-white p-5 shadow-sm transition hover:border-emerald-200 ${highlighted ? 'ring-2 ring-emerald-400' : ''}`}
+    >
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
           <span

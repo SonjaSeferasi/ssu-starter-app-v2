@@ -27,6 +27,15 @@ export function WhisperTab({ accessToken, headerTheme }: { accessToken: string; 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [deletedNotice, setDeletedNotice] = useState(false);
+  // Trending Confessions sidebar click-through: same scroll-to/highlight
+  // pattern FeedPage already uses for notification deep-links (SRS-312.10)
+  // -- targetConfessionId is "waiting to be found"; once the (re)loaded
+  // list actually contains it, the effect below scrolls to and briefly
+  // highlights it, then clears both. If it's never in the loaded list
+  // (e.g. way outside the first page), this silently does nothing, same
+  // graceful degradation as the post version.
+  const [targetConfessionId, setTargetConfessionId] = useState<number | null>(null);
+  const [highlightedConfessionId, setHighlightedConfessionId] = useState<number | null>(null);
 
   async function load() {
     if (!accessToken) return;
@@ -50,6 +59,27 @@ export function WhisperTab({ accessToken, headerTheme }: { accessToken: string; 
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessToken, category, sort]);
+
+  useEffect(() => {
+    if (loading || targetConfessionId === null) return;
+    if (!(confessions ?? []).some((c) => c.confessionId === targetConfessionId)) return;
+    const el = document.getElementById(`confession-${targetConfessionId}`);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setHighlightedConfessionId(targetConfessionId);
+    setTargetConfessionId(null);
+    const timer = setTimeout(() => setHighlightedConfessionId(null), 2500);
+    return () => clearTimeout(timer);
+  }, [loading, confessions, targetConfessionId]);
+
+  // Clicking a Trending Confessions item clears any active category filter
+  // (so the target confession can't be hidden by it) and sets the scroll
+  // target -- the effect above does the actual scrolling/highlighting once
+  // the (re)loaded list contains it.
+  function handleTrendingSelect(confessionId: number) {
+    setCategory(null);
+    setTargetConfessionId(confessionId);
+  }
 
   function handlePublished(confession: Confession) {
     setConfessions((prev) => [confession, ...(prev ?? [])]);
@@ -105,14 +135,21 @@ export function WhisperTab({ accessToken, headerTheme }: { accessToken: string; 
         ) : (
           <div className="space-y-4">
             {(confessions ?? []).map((confession) => (
-              <ConfessionCard key={confession.confessionId} confession={confession} accessToken={accessToken} onUpdated={handleUpdated} onDeleted={handleDeleted} />
+              <ConfessionCard
+                key={confession.confessionId}
+                confession={confession}
+                accessToken={accessToken}
+                onUpdated={handleUpdated}
+                onDeleted={handleDeleted}
+                highlighted={confession.confessionId === highlightedConfessionId}
+              />
             ))}
           </div>
         )}
       </div>
 
       <aside className="order-first w-full shrink-0 space-y-4 lg:order-last lg:w-72">
-        <TrendingConfessions accessToken={accessToken} />
+        <TrendingConfessions accessToken={accessToken} onSelect={handleTrendingSelect} />
       </aside>
     </div>
   );
