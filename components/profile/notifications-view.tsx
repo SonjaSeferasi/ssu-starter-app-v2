@@ -130,6 +130,13 @@ function NotificationsContent() {
       .catch(reason => setError(reason instanceof Error ? reason.message : 'Unable to load notifications.'));
   }, []);
   useEffect(load, [load]);
+  // Notifications that arrive while this page is open are read here too; otherwise the bell, which keeps
+  // checking on the same schedule, counts them and its badge stays until the student leaves and comes back.
+  useEffect(() => {
+    const timer = window.setInterval(load, 30_000);
+    window.addEventListener('focus', load);
+    return () => { window.clearInterval(timer); window.removeEventListener('focus', load); };
+  }, [load]);
 
   // Friend requests get their own tab; everything else is a general notification.
   const requests = items?.filter(item => item.kind === 'friend_request') ?? [];
