@@ -6,7 +6,10 @@ import type { ChatReaction } from './chat-reactions';
 // the realtime.messages policy limits each student to their own student:<auth uid> channel.
 // SRS-201.9 (#799): emoji messages also carry kind 'emoji' (the emoji is in text); text messages have no kind.
 // SRS-209.3 (#991): a reply carries the id of the message it answers; an ordinary message leaves it out.
-export type ChatMessageEvent = { id: string; conversation_id: string; sender_id: string; text: string; sent_at: string; kind?: 'emoji'; reply_to_id?: string | null };
+// SRS-201.6 (#1024): a photo message carries no text -- the schema forbids it -- so it arrives with kind
+// 'photo' and the id of its stored asset. photo_url is only ever set locally, by the send that just happened
+// or by the history (SRS-201.7); a signed link cannot be broadcast, because only the server can make one.
+export type ChatMessageEvent = { id: string; conversation_id: string; sender_id: string; text: string; sent_at: string; kind?: 'emoji' | 'photo'; reply_to_id?: string | null; asset_id?: string; photo_url?: string | null };
 // SRS-202.6 (#844): sent to each current member when a group is named or renamed.
 export type ChatConversationEvent = { conversation_id: string; name: string | null };
 // SRS-212.9 (#823): sent to a student when they are invited to a group.

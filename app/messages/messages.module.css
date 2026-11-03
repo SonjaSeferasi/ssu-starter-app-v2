@@ -162,6 +162,15 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 .chosenPhotoRemove:hover { background: #dfeae3; color: #28634e; }
 .chosenPhotoRemove:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
 
+/* SRS-201.6 (#1024): a sent photo fills its bubble, so the bubble keeps only the rounded corner and the
+   background that shows while the image is still loading. max-height stops a tall photo taking the whole
+   conversation; the browser keeps the aspect ratio from the file itself. */
+.bubble.photoBubble { overflow: hidden; padding: 0; line-height: 0; }
+.photoMessage { display: block; width: 100%; max-width: 320px; max-height: 420px; object-fit: contain; border-radius: 14px; }
+/* A photo message whose link this page does not have yet: the message is there and in the right place, which
+   is better than an empty bubble. SRS-201.7 replaces this with the photo itself. */
+.photoPending { display: inline-block; padding: 12px 16px; font-size: .9rem; font-style: italic; line-height: 1.5; }
+
 /* SRS-209.2 (#988): the bar above the message box naming the message the reply answers. */
 .replyBar { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; padding: 8px 10px; border-left: 3px solid #28634e; border-radius: 8px; background: #eef4f0; }
 .replyBarMark { display: grid; place-items: center; flex-shrink: 0; color: #28634e; }

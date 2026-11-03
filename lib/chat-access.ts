@@ -63,6 +63,10 @@ export async function chatOperation(fn: string, args: Record<string, string>) {
     // SRS-209.3 (#991): the message a reply answers, and where replies are offered.
     if (error.code === 'SCP01') throw new AccountError(MESSAGE_NOT_AVAILABLE, 404);
     if (error.code === 'SCP02') throw new AccountError('Replies are only available in group conversations.', 400);
+    // SRS-201.6 (#1022): sending a photo. SCF01 repeats what SRS-201.4 and SRS-201.5 already told the student
+    // in the page, because a request can reach the database without going through it.
+    if (error.code === 'SCF01') throw new AccountError('That photo cannot be sent in a conversation.', 400);
+    if (error.code === 'SCF02') throw new AccountError('Your photo could not be stored. Please try again.', 503);
     // SRS-204.1 / SRS-204.2: assign an administrator.
     if (error.code === 'SCA01') throw new AccountError('Only the group owner can assign an administrator.', 403);
     if (error.code === 'SCA02') throw new AccountError('This group already has an administrator.', 409);
