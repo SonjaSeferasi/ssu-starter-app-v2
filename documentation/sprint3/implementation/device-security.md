@@ -27,6 +27,12 @@ The verified-owner history API authorizes `can_end` only when it knows the calle
 
 Real task sub-issues of #880: #1053 data eligibility; #1054 authenticated API; #1056 controls/confirmation; #1057 verification/evidence. The focused API, eligibility and database run passed 10 tests. Live control/cancellation evidence remains pending.
 
+## SRS-107.8 selected-session termination contract
+
+`20261103111000_selected_session_logout.sql` adds durable selected-session revocation and the service-only owner-authorized operation. The authenticated POST derives account/current provider session from verified identity and accepts only a bounded history ID plus explicit confirmation. The server guard rejects the selected provider session on subsequent protected requests, including refreshed JWTs. History is retained; another sign-in creates a new session. This terminates SocialU access rather than deleting the provider session or its audit history.
+
+Real task sub-issues of #881: #1059 database; #1060 API; #1062 UI; #1063 two-browser verification/evidence. The focused API/data/eligibility run passed 20 tests, including wrong-account/current-session targets, missing confirmation, database failures, retry, expiry/revocation and denied direct authenticated-role execution. Deployment and live two-browser acceptance remain pending.
+
 The new migration has not yet been applied to the shared project. It is additive and installation does not end sessions. A localhost screenshot with unavailable location does not prove the available-location acceptance criterion: capture a genuine hosted sign-in with platform-supplied location. Never populate a fabricated location to make an evidence screenshot.
 
 The other three SRS items are selected for this sprint, but their implementation, deployment, browser acceptance and PRs must be recorded when actually completed. Do not close tasks or mark Done based only on branch creation or this plan.
