@@ -1,5 +1,5 @@
 import { accountClient, AccountError } from './socialu-account';
-export type LoginEntry = { id: string; signed_in_at: string; active: boolean; is_current: boolean; device?: string | null; location?: string | null };
+export type LoginEntry = { id: string; signed_in_at: string; active: boolean; is_current: boolean; device?: string | null; location?: string | null; can_end?: boolean };
 export type LoginHistory = { entries: LoginEntry[]; nextCursor: string | null };
 type Cursor = {at:string;id:string};
 export function historyCursor(value:string|null):Cursor|null{
@@ -17,7 +17,7 @@ export async function loginHistory(userId:string,cursor:Cursor|null,currentSessi
   if(error?.code==='42501')throw new AccountError('A verified, active university account is required.',403);
   if(error?.code==='22023')throw new AccountError('Invalid history page. Refresh your activity and try again.',400);
   if(error)throw new AccountError('Login Activity is unavailable. Please try again later.',503);
-  return {entries:data.entries,nextCursor:data.next?Buffer.from(JSON.stringify(data.next)).toString('base64url'):null};
+  return {entries:data.entries.map((entry:LoginEntry)=>({...entry,can_end:currentSession!==null&&entry.active===true&&entry.is_current===false})),nextCursor:data.next?Buffer.from(JSON.stringify(data.next)).toString('base64url'):null};
 }
 
 /** Called only after verifiedUser has validated the bearer token with Supabase. */

@@ -3,7 +3,14 @@ const {verified,rpc}=vi.hoisted(()=>({verified:vi.fn(),rpc:vi.fn()}));
 vi.mock('../../lib/socialu-account',async original=>({...await original<typeof import('../../lib/socialu-account')>(),verifiedUser:verified,accountClient:()=>({rpc})}));
 import {AccountError} from '../../lib/socialu-account';
 import {GET} from '../../app/api/account/login-activity/route';
+import {loginHistory} from '../../lib/login-activity';
 beforeEach(()=>{vi.resetAllMocks();verified.mockResolvedValue({id:'owner'});rpc.mockResolvedValue({data:{entries:[]},error:null});});
+it('authorizes options only with a known caller session and other active rows',async()=>{
+ const entries=[{id:'1',active:true,is_current:true},{id:'2',active:true,is_current:false},{id:'3',active:false,is_current:false}];
+ rpc.mockResolvedValue({data:{entries},error:null});
+ expect((await loginHistory('owner',null,'current')).entries.map(e=>e.can_end)).toEqual([false,true,false]);
+ expect((await loginHistory('owner',null,null)).entries.every(e=>e.can_end===false)).toBe(true);
+});
 describe('SRS-107.1 Login Activity',()=>{
  it('uses verified identity and never accepts an owner from the URL',async()=>{
   const response=await GET(new Request('http://localhost/api/account/login-activity?auth_user_id=other'));

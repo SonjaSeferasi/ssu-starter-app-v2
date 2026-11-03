@@ -21,6 +21,12 @@ Real task sub-issues of #878: #1048 data contract; #1049 authenticated capture/A
 
 ## Deployment and evidence status
 
+## SRS-107.7 logout-option contract
+
+The verified-owner history API authorizes `can_end` only when it knows the caller's current session and the record is another active session. The client independently fails closed for current, ended, unauthorized or invalid-ID records. Eligible rows offer Log out and an accessible confirmation dialog. Cancel makes no logout request. Confirm connects to the selected-session operation implemented by the dependent SRS-107.8 branch; keep the implementation PR in draft until the combined flow is verified.
+
+Real task sub-issues of #880: #1053 data eligibility; #1054 authenticated API; #1056 controls/confirmation; #1057 verification/evidence. The focused API, eligibility and database run passed 10 tests. Live control/cancellation evidence remains pending.
+
 The new migration has not yet been applied to the shared project. It is additive and installation does not end sessions. A localhost screenshot with unavailable location does not prove the available-location acceptance criterion: capture a genuine hosted sign-in with platform-supplied location. Never populate a fabricated location to make an evidence screenshot.
 
 The other three SRS items are selected for this sprint, but their implementation, deployment, browser acceptance and PRs must be recorded when actually completed. Do not close tasks or mark Done based only on branch creation or this plan.
