@@ -56,6 +56,7 @@ assert.equal((await call(1,'send','student2')).request_id,firstId);
 assert.equal((await call(2,'send','student1')).state,'received');
 assert.equal((await call(2,'incoming')).length,1);
 const follows=async()=>(await db.query<any>('SELECT follower_id::int AS follower,followed_id::int AS followed FROM socialu.student_follows ORDER BY follower_id,followed_id')).rows;
+const unfollowMigration=readFileSync(root+'/supabase/migrations/20261027010000_unfriend_removes_mutual_follows.sql','utf8');
 assert.deepEqual(await follows(),[]); // Pending requests do not start following.
 await db.exec('INSERT INTO socialu.student_follows(follower_id,followed_id) VALUES(1,2)'); // Existing follows are safe.
 
@@ -73,7 +74,22 @@ assert.equal((await call(1,'friends',null,null,'not found')).length,0);
 const cid=(await call(1,'message','student2')).conversation_id;
 assert.equal((await call(2,'message','student1')).conversation_id,cid);
 await assert.rejects(call(3,'message','student1'));
+// Installing the cleanup is additive and repeatable; no existing follows vanish.
+await db.exec('INSERT INTO socialu.student_follows(follower_id,followed_id) VALUES(1,2),(2,1),(1,3)');
+await db.exec(unfollowMigration); await db.exec(unfollowMigration);
+assert.deepEqual(await follows(),[{follower:1,followed:2},{follower:1,followed:3},{follower:2,followed:1}]);
+await assert.rejects(call(1,'remove','student2','999999'));
+assert.equal((await follows()).length,3); // A stale request cannot remove follows.
 await call(1,'remove','student2',firstId);
+assert.deepEqual(await follows(),[{follower:1,followed:3}]); // Both directions end; unrelated follows remain.
+const summary=async(n:number,target:string)=>(await db.query<any>("SELECT public.socialu_profile_social($1,'summary',$2) AS r",[uid(n),target])).rows[0].r;
+assert.equal((await summary(1,'student2')).following,false);
+assert.equal((await summary(2,'student1')).following,false);
+// Unrelated updates on an ended friendship must not undo a deliberate re-follow.
+await db.query("SELECT public.socialu_profile_social($1,'follow','student2')",[uid(1)]);
+await db.query('UPDATE socialu.friend_requests SET friendship_ended_at=friendship_ended_at WHERE request_id=$1',[firstId]);
+assert.equal((await summary(1,'student2')).following,true);
+await db.exec('DELETE FROM socialu.student_follows');
 assert.equal((await call(2,'friends')).length,0);
 await assert.rejects(call(1,'message','student2'));
 rel=await call(2,'send','student1'); await call(1,'decline','student2',rel.request_id);
@@ -83,6 +99,13 @@ assert.equal((await call(2,'incoming')).length,0);
 assert.deepEqual(await follows(),[]); // Decline and cancel never create follows.
 rel=await call(1,'send','student2'); await call(2,'accept','student1',rel.request_id);
 assert.equal((await follows()).length,2);
+// The legacy profile RPC uses the same trigger, and rollback restores both sides.
+await db.exec('BEGIN');
+await db.query('SELECT public.socialu_friend_action($1,$2,$3)',[uid(2),'student1','unfriend']);
+assert.deepEqual(await follows(),[]);
+await db.exec('ROLLBACK');
+assert.equal((await follows()).length,2);
+assert.equal((await call(1,'relation','student2')).state,'friends');
 await call(1,'block','student2');
 assert.deepEqual(await follows(),[]); assert.equal((await campus()).length,0); assert.equal((await call(1,'blocked')).length,1);
 assert.equal((await call(1,'friends')).length,0);
