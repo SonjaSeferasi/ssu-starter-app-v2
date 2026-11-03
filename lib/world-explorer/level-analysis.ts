@@ -129,7 +129,9 @@ export function playRoute(level:LevelDefinition,route:string[],options:{collectS
    else if(wanted&&here){
     // Prefer a running jump that the look-ahead proves collects the item and
     // lands safely; otherwise stop beneath it and jump straight up.
-    const target=wanted.item,running=plans.find(plan=>{const copy=simulation.clone();let got=false;for(let f=0;f<110;f++){copy.setInput({left:false,right:plan.hold==='right'||f<plan.release,jump:f<2});const happened=copy.advance(FIXED_STEP);if(unsafe(happened))return false;if(copy.state.status==='discovery')copy.resume();if(copy.collectedStars.has(target.id)||copy.collectedCoins.has(target.id))got=true;if(got&&copy.state.grounded&&f>6)return index.has(copy.state.standing||'');}return false;});
+    const target=wanted.item,running=plans.find(plan=>{const copy=simulation.clone();let got=false;for(let f=0;f<110;f++){copy.setInput({left:false,right:plan.hold==='right'||f<plan.release,jump:f<2});const happened=copy.advance(FIXED_STEP);if(unsafe(happened))return false;if(copy.state.status==='discovery')copy.resume();if(copy.collectedStars.has(target.id)||copy.collectedCoins.has(target.id))got=true;if(got&&copy.state.grounded&&f>6){if(!index.has(copy.state.standing||''))return false;
+     // The landing must stay safe while the player settles (a patrol turning beside it).
+     for(let g=0;g<14;g++){copy.setInput({left:false,right:false,jump:false});if(unsafe(copy.advance(FIXED_STEP)))return false;}return true;}}return false;});
     const x=simulation.position(target).x,distance=x-s.x,grip=here.surface==='ice'?level.physics.iceGrip??.3:1,stopping=s.vx*s.vx/(2*level.physics.acceleration*grip)+.06,beyond=x>here.x+here.width-.3;
     if(running){input={left:false,right:running.hold==='right'||running.release>0,jump:true};air=running;airFrames=1;tries.set(target.id,(tries.get(target.id)||0)+1);}
     // An arc item past the edge is tried on the way to the edge, then given up.
@@ -151,7 +153,10 @@ export function playRoute(level:LevelDefinition,route:string[],options:{collectS
      const stopSafe=(walk:number)=>{const copy=simulation.clone();for(let f=0;f<walk+45;f++){copy.setInput({left:false,right:f<walk,jump:false});if(unsafe(copy.advance(FIXED_STEP)))return false;if(copy.state.status==='discovery')copy.resume();}return copy.state.grounded;};
      if(stopSafe(10)){/* keep walking right */}
      else if(stopSafe(0))input={left:false,right:false,jump:false};
-     else{const chosen=plans.find(plan=>attempt(plan,true,target));if(chosen){input={left:false,right:chosen.hold==='right'||chosen.release>0,jump:true};air=chosen;airFrames=1;}else input={left:true,right:false,jump:false};}
+     else{const chosen=plans.find(plan=>attempt(plan,true,target));if(chosen){input={left:false,right:chosen.hold==='right'||chosen.release>0,jump:true};air=chosen;airFrames=1;}else{
+      // Retreat away from the hazard, as a person would: the side that the look-ahead proves safe.
+      const retreat=(left:boolean)=>{const copy=simulation.clone();for(let f=0;f<45;f++){copy.setInput({left,right:!left,jump:false});if(unsafe(copy.advance(FIXED_STEP)))return false;if(copy.state.status==='discovery')copy.resume();}return copy.state.grounded;};
+      input=retreat(true)||!retreat(false)?{left:true,right:false,jump:false}:{left:false,right:true,jump:false};}}
     }
     else if(edge<5.5||enemyAhead||windy||erupting){
      if(!walkSafe(40)||edge<1.6||enemyAhead){
@@ -170,7 +175,11 @@ export function playRoute(level:LevelDefinition,route:string[],options:{collectS
        input={left:false,right:edge>.7&&walkSafe(8),jump:false};
        const room=here?s.x-here.x:0,full=simulation.clone();full.state.vx=level.physics.runSpeed;
        // Standing at the edge with no jump that works: if a running jump would, back up for one.
-       if(Math.abs(s.vx)<.15&&room>1.6&&edge<1.2&&!here?.motion&&!simulation.enemies.some(enemy=>enemy.platformId===s.standing)){if(plans.some(plan=>{const copy=full.clone();for(let f=0;f<110;f++){copy.setInput({left:false,right:plan.hold==='right'||f<plan.release,jump:f<2});if(unsafe(copy.advance(FIXED_STEP)))return false;const at=copy.state.grounded&&copy.state.standing?index.get(copy.state.standing):undefined;if(at!==undefined&&at>target&&f>10)return true;}return false;}))backing=Math.min(36,Math.round((room-.6)/level.physics.runSpeed*60));}
+       if(Math.abs(s.vx)<.15&&room>1.6&&edge<1.2&&!here?.motion&&!simulation.enemies.some(enemy=>enemy.platformId===s.standing)){if(plans.some(plan=>{const copy=full.clone();for(let f=0;f<110;f++){copy.setInput({left:false,right:plan.hold==='right'||f<plan.release,jump:f<2});if(unsafe(copy.advance(FIXED_STEP)))return false;const at=copy.state.grounded&&copy.state.standing?index.get(copy.state.standing):undefined;if(at!==undefined&&at>target&&f>10)return true;}return false;})){
+        // Back up only along ground the look-ahead proves safe (no geyser or wave behind).
+        const frames=Math.min(36,Math.round((room-.6)/level.physics.runSpeed*60)),runUp=simulation.clone();let clear=true;
+        for(let f=0;f<frames+20&&clear;f++){runUp.setInput({left:f<frames,right:false,jump:false});if(unsafe(runUp.advance(FIXED_STEP)))clear=false;}
+        if(clear)backing=frames;}}
       }
      }
     }

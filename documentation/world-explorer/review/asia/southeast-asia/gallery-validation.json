@@ -1,0 +1,13 @@
+{
+  "decodedImages": 99,
+  "imageErrors": [],
+  "horizontalOverflow": false,
+  "missingLinks": [],
+  "mobileOverflow": false,
+  "finalPreview": {
+    "buildId": "WR5uBFBpPbzCKJQjGU45P",
+    "httpStatus": 200,
+    "countryGuideHasCorrectApostrophe": true,
+    "noMojibake": true
+  }
+}

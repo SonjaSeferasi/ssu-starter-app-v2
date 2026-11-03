@@ -1,0 +1,1046 @@
+{
+  "records": [
+    {
+      "code": "CHN",
+      "file": "public/world-explorer/levels/cn-level-01.json",
+      "sha256": "2766ed74180b84bbf72d113c2a5fb539a7e8e5169fe8552b14c2da9f61030388",
+      "runtimeDifficulty": 1,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "cn-start",
+            "to": "cn-step",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 1.22,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 62.56410256410254,
+            "tier": 5
+          },
+          {
+            "from": "cn-step",
+            "to": "cn-spur",
+            "action": "JUMP",
+            "gap": 1.8999999999999986,
+            "rise": 1.2300000000000002,
+            "gapPercent": 35.18518518518528,
+            "stepPercent": 63.076923076923066,
+            "tier": 5
+          },
+          {
+            "from": "cn-spur",
+            "to": "cn-lift",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.8000000000000007,
+            "rise": -0.15000000000000036,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 0,
+            "tier": 1
+          },
+          {
+            "from": "cn-lift",
+            "to": "cn-rest",
+            "action": "JUMP",
+            "gap": 1.5,
+            "rise": 0.7000000000000002,
+            "gapPercent": 27.777777777777878,
+            "stepPercent": 35.8974358974359,
+            "tier": 2
+          },
+          {
+            "from": "cn-rest",
+            "to": "cn-crumble",
+            "action": "JUMP",
+            "gap": 2,
+            "rise": 1.2999999999999998,
+            "gapPercent": 37.037037037037166,
+            "stepPercent": 66.66666666666664,
+            "tier": 5
+          },
+          {
+            "from": "cn-crumble",
+            "to": "cn-crest",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.1500000000000004,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 58.97435897435898,
+            "tier": 4
+          },
+          {
+            "from": "cn-low",
+            "to": "cn-end",
+            "action": "JUMP",
+            "gap": 1.7000000000000028,
+            "rise": 0.2999999999999998,
+            "gapPercent": 31.481481481481644,
+            "stepPercent": 15.38461538461537,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "moving",
+          "collapsing",
+          "wind"
+        ],
+        "measuredTier": 5,
+        "declaredTier": 5,
+        "score": 5.36,
+        "warnings": []
+      },
+      "edgeChecks": 44,
+      "recoveryChecks": 48,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "18/18",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "JPN",
+      "file": "public/world-explorer/levels/jp-level-01.json",
+      "sha256": "ab9c0af9a51648a4ca7122506eb3ba408b8f5101cdc8be094e09b3337c675264",
+      "runtimeDifficulty": 1,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "jp-start",
+            "to": "jp-lower-bridge",
+            "action": "JUMP",
+            "gap": 0,
+            "rise": -1.7,
+            "gapPercent": 0,
+            "stepPercent": 0,
+            "tier": 0
+          },
+          {
+            "from": "jp-lower-bridge",
+            "to": "jp-bridge-exit",
+            "action": "JUMP",
+            "gap": 0,
+            "rise": 0,
+            "gapPercent": 0,
+            "stepPercent": 0,
+            "tier": 0
+          },
+          {
+            "from": "jp-bridge-exit",
+            "to": "jp-enemy-island",
+            "action": "JUMP",
+            "gap": 0,
+            "rise": -5.551115123125783e-17,
+            "gapPercent": 0,
+            "stepPercent": 0,
+            "tier": 0
+          },
+          {
+            "from": "jp-enemy-island",
+            "to": "jp-main-05",
+            "action": "JUMP",
+            "gap": 1.6000000000000014,
+            "rise": 0.04999999999999999,
+            "gapPercent": 29.62962962962976,
+            "stepPercent": 2.5641025641025625,
+            "tier": 1
+          },
+          {
+            "from": "jp-main-05",
+            "to": "jp-main-06",
+            "action": "JUMP",
+            "gap": 1.5,
+            "rise": -0.19999999999999998,
+            "gapPercent": 27.777777777777878,
+            "stepPercent": 0,
+            "tier": 1
+          },
+          {
+            "from": "jp-main-06",
+            "to": "jp-main-07",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.279999999999994,
+            "rise": 0.5,
+            "gapPercent": 23.703703703703678,
+            "stepPercent": 25.64102564102563,
+            "tier": 1
+          },
+          {
+            "from": "jp-main-07",
+            "to": "jp-main-08",
+            "action": "JUMP",
+            "gap": 1.2800000000000011,
+            "rise": 0.25,
+            "gapPercent": 23.70370370370381,
+            "stepPercent": 12.820512820512816,
+            "tier": 1
+          },
+          {
+            "from": "jp-main-08",
+            "to": "jp-main-09",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.7999999999999972,
+            "rise": -0.65,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 0,
+            "tier": 1
+          },
+          {
+            "from": "jp-main-09",
+            "to": "jp-main-10",
+            "action": "JUMP",
+            "gap": 1.6000000000000085,
+            "rise": -0.050000000000000044,
+            "gapPercent": 29.629629629629896,
+            "stepPercent": 0,
+            "tier": 1
+          },
+          {
+            "from": "jp-main-10",
+            "to": "jp-finish",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": -0.24999999999999994,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 0,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "moving",
+          "patrol"
+        ],
+        "measuredTier": 1,
+        "declaredTier": 1,
+        "score": 1.24,
+        "warnings": []
+      },
+      "edgeChecks": 92,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [
+        {
+          "variant": "1/0",
+          "item": "jp-coin-13",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "1/0.7",
+          "item": "jp-coin-13",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "1/1.9",
+          "item": "jp-coin-13",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "1/1.9",
+          "item": "jp-coin-16",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "1/3.1",
+          "item": "jp-coin-13",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "1/3.1",
+          "item": "jp-coin-16",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "1/3.1",
+          "item": "jp-coin-18",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "2/0",
+          "item": "jp-coin-13",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "2/0.7",
+          "item": "jp-coin-13",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "2/0.7",
+          "item": "jp-coin-18",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "2/1.9",
+          "item": "jp-coin-13",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "2/1.9",
+          "item": "jp-coin-16",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "2/1.9",
+          "item": "jp-coin-18",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "2/3.1",
+          "item": "jp-coin-13",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "2/3.1",
+          "item": "jp-coin-16",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "3/0",
+          "item": "jp-coin-13",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "3/0",
+          "item": "jp-coin-18",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "3/0.7",
+          "item": "jp-coin-13",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "3/0.7",
+          "item": "jp-coin-16",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "3/1.9",
+          "item": "jp-coin-13",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "3/1.9",
+          "item": "jp-coin-16",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "3/3.1",
+          "item": "jp-coin-13",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "3/3.1",
+          "item": "jp-coin-16",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "4/0",
+          "item": "jp-coin-13",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "4/0",
+          "item": "jp-coin-16",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "4/0.7",
+          "item": "jp-coin-13",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "4/0.7",
+          "item": "jp-coin-16",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "4/0.7",
+          "item": "jp-coin-18",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "4/1.9",
+          "item": "jp-coin-13",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "4/1.9",
+          "item": "jp-coin-16",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        },
+        {
+          "variant": "4/3.1",
+          "item": "jp-coin-13",
+          "method": "Separate spawn-on-host reachability fixture; the full route tapes are not altered."
+        }
+      ],
+      "warnings": [],
+      "coins": "30/30",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "MNG",
+      "file": "public/world-explorer/levels/mn-level-01.json",
+      "sha256": "b4a50b678a800639f8f58893b483b93c9edd21af3bcbd36cffa6d909c8787973",
+      "runtimeDifficulty": 1,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "mn-bank",
+            "to": "mn-stream-stone",
+            "action": "RIDE_PLATFORM",
+            "gap": 0,
+            "rise": -0.6200000000000001,
+            "gapPercent": 0,
+            "stepPercent": 0,
+            "tier": 0
+          },
+          {
+            "from": "mn-stream-stone",
+            "to": "mn-shelter",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": -0.21999999999999997,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 0,
+            "tier": 1
+          },
+          {
+            "from": "mn-meadow",
+            "to": "mn-ford",
+            "action": "JUMP",
+            "gap": 1.5,
+            "rise": 0.8,
+            "gapPercent": 27.777777777777878,
+            "stepPercent": 41.025641025641015,
+            "tier": 3
+          },
+          {
+            "from": "mn-ford",
+            "to": "mn-end",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": -0.5,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 0,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "moving",
+          "wind"
+        ],
+        "measuredTier": 2,
+        "declaredTier": 2,
+        "score": 1.9066666666666667,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "13/13",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "PRK",
+      "file": "public/world-explorer/levels/kp-level-01.json",
+      "sha256": "0dcbe1cb794b29272434ae81d00c6f2b262b038813d2d99bfad1c5574bbbcb06",
+      "runtimeDifficulty": 1,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "kp-rest",
+            "to": "kp-rock-shelf",
+            "action": "JUMP",
+            "gap": 2,
+            "rise": 1.2000000000000002,
+            "gapPercent": 37.037037037037166,
+            "stepPercent": 61.53846153846153,
+            "tier": 5
+          },
+          {
+            "from": "kp-rock-shelf",
+            "to": "kp-rim",
+            "action": "JUMP",
+            "gap": 2,
+            "rise": 1.0999999999999999,
+            "gapPercent": 37.037037037037166,
+            "stepPercent": 56.41025641025639,
+            "tier": 4
+          },
+          {
+            "from": "kp-descent",
+            "to": "kp-end",
+            "action": "JUMP",
+            "gap": 2,
+            "rise": 0,
+            "gapPercent": 37.037037037037166,
+            "stepPercent": 0,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "collapsing",
+          "wind",
+          "timed-hazard"
+        ],
+        "measuredTier": 4,
+        "declaredTier": 4,
+        "score": 3.6933333333333334,
+        "warnings": []
+      },
+      "edgeChecks": 36,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [
+        {
+          "id": "kp-loose-rock-a",
+          "warning": 1.6,
+          "period": 7
+        },
+        {
+          "id": "kp-loose-rock-b",
+          "warning": 1.6,
+          "period": 8
+        }
+      ],
+      "coins": "15/15",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "KOR",
+      "file": "public/world-explorer/levels/kr-level-01.json",
+      "sha256": "b216b2223f6feb6657b37f5c74405ba6ad5f1dcd96916f04c36e5c7ed2f525ed",
+      "runtimeDifficulty": 1,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "kr-wall",
+            "to": "kr-lift",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.8000000000000007,
+            "rise": 0.3500000000000001,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 17.94871794871795,
+            "tier": 1
+          },
+          {
+            "from": "kr-lift",
+            "to": "kr-watch",
+            "action": "JUMP",
+            "gap": 1.6999999999999957,
+            "rise": 1.0999999999999996,
+            "gapPercent": 31.481481481481516,
+            "stepPercent": 56.41025641025637,
+            "tier": 4
+          },
+          {
+            "from": "kr-down",
+            "to": "kr-gap",
+            "action": "RIDE_PLATFORM",
+            "gap": 3.3500000000000014,
+            "rise": 2.220446049250313e-16,
+            "gapPercent": 62.03703703703728,
+            "stepPercent": 1.1386902816668268e-14,
+            "tier": 3
+          },
+          {
+            "from": "kr-gap",
+            "to": "kr-end",
+            "action": "JUMP",
+            "gap": 0.15000000000000568,
+            "rise": -0.3999999999999999,
+            "gapPercent": 2.7777777777778927,
+            "stepPercent": 0,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "moving",
+          "timed-gate"
+        ],
+        "measuredTier": 3,
+        "declaredTier": 3,
+        "score": 2.9066666666666663,
+        "warnings": []
+      },
+      "edgeChecks": 36,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "15/15",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "KAZ",
+      "file": "lib/world-explorer/levels/central-asia/kaz.ts",
+      "sha256": "beba1faa2c31bf6d789311be1b2e4d20c8d09975eb43f8a3d0277078d7e360e5",
+      "runtimeDifficulty": 1,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "kz-descent",
+            "to": "kz-rest",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 0.75,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 38.461538461538446,
+            "tier": 2
+          },
+          {
+            "from": "kz-rest",
+            "to": "kz-bridge",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 0,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 0,
+            "tier": 1
+          },
+          {
+            "from": "kz-drop",
+            "to": "kz-terrace",
+            "action": "JUMP",
+            "gap": 1.8000000000000114,
+            "rise": 0.6999999999999997,
+            "gapPercent": 33.33333333333366,
+            "stepPercent": 35.89743589743587,
+            "tier": 2
+          },
+          {
+            "from": "kz-terrace",
+            "to": "kz-end",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 0,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "timed-hazard"
+        ],
+        "measuredTier": 2,
+        "declaredTier": 2,
+        "score": 1.7866666666666666,
+        "warnings": []
+      },
+      "edgeChecks": 36,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [
+        {
+          "id": "kz-hazard-0",
+          "warning": 1.5,
+          "period": 8
+        }
+      ],
+      "coins": "11/11",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "KGZ",
+      "file": "lib/world-explorer/levels/central-asia/kgz.ts",
+      "sha256": "481d0c8356d670059b8b9167c4641b8ecaf7f0e0bd4678dba5e8ce36946d8d0e",
+      "runtimeDifficulty": 3,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "kg-bridge",
+            "to": "kg-shelf",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 1.1,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 56.4102564102564,
+            "tier": 4
+          },
+          {
+            "from": "kg-shelf",
+            "to": "kg-forest",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 1.1,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 56.4102564102564,
+            "tier": 4
+          },
+          {
+            "from": "kg-steps",
+            "to": "kg-ridge",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.1,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 56.4102564102564,
+            "tier": 4
+          },
+          {
+            "from": "kg-ridge",
+            "to": "kg-snow",
+            "action": "JUMP",
+            "gap": 2.5999999999999943,
+            "rise": 1.0999999999999996,
+            "gapPercent": 48.14814814814821,
+            "stepPercent": 56.41025641025637,
+            "tier": 4
+          },
+          {
+            "from": "kg-snow",
+            "to": "kg-end",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 0,
+            "tier": 1
+          }
+        ],
+        "mechanics": [],
+        "measuredTier": 4,
+        "declaredTier": 4,
+        "score": 4,
+        "warnings": []
+      },
+      "edgeChecks": 36,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "11/11",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "TJK",
+      "file": "lib/world-explorer/levels/central-asia/tjk.ts",
+      "sha256": "3641813f1fb6f7cd4abd6aa89a423c64a4a11827e147532bb8132daf3175e87e",
+      "runtimeDifficulty": 3,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "tj-face",
+            "to": "tj-high",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.7000000000000002,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 35.8974358974359,
+            "tier": 2
+          },
+          {
+            "from": "tj-high",
+            "to": "tj-peak",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 1.25,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "tj-peak",
+            "to": "tj-ledge",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.25,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "tj-ledge",
+            "to": "tj-rest",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 1.2500000000000009,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 64.10256410256413,
+            "tier": 5
+          },
+          {
+            "from": "tj-descent",
+            "to": "tj-end",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.2999999999999998,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 15.38461538461537,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "climbing",
+          "wind"
+        ],
+        "measuredTier": 5,
+        "declaredTier": 5,
+        "score": 5.24,
+        "warnings": []
+      },
+      "edgeChecks": 40,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "12/12",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "TKM",
+      "file": "lib/world-explorer/levels/central-asia/tkm.ts",
+      "sha256": "0300316f5a81ba2074b2b641b8d161940f2b0a6d555f0773f6f5490bf462e986",
+      "runtimeDifficulty": 2,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "tm-ramp",
+            "to": "tm-terrace",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 0.9500000000000002,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 48.71794871794871,
+            "tier": 3
+          },
+          {
+            "from": "tm-terrace",
+            "to": "tm-slide",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.2000000000000028,
+            "rise": 0.25,
+            "gapPercent": 22.222222222222353,
+            "stepPercent": 12.820512820512816,
+            "tier": 1
+          },
+          {
+            "from": "tm-slide",
+            "to": "tm-ledge",
+            "action": "JUMP",
+            "gap": 2.1999999999999957,
+            "rise": 0.9500000000000002,
+            "gapPercent": 40.740740740740804,
+            "stepPercent": 48.71794871794871,
+            "tier": 3
+          },
+          {
+            "from": "tm-drop",
+            "to": "tm-end",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.9499999999999997,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 48.71794871794869,
+            "tier": 3
+          }
+        ],
+        "mechanics": [
+          "moving"
+        ],
+        "measuredTier": 3,
+        "declaredTier": 3,
+        "score": 3.12,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "10/10",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "UZB",
+      "file": "lib/world-explorer/levels/central-asia/uzb.ts",
+      "sha256": "ab0cd66c8f5455dfa0a426ee50512f164901f0b14de36a78adee324575f69ad8",
+      "runtimeDifficulty": 1,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "uz-court",
+            "to": "uz-garden",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.75,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 38.461538461538446,
+            "tier": 2
+          },
+          {
+            "from": "uz-garden",
+            "to": "uz-lift",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.8000000000000043,
+            "rise": 0.050000000000000044,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 2.564102564102565,
+            "tier": 1
+          },
+          {
+            "from": "uz-lift",
+            "to": "uz-gallery",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.7,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 35.897435897435884,
+            "tier": 2
+          },
+          {
+            "from": "uz-gallery",
+            "to": "uz-walk",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 0.7000000000000002,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 35.8974358974359,
+            "tier": 2
+          },
+          {
+            "from": "uz-walk",
+            "to": "uz-end",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 0,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "moving",
+          "timed-gate"
+        ],
+        "measuredTier": 2,
+        "declaredTier": 2,
+        "score": 2.24,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "10/10",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    }
+  ],
+  "similarityFlags": [],
+  "released": false
+}

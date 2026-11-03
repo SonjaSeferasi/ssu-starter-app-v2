@@ -69,7 +69,9 @@ describe('Level similarity and difficulty tooling',()=>{
   const prints=redesigned.map(([code])=>fingerprint(levelDefinitionFor(code)));
   for(let i=0;i<prints.length;i++)for(let j=i+1;j<prints.length;j++){const result=compareLevels(prints[i],prints[j]);expect(result.review,`${result.a} ~ ${result.b} ${result.score.toFixed(2)}`).toBe(false);expect(result.score).toBeLessThan(.55);}
   expect(new Set(prints.map(p=>p.rhythm)).size).toBe(3);expect(new Set(prints.map(p=>p.signature)).size).toBe(3);
-  const template=similarityMatrix(['ITA','CAN','AUS','IND','ZAF','FRA','USA'].map(code=>levelDefinitionFor(code)));
+  // The levels still built from the shared template (Canada and the United States have since been redesigned).
+  const templateCodes=['ITA','CAN','AUS','ZAF','FRA','USA'].filter(code=>!(authoredLevels[code] as {design?:unknown}).design);expect(templateCodes.length).toBeGreaterThanOrEqual(3);
+  const template=similarityMatrix(templateCodes.map(code=>levelDefinitionFor(code)));
   expect(template.every(pair=>pair.review)).toBe(true);
  });
  it('derives a graph for template levels so every level is checked the same way',()=>{
@@ -143,6 +145,8 @@ describe('Design manifest and production tracker',()=>{
  it('opens every built level from the start, with no tier lock',()=>{
   // A tier describes the route, not a gate: a tier 4 level is open with nothing completed.
   expect(cardStatus('EGY',new Set())).toBe('playable');expect(cardStatus('BRA',new Set())).toBe('playable');expect(cardStatus('NOR',new Set())).toBe('playable');
-  expect(cardStatus('EGY',new Set(['EGY']))).toBe('completed');expect(cardStatus('KEN',new Set())).toBe('under-development');
+  expect(cardStatus('EGY',new Set(['EGY']))).toBe('completed');
+  // Every member state is built, so each card opens; a code outside the catalogue stays under development.
+  for(const record of designManifest())expect(cardStatus(record.code,new Set()),record.code).toBe('playable');expect(cardStatus('ANTARCTICA',new Set())).toBe('under-development');
  });
 });

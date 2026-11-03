@@ -1,0 +1,1388 @@
+{
+  "records": [
+    {
+      "code": "ARM",
+      "file": "lib/world-explorer/levels/west-asia/arm.ts",
+      "sha256": "dfc566330f96677a20fc066174ad055f6cbe5162d701e6a519468f0af7abe845",
+      "runtimeDifficulty": 3,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "am-descent",
+            "to": "am-bank",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 1.1,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 56.4102564102564,
+            "tier": 4
+          },
+          {
+            "from": "am-bank",
+            "to": "am-column-a",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 1.1,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 56.4102564102564,
+            "tier": 4
+          },
+          {
+            "from": "am-column-a",
+            "to": "am-column-b",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.0999999999999996,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 56.41025641025637,
+            "tier": 4
+          },
+          {
+            "from": "am-column-b",
+            "to": "am-column-c",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 1.1000000000000005,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 56.41025641025642,
+            "tier": 4
+          },
+          {
+            "from": "am-column-c",
+            "to": "am-overlook",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.0999999999999996,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 56.41025641025637,
+            "tier": 4
+          }
+        ],
+        "mechanics": [],
+        "measuredTier": 4,
+        "declaredTier": 4,
+        "score": 4,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "10/10",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "AZE",
+      "file": "lib/world-explorer/levels/west-asia/aze.ts",
+      "sha256": "283229ab48518eed7da2a61bab343fed5b4355164ff3f880315f64c2fef3651e",
+      "runtimeDifficulty": 2,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "az-rim",
+            "to": "az-shelf",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.95,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 48.7179487179487,
+            "tier": 3
+          },
+          {
+            "from": "az-warning",
+            "to": "az-mineral",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 0.95,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 48.7179487179487,
+            "tier": 3
+          },
+          {
+            "from": "az-mineral",
+            "to": "az-ridge",
+            "action": "JUMP",
+            "gap": 1.8000000000000114,
+            "rise": 0.9500000000000002,
+            "gapPercent": 33.33333333333366,
+            "stepPercent": 48.71794871794871,
+            "tier": 3
+          },
+          {
+            "from": "az-ridge",
+            "to": "az-overlook",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.9499999999999997,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 48.71794871794869,
+            "tier": 3
+          }
+        ],
+        "mechanics": [
+          "timed-hazard"
+        ],
+        "measuredTier": 3,
+        "declaredTier": 3,
+        "score": 3.12,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [
+        {
+          "id": "az-hazard-0",
+          "warning": 1.7,
+          "period": 9
+        }
+      ],
+      "coins": "10/10",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "BHR",
+      "file": "lib/world-explorer/levels/west-asia/bhr.ts",
+      "sha256": "ae6116ef220dcac7c1fa7e6122f729d471fb04df3040b373cd881f84c78f5bcc",
+      "runtimeDifficulty": 1,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "bh-pier",
+            "to": "bh-dock",
+            "action": "RIDE_PLATFORM",
+            "gap": 0.9499999999999957,
+            "rise": 0.37,
+            "gapPercent": 17.592592592592577,
+            "stepPercent": 18.974358974358967,
+            "tier": 1
+          },
+          {
+            "from": "bh-dock",
+            "to": "bh-shore",
+            "action": "JUMP",
+            "gap": 0.9499999999999957,
+            "rise": -0.030000000000000027,
+            "gapPercent": 17.592592592592577,
+            "stepPercent": 0,
+            "tier": 1
+          },
+          {
+            "from": "bh-shore",
+            "to": "bh-viewpoint",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.5,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 25.64102564102563,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "moving"
+        ],
+        "measuredTier": 1,
+        "declaredTier": 1,
+        "score": 1.12,
+        "warnings": []
+      },
+      "edgeChecks": 24,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "8/8",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "CYP",
+      "file": "lib/world-explorer/levels/west-asia/cyp.ts",
+      "sha256": "fa22e74ba60446be9d05160e1449349a2e331ab355c29b832bf69fda3b9020e9",
+      "runtimeDifficulty": 1,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "cy-stairs",
+            "to": "cy-village",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.7,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 35.897435897435884,
+            "tier": 2
+          },
+          {
+            "from": "cy-village",
+            "to": "cy-lift",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.8000000000000043,
+            "rise": 0,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 0,
+            "tier": 1
+          },
+          {
+            "from": "cy-lift",
+            "to": "cy-pine-trail",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.4500000000000002,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 23.076923076923077,
+            "tier": 1
+          },
+          {
+            "from": "cy-pine-trail",
+            "to": "cy-balcony",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.6999999999999993,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 35.89743589743585,
+            "tier": 2
+          },
+          {
+            "from": "cy-balcony",
+            "to": "cy-forest-view",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.7000000000000002,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 35.8974358974359,
+            "tier": 2
+          }
+        ],
+        "mechanics": [
+          "moving"
+        ],
+        "measuredTier": 2,
+        "declaredTier": 2,
+        "score": 2.12,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "10/10",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "GEO",
+      "file": "lib/world-explorer/levels/west-asia/geo.ts",
+      "sha256": "5c6b5c948b62c804f2b89cc44f4fc955579dc705c259d07a5b08b7e531519763",
+      "runtimeDifficulty": 3,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "ge-stairs",
+            "to": "ge-shelf",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 1.25,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "ge-shelf",
+            "to": "ge-high-trail",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 1.25,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "ge-high-trail",
+            "to": "ge-lift",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.7999999999999972,
+            "rise": 1,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 51.28205128205126,
+            "tier": 4
+          },
+          {
+            "from": "ge-lift",
+            "to": "ge-upper-trail",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 0.75,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 38.461538461538446,
+            "tier": 2
+          },
+          {
+            "from": "ge-upper-trail",
+            "to": "ge-ridge",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.25,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "ge-ridge",
+            "to": "ge-lookout",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.25,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          }
+        ],
+        "mechanics": [
+          "moving"
+        ],
+        "measuredTier": 5,
+        "declaredTier": 5,
+        "score": 5.12,
+        "warnings": []
+      },
+      "edgeChecks": 36,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "11/11",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "IRQ",
+      "file": "lib/world-explorer/levels/west-asia/irq.ts",
+      "sha256": "3cdc5d30db2f832da52755b692c56e615fb712273c870269ecc49249f42b6c0c",
+      "runtimeDifficulty": 1,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "iq-walkway",
+            "to": "iq-landing",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.7,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 35.897435897435884,
+            "tier": 2
+          },
+          {
+            "from": "iq-landing",
+            "to": "iq-reed-boat",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.3500000000000014,
+            "rise": 0.02000000000000013,
+            "gapPercent": 25.000000000000117,
+            "stepPercent": 1.025641025641032,
+            "tier": 1
+          },
+          {
+            "from": "iq-reed-boat",
+            "to": "iq-islet",
+            "action": "JUMP",
+            "gap": 1.3499999999999943,
+            "rise": 0.62,
+            "gapPercent": 24.999999999999982,
+            "stepPercent": 31.79487179487178,
+            "tier": 2
+          },
+          {
+            "from": "iq-islet",
+            "to": "iq-reed-walk",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.7000000000000002,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 35.8974358974359,
+            "tier": 2
+          },
+          {
+            "from": "iq-reed-walk",
+            "to": "iq-station",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.6999999999999997,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 35.89743589743587,
+            "tier": 2
+          }
+        ],
+        "mechanics": [
+          "current",
+          "moving"
+        ],
+        "measuredTier": 2,
+        "declaredTier": 2,
+        "score": 2.24,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "10/10",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "ISR",
+      "file": "lib/world-explorer/levels/west-asia/isr.ts",
+      "sha256": "abae43b0fcc989bb3e64ba6d601bbc1f8dafe8ef0750554b1e97afa95c0c42e9",
+      "runtimeDifficulty": 2,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "il-ramp",
+            "to": "il-cliff-path",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.95,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 48.7179487179487,
+            "tier": 3
+          },
+          {
+            "from": "il-shelter",
+            "to": "il-wind-ledge",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 0.95,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 48.7179487179487,
+            "tier": 3
+          },
+          {
+            "from": "il-wind-ledge",
+            "to": "il-upper-path",
+            "action": "JUMP",
+            "gap": 1.8000000000000114,
+            "rise": 0.9500000000000002,
+            "gapPercent": 33.33333333333366,
+            "stepPercent": 48.71794871794871,
+            "tier": 3
+          },
+          {
+            "from": "il-upper-path",
+            "to": "il-plateau",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.9499999999999997,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 48.71794871794869,
+            "tier": 3
+          }
+        ],
+        "mechanics": [
+          "wind"
+        ],
+        "measuredTier": 3,
+        "declaredTier": 3,
+        "score": 3.12,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "10/10",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "JOR",
+      "file": "lib/world-explorer/levels/west-asia/jor.ts",
+      "sha256": "3abeb3f466896524322b42bfb8ab5a0a9eb4b172b0cc44528bba15d6ed037823",
+      "runtimeDifficulty": 3,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "jo-passage",
+            "to": "jo-stair",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.1,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 56.4102564102564,
+            "tier": 4
+          },
+          {
+            "from": "jo-stair",
+            "to": "jo-mechanism",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 1.1,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 56.4102564102564,
+            "tier": 4
+          },
+          {
+            "from": "jo-gate-passage",
+            "to": "jo-upper-canyon",
+            "action": "JUMP",
+            "gap": 1.8000000000000114,
+            "rise": 1.0999999999999996,
+            "gapPercent": 33.33333333333366,
+            "stepPercent": 56.41025641025637,
+            "tier": 4
+          },
+          {
+            "from": "jo-upper-canyon",
+            "to": "jo-facade-view",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.1000000000000005,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 56.41025641025642,
+            "tier": 4
+          }
+        ],
+        "mechanics": [
+          "timed-gate"
+        ],
+        "measuredTier": 4,
+        "declaredTier": 4,
+        "score": 4.12,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "10/10",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "KWT",
+      "file": "lib/world-explorer/levels/west-asia/kwt.ts",
+      "sha256": "a28f3fec54511c9cc36ca63ef6d55a2e77a9575b9d9ce18ab5b623568b40933b",
+      "runtimeDifficulty": 1,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "kw-promenade",
+            "to": "kw-pier",
+            "action": "JUMP",
+            "gap": 1.3999999999999986,
+            "rise": 0.5,
+            "gapPercent": 25.92592592592599,
+            "stepPercent": 25.64102564102563,
+            "tier": 1
+          },
+          {
+            "from": "kw-pier",
+            "to": "kw-lift",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.3999999999999986,
+            "rise": -0.25,
+            "gapPercent": 25.92592592592599,
+            "stepPercent": 0,
+            "tier": 1
+          },
+          {
+            "from": "kw-lift",
+            "to": "kw-garden",
+            "action": "JUMP",
+            "gap": 1.4000000000000057,
+            "rise": 0.25,
+            "gapPercent": 25.925925925926123,
+            "stepPercent": 12.820512820512816,
+            "tier": 1
+          },
+          {
+            "from": "kw-garden",
+            "to": "kw-deck",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.5,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 25.64102564102563,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "moving"
+        ],
+        "measuredTier": 1,
+        "declaredTier": 1,
+        "score": 1.12,
+        "warnings": []
+      },
+      "edgeChecks": 28,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "9/9",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "LBN",
+      "file": "lib/world-explorer/levels/west-asia/lbn.ts",
+      "sha256": "1773f1ed69f12b9a6d22d281390dfaf7a528c38a366dcf1ea6965a5c7490865d",
+      "runtimeDifficulty": 3,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "lb-stream-bridge",
+            "to": "lb-rock",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.1,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 56.4102564102564,
+            "tier": 4
+          },
+          {
+            "from": "lb-rock",
+            "to": "lb-cliff",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 1.1,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 56.4102564102564,
+            "tier": 4
+          },
+          {
+            "from": "lb-cliff",
+            "to": "lb-rope-crossing",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 1.0999999999999996,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 56.41025641025637,
+            "tier": 4
+          },
+          {
+            "from": "lb-rope-crossing",
+            "to": "lb-overlook",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.1000000000000005,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 56.41025641025642,
+            "tier": 4
+          }
+        ],
+        "mechanics": [],
+        "measuredTier": 4,
+        "declaredTier": 4,
+        "score": 4,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "10/10",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "OMN",
+      "file": "lib/world-explorer/levels/west-asia/omn.ts",
+      "sha256": "d56bc482eb41fbe0d72527834235a13236664f761f9f745b4d98f5322c5ab8d3",
+      "runtimeDifficulty": 3,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "om-climb",
+            "to": "om-pool-bank",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.7000000000000002,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 35.8974358974359,
+            "tier": 2
+          },
+          {
+            "from": "om-pool-bank",
+            "to": "om-sluice",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 1.25,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "om-sluice",
+            "to": "om-narrow-gorge",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.25,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "om-narrow-gorge",
+            "to": "om-ridge",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.2500000000000009,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 64.10256410256413,
+            "tier": 5
+          },
+          {
+            "from": "om-ridge",
+            "to": "om-view",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.25,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          }
+        ],
+        "mechanics": [
+          "climbing",
+          "raised-platform"
+        ],
+        "measuredTier": 5,
+        "declaredTier": 5,
+        "score": 5.24,
+        "warnings": []
+      },
+      "edgeChecks": 36,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "11/11",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "QAT",
+      "file": "lib/world-explorer/levels/west-asia/qat.ts",
+      "sha256": "c00e77a38da5a294bf221d0b12ea3a16bc64cd43d326f3e2f26fbca7f1904717",
+      "runtimeDifficulty": 1,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "qa-corniche",
+            "to": "qa-raised-walk",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 0.7,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 35.897435897435884,
+            "tier": 2
+          },
+          {
+            "from": "qa-raised-walk",
+            "to": "qa-lift",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.8000000000000043,
+            "rise": -0.04999999999999993,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 0,
+            "tier": 1
+          },
+          {
+            "from": "qa-lift",
+            "to": "qa-roof",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.4500000000000002,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 23.076923076923077,
+            "tier": 1
+          },
+          {
+            "from": "qa-garden-stairs",
+            "to": "qa-bay-view",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.7000000000000002,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 35.8974358974359,
+            "tier": 2
+          }
+        ],
+        "mechanics": [
+          "moving"
+        ],
+        "measuredTier": 2,
+        "declaredTier": 2,
+        "score": 1.7866666666666666,
+        "warnings": []
+      },
+      "edgeChecks": 28,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "9/9",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "SAU",
+      "file": "lib/world-explorer/levels/west-asia/sau.ts",
+      "sha256": "121f11283016feb20a32581322196a45e7c84762dfe4d268cae52f77d3f64c2d",
+      "runtimeDifficulty": 3,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "sa-climb",
+            "to": "sa-light-court",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.7000000000000002,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 35.8974358974359,
+            "tier": 2
+          },
+          {
+            "from": "sa-light-gate",
+            "to": "sa-high-sandstone",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 1.25,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "sa-high-sandstone",
+            "to": "sa-upper-rim",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.25,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "sa-upper-rim",
+            "to": "sa-panorama",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.2500000000000009,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 64.10256410256413,
+            "tier": 5
+          }
+        ],
+        "mechanics": [
+          "climbing",
+          "timed-gate"
+        ],
+        "measuredTier": 5,
+        "declaredTier": 5,
+        "score": 5.24,
+        "warnings": []
+      },
+      "edgeChecks": 36,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "11/11",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "SYR",
+      "file": "lib/world-explorer/levels/west-asia/syr.ts",
+      "sha256": "b0bf3bfe75a97a78c6a55429d3a21447b9b3ce08d25b18a0db7cfc7df60815d4",
+      "runtimeDifficulty": 2,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "sy-court",
+            "to": "sy-raised-stone",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.95,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 48.7179487179487,
+            "tier": 3
+          },
+          {
+            "from": "sy-raised-stone",
+            "to": "sy-colonnade-walk",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 0.95,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 48.7179487179487,
+            "tier": 3
+          },
+          {
+            "from": "sy-wind-passage",
+            "to": "sy-high-stone",
+            "action": "JUMP",
+            "gap": 1.8000000000000114,
+            "rise": 0.9500000000000002,
+            "gapPercent": 33.33333333333366,
+            "stepPercent": 48.71794871794871,
+            "tier": 3
+          },
+          {
+            "from": "sy-high-stone",
+            "to": "sy-overlook",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.9499999999999997,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 48.71794871794869,
+            "tier": 3
+          }
+        ],
+        "mechanics": [
+          "raised-platform",
+          "wind"
+        ],
+        "measuredTier": 3,
+        "declaredTier": 3,
+        "score": 3.24,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "10/10",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "TUR",
+      "file": "lib/world-explorer/levels/west-asia/tur.ts",
+      "sha256": "9e0bde2a44847127bf638981e301fd7bf0deaebe0f378b43cd51c7be01655b4f",
+      "runtimeDifficulty": 3,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "tr-valley",
+            "to": "tr-tuff",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 1.1,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 56.4102564102564,
+            "tier": 4
+          },
+          {
+            "from": "tr-tuff",
+            "to": "tr-cave",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 1.1,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 56.4102564102564,
+            "tier": 4
+          },
+          {
+            "from": "tr-cave",
+            "to": "tr-lift",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.7999999999999972,
+            "rise": 0,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 0,
+            "tier": 1
+          },
+          {
+            "from": "tr-lift",
+            "to": "tr-upper-cave",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 0.8499999999999996,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 43.589743589743556,
+            "tier": 3
+          },
+          {
+            "from": "tr-upper-cave",
+            "to": "tr-chimney-trail",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.1000000000000005,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 56.41025641025642,
+            "tier": 4
+          },
+          {
+            "from": "tr-chimney-trail",
+            "to": "tr-overlook",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.0999999999999996,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 56.41025641025637,
+            "tier": 4
+          }
+        ],
+        "mechanics": [
+          "moving",
+          "timed-gate"
+        ],
+        "measuredTier": 4,
+        "declaredTier": 4,
+        "score": 4.24,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "10/10",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "ARE",
+      "file": "lib/world-explorer/levels/west-asia/are.ts",
+      "sha256": "cbdc4e34eb3be94d79b1172f82ed5223eeed794526b556e04ce6bfa16e1fab39",
+      "runtimeDifficulty": 2,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "ae-waterfront",
+            "to": "ae-lift",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.8000000000000007,
+            "rise": 0.04999999999999999,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 2.5641025641025625,
+            "tier": 1
+          },
+          {
+            "from": "ae-lift",
+            "to": "ae-garden",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 0.7,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 35.897435897435884,
+            "tier": 2
+          },
+          {
+            "from": "ae-garden",
+            "to": "ae-moving-bridge-a",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.9499999999999957,
+            "rise": 0.06999999999999984,
+            "gapPercent": 36.11111111111116,
+            "stepPercent": 3.5897435897435805,
+            "tier": 1
+          },
+          {
+            "from": "ae-moving-bridge-a",
+            "to": "ae-terrace",
+            "action": "JUMP",
+            "gap": 0.75,
+            "rise": 0.8700000000000001,
+            "gapPercent": 13.888888888888939,
+            "stepPercent": 44.615384615384606,
+            "tier": 3
+          },
+          {
+            "from": "ae-terrace",
+            "to": "ae-moving-bridge-b",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.3499999999999943,
+            "rise": 0.06999999999999984,
+            "gapPercent": 24.999999999999982,
+            "stepPercent": 3.5897435897435805,
+            "tier": 1
+          },
+          {
+            "from": "ae-moving-bridge-b",
+            "to": "ae-view",
+            "action": "JUMP",
+            "gap": 1.3499999999999943,
+            "rise": 0.8700000000000001,
+            "gapPercent": 24.999999999999982,
+            "stepPercent": 44.615384615384606,
+            "tier": 3
+          }
+        ],
+        "mechanics": [
+          "moving"
+        ],
+        "measuredTier": 3,
+        "declaredTier": 3,
+        "score": 2.7866666666666666,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "10/10",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "YEM",
+      "file": "lib/world-explorer/levels/west-asia/yem.ts",
+      "sha256": "b6b6e5b38abc42dbfa8949f887963cfed4576a74b703c5fbd5e3bd75c6ad34d1",
+      "runtimeDifficulty": 3,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "ye-slope",
+            "to": "ye-ridge-a",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 1.2500000000000002,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 64.1025641025641,
+            "tier": 5
+          },
+          {
+            "from": "ye-ridge-a",
+            "to": "ye-ridge-b",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 1.25,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "ye-ridge-b",
+            "to": "ye-plateau",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.25,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "ye-descent",
+            "to": "ye-coastal-shelf",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.25,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "ye-coastal-shelf",
+            "to": "ye-coast-view",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.25,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          }
+        ],
+        "mechanics": [
+          "wind"
+        ],
+        "measuredTier": 5,
+        "declaredTier": 5,
+        "score": 5.12,
+        "warnings": []
+      },
+      "edgeChecks": 36,
+      "recoveryChecks": 64,
+      "collectibleFixtures": [],
+      "warnings": [],
+      "coins": "11/11",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    }
+  ],
+  "similarityFlags": [],
+  "released": false
+}

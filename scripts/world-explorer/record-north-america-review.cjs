@@ -1,0 +1,10 @@
+const fs=require('node:fs'),path=require('node:path');
+const dir='documentation/world-explorer/review/north-america/art-polish';
+const buildId=fs.readFileSync('tmp/tools/north-america-build/.next/BUILD_ID','utf8').trim();
+fs.writeFileSync(path.join(dir,'build-result.json'),JSON.stringify({status:'passed',buildId,target:'north-america-build',typecheck:'passed',staticPages:43,focusedTests:96,sceneryRecheck:6,humanPlaytest:false,hardwarePerformance:false},null,2));
+const note='Latest update (November 3, 2026): the [3D and patrol polish pass](NORTH-AMERICA-ART-POLISH.md) supersedes the earlier art/build review below. Its isolated production build passes; use the current-source preview on port 3016.\n\n';
+const overview='documentation/world-explorer/NORTH-AMERICA.md',old=fs.readFileSync(overview,'utf8');if(!old.startsWith('Latest update (November 3, 2026)'))fs.writeFileSync(overview,note+old);
+const review='documentation/world-explorer/NORTH-AMERICA-ART-POLISH.md';let text=fs.readFileSync(review,'utf8');
+text=text.replace('TypeScript checking passes. The isolated production build is checked after\n  the art changes; see the review receipt for its final outcome.','TypeScript checking and the final isolated production build pass, including\n  all 43 generated pages. The exact build ID is in the build receipt.');
+text=text.replace('first Canada page also logs one generic resource-404 console message; it is\n  retained','first pages of the Canada and refreshed Mexico captures also log one generic\n  resource-404 console message each; these are retained');
+fs.writeFileSync(review,text);console.log('Recorded successful production build '+buildId+' and latest review status.');

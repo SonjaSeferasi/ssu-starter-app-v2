@@ -54,6 +54,8 @@ export const environment:CountryEnvironment={
   const plainHeight=(u:number,v:number)=>valueNoise(u*12,v*8,3)*1.4+(Math.abs(v-.78)<.05?-1.2:0);
   const golds=[new T.Color('#c9a655'),new T.Color('#b9964a'),new T.Color('#d4b468'),new T.Color('#9c8a45')];
   createHeightfield(features,{name:'golden-savanna-plain',x:finish/2,y:-10,z:-70,width:finish+260,depth:140,segments:[low?70:130,low?36:70],height:plainHeight,color:(h,_s,u,v)=>Math.abs(v-.78)<.05?new T.Color('#8f6f4a'):golds[Math.floor(valueNoise(u*30,v*20,6)*4)%4].clone().multiplyScalar(.9+h*.05)});
+  // Apron: savanna carried toward the camera so the full-level overview has ground below the course.
+  createHeightfield(features,{name:'golden-savanna-apron',x:finish/2,y:-10.4,z:72,width:finish+380,depth:150,segments:[low?30:60,low?6:12],height:(u,v)=>valueNoise(u*30,v*10,6)*.8,color:(_h,_s,u,v)=>golds[Math.floor(valueNoise(u*30,v*20,2)*golds.length)%golds.length]});
   const river=createWaterSurface(features,{x:finish/2,y:-10.6,z:-30.8,width:finish+240,depth:6,shallow:'#79a99a',deep:'#4f7f78',segments:30,name:'shallow-savanna-river',repeat:.2,edge:'none',flow:[.03,0]});
   // Granite kopjes and acacias near the course; golden grass everywhere.
   const sites=[{x:-8,y:-1,z:-12,w:14,t:8},{x:20,y:1.2,z:-22,w:13,t:11},{x:48,y:.6,z:-16,w:12,t:9},{x:76,y:2,z:-24,w:15,t:12},{x:102,y:.2,z:-14,w:12,t:8},{x:128,y:1.4,z:-20,w:14,t:10}].filter(site=>site.x<finish+24);
