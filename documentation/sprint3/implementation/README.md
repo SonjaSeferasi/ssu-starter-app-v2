@@ -1,5 +1,16 @@
 # Sprint 3 implementation — Linh Nguyen — October 29, 2026
 
+## Final integration verification — November 3, 2026
+
+This update supersedes the older verification counts and browser-unavailable notes below. Integrated current main `3f8accc` into the actual SRS-107.6 branch (integration commit `b1d6aa1`). Installed the locked dependencies in this isolated checkout. All **1,365 tests in 156 files passed**, and the production build passed. See [nov3-tests.txt](nov3-tests.txt) and [nov3-build.txt](nov3-build.txt).
+
+Linh signed in herself on the integrated production server at localhost:3002. Account Settings → Login Activity returned 25 real entries; Load older sign-ins reached all 28 records with no further page button. Dates include both EDT and EST, and the current sign-in is marked This session / Active. Refresh returned the first page. Screenshots contain only the previously authorized sign-in dates, times and statuses:
+
+- [Current records and current-session status](login-activity-nov3.png).
+- [Older page reaching record 28](login-activity-older-nov3.png).
+
+The automated database tests separately verify retained records, account isolation, pagination under concurrent inserts, provider deletion/expiry, and revocation. A live ended-session transition is still pending; it is not claimed from the automated test. PR and task completion must follow actual acceptance and merge results, recorded on the GitHub issues.
+
 > **Latest integration check:** main’s newer event work is included in the final feature branch. All 1,072 tests in 126 files and the integrated production build pass. PR merges and board completion remain pending because GitHub writes and browser control are unavailable. See [merge-readiness.md](merge-readiness.md).
 
 The five selected Login Activity items have implementation commits on their own pre-created SRS branches. All five PRs target main and remain **drafts awaiting review and merge**. This is implementation/evidence progress, not a declaration that the sprint, attendance or Canvas submission is complete.
