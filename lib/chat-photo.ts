@@ -18,6 +18,32 @@ export function choosePhoto(files: ArrayLike<ChosenPhoto> | null | undefined): C
   return files[0] ?? null;
 }
 
+// SRS-201.4 (#1015): the formats a conversation photo may use. These are exactly the rows seeded for the
+// chat_photo upload context in 20260929164656_create_socialu.sql, so the three places that judge a photo agree:
+// this list, the upload route, and socialu.media_assets' validate_media trigger. A format allowed here but not
+// seeded there would be accepted by the page and then refused by the database, which is worse than refusing it
+// at once.
+export const PHOTO_MIME_TYPES = ['image/png', 'image/jpeg', 'image/webp'] as const;
+
+// The accept hint for the file input. It only filters what the picker offers by default: a student can still
+// pick "All files", so this never replaces the check below.
+export const PHOTO_ACCEPT = PHOTO_MIME_TYPES.join(',');
+
+export const PHOTO_FORMAT_REJECTED = 'Photos must be PNG, JPEG or WebP.';
+
+export function isSupportedPhotoType(type: string | null | undefined): boolean {
+  return PHOTO_MIME_TYPES.some((supported) => supported === (type ?? '').toLowerCase().trim());
+}
+
+// Why a chosen photo cannot be sent, or null when its format is fine. Choosing is SRS-201.3 and stays
+// unchanged: the picker still reports whatever the student selected, and this judges it afterwards.
+// A file with no type at all is refused here rather than guessed at; the upload route reads the bytes
+// (SRS-201.6) and the database has the final say, so a wrong guess would only move the refusal later.
+export function photoFormatError(photo: { type: string } | null | undefined): string | null {
+  if (!photo) return null;
+  return isSupportedPhotoType(photo.type) ? null : PHOTO_FORMAT_REJECTED;
+}
+
 // A readable size for the chosen photo, in the same MB that SRS-201.5 counts (1 MB = 1,000,000
 // bytes), so what the student reads here matches the limit they are later held to.
 export function formatPhotoSize(bytes: number): string {

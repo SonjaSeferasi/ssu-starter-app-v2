@@ -17,7 +17,7 @@ import { InvitePicker } from '../invite-picker';
 import { ReactionChips, ReactionPicker } from '../message-reactions';
 import { SnipePanel } from '../../../components/snipe/snipe-panel';
 import { canSelectForReply, findReplyTarget, keepReplyTarget, replyIndication, replyPreview, replyQuote, toggleReplyTarget, type ReplyTargets } from '../../../lib/chat-reply';
-import { choosePhoto, describeChosenPhoto, type ChosenPhoto } from '../../../lib/chat-photo';
+import { PHOTO_ACCEPT, choosePhoto, describeChosenPhoto, photoFormatError, type ChosenPhoto } from '../../../lib/chat-photo';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -321,6 +321,23 @@ function Conversation() {
     photoInput.current?.focus();
   }
 
+  // SRS-201.4 (#1015, #1016): a chosen file is kept only when its format is one the conversation accepts.
+  // The accept hint below filters what the picker offers, but a student can still pick "All files", so the
+  // refusal has to happen here too. Saying why is better than silently ignoring the file.
+  function reviewPhoto(files: FileList | null) {
+    const chosen = choosePhoto(files);
+    if (!chosen) { setPhoto(null); return; }
+    const refusal = photoFormatError(chosen);
+    if (refusal) {
+      setError(refusal);
+      setPhoto(null);
+      if (photoInput.current) photoInput.current.value = '';
+      return;
+    }
+    setError('');
+    setPhoto(chosen);
+  }
+
   // SRS-209.2 (#988): choosing a message moves the cursor to the message box, so the reply can be written at once.
   const messageInput = useRef<HTMLInputElement>(null);
   useEffect(() => { if (replyingTo) messageInput.current?.focus(); }, [replyingTo]);
@@ -562,8 +579,8 @@ function Conversation() {
             </button>
             {/* SRS-201.3 (#1013): a hidden file input, opened by the Photo button beside it. The
                 accept hint is left wide here; narrowing it to the supported formats is SRS-201.4. */}
-            <input ref={photoInput} id="message-photo" type="file" accept="image/*" className={styles.srOnly}
-              onChange={(event) => setPhoto(choosePhoto(event.target.files))} disabled={sending} />
+            <input ref={photoInput} id="message-photo" type="file" accept={PHOTO_ACCEPT} className={styles.srOnly}
+              onChange={(event) => reviewPhoto(event.target.files)} disabled={sending} />
             <label htmlFor="message-photo" className={styles.photoToggle} title="Choose a photo">
               <span className={styles.srOnly}>Choose a photo</span>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="m21 15-5-5L5 21" /></svg>
