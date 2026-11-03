@@ -1,0 +1,43 @@
+[
+  {
+    "srs": "107.1",
+    "number": 963,
+    "branch": "linh/srs-107.1-login-history-access"
+  },
+  {
+    "srs": "107.2",
+    "branch": "linh/srs-107.2-complete-login-history",
+    "parent": 859,
+    "tasks": "#866 #867 #868 #869",
+    "title": "SRS-107.2: reach all recorded sign-ins with stable pagination",
+    "summary": "Adds cursor pagination and Load older sign-ins. Equal timestamps are ordered by numeric history ID; concurrent new sign-ins do not skip or duplicate older pages. Depends on SRS-107.1.",
+    "number": 964
+  },
+  {
+    "srs": "107.3",
+    "branch": "linh/srs-107.3-login-date",
+    "parent": 860,
+    "tasks": "#870 #871 #872 #873",
+    "title": "SRS-107.3: display recorded login dates in the viewer timezone",
+    "summary": "Displays the stored sign-in date for every history entry. Tests cover midnight boundaries and leap days; no timestamp is replaced with today. Depends on SRS-107.1 and 107.2.",
+    "number": 965
+  },
+  {
+    "srs": "107.4",
+    "branch": "linh/srs-107.4-login-time",
+    "parent": 861,
+    "tasks": "#874 #875 #876 #877",
+    "title": "SRS-107.4: show recorded login times and timezone context",
+    "summary": "Displays stored sign-in time including seconds and timezone. Date and time use the same browser timezone; tests distinguish repeated daylight-saving hours. Depends on SRS-107.1–107.3.",
+    "number": 966
+  },
+  {
+    "srs": "107.6",
+    "branch": "linh/srs-107.6-active-session-status",
+    "parent": 879,
+    "tasks": "#915 #916 #917 #918",
+    "title": "SRS-107.6: identify active, ended and current sessions",
+    "summary": "Derives session status from actual provider sessions, persisted expiry and the existing application revocation cutoff/preserved-session rule. Marks the verified current session without returning provider session IDs or tokens. Depends on SRS-107.1–107.4.",
+    "number": 967
+  }
+]

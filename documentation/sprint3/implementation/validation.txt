@@ -1,0 +1,250 @@
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ RUN  v2.1.8 /private/tmp/socialu-sprint3-implementation
+
+ ✓ __tests__/api/posts.test.ts (62 tests) 34ms
+ ✓ __tests__/api/comments.test.ts (35 tests) 20ms
+stdout | __tests__/database/whisper-wall.test.ts > keeps confessions anonymous, same-school isolated, and privacy-safe end to end against the real schema
+PASS: Whisper Wall same-school isolation, anonymous aliasing (stable + uncorrelated), confession + comment reactions (6 kinds, set/change/remove, one per student), tombstoning (including reaction rejection on a tombstoned comment), Campus Crush opt-out (RPC + raw-text enforcement), no-notification-on-mention, whisper_comment notifications without identity leak, cooldowns, severity-tiered report thresholds, and retired-category enforcement (new confessions rejected, historical confessions fully functional and never reclassified) -- against the real schema.
+
+ ✓ __tests__/database/whisper-wall.test.ts (1 test) 1756ms
+   ✓ keeps confessions anonymous, same-school isolated, and privacy-safe end to end against the real schema 1756ms
+ ✓ __tests__/database/group-leaving.test.ts (4 tests) 5441ms
+   ✓ lets a regular member or administrator leave, but never the owner without a successor 1617ms
+   ✓ works the same with school communities applied 1301ms
+   ✓ hands the group to the administrator when the owner leaves 1221ms
+   ✓ the handover works the same with school communities applied 1302ms
+ ✓ __tests__/database/group-administrator.test.ts (4 tests) 5142ms
+   ✓ lets only the owner make one current regular member the administrator 1561ms
+   ✓ works the same with school communities applied 1212ms
+   ✓ lets only the owner revoke the administrator, returning them to a regular member 1176ms
+   ✓ revoking works the same with school communities applied 1193ms
+stdout | __tests__/database/reposts.test.ts > creates reposts with correct visibility forcing, anti-chaining, independent interactions, and live-reauthorized embeds/notifications against the real schema
+PASS: repost creation/authorization, Friends Only visibility forcing (and no broadened access to the original), anti-chaining, independent likes/comments, caption editing (including captionless), original deletion (repost survives with its own likes/comments, no leaked content), live re-authorization of both the repost's own visibility and its embed, self-repost no-notify, and notification/access privacy after blocking -- against the real schema.
+
+ ✓ __tests__/database/reposts.test.ts (1 test) 1570ms
+   ✓ creates reposts with correct visibility forcing, anti-chaining, independent interactions, and live-reauthorized embeds/notifications against the real schema 1570ms
+ ✓ __tests__/database/chat.test.ts (1 test) 1546ms
+   ✓ retrieves saved text messages for participants only, oldest first, in the same shape as the live event 1546ms
+stderr | __tests__/api/auth.test.ts > SocialU login and registration > reports missing migration without exposing internal errors
+Friendship operation failed {
+  operation: 'socialu_account_lifecycle',
+  action: 'status',
+  code: 'PGRST202'
+}
+
+ ✓ __tests__/api/auth.test.ts (43 tests) 17ms
+ ✓ __tests__/database/message-reactions.test.ts (2 tests) 2670ms
+   ✓ lets participants add, change and remove one reaction per message, and sends reactions live 1610ms
+   ✓ works the same with school communities applied 1060ms
+ ✓ __tests__/chat-live-counts.test.ts (11 tests) 677ms
+stdout | __tests__/database/global-reactions.test.ts > reacts to posts, comments, and reposts with one active reaction per student, preserving existing likes and notifications
+PASS: Global reaction system -- post + comment reactions (6 kinds, set/change/remove, one per student), existing post_likes rows safely backfilled to 'like', notification semantics (once per new reaction, retracted on removal, never self), Friends Only enforcement, tombstoned-comment rejection, and repost/original reaction independence -- against the real schema.
+
+ ✓ __tests__/database/global-reactions.test.ts (1 test) 1247ms
+   ✓ reacts to posts, comments, and reposts with one active reaction per student, preserving existing likes and notifications 1247ms
+ ✓ __tests__/api/group-administrator.test.ts (33 tests) 14ms
+stdout | __tests__/database/mentions.test.ts > creates, authorizes, dedupes, and cleans up mentions in posts and comments against the real schema
+PASS: mention creation/resolution, Friends Only authorization gating, self-mention skip, edit dedup, stale removal + notification retraction, CURRENT-authorization re-check on every read (unfriending and blocking both hide an existing mention notification), username-change stability, deactivated-account filtering, and cascade on delete -- against the real schema.
+
+ ✓ __tests__/database/mentions.test.ts (1 test) 1590ms
+   ✓ creates, authorizes, dedupes, and cleans up mentions in posts and comments against the real schema 1589ms
+ ✓ __tests__/database/emoji-messages.test.ts (2 tests) 2708ms
+   ✓ sends an emoji as its own message and shows it wherever messages are loaded 1496ms
+   ✓ works the same with school communities applied 1212ms
+ ✓ __tests__/database/group-names.test.ts (2 tests) 2698ms
+   ✓ lets the owner or an administrator name a group, and shows the name to its members 1405ms
+   ✓ works the same with school communities applied 1292ms
+stdout | __tests__/database/school-isolation-regression.test.ts > keeps students from different schools fully isolated across feeds, single-post access, profile content, reposting, comments, and notifications
+PASS: cross-school isolation restored across campus feed, single-post access, profile content/view/highlights, reposting, comments (including delete), mentions, and notifications, with same-school functionality unaffected.
+
+ ✓ __tests__/database/school-isolation-regression.test.ts (1 test) 1656ms
+   ✓ keeps students from different schools fully isolated across feeds, single-post access, profile content, reposting, comments, and notifications 1656ms
+stdout | __tests__/database/friendships.test.ts > enforces friendship transitions, blocks, deactivation, and session revocation against the real schema
+PASS: real schema migration; request lifecycle/ownership, search, conversation reuse, block/unblock isolation, inactive access, preserved data and revoked sessions.
+
+ ✓ __tests__/database/friendships.test.ts (1 test) 1617ms
+   ✓ enforces friendship transitions, blocks, deactivation, and session revocation against the real schema 1616ms
+ ✓ __tests__/database/group-member-removal.test.ts (2 tests) 2587ms
+   ✓ lets the owner or administrator remove a regular member, keeping their earlier history 1593ms
+   ✓ works the same with school communities applied 993ms
+ ✓ __tests__/api/student-profile.test.ts (28 tests) 32ms
+ ✓ __tests__/database/group-invitation-answers.test.ts (2 tests) 2499ms
+   ✓ shows pending invitations to the invited student, who can accept (and join) or decline 1421ms
+   ✓ works the same with school communities applied 1078ms
+ ✓ __tests__/database/group-invitations.test.ts (2 tests) 2476ms
+   ✓ lets only the group owner invite current friends, saving a pending invitation without adding a member 1450ms
+   ✓ works the same with school communities applied 1026ms
+stderr | __tests__/api/game-room.test.ts > Game Room account boundary > identifies missing Game Room integration so the UI can offer unsaved design samples
+Game Room database operation failed { code: 'PGRST202', message: undefined }
+
+stderr | __tests__/api/game-room.test.ts > Game Room account boundary > does not describe unrelated storage failures as missing setup
+Game Room database operation failed { code: 'PGRST001', message: undefined }
+
+stderr | __tests__/api/game-room.test.ts > Game Room account boundary > returns a forbidden outcome when storage rejects an unowned outfit
+Game Room database operation failed { code: '42501', message: undefined }
+
+stderr | __tests__/api/game-room.test.ts > Independent avatar customization > never claims a customized avatar is saved without its database migration
+Game Room database operation failed { code: 'PGRST202', message: undefined }
+
+stderr | __tests__/api/game-room.test.ts > Independent avatar customization > explains when an older customization function cannot save layered options ({"code":"22023","message":"Invalid avatar selection"})
+Game Room database operation failed { code: '22023', message: 'Invalid avatar selection' }
+
+stderr | __tests__/api/game-room.test.ts > Independent avatar customization > explains when an older customization function cannot save layered options ({"code":"23514","message":"new row violates check constraint \"avatar_customization_options\""})
+Game Room database operation failed {
+  code: '23514',
+  message: 'new row violates check constraint "avatar_customization_options"'
+}
+
+ ✓ __tests__/api/game-room.test.ts (30 tests) 19ms
+ ✓ __tests__/api/profile-notifications.test.ts (11 tests) 19ms
+stdout | __tests__/database/report-post.test.ts > deletes a post only once 5 DISTINCT students have reported it, ignores duplicate/self reports, enforces Friends Only, stores the reason, and cascades comments/likes/reports/media on deletion without touching an unrelated post
+PASS: 5-distinct-reporter threshold, duplicate/self-report rejection, Friends Only enforcement, reason storage, and full cascade (comments/likes/reports/media) against the real schema, with an unrelated post left untouched.
+
+ ✓ __tests__/database/report-post.test.ts (1 test) 1383ms
+   ✓ deletes a post only once 5 DISTINCT students have reported it, ignores duplicate/self reports, enforces Friends Only, stores the reason, and cascades comments/likes/reports/media on deletion without touching an unrelated post 1383ms
+ ✓ __tests__/api/messages.test.ts (21 tests) 10ms
+ ✓ __tests__/database/message-notifications.test.ts (2 tests) 2515ms
+   ✓ notifies other participants of messages they have not seen, and sends new group invitations live 1308ms
+   ✓ works the same with school communities applied 1206ms
+ ✓ __tests__/api/message-reactions.test.ts (24 tests) 10ms
+ ✓ __tests__/jumpyland-mechanics.test.ts (13 tests) 112ms
+ ✓ __tests__/database/school-communities.test.ts (1 test) 1520ms
+   ✓ creates verified school communities and isolates campus content and interactions 1520ms
+ ✓ __tests__/api/password-reset-link.test.ts (17 tests) 12ms
+ ✓ __tests__/api/profile-space.test.ts (31 tests) 12ms
+ ✓ __tests__/database/sender-names.test.ts (2 tests) 2291ms
+   ✓ returns each sender’s name with the saved messages 1359ms
+   ✓ works the same with school communities applied 932ms
+stdout | __tests__/database/comment-notifications.test.ts > dedupes post_comment/comment_reply when the post author is the reply target, keeps them separate otherwise, resolves the correct recipient through a flattened reply-to-reply, and never self-notifies
+PASS: comment/reply notification dedup, correct-recipient flattening, and self-notification exclusion against the real schema.
+
+ ✓ __tests__/database/comment-notifications.test.ts (1 test) 1511ms
+   ✓ dedupes post_comment/comment_reply when the post author is the reply target, keeps them separate otherwise, resolves the correct recipient through a flattened reply-to-reply, and never self-notifies 1510ms
+ ✓ __tests__/database/profile-corner.test.ts (1 test) 1538ms
+   ✓ persists cards, enforces ownership, counts real votes and serializes the last plan spot 1537ms
+ ✓ __tests__/api/group-invitations.test.ts (13 tests) 9ms
+ ✓ __tests__/avatar-layers.test.ts (12 tests) 4ms
+ ✓ __tests__/api/events.test.ts (10 tests) 9ms
+ ✓ __tests__/api/emoji-messages.test.ts (19 tests) 40ms
+ ✓ __tests__/api/report.test.ts (11 tests) 8ms
+ ✓ __tests__/photo-lightbox.test.ts (9 tests) 80ms
+ ✓ __tests__/dormspace-campus.test.ts (5 tests) 47ms
+ ✓ __tests__/database/dormspace-multiplayer.test.ts (1 test) 1794ms
+   ✓ shares real players and nearby messages only with active, authorized, unblocked members of the same space 1794ms
+ ✓ __tests__/api/profile-corner.test.ts (27 tests) 11ms
+ ✓ __tests__/api/conversations.test.ts (16 tests) 9ms
+ ✓ __tests__/api/group-invitation-answers.test.ts (11 tests) 10ms
+ ✓ __tests__/dormspace-avatar.test.ts (36 tests) 75ms
+ ✓ __tests__/api/friends.test.ts (28 tests) 12ms
+stdout | __tests__/database/notifications-unified.test.ts > unifies friend, like, and comment notifications into one sorted feed with correct cross-kind unread counting
+PASS: unified friend/like/comment notification feed, cross-kind unread counting, grouped-like dedup, and mark-all-read against the real schema.
+
+ ✓ __tests__/database/notifications-unified.test.ts (1 test) 1611ms
+   ✓ unifies friend, like, and comment notifications into one sorted feed with correct cross-kind unread counting 1611ms
+ ✓ __tests__/api/profile-personality.test.ts (25 tests) 10ms
+ ✓ __tests__/api/profile-memories.test.ts (10 tests) 18ms
+stdout | __tests__/database/share-post.test.ts > enforces the same visibility/friendship/block authorization for a direct post link, with no enumeration and mentions included
+PASS: socialu_get_post enforces Public/Friends Only/block authorization identically to the feeds, collapses nonexistent/deleted/unauthorized/blocked into one generic error, and includes verified mentions.
+
+ ✓ __tests__/database/share-post.test.ts (1 test) 1572ms
+   ✓ enforces the same visibility/friendship/block authorization for a direct post link, with no enumeration and mentions included 1572ms
+ ✓ __tests__/dormspace-rules.test.ts (22 tests) 4ms
+ ✓ __tests__/jumpyland-character.test.ts (6 tests) 157ms
+stdout | __tests__/database/optional-post-text.test.ts > allows a photo-only post to be created in two steps, but never edited down to completely empty
+PASS: photo-only post creation (two-step flow), edit-with-blank-text allowed only when a photo remains, and the never-edited-down-to-empty invariant against the real schema.
+
+ ✓ __tests__/database/optional-post-text.test.ts (1 test) 1665ms
+   ✓ allows a photo-only post to be created in two steps, but never edited down to completely empty 1665ms
+ ✓ __tests__/api/profile.test.ts (10 tests) 9ms
+ ✓ __tests__/api/group-name.test.ts (13 tests) 10ms
+stdout | __tests__/database/post-visibility.test.ts > enforces post visibility across both feeds, including the author seeing their own Friends Only posts and NULL/invalid visibility being rejected
+PASS: SRS-315 visibility enforcement (Campus Feed placement, Friends Feed placement/restriction, author self-visibility, NULL/invalid rejection) against the real schema.
+
+ ✓ __tests__/database/post-visibility.test.ts (1 test) 1766ms
+   ✓ enforces post visibility across both feeds, including the author seeing their own Friends Only posts and NULL/invalid visibility being rejected 1766ms
+ ✓ __tests__/database/profile-space.test.ts (1 test) 1736ms
+   ✓ persists owner decorations, controls hello-note access, soft removal, blocking, and rate limits 1736ms
+ ✓ __tests__/database/login-activity.test.ts (1 test) 1711ms
+   ✓ retains real provider sessions, limits owner access and survives session deletion 1711ms
+ ✓ __tests__/api/profile-highlights.test.ts (6 tests) 7ms
+ ✓ __tests__/api/group-leaving.test.ts (8 tests) 6ms
+ ✓ __tests__/api/profile-corner-artwork.test.ts (17 tests) 9ms
+ ✓ __tests__/dormspace-interactions.test.ts (10 tests) 3ms
+ ✓ __tests__/navigation.test.ts (25 tests) 15ms
+ ✓ __tests__/dormspace-movement.test.ts (12 tests) 4ms
+ ✓ __tests__/database/dormspace-furnishings.test.ts (1 test) 1769ms
+   ✓ grants included furniture to existing and future dorms without changing saved rooms, points or access rules 1768ms
+ ✓ __tests__/database/profile-about-and-hello-notes.test.ts (1 test) 1777ms
+   ✓ keeps old answers, saves several prompts, more interests, and styled hello notes 1776ms
+ ✓ __tests__/api/profile-cover.test.ts (6 tests) 17ms
+ ✓ __tests__/api/reset-password.test.ts (6 tests) 14ms
+ ✓ __tests__/jumpyland-model.test.ts (6 tests) 58ms
+ ✓ __tests__/event-list.test.ts (8 tests) 12ms
+ ✓ __tests__/avatar-editor.test.ts (5 tests) 8ms
+ ✓ __tests__/api/message-notifications.test.ts (4 tests) 5ms
+ ✓ __tests__/profile-card-decorations.test.ts (6 tests) 4ms
+ ✓ __tests__/profile-look-save.test.ts (7 tests) 8ms
+ ✓ __tests__/jumpyland-challenge.test.ts (7 tests) 4ms
+ ✓ __tests__/api/jumpyland.test.ts (12 tests) 8ms
+ ✓ __tests__/api/conversation-read.test.ts (7 tests) 7ms
+ ✓ __tests__/api/profile-social.test.ts (18 tests) 8ms
+ ✓ __tests__/api/dorm-live.test.ts (23 tests) 10ms
+ ✓ __tests__/avatar-art.test.ts (4 tests) 300ms
+ ✓ __tests__/dormspace-rotation.test.ts (6 tests) 9ms
+ ✓ __tests__/api/session.test.ts (5 tests) 6ms
+ ✓ __tests__/api/campus-members.test.ts (8 tests) 9ms
+ ✓ __tests__/api/avatar.test.ts (5 tests) 5ms
+ ✓ __tests__/dormspace-collision.test.ts (6 tests) 2ms
+ ✓ __tests__/dormspace-live-store.test.ts (3 tests) 4ms
+ ✓ __tests__/database/dormspace-rotation.test.ts (1 test) 1493ms
+   ✓ persists rotated furniture through the real restricted bridge and validates both sides of every footprint 1493ms
+ ✓ __tests__/share-modal.test.ts (2 tests) 20ms
+ ✓ __tests__/jumpyland-geometry.test.ts (5 tests) 52ms
+ ✓ __tests__/mention-text.test.ts (4 tests) 5ms
+ ✓ __tests__/api/login-activity.test.ts (7 tests) 6ms
+ ✓ __tests__/profile-photo.test.ts (6 tests) 9ms
+ ✓ __tests__/api/sender-names.test.ts (2 tests) 5ms
+ ✓ __tests__/complete-avatars.test.ts (3 tests) 81ms
+ ✓ __tests__/dormspace-furnishings.test.ts (3 tests) 2ms
+ ✓ __tests__/database/profile-memories.test.ts (1 test) 1622ms
+   ✓ lets only the owner pin up to six memories in their own folder, and hides them from blocked students 1622ms
+ ✓ __tests__/database/profile-card-decorations.test.ts (1 test) 1652ms
+   ✓ stores decorations on every surface using the existing database setup, including full edge positions 1651ms
+ ✓ __tests__/database/avatar-layers.test.ts (1 test) 1523ms
+   ✓ saves and reloads complete layered looks while preserving legacy avatars and ownership rules 1522ms
+ ✓ __tests__/database/profile-personality.test.ts (1 test) 1546ms
+   ✓ saves only the owner, respects blocked profiles, validates input and preserves existing profiles 1545ms
+ ✓ __tests__/api/dorm-rotation.test.ts (13 tests) 8ms
+ ✓ __tests__/database/campus-members.test.ts (1 test) 1429ms
+   ✓ lists only verified active members of the viewer school, honoring blocks, search and pagination 1428ms
+ ✓ __tests__/database/profile-highlights.test.ts (1 test) 1438ms
+   ✓ accepts 30 pictures, rejects 31 pictures and text-only posts, and preserves ownership checks 1437ms
+ ✓ __tests__/database/profile-vibe-stickers.test.ts (1 test) 1426ms
+   ✓ persists every vibe sticker, preserves existing cards, and keeps owner and blocking checks 1426ms
+ ✓ __tests__/database/school-dormspace.test.ts (1 test) 1452ms
+   ✓ isolates hallway players and realtime messages by school 1452ms
+ ✓ __tests__/account-session.test.ts (4 tests) 2ms
+ ✓ __tests__/profile-themes.test.ts (2 tests) 4ms
+ ✓ __tests__/database/profile-corner-artwork.test.ts (1 test) 1398ms
+   ✓ shows saved card stickers to classmates while preserving all votes and joined students 1398ms
+ ✓ __tests__/dormspace-rotation-art.test.ts (11 tests) 29ms
+ ✓ __tests__/post-composer.test.ts (1 test) 4ms
+ ✓ __tests__/profile-countries.test.ts (2 tests) 9ms
+ ✓ __tests__/database/complete-avatars.test.ts (1 test) 1593ms
+   ✓ preserves legacy selections and saves all 126 complete avatar ids with account isolation 1593ms
+ ✓ __tests__/game-room-client.test.ts (3 tests) 5ms
+ ✓ __tests__/jumpyland-map.test.ts (4 tests) 2ms
+ ✓ __tests__/campus-crush-privacy.test.ts (1 test) 3ms
+ ✓ __tests__/avatar-manifest.test.ts (3 tests) 9ms
+ ✓ __tests__/share-redirect.test.ts (6 tests) 1ms
+ ✓ __tests__/jumpyland-life.test.ts (4 tests) 1ms
+ ✓ __tests__/login-activity-format.test.ts (3 tests) 17ms
+ ✓ __tests__/upcoming-events-panel.test.ts (1 test) 5ms
+ ✓ __tests__/university-email.test.ts (11 tests) 2ms
+
+ Test Files  121 passed (121)
+      Tests  1028 passed (1028)
+   Start at  18:37:15
+   Duration  50.57s (transform 1.55s, setup 0ms, collect 4.28s, tests 82.27s, environment 11ms, prepare 4.00s)
+

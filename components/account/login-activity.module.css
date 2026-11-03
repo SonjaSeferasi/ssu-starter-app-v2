@@ -2,3 +2,4 @@
 .more{padding:20px 32px;text-align:center}
 .timestamp{margin:6px 0 0;color:#66796c;font-size:14px}
 .header .zone{margin-top:8px!important;font-size:12px!important;color:#718074!important}
+.details{flex:1;min-width:0}.badges{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.badges span{font-size:12px;padding:5px 10px;border-radius:20px;white-space:nowrap}.active{background:#e9f2e6;color:#355e3e}.ended{background:#f0f2ef;color:#6f796f}.current{border:1px solid #cadac9;color:#4c7050}@media(max-width:600px){.entry{flex-wrap:wrap;gap:12px}.timestamp{font-size:12px}.badges{width:100%;justify-content:flex-start;padding-left:32px}}

@@ -20,9 +20,12 @@ it('retains real provider sessions, limits owner access and survives session del
   const migration=readFileSync('supabase/migrations/20261029100000_login_history.sql','utf8');
   await db.exec(migration);await db.exec(migration); // installation and backfill are idempotent
   await db.exec(readFileSync('supabase/migrations/20261029101000_complete_login_history.sql','utf8'));
+  await db.exec(readFileSync('supabase/migrations/20261029102000_login_activity_status.sql','utf8'));
   const history=async(id:string)=>(await db.query<any>('SELECT public.socialu_login_history($1) AS result',[id])).rows[0].result;
-  expect((await history(u)).entries).toHaveLength(1);expect((await history(other)).entries).toEqual([]);
+  expect((await history(u)).entries).toHaveLength(1);expect(new Date((await history(u)).entries[0].signed_in_at).toISOString()).toBe('2026-10-28T12:00:00.000Z');expect((await history(other)).entries).toEqual([]);
+  expect((await history(u)).entries[0].active).toBe(true);
   await db.query('DELETE FROM auth.sessions WHERE id=$1',[session]);
+  expect((await history(u)).entries[0].active).toBe(false);
   expect((await history(u)).entries).toHaveLength(1);
   expect((await db.query<any>('SELECT ended_at FROM socialu.login_history')).rows[0].ended_at).not.toBeNull();
   // Equal timestamps and concurrent new records cannot duplicate or skip older pages.
@@ -32,6 +35,17 @@ it('retains real provider sessions, limits owner access and survives session del
   await db.query("INSERT INTO auth.sessions(id,user_id,created_at) VALUES('30000000-0000-0000-0000-000000000001',$1,'2026-10-30T12:00:00Z')",[u]);
   while(page.next){page=(await db.query<any>('SELECT public.socialu_login_history($1,$2,$3) AS result',[u,page.next.at,page.next.id])).rows[0].result;ids.push(...page.entries.map((e:any)=>e.id));}
   expect(ids).toHaveLength(62);expect(new Set(ids).size).toBe(62);
+  // The application guard, provider expiry and provider deletion all end activity.
+  const newest='30000000-0000-0000-0000-000000000001';
+  await db.query("UPDATE auth.sessions SET not_after=now()-interval '1 minute' WHERE id=$1",[newest]);
+  expect((await history(u)).entries[0].active).toBe(false);
+  await db.query('UPDATE auth.sessions SET not_after=NULL WHERE id=$1',[newest]);
+  await db.query("INSERT INTO socialu.session_revocations VALUES($1,'2026-11-01T00:00:00Z',$2)",[u,newest]);
+  const active=await history(u);expect(active.entries[0].active).toBe(true);expect(active.entries[1].active).toBe(false);
+  const current=(await db.query<any>('SELECT public.socialu_login_history($1,NULL,NULL,$2) AS result',[u,newest])).rows[0].result;
+  expect(current.entries[0].is_current).toBe(true);expect(current.entries[1].is_current).toBe(false);
+  await db.query('UPDATE socialu.session_revocations SET preserved_session=NULL WHERE auth_user_id=$1',[u]);
+  expect((await history(u)).entries.every((e:any)=>!e.active)).toBe(true);
   await db.exec("SET ROLE authenticated");
   await expect(db.query('SELECT public.socialu_login_history($1)',[u])).rejects.toMatchObject({code:'42501'});
   await db.exec('RESET ROLE');

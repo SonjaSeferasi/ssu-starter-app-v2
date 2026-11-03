@@ -1,0 +1,137 @@
+
+> ssu-starter-app-v2@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.15
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/45) ...
+   Generating static pages (11/45) 
+   Generating static pages (22/45) 
+   Generating static pages (33/45) 
+ ✓ Generating static pages (45/45)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                                      Size     First Load JS
+┌ ○ /                                                            12.9 kB         192 kB
+├ ○ /_not-found                                                  876 B          88.9 kB
+├ ○ /account/login-activity                                      2.35 kB         229 kB
+├ ○ /account/security                                            148 B           102 kB
+├ ƒ /api/account/deactivate                                      0 B                0 B
+├ ƒ /api/account/login-activity                                  0 B                0 B
+├ ƒ /api/auth/change-password                                    0 B                0 B
+├ ƒ /api/auth/forgot-password                                    0 B                0 B
+├ ƒ /api/auth/login                                              0 B                0 B
+├ ƒ /api/auth/logout                                             0 B                0 B
+├ ƒ /api/auth/refresh                                            0 B                0 B
+├ ƒ /api/auth/register                                           0 B                0 B
+├ ƒ /api/auth/resend                                             0 B                0 B
+├ ƒ /api/auth/reset-password                                     0 B                0 B
+├ ƒ /api/auth/session                                            0 B                0 B
+├ ƒ /api/auth/verify                                             0 B                0 B
+├ ƒ /api/campus/members                                          0 B                0 B
+├ ƒ /api/comments/[commentId]                                    0 B                0 B
+├ ƒ /api/comments/[commentId]/reactions                          0 B                0 B
+├ ƒ /api/conversations                                           0 B                0 B
+├ ƒ /api/conversations/[id]                                      0 B                0 B
+├ ƒ /api/conversations/[id]/invitations                          0 B                0 B
+├ ƒ /api/conversations/[id]/leave                                0 B                0 B
+├ ƒ /api/conversations/[id]/members                              0 B                0 B
+├ ƒ /api/conversations/[id]/messages                             0 B                0 B
+├ ƒ /api/conversations/[id]/messages/[messageId]/reaction        0 B                0 B
+├ ƒ /api/conversations/[id]/peer                                 0 B                0 B
+├ ƒ /api/conversations/[id]/read                                 0 B                0 B
+├ ƒ /api/dorm                                                    0 B                0 B
+├ ƒ /api/dorm/guestbook                                          0 B                0 B
+├ ƒ /api/dorm/live                                               0 B                0 B
+├ ƒ /api/events                                                  0 B                0 B
+├ ƒ /api/events/[id]                                             0 B                0 B
+├ ƒ /api/events/[id]/comments                                    0 B                0 B
+├ ƒ /api/events/[id]/cover                                       0 B                0 B
+├ ƒ /api/events/[id]/going                                       0 B                0 B
+├ ƒ /api/events/[id]/invitations                                 0 B                0 B
+├ ƒ /api/events/[id]/invite-candidates                           0 B                0 B
+├ ƒ /api/events/[id]/like                                        0 B                0 B
+├ ƒ /api/events/invitations                                      0 B                0 B
+├ ƒ /api/friends                                                 0 B                0 B
+├ ƒ /api/game-room                                               0 B                0 B
+├ ƒ /api/group-invitations                                       0 B                0 B
+├ ƒ /api/group-invitations/[id]/accept                           0 B                0 B
+├ ƒ /api/group-invitations/[id]/decline                          0 B                0 B
+├ ƒ /api/jumpyland                                               0 B                0 B
+├ ƒ /api/message-notifications                                   0 B                0 B
+├ ƒ /api/notifications                                           0 B                0 B
+├ ƒ /api/posts                                                   0 B                0 B
+├ ƒ /api/posts/[postId]                                          0 B                0 B
+├ ƒ /api/posts/[postId]/comments                                 0 B                0 B
+├ ƒ /api/posts/[postId]/likes                                    0 B                0 B
+├ ƒ /api/posts/[postId]/photos                                   0 B                0 B
+├ ƒ /api/posts/[postId]/photos/[assetId]                         0 B                0 B
+├ ƒ /api/posts/[postId]/reactions                                0 B                0 B
+├ ƒ /api/posts/[postId]/report                                   0 B                0 B
+├ ƒ /api/posts/feed/campus                                       0 B                0 B
+├ ƒ /api/posts/feed/friends                                      0 B                0 B
+├ ƒ /api/preferences                                             0 B                0 B
+├ ƒ /api/profile                                                 0 B                0 B
+├ ƒ /api/profile/avatar                                          0 B                0 B
+├ ƒ /api/profile/details                                         0 B                0 B
+├ ƒ /api/profiles                                                0 B                0 B
+├ ƒ /api/profiles/content                                        0 B                0 B
+├ ƒ /api/profiles/corner                                         0 B                0 B
+├ ƒ /api/profiles/friends                                        0 B                0 B
+├ ƒ /api/profiles/highlights                                     0 B                0 B
+├ ƒ /api/profiles/memories                                       0 B                0 B
+├ ƒ /api/profiles/personality                                    0 B                0 B
+├ ƒ /api/profiles/social                                         0 B                0 B
+├ ƒ /api/profiles/space                                          0 B                0 B
+├ ƒ /api/whispers                                                0 B                0 B
+├ ƒ /api/whispers/[confessionId]                                 0 B                0 B
+├ ƒ /api/whispers/[confessionId]/comments                        0 B                0 B
+├ ƒ /api/whispers/[confessionId]/comments/[commentId]            0 B                0 B
+├ ƒ /api/whispers/[confessionId]/comments/[commentId]/reactions  0 B                0 B
+├ ƒ /api/whispers/[confessionId]/comments/[commentId]/report     0 B                0 B
+├ ƒ /api/whispers/[confessionId]/reactions                       0 B                0 B
+├ ƒ /api/whispers/[confessionId]/report                          0 B                0 B
+├ ƒ /api/whispers/mention-candidates                             0 B                0 B
+├ ƒ /api/whispers/opt-out                                        0 B                0 B
+├ ○ /dev/dormspace-art                                           1.37 kB         108 kB
+├ ○ /dev/game-room                                               381 B           177 kB
+├ ○ /dev/jumpyland                                               5.76 kB        95.5 kB
+├ ○ /dev/navigation                                              203 B           167 kB
+├ ○ /events                                                      3.54 kB         178 kB
+├ ƒ /events/[id]                                                 3.86 kB         178 kB
+├ ○ /events/create                                               5.01 kB         172 kB
+├ ○ /forgot-password                                             148 B           102 kB
+├ ○ /friends                                                     2.1 kB          229 kB
+├ ○ /game-1                                                      2.65 kB         170 kB
+├ ○ /game-room                                                   205 B           177 kB
+├ ○ /game-room/dormspace                                         17.1 kB         199 kB
+├ ○ /game-room/dormspace/art-credits                             179 B            95 kB
+├ ○ /game-room/dormspace/classic                                 23.7 kB         196 kB
+├ ○ /login                                                       148 B           102 kB
+├ ○ /messages                                                    725 B           174 kB
+├ ƒ /messages/[conversationId]                                   10.7 kB         184 kB
+├ ○ /notifications                                               2.52 kB         229 kB
+├ ƒ /posts/[postId]                                              1.57 kB         181 kB
+├ ○ /profile                                                     1.42 kB         228 kB
+├ ○ /profile/decorate                                            11.6 kB         238 kB
+├ ○ /profile/edit                                                3.97 kB         231 kB
+├ ○ /profile/settings                                            2.76 kB         230 kB
+├ ○ /register                                                    147 B           102 kB
+├ ○ /reset-password                                              148 B           102 kB
+├ ƒ /students/[username]                                         210 B           227 kB
+└ ○ /verify-email                                                148 B           102 kB
++ First Load JS shared by all                                    88 kB
+  ├ chunks/5558-3a3aa7e9f1a453f2.js                              31.6 kB
+  ├ chunks/cfcbb68b-be52cc3f5753bda2.js                          53.6 kB
+  └ other shared chunks (total)                                  2.82 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
