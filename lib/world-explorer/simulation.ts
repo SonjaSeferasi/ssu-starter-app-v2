@@ -1,3 +1,4 @@
+import {traceLight} from './light-puzzle';
 import {validateLevel} from './level-manifest';
 import type {CountryStats,EnemyState,GateState,HazardDefinition,HazardPhase,LevelDefinition,PlatformDefinition,PlatformState,SimulationEvent,SimulationInput,SimulationState,SimulationStatus,WindPhase,WindZoneDefinition} from './game-types';
 import {referenceCameraFrame} from './game-camera';
@@ -54,6 +55,8 @@ export class LevelSimulation{
  readonly activatedBlocks=new Set<string>();
  readonly enemies:EnemyState[];
  readonly gates:GateState[];
+ readonly lightPuzzles:import('./game-types').LightPuzzleState[];
+ private interactQueued=false;
  readonly state:SimulationState;
  private input:SimulationInput={left:false,right:false,jump:false};
  private accumulator=0;
@@ -76,6 +79,7 @@ export class LevelSimulation{
  constructor(level:LevelDefinition){
   this.level=validateLevel(level);this.platforms=this.level.platforms.map(p=>({...p,baseX:p.x,baseY:p.y,dx:0,dy:0,...(p.raise?{y:p.y-p.raise.drop,raised:0,raiseTimer:0}:{})}));
   const spawn=this.position(this.level.spawn);this.state={x:spawn.x,y:spawn.y,z:0,vx:0,vy:0,grounded:true,standing:this.level.spawn.platformId,hearts:3,coins:0,stars:0,checkpointId:null,discoveryFound:false,elapsedSeconds:0,status:'playing',animation:'idle',facing:1,invulnerable:0};
+  this.lightPuzzles=(this.level.lightPuzzles||[]).map(p=>({id:p.id,index:p.initialIndex,charge:0,lit:false}));
   this.gates=(this.level.gates||[]).map(gate=>({id:gate.id,open:0,timer:0}));
   this.enemies=(this.level.enemies||[]).map(enemy=>{const platform=this.platforms.find(platform=>platform.id===enemy.platformId)!,x=platform.x+enemy.minOffset;this.enemyOffsets.set(enemy.id,enemy.minOffset);this.enemyDirections.set(enemy.id,1);return{...enemy,x,y:platformSurfaceY(platform,x),z:0,direction:1,state:'PATROL_RIGHT'};});
  }
@@ -85,7 +89,7 @@ export class LevelSimulation{
   const copy=Object.create(LevelSimulation.prototype) as LevelSimulation,source=this as unknown as Record<string,unknown>,target=copy as unknown as Record<string,unknown>;
   for(const [key,value] of Object.entries(source)){
    if(value instanceof Set)target[key]=new Set(value);else if(value instanceof Map)target[key]=new Map(value);
-   else if(key==='platforms'||key==='enemies'||key==='gates')target[key]=(value as object[]).map(item=>({...item}));
+   else if(key==='platforms'||key==='enemies'||key==='gates'||key==='lightPuzzles')target[key]=(value as object[]).map(item=>({...item}));
    else if(key==='events')target[key]=[];else if(key==='level')target[key]=value;
    else target[key]=value&&typeof value==='object'?{...value}:value;
   }
@@ -93,8 +97,8 @@ export class LevelSimulation{
  }
  position(item:{platformId:string;offset:number;height?:number}){const p=this.platforms.find(p=>p.id===item.platformId);if(!p)throw new Error('Missing platform reference.');const x=p.x+item.offset;return{x,y:platformSurfaceY(p,x)+(item.height||0),z:0};}
  wind(zoneId:string){const zone=this.level.zones?.find(zone=>zone.id===zoneId);return zone?windAt(zone,this.state.elapsedSeconds):undefined;}
- setInput(input:SimulationInput){if(input.jump&&!this.input.jump&&this.state.status==='playing')this.jumpBuffer=this.level.physics.jumpBuffer;this.input={...input};}
- clearInput(){this.input={left:false,right:false,jump:false};this.jumpBuffer=0;}
+ setInput(input:SimulationInput){if(input.interact&&!this.input.interact&&this.state.status==='playing')this.interactQueued=true;if(input.jump&&!this.input.jump&&this.state.status==='playing')this.jumpBuffer=this.level.physics.jumpBuffer;this.input={...input};}
+ clearInput(){this.interactQueued=false;this.input={left:false,right:false,jump:false};this.jumpBuffer=0;}
  pause(){if(this.state.status==='playing'||this.state.status==='respawning'){this.resumeStatus=this.state.status;this.state.status='paused';this.accumulator=0;this.clearInput();}}
  resume(){if(this.state.status==='paused'||this.state.status==='discovery'){this.state.status=this.state.status==='discovery'?'playing':this.resumeStatus;this.accumulator=0;this.clearInput();}}
  stats():CountryStats{return{hearts:this.state.hearts,coins:this.state.coins,totalCoins:this.level.coins.length,stars:this.state.stars,totalStars:this.level.stars.length,checkpointActive:this.state.checkpointId!==null,checkpointId:this.state.checkpointId,timeSeconds:Math.floor(this.state.elapsedSeconds),discoveryFound:this.state.discoveryFound,collectedStarIds:[...this.collectedStars]};}
@@ -118,6 +122,14 @@ export class LevelSimulation{
  private recover(){
   const checkpoint=this.level.checkpoints.find(p=>p.id===this.state.checkpointId)||this.level.spawn,point=this.position(checkpoint),s=this.state;
   s.x=point.x;s.y=point.y;s.z=0;s.vx=s.vy=0;s.grounded=true;s.standing=checkpoint.platformId;s.status='playing';s.animation='respawn';this.effectTimer=.2;this.coyote=this.level.physics.coyoteTime;this.clearInput();this.events.push({type:'respawn'});
+ }
+ waterSurface(id:string){const basin=this.level.waterBasins?.find(b=>b.id===id);if(!basin)throw new Error('Missing water basin.');const platform=this.platforms.find(p=>p.id===basin.platformId)!;return basin.lowSurface+(basin.highSurface-basin.lowSurface)*(platform.raised??0);}
+ private operateLight(dt:number,pressed:Set<string>){
+  const turn=this.interactQueued;this.interactQueued=false;
+  for(const puzzle of this.level.lightPuzzles||[]){const point=this.position(puzzle),state=this.lightPuzzles.find(s=>s.id===puzzle.id)!;
+   if(turn&&this.state.grounded&&this.state.standing===puzzle.platformId&&Math.abs(this.state.x-point.x)<1.25){state.index=(state.index+1)%puzzle.normals.length;this.events.push({type:'mirror-turn',id:puzzle.id});}
+   const lit=traceLight(puzzle,point,state.index).lit;if(lit&&!state.lit)this.events.push({type:'light-aligned',id:puzzle.id});state.lit=lit;state.charge=lit?Math.min(puzzle.chargeSeconds,state.charge+dt):0;if(state.charge>=puzzle.chargeSeconds)pressed.add(puzzle.gateId);
+  }
  }
  private support(id:string){
   const platform=this.platforms.find(platform=>platform.id===id);if(platform)return solidPlatform(platform)?platform:undefined;
@@ -197,6 +209,7 @@ export class LevelSimulation{
    else if(timer>0){platform.raiseTimer=on?Math.max(timer,dt):timer-dt;if(platform.raiseTimer<=0)this.events.push({type:'lower',id:platform.id});}
    platform.raised=(platform.raiseTimer??0)>0?Math.min(1,before+dt/.5):on?before:Math.max(0,before-dt/.9);
   }
+  this.operateLight(dt,pressed);
   for(const gate of this.gates){
    const definition=this.level.gates!.find(item=>item.id===gate.id)!,under=s.x+p.playerRadius>definition.x-.1&&s.x-p.playerRadius<definition.x+definition.width+.1;
    if(pressed.has(gate.id)){if(gate.timer<=0)this.events.push({type:'gate-open',id:gate.id});gate.timer=definition.openSeconds;}
@@ -207,8 +220,8 @@ export class LevelSimulation{
  private step(){
   const s=this.state,p=this.level.physics,dt=FIXED_STEP;s.elapsedSeconds+=dt;s.invulnerable=Math.max(0,s.invulnerable-dt);this.effectTimer=Math.max(0,this.effectTimer-dt);
   this.crumble(dt);
-  if(this.gates.length||this.platforms.some(platform=>platform.raise))this.operateGates(dt);
-  for(const platform of this.platforms){const oldX=platform.x,oldY=platform.y,offset=platformOffset(platform,s.elapsedSeconds);platform.x=platform.baseX+offset.x;platform.y=platform.baseY+offset.y-(platform.drop||0)-(platform.raise?platform.raise.drop*(1-(platform.raised??0)):0);platform.dx=platform.x-oldX;platform.dy=platform.y-oldY;}
+  if(this.gates.length||this.lightPuzzles.length||this.platforms.some(platform=>platform.raise))this.operateGates(dt);
+  for(const platform of this.platforms){const oldX=platform.x,oldY=platform.y,offset=platformOffset(platform,s.elapsedSeconds);platform.x=platform.baseX+offset.x;const basin=this.level.waterBasins?.find(b=>b.platformId===platform.id);platform.y=basin?this.waterSurface(basin.id)+(platform.baseY-basin.highSurface):platform.baseY+offset.y-(platform.drop||0)-(platform.raise?platform.raise.drop*(1-(platform.raised??0)):0);platform.dx=platform.x-oldX;platform.dy=platform.y-oldY;}
   this.signalHazards();
   this.moveEnemies(dt);
   if(s.status==='respawning'){this.respawnTimer-=dt;if(this.respawnTimer<=0)this.recover();return;}
@@ -255,6 +268,7 @@ export class LevelSimulation{
    if(oldX+p.playerRadius<=platform.x&&s.x+p.playerRadius>platform.x){s.x=platform.x-p.playerRadius;s.vx=0;}
    else if(oldX-p.playerRadius>=platform.x+platform.width&&s.x-p.playerRadius<platform.x+platform.width){s.x=platform.x+platform.width+p.playerRadius;s.vx=0;}
   }
+  for(const basin of this.level.waterBasins||[])if(s.x>basin.x&&s.x<basin.x+basin.width&&s.y<this.waterSurface(basin.id)-.3){this.damage();return;}
   // A closed or part-open gate is a solid slab standing on the floor: a wall
   // from the side and a ceiling from below. It sinks into the ground to open.
   for(const gate of this.level.gates||[]){

@@ -45,6 +45,11 @@ export type ZoneDefinition=WindZoneDefinition;
  * `gateIds` may then be empty. */
 export type SwitchDefinition={id:string;platformId:string;offset:number;gateIds:string[]};
 export type GateDefinition={id:string;x:number;y:number;width:number;height:number;openSeconds:number};
+/** A fictional sluice basin; its fill fraction is the validated raise actuator.
+ * The water surface drives the crossing height, and submerged players recover. */
+export type WaterBasinDefinition={id:string;platformId:string;x:number;width:number;z:number;depth:number;lowSurface:number;highSurface:number};
+export type LightPuzzleDefinition={id:string;gateId:string;platformId:string;offset:number;height:number;emitter:{x:number;y:number};receiver:{x:number;y:number;radius:number};normals:[number,number][];initialIndex:number;chargeSeconds:number;range:number;occluders?:{x:number;y:number;width:number;height:number}[]};
+export type LightPuzzleState={id:string;index:number;charge:number;lit:boolean};
 export type WindPhase='calm'|'warning'|'gust';
 export type LevelSection={id:'A'|'B'|'C'|'D'|'E'|'F'|'G'|'H';label:string;x:number};
 /** Route graph: what a player does to get from one place to the next. Nodes
@@ -70,7 +75,7 @@ export type LevelDefinition={
  coins:CollectibleDefinition[];stars:CollectibleDefinition[];checkpoints:TriggerDefinition[];
  discovery:TriggerDefinition&{factId:string};finish:{platformId:string;offset:number};hazards:HazardDefinition[];
  enemies?:EnemyDefinition[];discoveryBlocks?:DiscoveryBlockDefinition[];mainRoute?:string[];upperRoute?:string[];
- zones?:ZoneDefinition[];switches?:SwitchDefinition[];gates?:GateDefinition[];routeGraph?:RouteGraph;design?:LevelDesign;difficultyTier?:DifficultyTier;sections?:LevelSection[];environment?:LevelEnvironment;camera?:CameraDefinition;difficulty?:'easy'|'easy-medium'|'medium'|'hard';
+ waterBasins?:WaterBasinDefinition[];lightPuzzles?:LightPuzzleDefinition[];zones?:ZoneDefinition[];switches?:SwitchDefinition[];gates?:GateDefinition[];routeGraph?:RouteGraph;design?:LevelDesign;difficultyTier?:DifficultyTier;sections?:LevelSection[];environment?:LevelEnvironment;camera?:CameraDefinition;difficulty?:'easy'|'easy-medium'|'medium'|'hard';
  physics:{gravity:number;jumpSpeed:number;runSpeed:number;acceleration:number;airControl:number;coyoteTime:number;jumpBuffer:number;playerRadius:number;playerHeight:number;killY:number;iceGrip?:number;stepHeight?:number;climbSpeed?:number};
 };
 export type CollapsePhase='stable'|'shaking'|'falling'|'hidden';
@@ -83,8 +88,8 @@ export type SimulationState={
  coins:number;stars:number;checkpointId:string|null;discoveryFound:boolean;elapsedSeconds:number;
  status:SimulationStatus;animation:ExplorerAnimation;facing:1|-1;invulnerable:number;
 };
-export type SimulationInput={left:boolean;right:boolean;jump:boolean};
-export type SimulationEvent={type:'coin'|'star'|'checkpoint'|'discovery'|'block'|'damage'|'respawn'|'finish'|'failed'|'wind-warning'|'wind'|'switch'|'gate-open'|'gate-closing'|'collapse'|'bounce'|'hazard-warning'|'hazard'|'raise'|'lower'|'climb';id?:string};
+export type SimulationInput={left:boolean;right:boolean;jump:boolean;interact?:boolean};
+export type SimulationEvent={type:'coin'|'star'|'checkpoint'|'discovery'|'block'|'damage'|'respawn'|'finish'|'failed'|'wind-warning'|'wind'|'switch'|'gate-open'|'gate-closing'|'collapse'|'bounce'|'hazard-warning'|'hazard'|'raise'|'lower'|'climb'|'mirror-turn'|'light-aligned';id?:string};
 export type CountryStats={hearts:number;coins:number;totalCoins:number;stars:number;totalStars:number;checkpointActive:boolean;checkpointId?:string|null;timeSeconds:number;discoveryFound:boolean;collectedStarIds?:string[]};
 export type CountryRunResult={stars:number;elapsedMs:number;discoveryFound:boolean};
 export type CountryCallbacks={

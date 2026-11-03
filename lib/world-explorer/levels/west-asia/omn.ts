@@ -29,5 +29,6 @@ export const level=authorLevel({
  coins:[["om-dry-path",2,1.1],["om-steps",2,1.1],["om-climb",2,2.2],["om-pool-bank",2,1.1],["om-sluice",2,1.1],["om-narrow-gorge",2,1.1],["om-ridge",2,1.1],["om-view",2,1.1],["om-dry-path",5,1.1],["om-view",15,1.1],["om-bonus",0.8,0.85]],
  stars:[["om-bonus",0.8,0.8],["om-ridge",3,2.2],["om-view",9.0,2.2]],
  edges:[["om-dry-path","om-steps","WALK"],["om-steps","om-climb","CLIMB"],["om-climb","om-pool-bank","JUMP"],["om-pool-bank","om-sluice","JUMP"],["om-sluice","om-narrow-gorge","JUMP"],["om-narrow-gorge","om-ridge","JUMP"],["om-ridge","om-view","JUMP"],["om-narrow-gorge","om-bonus","JUMP",false],["om-bonus","om-ridge","DROP",false]],
+ waterBasins:[{id:"om-sluice-basin",platformId:"om-sluice",x:42.5,width:10.3,z:-1.5,depth:7,lowSurface:4.95,highSurface:5.95}],
  switches:[{"id":"om-plate","platformId":"om-pool-bank","offset":6,"gateIds":[]}]
 });
