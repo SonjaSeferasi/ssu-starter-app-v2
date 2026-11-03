@@ -18,6 +18,7 @@ import { ReactionChips, ReactionPicker } from '../message-reactions';
 import { SnipePanel } from '../../../components/snipe/snipe-panel';
 import { canSelectForReply, findReplyTarget, keepReplyTarget, replyIndication, replyPreview, replyQuote, toggleReplyTarget, type ReplyTargets } from '../../../lib/chat-reply';
 import { PHOTO_ACCEPT, PHOTO_SEND_FAILED, choosePhoto, describeChosenPhoto, photoError, type ChosenPhoto } from '../../../lib/chat-photo';
+import { PHOTO_UNAVAILABLE, mergePhotoUrl, photoLinkRefreshDelay, photoLinksExpired } from '../../../lib/chat-photo-links';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -38,7 +39,9 @@ export default function ConversationPage() {
 // Saved history and live events can overlap; keep one copy of each message, oldest first.
 function mergeMessages(current: ChatMessageEvent[], incoming: ChatMessageEvent[]) {
   const byId = new Map(current.map((message) => [message.id, message]));
-  for (const message of incoming) byId.set(message.id, message);
+  // SRS-201.7 (#1029): a live photo arrives with no signed link, so merging keeps the one already known
+  // rather than blanking out a photo the student is looking at. A newer link still wins.
+  for (const message of incoming) byId.set(message.id, mergePhotoUrl(byId.get(message.id), message));
   return [...byId.values()].sort((a, b) => Date.parse(a.sent_at) - Date.parse(b.sent_at) || Number(a.id) - Number(b.id));
 }
 
@@ -142,6 +145,9 @@ function Conversation() {
         // SRS-209.5: merged rather than replaced, so a target learned earlier survives a reload that no
         // longer lists it among the fifty most recent messages.
         if (data.replies) setReplyTargets((current) => ({ ...current, ...data.replies }));
+        // SRS-201.7 (#1030): when the signed links in this response stop working, so the page can ask for
+        // new ones before they do rather than leaving broken images on screen.
+        setPhotoLinksExpireAt(typeof data.photo_links_expire_at === 'number' ? data.photo_links_expire_at : null);
         setMessages((current) => mergeMessages(current, loaded));
         setHistory('loaded');
         shownRef.current = true;
@@ -156,6 +162,46 @@ function Conversation() {
     return () => controller.abort();
   }, [conversationId, reload]);
 
+  // SRS-201.7 (#1030): a signed photo link lasts an hour, and a conversation is exactly the page a student
+  // leaves open all afternoon. The page asks for fresh links shortly before the ones it holds expire, so the
+  // photos never quietly turn into broken images. A conversation with no photos never sets a timer.
+  const [photoLinksExpireAt, setPhotoLinksExpireAt] = useState<number | null>(null);
+  const hasPhotos = messages.some((message) => message.kind === 'photo');
+  useEffect(() => {
+    const delay = photoLinkRefreshDelay(photoLinksExpireAt, Date.now(), hasPhotos);
+    if (delay === null) return;
+    const timer = setTimeout(() => setReload((count) => count + 1), delay);
+    return () => clearTimeout(timer);
+  }, [photoLinksExpireAt, hasPhotos]);
+
+  // SRS-201.7 (#1029, #1030): a link that fails to load anyway -- expired early, or a storage hiccup. The
+  // first failure for a photo asks for fresh links once; if the new link fails too, the message says the photo
+  // is unavailable rather than retrying forever. Cleared on every reload so a working link is shown again.
+  const [brokenPhotos, setBrokenPhotos] = useState<Record<string, boolean>>({});
+  const retriedPhotos = useRef(false);
+  function photoFailed(messageId: string) {
+    if (!retriedPhotos.current) {
+      retriedPhotos.current = true;
+      setReload((count) => count + 1);
+      return;
+    }
+    setBrokenPhotos((current) => ({ ...current, [messageId]: true }));
+  }
+  useEffect(() => { setBrokenPhotos({}); retriedPhotos.current = false; }, [conversationId]);
+
+  // Coming back to a tab that was asleep, or restored from the back button, can mean the links expired while
+  // the page was away. A timer that was never going to fire on a sleeping tab is why this is checked here too.
+  useEffect(() => {
+    if (!hasPhotos) return;
+    const onVisible = () => {
+      if (document.visibilityState === 'visible' && photoLinksExpired(photoLinksExpireAt, Date.now())) {
+        setReload((count) => count + 1);
+      }
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => document.removeEventListener('visibilitychange', onVisible);
+  }, [photoLinksExpireAt, hasPhotos]);
+
   // #319: keep only this conversation's messages; merging by ID stops the send reply and live event both showing.
   function addMessage(message: ChatMessageEvent) {
     // Any sent or received message (in any conversation) refreshes the list's order and previews (#457).
@@ -163,6 +209,10 @@ function Conversation() {
     if (message.conversation_id !== conversationId) return;
     setMessages((current) => mergeMessages(current, [message]));
     if (message.sender_id !== meRef.current) void markRead();
+    // SRS-201.7 (#1029): a photo arriving live carries no link -- realtime reaches the browser with no server
+    // in between to sign one -- so the history is loaded again to fetch it. The sender's own send already
+    // returned a link, so this only runs for photos from other people.
+    if (message.kind === 'photo' && !message.photo_url) setReload((count) => count + 1);
     // SRS-211.1: a member whose name is not loaded yet (for example, someone who just joined) loads the names again.
     if (sendersRef.current && message.sender_id !== meRef.current && !sendersRef.current[message.sender_id]) setReload((count) => count + 1);
   }
@@ -530,7 +580,11 @@ function Conversation() {
                   {shows === 'quote' && quoted && (
                     <span className={styles.quoted}>
                       <span className={styles.quotedWho}>{quoted.sender}</span>
-                      <span className={styles.quotedText}>{quoted.kind === 'emoji' ? quoted.text : replyPreview(quoted.text, 60)}</span>
+                      {/* SRS-201.7: a reply to a photo has no text to quote, so the quote names what was
+                          answered. The photo itself is already in the conversation just above. */}
+                      <span className={styles.quotedText}>
+                        {quoted.kind === 'photo' ? 'Photo' : quoted.kind === 'emoji' ? quoted.text : replyPreview(quoted.text, 60)}
+                      </span>
                     </span>
                   )}
                   {/* SRS-209.6 (#1001): the message is a reply, but its target cannot be shown to this student.
@@ -550,16 +604,23 @@ function Conversation() {
                           send returned. Everyone else sees that a photo is there until the history gives them
                           a link of their own, which is SRS-201.7 along with refreshing a link that has expired. */}
                       {message.kind === 'photo'
-                        ? message.photo_url
-                          ? <img className={styles.photoMessage} src={message.photo_url} alt={mine ? 'Photo you sent' : `Photo from ${sender}`} />
-                          : <span className={styles.photoPending}>Photo</span>
+                        ? message.photo_url && !brokenPhotos[message.id]
+                          ? <img className={styles.photoMessage} src={message.photo_url}
+                              alt={mine ? 'Photo you sent' : `Photo from ${sender}`} loading="lazy"
+                              onError={() => photoFailed(message.id)} />
+                          : <span className={styles.photoPending}>{message.photo_url ? PHOTO_UNAVAILABLE : 'Photo'}</span>
                         : message.text}
                     </p>
+                    {/* SRS-201.7: photos are now in the conversation, and socialu_react_to_message accepts
+                        only text and emoji (SRS-210), so a React button on a photo would always fail. It is
+                        hidden rather than left to refuse what it offers. */}
+                    {message.kind !== 'photo' && (
                     <button ref={(button) => { reactButtons.current[message.id] = button; }} type="button" className={styles.reactButton}
                       onClick={() => setReactingTo(picking ? null : message.id)} aria-expanded={picking}
                       aria-label={mine ? 'React to your message' : `React to ${sender}’s message`} title="React">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 11v1a10 10 0 1 1-9-10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><path d="M9 9h.01" /><path d="M15 9h.01" /><path d="M16 5h6" /><path d="M19 2v6" /></svg>
                     </button>
+                    )}
                     {canReply && (
                       <button ref={(button) => { replyButtons.current[message.id] = button; }} type="button" className={styles.replyButton}
                         onClick={() => setReplyingTo((current) => toggleReplyTarget(current, message.id))} aria-pressed={replying}
