@@ -38,15 +38,15 @@ Statuses: PROPOSED → DESIGN APPROVED → BLOCKOUT → GAMEPLAY IMPLEMENTED →
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | A | 🇧🇷 Brazil | Amazon Canopy Run | 3 · Challenger | vine swings | TESTING | Stage A refined · awaiting acceptance | pending |
 | A | 🇧🇴 Bolivia | Salar de Uyuni: The Salt Mirror | 2 · Adventurer | switch-raised salt blocks | TESTING | Stage A refined · awaiting acceptance | pending |
-| A | 🇺🇾 Uruguay | Colonia del Sacramento: Lighthouse Quarter | 1 · Explorer | city-gate plate | TESTING | prototype art · Stage C pending | pending |
-| A | 🇵🇪 Peru | Inca Trail: Terraces to the Sun Gate | 4 · Expert Explorer | terrace step-ups, frayed bridge | TESTING | prototype art · Stage C pending | pending |
-| B | 🇦🇷 Argentina | Los Glaciares: Perito Moreno Valley | 3 · Challenger | calving ice and floes | TESTING | prototype art · Stage B pending | pending |
-| B | 🇨🇱 Chile | El Tatio: Geysers at Dawn | 4 · Expert Explorer | timed geyser jets | TESTING | prototype art · Stage B pending | pending |
-| B | 🇨🇴 Colombia | Cocora Valley: Cloud Forest Climb | 4 · Expert Explorer | climbable walls | TESTING | prototype art · Stage B pending | pending |
-| B | 🇪🇨 Ecuador | Galápagos: Lava Coast | 3 · Challenger | wave surges | TESTING | prototype art · Stage B pending | pending |
-| C | 🇬🇾 Guyana | Kaieteur Falls: Potaro Gorge | 2 · Adventurer | river-current shelves | TESTING | prototype art · Stage B pending | pending |
-| C | 🇵🇾 Paraguay | Trinidad: The Jesuit Mission Trail | 1 · Explorer | collapsing earth banks | TESTING | prototype art · Stage C pending | pending |
-| C | 🇸🇷 Suriname | Paramaribo: Historic Waterfront | 2 · Adventurer | riverboat crossings | TESTING | prototype art · Stage C pending | pending |
+| A | 🇺🇾 Uruguay | Colonia del Sacramento: Lighthouse Quarter | 1 · Explorer | city-gate plate | TESTING | Batch C polished · awaiting review | pending |
+| A | 🇵🇪 Peru | Inca Trail: Terraces to the Sun Gate | 4 · Expert Explorer | terrace step-ups, frayed bridge | TESTING | Batch C polished · awaiting review | pending |
+| B | 🇦🇷 Argentina | Los Glaciares: Perito Moreno Valley | 3 · Challenger | calving ice and floes | TESTING | Batch B polished · awaiting review | pending |
+| B | 🇨🇱 Chile | El Tatio: Geysers at Dawn | 4 · Expert Explorer | timed geyser jets | TESTING | Batch B polished · awaiting review | pending |
+| B | 🇨🇴 Colombia | Cocora Valley: Cloud Forest Climb | 4 · Expert Explorer | climbable walls | TESTING | Batch B polished · awaiting review | pending |
+| B | 🇪🇨 Ecuador | Galápagos: Lava Coast | 3 · Challenger | wave surges | TESTING | Batch B polished · awaiting review | pending |
+| C | 🇬🇾 Guyana | Kaieteur Falls: Potaro Gorge | 2 · Adventurer | river-current shelves | TESTING | Batch B polished · awaiting review | pending |
+| C | 🇵🇾 Paraguay | Trinidad: The Jesuit Mission Trail | 1 · Explorer | collapsing earth banks | TESTING | Batch C polished · awaiting review | pending |
+| C | 🇸🇷 Suriname | Paramaribo: Historic Waterfront | 2 · Adventurer | riverboat crossings | TESTING | Batch C polished · awaiting review | pending |
 | C | 🇻🇪 Venezuela | Angel Falls: The Auyán-tepui Descent | 5 · Master Explorer | descent with climb-backs | TESTING | Stage A refined · awaiting acceptance | pending |
 
 ## Art polish (in progress)
@@ -54,10 +54,11 @@ Statuses: PROPOSED → DESIGN APPROVED → BLOCKOUT → GAMEPLAY IMPLEMENTED →
 A visual production pass is under way. It keeps every route, mechanic and test result; only scenery, terrain bodies, water, vegetation, lighting and the country cards change. The pass works in stages:
 
 - **Stage A, refined and awaiting acceptance:** Bolivia (an open landscape), Brazil (a dense rainforest) and Venezuela (a vertical tepui landscape). These prove the new standard. After the first review, a focused refinement pass gave Brazil rounded mossy platform edges and varied trees and lilies, Venezuela finer tepui rock, broken cliff silhouettes and layered clouds, and Bolivia stained, readable landing edges against the salt.
-- **Stage B, next:** Argentina, Chile, Colombia, Ecuador and Guyana.
-- **Stage C:** Paraguay, Peru, Suriname and Uruguay.
+- **Batch B, done and awaiting review:** Argentina, Chile, Colombia, Ecuador and Guyana. Guyana's and Ecuador's logged timing failures were fixed in this batch. Review package: [review/south-america/batch-b/README.md](review/south-america/batch-b/README.md).
+- **Batch C, done and awaiting review:** Paraguay, Peru, Suriname and Uruguay. Suriname's logged timing hit was reproduced and traced to the test bot, not the level. Review package: [review/south-america/batch-c/README.md](review/south-america/batch-c/README.md).
+- **Follow-up to the Batch B review:** country guides now describe each level's own place, Chile's detached slivers and Colombia's ribbon ridges are fixed, and Ecuador's cold-start hitch was profiled. Fresh production evidence: [review/south-america/followup-production/README.md](review/south-america/followup-production/README.md) and [review/south-america/guide-fix/README.md](review/south-america/guide-fix/README.md).
 
-Stage B starts only after Stage A is accepted. The review package, with before-and-after sheets for every shot, the visual checklist and the performance results, is in [review/south-america/art-polish/README.md](review/south-america/art-polish/README.md).
+All twelve countries are polished and stay at TESTING until people have reviewed them. What a person still has to do, country by country, is in the [acceptance checklist](review/south-america/ACCEPTANCE-CHECKLIST.md). The review package, with before-and-after sheets for every shot, the visual checklist and the performance results, is in [review/south-america/art-polish/README.md](review/south-america/art-polish/README.md).
 
 Shared improvements now available to every country:
 
@@ -66,7 +67,7 @@ Shared improvements now available to every country:
 - an instanced South American flora library with breeze animation
 - a capture tool for four review shots per country, with frame-time, load and memory measurement
 
-**Country cards.** Each card now shows the playable level's own location, featured landmark and an in-game preview image, instead of the first landmark of the general country profile. Venezuela's card now names Angel Falls and Canaima, not Coro, and its level is titled "Angel Falls: The Auyán-tepui Descent". A test checks every built level's card against its discovery and landmark list.
+**Country cards.** Each card now shows the playable level's own location, featured landmark and an in-game preview image, instead of the first landmark of the general country profile. Venezuela's card now names Angel Falls and Canaima, not Coro, and its level is titled "Angel Falls: The Auyán-tepui Descent". A test checks every built level's card against its discovery and landmark list. The in-level Country guide follows the same rule: its Place, Landscape and photograph come from the level (El Tatio, Cocora Valley, the Galápagos), not the general profile (Rapa Nui, Cartagena, Quito), while the capital stays as catalogued. `__tests__/world-explorer-guide-destination.test.ts` covers it.
 
 ## Stage A acceptance testing
 
@@ -82,11 +83,14 @@ The game plays each built level at the difficulty its data names: difficulty 1 f
 
 Venezuela's missing coin (reachable at difficulty 3) and the black shards in its falling view (fixed) are closed.
 
-**Found for Stage B and C, not yet addressed:**
+**Found for Batches B and C:**
 
-- Guyana's bonus route can fail at one timing, on the slick spray ledge in a gust.
-- Ecuador's and Suriname's routes each take a hit at one timing.
-- Argentina's `ar-coin-20` needs a step back at difficulty 2.
+- Fixed in Batch B: Guyana's bonus route could fail on the slick spray ledge in a gust (the ledge now has grip), and Ecuador's route took a hit at one timing (the second surge's left edge moved). A 24-timing sweep of all five Batch B levels shows no damage or failures.
+- Batch C: Suriname's hit reproduces in 2 of 72 runs of a 24-timing sweep, both on `sr-market` behind the mango beetle. The trace shows the bot hopping short behind the beetle after the drop; the mechanics are unchanged and a person's judgement is wanted. Paraguay, Peru and Uruguay show no damage in 72 runs each.
+- Ecuador's cold-start hitch is traced and fixed in shared scene code, which waits for the shared-scene team's agreement. The cause was a shadow type three.js r186 swaps on the first shadow pass, plus shaders compiled on first sight. No level in the five regions checked now links a shader after it is ready, and every capture is pixel-identical ([review/south-america/shader-prep/README.md](review/south-america/shader-prep/README.md)).
+- Argentina's Fitz Roy snow discs are replaced by snow caps that follow the rock ([review/south-america/argentina-snow/README.md](review/south-america/argentina-snow/README.md)).
+- Still open, for people: Colombia on a real phone (285k triangles), and Brazil's and Suriname's patrol fairness. Suriname's two damaging sweep timings stay documented until then.
+- By design: Argentina's `ar-coin-20` is reached by a step back at difficulty 2.
 
 ## Validation results
 
