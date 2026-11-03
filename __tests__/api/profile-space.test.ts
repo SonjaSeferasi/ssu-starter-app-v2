@@ -3,7 +3,7 @@ import { DEFAULT_LOOK, profileLookInput, helloText } from '../../lib/profile-spa
 import { findStickers, STICKER_CATALOG } from '../../lib/profile-stickers';
 const { getClient,getUser,rpc }=vi.hoisted(()=>({getClient:vi.fn(),getUser:vi.fn(),rpc:vi.fn()}));
 vi.mock('../../lib/supabase',()=>({getSupabaseClient:getClient}));
-import { GET,PUT,POST,DELETE } from '../../app/api/profiles/space/route';
+import { GET,PUT,POST,DELETE,PATCH } from '../../app/api/profiles/space/route';
 const user={id:'auth-1',email_confirmed_at:'2026-10-08T12:00:00Z'};
 const token='header.'+Buffer.from(JSON.stringify({iat:1791849600,session_id:'11111111-1111-4111-8111-111111111111'})).toString('base64url')+'.signature';
 let result:{data:unknown;error:unknown};
@@ -84,4 +84,27 @@ describe('profile look validation',()=>{
     expect(findStickers('tech','controller').map(sticker=>sticker.kind)).toEqual(['navy_controller']);
     expect(findStickers('outdoors','camp').map(sticker=>sticker.kind)).toEqual(['campfire','camping_tent']);
   });
+});
+
+describe('Board publishing',()=>{
+ const board={items:[{id:'note-one',kind:'note',x:20,y:22,width:28,rotation:-3,text:'Small wins',color:'pink'}]};
+ it('merges the board into the latest owner look and confirms the persisted value',async()=>{
+  let latest:any={...DEFAULT_LOOK,hometown:'Salem'};
+  rpc.mockImplementation(async(fn,args)=>{
+   if(fn==='socialu_session_guard')return {data:true,error:null};
+   if(args.p_action==='save_look')latest=args.p_look;
+   // Simulate JSONB key ordering in the database response.
+   return {data:{look:{...latest,...(latest.board?{board:{items:latest.board.items.map((item:any)=>Object.fromEntries(Object.entries(item).reverse()))}}:{})},notes:[]},error:null};
+  });
+  const response=await PATCH(request('PATCH',{field:'board',value:board,username:'not-the-owner'}));
+  expect(response.status).toBe(200);expect(latest.hometown).toBe('Salem');expect(latest.board).toEqual(board);
+  expect(rpc).toHaveBeenCalledWith('socialu_profile_space',{p_auth_id:user.id,p_action:'save_look',p_look:latest});
+ });
+ it('does not claim success if storage drops the board',async()=>{
+  const response=await PATCH(request('PATCH',{field:'board',value:board}));expect(response.status).toBe(503);
+ });
+ it('rejects invalid board content before any space write',async()=>{
+  const response=await PATCH(request('PATCH',{field:'board',value:{items:[{...board.items[0],kind:'project',url:'javascript:alert(1)'}]}}));
+  expect(response.status).toBe(400);expect(rpc.mock.calls.some(([fn,args])=>fn==='socialu_profile_space'&&args.p_action==='save_look')).toBe(false);
+ });
 });

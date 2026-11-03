@@ -1,3 +1,4 @@
+import { boardInput, type ProfileBoard } from './profile-board';
 import { STICKER_CATALOG, type CatalogStickerKind } from './profile-stickers';
 import { PROFILE_THEMES, type ProfileTheme } from './profile-themes';
 import { parseCornerArtwork, type CornerArtwork } from './profile-corner-artwork';
@@ -14,7 +15,7 @@ export const STICKER_SCALE = { min: 0.5, max: 2 } as const;
 // scale is omitted at the default size (1), so looks saved before resizing existed stay identical.
 export type SpaceSticker = { id: string; kind: SpaceStickerKind; x: number; y: number; rotation: number; scale?: number; position?: { x: number; y: number } };
 export type ProfileLook = {
-  palette: typeof SPACE_PALETTES[number]; frame: typeof SPACE_FRAMES[number]; cover: typeof SPACE_COVERS[number];
+  board?: ProfileBoard; palette: typeof SPACE_PALETTES[number]; frame: typeof SPACE_FRAMES[number]; cover: typeof SPACE_COVERS[number];
   layout: 'about-first' | 'campus-first'; stickers: SpaceSticker[]; theme?: ProfileTheme; hometown?: string; homeCountry?: string; cornerArtwork?: CornerArtwork; coverKey?: string; cardStickers?: { about: SpaceSticker[]; notes: SpaceSticker[] }; cardFinishes?: { about: CardFinish; notes: CardFinish };
 };
 export const DECORATION_AREAS = ['cover','about','notes'] as const;
@@ -75,7 +76,7 @@ export function profileLookInput(value: unknown): ProfileLook {
     if (!finishes || !CARD_FINISHES.includes(finishes.about) || !CARD_FINISHES.includes(finishes.notes)) throw new Error('Choose a valid card finish.');
     cardFinishes={about:finishes.about,notes:finishes.notes};
   }
-  return { palette: look.palette as ProfileLook['palette'], frame: look.frame as ProfileLook['frame'], cover: look.cover as ProfileLook['cover'], layout: look.layout as ProfileLook['layout'], stickers, ...(hometown!==undefined?{hometown}:{}), ...(homeCountry!==undefined?{homeCountry}:{}), ...(cornerArtwork?{cornerArtwork}:{}), ...(look.theme ? {theme:look.theme as ProfileTheme}:{}), ...(look.coverKey ? { coverKey: look.coverKey as string } : {}), ...(cardStickers?{cardStickers}:{}), ...(cardFinishes?{cardFinishes}:{}) };
+  return { palette: look.palette as ProfileLook['palette'], frame: look.frame as ProfileLook['frame'], cover: look.cover as ProfileLook['cover'], layout: look.layout as ProfileLook['layout'], stickers, ...(look.board!==undefined?{board:boardInput(look.board)}:{}), ...(hometown!==undefined?{hometown}:{}), ...(homeCountry!==undefined?{homeCountry}:{}), ...(cornerArtwork?{cornerArtwork}:{}), ...(look.theme ? {theme:look.theme as ProfileTheme}:{}), ...(look.coverKey ? { coverKey: look.coverKey as string } : {}), ...(cardStickers?{cardStickers}:{}), ...(cardFinishes?{cardFinishes}:{}) };
 }
 
 export function helloText(value: unknown) {

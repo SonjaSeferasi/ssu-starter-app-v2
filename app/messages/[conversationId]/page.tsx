@@ -17,7 +17,8 @@ import { InvitePicker } from '../invite-picker';
 import { ReactionChips, ReactionPicker } from '../message-reactions';
 import { SnipePanel } from '../../../components/snipe/snipe-panel';
 import { canSelectForReply, findReplyTarget, keepReplyTarget, replyIndication, replyPreview, replyQuote, toggleReplyTarget, type ReplyTargets } from '../../../lib/chat-reply';
-import { PHOTO_ACCEPT, choosePhoto, describeChosenPhoto, photoError, type ChosenPhoto } from '../../../lib/chat-photo';
+import { PHOTO_ACCEPT, PHOTO_SEND_FAILED, choosePhoto, describeChosenPhoto, photoError, type ChosenPhoto } from '../../../lib/chat-photo';
+import { PHOTO_UNAVAILABLE, mergePhotoUrl, photoLinkRefreshDelay, photoLinksExpired } from '../../../lib/chat-photo-links';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -38,7 +39,9 @@ export default function ConversationPage() {
 // Saved history and live events can overlap; keep one copy of each message, oldest first.
 function mergeMessages(current: ChatMessageEvent[], incoming: ChatMessageEvent[]) {
   const byId = new Map(current.map((message) => [message.id, message]));
-  for (const message of incoming) byId.set(message.id, message);
+  // SRS-201.7 (#1029): a live photo arrives with no signed link, so merging keeps the one already known
+  // rather than blanking out a photo the student is looking at. A newer link still wins.
+  for (const message of incoming) byId.set(message.id, mergePhotoUrl(byId.get(message.id), message));
   return [...byId.values()].sort((a, b) => Date.parse(a.sent_at) - Date.parse(b.sent_at) || Number(a.id) - Number(b.id));
 }
 
@@ -142,6 +145,9 @@ function Conversation() {
         // SRS-209.5: merged rather than replaced, so a target learned earlier survives a reload that no
         // longer lists it among the fifty most recent messages.
         if (data.replies) setReplyTargets((current) => ({ ...current, ...data.replies }));
+        // SRS-201.7 (#1030): when the signed links in this response stop working, so the page can ask for
+        // new ones before they do rather than leaving broken images on screen.
+        setPhotoLinksExpireAt(typeof data.photo_links_expire_at === 'number' ? data.photo_links_expire_at : null);
         setMessages((current) => mergeMessages(current, loaded));
         setHistory('loaded');
         shownRef.current = true;
@@ -156,6 +162,46 @@ function Conversation() {
     return () => controller.abort();
   }, [conversationId, reload]);
 
+  // SRS-201.7 (#1030): a signed photo link lasts an hour, and a conversation is exactly the page a student
+  // leaves open all afternoon. The page asks for fresh links shortly before the ones it holds expire, so the
+  // photos never quietly turn into broken images. A conversation with no photos never sets a timer.
+  const [photoLinksExpireAt, setPhotoLinksExpireAt] = useState<number | null>(null);
+  const hasPhotos = messages.some((message) => message.kind === 'photo');
+  useEffect(() => {
+    const delay = photoLinkRefreshDelay(photoLinksExpireAt, Date.now(), hasPhotos);
+    if (delay === null) return;
+    const timer = setTimeout(() => setReload((count) => count + 1), delay);
+    return () => clearTimeout(timer);
+  }, [photoLinksExpireAt, hasPhotos]);
+
+  // SRS-201.7 (#1029, #1030): a link that fails to load anyway -- expired early, or a storage hiccup. The
+  // first failure for a photo asks for fresh links once; if the new link fails too, the message says the photo
+  // is unavailable rather than retrying forever. Cleared on every reload so a working link is shown again.
+  const [brokenPhotos, setBrokenPhotos] = useState<Record<string, boolean>>({});
+  const retriedPhotos = useRef(false);
+  function photoFailed(messageId: string) {
+    if (!retriedPhotos.current) {
+      retriedPhotos.current = true;
+      setReload((count) => count + 1);
+      return;
+    }
+    setBrokenPhotos((current) => ({ ...current, [messageId]: true }));
+  }
+  useEffect(() => { setBrokenPhotos({}); retriedPhotos.current = false; }, [conversationId]);
+
+  // Coming back to a tab that was asleep, or restored from the back button, can mean the links expired while
+  // the page was away. A timer that was never going to fire on a sleeping tab is why this is checked here too.
+  useEffect(() => {
+    if (!hasPhotos) return;
+    const onVisible = () => {
+      if (document.visibilityState === 'visible' && photoLinksExpired(photoLinksExpireAt, Date.now())) {
+        setReload((count) => count + 1);
+      }
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => document.removeEventListener('visibilitychange', onVisible);
+  }, [photoLinksExpireAt, hasPhotos]);
+
   // #319: keep only this conversation's messages; merging by ID stops the send reply and live event both showing.
   function addMessage(message: ChatMessageEvent) {
     // Any sent or received message (in any conversation) refreshes the list's order and previews (#457).
@@ -163,6 +209,10 @@ function Conversation() {
     if (message.conversation_id !== conversationId) return;
     setMessages((current) => mergeMessages(current, [message]));
     if (message.sender_id !== meRef.current) void markRead();
+    // SRS-201.7 (#1029): a photo arriving live carries no link -- realtime reaches the browser with no server
+    // in between to sign one -- so the history is loaded again to fetch it. The sender's own send already
+    // returned a link, so this only runs for photos from other people.
+    if (message.kind === 'photo' && !message.photo_url) setReload((count) => count + 1);
     // SRS-211.1: a member whose name is not loaded yet (for example, someone who just joined) loads the names again.
     if (sendersRef.current && message.sender_id !== meRef.current && !sendersRef.current[message.sender_id]) setReload((count) => count + 1);
   }
@@ -263,6 +313,10 @@ function Conversation() {
 
   async function send(event: FormEvent) {
     event.preventDefault();
+    // SRS-201.6 (#1024): a chosen photo is what Send sends. The schema gives a photo message no text of its
+    // own, so a photo and a caption are two messages; anything typed stays in the box and is sent next,
+    // rather than being thrown away or quietly attached to something that cannot carry it.
+    if (photo) { await sendPhoto(photo); return; }
     if (!text.trim()) return;
     // SRS-209.3 (#992): a chosen message is sent with the reply, so the two are associated (SRS-209.4).
     // The choice is only cleared once the reply is actually sent, so a failed send keeps it for a retry.
@@ -312,12 +366,17 @@ function Conversation() {
 
   // SRS-201.3 (#1013): the photo the student has chosen to send. Choosing only; the formats are
   // SRS-201.4, the size limit SRS-201.5, and uploading and sending it SRS-201.6.
-  const [photo, setPhoto] = useState<ChosenPhoto | null>(null);
+  // SRS-201.6 (#1024): the chosen file itself is kept, not only its name and size, because sending it uploads it.
+  const [photo, setPhoto] = useState<File | null>(null);
   const photoInput = useRef<HTMLInputElement>(null);
+  // SRS-201.6 (#1025): the camera is a second input on the same handler. Clearing has to reach both, since a
+  // photo taken with the camera is cleared by the same button as one chosen from the device.
+  const cameraInput = useRef<HTMLInputElement>(null);
   function clearPhoto() {
     setPhoto(null);
     // Clearing the input's value matters: without it, choosing the same file again fires no change.
     if (photoInput.current) photoInput.current.value = '';
+    if (cameraInput.current) cameraInput.current.value = '';
     photoInput.current?.focus();
   }
 
@@ -333,10 +392,41 @@ function Conversation() {
       setError(refusal);
       setPhoto(null);
       if (photoInput.current) photoInput.current.value = '';
+      if (cameraInput.current) cameraInput.current.value = '';
       return;
     }
     setError('');
     setPhoto(chosen);
+  }
+
+  // SRS-201.6 (#1022, #1023, #1024): send the chosen photo. It goes as form data rather than JSON because the
+  // file is sent as it is, with no re-encoding in the browser. The server reads the sender from the token, so
+  // the form carries nothing but the photo.
+  // The chosen photo is only cleared once it has actually been sent, so a failed send keeps it for a retry --
+  // the same rule the reply target follows.
+  async function sendPhoto(file: File) {
+    if (sendingRef.current) return;
+    sendingRef.current = true;
+    setSending(true);
+    setError('');
+    try {
+      const form = new FormData();
+      form.append('photo', file);
+      const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/photos`, {
+        method: 'POST', headers: { Authorization: `Bearer ${storedAccessToken() ?? ''}` }, body: form,
+      });
+      const data = await response.json().catch(() => ({}));
+      if (response.status === 404) { setHistory('denied'); return; }
+      if (!response.ok) throw new Error(data.error || PHOTO_SEND_FAILED);
+      addMessage(data.message);
+      setMyStudentId((current) => current ?? data.message.sender_id);
+      clearPhoto();
+    } catch (err) {
+      setError(err instanceof Error && !(err instanceof TypeError) ? err.message : PHOTO_SEND_FAILED);
+    } finally {
+      sendingRef.current = false;
+      setSending(false);
+    }
   }
 
   // SRS-209.2 (#988): choosing a message moves the cursor to the message box, so the reply can be written at once.
@@ -469,7 +559,8 @@ function Conversation() {
             : messages.map((message, index) => {
               const mine = message.sender_id === myStudentId;
               // SRS-201.9 (#800): an emoji message is shown larger, without a bubble, on the sender's side.
-              const bubble = `${styles.bubble}${mine ? ` ${styles.bubbleOwn}` : ''}${message.kind === 'emoji' ? ` ${styles.emojiBubble}` : ''}`;
+              // SRS-201.6 (#1024): a photo bubble holds the photo itself, so it drops the text padding.
+              const bubble = `${styles.bubble}${mine ? ` ${styles.bubbleOwn}` : ''}${message.kind === 'emoji' ? ` ${styles.emojiBubble}` : ''}${message.kind === 'photo' ? ` ${styles.photoBubble}` : ''}`;
               // SRS-211.1 (#831): every message is read out with its sender's name; in groups the name is also
               // shown above each run of messages from another member.
               const sender = mine ? 'You' : senders[message.sender_id]?.name ?? (info?.kind === 'group' ? 'A member' : peer?.name ?? 'Them');
@@ -489,7 +580,11 @@ function Conversation() {
                   {shows === 'quote' && quoted && (
                     <span className={styles.quoted}>
                       <span className={styles.quotedWho}>{quoted.sender}</span>
-                      <span className={styles.quotedText}>{quoted.kind === 'emoji' ? quoted.text : replyPreview(quoted.text, 60)}</span>
+                      {/* SRS-201.7: a reply to a photo has no text to quote, so the quote names what was
+                          answered. The photo itself is already in the conversation just above. */}
+                      <span className={styles.quotedText}>
+                        {quoted.kind === 'photo' ? 'Photo' : quoted.kind === 'emoji' ? quoted.text : replyPreview(quoted.text, 60)}
+                      </span>
                     </span>
                   )}
                   {/* SRS-209.6 (#1001): the message is a reply, but its target cannot be shown to this student.
@@ -504,13 +599,28 @@ function Conversation() {
                     <p className={bubble}>
                       <span className={styles.srOnly}>
                         {quoted ? `${sender}, replying to ${quoted.sender}: ` : `${sender}: `}
-                      </span>{message.text}
+                      </span>
+                      {/* SRS-201.6 (#1024): the sender sees the photo they just sent, from the signed link the
+                          send returned. Everyone else sees that a photo is there until the history gives them
+                          a link of their own, which is SRS-201.7 along with refreshing a link that has expired. */}
+                      {message.kind === 'photo'
+                        ? message.photo_url && !brokenPhotos[message.id]
+                          ? <img className={styles.photoMessage} src={message.photo_url}
+                              alt={mine ? 'Photo you sent' : `Photo from ${sender}`} loading="lazy"
+                              onError={() => photoFailed(message.id)} />
+                          : <span className={styles.photoPending}>{message.photo_url ? PHOTO_UNAVAILABLE : 'Photo'}</span>
+                        : message.text}
                     </p>
+                    {/* SRS-201.7: photos are now in the conversation, and socialu_react_to_message accepts
+                        only text and emoji (SRS-210), so a React button on a photo would always fail. It is
+                        hidden rather than left to refuse what it offers. */}
+                    {message.kind !== 'photo' && (
                     <button ref={(button) => { reactButtons.current[message.id] = button; }} type="button" className={styles.reactButton}
                       onClick={() => setReactingTo(picking ? null : message.id)} aria-expanded={picking}
                       aria-label={mine ? 'React to your message' : `React to ${sender}’s message`} title="React">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 11v1a10 10 0 1 1-9-10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><path d="M9 9h.01" /><path d="M15 9h.01" /><path d="M16 5h6" /><path d="M19 2v6" /></svg>
                     </button>
+                    )}
                     {canReply && (
                       <button ref={(button) => { replyButtons.current[message.id] = button; }} type="button" className={styles.replyButton}
                         onClick={() => setReplyingTo((current) => toggleReplyTarget(current, message.id))} aria-pressed={replying}
@@ -586,10 +696,21 @@ function Conversation() {
               <span className={styles.srOnly}>Choose a photo</span>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="m21 15-5-5L5 21" /></svg>
             </label>
+            {/* SRS-201.6 (#1025): take the photo instead of choosing one. capture asks a phone for its camera
+                directly; a browser that has none ignores the hint and opens the picker, which is a reasonable
+                thing for this button to do rather than an error. What comes back is judged by the same rules. */}
+            <input ref={cameraInput} id="message-camera" type="file" accept={PHOTO_ACCEPT} capture="environment"
+              className={styles.srOnly} onChange={(event) => reviewPhoto(event.target.files)} disabled={sending} />
+            <label htmlFor="message-camera" className={styles.photoToggle} title="Take a photo">
+              <span className={styles.srOnly}>Take a photo</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3Z" /><circle cx="12" cy="13" r="3.5" /></svg>
+            </label>
             <label htmlFor="message-text" className={styles.srOnly}>Message</label>
             <input ref={messageInput} id="message-text" className={styles.input} value={text} onChange={(event) => setText(event.target.value)}
-              placeholder={replyTarget ? `Reply to ${replyTargetSender}…` : 'Message…'} maxLength={500} autoComplete="off" disabled={sending} />
-            <button type="submit" className={styles.send} disabled={sending || !text.trim()} aria-label="Send message">
+              placeholder={replyTarget ? `Reply to ${replyTargetSender}…` : photo ? 'Photo ready to send…' : 'Message…'} maxLength={500} autoComplete="off" disabled={sending} />
+            {/* SRS-201.6 (#1024): Send is available for a chosen photo as well as for typed text. */}
+            <button type="submit" className={styles.send} disabled={sending || (!text.trim() && !photo)}
+              aria-label={photo ? 'Send photo' : 'Send message'}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 2 11 13" /><path d="M22 2 15 22l-4-9-9-4 20-7Z" /></svg>
             </button>
           </form>

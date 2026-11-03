@@ -1,3 +1,4 @@
+import { boardInput } from '../../../../lib/profile-board';
 import { AccountError, accountClient, accountResponse, jsonBody, verifiedUser } from '../../../../lib/socialu-account';
 import { applyCornerArtwork, cornerArtworkPatch } from '../../../../lib/profile-corner-artwork';
 import { countryInput } from '../../../../lib/profile-countries';
@@ -89,6 +90,16 @@ export async function PATCH(request:Request) {
   try {
     const user=await verifiedUser(request);
     const body=await jsonBody(request),isHometown=body.field==='hometown';
+    if(body.field==='board'){
+      let board;try{board=boardInput(body.value);}catch(error){throw new AccountError((error as Error).message,400);}
+      const current=await call({p_auth_id:user.id,p_action:'read'});
+      if(current===null)return ready(null);
+      const look=profileLookInput({...current.look,board});
+      if(await call({p_auth_id:user.id,p_action:'save_look',p_look:look})===null)return ready(null);
+      const confirmed=await call({p_auth_id:user.id,p_action:'read'});
+      if(JSON.stringify(confirmed?.look?.board?boardInput(confirmed.look.board):null)!==JSON.stringify(board))throw new AccountError('Your board could not be confirmed. Please try again.',503);
+      return ready(confirmed);
+    }
     let patch;let hometown:string|undefined;let homeCountry:string|undefined;
     try{if(isHometown){hometown=hometownInput(body.value);if(body.countryCode!==undefined)homeCountry=countryInput(body.countryCode);}else patch=cornerArtworkPatch(body);}catch(error){throw new AccountError((error as Error).message,400);}
     const current=await call({p_auth_id:user.id,p_action:'read'});

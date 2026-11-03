@@ -13,6 +13,7 @@ import { countryByCode,countryFlag } from '../../lib/profile-countries';
 import { FRAME_OPTIONS, FRAME_COLLECTIONS, framesInCollection, type FrameCollection } from '../../lib/profile-frames';
 import { STICKER_CATEGORIES, findStickers, type StickerCategory } from '../../lib/profile-stickers';
 import { Avatar, PostGrid, profileFetch, useProfileGate } from './profile-view';
+import { ProfileBoard } from './profile-board';
 import { ProfileContentTabs, type ProfileCategory } from './profile-content-tabs';
 import { clearProfileLookDraft, readProfileLookDraft, sameProfileLook, saveProfileLook, writeProfileLookDraft } from '../../lib/profile-look-save';
 import { SessionNotice } from '../navigation/section-page';
@@ -269,7 +270,7 @@ function Decorator({profile}: {profile:StudentProfile}) {
           <section className={styles.previewPosts}>
             <ProfileContentTabs value={previewCategory} onChange={setPreviewCategory} own={!visitorPreview} prefix="decoration" panelId="decoration-content" className={styles.previewContentTabs}/>
             <div id="decoration-content" role="tabpanel" aria-labelledby={`decoration-tab-${previewCategory}`} tabIndex={0} className={styles.previewContent}>
-              {previewCategory==='posts'?<><h3>Your posts</h3>{postsError?<p>Your recent posts couldn’t load.</p>:posts===null?<p role="status">Loading your posts…</p>:!posts.length?<p>Your photos and campus moments will appear here.</p>:<div className={styles.postSamples}>{posts.map(post=><article key={post.postId}>{post.photos[0]&&<img src={post.photos[0].url} alt="Your post photo"/>}<p>{post.textContent||'A campus moment'}</p></article>)}</div>}</>
+              {previewCategory==='board'?<ProfileBoard profile={{...profile,is_own:false}} look={look} status={space.status} onSaved={()=>{}}/>:previewCategory==='posts'?<><h3>Your posts</h3>{postsError?<p>Your recent posts couldn’t load.</p>:posts===null?<p role="status">Loading your posts…</p>:!posts.length?<p>Your photos and campus moments will appear here.</p>:<div className={styles.postSamples}>{posts.map(post=><article key={post.postId}>{post.photos[0]&&<img src={post.photos[0].url} alt="Your post photo"/>}<p>{post.textContent||'A campus moment'}</p></article>)}</div>}</>
                 :<><h3>{previewCategory==='tagged'?'Tagged posts':'Saved posts'}{previewCount!==null&&<small> · {previewCount}</small>}</h3>{previewCategory==='saved'&&<p className={styles.help}><LockKeyhole size={12}/>Only you can see your saved posts.</p>}<PostGrid username={profile.username} category={previewCategory} own onCount={setPreviewCount}/></>}
             </div>
           </section>

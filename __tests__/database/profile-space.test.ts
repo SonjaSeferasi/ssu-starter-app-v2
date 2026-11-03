@@ -19,6 +19,11 @@ it('persists owner decorations, controls hello-note access, soft removal, blocki
     const customCover={...decorated,coverKey:`profile-covers/${testUid(1)}/22222222-2222-4222-8222-222222222222.png`};
     await call(1,'save_look',null,customCover);
     expect((await call(2,'read','dorm1')).look).toEqual(customCover);
+    const boardLook={...customCover,board:{items:[{id:'saved-note',kind:'note',text:'Small wins',x:12.75,y:30.125,width:28,rotation:-3,color:'pink'},{id:'saved-sticker',kind:'sticker',sticker:'star',x:70,y:50,width:15,rotation:5}]}};
+    await call(1,'save_look',null,boardLook);
+    expect((await call(1)).look).toEqual(boardLook);
+    expect((await call(2,'read','dorm1')).look).toEqual(boardLook);
+    await expect(call(2,'save_look','dorm1',boardLook)).rejects.toThrow(/own space/);
     // Exercise every catalog entry through real PostgreSQL to catch API/RPC allowlist drift.
     for(let offset=0;offset<SPACE_STICKERS.length;offset+=8) {
       const look={...DEFAULT_LOOK,stickers:SPACE_STICKERS.slice(offset,offset+8).map((kind,index)=>({id:`sample-${index}`,kind,x:50,y:50,rotation:0}))};
