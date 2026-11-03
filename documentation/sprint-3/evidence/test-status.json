@@ -1,0 +1,26 @@
+{
+  "status": "COMPLETED_WITH_FAILURES",
+  "files": {
+    "passed": 117,
+    "failed": 4,
+    "total": 121
+  },
+  "tests": {
+    "passed": 2107,
+    "failed": 5,
+    "total": 2112
+  },
+  "reportedFailures": [
+    "FAIL  __tests__/world-explorer-level-design.test.ts > Design manifest and production tracker > covers the 193 member  states at exactly the 39/39/39/38/38 tier split, all unreviewed",
+    "FAIL  __tests__/world-explorer-melanesia.test.ts > FJI Melanesia adventure > has a distinct animated patrol model  with room to land at each checkpoint",
+    "FAIL  __tests__/world-explorer-melanesia.test.ts > VUT Melanesia adventure > has a distinct animated patrol model  with room to land at each checkpoint",
+    "FAIL  __tests__/world-explorer-oceania-audit.test.ts > audits the current catalogue and protects gameplay outside  this four-country batch",
+    "FAIL  __tests__/world-explorer-west-asia.test.ts > SAU West Asia review candidate > uses its sourced setting and  measures at the authored tier in the runtime configuration"
+  ],
+  "productionBuild": "PASSED",
+  "humanPlaytests": "PENDING",
+  "accountSave": "PENDING",
+  "physicalPhone": "PENDING",
+  "confirmedPerformance": "PENDING",
+  "released": false
+}
