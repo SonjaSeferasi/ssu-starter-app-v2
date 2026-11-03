@@ -17,6 +17,7 @@ import { InvitePicker } from '../invite-picker';
 import { ReactionChips, ReactionPicker } from '../message-reactions';
 import { SnipePanel } from '../../../components/snipe/snipe-panel';
 import { canSelectForReply, findReplyTarget, keepReplyTarget, replyIndication, replyPreview, replyQuote, toggleReplyTarget, type ReplyTargets } from '../../../lib/chat-reply';
+import { choosePhoto, describeChosenPhoto, type ChosenPhoto } from '../../../lib/chat-photo';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -309,6 +310,17 @@ function Conversation() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [replyingTo]);
 
+  // SRS-201.3 (#1013): the photo the student has chosen to send. Choosing only; the formats are
+  // SRS-201.4, the size limit SRS-201.5, and uploading and sending it SRS-201.6.
+  const [photo, setPhoto] = useState<ChosenPhoto | null>(null);
+  const photoInput = useRef<HTMLInputElement>(null);
+  function clearPhoto() {
+    setPhoto(null);
+    // Clearing the input's value matters: without it, choosing the same file again fires no change.
+    if (photoInput.current) photoInput.current.value = '';
+    photoInput.current?.focus();
+  }
+
   // SRS-209.2 (#988): choosing a message moves the cursor to the message box, so the reply can be written at once.
   const messageInput = useRef<HTMLInputElement>(null);
   useEffect(() => { if (replyingTo) messageInput.current?.focus(); }, [replyingTo]);
@@ -529,11 +541,33 @@ function Conversation() {
               </button>
             </div>
           )}
+          {/* SRS-201.3 (#1013): what the student has chosen, so they can see it before sending and
+              change their mind. Sending it is SRS-201.6. */}
+          {photo && (
+            <div className={styles.chosenPhoto}>
+              <span className={styles.chosenPhotoMark} aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="m21 15-5-5L5 21" /></svg>
+              </span>
+              <span className={styles.chosenPhotoText}>{describeChosenPhoto(photo)}</span>
+              <button type="button" className={styles.chosenPhotoRemove} onClick={clearPhoto}
+                aria-label="Remove the chosen photo" title="Remove photo">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+              </button>
+            </div>
+          )}
           <form className={styles.composer} onSubmit={send}>
             <button ref={emojiButton} type="button" className={styles.emojiToggle} onClick={() => setPicking((open) => !open)}
               aria-expanded={picking} aria-label="Choose an emoji">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><path d="M9 9h.01" /><path d="M15 9h.01" /></svg>
             </button>
+            {/* SRS-201.3 (#1013): a hidden file input, opened by the Photo button beside it. The
+                accept hint is left wide here; narrowing it to the supported formats is SRS-201.4. */}
+            <input ref={photoInput} id="message-photo" type="file" accept="image/*" className={styles.srOnly}
+              onChange={(event) => setPhoto(choosePhoto(event.target.files))} disabled={sending} />
+            <label htmlFor="message-photo" className={styles.photoToggle} title="Choose a photo">
+              <span className={styles.srOnly}>Choose a photo</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="m21 15-5-5L5 21" /></svg>
+            </label>
             <label htmlFor="message-text" className={styles.srOnly}>Message</label>
             <input ref={messageInput} id="message-text" className={styles.input} value={text} onChange={(event) => setText(event.target.value)}
               placeholder={replyTarget ? `Reply to ${replyTargetSender}…` : 'Message…'} maxLength={500} autoComplete="off" disabled={sending} />
