@@ -1,0 +1,8 @@
+import {describe,it,expect,vi} from 'vitest';
+import {materialUpgradeQueue} from '../components/world-explorer/kit/material-upgrade-queue';
+describe('Late material upload scheduling',()=>{
+ it('does no shader or texture work during active gameplay, then finishes when paused',async()=>{let paused=false;const work=vi.fn(async()=>{}),q=materialUpgradeQueue(()=>paused),promise=q.prepare(work);await q.flush();expect(work).not.toHaveBeenCalled();paused=true;await q.flush();await promise;expect(work).toHaveBeenCalledOnce();});
+ it('serializes queued upgrades and checks safety again between groups',async()=>{let safe=true,release!:()=>void;const q=materialUpgradeQueue(()=>safe),a=q.prepare(()=>new Promise<void>(r=>release=r)),work=vi.fn(async()=>{}),b=q.prepare(work);safe=false;release();await a;await q.flush();expect(work).not.toHaveBeenCalled();safe=true;await q.flush();await b;expect(work).toHaveBeenCalledOnce();});
+ it('rejects pending work on destruction and never compiles a dead stage',async()=>{const work=vi.fn(async()=>{}),q=materialUpgradeQueue(()=>false),promise=q.prepare(work);const assertion=expect(promise).rejects.toThrow('Stage closed');q.dispose();await assertion;await q.flush();expect(work).not.toHaveBeenCalled();await expect(q.prepare(work)).rejects.toThrow('Stage closed');});
+ it('keeps independent stages and propagates compilation failures',async()=>{const a=materialUpgradeQueue(()=>true),b=materialUpgradeQueue(()=>false),work=vi.fn(async()=>{}),pending=b.prepare(work);await expect(a.prepare(async()=>{throw Error('GPU failed');})).rejects.toThrow('GPU failed');expect(work).not.toHaveBeenCalled();const rejected=expect(pending).rejects.toThrow();b.dispose();await rejected;});
+});
