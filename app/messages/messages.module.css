@@ -131,6 +131,46 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 .reactButton:hover, .reactButton[aria-expanded='true'] { background: #e6efe9; color: #28634e; }
 .reactButton:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; opacity: 1; }
 @media (hover: none) { .reactButton { opacity: .7; } }
+
+/* SRS-209.1 (#986): Reply sits beside React on each group message, and the chosen message stays outlined while
+   the student composes, so it is clear which message the reply answers. */
+.replyButton { display: grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #536963; cursor: pointer; opacity: 0; }
+.message:hover .replyButton, .message:focus-within .replyButton, .replyButton[aria-pressed='true'] { opacity: 1; }
+.replyButton:hover, .replyButton[aria-pressed='true'] { background: #e6efe9; color: #28634e; }
+.replyButton:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; opacity: 1; }
+@media (hover: none) { .replyButton { opacity: .7; } }
+.messageReplyTarget .bubble { outline: 2px solid #28634e; outline-offset: 2px; }
+
+/* SRS-209.5 (#998): the message a reply answers, shown above the reply itself. */
+.quoted { display: flex; gap: 6px; max-width: 100%; margin: 0 0 2px; padding: 3px 8px; border-left: 3px solid #9ab8a8; border-radius: 6px; background: #eef4f0; font-size: .78rem; }
+.messageOwn .quoted { border-left: 0; border-right: 3px solid #9ab8a8; }
+.quotedWho { flex-shrink: 0; font-weight: 700; color: #28634e; }
+.quotedText { overflow: hidden; color: #536963; text-overflow: ellipsis; white-space: nowrap; }
+/* SRS-209.6 (#1001): a reply whose target this student cannot be shown. */
+.quotedGone { border-left-color: #c2cec8; background: #f1f4f2; }
+.messageOwn .quotedGone { border-right-color: #c2cec8; }
+.quotedGone .quotedText { font-style: italic; color: #76867f; }
+
+/* SRS-201.3 (#1013): the Photo button beside the emoji toggle, and the bar naming the chosen photo. */
+.photoToggle { display: grid; place-items: center; flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%; color: #536963; cursor: pointer; }
+.photoToggle:hover { background: #e6efe9; color: #28634e; }
+.photoToggle:focus-within { outline: 3px solid #28634e; outline-offset: 2px; }
+.chosenPhoto { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; padding: 8px 10px; border-left: 3px solid #28634e; border-radius: 8px; background: #eef4f0; }
+.chosenPhotoMark { display: grid; place-items: center; flex-shrink: 0; color: #28634e; }
+.chosenPhotoText { overflow: hidden; min-width: 0; font-size: .84rem; color: #28634e; text-overflow: ellipsis; white-space: nowrap; }
+.chosenPhotoRemove { display: grid; place-items: center; flex-shrink: 0; margin-left: auto; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #536963; cursor: pointer; }
+.chosenPhotoRemove:hover { background: #dfeae3; color: #28634e; }
+.chosenPhotoRemove:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+
+/* SRS-209.2 (#988): the bar above the message box naming the message the reply answers. */
+.replyBar { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; padding: 8px 10px; border-left: 3px solid #28634e; border-radius: 8px; background: #eef4f0; }
+.replyBarMark { display: grid; place-items: center; flex-shrink: 0; color: #28634e; }
+.replyBarText { display: flex; flex-direction: column; min-width: 0; gap: 1px; }
+.replyBarWho { font-size: .78rem; font-weight: 700; color: #28634e; }
+.replyBarQuote { overflow: hidden; font-size: .84rem; color: #536963; text-overflow: ellipsis; white-space: nowrap; }
+.replyCancel { display: grid; place-items: center; flex-shrink: 0; margin-left: auto; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #536963; cursor: pointer; }
+.replyCancel:hover { background: #dfeae3; color: #28634e; }
+.replyCancel:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
 /* SRS-210.2 (#805): the approved reaction set, under the chosen message (kept clear of the sticky header and
    message box when it scrolls into view). */
 .reactionPicker { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 6px; padding: 4px; border: 1px solid #d3e2da; border-radius: 999px; background: #ffffff; box-shadow: 0 6px 18px #102c3026; scroll-margin: 180px 0 140px; }
@@ -187,13 +227,19 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 .backLink:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
 /* Phones: the list page shows the list; a conversation page shows the conversation. */
 @media (max-width: 900px) {
-  .page { grid-template-columns: 1fr; padding: 16px; }
+  .page { grid-template-columns: minmax(0, 1fr); padding: 16px; }
   .withConversation .listPanel, .emptyConversation { display: none; }
   /* Phones show the list and the conversation on separate pages, so the list scrolls with the page. */
   .listPanel, :global([data-navigation='bottom']) .listPanel { position: static; height: auto; min-height: 0; }
   .conversationList { overflow: visible; }
   .backButton { display: grid; }
   .closeButton { display: none; }
+  /* SRS-510.1 (#622): measured at 390 × 844 beside the side rail, one header row left the title 0 px wide (one
+     letter per line). The header wraps instead: back, avatar and title share the first row and the Invite /
+     Members buttons move to the next row, on the right. */
+  .header { flex-wrap: wrap; justify-content: flex-end; gap: 10px; padding: 14px 16px; }
+  .headerText { flex: 1 1 120px; }
+  .header .inviteButton { margin-left: 0; }
 }
 @media (max-width: 700px) {
   :global([data-navigation='bottom']) .footer { bottom: 73px; }

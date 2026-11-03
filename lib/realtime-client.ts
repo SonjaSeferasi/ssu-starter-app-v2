@@ -5,7 +5,8 @@ import type { ChatReaction } from './chat-reactions';
 // SRS-201.1 (#298): browser side of Supabase Realtime. Uses only the public URL and anon key;
 // the realtime.messages policy limits each student to their own student:<auth uid> channel.
 // SRS-201.9 (#799): emoji messages also carry kind 'emoji' (the emoji is in text); text messages have no kind.
-export type ChatMessageEvent = { id: string; conversation_id: string; sender_id: string; text: string; sent_at: string; kind?: 'emoji' };
+// SRS-209.3 (#991): a reply carries the id of the message it answers; an ordinary message leaves it out.
+export type ChatMessageEvent = { id: string; conversation_id: string; sender_id: string; text: string; sent_at: string; kind?: 'emoji'; reply_to_id?: string | null };
 // SRS-202.6 (#844): sent to each current member when a group is named or renamed.
 export type ChatConversationEvent = { conversation_id: string; name: string | null };
 // SRS-212.9 (#823): sent to a student when they are invited to a group.

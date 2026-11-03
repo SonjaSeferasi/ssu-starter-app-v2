@@ -6,6 +6,8 @@ import { useEffect } from 'react';
 import { subscribeToChat } from '../../lib/realtime-client';
 import { CHAT_ACTIVITY_EVENT, ConversationListPanel } from './conversation-list';
 import styles from './messages.module.css';
+import { SnipeSharingPermissions } from '../../components/snipe/snipe-sharing-permissions';
+import sharing from '../../components/snipe/snipe-sharing-permissions.module.css';
 
 // Messages home in the UI design's chat layout. Choosing a conversation opens /messages/[conversationId].
 export default function MessagesPage() {
@@ -22,13 +24,17 @@ export default function MessagesPage() {
   return (
     <main className={styles.page}>
       <ConversationListPanel />
-      <section className={`${styles.conversation} ${styles.emptyConversation}`} aria-label="Conversation">
-        <span className={styles.avatar} aria-hidden="true">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z" /></svg>
-        </span>
-        <h2 className={styles.emptyTitle}>Your messages</h2>
-        <p className={styles.emptyText}>Choose a conversation to read and send messages.</p>
-      </section>
+      <div className={sharing.column}>
+        <section className={`${styles.conversation} ${styles.emptyConversation}`} aria-label="Conversation">
+          <span className={styles.avatar} aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z" /></svg>
+          </span>
+          <h2 className={styles.emptyTitle}>Your messages</h2>
+          <p className={styles.emptyText}>Choose a conversation to read and send messages.</p>
+        </section>
+        {/* SRS-511.12, 514.1: collapsed until opened; loads nothing before that. Rendered only when signed in. */}
+        <SnipeSharingPermissions />
+      </div>
     </main>
   );
 }
