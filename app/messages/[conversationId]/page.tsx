@@ -17,7 +17,7 @@ import { InvitePicker } from '../invite-picker';
 import { ReactionChips, ReactionPicker } from '../message-reactions';
 import { SnipePanel } from '../../../components/snipe/snipe-panel';
 import { canSelectForReply, findReplyTarget, keepReplyTarget, replyIndication, replyPreview, replyQuote, toggleReplyTarget, type ReplyTargets } from '../../../lib/chat-reply';
-import { PHOTO_ACCEPT, choosePhoto, describeChosenPhoto, photoFormatError, type ChosenPhoto } from '../../../lib/chat-photo';
+import { PHOTO_ACCEPT, choosePhoto, describeChosenPhoto, photoError, type ChosenPhoto } from '../../../lib/chat-photo';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -321,13 +321,14 @@ function Conversation() {
     photoInput.current?.focus();
   }
 
-  // SRS-201.4 (#1015, #1016): a chosen file is kept only when its format is one the conversation accepts.
+  // SRS-201.4 (#1015, #1016) and SRS-201.5 (#1018): a chosen file is kept only when its format is one the
+  // conversation accepts and it is within the size limit.
   // The accept hint below filters what the picker offers, but a student can still pick "All files", so the
   // refusal has to happen here too. Saying why is better than silently ignoring the file.
   function reviewPhoto(files: FileList | null) {
     const chosen = choosePhoto(files);
     if (!chosen) { setPhoto(null); return; }
-    const refusal = photoFormatError(chosen);
+    const refusal = photoError(chosen);
     if (refusal) {
       setError(refusal);
       setPhoto(null);

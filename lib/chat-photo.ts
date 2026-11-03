@@ -44,6 +44,28 @@ export function photoFormatError(photo: { type: string } | null | undefined): st
   return isSupportedPhotoType(photo.type) ? null : PHOTO_FORMAT_REJECTED;
 }
 
+// SRS-201.5 (#1018): the largest a conversation photo may be. This is the max_bytes seeded for every
+// chat_photo row, and validate_media refuses on `byte_count > lim`, so a file of exactly this many bytes is
+// allowed. Refusing at 15,000,000 here would turn away a photo the database would have accepted.
+export const PHOTO_MAX_BYTES = 15_000_000;
+
+export const PHOTO_TOO_LARGE = 'Photos must be 15 MB or smaller.';
+// media_assets has CHECK (byte_count > 0), so an empty file could never be stored. Saying so here is kinder
+// than letting the upload fail later with a database message.
+export const PHOTO_EMPTY = 'That file is empty. Choose a photo.';
+
+export function photoSizeError(photo: { size: number } | null | undefined): string | null {
+  if (!photo) return null;
+  if (!Number.isFinite(photo.size) || photo.size <= 0) return PHOTO_EMPTY;
+  return photo.size > PHOTO_MAX_BYTES ? PHOTO_TOO_LARGE : null;
+}
+
+// Why a chosen photo cannot be sent, or null when it may be. Format is judged before size so a file that
+// fails both is named by what it is rather than by how big it is, which is the more useful thing to fix.
+export function photoError(photo: { type: string; size: number } | null | undefined): string | null {
+  return photoFormatError(photo) ?? photoSizeError(photo);
+}
+
 // A readable size for the chosen photo, in the same MB that SRS-201.5 counts (1 MB = 1,000,000
 // bytes), so what the student reads here matches the limit they are later held to.
 export function formatPhotoSize(bytes: number): string {
