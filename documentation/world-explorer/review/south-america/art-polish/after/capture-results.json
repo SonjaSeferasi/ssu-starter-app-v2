@@ -1,0 +1,56 @@
+{
+ "capturedAt": "2026-11-02T20:48:04.061Z",
+ "browser": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+ "base": "http://localhost:3000",
+ "renderer": "hardware (ANGLE D3D11) in headless Edge",
+ "frameRate": "browser default (capped)",
+ "note": "Measured on the development laptop in a headless browser while the level idles at its start. The phone figures emulate an 844x390 viewport on the laptop GPU; they are not a phone. Real-device testing is still required.",
+ "results": [
+  {
+   "code": "SUR",
+   "shots": {
+    "b": {
+     "x": 62,
+     "label": "riverboat crossing"
+    },
+    "c": {
+     "position": [
+      40,
+      3,
+      13
+     ],
+     "target": [
+      51,
+      2,
+      -5
+     ],
+     "label": "Fort Zeelandia"
+    }
+   },
+   "desktop": {
+    "readyMs": 2715,
+    "frames": 600,
+    "averageFps": 119,
+    "onePercentLowFps": 70,
+    "worstFrameMs": 41.4,
+    "drawCalls": 87,
+    "triangles": 133592,
+    "geometries": 44,
+    "textures": 6,
+    "jsHeapMB": 94
+   },
+   "phone": {
+    "readyMs": 1149,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 117,
+    "worstFrameMs": 8.6,
+    "drawCalls": 91,
+    "triangles": 135896,
+    "geometries": 45,
+    "textures": 6,
+    "jsHeapMB": 119
+   }
+  }
+ ]
+}

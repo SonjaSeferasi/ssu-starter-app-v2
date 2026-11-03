@@ -1,0 +1,196 @@
+{
+ "BRA": {
+  "difficulty": 2,
+  "cleanCoins": "29/29",
+  "cleanStars": "3/3",
+  "missing": [],
+  "runs": [
+   "0:ok,ok/1dmg,ok",
+   "0.9:ok,ok,ok",
+   "1.8:ok,ok,ok",
+   "2.7:ok,ok,ok",
+   "3.6:ok,ok,ok",
+   "4.5:ok,ok,ok",
+   "5.4:ok,ok,ok",
+   "6.3:ok,ok,ok"
+  ]
+ },
+ "BOL": {
+  "difficulty": 1,
+  "cleanCoins": "33/33",
+  "cleanStars": "3/3",
+  "missing": [],
+  "runs": [
+   "0:ok,ok,ok",
+   "0.9:ok,ok,ok",
+   "1.8:ok,ok,ok",
+   "2.7:ok,ok,ok",
+   "3.6:ok,ok,ok",
+   "4.5:ok,ok,ok",
+   "5.4:ok,ok,ok",
+   "6.3:ok,ok,ok"
+  ]
+ },
+ "URY": {
+  "difficulty": 1,
+  "cleanCoins": "35/35",
+  "cleanStars": "3/3",
+  "missing": [],
+  "runs": [
+   "0:ok,ok,ok",
+   "0.9:ok,ok,ok",
+   "1.8:ok,ok,ok",
+   "2.7:ok,ok,ok",
+   "3.6:ok,ok,ok",
+   "4.5:ok,ok,ok",
+   "5.4:ok,ok,ok",
+   "6.3:ok,ok,ok"
+  ]
+ },
+ "PER": {
+  "difficulty": 3,
+  "cleanCoins": "28/28",
+  "cleanStars": "3/3",
+  "missing": [],
+  "runs": [
+   "0:ok,ok,ok",
+   "0.9:ok,ok,ok",
+   "1.8:ok,ok,ok",
+   "2.7:ok,ok,ok",
+   "3.6:ok,ok,ok",
+   "4.5:ok,ok,ok",
+   "5.4:ok,ok,ok",
+   "6.3:ok,ok,ok"
+  ]
+ },
+ "ARG": {
+  "difficulty": 2,
+  "cleanCoins": "26/27",
+  "cleanStars": "3/3",
+  "missing": [
+   "ar-coin-20"
+  ],
+  "runs": [
+   "0:ok,ok,ok",
+   "0.9:ok,ok,ok",
+   "1.8:ok,ok,ok",
+   "2.7:ok,ok,ok",
+   "3.6:ok,ok,ok",
+   "4.5:ok,ok,ok",
+   "5.4:ok,ok,ok",
+   "6.3:ok,ok,ok"
+  ]
+ },
+ "CHL": {
+  "difficulty": 3,
+  "cleanCoins": "24/24",
+  "cleanStars": "3/3",
+  "missing": [],
+  "runs": [
+   "0:ok,ok,ok",
+   "0.9:ok,ok,ok",
+   "1.8:ok,ok,ok",
+   "2.7:ok,ok,ok",
+   "3.6:ok,ok,ok",
+   "4.5:ok,ok,ok",
+   "5.4:ok,ok,ok",
+   "6.3:ok,ok,ok"
+  ]
+ },
+ "COL": {
+  "difficulty": 3,
+  "cleanCoins": "21/21",
+  "cleanStars": "3/3",
+  "missing": [],
+  "runs": [
+   "0:ok,ok,ok",
+   "0.9:ok,ok,ok",
+   "1.8:ok,ok,ok",
+   "2.7:ok,ok,ok",
+   "3.6:ok,ok,ok",
+   "4.5:ok,ok,ok",
+   "5.4:ok,ok,ok",
+   "6.3:ok,ok,ok"
+  ]
+ },
+ "ECU": {
+  "difficulty": 2,
+  "cleanCoins": "19/19",
+  "cleanStars": "3/3",
+  "missing": [],
+  "runs": [
+   "0:ok,ok,ok",
+   "0.9:ok,ok,ok",
+   "1.8:ok,ok,ok",
+   "2.7:ok/1dmg,ok,ok",
+   "3.6:ok,ok,ok",
+   "4.5:ok,ok,ok",
+   "5.4:ok,ok,ok",
+   "6.3:ok,ok,ok"
+  ]
+ },
+ "GUY": {
+  "difficulty": 1,
+  "cleanCoins": "25/25",
+  "cleanStars": "3/3",
+  "missing": [],
+  "runs": [
+   "0:ok,ok,ok",
+   "0.9:ok,ok,ok",
+   "1.8:ok,ok,ok",
+   "2.7:ok,ok,ok",
+   "3.6:ok,ok,ok",
+   "4.5:ok,ok,ok/1dmg",
+   "5.4:ok,ok,ok",
+   "6.3:ok,ok,ok"
+  ]
+ },
+ "PRY": {
+  "difficulty": 1,
+  "cleanCoins": "27/27",
+  "cleanStars": "3/3",
+  "missing": [],
+  "runs": [
+   "0:ok,ok,ok",
+   "0.9:ok,ok,ok",
+   "1.8:ok,ok,ok",
+   "2.7:ok,ok,ok",
+   "3.6:ok,ok,ok",
+   "4.5:ok,ok,ok",
+   "5.4:ok,ok,ok",
+   "6.3:ok,ok,ok"
+  ]
+ },
+ "SUR": {
+  "difficulty": 1,
+  "cleanCoins": "25/25",
+  "cleanStars": "3/3",
+  "missing": [],
+  "runs": [
+   "0:ok,ok,ok",
+   "0.9:ok,ok,ok",
+   "1.8:ok,ok,ok",
+   "2.7:ok,ok,ok",
+   "3.6:ok,ok,ok",
+   "4.5:ok,ok,ok",
+   "5.4:ok,ok,ok",
+   "6.3:ok,ok,ok"
+  ]
+ },
+ "VEN": {
+  "difficulty": 3,
+  "cleanCoins": "24/24",
+  "cleanStars": "3/3",
+  "missing": [],
+  "runs": [
+   "0:ok,ok,ok",
+   "0.9:ok,ok,ok",
+   "1.8:ok,ok,ok",
+   "2.7:ok,ok,ok",
+   "3.6:ok,ok,ok",
+   "4.5:ok,ok,ok",
+   "5.4:ok,ok,ok",
+   "6.3:ok,ok,ok"
+  ]
+ }
+}

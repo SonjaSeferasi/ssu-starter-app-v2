@@ -1,0 +1,11 @@
+priority,country,code,route,tier,status,tester_code,date,input_device,viewport,graphics,assist,reduced_motion,first_time,completed,attempts,hud_seconds,help_received,warning_notice,camera_visibility,checkpoint_respawn,reward_retention,coin_counter,stars,pause_discovery,location,observation,repeatable
+1,Japan,JPN,main,1,NOT_RUN,,,,,,,,,,,,,,,,,,,,,,
+2,Japan,JPN,bonus,1,NOT_RUN,,,,,,,,,,,,,,,,,,,,,,
+3,North Korea,PRK,main,4,NOT_RUN,,,,,,,,,,,,,,,,,,,,,,
+4,North Korea,PRK,bonus,4,NOT_RUN,,,,,,,,,,,,,,,,,,,,,,
+5,China,CHN,main,5,NOT_RUN,,,,,,,,,,,,,,,,,,,,,,
+6,China,CHN,bonus,5,NOT_RUN,,,,,,,,,,,,,,,,,,,,,,
+7,South Korea,KOR,main,3,NOT_RUN,,,,,,,,,,,,,,,,,,,,,,
+8,South Korea,KOR,bonus,3,NOT_RUN,,,,,,,,,,,,,,,,,,,,,,
+9,Mongolia,MNG,main,2,NOT_RUN,,,,,,,,,,,,,,,,,,,,,,
+10,Mongolia,MNG,bonus,2,NOT_RUN,,,,,,,,,,,,,,,,,,,,,,

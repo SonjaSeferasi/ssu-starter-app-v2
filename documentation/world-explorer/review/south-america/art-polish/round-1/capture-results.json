@@ -1,0 +1,148 @@
+{
+ "capturedAt": "2026-10-31T03:52:22.772Z",
+ "browser": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+ "base": "http://localhost:3000",
+ "renderer": "hardware (ANGLE D3D11) in headless Edge",
+ "frameRate": "browser default (capped)",
+ "note": "Measured on the development laptop in a headless browser while the level idles at its start. The phone figures emulate an 844x390 viewport on the laptop GPU; they are not a phone. Real-device testing is still required. Bolivia was re-captured after the salt-mirror reflection was added.",
+ "results": [
+  {
+   "code": "BOL",
+   "shots": {
+    "b": {
+     "x": 40,
+     "label": "salt blocks in the first brine channel"
+    },
+    "c": {
+     "position": [
+      118,
+      3.5,
+      15
+     ],
+     "target": [
+      136,
+      4,
+      -16
+     ],
+     "label": "Isla Incahuasi"
+    }
+   },
+   "desktop": {
+    "readyMs": 13591,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 95,
+    "worstFrameMs": 17.5,
+    "drawCalls": 83,
+    "triangles": 87870,
+    "geometries": 44,
+    "textures": 8,
+    "jsHeapMB": 96
+   },
+   "phone": {
+    "readyMs": 11904,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 85,
+    "worstFrameMs": 18.1,
+    "drawCalls": 97,
+    "triangles": 90854,
+    "geometries": 45,
+    "textures": 9,
+    "jsHeapMB": 121
+   }
+  },
+  {
+   "code": "BRA",
+   "shots": {
+    "b": {
+     "x": 41,
+     "label": "vine swings over the ravine"
+    },
+    "c": {
+     "position": [
+      90,
+      5.5,
+      15
+     ],
+     "target": [
+      102,
+      4,
+      -6
+     ],
+     "label": "waterfall lookout"
+    }
+   },
+   "desktop": {
+    "readyMs": 4671,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 114,
+    "worstFrameMs": 8.9,
+    "drawCalls": 97,
+    "triangles": 199160,
+    "geometries": 57,
+    "textures": 11,
+    "jsHeapMB": 97
+   },
+   "phone": {
+    "readyMs": 2883,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 98,
+    "worstFrameMs": 16.7,
+    "drawCalls": 105,
+    "triangles": 200238,
+    "geometries": 59,
+    "textures": 11,
+    "jsHeapMB": 161
+   }
+  },
+  {
+   "code": "VEN",
+   "shots": {
+    "b": {
+     "x": 56,
+     "label": "climbable escarpment face"
+    },
+    "c": {
+     "position": [
+      80,
+      8,
+      17
+     ],
+     "target": [
+      98,
+      4,
+      -18
+     ],
+     "label": "Angel Falls"
+    }
+   },
+   "desktop": {
+    "readyMs": 3665,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 111,
+    "worstFrameMs": 9.6,
+    "drawCalls": 93,
+    "triangles": 188968,
+    "geometries": 59,
+    "textures": 10,
+    "jsHeapMB": 95
+   },
+   "phone": {
+    "readyMs": 2760,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 112,
+    "worstFrameMs": 8.9,
+    "drawCalls": 99,
+    "triangles": 195018,
+    "geometries": 60,
+    "textures": 10,
+    "jsHeapMB": 151
+   }
+  }
+ ]
+}

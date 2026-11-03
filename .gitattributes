@@ -1,0 +1,2 @@
+# Keep the bundled flag bytes identical to their pinned source SHA-256 hashes.
+public/world-explorer/flags/*.svg -text

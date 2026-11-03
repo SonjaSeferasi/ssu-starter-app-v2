@@ -1,0 +1,29 @@
+{
+  "scope": "Empty-page requestAnimationFrame diagnostic only. Uncapped flags do not establish normal gameplay performance.",
+  "records": [
+    {
+      "page": "blank",
+      "uncapped": false,
+      "args": [
+        "--use-angle=d3d11"
+      ],
+      "averageFps": 29.99850007499625,
+      "meanFrameMs": 33.335,
+      "frames": 120,
+      "visibility": "visible"
+    },
+    {
+      "page": "blank",
+      "uncapped": true,
+      "args": [
+        "--use-angle=d3d11",
+        "--disable-frame-rate-limit",
+        "--disable-gpu-vsync"
+      ],
+      "averageFps": 57.15918833952558,
+      "meanFrameMs": 17.495,
+      "frames": 120,
+      "visibility": "visible"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "scope": "Five East Asia prototypes, no releases",
+  "workingTree": {
+    "testFiles": 96,
+    "tests": 1006,
+    "passed": true,
+    "buildPassed": true,
+    "includesConcurrentWork": true
+  },
+  "isolatedCommitSnapshot": {
+    "testFiles": 94,
+    "tests": 946,
+    "passed": true,
+    "buildPassed": true,
+    "copiedCredentials": false,
+    "linkedDependencyFolder": false,
+    "separateAvatarAndSouthAmericaWorkExcluded": true
+  },
+  "browser": {
+    "routesWithHttp200": 5,
+    "screenshots": 15,
+    "uncaughtPageExceptions": 0,
+    "knownConsoleIssue": "GET /favicon.ico returns 404; scene resources and level routes loaded successfully",
+    "softwareRenderer": "Edge / ANGLE SwiftShader; not a hardware performance benchmark"
+  },
+  "humanPlaytest": "not-run",
+  "realDeviceMobile": "not-run",
+  "liveAccountSave": "not-run",
+  "visualAcceptance": "changes-required",
+  "released": false
+}

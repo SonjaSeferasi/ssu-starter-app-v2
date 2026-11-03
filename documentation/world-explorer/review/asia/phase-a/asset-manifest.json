@@ -1,0 +1,59 @@
+{
+  "scope": "Original code-generated art; not a photograph backdrop or claimed survey-accurate reconstruction",
+  "assets": [
+    {
+      "kind": "procedural terrain",
+      "paths": [
+        "components/world-explorer/countries/east-asia.ts",
+        "components/world-explorer/countries/east-asia-terrain.ts"
+      ],
+      "origin": "original repository code",
+      "use": "selected-country Three.js geometry and instanced foliage"
+    },
+    {
+      "kind": "surface maps",
+      "ids": [
+        "sandstone-cliff",
+        "gneiss"
+      ],
+      "license": "CC0; original sources and attribution retained in public/world-explorer/materials/LICENSES.md",
+      "use": "loaded through the existing surface-map cache; color-neutral sampled detail on original geometry"
+    },
+    {
+      "kind": "country flags",
+      "origin": "existing country flag assets",
+      "use": "existing country HUD, unchanged"
+    },
+    {
+      "kind": "Japan benchmark",
+      "origin": "existing repository art",
+      "use": "preserved without rebuilding or claiming new visual approval"
+    }
+  ],
+  "sources": [
+    {
+      "label": "China: Wulingyuan sandstone landscape",
+      "url": "https://whc.unesco.org/en/list/640/"
+    },
+    {
+      "label": "Mongolia: Orkhon Valley landscape",
+      "url": "https://whc.unesco.org/en/list/1081/"
+    },
+    {
+      "label": "North Korea: Mount Paektu geopark and caldera",
+      "url": "https://www.unesco.org/en/iggp/mt-paektu-unesco-global-geopark"
+    },
+    {
+      "label": "South Korea: Namsan and N Seoul Tower",
+      "url": "https://seoulcitywall.seoul.go.kr/en/wallcourse/4.do"
+    },
+    {
+      "label": "Japan: Fuji reference retained from the existing profile",
+      "url": "https://whc.unesco.org/en/list/1418/"
+    }
+  ],
+  "newPaidAssets": false,
+  "newRuntimeDependencies": false,
+  "newGlbFiles": 0,
+  "audio": "Existing audio logic preserved; no new country soundscape assets or audio approval in this increment"
+}

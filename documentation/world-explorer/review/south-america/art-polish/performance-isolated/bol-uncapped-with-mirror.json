@@ -1,0 +1,56 @@
+{
+ "capturedAt": "2026-10-31T04:06:30.780Z",
+ "browser": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+ "base": "http://localhost:3000",
+ "renderer": "hardware (ANGLE D3D11) in headless Edge",
+ "frameRate": "uncapped (vsync and frame-rate limit disabled)",
+ "note": "Measured on the development laptop in a headless browser while the level idles at its start. The phone figures emulate an 844x390 viewport on the laptop GPU; they are not a phone. Real-device testing is still required.",
+ "results": [
+  {
+   "code": "BOL",
+   "shots": {
+    "b": {
+     "x": 40,
+     "label": "salt blocks in the first brine channel"
+    },
+    "c": {
+     "position": [
+      118,
+      3.5,
+      15
+     ],
+     "target": [
+      136,
+      4,
+      -16
+     ],
+     "label": "Isla Incahuasi"
+    }
+   },
+   "desktop": {
+    "readyMs": 13445,
+    "frames": 600,
+    "averageFps": 185,
+    "onePercentLowFps": 91,
+    "worstFrameMs": 13.6,
+    "drawCalls": 83,
+    "triangles": 87870,
+    "geometries": 44,
+    "textures": 8,
+    "jsHeapMB": 96
+   },
+   "phone": {
+    "readyMs": 4308,
+    "frames": 600,
+    "averageFps": 312,
+    "onePercentLowFps": 165,
+    "worstFrameMs": 7.2,
+    "drawCalls": 97,
+    "triangles": 90854,
+    "geometries": 45,
+    "textures": 9,
+    "jsHeapMB": 129
+   }
+  }
+ ]
+}

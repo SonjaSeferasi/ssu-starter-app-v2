@@ -1,0 +1,186 @@
+{
+ "base": "http://localhost:3100",
+ "checkedAt": "2026-11-02T21:14:55.069Z",
+ "countries": {
+  "BRA": {
+   "opened": true,
+   "Capital / seat": "Brasília",
+   "Place": "Amazon canopy, river and waterfall · Central Amazon, Amazonas",
+   "Landscape": "Flooded várzea forest · Kapok trees and açaí palms · Amazon river channels",
+   "Languages": "Portuguese",
+   "heading": "Discover Brazil",
+   "discovery": "The Central Amazon Conservation Complex is the largest protected area in the Amazon Basin and one of the planet's richest regions for biodiversity. Its flooded ",
+   "photo": {
+    "alt": "Arquipélago de Anavilhanas 12.jpg",
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Arquip%C3%A9lago_de_Anavilhanas_12.jpg/960px-Arquip%C3%A9lago_de_Anavilhanas_12.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "caption": "Arquipélago de Anavilhanas 12.jpg\n· Karen Mohrstedt Badin ·\nCC BY-SA 4.0\n· Wikimedia Commons"
+   },
+   "screenshot": "guide-bra.jpg"
+  },
+  "BOL": {
+   "opened": true,
+   "Capital / seat": "Sucre",
+   "Place": "Salar de Uyuni and Isla Incahuasi · Salar de Uyuni, Potosí",
+   "Landscape": "Salt-flat crust · Salt mirror · Isla Incahuasi cacti",
+   "Languages": "Aymara · Guaraní · Quechua",
+   "heading": "Discover Bolivia",
+   "discovery": "Salar de Uyuni in Bolivia is the largest salt flat in the world. It lies about 3,650 metres above sea level, high in the Andes, and covers roughly 9,500 to 10,0",
+   "photo": {
+    "alt": "Piles of Salt Salar de Uyuni Bolivia Luca Galuzzi 2006 a.jpg",
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/Piles_of_Salt_Salar_de_Uyuni_Bolivia_Luca_Galuzzi_2006_a.jpg/960px-Piles_of_Salt_Salar_de_Uyuni_Bolivia_Luca_Galuzzi_2006_a.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "caption": "Piles of Salt Salar de Uyuni Bolivia Luca Galuzzi 2006 a.jpg\n· Luca Galuzzi (Lucag), edit by Trialsanderrors ·\nCC BY-SA 2.5\n· Wikimedia Commons"
+   },
+   "screenshot": "guide-bol.jpg"
+  },
+  "URY": {
+   "opened": true,
+   "Capital / seat": "Montevideo",
+   "Place": "Colonia lighthouse and Historic Quarter · Barrio Histórico, Colonia del Sacramento",
+   "Landscape": "Cobbled colonial quarter · Lighthouse and convent ruins · Río de la Plata waterfront",
+   "Languages": "Spanish",
+   "heading": "Discover Uruguay",
+   "discovery": "Colonia del Sacramento was founded by the Portuguese in 1680 on the Río de la Plata, where it helped them resist Spanish expansion. The town changed hands betwe",
+   "photo": {
+    "alt": "Colonia de Sacramento.jpg",
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/Colonia_de_Sacramento.jpg/960px-Colonia_de_Sacramento.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "caption": "Colonia de Sacramento.jpg\n· es:Usuario:Eligna ·\nCC BY-SA 3.0\n· Wikimedia Commons"
+   },
+   "screenshot": "guide-ury.jpg"
+  },
+  "PER": {
+   "opened": true,
+   "Capital / seat": "Lima",
+   "Place": "Historic Sanctuary of Machu Picchu · Inca Trail to Machu Picchu, Cusco Region",
+   "Landscape": "Inca terraces · Stone stairways · Cloud-forest ridges",
+   "Languages": "Aymara · Quechua · Spanish",
+   "heading": "Discover Peru",
+   "discovery": "Machu Picchu stands about 2,430 metres above sea level among steep mountain forest. The Inca built it in the 15th century, and it was abandoned around the time ",
+   "photo": {
+    "alt": "80 - Machu Picchu - Juin 2009 - edit.jpg",
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/62/80_-_Machu_Picchu_-_Juin_2009_-_edit.jpg/960px-80_-_Machu_Picchu_-_Juin_2009_-_edit.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "caption": "80 - Machu Picchu - Juin 2009 - edit.jpg\n· Martin St-Amant (S23678) ·\nCC BY-SA 3.0\n· Wikimedia Commons"
+   },
+   "screenshot": "guide-per.jpg"
+  },
+  "ARG": {
+   "opened": true,
+   "Capital / seat": "Buenos Aires",
+   "Place": "Perito Moreno Glacier · Los Glaciares National Park, Santa Cruz",
+   "Landscape": "Glacier front on Lago Argentino · Lenga beech forest · Fitz Roy granite skyline",
+   "Languages": "Guaraní · Spanish",
+   "heading": "Discover Argentina",
+   "discovery": "The Perito Moreno Glacier ends in Lago Argentino in a wall of ice about 5 kilometres wide, from which blocks of ice break off into the lake. It lies in Los Glac",
+   "photo": {
+    "alt": "PeritoMoreno005.jpg",
+    "src": "https://upload.wikimedia.org/wikipedia/commons/5/50/PeritoMoreno005.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "caption": "PeritoMoreno005.jpg\n· Christof Berger ·\nCC BY-SA 3.0\n· Wikimedia Commons"
+   },
+   "screenshot": "guide-arg.jpg"
+  },
+  "CHL": {
+   "opened": true,
+   "Capital / seat": "Santiago",
+   "Place": "El Tatio geyser field, Antofagasta Region",
+   "Landscape": "High Andean geyser field · Sinter terraces and boiling pools · Volcanoes around the basin",
+   "Languages": "Spanish",
+   "heading": "Discover Chile",
+   "discovery": "El Tatio, in the Andes of northern Chile, is the largest geyser field in the Southern Hemisphere and lies more than 4,200 metres above sea level. Its geysers an",
+   "photo": {
+    "alt": "Géiseres del Tatio, Atacama, Chile, 2016-02-01, DD 51-53 HDR.JPG",
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/G%C3%A9iseres_del_Tatio%2C_Atacama%2C_Chile%2C_2016-02-01%2C_DD_51-53_HDR.JPG/960px-G%C3%A9iseres_del_Tatio%2C_Atacama%2C_Chile%2C_2016-02-01%2C_DD_51-53_HDR.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "caption": "Géiseres del Tatio, Atacama, Chile, 2016-02-01, DD 51-53 HDR.JPG\n· Diego Delso ·\nCC BY-SA 4.0\n· Wikimedia Commons"
+   },
+   "screenshot": "guide-chl.jpg"
+  },
+  "COL": {
+   "opened": true,
+   "Capital / seat": "Bogotá",
+   "Place": "Quindío wax palms · Cocora Valley, Quindío",
+   "Landscape": "Quindío wax palms · Cloud-forest ridges · Pasture valley",
+   "Languages": "Spanish",
+   "heading": "Discover Colombia",
+   "discovery": "The Quindío wax palm is Colombia's national tree and the tallest palm in the world, usually growing to about 45 metres. A wax palm in Colombia measured 59.2 met",
+   "photo": {
+    "alt": "Palmas de cera, Valle del cócora.jpg",
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1b/Palmas_de_cera%2C_Valle_del_c%C3%B3cora.jpg/960px-Palmas_de_cera%2C_Valle_del_c%C3%B3cora.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "caption": "Palmas de cera, Valle del cócora.jpg\n· Tefalifenature ·\nCC BY-SA 4.0\n· Wikimedia Commons"
+   },
+   "screenshot": "guide-col.jpg"
+  },
+  "ECU": {
+   "opened": true,
+   "Capital / seat": "Quito",
+   "Place": "Galápagos lava coast · Galápagos Islands",
+   "Landscape": "Black lava shoreline · Tuff cones · Pacific surf and tide pools",
+   "Languages": "Spanish",
+   "heading": "Discover Ecuador",
+   "discovery": "The Galápagos Islands lie in the Pacific Ocean about 1,000 kilometres from the coast of Ecuador. Their unusual animals helped inspire Charles Darwin's theory of",
+   "photo": {
+    "alt": "Weathered Pahoehoe Lava Flow Galapagos.jpg",
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Weathered_Pahoehoe_Lava_Flow_Galapagos.jpg/960px-Weathered_Pahoehoe_Lava_Flow_Galapagos.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "caption": "Weathered Pahoehoe Lava Flow Galapagos.jpg\n· NAParish https://www.flickr.com/people/naparish/ ·\nCC BY-SA 2.0\n· Wikimedia Commons"
+   },
+   "screenshot": "guide-ecu.jpg"
+  },
+  "GUY": {
+   "opened": true,
+   "Capital / seat": "Georgetown",
+   "Place": "Kaieteur Falls · Kaieteur National Park",
+   "Landscape": "Single-drop waterfall · Sandstone gorge · Giant tank bromeliads",
+   "Languages": "English",
+   "heading": "Discover Guyana",
+   "discovery": "At Kaieteur Falls the Potaro River plunges about 226 metres over a sandstone cliff in a single drop, into a gorge surrounded by rainforest in Kaieteur National ",
+   "photo": {
+    "alt": "Kaieteur Falls Guyana (2) 2007.jpg",
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/Kaieteur_Falls_Guyana_%282%29_2007.jpg/960px-Kaieteur_Falls_Guyana_%282%29_2007.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "caption": "Kaieteur Falls Guyana (2) 2007.jpg\n· Bill Cameron ·\nCC BY-SA 3.0\n· Wikimedia Commons"
+   },
+   "screenshot": "guide-guy.jpg"
+  },
+  "PRY": {
+   "opened": true,
+   "Capital / seat": "Asunción",
+   "Place": "Jesuit Mission of La Santísima Trinidad de Paraná · Trinidad, Itapúa",
+   "Landscape": "Red-earth countryside · Jesuit mission ruins · Flowering lapacho trees",
+   "Languages": "Guaraní · Spanish",
+   "heading": "Discover Paraguay",
+   "discovery": "La Santísima Trinidad de Paraná and Jesús de Tavarangue are ruins of Jesuit missions built in the 17th and 18th centuries, where Jesuits and Guaraní people live",
+   "photo": {
+    "alt": "J37 746 Santísima Trinidad de Paraná, Wohnhaus.jpg",
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/J37_746_Sant%C3%ADsima_Trinidad_de_Paran%C3%A1%2C_Wohnhaus.jpg/960px-J37_746_Sant%C3%ADsima_Trinidad_de_Paran%C3%A1%2C_Wohnhaus.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "caption": "J37 746 Santísima Trinidad de Paraná, Wohnhaus.jpg\n· Falk2 ·\nCC BY-SA 4.0\n· Wikimedia Commons"
+   },
+   "screenshot": "guide-pry.jpg"
+  },
+  "SUR": {
+   "opened": true,
+   "Capital / seat": "Paramaribo",
+   "Place": "Paramaribo timber city and Fort Zeelandia · Historic Inner City of Paramaribo",
+   "Landscape": "Timber colonial waterfront · Suriname River · Fort Zeelandia",
+   "Languages": "Dutch",
+   "heading": "Discover Suriname",
+   "discovery": "Paramaribo, Suriname's capital, grew as a Dutch colonial town in the 17th and 18th centuries. Its historic centre keeps its original street plan and is made up ",
+   "photo": {
+    "alt": "Fort Zeelandia, Paramaribo, Suriname.jpg",
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/aa/Fort_Zeelandia%2C_Paramaribo%2C_Suriname.jpg/960px-Fort_Zeelandia%2C_Paramaribo%2C_Suriname.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "caption": "Fort Zeelandia, Paramaribo, Suriname.jpg\n· Medimir ·\nCC BY-SA 4.0\n· Wikimedia Commons"
+   },
+   "screenshot": "guide-sur.jpg"
+  },
+  "VEN": {
+   "opened": true,
+   "Capital / seat": "Caracas",
+   "Place": "Angel Falls (Kerepakupai Merú) on Auyán-tepui · Canaima National Park, Bolívar",
+   "Landscape": "Tepui escarpment · Angel Falls · Cloud-filled valley",
+   "Languages": "Spanish",
+   "heading": "Discover Venezuela",
+   "discovery": "Angel Falls drops about 979 metres from the edge of Auyán-tepui, a flat-topped mountain in Canaima National Park, making it the highest uninterrupted waterfall ",
+   "photo": {
+    "alt": "Salto Angel Dry Season.jpg",
+    "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/Salto_Angel_Dry_Season.jpg/960px-Salto_Angel_Dry_Season.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "caption": "Salto Angel Dry Season.jpg\n· Berrucomons ·\nCC BY-SA 4.0\n· Wikimedia Commons"
+   },
+   "screenshot": "guide-ven.jpg"
+  }
+ }
+}

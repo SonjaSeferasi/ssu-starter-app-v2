@@ -1,0 +1,141 @@
+{
+  "buildId": "um9nGOnV6b5-uBzo7h9C6",
+  "productionBuild": "passed",
+  "fullSuite": {
+    "passed": 1114,
+    "files": 98,
+    "command": "npm test -- --maxWorkers=2 --minWorkers=1"
+  },
+  "finalArtAndRouteRecheck": {
+    "passed": 38,
+    "files": 4
+  },
+  "simulationRouteEvidence": {
+    "inputDrivenRuns": 32,
+    "transitionChecks": 148,
+    "source": "public/world-explorer/data/east-asia-evidence.json"
+  },
+  "renderedDesktopPlaythroughs": {
+    "completed": 10,
+    "hearts": 3,
+    "bonusRoutesWithThreeStars": 5,
+    "human": false
+  },
+  "browserPageExceptions": 0,
+  "emulatedPhone": {
+    "physical": false,
+    "headingFits": true,
+    "horizontalOverflow": false,
+    "controlsResponded": true
+  },
+  "desktopHardware": {
+    "verified": true,
+    "renderer": "ANGLE (Intel, Intel(R) Arc(TM) Graphics (0x00007D55) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "averageFps": [
+      {
+        "country": "CHN",
+        "route": "main",
+        "fps": 29.091425125057658,
+        "p95FrameMs": 33.5
+      },
+      {
+        "country": "CHN",
+        "route": "bonus",
+        "fps": 29.447657452114402,
+        "p95FrameMs": 33.600000000000364
+      },
+      {
+        "country": "JPN",
+        "route": "main",
+        "fps": 29.86289276945571,
+        "p95FrameMs": 33.5
+      },
+      {
+        "country": "JPN",
+        "route": "bonus",
+        "fps": 29.864148735705683,
+        "p95FrameMs": 33.5
+      },
+      {
+        "country": "MNG",
+        "route": "main",
+        "fps": 29.85776586950945,
+        "p95FrameMs": 33.5
+      },
+      {
+        "country": "MNG",
+        "route": "bonus",
+        "fps": 29.857553105826856,
+        "p95FrameMs": 33.5
+      },
+      {
+        "country": "PRK",
+        "route": "main",
+        "fps": 30.000521748204314,
+        "p95FrameMs": 33.5
+      },
+      {
+        "country": "PRK",
+        "route": "bonus",
+        "fps": 29.718069368230335,
+        "p95FrameMs": 33.5
+      },
+      {
+        "country": "KOR",
+        "route": "main",
+        "fps": 29.763318293358665,
+        "p95FrameMs": 33.60000000000218
+      },
+      {
+        "country": "KOR",
+        "route": "bonus",
+        "fps": 29.84074298662752,
+        "p95FrameMs": 33.69999999999982
+      }
+    ],
+    "targetFps": 60,
+    "meetsAverageTarget": false
+  },
+  "accountSave": "pending at user request",
+  "physicalPhone": "pending at user request",
+  "humanVisualAndGameplayApproval": "pending",
+  "releasedCountries": 0,
+  "other42Countries": "PROPOSED",
+  "screenshots": [
+    "chn-start.png",
+    "chn-mechanic.png",
+    "chn-landmark.png",
+    "chn-overview.png",
+    "chn-mobile.png",
+    "jpn-start.png",
+    "jpn-mechanic.png",
+    "jpn-landmark.png",
+    "jpn-overview.png",
+    "jpn-mobile.png",
+    "mng-start.png",
+    "mng-mechanic.png",
+    "mng-landmark.png",
+    "mng-overview.png",
+    "mng-mobile.png",
+    "prk-start.png",
+    "prk-mechanic.png",
+    "prk-landmark.png",
+    "prk-overview.png",
+    "prk-mobile.png",
+    "kor-start.png",
+    "kor-mechanic.png",
+    "kor-landmark.png",
+    "kor-overview.png",
+    "kor-mobile.png",
+    "chn-main-completed.png",
+    "chn-bonus-completed.png",
+    "jpn-main-completed.png",
+    "jpn-bonus-completed.png",
+    "mng-main-completed.png",
+    "mng-bonus-completed.png",
+    "prk-main-completed.png",
+    "prk-bonus-completed.png",
+    "kor-main-completed.png",
+    "kor-bonus-completed.png"
+  ]
+}
