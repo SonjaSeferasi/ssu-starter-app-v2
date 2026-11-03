@@ -4,14 +4,15 @@ import {landingHeight} from './landing-geometry';
 import {bridge,clearSceneTextures,island,terrainMaterials,tree} from './scene-3d';
 import {Batch,Mushrooms,Puffs,at,bannerPole,bonsaiPine,canopyDeck,carvedMountain,cloud,cloudMaterial,domeHouse,fairyCastle,foliageMaterial,glowPoints,hangingGarden,house,karstPillars,mistSheets,pagoda,paperLantern,pillHills,planet,propKit,ringArch,roundTree,stoneBridge,timberStrut,torii,waterSurface,waterfall,waterfallMaterial,type Kit} from './toon-props';
 import {clearToonTextures,mapleLeafTexture,rng,waterfallTexture} from './toon-textures';
+import {forestSunlight} from './reference-nature';
 
 /** Sky, light and atmosphere for each world. `glow` is where the sun glows in the sky;
  * `sunOffset` is the shadow-casting light relative to the hero (kept in front for readability). */
 type Look={sky:[string,string,string];fog:string;near:number;far:number;hemi:[string,string,number];sun:[string,number];sunOffset:[number,number,number];rim:[string,number];glow:[number,number,number]};
 export const looks:Record<number,Look>={
- 1:{sky:['#2c83df','#7fbdf2','#dff2ff'],fog:'#d4ecfa',near:42,far:250,hemi:['#eef7ff','#a9cf6c',1.15],sun:['#fff0d2',3.2],sunOffset:[-8,16,12],rim:['#d4e8ff',.45],glow:[-.35,.42,-.84]},
- 2:{sky:['#1d72da','#6cb1f0','#d9f0ff'],fog:'#d6eefb',near:55,far:300,hemi:['#eaf5ff','#d4bf94',1.15],sun:['#fff4de',3.2],sunOffset:[-8,16,12],rim:['#d8ecff',.45],glow:[-.4,.5,-.77]},
- 3:{sky:['#438ed2','#9bc4e7','#f1e7c8'],fog:'#dbe2d1',near:48,far:250,hemi:['#e2eddf','#728247',.95],sun:['#ffdc9e',3],sunOffset:[9,12,10],rim:['#ffbd72',.7],glow:[.55,.32,-.82]},
+ 1:{sky:['#1681ed','#61aff5','#d6efff'],fog:'#c0e0ef',near:32,far:190,hemi:['#dceeff','#7b9145',1.05],sun:['#fff0d2',3.7],sunOffset:[-10,18,8],rim:['#b6dbff',.6],glow:[-.35,.42,-.84]},
+ 2:{sky:['#0878e7','#4ba8ef','#d9f3ff'],fog:'#b7dfef',near:40,far:240,hemi:['#daefff','#b49b74',1.05],sun:['#fff0d5',3.6],sunOffset:[-10,18,8],rim:['#bfdfff',.65],glow:[-.4,.5,-.77]},
+ 3:{sky:['#2486df','#8ec6ed','#f4e7be'],fog:'#b7c9b1',near:30,far:185,hemi:['#e1eddf','#8a845b',1.25],sun:['#ffdfaa',3.6],sunOffset:[-9,18,8],rim:['#ffcf8e',.85],glow:[-.55,.42,-.82]},
 };
 function applyLook(scene:T.Scene,look:Look){
  scene.background=new T.Color(look.sky[2]);scene.fog=new T.Fog(look.fog,look.near,look.far);
@@ -19,11 +20,11 @@ function applyLook(scene:T.Scene,look:Look){
   if(o instanceof T.HemisphereLight){o.color.set(look.hemi[0]);o.groundColor.set(look.hemi[1]);o.intensity=look.hemi[2];}
   else if(o instanceof T.DirectionalLight){if(o.castShadow){o.color.set(look.sun[0]);o.intensity=look.sun[1];o.userData.offset=look.sunOffset;}else{o.color.set(look.rim[0]);o.intensity=look.rim[1];}}
  });
- const material=new T.ShaderMaterial({side:T.BackSide,depthWrite:false,fog:false,
+ const material=new T.ShaderMaterial({side:T.BackSide,depthWrite:false,fog:false,toneMapped:false,
   uniforms:{top:{value:new T.Color(look.sky[0])},middle:{value:new T.Color(look.sky[1])},bottom:{value:new T.Color(look.sky[2])},glow:{value:new T.Vector3(...look.glow).normalize()},sun:{value:new T.Color(look.sun[0])}},
   vertexShader:'varying vec3 v;void main(){v=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
   fragmentShader:`varying vec3 v;uniform vec3 top;uniform vec3 middle;uniform vec3 bottom;uniform vec3 glow;uniform vec3 sun;
-void main(){vec3 d=normalize(v);vec3 c=mix(bottom,middle,smoothstep(-.03,.2,d.y));c=mix(c,top,smoothstep(.16,.72,d.y));
+void main(){vec3 d=normalize(v);vec3 c=mix(bottom,middle,smoothstep(-.15,.09,d.y));c=mix(c,top,smoothstep(.025,.3,d.y));
 float s=max(dot(d,glow),0.);c+=sun*(pow(s,10.)*.32+pow(s,420.)*1.4);
 gl_FragColor=vec4(c,1.);
 #include <tonemapping_fragment>
@@ -155,6 +156,7 @@ function skyIslands(c:Ctx){
 
 // ---- World 3: Shinobi Treetop Trail ----
 function village(c:Ctx){
+ forestSunlight(c.root,c.width);
  const {r,width,root,kit,batch,leaves,clouds}=c,greens=['#6fae3a','#86c044','#5c9a33','#9dcb52'],maples=['#d9532c','#e8742f','#c9402a','#f0a03c'];
  c.water=waterSurface(root,width/2,-15,-60,width+300,160,{deep:'#2b7d86',shallow:'#73c6b6',horizon:'#f2d8ad',fog:c.look.fog,near:c.look.near,far:c.look.far});
  const light=(p:T.Vector3,size:number)=>c.glows.push({position:p,size:size*1.4,color:'#ff9a3c'});
