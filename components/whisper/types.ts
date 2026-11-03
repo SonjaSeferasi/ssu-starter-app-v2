@@ -27,11 +27,16 @@ export const CATEGORIES: { id: WhisperCategory; label: string; emoji: string; bg
   { id: 'rant', label: 'Rant', emoji: '💬', bg: 'bg-blue-100', text: 'text-blue-800' },
   { id: 'advice', label: 'Advice', emoji: '🙏', bg: 'bg-amber-100', text: 'text-amber-800' },
   { id: 'unpopular_opinion', label: 'Unpopular Opinion', emoji: '🔥', bg: 'bg-red-100', text: 'text-red-800' },
+  // Warm coffee/caramel brown on a soft cream chip -- distinct from every
+  // other category's color (including the retired, amber-adjacent
+  // 'advice'), using one-off hex values since Tailwind's default palette
+  // has no true "brown" shade that reads as coffee-colored.
+  { id: 'professor_tea', label: 'Professor Tea', emoji: '☕', bg: 'bg-[#F5E9DA]', text: 'text-[#6B4226]' },
 ];
 
-// The three active categories -- used by the confession composer (what a
+// The four active categories -- used by the confession composer (what a
 // student can pick when posting) and the category filter dropdown (what
 // can be filtered FOR; "All Categories" still includes historical posts
 // in retired categories, since that's just p_category = NULL server-side).
-const SELECTABLE_IDS: WhisperCategory[] = ['campus_crush', 'unpopular_opinion', 'advice'];
+const SELECTABLE_IDS: WhisperCategory[] = ['campus_crush', 'unpopular_opinion', 'advice', 'professor_tea'];
 export const SELECTABLE_CATEGORIES = SELECTABLE_IDS.map((id) => CATEGORIES.find((c) => c.id === id)!);

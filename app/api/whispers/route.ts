@@ -2,7 +2,7 @@ import { AccountError, accountResponse, jsonBody, textField, verifiedUser } from
 import { feedRpc } from '../../../lib/feed';
 import { shapeConfession, shapeConfessions, type RawConfessionRow, type WhisperCategory, type WhisperSort } from '../../../lib/whisper';
 
-const CATEGORIES: WhisperCategory[] = ['funny', 'campus_crush', 'embarrassing', 'rant', 'advice', 'unpopular_opinion'];
+const CATEGORIES: WhisperCategory[] = ['funny', 'campus_crush', 'embarrassing', 'rant', 'advice', 'unpopular_opinion', 'professor_tea'];
 const SORTS: WhisperSort[] = ['latest', 'trending', 'most_discussed'];
 
 // The Whisper Wall (additional functionality, not SRS-numbered) -- list
