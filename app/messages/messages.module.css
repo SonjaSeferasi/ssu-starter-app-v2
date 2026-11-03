@@ -151,6 +151,17 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 .messageOwn .quotedGone { border-right-color: #c2cec8; }
 .quotedGone .quotedText { font-style: italic; color: #76867f; }
 
+/* SRS-201.3 (#1013): the Photo button beside the emoji toggle, and the bar naming the chosen photo. */
+.photoToggle { display: grid; place-items: center; flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%; color: #536963; cursor: pointer; }
+.photoToggle:hover { background: #e6efe9; color: #28634e; }
+.photoToggle:focus-within { outline: 3px solid #28634e; outline-offset: 2px; }
+.chosenPhoto { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; padding: 8px 10px; border-left: 3px solid #28634e; border-radius: 8px; background: #eef4f0; }
+.chosenPhotoMark { display: grid; place-items: center; flex-shrink: 0; color: #28634e; }
+.chosenPhotoText { overflow: hidden; min-width: 0; font-size: .84rem; color: #28634e; text-overflow: ellipsis; white-space: nowrap; }
+.chosenPhotoRemove { display: grid; place-items: center; flex-shrink: 0; margin-left: auto; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #536963; cursor: pointer; }
+.chosenPhotoRemove:hover { background: #dfeae3; color: #28634e; }
+.chosenPhotoRemove:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+
 /* SRS-209.2 (#988): the bar above the message box naming the message the reply answers. */
 .replyBar { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; padding: 8px 10px; border-left: 3px solid #28634e; border-radius: 8px; background: #eef4f0; }
 .replyBarMark { display: grid; place-items: center; flex-shrink: 0; color: #28634e; }
