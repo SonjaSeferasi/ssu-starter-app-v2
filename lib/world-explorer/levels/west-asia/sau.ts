@@ -29,6 +29,7 @@ export const level=authorLevel({
  coins:[["sa-valley",2,1.1],["sa-steps",2,1.1],["sa-climb",2,2.2],["sa-light-court",2,1.1],["sa-light-gate",2,1.1],["sa-high-sandstone",2,1.1],["sa-upper-rim",2,1.1],["sa-panorama",2,1.1],["sa-valley",5,1.1],["sa-panorama",15,1.1],["sa-bonus",0.8,0.85]],
  stars:[["sa-bonus",0.8,0.8],["sa-upper-rim",3,2.2],["sa-panorama",9.0,2.2]],
  edges:[["sa-valley","sa-steps","WALK"],["sa-steps","sa-climb","CLIMB"],["sa-climb","sa-light-court","JUMP"],["sa-light-court","sa-light-gate","WALK"],["sa-light-gate","sa-high-sandstone","JUMP"],["sa-high-sandstone","sa-upper-rim","JUMP"],["sa-upper-rim","sa-panorama","JUMP"],["sa-high-sandstone","sa-bonus","JUMP",false],["sa-bonus","sa-upper-rim","DROP",false]],
- switches:[{"id":"sa-plate","platformId":"sa-light-court","offset":8,"gateIds":["sa-gate"]}],
+ lightPuzzles:[{id:"sa-mirror",gateId:"sa-gate",platformId:"sa-light-court",offset:8,height:2.2,emitter:{x:33.4,y:10.5},receiver:{x:52.5,y:8.4,radius:.35},normals:[[1,0],[-.1963,-.9805],[0,1]],initialIndex:0,chargeSeconds:.4,range:17}],
+ switches:[{"id":"sa-plate","platformId":"sa-light-court","offset":8,"gateIds":[]}],
  gates:[{"id":"sa-gate","x":53,"y":5.3,"width":0.35,"height":2.2,"openSeconds":7.5}]
 });

@@ -14,7 +14,7 @@ export function playSoutheastAsiaRoute(level:LevelDefinition,path:string[],optio
   if(here&&s.grounded){visited.add(here.id);lastGround=here.id;const i=path.indexOf(here.id);if(i>=target)target=i;}
   if(s.grounded&&s.standing===options.stopAt)break;
   const next=simulation.platforms.find(p=>p.id===path[target+1]);
-  let left=false,right=true,jump=false;
+  let left=false,right=true,jump=false,interact=false;
   if(frame<(options.wait??0)*60)right=false;
   else if(options.collect){
    if(!reward&&s.grounded&&here){
@@ -60,7 +60,10 @@ export function playSoutheastAsiaRoute(level:LevelDefinition,path:string[],optio
    const hazard=level.hazards.find(h=>h.x>s.x+.15&&h.x-s.x<2.4);
    if(hazard&&Array.from({length:10},(_,i)=>hazardAt(hazard,s.elapsedSeconds+i*.15).phase).some(phase=>phase!=='calm'))left=right=jump=false;
   }
-  simulation.setInput({left,right,jump});
+  // A real mirror action: approach its pedestal, turn until the receiver is
+  // lit, then wait for its charge. No mirror or gate state is injected.
+  for(const puzzle of level.lightPuzzles||[]){const point=simulation.position(puzzle),state=simulation.lightPuzzles.find(p=>p.id===puzzle.id)!;if(s.grounded&&s.standing===puzzle.platformId&&s.x<point.x+2&&!reward&&frame>=(options.wait??0)*60&&state.charge<puzzle.chargeSeconds){const delta=point.x-s.x;right=delta>.2;left=delta<-.2;jump=false;if(Math.abs(delta)<.3){right=left=false;interact=!state.lit&&frame%12===0;}}}
+  simulation.setInput({left,right,jump,...(level.lightPuzzles?.length?{interact}:{})});
   for(const event of simulation.advance(FIXED_STEP)){events.push(event.type);if(event.type==='coin')coinEvents.push(event.id!);if(event.type==='star')starEvents.push(event.id!);if(event.type==='checkpoint')checkpointSnapshots.push(simulation.clone());}
  }
  return{simulation,visited,events,coinEvents,starEvents,checkpointSnapshots,debug:{reward,returnPlate}};
