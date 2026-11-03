@@ -1,17 +1,22 @@
 import { AccountError, accountResponse, jsonBody, verifiedUser } from '../../../../../lib/socialu-account';
 import { chatOperation, conversationIdParam, messageIdParam } from '../../../../../lib/chat-access';
 import { EMOJI_REQUIRED, isSingleEmoji } from '../../../../../lib/chat-emoji';
+import { withPhotoUrls } from '../../../../../lib/chat-photo-urls';
 export const dynamic = 'force-dynamic';
 
 // SRS-201.2 (#317): a conversation participant retrieves the saved text messages, oldest first.
 // SRS-201.9 (#799): emoji messages are included too, marked with kind 'emoji'.
+// SRS-201.7 (#1028, #1029): photo messages too. The database returns the storage key of each one, because the
+// bucket is private and only the server can sign a link to it; withPhotoUrls turns those keys into signed
+// links so the browser never handles a key. The reply is already no-store, so a link cannot outlive its hour
+// in a cache.
 // The student always comes from the verified token; the database runs the participant check.
 export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
     const user = await verifiedUser(request);
     const conversationId = conversationIdParam((await context.params).id);
     const history = await chatOperation('socialu_conversation_messages', { p_auth_id: user.id, p_conversation_id: conversationId });
-    return Response.json(history, { headers: { 'Cache-Control': 'no-store' } });
+    return Response.json(await withPhotoUrls(history), { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) { return accountResponse(error); }
 }
 
