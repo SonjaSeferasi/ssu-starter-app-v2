@@ -1,0 +1,11 @@
+import type {LevelDefinition} from '../../game-types';
+import {level as afg} from './afg';
+import {level as bgd} from './bgd';
+import {level as btn} from './btn';
+import {level as ind} from './ind';
+import {level as irn} from './irn';
+import {level as mdv} from './mdv';
+import {level as npl} from './npl';
+import {level as pak} from './pak';
+import {level as lka} from './lka';
+export const southAsiaLevels:Record<string,LevelDefinition>={AFG:afg,BGD:bgd,BTN:btn,IND:ind,IRN:irn,MDV:mdv,NPL:npl,PAK:pak,LKA:lka};

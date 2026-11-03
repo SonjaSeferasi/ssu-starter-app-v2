@@ -8,6 +8,7 @@ import {createArchway,createBannerPost,createDiscoveryCrate} from '../kit/marker
 import {createCreatureRig,finishCreature} from '../kit/creature';
 import {loadSurfaceMaps} from '../kit/surface-maps';
 import {eastAsiaPlaces,type NewEastAsiaCode} from '../../../lib/world-explorer/east-asia';
+import {facadeCourses} from './asia-landscape-art';
 import {eastAsiaTerrain,naturalRockMaterial} from './east-asia-terrain';
 import type {CountryEnvironment} from './types';
 
@@ -21,7 +22,7 @@ const themes={
 function spire(b:Builder,x:number,z:number,height:number,width:number,index:number,base=-16){
  const g=new T.CylinderGeometry(width*.38,width*.7,height,16,18),p=g.getAttribute('position');
  const lean=Math.sin(index*2.7)*width*.12;
- for(let i=0;i<p.count;i++){const yy=p.getY(i)/height+.5,a=Math.atan2(p.getZ(i),p.getX(i)),r=1+Math.sin(a*5+index)*.1+Math.sin(yy*27+index)*.04+(fbm(a*2,yy*11,index,3)-.5)*.16,ledge=1+Math.floor(yy*6)%2*.025;p.setX(i,p.getX(i)*r*ledge+lean*yy*yy);p.setZ(i,p.getZ(i)*r*(.75+(index%4)*.12));if(yy>.94)p.setY(i,p.getY(i)+Math.sin(a*3+index)*width*.12);}g.computeVertexNormals();
+ for(let i=0;i<p.count;i++){const yy=p.getY(i)/height+.5,a=Math.atan2(p.getZ(i),p.getX(i)),r=1+Math.sin(a*5+index)*.12+Math.sin(yy*27+index)*.045+(fbm(a*2,yy*11,index,3)-.5)*.25-.12*Math.pow(Math.max(0,Math.sin(a*9+index)),8),ledge=1+Math.floor(yy*6)%2*.025;p.setX(i,p.getX(i)*r*ledge+lean*yy*yy);p.setZ(i,p.getZ(i)*r*(.75+(index%4)*.12));if(yy>.94)p.setY(i,p.getY(i)+Math.sin(a*3+index)*width*.12);}g.computeVertexNormals();
  b.add(g,index%3?'#b3aa91':'#9ba38c',[x,base+height/2,z],[0,index*.27,0],[1,1,1],.16);
  // Broken moss patches rather than a uniform round lid on every pillar.
  for(let j=0;j<3;j++)b.add(new T.DodecahedronGeometry(1,0),'#496d3d',[x+lean+Math.cos(j*2.1)*width*.14,base+height-.03,z+Math.sin(j*2.1)*width*.13],[0,j,0],[width*.22,.12,width*.17],.12);
@@ -40,6 +41,7 @@ function district(b:Builder,x:number,z:number,height:number,width:number,index:n
  b.add(new T.BoxGeometry(width+.15,.17,d+.15),'#bfcccf',[x,base+height,z]);
  if(index%3===0){b.add(new T.BoxGeometry(width*.68,height*.22,d*.76),'#7993a5',[x,base+height*1.11,z]);b.add(new T.CylinderGeometry(.03,.04,2.4,5),'#a7bdc9',[x,base+height*1.22+1.2,z]);}
  if(index%4===1)b.add(new T.BoxGeometry(width*.4,.65,d*.6),'#445b72',[x,base+height+.35,z]);
+ for(const side of [-1,1]){b.add(new T.BoxGeometry(.065,height,.12),'#a8bfc9',[x+side*width*.43,base+height/2,z+d/2+.06]);for(let floor=2;floor<height;floor+=3)b.add(new T.BoxGeometry(width,.08,.16),'#96adb6',[x,base+floor,z+d/2+.06]);}
  const cols=Math.max(2,Math.floor(width/.8)),rows=Math.floor(height/1.2);
  for(let row=0;row<rows;row++)for(let col=0;col<cols;col++)b.add(new T.BoxGeometry(width/cols*.6,.64,.035),(row+col+index)%6===0?'#f2d4a0':'#35596e',[x-width*.43+col*width*.86/(cols-1),base+.75+row*1.2,z+d/2+.025]);
 }
@@ -60,7 +62,7 @@ export function createEastAsiaEnvironment(code:NewEastAsiaCode):CountryEnvironme
    if(code==='CHN'){
     root.userData.landform='fractured-sandstone-spires-and-natural-arches';
     for(let band=0;band<3;band++)for(let i=0;i<(low?10:14);i++){
-     const seed=i+band*17,x=-23+i*9+(band%2)*4+(randomize()-.5)*6,z=-20-band*27-randomize()*11,height=14+randomize()*24+band*2,width=2.3+randomize()*4;spire(b,x,z,height,width,seed);
+     const seed=i+band*17,x=-23+i*9+(band%2)*4+(randomize()-.5)*6,z=-20-band*27-randomize()*11,height=14+randomize()*24+band*2,width=1.8+randomize()**1.5*5.2;spire(b,x,z,height,width,seed);
      if(i%4!==0)trees.push({x:x+Math.sin(seed*2.7)*width*.12,y:height-16,z,scale:[.45+randomize()*.4,.5+randomize()*.4,.45+randomize()*.4],rotation:randomize()*6.28});
      if(i%3===0)spire(b,x+width*.5,z-1,height*.68,width*.65,seed+70);
     }
@@ -69,7 +71,7 @@ export function createEastAsiaEnvironment(code:NewEastAsiaCode):CountryEnvironme
     b.add(new T.ExtrudeGeometry(arch,{depth:1.8,bevelEnabled:true,bevelSize:.18,bevelThickness:.15,bevelSegments:2,curveSegments:24}),'#aba48b',[29,1,-46]);for(const side of [-1,1])spire(b,29+side*5.3,-45.1,17,2.7,side+18);
     const valley=createHeightfield(root,{name:'forested-valley-floor',x:finish/2,y:-16,z:-58,width:finish+150,depth:90,segments:[low?36:60,24],height:(u,v)=>fbm(u*8,v*7,15,4)*5,color:()=>new T.Color('#54765a')});valley.updateMatrixWorld(true);
     const falls=createWaterfall(root,{x:47,top:5,z:-33,width:1.2,height:19,seed:13,low,tint:'#c8e4e8'});animations.push(time=>falls.update(time));
-    plantGrove(root,'plane',trees,{low,name:'wulingyuan-broadleaf-canopies',shadows:false});
+    plantGrove(root,'plane',trees.filter((_,i)=>i%3!==0),{low,name:'wulingyuan-broadleaf-canopies',shadows:false});plantGrove(root,'conifer',trees.filter((_,i)=>i%3===0).map(p=>({...p,scale:.4})),{low,name:'wulingyuan-exposed-ridge-conifers',shadows:false});
     const thickets:Placement[]=[];for(let i=0;i<(low?45:90);i++){const x=-15+randomize()*(finish+35),z=-17-randomize()*31,hit=new T.Raycaster(new T.Vector3(x,20,z),new T.Vector3(0,-1,0)).intersectObject(valley)[0];if(hit)thickets.push({x,y:hit.point.y,z,scale:.7+randomize()*.8});}plantGrove(root,'plane',thickets,{low,name:'wulingyuan-valley-forest',shadows:false});
    }else if(code==='MNG'){
     root.userData.landform='open-rolling-steppe-and-river';
@@ -89,10 +91,11 @@ export function createEastAsiaEnvironment(code:NewEastAsiaCode):CountryEnvironme
     root.userData.landform='paektu-volcanic-caldera-and-lava-terraces';
     // The near side is a low scenic cutaway. It exposes the lake instead of
     // hiding it behind an opaque full-height foreground rim.
-    createHeightfield(root,{name:'paektu-caldera-rim',x:finish*.53,y:-3.7,z:-65,width:108,depth:82,segments:[low?64:100,low?40:64],height:(u,v)=>{const r=Math.hypot((u-.5)*2.4,(v-.5)*2.6),a=Math.atan2(v-.5,u-.5),crest=.82+Math.sin(a*5)*.035+Math.sin(a*11)*.02,rim=Math.exp(-((r-crest)**2)/.031),front=1-T.MathUtils.smoothstep(v,.53,.8)*.88;return rim*(20+Math.sin(a*7)*3+Math.sin(a*13)*1.2)*front+fbm(u*28,v*24,9,4)*1.7;},color:mountainColor({snowLine:23,rock:'#596575',forest:'#657666',snow:'#dce7ed',treeLine:2})});
+    createHeightfield(root,{name:'paektu-caldera-rim',x:finish*.53,y:-3.7,z:-65,width:108,depth:82,segments:[low?64:100,low?40:64],height:(u,v)=>{const r=Math.hypot((u-.5)*2.4,(v-.5)*2.6),a=Math.atan2(v-.5,u-.5),crest=.82+Math.sin(a*5)*.035+Math.sin(a*11)*.02,rim=Math.exp(-((r-crest)**2)/.031),front=1-T.MathUtils.smoothstep(v,.53,.8)*.88;return rim*(20+Math.sin(a*7)*3+Math.sin(a*13)*1.2+Math.sin(a*23)*.65)*front+fbm(u*28,v*24,9,4)*1.7;},color:mountainColor({snowLine:23,rock:'#596575',forest:'#657666',snow:'#dce7ed',treeLine:2})});
     const lake=createWaterSurface(root,{x:finish*.53,y:-.6,z:-65,width:40,depth:28,shallow:'#7ec5ce',deep:'#285d83',segments:24,roughness:.22,name:'paektu-caldera-lake'});
     const old=lake.surface.geometry,geometry=new T.CircleGeometry(1,80);geometry.scale(20,14,1);const count=geometry.getAttribute('position').count,color=new Float32Array(count*3),deep=new T.Color('#20576e'),shoreColor=new T.Color('#558d98');for(let i=0;i<count;i++){const c=i===0?deep:shoreColor;color[i*3]=c.r;color[i*3+1]=c.g;color[i*3+2]=c.b;}geometry.setAttribute('color',new T.BufferAttribute(color,3));lake.surface.geometry=geometry;old.dispose();animations.push(time=>lake.update(time));
-    const shore=new T.Mesh(new T.RingGeometry(1.005,1.12,80),matte('#58616b'));shore.name='paektu-basalt-shoreline';shore.rotation.x=-Math.PI/2;shore.scale.set(20,14,1);shore.position.set(finish*.53,-.64,-65);root.add(shore);
+    const lakeMaterial=lake.surface.material as T.MeshStandardMaterial;lakeMaterial.normalScale.set(.13,.13);lakeMaterial.roughness=.3;
+    const shore=new T.Mesh(new T.RingGeometry(.99,1.09,80,3),matte('#58616b'));shore.name='paektu-basalt-shoreline';shore.rotation.x=-Math.PI/2;shore.scale.set(20,14,1);shore.position.set(finish*.53,-.64,-65);root.add(shore);
     for(let i=0;i<28;i++){const x=-8+i*4.4,z=-8-(i%3)*6,h=1+(i%4)*.7; b.add(new T.CylinderGeometry(.7,1,h,6),'#7c8993',[x,-5+h/2,z],[.07,i*.4,.08],[1,1,1],.18);if(i%5===0)trees.push({x,y:-4.7,z:-22,scale:.65});}
     plantGrove(root,'conifer',trees,{low,name:'paektu-lower-highland-conifers',shadows:false});
    }else{

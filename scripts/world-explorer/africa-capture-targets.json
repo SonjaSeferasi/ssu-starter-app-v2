@@ -1,0 +1,1844 @@
+{
+ "EGY": {
+  "title": "Giza Plateau: The Sun Gate",
+  "spawn": [
+   0,
+   0
+  ],
+  "mid": [
+   70.2,
+   2.2,
+   "eg-canyon-far"
+  ],
+  "signature": [
+   80.4,
+   1,
+   "eg-dais"
+  ],
+  "zone": [
+   48,
+   18.4
+  ],
+  "cycleHazard": null,
+  "finish": 132.4,
+  "landmark": null
+ },
+ "ZAF": {
+  "title": "Savanna Wildlife Adventure",
+  "spawn": [
+   3,
+   0
+  ],
+  "mid": [
+   63.85,
+   -0.2,
+   "za-e1"
+  ],
+  "signature": [
+   44.8,
+   3,
+   "za-up-swing horizontal"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 121.8,
+  "landmark": null
+ },
+ "MAR": {
+  "title": "Chefchaouen: The Blue Medina",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   54.6,
+   4.4,
+   "ma-roof-3"
+  ],
+  "signature": [
+   32.4,
+   0.6,
+   "ma-awning-1 bounce"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 114,
+  "landmark": {
+   "name": "blue-medina-houses",
+   "center": [
+    57.6,
+    2.9,
+    -15
+   ],
+   "size": [
+    142.6,
+    16.3,
+    18.5
+   ]
+  }
+ },
+ "DZA": {
+  "title": "Tassili n\u2019Ajjer: The Stone Forest",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   55.6,
+   2.8,
+   "dz-shelter"
+  ],
+  "signature": [
+   39.6,
+   2.6,
+   "dz-flake-1 collapse"
+  ],
+  "zone": [
+   24,
+   13
+  ],
+  "cycleHazard": null,
+  "finish": 119.6,
+  "landmark": {
+   "name": "sandstone-stone-forest",
+   "center": [
+    63.8,
+    2.8,
+    -37.7
+   ],
+   "size": [
+    149.2,
+    17.7,
+    40
+   ]
+  }
+ },
+ "TUN": {
+  "title": "El Jem: The Amphitheatre Climb",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   48.9,
+   0.6,
+   "tn-lift"
+  ],
+  "signature": [
+   48.9,
+   0.6,
+   "tn-lift vertical"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 98.8,
+  "landmark": {
+   "name": "el-jem-amphitheatre",
+   "center": [
+    49.4,
+    4.1,
+    -46
+   ],
+   "size": [
+    93.6,
+    20.6,
+    21.7
+   ]
+  }
+ },
+ "LBY": {
+  "title": "Leptis Magna: Columns by the Sea",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   55.8,
+   0,
+   "ly-quay-1"
+  ],
+  "signature": [
+   22.7,
+   0.9,
+   "ly-drum-1 collapse"
+  ],
+  "zone": null,
+  "cycleHazard": [
+   "ly-surge-1",
+   54.4
+  ],
+  "finish": 111.8,
+  "landmark": {
+   "name": "severan-arch",
+   "center": [
+    -1,
+    4.3,
+    -4.2
+   ],
+   "size": [
+    7,
+    8.6,
+    7.4
+   ]
+  }
+ },
+ "SDN": {
+  "title": "Mero\u00eb: Pyramids of the Kushite Kings",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   53.1,
+   3.4,
+   "sd-course-1"
+  ],
+  "signature": [
+   25.900000000000002,
+   1,
+   "sd-camel horizontal"
+  ],
+  "zone": [
+   70,
+   18
+  ],
+  "cycleHazard": null,
+  "finish": 101.2,
+  "landmark": {
+   "name": "meroe-pyramids",
+   "center": [
+    53,
+    2.4,
+    -28.5
+   ],
+   "size": [
+    106.7,
+    13.2,
+    39.8
+   ]
+  }
+ },
+ "MLI": {
+  "title": "Djenn\u00e9: Rooftops of the Mud City",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   48.1,
+   5.6,
+   "ml-cone-1"
+  ],
+  "signature": [
+   20.1,
+   2,
+   "ml-house-1 climb"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 96.4,
+  "landmark": {
+   "name": "great-mosque-of-djenne",
+   "center": [
+    65,
+    6.7,
+    -23.9
+   ],
+   "size": [
+    40,
+    17.4,
+    14.3
+   ]
+  }
+ },
+ "NER": {
+  "title": "Kour\u00e9: The Giraffe Plateau",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   50.800000000000004,
+   2.2,
+   "ne-giraffe-2"
+  ],
+  "signature": [
+   19.8,
+   1,
+   "ne-laterite-2 collapse"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 102.2,
+  "landmark": {
+   "name": "west-african-giraffes",
+   "center": [
+    35.6,
+    -1.5,
+    -19
+   ],
+   "size": [
+    34.2,
+    6.2,
+    5
+   ]
+  }
+ },
+ "MRT": {
+  "title": "Iron Ore Train: Across the Sahara",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   56.1,
+   1.6,
+   "mr-dune-1"
+  ],
+  "signature": [
+   23.4,
+   1.6,
+   "mr-wagon-1 horizontal"
+  ],
+  "zone": [
+   52,
+   21
+  ],
+  "cycleHazard": null,
+  "finish": 110.8,
+  "landmark": {
+   "name": "iron-ore-train",
+   "center": [
+    55.3,
+    -1.6,
+    -6.1
+   ],
+   "size": [
+    170.9,
+    4.6,
+    2.6
+   ]
+  }
+ },
+ "SEN": {
+  "title": "Lac Rose: The Salt Harvest",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   59.8,
+   0.2,
+   "sn-bank-2"
+  ],
+  "signature": [
+   36.7,
+   -0.6,
+   "sn-pirogue horizontal"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 113.4,
+  "landmark": {
+   "name": "pink-lake-water",
+   "center": [
+    56.7,
+    -2.8,
+    -50
+   ],
+   "size": [
+    633.4,
+    0,
+    70
+   ]
+  }
+ },
+ "GMB": {
+  "title": "River Gambia: Baboon Islands",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   45,
+   0.3,
+   "gm-ferry"
+  ],
+  "signature": [
+   45,
+   0.3,
+   "gm-ferry horizontal"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 92.8,
+  "landmark": {
+   "name": "river-gambia",
+   "center": [
+    46.4,
+    -2.4,
+    -6
+   ],
+   "size": [
+    412.8,
+    0,
+    40
+   ]
+  }
+ },
+ "GNB": {
+  "title": "Bijag\u00f3s: The Hippo Crossing",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   41.2,
+   0.3,
+   "gw-island"
+  ],
+  "signature": [
+   20.5,
+   -0.4,
+   "gw-hippo-1 vertical"
+  ],
+  "zone": null,
+  "cycleHazard": [
+   "gw-wave-1",
+   12.4
+  ],
+  "finish": 89.4,
+  "landmark": {
+   "name": "saltwater-hippos",
+   "center": [
+    40.5,
+    -2.6,
+    -14.5
+   ],
+   "size": [
+    48.2,
+    1.5,
+    6.6
+   ]
+  }
+ },
+ "GIN": {
+  "title": "Fouta Djallon: The Bridal Veil Falls",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   46.2,
+   4.6,
+   "gn-shelf-1"
+  ],
+  "signature": [
+   37.4,
+   4.6,
+   "gn-cliff climb"
+  ],
+  "zone": null,
+  "cycleHazard": [
+   "gn-spray-1",
+   62
+  ],
+  "finish": 96,
+  "landmark": {
+   "name": "bridal-veil-falls",
+   "center": [
+    38.4,
+    4.8,
+    -9.4
+   ],
+   "size": [
+    34,
+    25.5,
+    10.8
+   ]
+  }
+ },
+ "SLE": {
+  "title": "Tiwai Island: Down the Moa River",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   57.6,
+   0.4,
+   "sl-log-2"
+  ],
+  "signature": [
+   19,
+   -0.2,
+   "sl-log-1 horizontal"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 105.4,
+  "landmark": {
+   "name": "moa-river",
+   "center": [
+    52.7,
+    -2.6,
+    -6
+   ],
+   "size": [
+    425.4,
+    0,
+    40
+   ]
+  }
+ },
+ "LBR": {
+  "title": "Robertsport: The Surf Coast",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   49.1,
+   0,
+   "lr-point"
+  ],
+  "signature": [
+   33.5,
+   -0.6,
+   "lr-board-1 horizontal"
+  ],
+  "zone": null,
+  "cycleHazard": [
+   "lr-wave-1",
+   18.4
+  ],
+  "finish": 92.8,
+  "landmark": {
+   "name": "atlantic-surf",
+   "center": [
+    46.4,
+    -2.7,
+    -23.8
+   ],
+   "size": [
+    132.8,
+    0.6,
+    43
+   ]
+  }
+ },
+ "CIV": {
+  "title": "Yamoussoukro: The Basilica Dome",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   55.8,
+   5.2,
+   "ci-ring"
+  ],
+  "signature": [
+   46.1,
+   3,
+   "ci-lift vertical"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 108.4,
+  "landmark": {
+   "name": "basilica-dome",
+   "center": [
+    55.8,
+    16.5,
+    -34
+   ],
+   "size": [
+    36,
+    40.9,
+    34
+   ]
+  }
+ },
+ "GHA": {
+  "title": "Kakum: The Canopy Walkway",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   57.1,
+   2.4,
+   "gh-plank-2"
+  ],
+  "signature": [
+   37.5,
+   1.6,
+   "gh-span-1 horizontal"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 117.8,
+  "landmark": {
+   "name": "kakum-canopy-walkway",
+   "center": [
+    57.4,
+    4.3,
+    -1.9
+   ],
+   "size": [
+    87.7,
+    5.4,
+    1.1
+   ]
+  }
+ },
+ "TGO": {
+  "title": "Koutammakou: The Tower Houses",
+  "spawn": [
+   -3,
+   0
+  ],
+  "mid": [
+   48.1,
+   3.2,
+   "tg-house-3"
+  ],
+  "signature": [
+   10.9,
+   2.4,
+   "tg-house-1 climb"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 90.2,
+  "landmark": {
+   "name": "takienta-tower-houses",
+   "center": [
+    42.8,
+    -2,
+    -21.8
+   ],
+   "size": [
+    70.9,
+    4.1,
+    18.4
+   ]
+  }
+ },
+ "BEN": {
+  "title": "Ganvi\u00e9: The Stilt Village",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   54.9,
+   0.4,
+   "bj-pirogue-2"
+  ],
+  "signature": [
+   20.5,
+   -0.2,
+   "bj-pirogue-1 horizontal"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 101,
+  "landmark": {
+   "name": "ganvie-stilt-houses",
+   "center": [
+    49.7,
+    3,
+    -18
+   ],
+   "size": [
+    113.2,
+    10.7,
+    34.6
+   ]
+  }
+ },
+ "BFA": {
+  "title": "Ti\u00e9b\u00e9l\u00e9: The Painted Royal Court",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   53.800000000000004,
+   1.4,
+   "bf-granary-1"
+  ],
+  "signature": [
+   14,
+   0,
+   "bf-outer-court"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 90.6,
+  "landmark": {
+   "name": "painted-kassena-houses",
+   "center": [
+    42.5,
+    -1.6,
+    -10
+   ],
+   "size": [
+    102.6,
+    2.7,
+    10.2
+   ]
+  }
+ },
+ "NGA": {
+  "title": "Zuma Rock: The Monolith Ascent",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   42.9,
+   5.6,
+   "ng-flake-2"
+  ],
+  "signature": [
+   28.4,
+   5,
+   "ng-face climb"
+  ],
+  "zone": [
+   66,
+   18
+  ],
+  "cycleHazard": [
+   "ng-rockfall-1",
+   51.4
+  ],
+  "finish": 92.4,
+  "landmark": {
+   "name": "zuma-rock-monolith",
+   "center": [
+    75.6,
+    17.5,
+    -36
+   ],
+   "size": [
+    71.3,
+    44,
+    40
+   ]
+  }
+ },
+ "CPV": {
+  "title": "Fogo: Into the Volcano",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   55.5,
+   1.9,
+   "cv-fumarole-1"
+  ],
+  "signature": [
+   20.3,
+   -0.4,
+   "cv-lava-2 collapse"
+  ],
+  "zone": null,
+  "cycleHazard": [
+   "cv-steam-1",
+   55.7
+  ],
+  "finish": 115.4,
+  "landmark": {
+   "name": "pico-do-fogo",
+   "center": [
+    102.5,
+    14,
+    -60
+   ],
+   "size": [
+    62.3,
+    36,
+    60
+   ]
+  }
+ },
+ "CMR": {
+  "title": "Mount Cameroon: The Race of Hope",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   54,
+   2.6,
+   "cm-gully-far"
+  ],
+  "signature": [
+   39.5,
+   1.6,
+   "cm-liana-1 pendulum"
+  ],
+  "zone": null,
+  "cycleHazard": [
+   "cm-rockfall",
+   84
+  ],
+  "finish": 117.2,
+  "landmark": {
+   "name": "mount-cameroon",
+   "center": [
+    58.6,
+    12.2,
+    -130
+   ],
+   "size": [
+    557.2,
+    44.4,
+    80
+   ]
+  }
+ },
+ "CAF": {
+  "title": "Dzanga Bai: The Elephant Clearing",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   48,
+   0.8,
+   "cf-pools"
+  ],
+  "signature": [
+   33.3,
+   0.6,
+   "cf-mud-1 collapse"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 96,
+  "landmark": {
+   "name": "dzanga-bai-clearing",
+   "center": [
+    48,
+    -1.4,
+    -8
+   ],
+   "size": [
+    416,
+    1.6,
+    46
+   ]
+  }
+ },
+ "TCD": {
+  "title": "Ennedi: The Aloba Arch",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   57.8,
+   5,
+   "td-arch-leg"
+  ],
+  "signature": [
+   57.8,
+   5,
+   "td-arch-leg climb"
+  ],
+  "zone": [
+   61,
+   24
+  ],
+  "cycleHazard": null,
+  "finish": 110.4,
+  "landmark": {
+   "name": "aloba-arch",
+   "center": [
+    55.2,
+    5.1,
+    -150
+   ],
+   "size": [
+    82.6,
+    36.2,
+    28
+   ]
+  }
+ },
+ "COD": {
+  "title": "Nyiragongo: Rim of the Lava Lake",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   53.3,
+   -1.2,
+   "cd-inner-ledge"
+  ],
+  "signature": [
+   37.5,
+   -0.8,
+   "cd-terrace-2 collapse"
+  ],
+  "zone": [
+   76,
+   20
+  ],
+  "cycleHazard": [
+   "cd-fountain-1",
+   30.2
+  ],
+  "finish": 103,
+  "landmark": {
+   "name": "nyiragongo-crater",
+   "center": [
+    17.9,
+    -0.3,
+    -30
+   ],
+   "size": [
+    56.8,
+    20.5,
+    61.2
+   ]
+  }
+ },
+ "COG": {
+  "title": "Congo River: The Brazzaville Rapids",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   58.9,
+   0.4,
+   "cg-island"
+  ],
+  "signature": [
+   47.2,
+   0,
+   "cg-barge horizontal"
+  ],
+  "zone": null,
+  "cycleHazard": [
+   "cg-wave-1",
+   22.3
+  ],
+  "finish": 106.4,
+  "landmark": {
+   "name": "congo-river",
+   "center": [
+    53.2,
+    -3.2,
+    -80
+   ],
+   "size": [
+    626.4,
+    0,
+    150
+   ]
+  }
+ },
+ "GAB": {
+  "title": "Loango: Elephants on the Beach",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   41.6,
+   -0.4,
+   "ga-spit"
+  ],
+  "signature": [
+   28.1,
+   -0.8,
+   "ga-drift-1 vertical"
+  ],
+  "zone": null,
+  "cycleHazard": [
+   "ga-surf-1",
+   18
+  ],
+  "finish": 90.4,
+  "landmark": {
+   "name": "loango-beach",
+   "center": [
+    48.9,
+    -2.8,
+    -12.9
+   ],
+   "size": [
+    137.9,
+    0.4,
+    11.9
+   ]
+  }
+ },
+ "GNQ": {
+  "title": "Bioko: The Crater Lake",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   46.5,
+   -1,
+   "gq-log-1"
+  ],
+  "signature": [
+   64.9,
+   2.4,
+   "gq-wall climb"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 93.9,
+  "landmark": {
+   "name": "crater-lake",
+   "center": [
+    46.9,
+    -3,
+    -6
+   ],
+   "size": [
+    413.9,
+    0,
+    40
+   ]
+  }
+ },
+ "STP": {
+  "title": "Pico C\u00e3o Grande: The Needle",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   56.1,
+   4,
+   "st-needle-base"
+  ],
+  "signature": [
+   34.2,
+   4.6,
+   "st-face-1 climb"
+  ],
+  "zone": [
+   84,
+   14
+  ],
+  "cycleHazard": null,
+  "finish": 104,
+  "landmark": {
+   "name": "pico-cao-grande",
+   "center": [
+    100.6,
+    20.9,
+    -34
+   ],
+   "size": [
+    24.4,
+    61.8,
+    19.9
+   ]
+  }
+ },
+ "AGO": {
+  "title": "Serra da Leba: The Hairpin Pass",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   59.4,
+   3.8,
+   "ao-bend-3"
+  ],
+  "signature": [
+   21.4,
+   1.4,
+   "ao-truck-1 horizontal"
+  ],
+  "zone": null,
+  "cycleHazard": [
+   "ao-rockfall-1",
+   39.4
+  ],
+  "finish": 106.4,
+  "landmark": {
+   "name": "serra-da-leba-road",
+   "center": [
+    63.8,
+    14.5,
+    -26.4
+   ],
+   "size": [
+    56.4,
+    24.4,
+    3.2
+   ]
+  }
+ },
+ "KEN": {
+  "title": "Maasai Mara: The Great Migration",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   46.1,
+   -1.2,
+   "ke-gnu-3"
+  ],
+  "signature": [
+   20.9,
+   -1.2,
+   "ke-gnu-1 horizontal"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 95.8,
+  "landmark": {
+   "name": "mara-river-crossing",
+   "center": [
+    47.8,
+    -2,
+    -12.1
+   ],
+   "size": [
+    98.6,
+    4,
+    7.4
+   ]
+  }
+ },
+ "TZA": {
+  "title": "Kilimanjaro: Roof of Africa",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   54.3,
+   2.9,
+   "tz-step-4"
+  ],
+  "signature": [
+   63.7,
+   6.4,
+   "tz-lava-tower climb"
+  ],
+  "zone": [
+   92,
+   22
+  ],
+  "cycleHazard": null,
+  "finish": 123,
+  "landmark": {
+   "name": "kibo-summit",
+   "center": [
+    61.5,
+    12.5,
+    -170
+   ],
+   "size": [
+    563,
+    53,
+    90
+   ]
+  }
+ },
+ "ETH": {
+  "title": "Lalibela: The Rock-Hewn Churches",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   49.9,
+   -3,
+   "et-tunnel"
+  ],
+  "signature": [
+   38.4,
+   -3,
+   "et-courtyard"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 96,
+  "landmark": {
+   "name": "bete-giyorgis",
+   "center": [
+    38.4,
+    2.2,
+    -11
+   ],
+   "size": [
+    12,
+    12.3,
+    12.1
+   ]
+  }
+ },
+ "ERI": {
+  "title": "Asmara: The Modernist City",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   46.9,
+   4,
+   "er-sign"
+  ],
+  "signature": [
+   11.9,
+   1.2,
+   "er-lift-1 vertical"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 92.6,
+  "landmark": {
+   "name": "fiat-tagliero",
+   "center": [
+    87.6,
+    5.8,
+    -4
+   ],
+   "size": [
+    31,
+    11.6,
+    3.7
+   ]
+  }
+ },
+ "DJI": {
+  "title": "Lac Abb\u00e9: The Steaming Chimneys",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   55.2,
+   1,
+   "dj-chimney-3"
+  ],
+  "signature": [
+   13.299999999999999,
+   0.2,
+   "dj-crust-1 collapse"
+  ],
+  "zone": [
+   76.6,
+   19
+  ],
+  "cycleHazard": [
+   "dj-steam-2",
+   35.8
+  ],
+  "finish": 106.6,
+  "landmark": {
+   "name": "limestone-chimneys",
+   "center": [
+    53.4,
+    4.4,
+    -18.3
+   ],
+   "size": [
+    125.3,
+    17.1,
+    39.8
+   ]
+  }
+ },
+ "SOM": {
+  "title": "Laas Geel: The Painted Shelters",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   40.9,
+   2.2,
+   "so-ledge-1"
+  ],
+  "signature": [
+   23.7,
+   1.6,
+   "so-boulder-2 collapse"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 77.8,
+  "landmark": {
+   "name": "laas-geel-shelters",
+   "center": [
+    32.3,
+    4.1,
+    -1.8
+   ],
+   "size": [
+    11.2,
+    5.6,
+    5.6
+   ]
+  }
+ },
+ "SSD": {
+  "title": "The Sudd: Floating Papyrus",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   37.9,
+   0,
+   "ss-island"
+  ],
+  "signature": [
+   18.1,
+   -0.3,
+   "ss-mat-1 vertical"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 83.4,
+  "landmark": {
+   "name": "the-sudd",
+   "center": [
+    41.7,
+    -1.3,
+    -140
+   ],
+   "size": [
+    403.4,
+    1.8,
+    60
+   ]
+  }
+ },
+ "UGA": {
+  "title": "Murchison Falls: The Nile Squeeze",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   54.4,
+   1,
+   "ug-top"
+  ],
+  "signature": [
+   63.7,
+   1.2,
+   "ug-ledge-1 collapse"
+  ],
+  "zone": null,
+  "cycleHazard": [
+   "ug-spray-1",
+   38
+  ],
+  "finish": 105.4,
+  "landmark": {
+   "name": "murchison-gorge",
+   "center": [
+    52.7,
+    -3.5,
+    -13
+   ],
+   "size": [
+    145.4,
+    17,
+    22
+   ]
+  }
+ },
+ "RWA": {
+  "title": "Volcanoes: The Gorilla Trail",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   41.7,
+   3.4,
+   "rw-bamboo-2"
+  ],
+  "signature": [
+   27.8,
+   0,
+   "rw-bamboo-1 bounce"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 86.6,
+  "landmark": {
+   "name": "virunga-cones",
+   "center": [
+    43.3,
+    8.2,
+    -160
+   ],
+   "size": [
+    526.6,
+    28.4,
+    60
+   ]
+  }
+ },
+ "BDI": {
+  "title": "Gishora: The Royal Drums",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   42.5,
+   5,
+   "bi-ridge-1"
+  ],
+  "signature": [
+   9.799999999999999,
+   -0.8,
+   "bi-drum-1 bounce"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 84,
+  "landmark": {
+   "name": "royal-drums",
+   "center": [
+    81.4,
+    9.3,
+    -6
+   ],
+   "size": [
+    9.9,
+    2.5,
+    7.5
+   ]
+  }
+ },
+ "MWI": {
+  "title": "Lake Malawi: Cichlid Shores",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   37.8,
+   0.8,
+   "mw-cove"
+  ],
+  "signature": [
+   45.900000000000006,
+   0.5,
+   "mw-dugout horizontal"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 84.2,
+  "landmark": {
+   "name": "lake-malawi",
+   "center": [
+    42.1,
+    -1.6,
+    -80
+   ],
+   "size": [
+    604.2,
+    0,
+    180
+   ]
+  }
+ },
+ "MOZ": {
+  "title": "Bazaruto: The Dhow Crossing",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   51.6,
+   0.2,
+   "mz-bar-2"
+  ],
+  "signature": [
+   41.6,
+   0,
+   "mz-dhow horizontal"
+  ],
+  "zone": null,
+  "cycleHazard": [
+   "mz-wave-1",
+   33.9
+  ],
+  "finish": 93.4,
+  "landmark": {
+   "name": "bazaruto-dunes",
+   "center": [
+    46.7,
+    9.1,
+    -120
+   ],
+   "size": [
+    413.4,
+    24.2,
+    60
+   ]
+  }
+ },
+ "MDG": {
+  "title": "Tsingy de Bemaraha: Razor Stone Forest",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   49.2,
+   2.8,
+   "mg-pin-3"
+  ],
+  "signature": [
+   20,
+   -0.4,
+   "mg-pin-2 collapse"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 99.6,
+  "landmark": {
+   "name": "tsingy-pinnacles",
+   "center": [
+    50.1,
+    3,
+    -18.3
+   ],
+   "size": [
+    122.2,
+    20,
+    36.6
+   ]
+  }
+ },
+ "MUS": {
+  "title": "Chamarel: The Seven Coloured Earths",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   41.2,
+   0.4,
+   "mu-gorge"
+  ],
+  "signature": [
+   31.1,
+   0,
+   "mu-cart horizontal"
+  ],
+  "zone": null,
+  "cycleHazard": [
+   "mu-spray-1",
+   55.4
+  ],
+  "finish": 86.6,
+  "landmark": {
+   "name": "seven-coloured-earths",
+   "center": [
+    16.7,
+    -0.2,
+    -8.9
+   ],
+   "size": [
+    34.4,
+    2.4,
+    13.9
+   ]
+  }
+ },
+ "SYC": {
+  "title": "La Digue: The Granite Boulders",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   38.4,
+   0.4,
+   "sc-tortoise"
+  ],
+  "signature": [
+   38.4,
+   0.4,
+   "sc-tortoise horizontal"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 81.4,
+  "landmark": {
+   "name": "granite-boulders",
+   "center": [
+    45.2,
+    1.8,
+    -13.6
+   ],
+   "size": [
+    94.8,
+    12.6,
+    26.6
+   ]
+  }
+ },
+ "COM": {
+  "title": "Karthala: The Crater Rim Walk",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   45.7,
+   2.6,
+   "km-lava-2"
+  ],
+  "signature": [
+   45.7,
+   2.6,
+   "km-lava-2"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 86.8,
+  "landmark": {
+   "name": "karthala-caldera",
+   "center": [
+    43.4,
+    4.1,
+    -150
+   ],
+   "size": [
+    526.8,
+    20.2,
+    70
+   ]
+  }
+ },
+ "ZMB": {
+  "title": "Victoria Falls: The Smoke That Thunders",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   49.3,
+   0.6,
+   "zm-lip-2"
+  ],
+  "signature": [
+   49.3,
+   0.6,
+   "zm-lip-2"
+  ],
+  "zone": [
+   67,
+   16
+  ],
+  "cycleHazard": [
+   "zm-spray-1",
+   40.4
+  ],
+  "finish": 102.4,
+  "landmark": {
+   "name": "victoria-falls-curtain",
+   "center": [
+    40.7,
+    -16.1,
+    -24.4
+   ],
+   "size": [
+    172.7,
+    59.9,
+    11.3
+   ]
+  }
+ },
+ "ZWE": {
+  "title": "Great Zimbabwe: The Stone City",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   46,
+   1.8,
+   "zw-wall-3"
+  ],
+  "signature": [
+   30,
+   1.2,
+   "zw-enclosure"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 91,
+  "landmark": {
+   "name": "great-enclosure",
+   "center": [
+    29.5,
+    2,
+    -9.9
+   ],
+   "size": [
+    37,
+    10,
+    19.5
+   ]
+  }
+ },
+ "NAM": {
+  "title": "Sossusvlei: Dunes of the Namib",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   53,
+   0.8,
+   "nm-pan"
+  ],
+  "signature": [
+   25,
+   2,
+   "nm-crest-2 collapse"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 100.6,
+  "landmark": {
+   "name": "red-star-dunes",
+   "center": [
+    50.3,
+    4.9,
+    -70
+   ],
+   "size": [
+    420.6,
+    21.8,
+    40
+   ]
+  }
+ },
+ "BWA": {
+  "title": "Okavango: Mokoro Channels",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   50,
+   -0.3,
+   "bw-mokoro-2"
+  ],
+  "signature": [
+   18.8,
+   -0.3,
+   "bw-mokoro-1 horizontal"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 92.6,
+  "landmark": {
+   "name": "okavango-channels",
+   "center": [
+    46.3,
+    -1.5,
+    -6
+   ],
+   "size": [
+    412.6,
+    0,
+    40
+   ]
+  }
+ },
+ "LSO": {
+  "title": "Maletsunyane: The Highland Gorge",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   48.5,
+   -1.8,
+   "ls-spray-rock"
+  ],
+  "signature": [
+   34.1,
+   -0.8,
+   "ls-abseil vertical"
+  ],
+  "zone": [
+   56.4,
+   7.4
+  ],
+  "cycleHazard": null,
+  "finish": 95.2,
+  "landmark": {
+   "name": "maletsunyane-falls",
+   "center": [
+    44.7,
+    -1,
+    -10.3
+   ],
+   "size": [
+    17.9,
+    18,
+    10.1
+   ]
+  }
+ },
+ "SWZ": {
+  "title": "Mantenga: The Beehive Village",
+  "spawn": [
+   -2,
+   0
+  ],
+  "mid": [
+   35.5,
+   0.4,
+   "sz-bank"
+  ],
+  "signature": [
+   35.5,
+   0.4,
+   "sz-bank"
+  ],
+  "zone": null,
+  "cycleHazard": null,
+  "finish": 74.8,
+  "landmark": {
+   "name": "beehive-huts",
+   "center": [
+    0.6,
+    0.8,
+    -6.4
+   ],
+   "size": [
+    17.3,
+    2.7,
+    6.2
+   ]
+  }
+ }
+}

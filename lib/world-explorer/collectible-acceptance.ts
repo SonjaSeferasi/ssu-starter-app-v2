@@ -11,8 +11,10 @@ export const acceptanceTimings=[0,1.8,3.6];
 /** Coins a player reaches by stepping back a little after a jump, which the
  * forward-moving bot does not do on its own: the platform is played with a
  * one-second backtrack. Argentina: at difficulty 2 the jump over the faster
- * crest patrol carries past ar-coin-20 on the moraine. */
-export const stepBack:Record<string,string[]>={ARG:['ar-moraine']};
+ * crest patrol carries past ar-coin-20 on the moraine. Japan: the jump down
+ * from the star terrace lands at the far end of the short descent ledge, past
+ * jp-coin-13. */
+export const stepBack:Record<string,string[]>={ARG:['ar-moraine'],JPN:['jp-descent']};
 
 export type AcceptanceRun={route:'main'|'bonus';wait:number;status:string;damage:number;coins:number;stars:number};
 export function collectibleAcceptance(code:string){

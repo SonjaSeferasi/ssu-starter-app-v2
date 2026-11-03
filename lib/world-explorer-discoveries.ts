@@ -1,6 +1,16 @@
+import {remainingNorthAmericaPlaces,type RemainingNorthAmericaCode} from './world-explorer/north-america-remaining';
+import {westAsiaPlaces,type WestAsiaCode} from './world-explorer/west-asia';
+import {africaPlaces,type AfricaCode} from './world-explorer/africa';
+import {africaLevels} from './world-explorer/levels/africa';
+import {northAmericaPlaces,type NorthAmericaCode} from './world-explorer/north-america';
 import snapshot from '../public/world-explorer/data/discoveries.json';
 import {countryByCode} from './world-explorer/catalog';
 import {eastAsiaPlaces,type NewEastAsiaCode} from './world-explorer/east-asia';
+import {southeastAsiaPlaces,type SoutheastAsiaCode} from './world-explorer/southeast-asia';
+import {southAsiaPlaces,type SouthAsiaCode} from './world-explorer/south-asia';
+import {centralAsiaPlaces,type CentralAsiaCode} from './world-explorer/central-asia';
+import {europePlaces,type EuropeCode} from './world-explorer/europe';
+import {oceaniaPlaces,type OceaniaCode} from './world-explorer/oceania';
 
 export type Discovery={
  title:string;landmark:string;text:string;sourceUrl:string;
@@ -42,7 +52,25 @@ export const discoveryAttribution='UNESCO World Heritage Centre via UNESCO Datah
 
 export function discoveryFor(code:string):Discovery|undefined{
  const key=code.toUpperCase();
+ const remaining=remainingNorthAmericaPlaces[key as RemainingNorthAmericaCode];
+ if(remaining)return{title:remaining.title,landmark:remaining.landmark,text:remaining.fact,sourceUrl:remaining.source,challengeQuestion:remaining.question,answer:remaining.answer,kind:'showcase'};
+ const north=northAmericaPlaces[key as NorthAmericaCode];
+ if(north)return{title:north.landmark,landmark:north.landmark,text:north.fact,sourceUrl:north.source,challengeQuestion:north.question,answer:north.answer,kind:'showcase'};
+ const africa=africaPlaces[key as AfricaCode];
+ if(africa&&africaLevels[key as AfricaCode])return{title:africa.landmark,landmark:africa.landmark,text:africa.fact,sourceUrl:africa.source,challengeQuestion:africa.question,answer:africa.answer,kind:'showcase'};
  const east=eastAsiaPlaces[key as NewEastAsiaCode];
+ const southeast=southeastAsiaPlaces[key as SoutheastAsiaCode];
+ const south=southAsiaPlaces[key as SouthAsiaCode];
+ const europe=europePlaces[key as EuropeCode];
+ const oceania=oceaniaPlaces[key as OceaniaCode];
+ if(oceania)return{title:oceania.landmark,landmark:oceania.landmark,text:oceania.fact,sourceUrl:oceania.source,challengeQuestion:oceania.question,answer:oceania.answer,kind:'showcase'};
+ if(europe)return{title:europe.landmark,landmark:europe.landmark,text:europe.fact,sourceUrl:europe.source,challengeQuestion:europe.question,answer:europe.answer,kind:'showcase'};
+ const west=westAsiaPlaces[key as WestAsiaCode];
+ if(west)return{title:west.landmark,landmark:west.landmark,text:west.fact,sourceUrl:west.source,challengeQuestion:west.question,answer:west.answer,kind:'showcase'};
+ const central=centralAsiaPlaces[key as CentralAsiaCode];
+ if(central)return{title:central.landmark,landmark:central.landmark,text:central.fact,sourceUrl:central.source,challengeQuestion:central.question,answer:central.answer,kind:'showcase'};
+ if(south)return{title:south.landmark,landmark:south.landmark,text:south.fact,sourceUrl:south.source,challengeQuestion:south.question,answer:south.answer,kind:'showcase'};
+ if(southeast)return{title:southeast.landmark,landmark:southeast.landmark,text:southeast.fact,sourceUrl:southeast.source,challengeQuestion:southeast.question,answer:southeast.answer,kind:'showcase'};
  if(east)return{title:east.landmark,landmark:east.landmark,text:east.fact,sourceUrl:east.source,challengeQuestion:east.question,answer:east.answer,kind:'showcase'};
  if(showcases[key])return showcases[key];
  return countryByCode(key)?discoveries.get(key):undefined;

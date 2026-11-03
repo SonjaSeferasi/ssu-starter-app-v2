@@ -1,9 +1,19 @@
+import {remainingNorthAmericaPlaces,type RemainingNorthAmericaCode} from './north-america-remaining';
+import {westAsiaPlaces,type WestAsiaCode} from './west-asia';
+import {africaPlaces,type AfricaCode} from './africa';
+import {africaLevels} from './levels/africa';
+import {northAmericaPlaces,type NorthAmericaCode} from './north-america';
 import {countryProfile} from './profiles';
+import {europePlaces,type EuropeCode} from './europe';
+import {oceaniaPlaces,type OceaniaCode} from './oceania';
 import {southAmericaEntry} from './south-america';
+import verifiedPhotos from './verified-photos.json';
 
 /** What a country guide shows as the destination: the place, its landscape,
  * and the Commons search and subject for its reference photograph. */
-export type GuideDestination={place:string;landscape:string[];mediaSearch:string;photoSubject:string;sourceUrl?:string;fromLevel:boolean};
+export type GuideDestination={place:string;landscape:string[];mediaSearch:string;photoSubject:string;photoAliases?:readonly string[];photoFile?:string;sourceUrl?:string;fromLevel:boolean};
+type VerifiedPhoto={file:string;aliases:string[];why?:string;verified:string};
+const pinned=verifiedPhotos.photos as Record<string,VerifiedPhoto>;
 
 /** The playable South American levels describe their own destination, which
  * is often not the country's general profile (Chile's level is El Tatio, not
@@ -25,7 +35,25 @@ const southAmericanGuides:Record<string,{landscape:string[];mediaSearch:string;p
  VEN:{landscape:['Tepui escarpment','Angel Falls','Cloud-filled valley'],mediaSearch:'Salto Ángel',photoSubject:'Salto Ángel'},
 };
 
+/** A verified photo (verified-photos.json) replaces the search: its file is
+ * fetched by title and its aliases are the names its title must carry. */
 export function guideDestination(code:string):GuideDestination|undefined{
+ const destination=regionDestination(code),pin=pinned[code.toUpperCase()];
+ return destination&&pin?{...destination,photoFile:pin.file,photoAliases:[...pin.aliases,...(destination.photoAliases??[destination.photoSubject])]}:destination;
+}
+function regionDestination(code:string):GuideDestination|undefined{
+ const remaining=remainingNorthAmericaPlaces[code.toUpperCase() as RemainingNorthAmericaCode];
+ if(remaining)return{place:remaining.landmark,landscape:remaining.features.map(f=>f.replace(/-/g,' ')),mediaSearch:remaining.landmark,photoSubject:remaining.landmark,photoAliases:code.toUpperCase()==='LCA'?['Gros Piton','Petit Piton','Pitons Saint Lucia']:code.toUpperCase()==='TTO'?['Caroni Swamp','Caroni Bird Sanctuary']:undefined,sourceUrl:remaining.source,fromLevel:true};
+ const north=northAmericaPlaces[code.toUpperCase() as NorthAmericaCode];
+ if(north)return{place:north.landmark,landscape:north.features.map(f=>f.replace(/-/g,' ')),mediaSearch:north.landmark,photoSubject:north.landmark,sourceUrl:north.source,fromLevel:true};
+ const oceania=oceaniaPlaces[code.toUpperCase() as OceaniaCode];
+ if(oceania)return{place:oceania.landmark,landscape:[...oceania.features],mediaSearch:oceania.mediaSearch,photoSubject:oceania.photoSubject,sourceUrl:oceania.source,fromLevel:true};
+ const europe=europePlaces[code.toUpperCase() as EuropeCode];
+ if(europe)return{place:europe.landmark,landscape:[...europe.features],mediaSearch:europe.mediaSearch,photoSubject:europe.photoSubject,sourceUrl:europe.source,fromLevel:true};
+ const africa=africaPlaces[code.toUpperCase() as AfricaCode];
+ if(africa&&africaLevels[code.toUpperCase() as AfricaCode])return{place:africa.landmark,landscape:[...africa.landscape],mediaSearch:africa.mediaSearch,photoSubject:africa.photoSubject,photoAliases:(africa as {photoAliases?:string[]}).photoAliases,sourceUrl:africa.source,fromLevel:true};
+ const west=westAsiaPlaces[code.toUpperCase() as WestAsiaCode];
+ if(west)return{place:west.landmark,landscape:[...west.features],mediaSearch:west.mediaSearch,photoSubject:west.photoSubject,sourceUrl:west.source,fromLevel:true};
  const entry=southAmericaEntry(code),guide=entry?southAmericanGuides[entry.code]:undefined;
  // A location that already begins with the landmark name is not repeated.
  if(entry?.levelBuilt&&guide)return{place:entry.locationName.startsWith(entry.featuredLandmark.name)?entry.locationName:`${entry.featuredLandmark.name} · ${entry.locationName}`,landscape:guide.landscape,mediaSearch:guide.mediaSearch,photoSubject:guide.photoSubject,fromLevel:true};
