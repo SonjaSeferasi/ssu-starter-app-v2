@@ -16,5 +16,5 @@ export function AvatarPreview({ appearance, outfits, faces, small = false, portr
   costume?: CostumeStyle;
 }) {
   const preview = avatarEditorPreview({ outfits, faces }, appearance);
-  return <CompleteAvatar avatar={completeAvatar(preview.avatarId)!} small={small} portrait={portrait} />;
+  return <CompleteAvatar avatar={completeAvatar(preview.avatarId)!} look={{ bodyShape: preview.bodyShape, skinColor: preview.skinColor }} small={small} portrait={portrait} />;
 }

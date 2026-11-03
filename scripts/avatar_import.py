@@ -15,7 +15,9 @@ Eye positions are pixels inside the cut head file. Without them, glasses and fre
 are not offered for that head.
 """
 import json
+import os
 import sys
+import time
 from pathlib import Path
 
 import numpy as np
@@ -92,6 +94,48 @@ def geometry(kind, sheet_id, mask):
     return {'anchor': [round(float(np.mean(centres)), 1), top], 'size': int(np.median(widths))}
 
 
+def neck_opening(mask, centre_x):
+    """[top, bottom, half width] of the see-through neck hole, in piece pixels.
+
+    The neck shows through this hole, so the layout draws the head behind the top
+    there. Tops painted without a hole (e.g. a crewneck with its inside collar
+    painted) get a thin band at the collar's front edge and a half width of 0.
+    """
+    x = int(round(centre_x))
+    column = mask[:, x]
+    first = int(np.nonzero(column)[0].min())
+    gap = [y for y in range(first, min(first + 160, len(column))) if not column[y]]
+    if not gap:
+        return [first, first + round(mask.shape[0] * 0.02), 0]
+    top = bottom = gap[0]
+    while bottom + 1 < len(column) and not column[bottom + 1]:
+        bottom += 1
+    half = 0
+    for y in range(top, bottom + 1):
+        left = right = x
+        while left > 0 and not mask[y, left - 1]:
+            left -= 1
+        while right < mask.shape[1] - 1 and not mask[y, right + 1]:
+            right += 1
+        half = max(half, (right - left) / 2)
+    return [top, bottom + 1, round(half, 1)]
+
+
+def save_png(pixels, path):
+    """Write via a temporary file and retry: on Windows, antivirus or a running dev
+    server can hold a freshly written image for a moment."""
+    temp = path.with_suffix('.tmp.png')
+    for attempt in range(8):
+        try:
+            Image.fromarray(pixels).save(temp, optimize=True)
+            os.replace(temp, path)
+            return
+        except OSError:
+            if attempt == 7:
+                raise
+            time.sleep(0.4 * (attempt + 1))
+
+
 def sample(cell, box):
     h, w = cell.shape[:2]
     x0, x1, y0, y1 = int(w * box[0]), int(w * box[1]), int(h * box[2]), int(h * box[3])
@@ -128,13 +172,17 @@ def main():
             mask = cell[..., 3] > 128
             if not mask.any():
                 print(f'  {path.name}: cell {index + 1} is empty'); cells.append(None); continue
-            ys, xs = np.nonzero(cell[..., 3] > 20)
+            # Rows/columns with only a stray speck (e.g. a leftover background pixel in a
+            # sheet corner) must not widen the crop and shift the attachment point.
+            ink = cell[..., 3] > 20
+            ys = np.nonzero(ink.sum(1) >= 3)[0]
+            xs = np.nonzero(ink.sum(0) >= 3)[0]
             pad = 4
             y0, y1 = max(0, ys.min() - pad), min(cell.shape[0], ys.max() + pad + 1)
             x0, x1 = max(0, xs.min() - pad), min(cell.shape[1], xs.max() + pad + 1)
             piece = cell[y0:y1, x0:x1]
             name = f'{kind}-{sheet_id}-{index + 1}.png'
-            Image.fromarray(piece).save(out / name, optimize=True)
+            save_png(piece, out / name)
             info = {'file': f'{url_base}/{name}', 'width': int(piece.shape[1]), 'height': int(piece.shape[0])}
             info.update(geometry(kind, sheet_id, piece[..., 3] > 128))
             setting = overrides.get(PREFIX[kind], {}).get(sheet_id, {})
@@ -158,7 +206,9 @@ def main():
             if info['size'] <= 0 or info.get('faceWidth', 1) <= 0:
                 raise ValueError(f'{path.name}: cell {index + 1} has an invalid attachment width')
             if kind == 'top':
-                info['color'] = sample(piece, (0.35, 0.65, 0.35, 0.7))
+                info['neck'] = neck_opening(piece[..., 3] > 128, info['anchor'][0])
+                # Front panel beside the opening: open fronts show an inner tee or knit in the middle.
+                info['color'] = sample(piece, (0.2, 0.32, 0.3, 0.55))
             elif kind == 'pants':
                 info['color'] = sample(piece, (0.25, 0.75, 0.1, 0.4))
             cells.append(info)
