@@ -7,6 +7,7 @@ import { ConfessionCard } from './ConfessionCard';
 import { CategoryFilter } from './CategoryFilter';
 import { TrendingConfessions } from './TrendingConfessions';
 import type { Confession, WhisperCategory, WhisperSort } from './types';
+import type { HeaderThemeId } from '../../lib/screen-themes';
 
 const SORTS: { id: WhisperSort; label: string }[] = [
   { id: 'latest', label: 'Latest' },
@@ -19,7 +20,7 @@ const SORTS: { id: WhisperSort; label: string }[] = [
 // sidebar here is intentionally just Trending Confessions -- Community
 // Guidelines was removed per explicit instruction (its Campus Crush
 // mention opt-out moved to Profile Settings, see campus-crush-privacy.tsx).
-export function WhisperTab({ accessToken }: { accessToken: string }) {
+export function WhisperTab({ accessToken, headerTheme }: { accessToken: string; headerTheme?: HeaderThemeId | null }) {
   const [category, setCategory] = useState<WhisperCategory | null>(null);
   const [sort, setSort] = useState<WhisperSort>('latest');
   const [confessions, setConfessions] = useState<Confession[] | null>(null);
@@ -67,7 +68,7 @@ export function WhisperTab({ accessToken }: { accessToken: string }) {
   return (
     <div className="flex flex-col items-start gap-6 lg:flex-row">
       <div className="w-full min-w-0 flex-1 space-y-4 lg:max-w-2xl">
-        <WhisperWallBanner />
+        <WhisperWallBanner headerTheme={headerTheme} />
 
         <ConfessionComposer accessToken={accessToken} onPublished={handlePublished} />
 

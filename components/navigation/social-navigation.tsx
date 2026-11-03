@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Palette } from 'lucide-react';
 import { isCurrentDestination, navigationDestinations } from '../../lib/navigation';
 import styles from './social-shell.module.css';
 import type { NavigationPosition } from '../../lib/game-room';
@@ -61,6 +62,14 @@ export function SocialNavigation({ pathname, position = 'side', onPositionChange
           </div>
           {saving && <p role="status">Saving preference…</p>}
           {preferenceError && <p role="alert">{preferenceError} <button onClick={onRetry} disabled={saving}>Retry</button></p>}
+          {/* "Customize Your Screen" (additional functionality, not in the
+              official SRS): the canonical entry point lives here, not on
+              Profile Settings, so it's discoverable from Preferences
+              without a second, duplicate link elsewhere. */}
+          <Link href="/profile/settings/customize" className={styles.customizeScreenLink}>
+            <Palette size={18} aria-hidden="true" />
+            <span><strong>Customize Your Screen</strong><small>Personalize your feed background and header style.</small></span>
+          </Link>
           <button className={styles.closePreferences} onClick={() => setPreferencesOpen(false)}>Close</button>
         </section>}
       </div>
