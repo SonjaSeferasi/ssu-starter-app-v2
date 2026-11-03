@@ -12,7 +12,7 @@ const manifest: AvatarManifest = {
     'long-waves': cells(index => ({ file: `/avatars/v2/head-long-waves-${index + 1}.png`, width: 189, height: 339, anchor: [94, 334], size: 48, eyes: [66, 130, 122, 130] })),
     'hijab-black': cells(index => ({ file: `/avatars/v2/head-hijab-black-${index + 1}.png`, width: 219, height: 349, anchor: [114, 344], size: 178, eyes: null })),
   },
-  tops: { hoodie: cells(index => ({ file: `/avatars/v2/top-hoodie-${index + 1}.png`, width: 337, height: 309, anchor: [168, 4], size: 328, hem: 304, color: '#263b6' + index })) },
+  tops: { hoodie: cells(index => ({ file: `/avatars/v2/top-hoodie-${index + 1}.png`, width: 337, height: 409, anchor: [168, 4], size: 328, hem: 404, color: '#263b6' + index })) },
   bottoms: { 'straight-jeans': cells(index => ({ file: `/avatars/v2/pants-straight-jeans-${index + 1}.png`, width: 217, height: 379, anchor: [108, 4], size: 180, color: '#8aa9c' + index })) },
   skin: ['#f3d7c6', '#e9bf9f', '#c99a6e', '#a87650', '#7a4f33', '#4b2f22'],
 };
@@ -28,11 +28,33 @@ describe('layered avatar layout', () => {
 
   it('tucks the neck into the collar and the waistband under the hem', () => {
     const [bottom, top, head] = layoutAvatar(manifest, look)!.layers;
-    const topScale = top.width / 337, headScale = head.width / 189, bottomScale = bottom.width / 217;
-    const collarY = top.y + 4 * top.height / 309, hemY = top.y + 304 * top.height / 309;
-    expect(head.y + 334 * headScale).toBeCloseTo(collarY + LAYOUT.hair.neckOverlap * (topScale * 328 / LAYOUT.top.shoulderWidth), 3);
-    expect(bottom.y + 4 * bottomScale).toBeLessThan(hemY);
+    const topScale = top.width / 337, headScale = head.width / 189;
+    const fit = topScale * 328 / LAYOUT.top.shoulderWidth;
+    const collarY = top.y + 4 * topScale, hemY = top.y + 404 * topScale;
+    expect(head.y + 334 * headScale).toBeCloseTo(collarY + LAYOUT.hair.neckDepth * fit, 3);
+    expect(bottom.y + 4 * bottom.height / 379).toBeLessThan(hemY);
     for (const layer of [bottom, top, head]) expect(layer.x + layer.width / 2).toBeGreaterThan(100);
+  });
+
+  it('keeps every top in its painted proportions and the legs the same length for every top', () => {
+    const top = layoutAvatar(manifest, look)!.layers[1];
+    expect(top.width / top.height).toBeCloseTo(337 / 409, 5);
+    const tall = { ...manifest, tops: { hoodie: manifest.tops.hoodie.map(cell => ({ ...cell, height: 459, hem: 454 })) } };
+    const legs = (m: AvatarManifest) => { const [bottom, top] = layoutAvatar(m, look)!.layers; return bottom.height / (top.width / 337 * 328 / LAYOUT.top.shoulderWidth); };
+    expect(legs(tall)).toBeCloseTo(legs(manifest), 5);
+  });
+
+  it('puts the neck of a hair head behind the collar opening and a hijab fully in front', () => {
+    const withNeck = { ...manifest, tops: { hoodie: manifest.tops.hoodie.map(cell => ({ ...cell, neck: [18, 60, 50] as [number, number, number] })) } };
+    const layout = layoutAvatar(withNeck, look)!;
+    const top = layout.layers[1], topScale = top.width / 337;
+    expect(layout.neckBehind!.frontY).toBeCloseTo(top.y + (18 + LAYOUT.hair.edgeCover) * topScale, 5);
+    expect(layout.neckBehind!.opening!.width).toBeCloseTo(100 * topScale, 5);
+    expect(layout.neckBehind!.opening!.color).toMatch(/^#[0-9a-f]{6}$/);
+    expect(layoutAvatar(withNeck, { ...look, headStyle: 'hijab-black' })!.neckBehind).toBeNull();
+    // A painted collar (no opening) puts the front line at its front edge and needs no backing.
+    const painted = { ...manifest, tops: { hoodie: manifest.tops.hoodie.map(cell => ({ ...cell, neck: [13, 22, 0] as [number, number, number] })) } };
+    expect(layoutAvatar(painted, look)!.neckBehind!.opening).toBeNull();
   });
 
   it('keeps the whole figure inside the avatar canvas', () => {

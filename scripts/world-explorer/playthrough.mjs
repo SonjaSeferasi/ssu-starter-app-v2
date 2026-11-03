@@ -20,7 +20,7 @@
 //     reload the country card reads "Completed".
 // Writes <out>/playthrough-results.json and screenshots to <out>/screens/.
 import {spawn} from 'node:child_process';
-import {mkdirSync,writeFileSync,mkdtempSync,readFileSync} from 'node:fs';
+import {existsSync,mkdirSync,writeFileSync,mkdtempSync,readFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 
@@ -137,7 +137,11 @@ const report={base,startedAt:new Date().toISOString(),browser:version.Browser,co
 for(const code of codes){
  const lower=code.toLowerCase(),entry=report.countries[code]={};
  for(const kind of ['complete-bonus','hazard','complete-main']){
-  const script=JSON.parse(readFileSync(join(out,`${lower}-${kind}.json`),'utf8'));
+  // A script the Node acceptance did not record is not run here (and never passes):
+  // hazard recovery checked with the controlled fixture has no natural run to replay.
+  const file=join(out,`${lower}-${kind}.json`);
+  if(!existsSync(file)){entry[kind]={notRun:true,reason:kind==='hazard'?'no natural hazard run recorded (hazard recovery checked with the controlled fixture in Node)':'no clean completion recorded'};console.log(code,kind,'NOT RUN',entry[kind].reason);continue;}
+  const script=JSON.parse(readFileSync(file,'utf8'));
   try{entry[kind]=await replay(code,script);}catch(error){entry[kind]={error:String(error.message||error)};}
   console.log(code,kind,entry[kind].ok?'PASS':'FAIL',JSON.stringify(entry[kind].final||entry[kind].error));
   for(const c of entry[kind].checks||[])if(!c.ok)console.log('  failed:',c.check,JSON.stringify(c.actual),'expected',JSON.stringify(c.expected));

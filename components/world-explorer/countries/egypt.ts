@@ -108,6 +108,8 @@ export const environment:CountryEnvironment={
   createHeightfield(features,{name:'giza-desert-floor',x:finish/2,y:floorY,z:-14,width:finish+180,depth:56,segments:[low?70:150,low?16:30],height:rippled,color:sand});
   // Foreground dunes between camera and course hide the plateau's lower cliff;
   // their crest stays below the sight line to the player's feet.
+  // Apron: the same sand carried toward the camera for the full-level overview.
+  createHeightfield(features,{name:'giza-desert-apron',x:finish/2,y:floorY-.3,z:92,width:finish+300,depth:160,segments:[low?30:60,low?6:12],height:(u,v)=>Math.sin(u*140+Math.sin(v*9)*2.4)*.35+valueNoise(u*24,v*12,5)*.9,color:sand});
   createHeightfield(features,{name:'giza-foreground-dunes',x:finish/2,y:floorY,z:9.5,width:finish+120,depth:9,segments:[low?50:110,10],height:(u,v)=>Math.sin(Math.min(1,v*1.25)*Math.PI)*(4.6+valueNoise(u*24,v*3,8)*1.6),color:sand});
   createHeightfield(features,{name:'giza-near-dunes',x:finish/2,y:-9,z:-70,width:finish+240,depth:80,segments:[low?60:120,low?20:40],height:duneHeight(17,5,7),color:sand});
   createHeightfield(features,{name:'giza-far-dunes',x:finish/2,y:-8,z:-190,width:finish+360,depth:90,segments:[low?50:100,16],height:duneHeight(23,9,5),color:sand});

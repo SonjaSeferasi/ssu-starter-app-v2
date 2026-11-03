@@ -95,8 +95,28 @@
 .countryList small[data-status=playable]{color:#cfe6a8}.countryList small[data-status=completed]{color:#f0d68a}.countryList small[data-status=locked]{color:#d9a68a}.countryList small[data-status=under-development]{color:#9fb8ad}.prototypeBadge[data-status=locked]{color:#f0b49a!important}.playButton:disabled{opacity:.55;cursor:not-allowed}
 .asiaRegions{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 13px}.asiaRegions button{border:1px solid #b5cba34d;border-radius:18px;background:#173f43;color:#e4ebd6;padding:7px 9px;font-size:10px}.asiaRegions button[aria-pressed=true]{background:#e5cd75;color:#193d3b;border-color:#f1dc8e}.asiaRegions span{font-size:9px;margin-left:5px;opacity:.8}
 
-/* East Asia: long country names get their own row on narrow phones. */
-@media(max-width:700px){
+/* Regional HUD identity stays readable without changing East Asia's layout. */
+@media(max-width:700px) and (orientation:portrait){
+ .referenceRun:is([data-environment^=southeast-],[data-environment^=south-asia-],[data-environment^=central-asia-],[data-environment^=west-asia-]) .playIdentity{grid-column:1/-1;max-width:none;width:100%;min-width:0;box-sizing:border-box}
+ .referenceRun:is([data-environment^=southeast-],[data-environment^=south-asia-],[data-environment^=central-asia-],[data-environment^=west-asia-]) .playIdentity>div{min-width:0;flex:1}
+ .referenceRun:is([data-environment^=southeast-],[data-environment^=south-asia-],[data-environment^=central-asia-],[data-environment^=west-asia-]) .playIdentity h1{font-size:clamp(17px,5vw,23px);line-height:1.15;white-space:normal;word-break:normal;overflow-wrap:normal;letter-spacing:.02em}
+ .referenceRun:is([data-environment^=southeast-],[data-environment^=south-asia-],[data-environment^=central-asia-],[data-environment^=west-asia-]) .playIdentity p{font-size:9px;line-height:1.3;white-space:normal;overflow-wrap:normal}
+ .referenceRun:is([data-environment^=southeast-],[data-environment^=south-asia-],[data-environment^=central-asia-],[data-environment^=west-asia-]) .referenceProgress{grid-column:1;grid-row:2;width:100%}
+ .referenceRun:is([data-environment^=southeast-],[data-environment^=south-asia-],[data-environment^=central-asia-],[data-environment^=west-asia-]) .playCounters{grid-column:2;grid-row:2}
+}
+@media(max-height:500px) and (orientation:landscape){
+ .referenceRun:is([data-environment^=southeast-],[data-environment^=south-asia-],[data-environment^=central-asia-],[data-environment^=west-asia-]) .playHeader{grid-template-columns:minmax(0,1fr) auto;gap:6px;left:8px;right:8px;top:8px}
+ .referenceRun:is([data-environment^=southeast-],[data-environment^=south-asia-],[data-environment^=central-asia-],[data-environment^=west-asia-]) .playIdentity{min-width:0;max-width:460px;padding:6px 9px;min-height:0}
+ .referenceRun:is([data-environment^=southeast-],[data-environment^=south-asia-],[data-environment^=central-asia-],[data-environment^=west-asia-]) .playIdentity>div{min-width:0;flex:1}
+ .referenceRun:is([data-environment^=southeast-],[data-environment^=south-asia-],[data-environment^=central-asia-],[data-environment^=west-asia-]) .playIdentity h1{font-size:18px;line-height:1.15;white-space:normal;word-break:normal;overflow-wrap:normal}
+ .referenceRun:is([data-environment^=southeast-],[data-environment^=south-asia-],[data-environment^=central-asia-],[data-environment^=west-asia-]) .playIdentity p{font-size:9px;line-height:1.2;white-space:normal}
+ .referenceRun:is([data-environment^=southeast-],[data-environment^=south-asia-],[data-environment^=central-asia-],[data-environment^=west-asia-]) .referenceProgress{grid-column:1/-1;grid-row:2;width:min(260px,48%);height:34px;margin-top:0}
+}
+
+/* Central Asia desktop names: keep Turkmenistan whole without changing existing candidates. */
+@media(min-width:1001px){.referenceRun[data-environment^=central-asia-] .playIdentity h1{font-size:clamp(20px,1.8vw,28px);white-space:nowrap;overflow-wrap:normal}}
+/* East Asia: long country names get their own row on phones and small landscape screens. */
+@media(max-width:1000px){
  .referenceRun:is([data-environment=china-wulingyuan],[data-environment=mongolia-orkhon],[data-environment=north-korea-paektu],[data-environment=south-korea-seoul]) .playHeader{grid-template-columns:minmax(0,1fr) auto;gap:8px;left:10px;right:10px}
  .referenceRun:is([data-environment=china-wulingyuan],[data-environment=mongolia-orkhon],[data-environment=north-korea-paektu],[data-environment=south-korea-seoul]) .playIdentity{grid-column:1/-1;max-width:none;width:100%;box-sizing:border-box;min-height:60px}
  .referenceRun:is([data-environment=china-wulingyuan],[data-environment=mongolia-orkhon],[data-environment=north-korea-paektu],[data-environment=south-korea-seoul]) .playIdentity>div{min-width:0}
@@ -105,3 +125,54 @@
  .referenceRun:is([data-environment=china-wulingyuan],[data-environment=mongolia-orkhon],[data-environment=north-korea-paektu],[data-environment=south-korea-seoul]) .referenceProgress{grid-column:1;grid-row:2;justify-self:start;width:100%;max-width:190px}
  .referenceRun:is([data-environment=china-wulingyuan],[data-environment=mongolia-orkhon],[data-environment=north-korea-paektu],[data-environment=south-korea-seoul]) .playCounters{grid-column:2;grid-row:2}
 }
+
+/* West Asia names: scoped to new prototypes; existing candidates keep their rules. */
+@media(min-width:1001px){.referenceRun[data-environment^=west-asia-] .playIdentity h1{font-size:clamp(16px,1.45vw,23px);white-space:nowrap;overflow-wrap:normal}}
+@media(max-width:700px){.referenceRun[data-environment^=west-asia-] .playIdentity h1{font-size:clamp(13px,3.9vw,20px)}}
+@media(min-width:1001px){.referenceRun[data-environment=west-asia-ae] .playIdentity h1{font-size:clamp(14px,1.15vw,18px)}}
+@media(max-height:500px) and (orientation:landscape){.referenceRun[data-environment=west-asia-ae] .playIdentity h1{font-size:14px;white-space:nowrap}}
+
+/* Asia enhancement: whole Southeast Asia country names on desktop. */
+@media(min-width:1001px){.referenceRun[data-environment^=southeast-] .playIdentity h1{font-size:clamp(18px,1.7vw,27px);white-space:nowrap;overflow-wrap:normal}}
+
+/* Country names vary widely in length; preserve the play area on phones. */
+.referenceRun[data-environment^=north-america-] .playIdentity>div{min-width:0}
+.referenceRun[data-environment^=north-america-] .playIdentity h1{font-size:clamp(16px,1.7vw,25px);line-height:1.12;word-break:normal;overflow-wrap:normal}
+@media(max-width:700px){.referenceRun[data-environment^=north-america-] .playIdentity h1{font-size:clamp(12px,3.4vw,16px)}.referenceRun[data-environment^=north-america-] .playIdentity p{font-size:9px;line-height:1.15}}
+@media(max-height:500px) and (orientation:landscape){.referenceRun[data-environment^=north-america-] .playIdentity h1{font-size:14px}.referenceRun[data-environment^=north-america-] .playIdentity p{font-size:9px}}
+
+@media(max-width:700px){.referenceRun[data-environment=north-america-vc] .playIdentity h1{font-size:12px}}
+/* Africa: keep each word of a long country name whole in the level header (Guinea-Bissau may break at its hyphen). */
+.referenceRun:is([data-environment^=africa-],[data-environment=egypt-giza-desert],[data-environment=south-africa-savanna]) .playIdentity h1{white-space:normal;word-break:normal;overflow-wrap:normal;hyphens:manual;line-height:1.12}
+@media(max-width:700px){.referenceRun:is([data-environment^=africa-],[data-environment=egypt-giza-desert],[data-environment=south-africa-savanna]) .playIdentity h1{font-size:clamp(12px,3.6vw,18px);letter-spacing:.2px}}
+
+/* South Asia: retain whole long names within the desktop identity ribbon. */
+@media(min-width:1001px){.referenceRun[data-environment^=south-asia-] .playIdentity h1{font-size:clamp(18px,1.7vw,27px);white-space:nowrap;overflow-wrap:normal}}
+
+/* East Asia enhancement: whole country labels at desktop and compact landscape. */
+@media(min-width:1001px){.referenceRun:is([data-environment=north-korea-paektu],[data-environment=south-korea-seoul]) .playIdentity h1{font-size:clamp(18px,1.55vw,25px);white-space:nowrap}}
+@media(max-width:700px) and (orientation:landscape){.run[data-environment=japan-mountain-spring] .playHeader{grid-template-columns:minmax(0,1fr) auto;gap:6px}.run[data-environment=japan-mountain-spring] .playIdentity{grid-column:1/-1;max-width:none;width:100%;box-sizing:border-box}.run[data-environment=japan-mountain-spring] .referenceProgress{grid-column:1;grid-row:2;max-width:180px}.run[data-environment=japan-mountain-spring] .playCounters{grid-column:2;grid-row:2}}
+@media(min-width:1001px){.referenceRun:is([data-environment^=africa-],[data-environment=egypt-giza-desert],[data-environment=south-africa-savanna]) .playIdentity h1{font-size:clamp(20px,1.9vw,30px)}}
+
+@media(max-width:700px){.referenceRun[data-environment=west-asia-sa] .touchControls{gap:10px}.referenceRun[data-environment=west-asia-sa] .touchControls button,.referenceRun[data-environment=west-asia-sa] .touchControls button:last-child{width:56px;height:56px}}
+
+/* Phone readability floor. Earlier regional phone rules shrink the level line, counters, HUD buttons, the country card and dialog text to 6-9 px. Whatever they set, on phone viewports the text of a country run, its dialogs and its country card stays at least 11 px (photo credits 10 px in every viewport) */
+@media(max-width:700px),(max-height:500px) and (orientation:landscape){
+.explorer .run .playIdentity p,.explorer .run .playIdentity small,.explorer .run .playCounters small,.explorer .run .playProgress>div,.explorer .run .playLives span,.explorer .run .playSecondary>button,.explorer .run .controlsHint,.explorer .run .runTop span,.explorer .run .reviewTools{font-size:11px!important;line-height:1.25!important}
+.explorer .gameDialog p,.explorer .gameDialog small,.explorer .gameDialog dt,.explorer .gameDialog dd,.explorer .gameDialog li,.explorer .discovery small,.explorer .runFactCard .eyebrow,.explorer .runFactCard dt,.explorer .runFactCard dd,.explorer .runFactCard>a,.explorer .sourceDetail,.explorer .factStatus,.explorer .phase,.explorer .prototypeBadge{font-size:11px!important;line-height:1.35!important}
+.explorer .countryBanner p,.explorer .countryDetail>p,.explorer .countryDetail dl>div,.explorer .intro .eyebrow,.explorer .intro .edition,.explorer .edition{font-size:11px!important;line-height:1.3!important}
+}
+/* Text buttons in dialogs (Restore defaults, Return to world map) are at least 36 px tall on every screen, tablets included. */
+.explorer .quietButton{min-height:36px;padding:8px 12px}
+/* Photo credits (title, author, licence) stay at least 10 px in every viewport; earlier rules set 7-8 px. */
+.explorer .landmarkPhoto figcaption,.explorer .landmarkPhoto figcaption *,.explorer .gameDialog .landmarkPhoto figcaption,.explorer .gameDialog .landmarkPhoto figcaption *,.explorer .runFactCard .landmarkPhoto figcaption,.explorer .runFactCard .landmarkPhoto figcaption *{font-size:10px!important;line-height:1.35!important}
+
+/* Melanesia batch: readable headings and controls without altering other regions. */
+.referenceRun:is([data-environment=oceania-fj],[data-environment=oceania-pg],[data-environment=oceania-sb],[data-environment=oceania-vu]) .playIdentity>div{min-width:0;flex:1}
+.referenceRun:is([data-environment=oceania-fj],[data-environment=oceania-pg],[data-environment=oceania-sb],[data-environment=oceania-vu]) .playIdentity h1{font-size:clamp(15px,1.7vw,24px);line-height:1.12;word-break:normal;overflow-wrap:normal}
+.referenceRun:is([data-environment=oceania-fj],[data-environment=oceania-pg],[data-environment=oceania-sb],[data-environment=oceania-vu]) .playIdentity p{font-size:11px;line-height:1.2}
+.referenceRun:is([data-environment=oceania-fj],[data-environment=oceania-pg],[data-environment=oceania-sb],[data-environment=oceania-vu]) .playSecondary button{font-size:12px;min-height:34px}
+@media(max-width:700px){.referenceRun:is([data-environment=oceania-fj],[data-environment=oceania-pg],[data-environment=oceania-sb],[data-environment=oceania-vu]) .playIdentity h1{font-size:clamp(12px,3.4vw,16px)}.referenceRun:is([data-environment=oceania-fj],[data-environment=oceania-pg],[data-environment=oceania-sb],[data-environment=oceania-vu]) .playIdentity p{font-size:11px}}
+@media(max-height:500px) and (orientation:landscape){.referenceRun:is([data-environment=oceania-fj],[data-environment=oceania-pg],[data-environment=oceania-sb],[data-environment=oceania-vu]) .playIdentity h1{font-size:13px}.referenceRun:is([data-environment=oceania-fj],[data-environment=oceania-pg],[data-environment=oceania-sb],[data-environment=oceania-vu]) .playIdentity p{font-size:10px}}
+/* Portrait tablets: a level with a fourth touch button (the mirror turn) widens the left control group into the centred hearts and guide panel; lift the panel above the controls, as phones already do. */
+@media(min-width:701px) and (max-width:1100px) and (orientation:portrait){.explorer .referenceRun:has(.touchControls button:nth-child(4)) .playSecondary{bottom:calc(max(24px,env(safe-area-inset-bottom)) + clamp(72px,10vw,124px) + 14px)}}

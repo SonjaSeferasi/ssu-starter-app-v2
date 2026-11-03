@@ -1,0 +1,13 @@
+import type {LevelDefinition} from '../../game-types';
+import {level as brn} from './brn';
+import {level as khm} from './khm';
+import {level as idn} from './idn';
+import {level as lao} from './lao';
+import {level as mys} from './mys';
+import {level as mmr} from './mmr';
+import {level as phl} from './phl';
+import {level as sgp} from './sgp';
+import {level as tha} from './tha';
+import {level as tls} from './tls';
+import {level as vnm} from './vnm';
+export const southeastAsiaLevels:Record<string,LevelDefinition>={BRN:brn,KHM:khm,IDN:idn,LAO:lao,MYS:mys,MMR:mmr,PHL:phl,SGP:sgp,THA:tha,TLS:tls,VNM:vnm};

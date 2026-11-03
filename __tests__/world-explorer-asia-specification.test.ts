@@ -3,10 +3,12 @@ import specification from '../public/world-explorer/data/asia-specification.json
 import {asiaProductionManifest,asiaProductionStates} from '../lib/world-explorer/asia-production';
 
 describe('Asia specification and truthful production gates',()=>{
- it('preserves all 47 requested settings and target tiers without claiming new playable routes',()=>{
+ it('preserves all 47 requested settings and target tiers and separates regional prototypes from proposals',()=>{
   const records=asiaProductionManifest();expect(records).toHaveLength(47);expect(specification.countries).toHaveLength(47);
   for(const row of records){const brief=specification.countries.find(r=>r.iso2===row.iso2)!;expect(row.setting).toBe(brief.location);expect(row.targetDifficultyTier).toBe(brief.targetTier);expect(row.visualEnvironment.length).toBeGreaterThan(45);expect(row.mainLayout).toBeTruthy();}
-  expect(records.filter(r=>r.region!=='east').every(r=>r.productionState==='PROPOSED')).toBe(true);
+  expect(records.filter(r=>r.productionState==='PROPOSED')).toHaveLength(0);
+  expect(records.every(r=>r.productionState==='TESTING'&&r.stages.tested)).toBe(true);
+  expect(records.filter(r=>r.region==='southeast').every(r=>r.productionState==='TESTING'&&r.stages.tested&&!r.stages.released)).toBe(true);
   expect(records.map(r=>r.code)).not.toContain('ANTARCTICA');
  });
  it('matches the revised East Asia targets with tested routes while retaining human approval gates',()=>{

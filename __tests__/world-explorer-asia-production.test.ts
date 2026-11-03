@@ -15,9 +15,9 @@ describe('Asia regional production and release boundaries',()=>{
   expect(asiaRegionFor('TUR')?.id).toBe('west');expect(asiaRegionFor('RUS')).toBeUndefined();
  });
  it('keeps automation evidence separate from human visual and release approval',()=>{
-  const records=asiaProductionManifest();expect(records.filter(r=>r.stages.tested)).toHaveLength(5);
+  const records=asiaProductionManifest();expect(records.filter(r=>r.stages.tested)).toHaveLength(47);
   for(const record of records){expect(record.stages.released).toBe(false);expect(record.stages.visuallyCompleted).toBe(false);expect(record.humanReview).toBe('pending');}
-  expect(records.filter(r=>r.region!=='east'&&r.code!=='IND').every(r=>!r.stages.implemented)).toBe(true);
+  expect(records.every(r=>r.stages.implemented&&r.productionState==='TESTING')).toBe(true);
  });
  it('offers implemented countries freely and ties recorded play evidence to exact authored files',()=>{
   for(const row of evidence.records){

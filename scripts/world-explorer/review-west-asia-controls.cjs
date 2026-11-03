@@ -1,0 +1,31 @@
+/* Real keyboard / browser-emulated touch events. No simulation input injection. */
+const fs=require('fs'),path=require('path'),{chromium}=require(process.env.EXPLORER_PLAYWRIGHT_MODULE||'../../tmp/tools/asia-browser/node_modules/playwright');
+const places=require('../../documentation/world-explorer/review/asia/west-asia/settings.json'),photos=require('../../public/world-explorer/data/west-asia-media.json');
+const out=path.resolve('documentation/world-explorer/review/asia/west-asia'),base=process.env.EXPLORER_REVIEW_URL||'http://127.0.0.1:3011';
+const assert=(x,m)=>{if(!x)throw Error(m);};
+(async()=>{const browser=await chromium.launch({executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',headless:true,args:['--use-angle=d3d11']}),records=[];try{
+ for(const place of places){const record={code:place.code,setting:place.landmark,title:place.title,physicalPhone:false,humanPlaytest:false,released:false};
+  for(const mode of ['keyboard','emulatedTouch']){
+   const context=await browser.newContext({viewport:mode==='keyboard'?{width:1280,height:800}:{width:390,height:844},deviceScaleFactor:1,isMobile:mode!=='keyboard',hasTouch:mode!=='keyboard'}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+   await page.goto(`${base}/world-explorer?country=${place.code}&play=1&review=1`,{waitUntil:'domcontentloaded'});await page.locator('canvas[data-ready="true"]').waitFor({timeout:60000});await page.waitForFunction(()=>!!window.worldExplorerReview);
+   await page.locator('canvas').focus();const state=()=>page.evaluate(()=>window.worldExplorerReview.reviewState()),initial=await state();
+   const cdp=mode==='emulatedTouch'?await context.newCDPSession(page):null;
+   async function down(action){if(mode==='keyboard'){await page.keyboard.down({right:'ArrowRight',left:'ArrowLeft',jump:'Space'}[action]);return;}const box=await page.getByRole('button',{name:action==='jump'?'Jump':'Move '+action,exact:true}).boundingBox();assert(box,place.code+' hidden touch '+action);await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:box.x+box.width/2,y:box.y+box.height/2,id:1}]});}
+   async function up(action){if(mode==='keyboard')await page.keyboard.up({right:'ArrowRight',left:'ArrowLeft',jump:'Space'}[action]);else await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});}
+   await down('right');await page.waitForFunction(x=>window.worldExplorerReview.reviewState().x>x+2.2,initial.x,{timeout:15000});await up('right');await page.waitForTimeout(350);const right=await state();await page.waitForTimeout(200);const rightReleased=await state();assert(Math.abs(rightReleased.x-right.x)<.1,place.code+'/'+mode+' right release');
+   await down('left');await page.waitForFunction(x=>window.worldExplorerReview.reviewState().x<x-1.2,right.x,{timeout:15000});await up('left');await page.waitForTimeout(350);const left=await state();await page.waitForTimeout(200);const leftReleased=await state();assert(Math.abs(leftReleased.x-left.x)<.1,place.code+'/'+mode+' left release');
+   await down('jump');await page.waitForFunction(y=>window.worldExplorerReview.reviewState().y>y+.3,left.y,{timeout:10000});await up('jump');const jumping=await state();await page.screenshot({path:path.join(out,place.code.toLowerCase()+'-'+mode+'-controls.png')});
+   await page.waitForFunction(y=>{const s=window.worldExplorerReview.reviewState();return s.standing&&Math.abs(s.y-y)<.1;},initial.y,{timeout:10000});const landed=await state();
+   await page.getByRole('button',{name:'Pause level',exact:true}).click();const pauseStart=await state();await page.waitForTimeout(350);const pauseEnd=await state();assert(pauseStart.status==='paused'&&pauseStart.elapsed===pauseEnd.elapsed,place.code+'/'+mode+' pause clock');await page.getByRole('button',{name:'Continue adventure',exact:true}).click();await page.waitForFunction(()=>window.worldExplorerReview.reviewState().status==='playing');
+   assert(right.x>initial.x+2&&left.x<right.x-1&&jumping.y>left.y+.25&&landed.hearts===3&&!errors.length,place.code+'/'+mode+' control check');record[mode]={initial,right,left,jumping,landed,pauseFreezesClock:true,keyOrPointerRelease:true,errors,passed:true};
+   if(mode==='keyboard'){
+    await page.getByRole('button',{name:'Country guide',exact:true}).click();const dialog=page.getByRole('dialog'),text=await dialog.textContent(),photo=photos.records.find(p=>p.code===place.code).image;assert(text.includes(place.landmark),place.code+' wrong guide setting');
+    const image=dialog.getByRole('img',{name:photo.title,exact:true});await image.waitFor();await image.evaluate(i=>i.decode());assert((await image.getAttribute('src'))===photo.url,place.code+' wrong guide photo');await page.screenshot({path:path.join(out,place.code.toLowerCase()+'-guide.png')});
+    const close=page.getByRole('button',{name:/Continue adventure|Continue exploring|Keep exploring|Back to adventure/i});await close.first().click();await page.getByRole('button',{name:'Return to the world map',exact:true}).click();
+    const card=page.getByRole('region',{name:'Selected destination'});await card.waitFor();const cardText=await card.textContent();assert(cardText.includes(place.title)&&cardText.includes(place.landmark),place.code+' wrong card title/setting');const cardImage=card.getByRole('img',{name:photo.title,exact:true});await cardImage.waitFor();await cardImage.evaluate(i=>i.decode());assert(await cardImage.getAttribute('src')===photo.url,place.code+' wrong card photo');await page.screenshot({path:path.join(out,place.code.toLowerCase()+'-card.png')});record.content={guidePlace:place.landmark,cardTitle:place.title,photographTitle:photo.title,photographUrl:photo.url,photographDecoded:true,passed:true};
+   }
+   await context.close();
+  }
+  records.push(record);fs.writeFileSync(path.join(out,'controls-and-content.json'),JSON.stringify({productionBuildId:process.env.EXPLORER_BUILD_ID,method:'Playwright keyboard events and CDP touchStart/touchEnd on rendered buttons. No position, reward or checkpoint injection. Photographs decoded in the actual guide and destination card.',records},null,2)+'\n');console.log(place.code,'keyboard, emulated touch, guide and card PASS');
+ }
+ }finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

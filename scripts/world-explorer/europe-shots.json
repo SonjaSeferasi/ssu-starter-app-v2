@@ -1,0 +1,802 @@
+{
+ "ALB": {
+  "b": {
+   "x": 52.3,
+   "label": "timed-gate"
+  },
+  "c": {
+   "position": [
+    100.1,
+    9,
+    22
+   ],
+   "target": [
+    114.1,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Butrint"
+  }
+ },
+ "AND": {
+  "b": {
+   "x": 13,
+   "label": "stairs-and-slopes"
+  },
+  "c": {
+   "position": [
+    39.9,
+    9,
+    22
+   ],
+   "target": [
+    53.9,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Madriu-Perafita-Claror Valley"
+  }
+ },
+ "AUT": {
+  "b": {
+   "x": 18.4,
+   "label": "bounce-pad"
+  },
+  "c": {
+   "position": [
+    62.7,
+    9,
+    22
+   ],
+   "target": [
+    76.7,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Historic Centre of the City of Salzburg"
+  }
+ },
+ "BLR": {
+  "b": {
+   "x": 78,
+   "label": "vertical-lift"
+  },
+  "c": {
+   "position": [
+    87.5,
+    9,
+    22
+   ],
+   "target": [
+    101.5,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Mir Castle Complex"
+  }
+ },
+ "BEL": {
+  "b": {
+   "x": 57.8,
+   "label": "vertical-lift"
+  },
+  "c": {
+   "position": [
+    58.4,
+    9,
+    22
+   ],
+   "target": [
+    72.4,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Flemish Béguinages"
+  }
+ },
+ "BIH": {
+  "b": {
+   "x": 36,
+   "label": "vertical-lift"
+  },
+  "c": {
+   "position": [
+    64.3,
+    9,
+    22
+   ],
+   "target": [
+    78.3,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Old Bridge Area of the Old City of Mostar"
+  }
+ },
+ "BGR": {
+  "b": {
+   "x": 21.4,
+   "label": "stairs-and-slopes"
+  },
+  "c": {
+   "position": [
+    46.8,
+    9,
+    22
+   ],
+   "target": [
+    60.8,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Boyana Church"
+  }
+ },
+ "HRV": {
+  "b": {
+   "x": 36.7,
+   "label": "stairs-and-slopes"
+  },
+  "c": {
+   "position": [
+    62.1,
+    9,
+    22
+   ],
+   "target": [
+    76.1,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Historical Complex of Split with the Palace of Diocletian"
+  }
+ },
+ "CZE": {
+  "b": {
+   "x": 69.2,
+   "label": "timed-gate"
+  },
+  "c": {
+   "position": [
+    80.6,
+    9,
+    22
+   ],
+   "target": [
+    94.6,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Historic Centre of Český Krumlov"
+  }
+ },
+ "DNK": {
+  "b": {
+   "x": 20.1,
+   "label": "collapsing-ledge"
+  },
+  "c": {
+   "position": [
+    61.4,
+    9,
+    22
+   ],
+   "target": [
+    75.4,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Jelling Mounds, Runic Stones and Church"
+  }
+ },
+ "EST": {
+  "b": {
+   "x": 44.3,
+   "label": "vertical-lift"
+  },
+  "c": {
+   "position": [
+    69.5,
+    9,
+    22
+   ],
+   "target": [
+    83.5,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Historic Centre (Old Town) of Tallinn"
+  }
+ },
+ "FIN": {
+  "b": {
+   "x": 73.7,
+   "label": "vertical-lift"
+  },
+  "c": {
+   "position": [
+    75.6,
+    9,
+    22
+   ],
+   "target": [
+    89.6,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Fortress of Suomenlinna"
+  }
+ },
+ "DEU": {
+  "b": {
+   "x": 79.4,
+   "label": "vertical-lift"
+  },
+  "c": {
+   "position": [
+    93.9,
+    9,
+    22
+   ],
+   "target": [
+    107.9,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Aachen Cathedral"
+  }
+ },
+ "GRC": {
+  "b": {
+   "x": 78.4,
+   "label": "pressure-plate"
+  },
+  "c": {
+   "position": [
+    97.9,
+    9,
+    22
+   ],
+   "target": [
+    111.9,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Acropolis of Athens"
+  }
+ },
+ "HUN": {
+  "b": {
+   "x": 68.7,
+   "label": "timed-gate"
+  },
+  "c": {
+   "position": [
+    80.7,
+    9,
+    22
+   ],
+   "target": [
+    94.7,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Budapest, Banks of the Danube and Buda Castle Quarter"
+  }
+ },
+ "ISL": {
+  "b": {
+   "x": 43.7,
+   "label": "ice-surface"
+  },
+  "c": {
+   "position": [
+    88.2,
+    9,
+    22
+   ],
+   "target": [
+    102.2,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Þingvellir National Park"
+  }
+ },
+ "IRL": {
+  "b": {
+   "x": 27.2,
+   "label": "wind-gusts"
+  },
+  "c": {
+   "position": [
+    61,
+    9,
+    22
+   ],
+   "target": [
+    75,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Brú na Bóinne"
+  }
+ },
+ "LVA": {
+  "b": {
+   "x": 42.1,
+   "label": "timed-gate"
+  },
+  "c": {
+   "position": [
+    75,
+    9,
+    22
+   ],
+   "target": [
+    89,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Historic Centre of Riga"
+  }
+ },
+ "LIE": {
+  "b": {
+   "x": 68.4,
+   "label": "timed-gate"
+  },
+  "c": {
+   "position": [
+    81.6,
+    9,
+    22
+   ],
+   "target": [
+    95.6,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Vaduz Castle"
+  }
+ },
+ "LTU": {
+  "b": {
+   "x": 43.2,
+   "label": "bounce-pad"
+  },
+  "c": {
+   "position": [
+    69.5,
+    9,
+    22
+   ],
+   "target": [
+    83.5,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Vilnius Historic Centre"
+  }
+ },
+ "LUX": {
+  "b": {
+   "x": 65,
+   "label": "pressure-plate"
+  },
+  "c": {
+   "position": [
+    98.4,
+    9,
+    22
+   ],
+   "target": [
+    112.4,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "City of Luxembourg: its Old Quarters and Fortifications"
+  }
+ },
+ "MLT": {
+  "b": {
+   "x": 78.5,
+   "label": "pressure-plate"
+  },
+  "c": {
+   "position": [
+    81.6,
+    9,
+    22
+   ],
+   "target": [
+    95.6,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "City of Valletta"
+  }
+ },
+ "MDA": {
+  "b": {
+   "x": 86.7,
+   "label": "vertical-lift"
+  },
+  "c": {
+   "position": [
+    60.5,
+    9,
+    22
+   ],
+   "target": [
+    74.5,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Struve Geodetic Arc"
+  }
+ },
+ "MCO": {
+  "b": {
+   "x": 59.8,
+   "label": "pressure-plate"
+  },
+  "c": {
+   "position": [
+    90.5,
+    9,
+    22
+   ],
+   "target": [
+    104.5,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Prince’s Palace of Monaco"
+  }
+ },
+ "MNE": {
+  "b": {
+   "x": 27.3,
+   "label": "bounce-pad"
+  },
+  "c": {
+   "position": [
+    60.3,
+    9,
+    22
+   ],
+   "target": [
+    74.3,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Natural and Culturo-Historical Region of Kotor"
+  }
+ },
+ "NLD": {
+  "b": {
+   "x": 21.2,
+   "label": "water-hazard"
+  },
+  "c": {
+   "position": [
+    66.4,
+    9,
+    22
+   ],
+   "target": [
+    80.4,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Schokland and Surroundings"
+  }
+ },
+ "MKD": {
+  "b": {
+   "x": 20.6,
+   "label": "collapsing-ledge"
+  },
+  "c": {
+   "position": [
+    60.9,
+    9,
+    22
+   ],
+   "target": [
+    74.9,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Natural and Cultural Heritage of the Ohrid region"
+  }
+ },
+ "POL": {
+  "b": {
+   "x": 27.2,
+   "label": "timed-gate"
+  },
+  "c": {
+   "position": [
+    72.8,
+    9,
+    22
+   ],
+   "target": [
+    86.8,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Historic Centre of Kraków"
+  }
+ },
+ "PRT": {
+  "b": {
+   "x": 22,
+   "label": "water-hazard"
+  },
+  "c": {
+   "position": [
+    64.8,
+    9,
+    22
+   ],
+   "target": [
+    78.8,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Central Zone of the Town of Angra do Heroismo in the Azores"
+  }
+ },
+ "ROU": {
+  "b": {
+   "x": 22.8,
+   "label": "moving-platform"
+  },
+  "c": {
+   "position": [
+    67,
+    9,
+    22
+   ],
+   "target": [
+    81,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Danube Delta"
+  }
+ },
+ "RUS": {
+  "b": {
+   "x": 25.8,
+   "label": "patrol-enemy"
+  },
+  "c": {
+   "position": [
+    49.8,
+    9,
+    22
+   ],
+   "target": [
+    63.8,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Historic Centre of Saint Petersburg"
+  }
+ },
+ "SMR": {
+  "b": {
+   "x": 68.7,
+   "label": "bounce-pad"
+  },
+  "c": {
+   "position": [
+    79.2,
+    9,
+    22
+   ],
+   "target": [
+    93.2,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "San Marino Historic Centre and Mount Titano"
+  }
+ },
+ "SRB": {
+  "b": {
+   "x": 62.5,
+   "label": "timed-gate"
+  },
+  "c": {
+   "position": [
+    71,
+    9,
+    22
+   ],
+   "target": [
+    85,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Stari Ras and Sopoćani"
+  }
+ },
+ "SVK": {
+  "b": {
+   "x": 54.8,
+   "label": "timed-gate"
+  },
+  "c": {
+   "position": [
+    82.3,
+    9,
+    22
+   ],
+   "target": [
+    96.3,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Historic Town of Banská Štiavnica"
+  }
+ },
+ "SVN": {
+  "b": {
+   "x": 41.4,
+   "label": "ice-surface"
+  },
+  "c": {
+   "position": [
+    104.9,
+    9,
+    22
+   ],
+   "target": [
+    118.9,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Škocjan Caves"
+  }
+ },
+ "ESP": {
+  "b": {
+   "x": 67.2,
+   "label": "pressure-plate"
+  },
+  "c": {
+   "position": [
+    92.9,
+    9,
+    22
+   ],
+   "target": [
+    106.9,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Alhambra, Generalife and Albayzín, Granada"
+  }
+ },
+ "SWE": {
+  "b": {
+   "x": 39.7,
+   "label": "pressure-plate"
+  },
+  "c": {
+   "position": [
+    81.3,
+    9,
+    22
+   ],
+   "target": [
+    95.3,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Royal Domain of Drottningholm"
+  }
+ },
+ "CHE": {
+  "b": {
+   "x": 36.9,
+   "label": "vertical-lift"
+  },
+  "c": {
+   "position": [
+    68,
+    9,
+    22
+   ],
+   "target": [
+    82,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Abbey of St Gall"
+  }
+ },
+ "UKR": {
+  "b": {
+   "x": 26.5,
+   "label": "wind-gusts"
+  },
+  "c": {
+   "position": [
+    63.7,
+    9,
+    22
+   ],
+   "target": [
+    77.7,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Kyiv: Saint-Sophia Cathedral and Kyiv-Pechersk Lavra"
+  }
+ },
+ "GBR": {
+  "b": {
+   "x": 81.1,
+   "label": "moving-platform"
+  },
+  "c": {
+   "position": [
+    83.2,
+    9,
+    22
+   ],
+   "target": [
+    97.2,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Elizabeth Tower and Palace of Westminster"
+  }
+ }
+}

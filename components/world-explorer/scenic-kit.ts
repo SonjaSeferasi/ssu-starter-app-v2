@@ -18,8 +18,11 @@ export function mesh(parent:T.Object3D,g:T.BufferGeometry,m:T.Material,x=0,y=0,z
 export function sphere(parent:T.Object3D,m:T.Material,x:number,y:number,z:number,sx:number,sy=sx,sz=sx){const o=mesh(parent,new T.SphereGeometry(1,12,8),m,x,y,z);o.scale.set(sx,sy,sz);return o;}
 export function strut(parent:T.Object3D,m:T.Material,a:T.Vector3,b:T.Vector3,r:number){const o=mesh(parent,new T.CylinderGeometry(r*.84,r,a.distanceTo(b),8),m);o.position.copy(a).add(b).multiplyScalar(.5);o.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),b.clone().sub(a).normalize());return o;}
 
+// three r186 draws PCFSoftShadowMap as PCFShadowMap and switches the type on
+// the first shadow pass, which changes every lit shader's program key and
+// recompiles them all mid-play. Asking for PCFShadowMap keeps the look and the keys.
 export function stage(parent:HTMLElement,sky:string){
- const renderer=new T.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.5));renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;
+ const renderer=new T.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.5));renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFShadowMap;
  renderer.domElement.style.cssText='display:block;width:100%;height:100%;outline:none';parent.appendChild(renderer.domElement);
  const scene=new T.Scene();scene.background=new T.Color(sky);scene.add(new T.HemisphereLight('#e7f3ff','#837246',1.6));
  const sun=new T.DirectionalLight('#fff1ce',3.2);sun.position.set(-8,18,12);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-20;sun.shadow.camera.right=20;sun.shadow.camera.top=20;sun.shadow.camera.bottom=-20;sun.shadow.camera.far=70;sun.shadow.normalBias=.04;scene.add(sun,sun.target);

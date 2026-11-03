@@ -36,7 +36,7 @@ describe('Country environment registry',()=>{
    expect(environment?.info.landmarkSource).toMatch(/^https:\/\//);expect(environment?.info.license.length).toBeGreaterThan(20);
   }
   expect(await loadCountryEnvironment('unknown-environment')).toBeNull();
- },30000);
+ },120000);// 193 environment modules imported one by one: about 9 s alone, over 30 s under the full parallel suite.
 });
 
 describe.each(countries)('%s environment',(code,landmarks)=>{

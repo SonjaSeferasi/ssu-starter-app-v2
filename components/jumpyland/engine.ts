@@ -6,6 +6,7 @@ import {freshLife,loseHeart} from './attempt-life';
 import {characterRig} from './character-rig';
 import {rockDetail} from './rock-detail';
 import {biomeDetails} from './biome-details';
+import {referenceNature} from './reference-nature';
 import {clayMaterial,mushroomCrownHeight,createStage,terrainMaterials,island,deck,tree,bridge,mushroom,pipe,castle,mesh,box,cylinder,link,material,disposeStage} from './scene-3d';
 import {worldScenery} from './world-scenery';
 import {type Course,type Platform,GRAVITY,JUMP_SPEED,horizontalVelocity,regionAt} from './levels';
@@ -23,7 +24,7 @@ type Landing={base:Platform;at:Platform;object:T.Group;dx:number;dy:number};
 const top=landingHeight;
 export function mountGame(parent:HTMLElement,course:Course,avatar:string,input:InputState,onCoins:(count:number)=>void,onEnd:(cause:'fall'|'hazard'|'enemy'|'complete',coins:number)=>void,onPause:()=>void,onReady:(controller:GameController)=>void,onProgress:(percent:number)=>void,onWorld:(state:WorldState)=>void,loadout:RunLoadout=emptyLoadout,onSound:(sound:GameSound)=>void=()=>{},startX=90,appearance:AvatarAppearance|null=null){
  const {scene,renderer,sun}=createStage(),world=course.number;parent.appendChild(renderer.domElement);const canvas=renderer.domElement;canvas.tabIndex=0;canvas.setAttribute('aria-label','3D game. Left and right move, Up or Space jumps, Down crouches, climbs or enters pipes. X uses power. C or Shift defends against shots.');canvas.style.cssText='display:block;width:100%;height:100%;outline:none';
- const camera=new T.PerspectiveCamera(43,1,.1,210),env=worldScenery(scene,course),mats=terrainMaterials(world),land:T.Group=new T.Group();scene.add(land);
+ const camera=new T.PerspectiveCamera(45,1,.1,280),env=worldScenery(scene,course),mats=terrainMaterials(world),land:T.Group=new T.Group();scene.add(land);
  const hanging:{rope:T.Mesh;anchor:T.Vector3;landing:Platform;offset:number}[]=[];
  const platforms:Landing[]=[...course.platforms,...course.ledges].map((p,i)=>{let object:T.Group;if(p.kind==='deck'||p.kind==='bamboo'||p.kind==='bridge'){object=deck(land,p,p.kind==='bamboo');if(p.kind==='bridge'){object.clear();bridge(object,0,p.width/100,-p.y/100);}
   if(p.kind==='deck'){
@@ -45,6 +46,7 @@ export function mountGame(parent:HTMLElement,course:Course,avatar:string,input:I
  return{base:p,at:{...p,profileX:p.x},object,dx:0,dy:0};});
  const stopRockDetail=rockDetail(land,platforms.filter(p=>p.base.kind==='rock'),course);
  biomeDetails(scene,course);
+ referenceNature(scene,course);
  // Landmarks belong to the terrain, and occupy the same world coordinates as collisions.
  const pipes:{x:number;y:number;object:T.Group}[]=[],springs:{x:number;y:number}[]=[],ladders:{x:number;bottom:number;roof:number}[]=[],checkpoints:{x:number;y:number;object:T.Group;active:boolean}[]=[];
  for(let i=0;i<course.platforms.length;i++){const p=course.platforms[i];if(world===1){if([1,6,10].includes(i)){const x=p.x+80,y=top(p,x);mushroom(land,x/100,-y/100,0,.8);springs.push({x,y:y-mushroomCrownHeight*80});}if([3,9].includes(i)){const x=p.x+p.width-90,y=top(p,x);pipes.push({x,y,object:pipe(land,x/100,-y/100,0)});}if(i%3===0)mushroom(land,(p.x+40)/100,-top(p,p.x+40)/100,-2.4,1.8);}
@@ -168,10 +170,10 @@ export function mountGame(parent:HTMLElement,course:Course,avatar:string,input:I
  poses.push({x,y,facing});if(poses.length>180)poses.shift();const cloneCount=powers.cloneUntil>now?powers.clones:0;for(let i=0;i<2;i++){const c=clones[i],show=i<cloneCount;if(c.visible&&!show)puff(c.position.x*100,-c.position.y*100);c.visible=show;if(show){const pose=poses[Math.max(0,poses.length-1-(i+1)*25)];c.position.set((pose.x-facing*(i+1)*28)/100,-pose.y/100,.7+i*.22);c.scale.x=pose.facing;}}
  animateSmoke(dt,now);
  for(const c of coins)if(!c.taken)c.object.rotation.y=now*.002;env.update(now,camera);
- const targetX=x/100+4.8,targetY=-y/100+1.65;camera.position.x=T.MathUtils.lerp(camera.position.x,targetX,.07);camera.position.y=T.MathUtils.lerp(camera.position.y,targetY+.45,.07);camera.position.z=camera.aspect<1?21:16;camera.lookAt(camera.position.x,targetY,-1.5);const sunOffset=(sun.userData.offset as number[]|undefined)??[-8,16,12];sun.position.set(x/100+sunOffset[0],sunOffset[1],sunOffset[2]);sun.target.position.set(x/100,-3,0);
+ const targetX=x/100+(camera.aspect<1?3.2:6.2),targetY=-y/100+1.8;camera.position.x=T.MathUtils.lerp(camera.position.x,targetX,.07);camera.position.y=T.MathUtils.lerp(camera.position.y,targetY+1.5,.07);camera.position.z=camera.aspect<1?25:22;camera.lookAt(camera.position.x,targetY,-1.5);const sunOffset=(sun.userData.offset as number[]|undefined)??[-8,16,12];sun.position.set(x/100+sunOffset[0],sunOffset[1],sunOffset[2]);sun.target.position.set(x/100,-3,0);
  if(now>nextReport){nextReport=now+120;const special=activeTechnique(powers,now);onProgress(Math.min(100,Math.floor(x/course.finish*100)));onWorld({guarding:guardActive(guard,now),guardCooldown:Math.max(0,(guard.readyAt-now)/1000),blockedShots:guard.blocked,hearts:health.hearts,region:regionAt(course,x).name,cooldown:Math.max(0,Math.ceil((nextPower-now)/1000)),defeated,shield:powers.shield,skyJump:Math.max(0,Math.ceil((powers.doubleJumpUntil-now)/1000)),rapid:Math.max(0,Math.ceil((powers.rapidUntil-now)/1000)),nimbus:Math.max(0,Math.ceil((powers.nimbusUntil-now)/1000)),saiyan:Math.max(0,Math.ceil((powers.saiyanUntil-now)/1000)),special:special?.kind==='clone'?`Shadow clones (${cloneCount})`:special?.name||'',specialSeconds:special?Math.ceil((special.until-now)/1000):0,notice});}
  }
- camera.position.set(x/100+4.8,-y/100+2.1,camera.aspect<1?21:16);camera.lookAt(x/100+4.8,-y/100+1.65,-1.5);
+ camera.position.set(x/100+(camera.aspect<1?3.2:6.2),-y/100+3.3,camera.aspect<1?25:22);camera.lookAt(camera.position.x,-y/100+1.8,-1.5);
  const controller:GameController={pause(){paused=true;clearInput();},resume(){paused=false;last=performance.now();canvas.focus({preventScroll:true});},destroy(){if(disposed)return;disposed=true;cancelAnimationFrame(frame);observer.disconnect();window.removeEventListener('keydown',keyDown);window.removeEventListener('keyup',keyUp);window.removeEventListener('blur',clearInput);stopRockDetail();env.dispose();figures.forEach(figure=>figure.rig.dispose());goldenTexture?.dispose();texture.dispose();disposeStage(renderer,scene);canvas.remove();}};
  const loop=(stamp:number)=>{if(disposed)return;const dt=Math.min(.1,(stamp-last)/1000);last=stamp;if(!paused&&!ended&&ready){accumulator+=dt;while(accumulator>=1/120&&!ended){update(1/120);accumulator-=1/120;}}else accumulator=0;renderer.render(scene,camera);if(!ready&&texture.image){ready=true;canvas.dataset.ready='true';onReady(controller);canvas.focus({preventScroll:true});}frame=requestAnimationFrame(loop);};frame=requestAnimationFrame(loop);return()=>controller.destroy();
 }

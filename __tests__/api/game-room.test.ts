@@ -66,6 +66,15 @@ describe('Independent avatar customization', () => {
     expect((await PUT(req('PUT', selected))).status).toBe(200);
     expect(rpc).toHaveBeenCalledWith('socialu_avatar_customization', { p_auth_id: user.id, p_appearance: selected });
   });
+  it('saves a chosen body shape and skin colour with the complete avatar', async () => {
+    const selected = { ...selection, avatarId: 'campus-v4-male-2-1-natural', bodyShape: 'plus', skinColor: 'espresso' };
+    expect((await PUT(req('PUT', selected))).status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_avatar_customization', { p_auth_id: user.id, p_appearance: selected });
+  });
+  it.each([{ bodyShape: 'huge' }, { skinColor: '#000000' }, { skinColor: 3 }])('rejects an unknown body or skin choice %j', async change => {
+    expect((await PUT(req('PUT', { ...selection, avatarId: 'campus-v4-male-2-1-natural', ...change }))).status).toBe(400);
+    expect(rpc).not.toHaveBeenCalled();
+  });
   it.each(['unknown', null, 2])('rejects an invalid complete avatar id %j', async avatarId => {
     expect((await PUT(req('PUT', { ...selection, avatarId }))).status).toBe(400);
     expect(rpc).not.toHaveBeenCalled();

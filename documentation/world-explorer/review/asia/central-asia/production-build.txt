@@ -1,0 +1,115 @@
+
+> ssu-starter-app-v2@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.15
+  - Environments: .env
+
+   Creating an optimized production build ...
+npm : Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
+At line:6 char:1
++ npm run build *> tmp/tools/asia-review/central-build.log
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Browserslist: b...ld. Please run::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/43) ...
+   Generating static pages (10/43) 
+   Generating static pages (21/43) 
+   Generating static pages (32/43) 
+ ✓ Generating static pages (43/43)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                               Size     First Load JS
+┌ ○ /                                     11.8 kB         115 kB
+├ ○ /_not-found                           876 B            90 kB
+├ ○ /account/security                     144 B           103 kB
+├ ƒ /api/account/deactivate               0 B                0 B
+├ ƒ /api/auth/change-password             0 B                0 B
+├ ƒ /api/auth/forgot-password             0 B                0 B
+├ ƒ /api/auth/login                       0 B                0 B
+├ ƒ /api/auth/logout                      0 B                0 B
+├ ƒ /api/auth/refresh                     0 B                0 B
+├ ƒ /api/auth/register                    0 B                0 B
+├ ƒ /api/auth/resend                      0 B                0 B
+├ ƒ /api/auth/reset-password              0 B                0 B
+├ ƒ /api/auth/session                     0 B                0 B
+├ ƒ /api/auth/verify                      0 B                0 B
+├ ƒ /api/campus/members                   0 B                0 B
+├ ƒ /api/comments/[commentId]             0 B                0 B
+├ ƒ /api/conversations                    0 B                0 B
+├ ƒ /api/conversations/[id]/messages      0 B                0 B
+├ ƒ /api/conversations/[id]/peer          0 B                0 B
+├ ƒ /api/conversations/[id]/read          0 B                0 B
+├ ƒ /api/dorm                             0 B                0 B
+├ ƒ /api/dorm/guestbook                   0 B                0 B
+├ ƒ /api/dorm/live                        0 B                0 B
+├ ƒ /api/events                           0 B                0 B
+├ ƒ /api/friends                          0 B                0 B
+├ ƒ /api/game-room                        0 B                0 B
+├ ƒ /api/jumpyland                        0 B                0 B
+├ ƒ /api/notifications                    0 B                0 B
+├ ƒ /api/posts                            0 B                0 B
+├ ƒ /api/posts/[postId]                   0 B                0 B
+├ ƒ /api/posts/[postId]/comments          0 B                0 B
+├ ƒ /api/posts/[postId]/likes             0 B                0 B
+├ ƒ /api/posts/[postId]/photos            0 B                0 B
+├ ƒ /api/posts/[postId]/photos/[assetId]  0 B                0 B
+├ ƒ /api/posts/[postId]/report            0 B                0 B
+├ ƒ /api/posts/feed/campus                0 B                0 B
+├ ƒ /api/posts/feed/friends               0 B                0 B
+├ ƒ /api/preferences                      0 B                0 B
+├ ƒ /api/profile                          0 B                0 B
+├ ƒ /api/profile/avatar                   0 B                0 B
+├ ƒ /api/profile/details                  0 B                0 B
+├ ƒ /api/profiles                         0 B                0 B
+├ ƒ /api/profiles/content                 0 B                0 B
+├ ƒ /api/profiles/friends                 0 B                0 B
+├ ƒ /api/profiles/highlights              0 B                0 B
+├ ƒ /api/profiles/social                  0 B                0 B
+├ ƒ /api/world-explorer/countries/[code]  0 B                0 B
+├ ƒ /api/world-explorer/media/[code]      0 B                0 B
+├ ƒ /api/world-explorer/progress          0 B                0 B
+├ ○ /dev/dormspace-art                    1.37 kB         112 kB
+├ ○ /dev/game-room                        365 B           114 kB
+├ ○ /dev/jumpyland                        6.92 kB         101 kB
+├ ○ /dev/navigation                       243 B          99.8 kB
+├ ○ /events                               1.86 kB         105 kB
+├ ○ /events/create                        1.56 kB         105 kB
+├ ○ /forgot-password                      144 B           103 kB
+├ ○ /friends                              2.09 kB         117 kB
+├ ○ /game-1                               2.72 kB         102 kB
+├ ○ /game-room                            192 B           114 kB
+├ ○ /game-room/dormspace                  17 kB           197 kB
+├ ○ /game-room/dormspace/art-credits      178 B          96.1 kB
+├ ○ /game-room/dormspace/classic          23.8 kB         132 kB
+├ ○ /login                                144 B           103 kB
+├ ○ /messages                             706 B           168 kB
+├ ƒ /messages/[conversationId]            3.23 kB         171 kB
+├ ○ /notifications                        2.3 kB          117 kB
+├ ○ /profile                              1.4 kB          116 kB
+├ ○ /profile/edit                         3.95 kB         119 kB
+├ ○ /profile/settings                     2.15 kB         117 kB
+├ ○ /register                             144 B           103 kB
+├ ○ /reset-password                       144 B           103 kB
+├ ƒ /students/[username]                  193 B           115 kB
+├ ○ /verify-email                         144 B           103 kB
+└ ○ /world-explorer                       1.31 kB        90.4 kB
++ First Load JS shared by all             89.1 kB
+  ├ chunks/2117-bd13823bdf171f3c.js       31.6 kB
+  ├ chunks/fd9d1056-2f4f1dea4dc7d96a.js   53.6 kB
+  └ other shared chunks (total)           3.89 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

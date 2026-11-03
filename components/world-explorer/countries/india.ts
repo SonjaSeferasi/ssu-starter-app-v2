@@ -22,7 +22,7 @@ const info={
  landmarkSource:'https://whc.unesco.org/en/list/252/',
  assets:['taj-mahal-dome-iwans-and-minarets','red-sandstone-gateway','charbagh-water-channels','fountains','cypress-rows','flowerbeds','chhatri-pavilions','carved-sandstone-bridges','floating-petals','parakeets'],
 };
-const sandstone:TerrainPreset={id:'agra-red-sandstone',shape:'masonry',rock:{light:'#f0ad90',dark:'#d08268',crack:'#7a3e2c',top:'#6f9a48',topDepth:.04,strata:.2},cap:{kind:'tiles',a:'#b9624a',b:'#f2ece0',c:'#7d3a2c'},rim:{kind:'tufts',color:'#4f8a35',alt:'#6aa346',size:.9},flowers:{colors:['#f39a1e','#e8473b','#f6d14b','#f3f0ea'],density:2.2},maps:{set:'sandstone-blocks',tint:'#ffcdb8',repeat:1}};
+const sandstone:TerrainPreset={id:'agra-red-sandstone',shape:'masonry',rock:{light:'#f0ad90',dark:'#d08268',crack:'#7a3e2c',top:'#6f9a48',topDepth:.04,strata:.2},cap:{kind:'paving',a:'#bf7960',b:'#d59478',c:'#99735b'},rim:{kind:'tufts',color:'#4f8a35',alt:'#6aa346',size:.9},flowers:{colors:['#f39a1e','#e8473b','#f6d14b','#f3f0ea'],density:2.2},maps:{set:'sandstone-blocks',tint:'#ffcdb8',repeat:1}};
 const deck:DeckPalette={wood:'#8a6444',woodAlt:'#9b7350',rope:'#c8b48a',stone:'#eba083',stoneAlt:'#de8f72',metal:'#6d5a3e',accent:'#f2ece0'};
 const marble='#f3efe6',marbleShade='#e4ddd0';
 
@@ -98,6 +98,7 @@ export const environment:CountryEnvironment={
   const gate=new Builder();gateway(gate,22,-9.6,-52,1);const gateMaterial=vertexMaterial(.85);markSurface(gateMaterial,'sandstone-blocks','#ffc2a6');gate.mesh(features,gateMaterial,'red-sandstone-gateway');
   const sites=[{x:-8,y:-1,z:-12,w:15,t:7},{x:20,y:1,z:-22,w:13,t:8},{x:46,y:.4,z:-18,w:12,t:8},{x:78,y:1.4,z:-24,w:14,t:9},{x:104,y:.2,z:-14,w:12,t:7},{x:130,y:1,z:-20,w:14,t:8}].filter(site=>site.x<finish+24);
   for(const [i,site] of sites.entries())createScenicTerrace(staticRoot,{x:site.x,y:site.y,z:site.z,width:site.w,depth:7,thickness:site.t,preset:sandstone,seed:7100+i,quality:low?'low':'standard',lush:true});
+  const edging=new Builder();for(let i=0;i<45;i++){const x=-20+i*(finish+40)/44;for(const side of [-1,1]){edging.add(new T.BoxGeometry((finish+40)/45*.94,.22,.45),'#bba589',[x,-9.27,-14+side*2.3]);edging.add(new T.SphereGeometry(.42,8,5),'#688749',[x,-9.15,-14+side*3.05],[0,0,0],[1,.45,1.2]);}}edging.mesh(staticRoot,vertexMaterial(.9),'agra-garden-stone-water-transitions');
   const pavilions=new Builder();for(const site of sites)if(site.w>=13)chhatri(pavilions,site.x+site.w*.25,site.y,site.z-1.5,3.2,'#efe6d6');pavilions.mesh(features,vertexMaterial(.7),'garden-chhatris');
   const r=random(41),cypress:Placement[]=[],shade:Placement[]=[],beds:Placement[]=[];
   for(let i=0;i<(low?16:34);i++){const z=-30-i*2.2;if(z<-110)break;for(const side of [-1,1])cypress.push({x:62+side*6,y:-9.6,z,scale:1.1,rotation:r()*6});}

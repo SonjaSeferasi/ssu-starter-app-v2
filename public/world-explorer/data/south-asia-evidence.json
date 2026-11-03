@@ -1,0 +1,702 @@
+{
+  "records": [
+    {
+      "code": "AFG",
+      "file": "lib/world-explorer/levels/south-asia/afg.ts",
+      "sha256": "88c24d99051e7225239a50c0d8350f9f3d901f3f1915b4dbeae2b12605d99717",
+      "runtimeDifficulty": 3,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "af-start",
+            "to": "af-terrace",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 1.15,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 58.97435897435896,
+            "tier": 4
+          },
+          {
+            "from": "af-terrace",
+            "to": "af-shelf",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 1.15,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 58.97435897435896,
+            "tier": 4
+          },
+          {
+            "from": "af-shelf",
+            "to": "af-bridge",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.1500000000000004,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 58.97435897435898,
+            "tier": 4
+          },
+          {
+            "from": "af-bridge",
+            "to": "af-overlook",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 1.1499999999999995,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 58.97435897435893,
+            "tier": 4
+          },
+          {
+            "from": "af-descent",
+            "to": "af-end",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 4.440892098500626e-16,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 2.2773805633336536e-14,
+            "tier": 1
+          }
+        ],
+        "mechanics": [],
+        "measuredTier": 4,
+        "declaredTier": 4,
+        "score": 4,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "warnings": [],
+      "coins": "10/10",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "BGD",
+      "file": "lib/world-explorer/levels/south-asia/bgd.ts",
+      "sha256": "6a2befe2d661e0f2ea3499e75c5e95ddb335ac946215d29aaf2af1cce35ad9f6",
+      "runtimeDifficulty": 1,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "bd-boardwalk",
+            "to": "bd-raft",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.6000000000000014,
+            "rise": -0.08000000000000002,
+            "gapPercent": 29.62962962962976,
+            "stepPercent": 0,
+            "tier": 1
+          },
+          {
+            "from": "bd-raft",
+            "to": "bd-bank",
+            "action": "JUMP",
+            "gap": 1.6999999999999957,
+            "rise": 0.12,
+            "gapPercent": 31.481481481481516,
+            "stepPercent": 6.1538461538461515,
+            "tier": 1
+          },
+          {
+            "from": "bd-bank",
+            "to": "bd-end",
+            "action": "JUMP",
+            "gap": 2.700000000000003,
+            "rise": 0.09999999999999998,
+            "gapPercent": 50.000000000000234,
+            "stepPercent": 5.128205128205125,
+            "tier": 2
+          }
+        ],
+        "mechanics": [
+          "moving"
+        ],
+        "measuredTier": 1,
+        "declaredTier": 1,
+        "score": 1.4533333333333331,
+        "warnings": []
+      },
+      "edgeChecks": 28,
+      "warnings": [],
+      "coins": "9/9",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "BTN",
+      "file": "lib/world-explorer/levels/south-asia/btn.ts",
+      "sha256": "5cb31438bc7c70db8127310121e56f505e235b10b07a8fa1405ccc417dcb7759",
+      "runtimeDifficulty": 3,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "bt-steps",
+            "to": "bt-cliff",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 1.2500000000000002,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 64.1025641025641,
+            "tier": 5
+          },
+          {
+            "from": "bt-cliff",
+            "to": "bt-ledge",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 1.25,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "bt-ledge",
+            "to": "bt-lift",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.7999999999999972,
+            "rise": 1.0499999999999998,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 53.84615384615382,
+            "tier": 4
+          },
+          {
+            "from": "bt-lift",
+            "to": "bt-bridge",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 1.0999999999999996,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 56.41025641025637,
+            "tier": 4
+          },
+          {
+            "from": "bt-bridge",
+            "to": "bt-rest",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.25,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "bt-rest",
+            "to": "bt-end",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 0,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "moving"
+        ],
+        "measuredTier": 5,
+        "declaredTier": 5,
+        "score": 5.12,
+        "warnings": []
+      },
+      "edgeChecks": 36,
+      "warnings": [],
+      "coins": "11/11",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "IND",
+      "file": "lib/world-explorer/levels/south-asia/ind.ts",
+      "sha256": "7e2c308641811c2afbfb45ca736bf5ea3cf8b8d66ef0bf7567cfe4bf86b61831",
+      "runtimeDifficulty": 1,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "in-bridge",
+            "to": "in-court",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 0.7,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 35.897435897435884,
+            "tier": 2
+          },
+          {
+            "from": "in-court",
+            "to": "in-garden",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 0.75,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 38.461538461538446,
+            "tier": 2
+          },
+          {
+            "from": "in-garden",
+            "to": "in-pavilion",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.5499999999999972,
+            "rise": -0.050000000000000044,
+            "gapPercent": 28.703703703703752,
+            "stepPercent": 0,
+            "tier": 1
+          },
+          {
+            "from": "in-pavilion",
+            "to": "in-island",
+            "action": "JUMP",
+            "gap": 1.8500000000000014,
+            "rise": 0.30000000000000004,
+            "gapPercent": 34.25925925925941,
+            "stepPercent": 15.384615384615383,
+            "tier": 1
+          },
+          {
+            "from": "in-island",
+            "to": "in-end",
+            "action": "JUMP",
+            "gap": 1.7000000000000028,
+            "rise": 0,
+            "gapPercent": 31.481481481481644,
+            "stepPercent": 0,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "moving"
+        ],
+        "measuredTier": 2,
+        "declaredTier": 2,
+        "score": 1.7866666666666666,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "warnings": [],
+      "coins": "10/10",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "IRN",
+      "file": "lib/world-explorer/levels/south-asia/irn.ts",
+      "sha256": "60a4edd7a0b97cbf73b090b19e9b7da8169da215647910353decc795349f5e14",
+      "runtimeDifficulty": 2,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "ir-steps",
+            "to": "ir-roof",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 0.95,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 48.7179487179487,
+            "tier": 3
+          },
+          {
+            "from": "ir-roof",
+            "to": "ir-lift",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.8000000000000043,
+            "rise": 0.9499999999999997,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 48.71794871794869,
+            "tier": 3
+          },
+          {
+            "from": "ir-lift",
+            "to": "ir-terrace",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.9500000000000002,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 48.71794871794871,
+            "tier": 3
+          },
+          {
+            "from": "ir-court",
+            "to": "ir-end",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.25,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 12.820512820512816,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "moving",
+          "wind"
+        ],
+        "measuredTier": 3,
+        "declaredTier": 3,
+        "score": 3.24,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "warnings": [],
+      "coins": "10/10",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "MDV",
+      "file": "lib/world-explorer/levels/south-asia/mdv.ts",
+      "sha256": "716638ee5da7b93b886c5bff3e735fce28905d1a825a6252002b02dc0d709bb8",
+      "runtimeDifficulty": 1,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "mv-dock",
+            "to": "mv-island",
+            "action": "JUMP",
+            "gap": 1.6000000000000014,
+            "rise": 0.2,
+            "gapPercent": 29.62962962962976,
+            "stepPercent": 10.256410256410254,
+            "tier": 1
+          },
+          {
+            "from": "mv-island",
+            "to": "mv-float",
+            "action": "RIDE_PLATFORM",
+            "gap": 2.6000000000000014,
+            "rise": -0.1,
+            "gapPercent": 48.148148148148344,
+            "stepPercent": 0,
+            "tier": 2
+          },
+          {
+            "from": "mv-float",
+            "to": "mv-islet",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.19999999999999996,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 10.25641025641025,
+            "tier": 1
+          },
+          {
+            "from": "mv-islet",
+            "to": "mv-end",
+            "action": "JUMP",
+            "gap": 1.7000000000000028,
+            "rise": -0.09999999999999998,
+            "gapPercent": 31.481481481481644,
+            "stepPercent": 0,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "moving"
+        ],
+        "measuredTier": 1,
+        "declaredTier": 1,
+        "score": 1.4533333333333331,
+        "warnings": []
+      },
+      "edgeChecks": 28,
+      "warnings": [],
+      "coins": "9/9",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "NPL",
+      "file": "lib/world-explorer/levels/south-asia/npl.ts",
+      "sha256": "5289fbd89f5c17425cd80b09af7d3e699e4f2cfbe7a09f5bd3f4e2d88b9ce282",
+      "runtimeDifficulty": 3,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "np-start",
+            "to": "np-ledge",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 1.2499999999999998,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 64.10256410256407,
+            "tier": 5
+          },
+          {
+            "from": "np-ledge",
+            "to": "np-snow",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 1.25,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "np-snow",
+            "to": "np-bridge",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.25,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "np-face",
+            "to": "np-ridge",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.7000000000000011,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 35.89743589743594,
+            "tier": 2
+          },
+          {
+            "from": "np-descent",
+            "to": "np-end",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.2999999999999998,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 15.38461538461537,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "climbing"
+        ],
+        "measuredTier": 5,
+        "declaredTier": 5,
+        "score": 5.12,
+        "warnings": []
+      },
+      "edgeChecks": 36,
+      "warnings": [],
+      "coins": "11/11",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "PAK",
+      "file": "lib/world-explorer/levels/south-asia/pak.ts",
+      "sha256": "8ef449700a90b7a5b59ce1bab1f2331fdf4060fb7bf17abd95307b70235a3568",
+      "runtimeDifficulty": 3,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "pk-bridge",
+            "to": "pk-lift",
+            "action": "RIDE_PLATFORM",
+            "gap": 2,
+            "rise": 0.2,
+            "gapPercent": 37.037037037037166,
+            "stepPercent": 10.256410256410254,
+            "tier": 1
+          },
+          {
+            "from": "pk-lift",
+            "to": "pk-rock",
+            "action": "JUMP",
+            "gap": 2,
+            "rise": 1.2499999999999998,
+            "gapPercent": 37.037037037037166,
+            "stepPercent": 64.10256410256407,
+            "tier": 5
+          },
+          {
+            "from": "pk-rock",
+            "to": "pk-peak",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.25,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "pk-peak",
+            "to": "pk-ledge",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 1.25,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "pk-descent",
+            "to": "pk-end",
+            "action": "JUMP",
+            "gap": 1.8000000000000114,
+            "rise": 0,
+            "gapPercent": 33.33333333333366,
+            "stepPercent": 0,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "moving"
+        ],
+        "measuredTier": 5,
+        "declaredTier": 5,
+        "score": 5.12,
+        "warnings": []
+      },
+      "edgeChecks": 36,
+      "warnings": [],
+      "coins": "11/11",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "LKA",
+      "file": "lib/world-explorer/levels/south-asia/lka.ts",
+      "sha256": "a8d007df1f104a4abf42ced165713ca58ade12c494bd3dee33b5bc0a4deff520",
+      "runtimeDifficulty": 2,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "lk-stairs",
+            "to": "lk-ledge",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.95,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 48.7179487179487,
+            "tier": 3
+          },
+          {
+            "from": "lk-ledge",
+            "to": "lk-overlook",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 0.9500000000000002,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 48.71794871794871,
+            "tier": 3
+          },
+          {
+            "from": "lk-overlook",
+            "to": "lk-end",
+            "action": "JUMP",
+            "gap": 1.8000000000000114,
+            "rise": 0.8999999999999999,
+            "gapPercent": 33.33333333333366,
+            "stepPercent": 46.15384615384613,
+            "tier": 3
+          }
+        ],
+        "mechanics": [
+          "timed-gate"
+        ],
+        "measuredTier": 3,
+        "declaredTier": 3,
+        "score": 3.12,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "warnings": [],
+      "coins": "10/10",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    }
+  ],
+  "similarityFlags": [],
+  "released": false
+}

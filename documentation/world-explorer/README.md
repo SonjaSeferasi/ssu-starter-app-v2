@@ -6,6 +6,62 @@ World Explorer is a separate geography adventure. The existing Jumpyland mode an
 
 All twelve South American countries have individually designed, playable levels, built in three batches on the shared engine. The progress dashboard, validation results, captures, performance figures and outstanding issues are in [SOUTH-AMERICA.md](SOUTH-AMERICA.md). Every level is in TESTING; none is released until a person has reviewed it.
 
+## Europe and Oceania country previews
+
+Forty European and thirteen Oceania adventures are composed from route beats on the shared engine. See [EUROPE.md](EUROPE.md) and [OCEANIA.md](OCEANIA.md). Africa is built by the Africa team ([AFRICA.md](AFRICA.md)) and the rest of North America by the North America team ([NORTH-AMERICA.md](NORTH-AMERICA.md)). Every adventure is in TESTING.
+
+## One acceptance checklist for every built adventure
+
+[review/acceptance-all/ACCEPTANCE.md](review/acceptance-all/ACCEPTANCE.md) applies the same checks to every built country:
+- destination accuracy
+- both routes
+- every collectible
+- checkpoints
+- hazard recovery
+- keyboard and touch controls
+- five viewport layouts
+- saved progress
+- performance
+- cold-start shader preparation
+
+It is generated from recorded evidence by `scripts/world-explorer/acceptance-report.mjs`.
+- Automated results are kept apart from human desktop play, physical-phone testing and live account saves, which are recorded in `human-results.json` (see `HUMAN-RESULTS.md`).
+- A check with no evidence reads "not run" or "not performed", never "pass".
+
+Current results for 193 adventures (pass / fail / not run). Each check is followed by what it found.
+- **Destination: 154 / 39 / 0.** Each failure is a guide photo, either missing or with a file name that doesn't name the place. Most belong to other teams' entries. `review/acceptance-all/media/media-diagnose.json` gives the cause for each country: Commons rate limits (HTTP 429) or search results that the shared `media.ts` filter rejects. That filter rejects every public-domain file, because those files have no licence URL.
+- **Routes: 190 / 3 / 0.** BRA, COD and MOZ fail.
+- **Collectibles: 192 / 1 / 0.** JPN fails: coin jp-coin-13.
+- **Checkpoints: 192 / 1 / 0.** SLE fails.
+- **Hazard recovery: 193 / 0 / 0.**
+- **Cold-start shader links after ready: 193 / 0 / 0.**
+- **Browser replays, keyboard, emulated touch, saved progress and frame rate: 53 / 0 / 140.** They were run for the Europe and Oceania batches only.
+- **Layout: 0 / 193 / 0.** The only failure is the shared phone HUD text at 8 px.
+
+Human checks recorded: 0 of 193.
+
+**Full unit suite, run on the shared working tree on 2026-11-03: 2046 of 2055 tests pass, 9 fail.** The Europe (205), Oceania (65) and material-prepare suites pass, and `tsc --noEmit` is clean. The failures:
+- **`world-explorer-west-asia` (SAU, 3 tests) and `world-explorer-asia-enhancement` (OMN, 1 test).** Another team was editing `levels/west-asia/sau.ts`, `omn.ts`, `simulation.ts`, `level-manifest.ts` and `light-puzzle.ts` during the run. These tests passed in the run before.
+- **`world-explorer-country-environments`.** It hits the 30 s timeout under full-suite load and passes 41 of 41 when run alone.
+- **`world-explorer-level-design`, three tests that assume part of the campaign is unbuilt:**
+  - **Tier split.** With every country built, the tiers come out 32/56/47/28/30, not 39/39/39/38/38. Parallel batches each picked tiers from the same remaining quota. Rebalancing needs a cross-team decision.
+  - **Template levels.** CAN and USA were redesigned by the North America team, so they no longer match the other templates.
+  - **`cardStatus('NRU')`.** It expects 'under-development', but Nauru is now built. No country is unbuilt any more, so this assertion needs another subject. The file has another team's uncommitted edits, so it was not changed here.
+- **`world-explorer-districts`, district count.** The test expects more than 25 countries with generic profile districts. The count is 17, because place-specific profiles no longer use the generic trait words:
+  - 7 are Europe entries: ALB, BEL, BGR, CZE, IRL, POL, SVK;
+  - 17 come from the Africa, North America and Asia data;
+  - Latvia's timber trait was restored.
+
+  The levels with their own environments do not use these districts.
+
+## Level design system (route graphs, tiers, validation)
+
+Egypt, Brazil and Norway were rebuilt as three structurally different proof levels (environmental puzzle, traversal, precision) on a shared route-graph system. It adds a LevelValidator, a DifficultyAnalyzer calibrated to the measured jump envelope, a similarity checker and a 193-country design manifest. See [LEVEL-DESIGN-SYSTEM.md](LEVEL-DESIGN-SYSTEM.md) and [DESIGN-MANIFEST.md](DESIGN-MANIFEST.md).
+
+## Ten new playable countries
+
+Italy, Egypt, Brazil, Canada, Australia, India, South Africa, Norway, France and the United States now have complete, playable levels built on the Japan engine. Each one has a lower main route, an optional upper route with a moving platform and a star, a country mechanic (sliding slab, desert or fjord wind, swinging logs, ice, a wave-bobbing raft, a garden platform, a cable-hung platform, a maintenance lift or a dock gantry), an original patrol creature, 30 coins, three stars, two checkpoints and a sourced discovery. Scenery is loaded per country on demand. All eleven levels remain prototypes awaiting human visual and device review. See [Country levels](COUNTRY-LEVELS.md) for the architecture, per-country deliverables, test results, performance points, licences and known limitations.
+
 ## Japan-first prototype
 
 The current deliverable follows the supplied specification's immediate priority: **one authored Japan prototype**. The 193-country catalogue and existing scenery previews remain available for planning and inspection. `levelAvailability()` marks Japan as `prototype`, other destinations as `preview`, and every destination as `releaseReady: false` / `visualReviewed: false` until the required human/device review is complete.

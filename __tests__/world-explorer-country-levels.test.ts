@@ -7,11 +7,12 @@ import {discoveryFor} from '../lib/world-explorer-discoveries';
 import {countryProfile} from '../lib/world-explorer/profiles';
 import type {LevelDefinition} from '../lib/world-explorer/game-types';
 
-/** The ten reference countries built on the shared Japan engine. Seven still
+/** The ten reference countries built on the shared Japan engine. Six still
  * use the first eight-section template; Egypt, Brazil and Norway were rebuilt
- * as route-graph levels and are covered in world-explorer-level-design. */
+ * as route-graph levels and are covered in world-explorer-level-design. India now has its own South Asia route-graph tests. */
 const codes=['ITA','EGY','BRA','CAN','AUS','IND','ZAF','NOR','FRA','USA'];
-const templateCodes=['ITA','CAN','AUS','IND','ZAF','FRA','USA'];
+// Canada and USA now use route graphs, covered by world-explorer-north-america.test.ts.
+const templateCodes=['ITA','AUS','ZAF','FRA'];
 const sectionIds=['A','B','C','D','E','F','G','H'];
 const byId=(level:LevelDefinition,id:string)=>level.platforms.find(platform=>platform.id===id)!;
 
@@ -85,10 +86,10 @@ describe('Country mechanics in the shared simulation',()=>{
    expect(warnedBeforeGust,code).toBe(true);expect(Math.sign(simulation.state.x-start)).toBe(Math.sign(zone.force));expect(Math.abs(simulation.state.x-start)).toBeGreaterThan(.5);expect(simulation.state.grounded).toBe(true);expect(simulation.state.hearts).toBe(3);
   }
  });
- it('makes only the frozen Canadian ledge slippery',()=>{
-  const level=levelDefinitionFor('CAN'),ice=level.platforms.find(p=>p.surface==='ice')!,stone=level.platforms.find(p=>p.id==='ca-e1')!;
+ it('makes the Canadian ice ledges slippery and leaves dry banks grippy',()=>{
+  const level=levelDefinitionFor('CAN'),ice=level.platforms.find(p=>p.surface==='ice')!,stone=level.platforms.find(p=>p.id==='ca-start')!;
   const slide=(platformId:string)=>{const fixture=structuredClone(level);const p=fixture.platforms.find(item=>item.id===platformId)!;p.width=14;fixture.spawn={platformId,offset:1};fixture.enemies=[];fixture.discoveryBlocks=[];fixture.discovery={...fixture.discovery,platformId:fixture.platforms[0].id,offset:1};const simulation=new LevelSimulation(fixture);simulation.setInput({left:false,right:true,jump:false});for(let i=0;i<70;i++)simulation.advance(FIXED_STEP);simulation.setInput({left:false,right:false,jump:false});const from=simulation.state.x;for(let i=0;i<120;i++)simulation.advance(FIXED_STEP);return simulation.state.x-from;};
-  expect(slide(ice.id)).toBeGreaterThan(slide(stone.id)*2);expect(level.platforms.filter(p=>p.surface==='ice')).toHaveLength(1);
+  expect(slide(ice.id)).toBeGreaterThan(slide(stone.id)*2);expect(level.platforms.filter(p=>p.surface==='ice')).toHaveLength(2);
  });
  it('holds paused moving platforms at both ends and bobs the Australian raft on the waves',()=>{
   const level=levelDefinitionFor('ITA'),slab=level.platforms.find(p=>p.style==='slab')!,samples=Array.from({length:700},(_,i)=>platformOffset(slab,i/100).x);

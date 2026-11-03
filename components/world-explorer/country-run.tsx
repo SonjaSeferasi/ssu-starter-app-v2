@@ -1,9 +1,12 @@
 'use client';
+import {remainingNorthAmericaPlaces,type RemainingNorthAmericaCode} from '../../lib/world-explorer/north-america-remaining';
 import {useEffect,useMemo,useRef,useState} from 'react';
 import {ArrowLeft,ArrowRight,ArrowUp,BookOpen,Check,Compass,Flag,Heart,Pause,Play,RotateCcw,Settings,Star,Trophy,Volume2} from 'lucide-react';
 import type {Country} from '../../lib/world-explorer/catalog';
 import {discoveryFor} from '../../lib/world-explorer-discoveries';
 import {countryProfile} from '../../lib/world-explorer/profiles';
+import {northAmericaPlaces,type NorthAmericaCode} from '../../lib/world-explorer/north-america';
+import {africaPlaces,type AfricaCode} from '../../lib/world-explorer/africa';
 import {guideDestination} from '../../lib/world-explorer/guide-destination';
 import {isAuthoredLevel,levelAvailability,levelDefinitionFor} from '../../lib/world-explorer/level-manifest';
 import type {CountryRunResult,CountryStats,Difficulty,ExplorerRunPreferences} from '../../lib/world-explorer/game-types';
@@ -114,6 +117,10 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
 function RoutePortrait(){return <svg viewBox="0 0 36 40" aria-hidden="true"><circle cx="18" cy="20" r="17" fill="#74bde9" stroke="#e0f3ff" strokeWidth="2"/><path d="M7 35Q6 23 18 23T30 35" fill="#1b3764"/><ellipse cx="18" cy="18" rx="9" ry="11" fill="#dca078"/><path d="M9 19L7 11Q8 4 15 7Q19 1 22 7Q30 5 28 14L25 17L22 10L17 12L13 10Z" fill="#28211c"/><circle cx="15" cy="18" r="1.1" fill="#242524"/><circle cx="22" cy="18" r="1.1" fill="#242524"/><path d="M17 24Q20 26 23 23" fill="none" stroke="#985a43" strokeWidth="1"/></svg>;}
 /** Finish-marker icons for the route bar, one per authored environment. */
 const destinationIcons:Record<string,JSX.Element>={
+ 'north-america-mx':<><path d="M2 40V34H7V28H12V22H15V13H23V22H26V28H31V34H35V40Z" fill="#d8c391" stroke="#776344" strokeWidth="2"/><path d="M17 39V19H21V39M16 13H24" stroke="#8c7955" strokeWidth="2"/></>,
+ 'north-america-gt':<><path d="M5 40V34H9V28H12V22H15V11H23V22H26V28H29V34H33V40Z" fill="#b5b494" stroke="#536749" strokeWidth="2"/><path d="M17 11V3H21V11M17 40V17H21V40" stroke="#756b4e" strokeWidth="3"/><path d="M2 39L5 30L8 39M29 39L32 27L35 39" fill="#43824e"/></>,
+ 'north-america-cr':<><path d="M7 40V23M29 40V23" stroke="#70533b" strokeWidth="3"/><circle cx="7" cy="17" r="7" fill="#549b61"/><circle cx="29" cy="14" r="8" fill="#397b50"/><path d="M7 26Q18 35 29 26M7 22Q18 30 29 22" fill="none" stroke="#e0c68a" strokeWidth="2"/></>,
+ 'north-america-jm':<><path d="M1 40V33H9V26H17V19H25V12H35V40Z" fill="#b9c49a" stroke="#657d60" strokeWidth="2"/><path d="M29 14V23H22V30H14V37H3" fill="none" stroke="#77cbd4" strokeWidth="5"/><path d="M24 4Q30 0 35 5" fill="none" stroke="#43885d" strokeWidth="3"/></>,
  'japan-mountain-spring':<><path d="M8 40V29H28V40M10 27V17H26V27M13 15V7H23V15" fill="#f3e4cc" stroke="#8f3438" strokeWidth="2"/><path d="M3 30L18 25L33 30ZM5 18L18 13L31 18ZM10 8L18 3L26 8Z" fill="#d04f4d" stroke="#243d60" strokeWidth="2"/><path d="M16 40V34H21V40M18 3V0" fill="#263e62" stroke="#d1b775"/></>,
  'italy-rome-colosseum':<><path d="M3 40V14Q18 6 33 14V40Z" fill="#e8d3a8" stroke="#7d5a3a" strokeWidth="2"/><path d="M7 38V31Q9 28 11 31V38M15 38V31Q17 28 19 31V38M23 38V31Q25 28 27 31V38M7 25V20Q9 17 11 20V25M15 25V20Q17 17 19 20V25M23 25V20Q25 17 27 20V25" fill="#7d5a3a"/></>,
  'egypt-giza-desert':<><path d="M2 40L15 12L28 40Z" fill="#e7bf74" stroke="#8a5a2b" strokeWidth="2"/><path d="M18 40L27 22L35 40Z" fill="#d9a85c" stroke="#8a5a2b" strokeWidth="2"/><path d="M9 26H21M6 33H24" stroke="#a87a44"/></>,
@@ -131,5 +138,5 @@ function DestinationIcon({environment}:{environment:string}){return <svg viewBox
 function Discovery({country,compact=false}:{country:Country;compact?:boolean}){
  // Place, landscape and photo describe the playable level's destination.
  const fact=discoveryFor(country.code),profile=countryProfile(country.code),destination=guideDestination(country.code);
- return <div className={styles.discovery}><h3>{fact?.title||profile?.landmarkName}</h3><p>{fact?.text||country.description}</p>{!compact&&<><dl className={styles.discoveryFacts}>{country.capital.length>0&&<div><dt>Capital / seat</dt><dd>{country.capital.join(' · ')}</dd></div>}<div><dt>Place</dt><dd>{destination?.place}</dd></div><div><dt>Landscape</dt><dd>{destination?.landscape.join(' · ')}</dd></div>{country.languages.length>0&&<div><dt>Languages</dt><dd>{country.languages.slice(0,3).join(' · ')}</dd></div>}</dl><LandmarkPhoto code={country.code}/></>}<a href={fact?.sourceUrl||profile?.sourceUrl} target="_blank" rel="noreferrer">Explore the source <ArrowRight size={12}/></a></div>;
+ return <div className={styles.discovery}><h3>{fact?.title||profile?.landmarkName}</h3><p>{fact?.text||country.description}</p>{remainingNorthAmericaPlaces[country.code as RemainingNorthAmericaCode]&&<p><strong>Trail tip: </strong>{remainingNorthAmericaPlaces[country.code as RemainingNorthAmericaCode].hint}</p>}{northAmericaPlaces[country.code as NorthAmericaCode]&&<p><strong>Trail tip: </strong>{northAmericaPlaces[country.code as NorthAmericaCode].hint}</p>}{africaPlaces[country.code as AfricaCode]&&<p><strong>Trail tip: </strong>{africaPlaces[country.code as AfricaCode].hint}</p>}{!compact&&<><dl className={styles.discoveryFacts}>{country.capital.length>0&&<div><dt>Capital / seat</dt><dd>{country.capital.join(' · ')}</dd></div>}<div><dt>Place</dt><dd>{destination?.place}</dd></div><div><dt>Landscape</dt><dd>{destination?.landscape.join(' · ')}</dd></div>{country.languages.length>0&&<div><dt>Languages</dt><dd>{country.languages.slice(0,3).join(' · ')}</dd></div>}</dl><LandmarkPhoto code={country.code}/></>}<a href={fact?.sourceUrl||profile?.sourceUrl} target="_blank" rel="noreferrer">Explore the source <ArrowRight size={12}/></a></div>;
 }
