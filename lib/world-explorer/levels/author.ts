@@ -1,4 +1,4 @@
-import type {CollectibleDefinition,DifficultyTier,EnemyDefinition,GateDefinition,HazardDefinition,LevelDefinition,LevelDesign,LevelEnvironment,LevelSection,PlatformDefinition,RouteAction,RouteNodeType,SwitchDefinition,WindZoneDefinition,DiscoveryBlockDefinition,CameraDefinition} from '../game-types';
+import type {CollectibleDefinition,DifficultyTier,EnemyDefinition,GateDefinition,HazardDefinition,LevelDefinition,LevelDesign,LevelEnvironment,LevelSection,PlatformDefinition,RouteAction,RouteNodeType,SwitchDefinition,WindZoneDefinition,DiscoveryBlockDefinition,CameraDefinition,WaterBasinDefinition,LightPuzzleDefinition} from '../game-types';
 
 /** A small authoring vocabulary for country levels written as JavaScript
  * modules. It only fills defaults and ids; every number that shapes play is
@@ -25,7 +25,7 @@ export type LevelSpec={
  /** [platformId, offset, height] */
  coins:[string,number,number?][];stars:[string,number,number][];
  edges:EdgeSpec[];nodeTypes?:Record<string,RouteNodeType>;
- hazards?:HazardDefinition[];enemies?:EnemyDefinition[];switches?:SwitchDefinition[];gates?:GateDefinition[];zones?:WindZoneDefinition[];discoveryBlocks?:DiscoveryBlockDefinition[];
+ waterBasins?:WaterBasinDefinition[];lightPuzzles?:LightPuzzleDefinition[];hazards?:HazardDefinition[];enemies?:EnemyDefinition[];switches?:SwitchDefinition[];gates?:GateDefinition[];zones?:WindZoneDefinition[];discoveryBlocks?:DiscoveryBlockDefinition[];
  camera?:CameraDefinition;physics?:Partial<LevelDefinition['physics']>;
 };
 
@@ -53,6 +53,7 @@ export function authorLevel(spec:LevelSpec):LevelDefinition{
   checkpoints:spec.checkpoints.map(([platformId,offset],i)=>({id:`${prefix}-checkpoint-${String(i+1).padStart(2,'0')}`,platformId,offset})),
   discovery:{id:`${prefix}-discovery`,platformId:spec.discovery[0],offset:spec.discovery[1],factId:`${prefix}-discovery`},
   finish:{platformId:spec.finish[0],offset:spec.finish[1]},hazards:spec.hazards||[],
+  ...(spec.waterBasins?{waterBasins:spec.waterBasins}:{}),...(spec.lightPuzzles?{lightPuzzles:spec.lightPuzzles}:{}),
   ...(spec.enemies?{enemies:spec.enemies}:{}),...(spec.switches?{switches:spec.switches}:{}),...(spec.gates?{gates:spec.gates}:{}),...(spec.zones?{zones:spec.zones}:{}),...(spec.discoveryBlocks?{discoveryBlocks:spec.discoveryBlocks}:{}),
   routeGraph:{nodes:spec.platforms.map(p=>({id:p.id,type:typeOf(p),platformId:p.id})),edges:spec.edges.map(([from,to,action,mandatory])=>({from,to,action,mandatory:mandatory??true}))},
   physics:{...explorerPhysics,...spec.physics},

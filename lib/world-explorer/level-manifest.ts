@@ -99,7 +99,18 @@ export function validateLevel(value:unknown):LevelDefinition{
  if(value.switches!==undefined){
   const gates=new Set(((value.gates as Record<string,unknown>[]|undefined)||[]).map(gate=>gate.id));
   if(!Array.isArray(value.switches)||value.switches.length>8)throw new Error('Invalid switches.');
-  for(const plate of value.switches){const checked=reference(plate);id(checked);const host=platforms.get(checked.platformId as string)!,raises=[...platforms.values()].some(p=>object(p.raise)&&p.raise.switchId===checked.id);if(host.motion!==null||host.collapse!==undefined||host.raise!==undefined||!Array.isArray(checked.gateIds)||(!checked.gateIds.length&&!raises)||checked.gateIds.some(gate=>!gates.has(gate)))throw new Error('Invalid pressure switch.');}
+  for(const plate of value.switches){const checked=reference(plate);id(checked);const host=platforms.get(checked.platformId as string)!,raises=[...platforms.values()].some(p=>object(p.raise)&&p.raise.switchId===checked.id);if(host.motion!==null||host.collapse!==undefined||host.raise!==undefined||!Array.isArray(checked.gateIds)||(!checked.gateIds.length&&!raises&&!(Array.isArray(value.lightPuzzles)&&value.lightPuzzles.some(p=>object(p)&&p.platformId===checked.platformId)))||checked.gateIds.some(gate=>!gates.has(gate)))throw new Error('Invalid pressure switch.');}
+ }
+ if(value.waterBasins!==undefined){
+  if(!Array.isArray(value.waterBasins)||value.waterBasins.length>4)throw new Error('Invalid water basins.');
+  for(const basin of value.waterBasins){if(!object(basin))throw new Error('Invalid water basin.');id(basin);const host=platforms.get(String(basin.platformId));if(!host||!object(host.raise)||!finite(basin.x,-100,2000)||!finite(basin.width,1,40)||!finite(basin.z,-20,0)||!finite(basin.depth,2,15)||!finite(basin.lowSurface,-15,29)||!finite(basin.highSurface,-14,30)||Number(basin.highSurface)<=Number(basin.lowSurface)||Math.abs(Number(basin.highSurface)-Number(basin.lowSurface)-Number(host.raise.drop))>1e-6||Number(host.y)<=Number(basin.highSurface)||Number(host.x)<Number(basin.x)||Number(host.x)+Number(host.width)>Number(basin.x)+Number(basin.width))throw new Error('Invalid water transition.');}
+ }
+ if(value.lightPuzzles!==undefined){
+  if(!Array.isArray(value.lightPuzzles)||value.lightPuzzles.length>4)throw new Error('Invalid light puzzles.');
+  const gates=new Set(((value.gates as Record<string,unknown>[]|undefined)||[]).map(g=>g.id));
+  for(const puzzle of value.lightPuzzles){const p=reference(puzzle,true,4);id(p);const emitter=p.emitter,receiver=p.receiver,host=platforms.get(String(p.platformId));if(!gates.has(p.gateId)||host?.motion!==null||!object(emitter)||!finite(emitter.x,-100,2000)||!finite(emitter.y,-15,40)||!object(receiver)||!finite(receiver.x,-100,2000)||!finite(receiver.y,-15,40)||!finite(receiver.radius,.1,1)||!Array.isArray(p.normals)||p.normals.length<2||p.normals.length>8||!p.normals.every(n=>Array.isArray(n)&&n.length===2&&n.every(v=>finite(v,-1,1))&&Math.hypot(...n as [number,number])>.1)||!Number.isInteger(p.initialIndex)||!finite(p.initialIndex,0,p.normals.length-1)||!finite(p.chargeSeconds,.1,3)||!finite(p.range,1,40)||Math.hypot(Number(p.offset)+Number(host?.x)-Number(emitter.x),Number(host?.y)+Number(p.height)-Number(emitter.y))<.1)throw new Error('Invalid light puzzle.');
+   if(p.occluders!==undefined&&(!Array.isArray(p.occluders)||p.occluders.length>12||!p.occluders.every(b=>object(b)&&finite(b.x,-100,2000)&&finite(b.y,-15,40)&&finite(b.width,.1,30)&&finite(b.height,.1,30))))throw new Error('Invalid beam occluders.');
+  }
  }
  // Every switch-raised platform names a switch that exists.
  const switchIds=new Set(((value.switches as Record<string,unknown>[]|undefined)||[]).map(plate=>plate.id));
