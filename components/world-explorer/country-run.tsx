@@ -4,6 +4,7 @@ import {ArrowLeft,ArrowRight,ArrowUp,BookOpen,Check,Compass,Flag,Heart,Pause,Pla
 import type {Country} from '../../lib/world-explorer/catalog';
 import {discoveryFor} from '../../lib/world-explorer-discoveries';
 import {countryProfile} from '../../lib/world-explorer/profiles';
+import {guideDestination} from '../../lib/world-explorer/guide-destination';
 import {isAuthoredLevel,levelAvailability,levelDefinitionFor} from '../../lib/world-explorer/level-manifest';
 import type {CountryRunResult,CountryStats,Difficulty,ExplorerRunPreferences} from '../../lib/world-explorer/game-types';
 import type {ExplorerPreferences} from '../../lib/world-explorer/preferences';
@@ -128,6 +129,7 @@ const destinationIcons:Record<string,JSX.Element>={
 function DestinationIcon({environment}:{environment:string}){return <svg viewBox="0 0 36 44" aria-hidden="true">{destinationIcons[environment]||destinationIcons['japan-mountain-spring']}</svg>;}
 
 function Discovery({country,compact=false}:{country:Country;compact?:boolean}){
- const fact=discoveryFor(country.code),profile=countryProfile(country.code);
- return <div className={styles.discovery}><h3>{fact?.title||profile?.landmarkName}</h3><p>{fact?.text||country.description}</p>{!compact&&<><dl className={styles.discoveryFacts}>{country.capital.length>0&&<div><dt>Capital / seat</dt><dd>{country.capital.join(' · ')}</dd></div>}<div><dt>Place</dt><dd>{profile?.landmarkName}</dd></div><div><dt>Landscape</dt><dd>{profile?.features.join(' · ')}</dd></div>{country.languages.length>0&&<div><dt>Languages</dt><dd>{country.languages.slice(0,3).join(' · ')}</dd></div>}</dl><LandmarkPhoto code={country.code}/></>}<a href={fact?.sourceUrl||profile?.sourceUrl} target="_blank" rel="noreferrer">Explore the source <ArrowRight size={12}/></a></div>;
+ // Place, landscape and photo describe the playable level's destination.
+ const fact=discoveryFor(country.code),profile=countryProfile(country.code),destination=guideDestination(country.code);
+ return <div className={styles.discovery}><h3>{fact?.title||profile?.landmarkName}</h3><p>{fact?.text||country.description}</p>{!compact&&<><dl className={styles.discoveryFacts}>{country.capital.length>0&&<div><dt>Capital / seat</dt><dd>{country.capital.join(' · ')}</dd></div>}<div><dt>Place</dt><dd>{destination?.place}</dd></div><div><dt>Landscape</dt><dd>{destination?.landscape.join(' · ')}</dd></div>{country.languages.length>0&&<div><dt>Languages</dt><dd>{country.languages.slice(0,3).join(' · ')}</dd></div>}</dl><LandmarkPhoto code={country.code}/></>}<a href={fact?.sourceUrl||profile?.sourceUrl} target="_blank" rel="noreferrer">Explore the source <ArrowRight size={12}/></a></div>;
 }

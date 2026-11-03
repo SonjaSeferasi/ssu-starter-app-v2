@@ -1,5 +1,5 @@
 import {countryByCode} from './catalog';
-import {countryProfile} from './profiles';
+import {guideDestination} from './guide-destination';
 
 export type LandmarkImage={title:string;url:string;pageUrl:string;author:string;license:string;licenseUrl:string;retrievedAt:string};
 type CacheEntry={value:LandmarkImage|null;until:number};
@@ -15,14 +15,16 @@ function metadata(record:unknown,key:string){if(!object(record)||!object(record[
  * explicit supported licence and retain author + source alongside the image. */
 export function commonsImage(payload:unknown,subject:string):LandmarkImage|null{
  if(!object(payload)||!object(payload.query)||!Array.isArray(payload.query.pages))return null;
- const words=subject.toLowerCase().replace(/[^a-z0-9 ]/g,' ').split(/\s+/).filter(w=>w.length>3&&!['with','from','city','historic','national','complex','heritage'].includes(w));
+ // Accents are folded on both sides, so "Galápagos" matches "Galapagos".
+ const fold=(text:string)=>text.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+ const words=fold(subject).replace(/[^a-z0-9 ]/g,' ').split(/\s+/).filter(w=>w.length>3&&!['with','from','city','historic','national','complex','heritage'].includes(w));
  if(!words.length)return null;
  for(const page of payload.query.pages){
   if(!object(page)||typeof page.title!=='string'||!Array.isArray(page.imageinfo)||!object(page.imageinfo[0]))continue;
   const info=page.imageinfo[0],title=plain(page.title.replace(/^File:/,''));
-  if(/\b(aircraft|grumman|hawkeyes?|helicopters?|fighter|airliner|fly past|locator|screenshot|logo|postage stamp)\b/i.test(title))continue;
+  if(/\b(aircraft|grumman|hawkeyes?|helicopters?|fighter|airliner|fly past|locator|screenshot|logo|postage stamp|spherical panorama)\b/i.test(title))continue;
   // Do not substitute a random travel image when the named place cannot be found.
-  const hits=words.filter(word=>title.toLowerCase().includes(word)).length;
+  const hits=words.filter(word=>fold(title).includes(word)).length;
   if(hits<Math.min(2,words.length))continue;
   if(!['image/jpeg','image/png','image/webp'].includes(String(info.mime)))continue;
   const author=metadata(info.extmetadata,'Artist'),license=metadata(info.extmetadata,'LicenseShortName');
@@ -38,16 +40,17 @@ export function commonsImage(payload:unknown,subject:string):LandmarkImage|null{
 /** Only catalogue country codes can start a request; no user URLs or arbitrary
  * search strings are accepted. Optional media never blocks the modeled level. */
 export async function landmarkImage(code:string):Promise<LandmarkImage|null>{
- const country=countryByCode(code),profile=country?countryProfile(country.code):undefined;
- if(!country||!profile)return null;
+ // A playable level's own destination when it has one, else the country profile.
+ const country=countryByCode(code),destination=country?guideDestination(country.code):undefined;
+ if(!country||!destination)return null;
  const key=country.code,hit=cache.get(key);if(hit&&hit.until>Date.now())return hit.value;
  const active=pending.get(key);if(active)return active;
  const request=(async()=>{
   let value:LandmarkImage|null=null;
   try{
-   const params=new URLSearchParams({action:'query',format:'json',formatversion:'2',generator:'search',gsrnamespace:'6',gsrlimit:'4',gsrsearch:`${profile.mediaSearch} filetype:bitmap`,prop:'imageinfo',iiprop:'url|mime|extmetadata',iiurlwidth:'640',maxlag:'5'});
+   const params=new URLSearchParams({action:'query',format:'json',formatversion:'2',generator:'search',gsrnamespace:'6',gsrlimit:'4',gsrsearch:`${destination.mediaSearch} filetype:bitmap`,prop:'imageinfo',iiprop:'url|mime|extmetadata',iiurlwidth:'640',maxlag:'5'});
    const response=await fetch('https://commons.wikimedia.org/w/api.php?'+params,{headers:{Accept:'application/json','User-Agent':'SocialUWorldExplorer/1.0 (https://github.com/SonjaSeferasi/ssu-starter-app-v2; educational landmark previews)'},signal:AbortSignal.timeout(5000),cache:'no-store'});
-   if(response.ok)value=commonsImage(await response.json(),profile.landmarkName);
+   if(response.ok)value=commonsImage(await response.json(),destination.photoSubject);
   }catch{/* A sourced text card and all 3D geometry remain usable. */}
   cache.set(key,{value,until:Date.now()+(value?24*HOUR:HOUR)});return value;
  })();pending.set(key,request);
