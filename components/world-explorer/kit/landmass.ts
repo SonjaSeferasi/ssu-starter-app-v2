@@ -87,7 +87,9 @@ function sculptedBodyGeometry(definition:PlatformDefinition,palette:LandmassPale
  for(let j=0;j<=rings;j++){
   const t=j/rings;
   for(let i=0;i<=segments;i++){
-   const u=i/segments,p=point(u%1),a=u*Math.PI*2,lip=smooth(0,.18,t);
+   // The angle wraps with the outline, so the ring's closing vertex matches its
+   // first exactly; otherwise the non-periodic noise opens a seam in the body.
+   const u=i/segments,p=point(u%1),a=(u%1)*Math.PI*2,lip=smooth(0,.18,t);
    // Erosion: bulging strata bands and fissures, strongest mid-depth.
    const fracture=(Math.sin(t*19+Math.sin(a*3+phase)*.9)*.05+Math.sin(a*9+Math.floor(t*5)*1.7+phase)*.06+(fbm(a*1.3,t*3,seed,3)-.5)*.22)*Math.sin(t*Math.PI)*lip;
    let x=p.x,z=p.z,y=top(Math.max(-w/2,Math.min(w/2,p.x)))-capDepth;

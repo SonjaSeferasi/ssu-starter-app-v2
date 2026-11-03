@@ -131,7 +131,7 @@ export const environment:CountryEnvironment={
   }
   if(style==='awning'){
    // A striped café awning stretched over a flower cart: the canvas is the pad.
-   const details=dressLandmass(root,definition,cobbles,{low,kind:'ground'});
+   const details=dressLandmass(root,definition,cobbles,{low,kind:'ground',profile:'mass',visualDepth:Math.max(1,definition.y+.75+1.2)});
    built(details,'cafe-awning',b=>{for(let i=0;i<6;i++)b.add(new T.BoxGeometry(w/6+.01,.08,3),i%2?'#f4efe4':'#2f6f9f',[-w/2+(i+.5)*w/6,-.04,0]);for(const x of [-w/2+.1,w/2-.1])for(const z of [-1.3,1.3])b.add(new T.CylinderGeometry(.04,.04,.9,6),'#3e4650',[x,-.5,z]);b.add(new T.BoxGeometry(w,.5,.9),'#7a5a3e',[0,-.6,-1.9]);for(let i=0;i<6;i++)b.add(new T.SphereGeometry(.13,8,6),['#e85a7a','#f5c242','#f4efe4'][i%3],[-.7+i*.28,-.28,-1.9]);},2,.7);
    return;
   }
@@ -139,6 +139,8 @@ export const environment:CountryEnvironment={
    const details=dressLandmass(root,definition,roofDeck,{low,kind:'block'});
    // The house below the roof: shuttered windows and a door on the street face.
    if(definition.thickness>4)built(details,'house-front',(b,rr)=>{const d=Math.max(2,definition.depth)/2+.02,floors=Math.floor((definition.y+.6)/1.4);for(let f=0;f<floors;f++)for(let x=-w/2+.8;x<w/2-.5;x+=1.3){b.add(new T.BoxGeometry(.4,.55,.04),'#3b3029',[x,-.75-f*1.4,d]);for(const s of [-1,1])b.add(new T.BoxGeometry(.17,.57,.05),rr()<.5?'#3d6b4f':'#2f5f8a',[x+s*.3,-.75-f*1.4,d+.01]);}b.add(new T.BoxGeometry(.7,1.2,.05),'#5b3f2c',[w*.15,-definition.y-.2,d]);b.add(new T.BoxGeometry(w,.12,.1),'#d8cbb4',[0,-.08,d+.03]);},definition.id.length);
+   // The house stands on a fieldstone seawall where the river laps it.
+   if(definition.thickness>4)built(details,'seawall-plinth',(b,rr)=>{const d=Math.max(2,definition.depth)/2,water=-.75-definition.y;b.add(new T.BoxGeometry(w+.5,1.6,.5),'#8f8676',[0,water+.3,d+.12],[0,0,0],[1,1,1],.08);for(let x=-w/2;x<w/2;x+=.55+rr()*.3)b.add(new T.BoxGeometry(.04,1.5,.03),'#6f675a',[x,water+.3,d+.38]);b.add(new T.BoxGeometry(w+.5,.25,.52),'#4f6a3a',[0,water-.35,d+.13]);b.add(new T.BoxGeometry(w+.6,.12,.6),'#b8ad98',[0,water+1.12,d+.12]);},definition.id.length*3);
    // A flat azotea with a tiled parapet behind, and the house wall below.
    built(details,'roof-parapet-and-tiles',b=>{b.add(new T.BoxGeometry(w,.35,.25),'#efe4d0',[0,.17,-1.5]);for(let i=0;i<Math.ceil(w/.3);i++){const g=new T.CylinderGeometry(.08,.08,.9,6,1,false,0,Math.PI);g.rotateX(Math.PI/2);b.add(g,i%2?'#a6532f':'#93492a',[-w/2+.15+i*.3,.4,-1.95],[0,0,0],[1,1,1],.1);}
     if(style==='chimney-roof')b.add(new T.BoxGeometry(.5,1.1,.5),'#d8cbb4',[w*.25,.55,-1.2]);
@@ -147,7 +149,8 @@ export const environment:CountryEnvironment={
    return;
   }
   const palette=style==='convent'||definition.terrain==='arch'?ruin:style==='rambla'||style==='lighthouse-quay'||style==='quay'?promenade:cobbles;
-  const details=dressLandmass(root,definition,palette,{low,kind:definition.terrain==='arch'?'cliff':'ground'});
+  // Seawalls, plazas and ruins reach just below the river line, not out of view.
+  const details=dressLandmass(root,definition,palette,{low,kind:definition.terrain==='arch'?'cliff':'ground',profile:'mass',visualDepth:Math.max(1,Math.min(definition.thickness,definition.y+(definition.slope||0)*.5+.75+1.2))});
   if(definition.terrain==='arch')built(details,'ruin-wall-arch',b=>{const g=arcadeBay(w,1.6,.6,{opening:.45,spring:.5});b.add(g,'#a99c82',[0,0,-1.4]);},5);
   if(w>=6){
    // Street furniture behind the lane: iron lamp posts and benches.

@@ -64,3 +64,5 @@ From an eight-timing sweep (0–6.3 s) of all twelve countries at runtime diffic
 - **Argentina (difficulty 2).** `ar-coin-20` needs a step back (see above).
 
 None of these stop a level from being finished, and each passes the acceptance test. They are tracked in `SOUTH-AMERICA.md` for Stage B.
+
+**Since then.** Guyana and Ecuador were fixed in Batch B (`timing-sweep-batch-b.json`, 0 damage in 360 runs). Suriname was reproduced and traced in Batch C (`timing-sweep-batch-c.json`): 2 of 72 runs on `sr-market`, a bot timing miss, and the mechanics are unchanged. Ecuador's start-up hitch was profiled (`ecu-hitch-profile-production.json`, `ecu-hitch-profile-dev-surges-delayed.json`); the findings are in [../followup-production/README.md](../followup-production/README.md).

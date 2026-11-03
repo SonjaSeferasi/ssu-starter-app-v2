@@ -19,12 +19,13 @@ export type SouthAmericaEntry={
  locationName:string;featuredLandmark:{name:string;assetId:string;descriptionId:string};previewImage:string;
  /** Art-polish pass: Stage A (Bolivia, Brazil, Venezuela) proves the new
   * visual standard; after a second, focused refinement it awaits acceptance
-  * (human review and real-device play) before the other nine are redone. */
- visualQuality:'stage-a-refined-awaiting-acceptance'|'prototype-art';
+  * (human review and real-device play). Batches B and C then polished the
+  * other nine; every country still awaits human and device review. */
+ visualQuality:'stage-a-refined-awaiting-acceptance'|'batch-b-polished-awaiting-review'|'batch-c-polished-awaiting-review'|'prototype-art';
 };
 
 type Brief=Omit<SouthAmericaEntry,'levelBuilt'|'locationName'|'featuredLandmark'|'previewImage'|'visualQuality'>;
-const stageA=new Set(['BOL','BRA','VEN']);
+const stageA=new Set(['BOL','BRA','VEN']),batchB=new Set(['ARG','CHL','COL','ECU','GUY']),batchC=new Set(['PRY','PER','SUR','URY']);
 const cardMetadata:Record<string,[string,string,string]>={BRA:["Central Amazon, Amazonas","Amazon canopy, river and waterfall","emergent-kapok-trees"],BOL:["Salar de Uyuni, Potosí","Salar de Uyuni and Isla Incahuasi","salt-mirror-horizon"],URY:["Barrio Histórico, Colonia del Sacramento","Colonia lighthouse and Historic Quarter","colonia-lighthouse"],PER:["Inca Trail to Machu Picchu, Cusco Region","Historic Sanctuary of Machu Picchu","machu-picchu-citadel"],ARG:["Los Glaciares National Park, Santa Cruz","Perito Moreno Glacier","perito-moreno-glacier-front"],CHL:["El Tatio geyser field, Antofagasta Region","El Tatio geyser field","el-tatio-geyser-field"],COL:["Cocora Valley, Quindío","Quindío wax palms","quindio-wax-palms"],ECU:["Galápagos Islands","Galápagos lava coast","galapagos-lava-shore"],GUY:["Kaieteur National Park","Kaieteur Falls","kaieteur-falls"],PRY:["Trinidad, Itapúa","Jesuit Mission of La Santísima Trinidad de Paraná","trinidad-mission-ruins"],SUR:["Historic Inner City of Paramaribo","Paramaribo timber city and Fort Zeelandia","paramaribo-wooden-buildings"],VEN:["Canaima National Park, Bolívar","Angel Falls (Kerepakupai Merú) on Auyán-tepui","angel-falls"]};
 const briefs:Brief[]=[
  {code:'BRA',iso2:'BR',name:'Brazil',batch:'A',tier:3,title:'Amazon Canopy Run',setting:'Central Amazon várzea forest on a river channel',archetype:'canopy-river-traversal',signature:'vine-swings',brief:'Bromeliad launch into the canopy, two vine swings, drifting rafts over the river, root stairs and a waterfall lookout.',landmarks:['emergent-kapok-trees','amazon-river-channel','animated-waterfall'],status:'TESTING',humanReview:'pending'},
@@ -41,7 +42,7 @@ const briefs:Brief[]=[
  {code:'VEN',iso2:'VE',name:'Venezuela',batch:'C',tier:5,title:'Angel Falls: The Auyán-tepui Descent',setting:'Auyán-tepui and Angel Falls, Canaima National Park',archetype:'tepui-cliff-descent',signature:'descent-with-climb-backs',brief:'Advanced descent from a tepui summit beside Angel Falls: long precise drops, crumbling sandstone, summit gusts and climbable faces between ledges.',landmarks:['angel-falls','auyan-tepui-plateau','canaima-rainforest'],status:'TESTING',humanReview:'pending'},
 ];
 
-export const southAmerica:SouthAmericaEntry[]=briefs.map(entry=>{const [locationName,name,assetId]=cardMetadata[entry.code];return{...entry,levelBuilt:!!authoredLevels[entry.code],locationName,featuredLandmark:{name,assetId,descriptionId:`${entry.iso2.toLowerCase()}-discovery`},previewImage:`/world-explorer/previews/${entry.iso2.toLowerCase()}.jpg`,visualQuality:stageA.has(entry.code)?'stage-a-refined-awaiting-acceptance':'prototype-art'};});
+export const southAmerica:SouthAmericaEntry[]=briefs.map(entry=>{const [locationName,name,assetId]=cardMetadata[entry.code];return{...entry,levelBuilt:!!authoredLevels[entry.code],locationName,featuredLandmark:{name,assetId,descriptionId:`${entry.iso2.toLowerCase()}-discovery`},previewImage:`/world-explorer/previews/${entry.iso2.toLowerCase()}.jpg`,visualQuality:stageA.has(entry.code)?'stage-a-refined-awaiting-acceptance':batchB.has(entry.code)?'batch-b-polished-awaiting-review':batchC.has(entry.code)?'batch-c-polished-awaiting-review':'prototype-art'};});
 export const southAmericaEntry=(code:string)=>southAmerica.find(entry=>entry.code===code.toUpperCase());
 /** Counts for the dashboard and the final report. */
 export function southAmericaSummary(){

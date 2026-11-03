@@ -1,6 +1,8 @@
 import {authorLevel,platform,spread} from '../author';
 
 const crust={collapse:{delay:1,respawn:3}};
+// Surge 2 starts 4.2 past the pahoehoe drop, so a running drop can stop
+// before the warned wave instead of sliding into its edge.
 const surge=(id:string,x:number,width:number,y:number,phase:number)=>({id,x,y,width,height:1.6,style:'wave',cycle:{period:7,warning:2,active:1.6,phase}});
 /** Ecuador — Galápagos: Lava Coast. Tier 3 (Challenger).
  * A shoreline read by the sea: warned wave surges sweep the low tide shelves,
@@ -32,7 +34,7 @@ export const level=authorLevel({
  spawn:['ec-beach',4],finish:['ec-overlook',9],discovery:['ec-overlook',5],checkpoints:[['ec-lava-cliff',1.5],['ec-lava-tube',1.2]],
  hazards:[
   {id:'ec-sea-west',x:18,y:-2.2,width:13.8,height:.9,style:'sea'},{id:'ec-sea-east',x:51.8,y:-2.2,width:14,height:.9,style:'sea'},
-  surge('ec-surge-1',12.6,3,0,0),surge('ec-surge-2',41.4,2.6,-.4,0),surge('ec-surge-3',46.4,2.6,-.4,3.5),
+  surge('ec-surge-1',12.6,3,0,0),surge('ec-surge-2',42,2,-.4,0),surge('ec-surge-3',46.4,2.6,-.4,3.5),
  ],
  enemies:[{id:'ec-lava-crab',platformId:'ec-lava-tube',minOffset:3.6,maxOffset:6,speed:1.1,turnPause:.4,height:.75}],
  discoveryBlocks:[{id:'ec-discovery-block',x:3,y:3.05,width:.75,height:.8,factId:'ec-discovery'}],

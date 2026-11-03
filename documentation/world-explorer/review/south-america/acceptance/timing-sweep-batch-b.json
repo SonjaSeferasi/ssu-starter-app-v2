@@ -1,0 +1,3427 @@
+{
+ "ARG": {
+  "difficulty": 2,
+  "waits": [
+   0,
+   0.38,
+   0.75,
+   1.13,
+   1.5,
+   1.88,
+   2.25,
+   2.63,
+   3,
+   3.38,
+   3.75,
+   4.13,
+   4.5,
+   4.88,
+   5.25,
+   5.63,
+   6,
+   6.38,
+   6.75,
+   7.13,
+   7.5,
+   7.88,
+   8.25,
+   8.63
+  ],
+  "runs": 72,
+  "damaged": 0,
+  "failed": 0,
+  "cleanCoins": "27/27",
+  "cleanStars": "3/3",
+  "missingCoins": [],
+  "detail": [
+   {
+    "wait": 0,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 0,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 25,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 0,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 0.38,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 0.38,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 25,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 0.38,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 0.75,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 0.75,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 25,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 0.75,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 1.13,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 1.13,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 25,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 1.13,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 1.5,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 1.5,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 25,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 1.5,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 1.88,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 1.88,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 25,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 1.88,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 2.25,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 2.25,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 25,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 2.25,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 2.63,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 2.63,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 25,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 2.63,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 3,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 3,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 25,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 3,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 3.38,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 3.38,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 25,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 3.38,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 3.75,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 3.75,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 25,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 3.75,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 4.13,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 4.13,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 25,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 4.13,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 4.5,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 4.5,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 25,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 4.5,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 4.88,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 4.88,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 25,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 4.88,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 5.25,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 5.25,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 25,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 5.25,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 5.63,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 5.63,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 25,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 5.63,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 6,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 6,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 25,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 6,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 6.38,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 6.38,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 6.38,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 6.75,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 6.75,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 6.75,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 26,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 7.13,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 7.13,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 7.13,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 24,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 7.5,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 7.5,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 7.5,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 24,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 7.88,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 7.88,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 7.88,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 24,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 8.25,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 8.25,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 8.25,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 24,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 8.63,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 8.63,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 8.63,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 24,
+    "stars": 3,
+    "hits": []
+   }
+  ]
+ },
+ "CHL": {
+  "difficulty": 3,
+  "waits": [
+   0,
+   0.38,
+   0.75,
+   1.13,
+   1.5,
+   1.88,
+   2.25,
+   2.63,
+   3,
+   3.38,
+   3.75,
+   4.13,
+   4.5,
+   4.88,
+   5.25,
+   5.63,
+   6,
+   6.38,
+   6.75,
+   7.13,
+   7.5,
+   7.88,
+   8.25,
+   8.63
+  ],
+  "runs": 72,
+  "damaged": 0,
+  "failed": 0,
+  "cleanCoins": "24/24",
+  "cleanStars": "3/3",
+  "missingCoins": [],
+  "detail": [
+   {
+    "wait": 0,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 0,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 0,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 0.38,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 0.38,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 0.38,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 0.75,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 0.75,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 0.75,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 1.13,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 1.13,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 1.13,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 1.5,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 1.5,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 1.5,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 1.88,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 1.88,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 1.88,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 2.25,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 2.25,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 2.25,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 2.63,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 2.63,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 2.63,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 3,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 3,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 3,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 3.38,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 3.38,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 3.38,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 3.75,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 3.75,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 3.75,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 4.13,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 4.13,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 4.13,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 4.5,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 4.5,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 4.5,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 4.88,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 4.88,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 4.88,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 5.25,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 5.25,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 5.25,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 5.63,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 5.63,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 5.63,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 6,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 6,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 6,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 6.38,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 6.38,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 6.38,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 6.75,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 6.75,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 6.75,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 7.13,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 7.13,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 7.13,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 7.5,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 7.5,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 7.5,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 7.88,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 7.88,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 7.88,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 8.25,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 8.25,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 8.25,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 8.63,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 8.63,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 8.63,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   }
+  ]
+ },
+ "COL": {
+  "difficulty": 3,
+  "waits": [
+   0,
+   0.38,
+   0.75,
+   1.13,
+   1.5,
+   1.88,
+   2.25,
+   2.63,
+   3,
+   3.38,
+   3.75,
+   4.13,
+   4.5,
+   4.88,
+   5.25,
+   5.63,
+   6,
+   6.38,
+   6.75,
+   7.13,
+   7.5,
+   7.88,
+   8.25,
+   8.63
+  ],
+  "runs": 72,
+  "damaged": 0,
+  "failed": 0,
+  "cleanCoins": "21/21",
+  "cleanStars": "3/3",
+  "missingCoins": [],
+  "detail": [
+   {
+    "wait": 0,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 0,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 0,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 0.38,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 0.38,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 0.38,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 0.75,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 15,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 0.75,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 0.75,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 1.13,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 1.13,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 1.13,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 1.5,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 1.5,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 1.5,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 1.88,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 1.88,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 1.88,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 2.25,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 2.25,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 2.25,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 2.63,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 2.63,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 2.63,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 3,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 3,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 3,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 3.38,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 3.38,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 3.38,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 3.75,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 3.75,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 3.75,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 4.13,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 4.13,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 4.13,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 4.5,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 4.5,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 4.5,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 4.88,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 4.88,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 4.88,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 5.25,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 5.25,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 5.25,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 5.63,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 5.63,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 5.63,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 6,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 6,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 6,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 6.38,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 6.38,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 6.38,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 6.75,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 6.75,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 6.75,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 7.13,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 7.13,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 7.13,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 7.5,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 7.5,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 7.5,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 7.88,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 7.88,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 7.88,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 8.25,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 8.25,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 8.25,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 8.63,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 8.63,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 8.63,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   }
+  ]
+ },
+ "ECU": {
+  "difficulty": 2,
+  "waits": [
+   0,
+   0.38,
+   0.75,
+   1.13,
+   1.5,
+   1.88,
+   2.25,
+   2.63,
+   3,
+   3.38,
+   3.75,
+   4.13,
+   4.5,
+   4.88,
+   5.25,
+   5.63,
+   6,
+   6.38,
+   6.75,
+   7.13,
+   7.5,
+   7.88,
+   8.25,
+   8.63
+  ],
+  "runs": 72,
+  "damaged": 0,
+  "failed": 0,
+  "cleanCoins": "19/19",
+  "cleanStars": "3/3",
+  "missingCoins": [],
+  "detail": [
+   {
+    "wait": 0,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 15,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 0,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 0,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 0.38,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 15,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 0.38,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 0.38,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 0.75,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 15,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 0.75,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 0.75,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 1.13,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 15,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 1.13,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 1.13,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 1.5,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 15,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 1.5,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 1.5,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 1.88,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 15,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 1.88,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 1.88,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 2.25,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 14,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 2.25,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 2.25,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 2.63,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 15,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 2.63,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 2.63,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 3,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 15,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 3,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 3,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 3.38,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 15,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 3.38,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 3.38,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 3.75,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 15,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 3.75,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 3.75,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 4.13,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 15,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 4.13,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 4.13,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 4.5,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 15,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 4.5,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 4.5,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 4.88,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 15,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 4.88,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 4.88,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 5.25,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 15,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 5.25,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 5.25,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 5.63,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 14,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 5.63,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 5.63,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 6,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 15,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 6,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 6,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 6.38,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 15,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 6.38,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 6.38,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 6.75,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 14,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 6.75,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 6.75,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 7.13,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 14,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 7.13,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 7.13,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 7.5,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 14,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 7.5,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 7.5,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 7.88,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 14,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 7.88,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 7.88,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 8.25,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 14,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 8.25,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 8.25,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 8.63,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 14,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 8.63,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 2,
+    "hits": []
+   },
+   {
+    "wait": 8.63,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 19,
+    "stars": 3,
+    "hits": []
+   }
+  ]
+ },
+ "GUY": {
+  "difficulty": 1,
+  "waits": [
+   0,
+   0.38,
+   0.75,
+   1.13,
+   1.5,
+   1.88,
+   2.25,
+   2.63,
+   3,
+   3.38,
+   3.75,
+   4.13,
+   4.5,
+   4.88,
+   5.25,
+   5.63,
+   6,
+   6.38,
+   6.75,
+   7.13,
+   7.5,
+   7.88,
+   8.25,
+   8.63
+  ],
+  "runs": 72,
+  "damaged": 0,
+  "failed": 0,
+  "cleanCoins": "25/25",
+  "cleanStars": "3/3",
+  "missingCoins": [],
+  "detail": [
+   {
+    "wait": 0,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 0,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 0,
+    "hits": []
+   },
+   {
+    "wait": 0,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 0.38,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 0.38,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 0.38,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 20,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 0.75,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 0.75,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 0.75,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 1.13,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 1.13,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 1.13,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 1.5,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 1.5,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 1.5,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 1.88,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 1.88,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 1.88,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 2.25,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 2.25,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 2.25,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 2.63,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 2.63,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 2.63,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 3,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 3,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 3,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 3.38,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 3.38,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 3.38,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 3.75,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 3.75,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 3.75,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 4.13,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 4.13,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 4.13,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 4.5,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 4.5,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 4.5,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 4.88,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 4.88,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 0,
+    "hits": []
+   },
+   {
+    "wait": 4.88,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 5.25,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 0,
+    "hits": []
+   },
+   {
+    "wait": 5.25,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 5.25,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 5.63,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 5.63,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 5.63,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 6,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 6,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 6,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 6.38,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 16,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 6.38,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 6.38,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 6.75,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 6.75,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 6.75,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 7.13,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 7.13,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 7.13,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 7.5,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 7.5,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 23,
+    "stars": 0,
+    "hits": []
+   },
+   {
+    "wait": 7.5,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 7.88,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 17,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 7.88,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 7.88,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 8.25,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 8.25,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 8.25,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 3,
+    "hits": []
+   },
+   {
+    "wait": 8.63,
+    "strategy": "critical",
+    "status": "completed",
+    "damage": 0,
+    "coins": 18,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 8.63,
+    "strategy": "main",
+    "status": "completed",
+    "damage": 0,
+    "coins": 22,
+    "stars": 1,
+    "hits": []
+   },
+   {
+    "wait": 8.63,
+    "strategy": "bonus",
+    "status": "completed",
+    "damage": 0,
+    "coins": 21,
+    "stars": 3,
+    "hits": []
+   }
+  ]
+ }
+}

@@ -4,11 +4,11 @@
  "BOL": {"b": {"x": 40, "label": "salt blocks in the first brine channel"}, "c": {"position": [118, 3.5, 15], "target": [136, 4, -16], "label": "Isla Incahuasi"}},
  "URY": {"b": {"x": 68, "label": "tiled rooftops"}, "c": {"position": [117, 3, 13], "target": [130, 6, -6], "label": "Colonia lighthouse"}},
  "PER": {"b": {"x": 45, "label": "frayed rope bridge"}, "c": {"position": [117, 10, 17], "target": [138, 6, -30], "label": "citadel and Huayna Picchu"}},
- "ARG": {"b": {"x": 77, "label": "glacier front with calving seracs"}, "c": {"position": [58, 4, 17], "target": [80, 8, -40], "label": "Perito Moreno glacier"}},
+ "ARG": {"b": {"x": 77, "label": "glacier front with calving seracs"}, "c": {"position": [60, 5, 18], "target": [82, 9, -30], "fov": 50, "label": "Perito Moreno glacier front"}},
  "CHL": {"b": {"x": 70, "label": "El Tatio geysers"}, "c": {"position": [64, 3, 14], "target": [78, 4, -20], "label": "El Tatio geyser field and volcanoes"}},
  "COL": {"b": {"x": 28, "label": "climbable moss face"}, "c": {"position": [40, 10, 15], "target": [48, 14, -20], "label": "Quindío wax palms"}},
  "ECU": {"b": {"x": 44, "label": "wave surges over the tide shelf"}, "c": {"position": [60, 4, 15], "target": [70, 8, -110], "label": "lava coast and volcanic cones"}},
- "GUY": {"b": {"x": 18, "label": "river-current shelves"}, "c": {"position": [37, 2, 15], "target": [50, -8, -14], "label": "Kaieteur Falls"}},
+ "GUY": {"b": {"x": 18, "label": "river-current shelves"}, "c": {"position": [84, 6, 14], "target": [72, -14, -50], "fov": 50, "label": "Kaieteur Falls from the gorge lookout"}},
  "PRY": {"b": {"x": 20, "label": "crumbling earth banks"}, "c": {"position": [92, 4, 13], "target": [104, 3, -5], "label": "Trinidad mission ruins"}},
  "SUR": {"b": {"x": 62, "label": "riverboat crossing"}, "c": {"position": [40, 3, 13], "target": [51, 2, -5], "label": "Fort Zeelandia"}},
  "VEN": {"b": {"x": 56, "label": "climbable escarpment face"}, "c": {"position": [80, 8, 17], "target": [98, 4, -18], "label": "Angel Falls"}}

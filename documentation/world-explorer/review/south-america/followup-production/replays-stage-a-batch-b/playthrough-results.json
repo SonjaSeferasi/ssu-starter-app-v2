@@ -1,0 +1,4179 @@
+{
+ "base": "http://localhost:3100",
+ "startedAt": "2026-11-02T22:09:39.087Z",
+ "browser": "Edg/156.0.4314.50",
+ "countries": {
+  "BOL": {
+   "complete-bonus": {
+    "kind": "complete-bonus",
+    "seconds": 28.4,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 31,
+      "expected": 31
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 31,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "raise": 9,
+       "switch": 3
+      },
+      "expected": {
+       "coin": 31,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "raise": 9,
+       "switch": 3
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "bo-coin-01",
+       "bo-coin-02",
+       "bo-coin-03",
+       "bo-coin-04",
+       "bo-coin-05",
+       "bo-coin-06",
+       "bo-coin-07",
+       "bo-coin-08",
+       "bo-coin-09",
+       "bo-coin-12",
+       "bo-coin-13",
+       "bo-coin-14",
+       "bo-coin-15",
+       "bo-coin-16",
+       "bo-coin-17",
+       "bo-coin-18",
+       "bo-coin-19",
+       "bo-coin-20",
+       "bo-coin-21",
+       "bo-coin-22",
+       "bo-coin-23",
+       "bo-coin-24",
+       "bo-coin-25",
+       "bo-coin-26",
+       "bo-coin-27",
+       "bo-coin-28",
+       "bo-coin-29",
+       "bo-coin-30",
+       "bo-coin-31",
+       "bo-coin-32",
+       "bo-coin-33"
+      ],
+      "expected": [
+       "bo-coin-01",
+       "bo-coin-02",
+       "bo-coin-03",
+       "bo-coin-04",
+       "bo-coin-05",
+       "bo-coin-06",
+       "bo-coin-07",
+       "bo-coin-08",
+       "bo-coin-09",
+       "bo-coin-12",
+       "bo-coin-13",
+       "bo-coin-14",
+       "bo-coin-15",
+       "bo-coin-16",
+       "bo-coin-17",
+       "bo-coin-18",
+       "bo-coin-19",
+       "bo-coin-20",
+       "bo-coin-21",
+       "bo-coin-22",
+       "bo-coin-23",
+       "bo-coin-24",
+       "bo-coin-25",
+       "bo-coin-26",
+       "bo-coin-27",
+       "bo-coin-28",
+       "bo-coin-29",
+       "bo-coin-30",
+       "bo-coin-31",
+       "bo-coin-32",
+       "bo-coin-33"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "bo-star-01",
+       "bo-star-02",
+       "bo-star-03"
+      ],
+      "expected": [
+       "bo-star-01",
+       "bo-star-02",
+       "bo-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/bol-complete-bonus-raise-5.jpg",
+     "screens/bol-complete-bonus-checkpoint-1.jpg",
+     "screens/bol-complete-bonus-checkpoint-2.jpg",
+     "screens/bol-complete-bonus-discovery.jpg",
+     "screens/bol-complete-bonus-result.jpg"
+    ],
+    "readyMs": 8882,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Bolivia explored!",
+     "31 / 33 coins",
+     "0:28",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "The largest salt flat on Earth",
+     "Salar de Uyuni in Bolivia is the largest salt flat in the world. It lies about 3,650 metres above sea level, high in the Andes, and covers roughly 9,500 to 10,000 square kilometres of white salt crust."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 31,
+     "stars": 3,
+     "discoveryFound": true,
+     "x": 141.43,
+     "standing": "bo-summit",
+     "elapsed": 28.4,
+     "replayed": "1704/1704"
+    },
+    "ok": true
+   },
+   "hazard": {
+    "kind": "hazard",
+    "seconds": 14.7,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "playing",
+      "expected": "playing"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 2,
+      "expected": 2
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 15,
+      "expected": 15
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 15,
+       "star": 2,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1,
+       "raise": 7,
+       "switch": 2
+      },
+      "expected": {
+       "coin": 15,
+       "star": 2,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1,
+       "raise": 7,
+       "switch": 2
+      }
+     },
+     {
+      "check": "respawned on the checkpoint platform",
+      "ok": true,
+      "actual": "bo-flat-3",
+      "expected": "bo-flat-3"
+     },
+     {
+      "check": "respawned at the checkpoint position",
+      "ok": true,
+      "actual": 51.4,
+      "expected": 51.4
+     }
+    ],
+    "screens": [
+     "screens/bol-hazard-raise-5.jpg",
+     "screens/bol-hazard-checkpoint-1.jpg",
+     "screens/bol-hazard-damage-1.jpg",
+     "screens/bol-hazard-respawn-1.jpg",
+     "screens/bol-hazard-after-respawn.jpg"
+    ],
+    "readyMs": 11776,
+    "final": {
+     "status": "playing",
+     "hearts": 2,
+     "coins": 15,
+     "stars": 2,
+     "discoveryFound": false,
+     "x": 51.4,
+     "standing": "bo-flat-3",
+     "elapsed": 15.58,
+     "replayed": "880/880"
+    },
+    "ok": true
+   },
+   "complete-main": {
+    "kind": "complete-main",
+    "seconds": 33.4,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 33,
+      "expected": 33
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 33,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "raise": 9,
+       "switch": 3
+      },
+      "expected": {
+       "coin": 33,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "raise": 9,
+       "switch": 3
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "bo-coin-01",
+       "bo-coin-02",
+       "bo-coin-03",
+       "bo-coin-04",
+       "bo-coin-05",
+       "bo-coin-06",
+       "bo-coin-07",
+       "bo-coin-08",
+       "bo-coin-09",
+       "bo-coin-10",
+       "bo-coin-11",
+       "bo-coin-12",
+       "bo-coin-13",
+       "bo-coin-14",
+       "bo-coin-15",
+       "bo-coin-16",
+       "bo-coin-17",
+       "bo-coin-18",
+       "bo-coin-19",
+       "bo-coin-20",
+       "bo-coin-21",
+       "bo-coin-22",
+       "bo-coin-23",
+       "bo-coin-24",
+       "bo-coin-25",
+       "bo-coin-26",
+       "bo-coin-27",
+       "bo-coin-28",
+       "bo-coin-29",
+       "bo-coin-30",
+       "bo-coin-31",
+       "bo-coin-32",
+       "bo-coin-33"
+      ],
+      "expected": [
+       "bo-coin-01",
+       "bo-coin-02",
+       "bo-coin-03",
+       "bo-coin-04",
+       "bo-coin-05",
+       "bo-coin-06",
+       "bo-coin-07",
+       "bo-coin-08",
+       "bo-coin-09",
+       "bo-coin-10",
+       "bo-coin-11",
+       "bo-coin-12",
+       "bo-coin-13",
+       "bo-coin-14",
+       "bo-coin-15",
+       "bo-coin-16",
+       "bo-coin-17",
+       "bo-coin-18",
+       "bo-coin-19",
+       "bo-coin-20",
+       "bo-coin-21",
+       "bo-coin-22",
+       "bo-coin-23",
+       "bo-coin-24",
+       "bo-coin-25",
+       "bo-coin-26",
+       "bo-coin-27",
+       "bo-coin-28",
+       "bo-coin-29",
+       "bo-coin-30",
+       "bo-coin-31",
+       "bo-coin-32",
+       "bo-coin-33"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "bo-star-01",
+       "bo-star-02",
+       "bo-star-03"
+      ],
+      "expected": [
+       "bo-star-01",
+       "bo-star-02",
+       "bo-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/bol-complete-main-raise-5.jpg",
+     "screens/bol-complete-main-checkpoint-1.jpg",
+     "screens/bol-complete-main-checkpoint-2.jpg",
+     "screens/bol-complete-main-discovery.jpg",
+     "screens/bol-complete-main-result.jpg"
+    ],
+    "readyMs": 4110,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Bolivia explored!",
+     "33 / 33 coins",
+     "0:33",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "The largest salt flat on Earth",
+     "Salar de Uyuni in Bolivia is the largest salt flat in the world. It lies about 3,650 metres above sea level, high in the Andes, and covers roughly 9,500 to 10,000 square kilometres of white salt crust."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 33,
+     "stars": 3,
+     "discoveryFound": true,
+     "x": 141.42,
+     "standing": "bo-summit",
+     "elapsed": 33.4,
+     "replayed": "2004/2004"
+    },
+    "ok": true
+   },
+   "keyboard": {
+    "checks": [
+     {
+      "check": "ArrowRight moves the player right",
+      "ok": true,
+      "actual": 5.4
+     },
+     {
+      "check": "Space makes the player jump",
+      "ok": true,
+      "actual": 1.94
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/bol-keyboard.jpg"
+    ]
+   },
+   "touch": {
+    "checks": [
+     {
+      "check": "touch buttons are shown in a touch viewport",
+      "ok": true
+     },
+     {
+      "check": "holding the right button moves the player",
+      "ok": true,
+      "actual": 4.83
+     },
+     {
+      "check": "the jump button makes the player jump",
+      "ok": true,
+      "actual": 1.94
+     }
+    ],
+    "attempts": [
+     {
+      "attempt": 1,
+      "buttons": true,
+      "pointerEventsReachedPage": 2,
+      "status": "playing",
+      "moved": 4.83,
+      "jumped": 1.94
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/bol-touch-viewport.jpg"
+    ],
+    "note": "Chromium touch emulation on a laptop; not a real phone."
+   }
+  },
+  "BRA": {
+   "complete-bonus": {
+    "kind": "complete-bonus",
+    "seconds": 25.6,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 22,
+      "expected": 22
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 22,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "bounce": 1
+      },
+      "expected": {
+       "coin": 22,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "bounce": 1
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "br-coin-01",
+       "br-coin-02",
+       "br-coin-03",
+       "br-coin-06",
+       "br-coin-07",
+       "br-coin-08",
+       "br-coin-09",
+       "br-coin-10",
+       "br-coin-11",
+       "br-coin-12",
+       "br-coin-13",
+       "br-coin-19",
+       "br-coin-20",
+       "br-coin-21",
+       "br-coin-22",
+       "br-coin-23",
+       "br-coin-24",
+       "br-coin-25",
+       "br-coin-26",
+       "br-coin-27",
+       "br-coin-28",
+       "br-coin-29"
+      ],
+      "expected": [
+       "br-coin-01",
+       "br-coin-02",
+       "br-coin-03",
+       "br-coin-06",
+       "br-coin-07",
+       "br-coin-08",
+       "br-coin-09",
+       "br-coin-10",
+       "br-coin-11",
+       "br-coin-12",
+       "br-coin-13",
+       "br-coin-19",
+       "br-coin-20",
+       "br-coin-21",
+       "br-coin-22",
+       "br-coin-23",
+       "br-coin-24",
+       "br-coin-25",
+       "br-coin-26",
+       "br-coin-27",
+       "br-coin-28",
+       "br-coin-29"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "br-star-01",
+       "br-star-02",
+       "br-star-03"
+      ],
+      "expected": [
+       "br-star-01",
+       "br-star-02",
+       "br-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/bra-complete-bonus-bounce-1.jpg",
+     "screens/bra-complete-bonus-checkpoint-1.jpg",
+     "screens/bra-complete-bonus-checkpoint-2.jpg",
+     "screens/bra-complete-bonus-discovery.jpg",
+     "screens/bra-complete-bonus-result.jpg"
+    ],
+    "readyMs": 3353,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Brazil explored!",
+     "22 / 29 coins",
+     "0:25",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "One of the richest places for life",
+     "The Central Amazon Conservation Complex is the largest protected area in the Amazon Basin and one of the planet's richest regions for biodiversity. Its flooded forests, lakes and channels hold the largest array of electric fish in the world."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 22,
+     "stars": 3,
+     "discoveryFound": true,
+     "x": 116.33,
+     "standing": "br-lookout",
+     "elapsed": 25.65,
+     "replayed": "1539/1539"
+    },
+    "ok": true
+   },
+   "hazard": {
+    "kind": "hazard",
+    "seconds": 17.5,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "playing",
+      "expected": "playing"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 2,
+      "expected": 2
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 14,
+      "expected": 14
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 14,
+       "star": 1,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1,
+       "bounce": 1
+      },
+      "expected": {
+       "coin": 14,
+       "star": 1,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1,
+       "bounce": 1
+      }
+     },
+     {
+      "check": "respawned on the checkpoint platform",
+      "ok": true,
+      "actual": "br-canopy-3",
+      "expected": "br-canopy-3"
+     },
+     {
+      "check": "respawned at the checkpoint position",
+      "ok": true,
+      "actual": 51,
+      "expected": 51
+     }
+    ],
+    "screens": [
+     "screens/bra-hazard-bounce-1.jpg",
+     "screens/bra-hazard-checkpoint-1.jpg",
+     "screens/bra-hazard-damage-1.jpg",
+     "screens/bra-hazard-respawn-1.jpg",
+     "screens/bra-hazard-after-respawn.jpg"
+    ],
+    "readyMs": 7599,
+    "final": {
+     "status": "playing",
+     "hearts": 2,
+     "coins": 14,
+     "stars": 1,
+     "discoveryFound": false,
+     "x": 51,
+     "standing": "br-canopy-3",
+     "elapsed": 18.35,
+     "replayed": "1050/1050"
+    },
+    "ok": true
+   },
+   "complete-main": {
+    "kind": "complete-main",
+    "seconds": 30.7,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 2,
+      "expected": 2
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 25,
+      "expected": 25
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 25,
+       "star": 1,
+       "checkpoint": 2,
+       "damage": 1,
+       "respawn": 1,
+       "discovery": 1,
+       "finish": 1,
+       "bounce": 1
+      },
+      "expected": {
+       "coin": 25,
+       "star": 1,
+       "checkpoint": 2,
+       "damage": 1,
+       "respawn": 1,
+       "discovery": 1,
+       "finish": 1,
+       "bounce": 1
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 1,
+      "expected": 1
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "br-coin-01",
+       "br-coin-02",
+       "br-coin-03",
+       "br-coin-04",
+       "br-coin-05",
+       "br-coin-06",
+       "br-coin-07",
+       "br-coin-08",
+       "br-coin-09",
+       "br-coin-10",
+       "br-coin-11",
+       "br-coin-12",
+       "br-coin-13",
+       "br-coin-14",
+       "br-coin-15",
+       "br-coin-16",
+       "br-coin-17",
+       "br-coin-18",
+       "br-coin-19",
+       "br-coin-20",
+       "br-coin-21",
+       "br-coin-22",
+       "br-coin-23",
+       "br-coin-24",
+       "br-coin-25"
+      ],
+      "expected": [
+       "br-coin-01",
+       "br-coin-02",
+       "br-coin-03",
+       "br-coin-04",
+       "br-coin-05",
+       "br-coin-06",
+       "br-coin-07",
+       "br-coin-08",
+       "br-coin-09",
+       "br-coin-10",
+       "br-coin-11",
+       "br-coin-12",
+       "br-coin-13",
+       "br-coin-14",
+       "br-coin-15",
+       "br-coin-16",
+       "br-coin-17",
+       "br-coin-18",
+       "br-coin-19",
+       "br-coin-20",
+       "br-coin-21",
+       "br-coin-22",
+       "br-coin-23",
+       "br-coin-24",
+       "br-coin-25"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "br-star-02"
+      ],
+      "expected": [
+       "br-star-02"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/bra-complete-main-bounce-1.jpg",
+     "screens/bra-complete-main-checkpoint-1.jpg",
+     "screens/bra-complete-main-checkpoint-2.jpg",
+     "screens/bra-complete-main-damage-1.jpg",
+     "screens/bra-complete-main-respawn-1.jpg",
+     "screens/bra-complete-main-discovery.jpg",
+     "screens/bra-complete-main-result.jpg"
+    ],
+    "readyMs": 1962,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Brazil explored!",
+     "25 / 29 coins",
+     "0:30",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "One of the richest places for life",
+     "The Central Amazon Conservation Complex is the largest protected area in the Amazon Basin and one of the planet's richest regions for biodiversity. Its flooded forests, lakes and channels hold the largest array of electric fish in the world."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 2,
+     "coins": 25,
+     "stars": 1,
+     "discoveryFound": true,
+     "x": 116.33,
+     "standing": "br-lookout",
+     "elapsed": 30.67,
+     "replayed": "1840/1840"
+    },
+    "ok": true
+   },
+   "keyboard": {
+    "checks": [
+     {
+      "check": "ArrowRight moves the player right",
+      "ok": true,
+      "actual": 5.5
+     },
+     {
+      "check": "Space makes the player jump",
+      "ok": true,
+      "actual": 1.95
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/bra-keyboard.jpg"
+    ]
+   },
+   "touch": {
+    "checks": [
+     {
+      "check": "touch buttons are shown in a touch viewport",
+      "ok": true
+     },
+     {
+      "check": "holding the right button moves the player",
+      "ok": true,
+      "actual": 4.73
+     },
+     {
+      "check": "the jump button makes the player jump",
+      "ok": true,
+      "actual": 1.95
+     }
+    ],
+    "attempts": [
+     {
+      "attempt": 1,
+      "buttons": true,
+      "pointerEventsReachedPage": 2,
+      "status": "playing",
+      "moved": 4.73,
+      "jumped": 1.95
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/bra-touch-viewport.jpg"
+    ],
+    "note": "Chromium touch emulation on a laptop; not a real phone."
+   }
+  },
+  "VEN": {
+   "complete-bonus": {
+    "kind": "complete-bonus",
+    "seconds": 31.5,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 21,
+      "expected": 21
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 21,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 3,
+       "climb": 2
+      },
+      "expected": {
+       "coin": 21,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 3,
+       "climb": 2
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "ve-coin-02",
+       "ve-coin-03",
+       "ve-coin-04",
+       "ve-coin-05",
+       "ve-coin-06",
+       "ve-coin-07",
+       "ve-coin-08",
+       "ve-coin-09",
+       "ve-coin-10",
+       "ve-coin-11",
+       "ve-coin-12",
+       "ve-coin-13",
+       "ve-coin-14",
+       "ve-coin-15",
+       "ve-coin-18",
+       "ve-coin-19",
+       "ve-coin-20",
+       "ve-coin-21",
+       "ve-coin-22",
+       "ve-coin-23",
+       "ve-coin-24"
+      ],
+      "expected": [
+       "ve-coin-02",
+       "ve-coin-03",
+       "ve-coin-04",
+       "ve-coin-05",
+       "ve-coin-06",
+       "ve-coin-07",
+       "ve-coin-08",
+       "ve-coin-09",
+       "ve-coin-10",
+       "ve-coin-11",
+       "ve-coin-12",
+       "ve-coin-13",
+       "ve-coin-14",
+       "ve-coin-15",
+       "ve-coin-18",
+       "ve-coin-19",
+       "ve-coin-20",
+       "ve-coin-21",
+       "ve-coin-22",
+       "ve-coin-23",
+       "ve-coin-24"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "ve-star-01",
+       "ve-star-02",
+       "ve-star-03"
+      ],
+      "expected": [
+       "ve-star-01",
+       "ve-star-02",
+       "ve-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/ven-complete-bonus-discovery.jpg",
+     "screens/ven-complete-bonus-collapse-1.jpg",
+     "screens/ven-complete-bonus-wind-1.jpg",
+     "screens/ven-complete-bonus-checkpoint-1.jpg",
+     "screens/ven-complete-bonus-climb-1.jpg",
+     "screens/ven-complete-bonus-checkpoint-2.jpg",
+     "screens/ven-complete-bonus-result.jpg"
+    ],
+    "readyMs": 2711,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Venezuela explored!",
+     "21 / 24 coins",
+     "0:31",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "The world's highest waterfall",
+     "Angel Falls drops about 979 metres from the edge of Auyán-tepui, a flat-topped mountain in Canaima National Park, making it the highest uninterrupted waterfall in the world. The park became a World Heritage site in 1994."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 21,
+     "stars": 3,
+     "discoveryFound": true,
+     "x": 128.69,
+     "standing": "ve-angel-falls-view",
+     "elapsed": 31.48,
+     "replayed": "1889/1889"
+    },
+    "ok": true
+   },
+   "hazard": {
+    "kind": "hazard",
+    "seconds": 12.7,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "playing",
+      "expected": "playing"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 2,
+      "expected": 2
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 6,
+      "expected": 6
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 6,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1,
+       "discovery": 1,
+       "collapse": 2
+      },
+      "expected": {
+       "coin": 6,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1,
+       "discovery": 1,
+       "collapse": 2
+      }
+     },
+     {
+      "check": "respawned on the checkpoint platform",
+      "ok": true,
+      "actual": "ve-terrace-1",
+      "expected": "ve-terrace-1"
+     },
+     {
+      "check": "respawned at the checkpoint position",
+      "ok": true,
+      "actual": 28.9,
+      "expected": 28.9
+     }
+    ],
+    "screens": [
+     "screens/ven-hazard-discovery.jpg",
+     "screens/ven-hazard-collapse-1.jpg",
+     "screens/ven-hazard-wind-1.jpg",
+     "screens/ven-hazard-checkpoint-1.jpg",
+     "screens/ven-hazard-damage-1.jpg",
+     "screens/ven-hazard-respawn-1.jpg",
+     "screens/ven-hazard-after-respawn.jpg"
+    ],
+    "readyMs": 1920,
+    "final": {
+     "status": "playing",
+     "hearts": 2,
+     "coins": 6,
+     "stars": 0,
+     "discoveryFound": true,
+     "x": 28.9,
+     "standing": "ve-terrace-1",
+     "elapsed": 13.65,
+     "replayed": "759/759"
+    },
+    "ok": true
+   },
+   "complete-main": {
+    "kind": "complete-main",
+    "seconds": 32.1,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 22,
+      "expected": 22
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 22,
+       "star": 2,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 3,
+       "climb": 2
+      },
+      "expected": {
+       "coin": 22,
+       "star": 2,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 3,
+       "climb": 2
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 2,
+      "expected": 2
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "ve-coin-02",
+       "ve-coin-03",
+       "ve-coin-04",
+       "ve-coin-05",
+       "ve-coin-06",
+       "ve-coin-07",
+       "ve-coin-08",
+       "ve-coin-09",
+       "ve-coin-10",
+       "ve-coin-11",
+       "ve-coin-12",
+       "ve-coin-13",
+       "ve-coin-14",
+       "ve-coin-15",
+       "ve-coin-16",
+       "ve-coin-17",
+       "ve-coin-18",
+       "ve-coin-19",
+       "ve-coin-20",
+       "ve-coin-21",
+       "ve-coin-22",
+       "ve-coin-23"
+      ],
+      "expected": [
+       "ve-coin-02",
+       "ve-coin-03",
+       "ve-coin-04",
+       "ve-coin-05",
+       "ve-coin-06",
+       "ve-coin-07",
+       "ve-coin-08",
+       "ve-coin-09",
+       "ve-coin-10",
+       "ve-coin-11",
+       "ve-coin-12",
+       "ve-coin-13",
+       "ve-coin-14",
+       "ve-coin-15",
+       "ve-coin-16",
+       "ve-coin-17",
+       "ve-coin-18",
+       "ve-coin-19",
+       "ve-coin-20",
+       "ve-coin-21",
+       "ve-coin-22",
+       "ve-coin-23"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "ve-star-02",
+       "ve-star-03"
+      ],
+      "expected": [
+       "ve-star-02",
+       "ve-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/ven-complete-main-discovery.jpg",
+     "screens/ven-complete-main-collapse-1.jpg",
+     "screens/ven-complete-main-wind-1.jpg",
+     "screens/ven-complete-main-checkpoint-1.jpg",
+     "screens/ven-complete-main-climb-1.jpg",
+     "screens/ven-complete-main-checkpoint-2.jpg",
+     "screens/ven-complete-main-result.jpg"
+    ],
+    "readyMs": 1907,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Venezuela explored!",
+     "22 / 24 coins",
+     "0:32",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "The world's highest waterfall",
+     "Angel Falls drops about 979 metres from the edge of Auyán-tepui, a flat-topped mountain in Canaima National Park, making it the highest uninterrupted waterfall in the world. The park became a World Heritage site in 1994."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 22,
+     "stars": 2,
+     "discoveryFound": true,
+     "x": 128.69,
+     "standing": "ve-angel-falls-view",
+     "elapsed": 32.13,
+     "replayed": "1928/1928"
+    },
+    "ok": true
+   },
+   "keyboard": {
+    "checks": [
+     {
+      "check": "ArrowRight moves the player right",
+      "ok": true,
+      "actual": 5.5
+     },
+     {
+      "check": "Space makes the player jump",
+      "ok": true,
+      "actual": 1.94
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/ven-keyboard.jpg"
+    ]
+   },
+   "touch": {
+    "checks": [
+     {
+      "check": "touch buttons are shown in a touch viewport",
+      "ok": true
+     },
+     {
+      "check": "holding the right button moves the player",
+      "ok": true,
+      "actual": 4.83
+     },
+     {
+      "check": "the jump button makes the player jump",
+      "ok": true,
+      "actual": 1.95
+     }
+    ],
+    "attempts": [
+     {
+      "attempt": 1,
+      "buttons": true,
+      "pointerEventsReachedPage": 2,
+      "status": "playing",
+      "moved": 4.83,
+      "jumped": 1.95
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/ven-touch-viewport.jpg"
+    ],
+    "note": "Chromium touch emulation on a laptop; not a real phone."
+   }
+  },
+  "ARG": {
+   "complete-bonus": {
+    "kind": "complete-bonus",
+    "seconds": 39.9,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 26,
+      "expected": 26
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 26,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1
+      },
+      "expected": {
+       "coin": 26,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "ar-coin-01",
+       "ar-coin-02",
+       "ar-coin-03",
+       "ar-coin-04",
+       "ar-coin-06",
+       "ar-coin-07",
+       "ar-coin-08",
+       "ar-coin-09",
+       "ar-coin-10",
+       "ar-coin-11",
+       "ar-coin-12",
+       "ar-coin-13",
+       "ar-coin-14",
+       "ar-coin-15",
+       "ar-coin-16",
+       "ar-coin-17",
+       "ar-coin-18",
+       "ar-coin-19",
+       "ar-coin-20",
+       "ar-coin-21",
+       "ar-coin-22",
+       "ar-coin-23",
+       "ar-coin-24",
+       "ar-coin-25",
+       "ar-coin-26",
+       "ar-coin-27"
+      ],
+      "expected": [
+       "ar-coin-01",
+       "ar-coin-02",
+       "ar-coin-03",
+       "ar-coin-04",
+       "ar-coin-06",
+       "ar-coin-07",
+       "ar-coin-08",
+       "ar-coin-09",
+       "ar-coin-10",
+       "ar-coin-11",
+       "ar-coin-12",
+       "ar-coin-13",
+       "ar-coin-14",
+       "ar-coin-15",
+       "ar-coin-16",
+       "ar-coin-17",
+       "ar-coin-18",
+       "ar-coin-19",
+       "ar-coin-20",
+       "ar-coin-21",
+       "ar-coin-22",
+       "ar-coin-23",
+       "ar-coin-24",
+       "ar-coin-25",
+       "ar-coin-26",
+       "ar-coin-27"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "ar-star-01",
+       "ar-star-02",
+       "ar-star-03"
+      ],
+      "expected": [
+       "ar-star-01",
+       "ar-star-02",
+       "ar-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/arg-complete-bonus-wind-1.jpg",
+     "screens/arg-complete-bonus-checkpoint-1.jpg",
+     "screens/arg-complete-bonus-checkpoint-2.jpg",
+     "screens/arg-complete-bonus-discovery.jpg",
+     "screens/arg-complete-bonus-result.jpg"
+    ],
+    "readyMs": 3134,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Argentina explored!",
+     "26 / 27 coins",
+     "0:39",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "A glacier you can hear calving",
+     "The Perito Moreno Glacier ends in Lago Argentino in a wall of ice about 5 kilometres wide, from which blocks of ice break off into the lake. It lies in Los Glaciares National Park, a World Heritage site since 1981."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 26,
+     "stars": 3,
+     "discoveryFound": true,
+     "x": 137.86,
+     "standing": "ar-fitz-roy-view",
+     "elapsed": 39.92,
+     "replayed": "2395/2395"
+    },
+    "ok": true
+   },
+   "hazard": {
+    "kind": "hazard",
+    "seconds": 10.7,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "playing",
+      "expected": "playing"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 2,
+      "expected": 2
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 8,
+      "expected": 8
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 8,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1
+      },
+      "expected": {
+       "coin": 8,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1
+      }
+     },
+     {
+      "check": "respawned on the checkpoint platform",
+      "ok": true,
+      "actual": "ar-shore",
+      "expected": "ar-shore"
+     },
+     {
+      "check": "respawned at the checkpoint position",
+      "ok": true,
+      "actual": 36.9,
+      "expected": 36.9
+     }
+    ],
+    "screens": [
+     "screens/arg-hazard-wind-1.jpg",
+     "screens/arg-hazard-checkpoint-1.jpg",
+     "screens/arg-hazard-damage-1.jpg",
+     "screens/arg-hazard-respawn-1.jpg",
+     "screens/arg-hazard-after-respawn.jpg"
+    ],
+    "readyMs": 1634,
+    "final": {
+     "status": "playing",
+     "hearts": 2,
+     "coins": 8,
+     "stars": 0,
+     "discoveryFound": false,
+     "x": 36.9,
+     "standing": "ar-shore",
+     "elapsed": 11.62,
+     "replayed": "639/639"
+    },
+    "ok": true
+   },
+   "complete-main": {
+    "kind": "complete-main",
+    "seconds": 43,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 25,
+      "expected": 25
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 25,
+       "star": 2,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1
+      },
+      "expected": {
+       "coin": 25,
+       "star": 2,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 2,
+      "expected": 2
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "ar-coin-01",
+       "ar-coin-02",
+       "ar-coin-03",
+       "ar-coin-04",
+       "ar-coin-05",
+       "ar-coin-06",
+       "ar-coin-07",
+       "ar-coin-08",
+       "ar-coin-09",
+       "ar-coin-10",
+       "ar-coin-11",
+       "ar-coin-12",
+       "ar-coin-13",
+       "ar-coin-14",
+       "ar-coin-15",
+       "ar-coin-16",
+       "ar-coin-17",
+       "ar-coin-18",
+       "ar-coin-19",
+       "ar-coin-20",
+       "ar-coin-21",
+       "ar-coin-22",
+       "ar-coin-23",
+       "ar-coin-24",
+       "ar-coin-25"
+      ],
+      "expected": [
+       "ar-coin-01",
+       "ar-coin-02",
+       "ar-coin-03",
+       "ar-coin-04",
+       "ar-coin-05",
+       "ar-coin-06",
+       "ar-coin-07",
+       "ar-coin-08",
+       "ar-coin-09",
+       "ar-coin-10",
+       "ar-coin-11",
+       "ar-coin-12",
+       "ar-coin-13",
+       "ar-coin-14",
+       "ar-coin-15",
+       "ar-coin-16",
+       "ar-coin-17",
+       "ar-coin-18",
+       "ar-coin-19",
+       "ar-coin-20",
+       "ar-coin-21",
+       "ar-coin-22",
+       "ar-coin-23",
+       "ar-coin-24",
+       "ar-coin-25"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "ar-star-02",
+       "ar-star-03"
+      ],
+      "expected": [
+       "ar-star-02",
+       "ar-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/arg-complete-main-wind-1.jpg",
+     "screens/arg-complete-main-checkpoint-1.jpg",
+     "screens/arg-complete-main-checkpoint-2.jpg",
+     "screens/arg-complete-main-discovery.jpg",
+     "screens/arg-complete-main-result.jpg"
+    ],
+    "readyMs": 1608,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Argentina explored!",
+     "25 / 27 coins",
+     "0:42",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "A glacier you can hear calving",
+     "The Perito Moreno Glacier ends in Lago Argentino in a wall of ice about 5 kilometres wide, from which blocks of ice break off into the lake. It lies in Los Glaciares National Park, a World Heritage site since 1981."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 25,
+     "stars": 2,
+     "discoveryFound": true,
+     "x": 137.9,
+     "standing": "ar-fitz-roy-view",
+     "elapsed": 42.98,
+     "replayed": "2579/2579"
+    },
+    "ok": true
+   },
+   "keyboard": {
+    "checks": [
+     {
+      "check": "ArrowRight moves the player right",
+      "ok": true,
+      "actual": 5.5
+     },
+     {
+      "check": "Space makes the player jump",
+      "ok": true,
+      "actual": 1.94
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/arg-keyboard.jpg"
+    ]
+   },
+   "touch": {
+    "checks": [
+     {
+      "check": "touch buttons are shown in a touch viewport",
+      "ok": true
+     },
+     {
+      "check": "holding the right button moves the player",
+      "ok": true,
+      "actual": 4.73
+     },
+     {
+      "check": "the jump button makes the player jump",
+      "ok": true,
+      "actual": 1.94
+     }
+    ],
+    "attempts": [
+     {
+      "attempt": 1,
+      "buttons": true,
+      "pointerEventsReachedPage": 2,
+      "status": "playing",
+      "moved": 4.73,
+      "jumped": 1.94
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/arg-touch-viewport.jpg"
+    ],
+    "note": "Chromium touch emulation on a laptop; not a real phone."
+   }
+  },
+  "CHL": {
+   "complete-bonus": {
+    "kind": "complete-bonus",
+    "seconds": 23,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 19,
+      "expected": 19
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 19,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 3
+      },
+      "expected": {
+       "coin": 19,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 3
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "cl-coin-01",
+       "cl-coin-02",
+       "cl-coin-03",
+       "cl-coin-04",
+       "cl-coin-05",
+       "cl-coin-06",
+       "cl-coin-07",
+       "cl-coin-08",
+       "cl-coin-09",
+       "cl-coin-11",
+       "cl-coin-12",
+       "cl-coin-13",
+       "cl-coin-17",
+       "cl-coin-18",
+       "cl-coin-20",
+       "cl-coin-21",
+       "cl-coin-22",
+       "cl-coin-23",
+       "cl-coin-24"
+      ],
+      "expected": [
+       "cl-coin-01",
+       "cl-coin-02",
+       "cl-coin-03",
+       "cl-coin-04",
+       "cl-coin-05",
+       "cl-coin-06",
+       "cl-coin-07",
+       "cl-coin-08",
+       "cl-coin-09",
+       "cl-coin-11",
+       "cl-coin-12",
+       "cl-coin-13",
+       "cl-coin-17",
+       "cl-coin-18",
+       "cl-coin-20",
+       "cl-coin-21",
+       "cl-coin-22",
+       "cl-coin-23",
+       "cl-coin-24"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "cl-star-01",
+       "cl-star-02",
+       "cl-star-03"
+      ],
+      "expected": [
+       "cl-star-01",
+       "cl-star-02",
+       "cl-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/chl-complete-bonus-collapse-1.jpg",
+     "screens/chl-complete-bonus-checkpoint-1.jpg",
+     "screens/chl-complete-bonus-checkpoint-2.jpg",
+     "screens/chl-complete-bonus-discovery.jpg",
+     "screens/chl-complete-bonus-result.jpg"
+    ],
+    "readyMs": 1454,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Chile explored!",
+     "19 / 24 coins",
+     "0:22",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "Geysers high in the Andes",
+     "El Tatio, in the Andes of northern Chile, is the largest geyser field in the Southern Hemisphere and lies more than 4,200 metres above sea level. Its geysers and hot springs steam most strongly in the cold early morning."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 19,
+     "stars": 3,
+     "discoveryFound": true,
+     "x": 110.42,
+     "standing": "cl-tatio-lookout",
+     "elapsed": 22.97,
+     "replayed": "1378/1378"
+    },
+    "ok": true
+   },
+   "hazard": {
+    "kind": "hazard",
+    "seconds": 10.9,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "playing",
+      "expected": "playing"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 2,
+      "expected": 2
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 7,
+      "expected": 7
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 7,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1,
+       "collapse": 2
+      },
+      "expected": {
+       "coin": 7,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1,
+       "collapse": 2
+      }
+     },
+     {
+      "check": "respawned on the checkpoint platform",
+      "ok": true,
+      "actual": "cl-sinter-mound",
+      "expected": "cl-sinter-mound"
+     },
+     {
+      "check": "respawned at the checkpoint position",
+      "ok": true,
+      "actual": 39,
+      "expected": 39
+     }
+    ],
+    "screens": [
+     "screens/chl-hazard-collapse-1.jpg",
+     "screens/chl-hazard-checkpoint-1.jpg",
+     "screens/chl-hazard-damage-1.jpg",
+     "screens/chl-hazard-respawn-1.jpg",
+     "screens/chl-hazard-after-respawn.jpg"
+    ],
+    "readyMs": 5164,
+    "final": {
+     "status": "playing",
+     "hearts": 2,
+     "coins": 7,
+     "stars": 0,
+     "discoveryFound": false,
+     "x": 39,
+     "standing": "cl-sinter-mound",
+     "elapsed": 11.92,
+     "replayed": "655/655"
+    },
+    "ok": true
+   },
+   "complete-main": {
+    "kind": "complete-main",
+    "seconds": 21.6,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 20,
+      "expected": 20
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 20,
+       "star": 1,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 3
+      },
+      "expected": {
+       "coin": 20,
+       "star": 1,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 3
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 1,
+      "expected": 1
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "cl-coin-01",
+       "cl-coin-02",
+       "cl-coin-03",
+       "cl-coin-04",
+       "cl-coin-05",
+       "cl-coin-06",
+       "cl-coin-07",
+       "cl-coin-08",
+       "cl-coin-09",
+       "cl-coin-11",
+       "cl-coin-12",
+       "cl-coin-13",
+       "cl-coin-14",
+       "cl-coin-15",
+       "cl-coin-16",
+       "cl-coin-17",
+       "cl-coin-18",
+       "cl-coin-19",
+       "cl-coin-20",
+       "cl-coin-21"
+      ],
+      "expected": [
+       "cl-coin-01",
+       "cl-coin-02",
+       "cl-coin-03",
+       "cl-coin-04",
+       "cl-coin-05",
+       "cl-coin-06",
+       "cl-coin-07",
+       "cl-coin-08",
+       "cl-coin-09",
+       "cl-coin-11",
+       "cl-coin-12",
+       "cl-coin-13",
+       "cl-coin-14",
+       "cl-coin-15",
+       "cl-coin-16",
+       "cl-coin-17",
+       "cl-coin-18",
+       "cl-coin-19",
+       "cl-coin-20",
+       "cl-coin-21"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "cl-star-03"
+      ],
+      "expected": [
+       "cl-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/chl-complete-main-collapse-1.jpg",
+     "screens/chl-complete-main-checkpoint-1.jpg",
+     "screens/chl-complete-main-checkpoint-2.jpg",
+     "screens/chl-complete-main-discovery.jpg",
+     "screens/chl-complete-main-result.jpg"
+    ],
+    "readyMs": 4779,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Chile explored!",
+     "20 / 24 coins",
+     "0:21",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "Geysers high in the Andes",
+     "El Tatio, in the Andes of northern Chile, is the largest geyser field in the Southern Hemisphere and lies more than 4,200 metres above sea level. Its geysers and hot springs steam most strongly in the cold early morning."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 20,
+     "stars": 1,
+     "discoveryFound": true,
+     "x": 110.5,
+     "standing": "cl-tatio-lookout",
+     "elapsed": 21.62,
+     "replayed": "1297/1297"
+    },
+    "ok": true
+   },
+   "keyboard": {
+    "checks": [
+     {
+      "check": "ArrowRight moves the player right",
+      "ok": true,
+      "actual": 5.5
+     },
+     {
+      "check": "Space makes the player jump",
+      "ok": true,
+      "actual": 1.94
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/chl-keyboard.jpg"
+    ]
+   },
+   "touch": {
+    "checks": [
+     {
+      "check": "touch buttons are shown in a touch viewport",
+      "ok": true
+     },
+     {
+      "check": "holding the right button moves the player",
+      "ok": true,
+      "actual": 4.83
+     },
+     {
+      "check": "the jump button makes the player jump",
+      "ok": true,
+      "actual": 1.95
+     }
+    ],
+    "attempts": [
+     {
+      "attempt": 1,
+      "buttons": true,
+      "pointerEventsReachedPage": 2,
+      "status": "playing",
+      "moved": 4.83,
+      "jumped": 1.95
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/chl-touch-viewport.jpg"
+    ],
+    "note": "Chromium touch emulation on a laptop; not a real phone."
+   }
+  },
+  "COL": {
+   "complete-bonus": {
+    "kind": "complete-bonus",
+    "seconds": 21.7,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 19,
+      "expected": 19
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 19,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 2,
+       "climb": 6
+      },
+      "expected": {
+       "coin": 19,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 2,
+       "climb": 6
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "co-coin-01",
+       "co-coin-02",
+       "co-coin-03",
+       "co-coin-04",
+       "co-coin-05",
+       "co-coin-06",
+       "co-coin-07",
+       "co-coin-08",
+       "co-coin-09",
+       "co-coin-10",
+       "co-coin-13",
+       "co-coin-14",
+       "co-coin-15",
+       "co-coin-16",
+       "co-coin-17",
+       "co-coin-18",
+       "co-coin-19",
+       "co-coin-20",
+       "co-coin-21"
+      ],
+      "expected": [
+       "co-coin-01",
+       "co-coin-02",
+       "co-coin-03",
+       "co-coin-04",
+       "co-coin-05",
+       "co-coin-06",
+       "co-coin-07",
+       "co-coin-08",
+       "co-coin-09",
+       "co-coin-10",
+       "co-coin-13",
+       "co-coin-14",
+       "co-coin-15",
+       "co-coin-16",
+       "co-coin-17",
+       "co-coin-18",
+       "co-coin-19",
+       "co-coin-20",
+       "co-coin-21"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "co-star-01",
+       "co-star-02",
+       "co-star-03"
+      ],
+      "expected": [
+       "co-star-01",
+       "co-star-02",
+       "co-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/col-complete-bonus-climb-1.jpg",
+     "screens/col-complete-bonus-collapse-1.jpg",
+     "screens/col-complete-bonus-checkpoint-1.jpg",
+     "screens/col-complete-bonus-checkpoint-2.jpg",
+     "screens/col-complete-bonus-discovery.jpg",
+     "screens/col-complete-bonus-result.jpg"
+    ],
+    "readyMs": 3110,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Colombia explored!",
+     "19 / 21 coins",
+     "0:21",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "The tallest palms on Earth",
+     "The Quindío wax palm is Colombia's national tree and the tallest palm in the world, usually growing to about 45 metres. A wax palm in Colombia measured 59.2 metres tall. The species is threatened and protected."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 19,
+     "stars": 3,
+     "discoveryFound": true,
+     "x": 89.62,
+     "standing": "co-summit",
+     "elapsed": 21.68,
+     "replayed": "1301/1301"
+    },
+    "ok": true
+   },
+   "hazard": {
+    "kind": "hazard",
+    "seconds": 11.1,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "playing",
+      "expected": "playing"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 2,
+      "expected": 2
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 9,
+      "expected": 9
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 9,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1,
+       "collapse": 1,
+       "climb": 2
+      },
+      "expected": {
+       "coin": 9,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1,
+       "collapse": 1,
+       "climb": 2
+      }
+     },
+     {
+      "check": "respawned on the checkpoint platform",
+      "ok": true,
+      "actual": "co-wall-2",
+      "expected": "co-wall-2"
+     },
+     {
+      "check": "respawned at the checkpoint position",
+      "ok": true,
+      "actual": 28.8,
+      "expected": 28.8
+     }
+    ],
+    "screens": [
+     "screens/col-hazard-climb-1.jpg",
+     "screens/col-hazard-collapse-1.jpg",
+     "screens/col-hazard-checkpoint-1.jpg",
+     "screens/col-hazard-damage-1.jpg",
+     "screens/col-hazard-respawn-1.jpg",
+     "screens/col-hazard-after-respawn.jpg"
+    ],
+    "readyMs": 1765,
+    "final": {
+     "status": "playing",
+     "hearts": 2,
+     "coins": 9,
+     "stars": 0,
+     "discoveryFound": false,
+     "x": 28.8,
+     "standing": "co-wall-2",
+     "elapsed": 11.92,
+     "replayed": "666/666"
+    },
+    "ok": true
+   },
+   "complete-main": {
+    "kind": "complete-main",
+    "seconds": 22.3,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 18,
+      "expected": 18
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 18,
+       "star": 2,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 2,
+       "climb": 4
+      },
+      "expected": {
+       "coin": 18,
+       "star": 2,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 2,
+       "climb": 4
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 2,
+      "expected": 2
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "co-coin-01",
+       "co-coin-02",
+       "co-coin-03",
+       "co-coin-04",
+       "co-coin-05",
+       "co-coin-06",
+       "co-coin-07",
+       "co-coin-08",
+       "co-coin-09",
+       "co-coin-10",
+       "co-coin-11",
+       "co-coin-12",
+       "co-coin-13",
+       "co-coin-14",
+       "co-coin-15",
+       "co-coin-16",
+       "co-coin-17",
+       "co-coin-18"
+      ],
+      "expected": [
+       "co-coin-01",
+       "co-coin-02",
+       "co-coin-03",
+       "co-coin-04",
+       "co-coin-05",
+       "co-coin-06",
+       "co-coin-07",
+       "co-coin-08",
+       "co-coin-09",
+       "co-coin-10",
+       "co-coin-11",
+       "co-coin-12",
+       "co-coin-13",
+       "co-coin-14",
+       "co-coin-15",
+       "co-coin-16",
+       "co-coin-17",
+       "co-coin-18"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "co-star-02",
+       "co-star-03"
+      ],
+      "expected": [
+       "co-star-02",
+       "co-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/col-complete-main-climb-1.jpg",
+     "screens/col-complete-main-collapse-1.jpg",
+     "screens/col-complete-main-checkpoint-1.jpg",
+     "screens/col-complete-main-checkpoint-2.jpg",
+     "screens/col-complete-main-discovery.jpg",
+     "screens/col-complete-main-result.jpg"
+    ],
+    "readyMs": 1715,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Colombia explored!",
+     "18 / 21 coins",
+     "0:22",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "The tallest palms on Earth",
+     "The Quindío wax palm is Colombia's national tree and the tallest palm in the world, usually growing to about 45 metres. A wax palm in Colombia measured 59.2 metres tall. The species is threatened and protected."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 18,
+     "stars": 2,
+     "discoveryFound": true,
+     "x": 89.62,
+     "standing": "co-summit",
+     "elapsed": 22.27,
+     "replayed": "1336/1336"
+    },
+    "ok": true
+   },
+   "keyboard": {
+    "checks": [
+     {
+      "check": "ArrowRight moves the player right",
+      "ok": true,
+      "actual": 5.5
+     },
+     {
+      "check": "Space makes the player jump",
+      "ok": true,
+      "actual": 1.94
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/col-keyboard.jpg"
+    ]
+   },
+   "touch": {
+    "checks": [
+     {
+      "check": "touch buttons are shown in a touch viewport",
+      "ok": true
+     },
+     {
+      "check": "holding the right button moves the player",
+      "ok": true,
+      "actual": 4.83
+     },
+     {
+      "check": "the jump button makes the player jump",
+      "ok": true,
+      "actual": 1.94
+     }
+    ],
+    "attempts": [
+     {
+      "attempt": 1,
+      "buttons": true,
+      "pointerEventsReachedPage": 2,
+      "status": "playing",
+      "moved": 4.83,
+      "jumped": 1.94
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/col-touch-viewport.jpg"
+    ],
+    "note": "Chromium touch emulation on a laptop; not a real phone."
+   }
+  },
+  "ECU": {
+   "complete-bonus": {
+    "kind": "complete-bonus",
+    "seconds": 19.1,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 19,
+      "expected": 19
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 19,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 2
+      },
+      "expected": {
+       "coin": 19,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 2
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "ec-coin-01",
+       "ec-coin-02",
+       "ec-coin-03",
+       "ec-coin-04",
+       "ec-coin-05",
+       "ec-coin-06",
+       "ec-coin-07",
+       "ec-coin-08",
+       "ec-coin-09",
+       "ec-coin-10",
+       "ec-coin-11",
+       "ec-coin-12",
+       "ec-coin-13",
+       "ec-coin-14",
+       "ec-coin-15",
+       "ec-coin-16",
+       "ec-coin-17",
+       "ec-coin-18",
+       "ec-coin-19"
+      ],
+      "expected": [
+       "ec-coin-01",
+       "ec-coin-02",
+       "ec-coin-03",
+       "ec-coin-04",
+       "ec-coin-05",
+       "ec-coin-06",
+       "ec-coin-07",
+       "ec-coin-08",
+       "ec-coin-09",
+       "ec-coin-10",
+       "ec-coin-11",
+       "ec-coin-12",
+       "ec-coin-13",
+       "ec-coin-14",
+       "ec-coin-15",
+       "ec-coin-16",
+       "ec-coin-17",
+       "ec-coin-18",
+       "ec-coin-19"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "ec-star-01",
+       "ec-star-02",
+       "ec-star-03"
+      ],
+      "expected": [
+       "ec-star-01",
+       "ec-star-02",
+       "ec-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/ecu-complete-bonus-collapse-1.jpg",
+     "screens/ecu-complete-bonus-checkpoint-1.jpg",
+     "screens/ecu-complete-bonus-checkpoint-2.jpg",
+     "screens/ecu-complete-bonus-discovery.jpg",
+     "screens/ecu-complete-bonus-result.jpg"
+    ],
+    "readyMs": 1654,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Ecuador explored!",
+     "19 / 19 coins",
+     "0:19",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "Islands that shaped a theory",
+     "The Galápagos Islands lie in the Pacific Ocean about 1,000 kilometres from the coast of Ecuador. Their unusual animals helped inspire Charles Darwin's theory of evolution, and in 1978 they were among the very first places named World Heritage sites."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 19,
+     "stars": 3,
+     "discoveryFound": true,
+     "x": 98.9,
+     "standing": "ec-overlook",
+     "elapsed": 19.1,
+     "replayed": "1146/1146"
+    },
+    "ok": true
+   },
+   "hazard": {
+    "kind": "hazard",
+    "seconds": 12.1,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "playing",
+      "expected": "playing"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 2,
+      "expected": 2
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 8,
+      "expected": 8
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 8,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1,
+       "collapse": 2
+      },
+      "expected": {
+       "coin": 8,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1,
+       "collapse": 2
+      }
+     },
+     {
+      "check": "respawned on the checkpoint platform",
+      "ok": true,
+      "actual": "ec-lava-cliff",
+      "expected": "ec-lava-cliff"
+     },
+     {
+      "check": "respawned at the checkpoint position",
+      "ok": true,
+      "actual": 33.3,
+      "expected": 33.3
+     }
+    ],
+    "screens": [
+     "screens/ecu-hazard-collapse-1.jpg",
+     "screens/ecu-hazard-checkpoint-1.jpg",
+     "screens/ecu-hazard-damage-1.jpg",
+     "screens/ecu-hazard-respawn-1.jpg",
+     "screens/ecu-hazard-after-respawn.jpg"
+    ],
+    "readyMs": 6264,
+    "final": {
+     "status": "playing",
+     "hearts": 2,
+     "coins": 8,
+     "stars": 0,
+     "discoveryFound": false,
+     "x": 33.3,
+     "standing": "ec-lava-cliff",
+     "elapsed": 13.05,
+     "replayed": "723/723"
+    },
+    "ok": true
+   },
+   "complete-main": {
+    "kind": "complete-main",
+    "seconds": 20.2,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 17,
+      "expected": 17
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 17,
+       "star": 2,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 2
+      },
+      "expected": {
+       "coin": 17,
+       "star": 2,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 2
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 2,
+      "expected": 2
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "ec-coin-01",
+       "ec-coin-02",
+       "ec-coin-03",
+       "ec-coin-04",
+       "ec-coin-05",
+       "ec-coin-06",
+       "ec-coin-07",
+       "ec-coin-08",
+       "ec-coin-09",
+       "ec-coin-10",
+       "ec-coin-11",
+       "ec-coin-12",
+       "ec-coin-13",
+       "ec-coin-14",
+       "ec-coin-15",
+       "ec-coin-16",
+       "ec-coin-17"
+      ],
+      "expected": [
+       "ec-coin-01",
+       "ec-coin-02",
+       "ec-coin-03",
+       "ec-coin-04",
+       "ec-coin-05",
+       "ec-coin-06",
+       "ec-coin-07",
+       "ec-coin-08",
+       "ec-coin-09",
+       "ec-coin-10",
+       "ec-coin-11",
+       "ec-coin-12",
+       "ec-coin-13",
+       "ec-coin-14",
+       "ec-coin-15",
+       "ec-coin-16",
+       "ec-coin-17"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "ec-star-02",
+       "ec-star-03"
+      ],
+      "expected": [
+       "ec-star-02",
+       "ec-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/ecu-complete-main-collapse-1.jpg",
+     "screens/ecu-complete-main-checkpoint-1.jpg",
+     "screens/ecu-complete-main-checkpoint-2.jpg",
+     "screens/ecu-complete-main-discovery.jpg",
+     "screens/ecu-complete-main-result.jpg"
+    ],
+    "readyMs": 3759,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Ecuador explored!",
+     "17 / 19 coins",
+     "0:20",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "Islands that shaped a theory",
+     "The Galápagos Islands lie in the Pacific Ocean about 1,000 kilometres from the coast of Ecuador. Their unusual animals helped inspire Charles Darwin's theory of evolution, and in 1978 they were among the very first places named World Heritage sites."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 17,
+     "stars": 2,
+     "discoveryFound": true,
+     "x": 98.85,
+     "standing": "ec-overlook",
+     "elapsed": 20.2,
+     "replayed": "1212/1212"
+    },
+    "ok": true
+   },
+   "keyboard": {
+    "checks": [
+     {
+      "check": "ArrowRight moves the player right",
+      "ok": true,
+      "actual": 5.4
+     },
+     {
+      "check": "Space makes the player jump",
+      "ok": true,
+      "actual": 1.94
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/ecu-keyboard.jpg"
+    ]
+   },
+   "touch": {
+    "checks": [
+     {
+      "check": "touch buttons are shown in a touch viewport",
+      "ok": true
+     },
+     {
+      "check": "holding the right button moves the player",
+      "ok": true,
+      "actual": 4.83
+     },
+     {
+      "check": "the jump button makes the player jump",
+      "ok": true,
+      "actual": 1.95
+     }
+    ],
+    "attempts": [
+     {
+      "attempt": 1,
+      "buttons": true,
+      "pointerEventsReachedPage": 2,
+      "status": "playing",
+      "moved": 4.83,
+      "jumped": 1.95
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/ecu-touch-viewport.jpg"
+    ],
+    "note": "Chromium touch emulation on a laptop; not a real phone."
+   }
+  },
+  "GUY": {
+   "complete-bonus": {
+    "kind": "complete-bonus",
+    "seconds": 20.4,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 21,
+      "expected": 21
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 21,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1
+      },
+      "expected": {
+       "coin": 21,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "gy-coin-01",
+       "gy-coin-02",
+       "gy-coin-03",
+       "gy-coin-04",
+       "gy-coin-05",
+       "gy-coin-06",
+       "gy-coin-07",
+       "gy-coin-08",
+       "gy-coin-10",
+       "gy-coin-11",
+       "gy-coin-12",
+       "gy-coin-13",
+       "gy-coin-16",
+       "gy-coin-17",
+       "gy-coin-18",
+       "gy-coin-19",
+       "gy-coin-21",
+       "gy-coin-22",
+       "gy-coin-23",
+       "gy-coin-24",
+       "gy-coin-25"
+      ],
+      "expected": [
+       "gy-coin-01",
+       "gy-coin-02",
+       "gy-coin-03",
+       "gy-coin-04",
+       "gy-coin-05",
+       "gy-coin-06",
+       "gy-coin-07",
+       "gy-coin-08",
+       "gy-coin-10",
+       "gy-coin-11",
+       "gy-coin-12",
+       "gy-coin-13",
+       "gy-coin-16",
+       "gy-coin-17",
+       "gy-coin-18",
+       "gy-coin-19",
+       "gy-coin-21",
+       "gy-coin-22",
+       "gy-coin-23",
+       "gy-coin-24",
+       "gy-coin-25"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "gy-star-01",
+       "gy-star-02",
+       "gy-star-03"
+      ],
+      "expected": [
+       "gy-star-01",
+       "gy-star-02",
+       "gy-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/guy-complete-bonus-wind-1.jpg",
+     "screens/guy-complete-bonus-checkpoint-1.jpg",
+     "screens/guy-complete-bonus-checkpoint-2.jpg",
+     "screens/guy-complete-bonus-discovery.jpg",
+     "screens/guy-complete-bonus-result.jpg"
+    ],
+    "readyMs": 2841,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Guyana explored!",
+     "21 / 25 coins",
+     "0:20",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "A single giant drop",
+     "At Kaieteur Falls the Potaro River plunges about 226 metres over a sandstone cliff in a single drop, into a gorge surrounded by rainforest in Kaieteur National Park."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 21,
+     "stars": 3,
+     "discoveryFound": true,
+     "x": 106.26,
+     "standing": "gy-kaieteur-view",
+     "elapsed": 20.38,
+     "replayed": "1223/1223"
+    },
+    "ok": true
+   },
+   "hazard": {
+    "kind": "hazard",
+    "seconds": 16.2,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "playing",
+      "expected": "playing"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 2,
+      "expected": 2
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 13,
+      "expected": 13
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 13,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1
+      },
+      "expected": {
+       "coin": 13,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1
+      }
+     },
+     {
+      "check": "respawned on the checkpoint platform",
+      "ok": true,
+      "actual": "gy-brink",
+      "expected": "gy-brink"
+     },
+     {
+      "check": "respawned at the checkpoint position",
+      "ok": true,
+      "actual": 42.1,
+      "expected": 42.1
+     }
+    ],
+    "screens": [
+     "screens/guy-hazard-wind-1.jpg",
+     "screens/guy-hazard-checkpoint-1.jpg",
+     "screens/guy-hazard-damage-1.jpg",
+     "screens/guy-hazard-respawn-1.jpg",
+     "screens/guy-hazard-after-respawn.jpg"
+    ],
+    "readyMs": 2030,
+    "final": {
+     "status": "playing",
+     "hearts": 2,
+     "coins": 13,
+     "stars": 0,
+     "discoveryFound": false,
+     "x": 42.1,
+     "standing": "gy-brink",
+     "elapsed": 17.12,
+     "replayed": "974/974"
+    },
+    "ok": true
+   },
+   "complete-main": {
+    "kind": "complete-main",
+    "seconds": 18.8,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 23,
+      "expected": 23
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 23,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1
+      },
+      "expected": {
+       "coin": 23,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 0,
+      "expected": 0
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "gy-coin-01",
+       "gy-coin-02",
+       "gy-coin-03",
+       "gy-coin-04",
+       "gy-coin-05",
+       "gy-coin-06",
+       "gy-coin-07",
+       "gy-coin-08",
+       "gy-coin-09",
+       "gy-coin-10",
+       "gy-coin-11",
+       "gy-coin-12",
+       "gy-coin-13",
+       "gy-coin-14",
+       "gy-coin-15",
+       "gy-coin-16",
+       "gy-coin-17",
+       "gy-coin-18",
+       "gy-coin-19",
+       "gy-coin-20",
+       "gy-coin-21",
+       "gy-coin-22",
+       "gy-coin-23"
+      ],
+      "expected": [
+       "gy-coin-01",
+       "gy-coin-02",
+       "gy-coin-03",
+       "gy-coin-04",
+       "gy-coin-05",
+       "gy-coin-06",
+       "gy-coin-07",
+       "gy-coin-08",
+       "gy-coin-09",
+       "gy-coin-10",
+       "gy-coin-11",
+       "gy-coin-12",
+       "gy-coin-13",
+       "gy-coin-14",
+       "gy-coin-15",
+       "gy-coin-16",
+       "gy-coin-17",
+       "gy-coin-18",
+       "gy-coin-19",
+       "gy-coin-20",
+       "gy-coin-21",
+       "gy-coin-22",
+       "gy-coin-23"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [],
+      "expected": []
+     }
+    ],
+    "screens": [
+     "screens/guy-complete-main-wind-1.jpg",
+     "screens/guy-complete-main-checkpoint-1.jpg",
+     "screens/guy-complete-main-checkpoint-2.jpg",
+     "screens/guy-complete-main-discovery.jpg",
+     "screens/guy-complete-main-result.jpg"
+    ],
+    "readyMs": 1739,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Guyana explored!",
+     "23 / 25 coins",
+     "0:18",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "A single giant drop",
+     "At Kaieteur Falls the Potaro River plunges about 226 metres over a sandstone cliff in a single drop, into a gorge surrounded by rainforest in Kaieteur National Park."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 23,
+     "stars": 0,
+     "discoveryFound": true,
+     "x": 106.24,
+     "standing": "gy-kaieteur-view",
+     "elapsed": 18.82,
+     "replayed": "1129/1129"
+    },
+    "ok": true
+   },
+   "keyboard": {
+    "checks": [
+     {
+      "check": "ArrowRight moves the player right",
+      "ok": true,
+      "actual": 5.5
+     },
+     {
+      "check": "Space makes the player jump",
+      "ok": true,
+      "actual": 1.94
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/guy-keyboard.jpg"
+    ]
+   },
+   "touch": {
+    "checks": [
+     {
+      "check": "touch buttons are shown in a touch viewport",
+      "ok": true
+     },
+     {
+      "check": "holding the right button moves the player",
+      "ok": true,
+      "actual": 4.83
+     },
+     {
+      "check": "the jump button makes the player jump",
+      "ok": true,
+      "actual": 1.95
+     }
+    ],
+    "attempts": [
+     {
+      "attempt": 1,
+      "buttons": true,
+      "pointerEventsReachedPage": 2,
+      "status": "playing",
+      "moved": 4.83,
+      "jumped": 1.95
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/guy-touch-viewport.jpg"
+    ],
+    "note": "Chromium touch emulation on a laptop; not a real phone."
+   }
+  }
+ },
+ "savedProgress": {
+  "version": 1,
+  "countries": {
+   "BOL": {
+    "completed": true,
+    "bestCoins": 33,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "bo-discovery"
+    ],
+    "completedAt": "2026-11-02T22:10:18.801Z",
+    "bestTimeMs": 28400
+   },
+   "BRA": {
+    "completed": true,
+    "bestCoins": 25,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "br-discovery"
+    ],
+    "completedAt": "2026-11-02T22:12:41.349Z",
+    "bestTimeMs": 25650
+   },
+   "VEN": {
+    "completed": true,
+    "bestCoins": 22,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "ve-discovery"
+    ],
+    "completedAt": "2026-11-02T22:14:57.448Z",
+    "bestTimeMs": 31483
+   },
+   "ARG": {
+    "completed": true,
+    "bestCoins": 26,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "ar-discovery"
+    ],
+    "completedAt": "2026-11-02T22:17:14.019Z",
+    "bestTimeMs": 39917
+   },
+   "CHL": {
+    "completed": true,
+    "bestCoins": 20,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "cl-discovery"
+    ],
+    "completedAt": "2026-11-02T22:19:18.400Z",
+    "bestTimeMs": 21617
+   },
+   "COL": {
+    "completed": true,
+    "bestCoins": 19,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "co-discovery"
+    ],
+    "completedAt": "2026-11-02T22:21:08.676Z",
+    "bestTimeMs": 21683
+   },
+   "ECU": {
+    "completed": true,
+    "bestCoins": 19,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "ec-discovery"
+    ],
+    "completedAt": "2026-11-02T22:22:50.048Z",
+    "bestTimeMs": 19100
+   },
+   "GUY": {
+    "completed": true,
+    "bestCoins": 23,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "gy-discovery"
+    ],
+    "completedAt": "2026-11-02T22:24:39.139Z",
+    "bestTimeMs": 18817
+   }
+  }
+ },
+ "cards": {
+  "BOL": {
+   "completedOnCard": true,
+   "cardText": [
+    "Bolivia",
+    "Salar de Uyuni: The Salt Mirror · Tier 2 · Adventurer",
+    "COMPLETED · VISUAL REVIEW PENDING",
+    "Flat, open puzzle level: pressure switches raise salt-brick blocks out of brine channels for a window, including a two-switch sequence via a salt-hotel roof; rusted train-car roofs; a climb up Isla Incahuasi. This playable level is still awaiting human visual and device review.",
+    "Bolivia is grouped in South America in UN M49. Capital: Sucre.",
+    "Capital / seat",
+    "Sucre",
+    "Languages",
+    "Aymara · Guaraní · Quechua · Spanish",
+    "Currency"
+   ],
+   "saved": {
+    "completed": true,
+    "bestCoins": 33,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "bo-discovery"
+    ],
+    "completedAt": "2026-11-02T22:10:18.801Z",
+    "bestTimeMs": 28400
+   },
+   "screens": [
+    "screens/bol-card-after-reload.jpg"
+   ],
+   "ok": true
+  },
+  "BRA": {
+   "completedOnCard": true,
+   "cardText": [
+    "Brazil",
+    "Amazon Canopy Run · Tier 3 · Challenger",
+    "COMPLETED · VISUAL REVIEW PENDING",
+    "Launch off a giant bromeliad into the canopy, swing across on vines and ride rafts over the river to a waterfall lookout. This playable level is still awaiting human visual and device review.",
+    "Brazil is grouped in South America in UN M49. Capital: Brasília. The Central Amazon Conservation Complex protects forests, lakes and river environments in Brazil.",
+    "Capital / seat",
+    "Brasília",
+    "Languages",
+    "Portuguese",
+    "Currency"
+   ],
+   "saved": {
+    "completed": true,
+    "bestCoins": 25,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "br-discovery"
+    ],
+    "completedAt": "2026-11-02T22:12:41.349Z",
+    "bestTimeMs": 25650
+   },
+   "screens": [
+    "screens/bra-card-after-reload.jpg"
+   ],
+   "ok": true
+  },
+  "VEN": {
+   "completedOnCard": true,
+   "cardText": [
+    "Venezuela",
+    "Angel Falls: The Auyán-tepui Descent · Tier 5 · Master Explorer",
+    "COMPLETED · VISUAL REVIEW PENDING",
+    "Advanced descent from a tepui summit beside Angel Falls: long precise drops, crumbling sandstone, summit gusts and climbable faces between ledges. This playable level is still awaiting human visual and device review.",
+    "Venezuela is grouped in South America in UN M49. Capital: Caracas.",
+    "Capital / seat",
+    "Caracas",
+    "Languages",
+    "Spanish",
+    "Currency"
+   ],
+   "saved": {
+    "completed": true,
+    "bestCoins": 22,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "ve-discovery"
+    ],
+    "completedAt": "2026-11-02T22:14:57.448Z",
+    "bestTimeMs": 31483
+   },
+   "screens": [
+    "screens/ven-card-after-reload.jpg"
+   ],
+   "ok": true
+  },
+  "ARG": {
+   "completedOnCard": true,
+   "cardText": [
+    "Argentina",
+    "Los Glaciares: Perito Moreno Valley · Tier 3 · Challenger",
+    "COMPLETED · VISUAL REVIEW PENDING",
+    "Down a moraine valley in Patagonian gusts, across the lake on drifting ice floes, past the glacier front where warned ice calves, then up slick ice steps. This playable level is still awaiting human visual and device review.",
+    "Argentina is grouped in South America in UN M49. Capital: Buenos Aires.",
+    "Capital / seat",
+    "Buenos Aires",
+    "Languages",
+    "Guaraní · Spanish",
+    "Currency"
+   ],
+   "saved": {
+    "completed": true,
+    "bestCoins": 26,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "ar-discovery"
+    ],
+    "completedAt": "2026-11-02T22:17:14.019Z",
+    "bestTimeMs": 39917
+   },
+   "screens": [
+    "screens/arg-card-after-reload.jpg"
+   ],
+   "ok": true
+  },
+  "CHL": {
+   "completedOnCard": true,
+   "cardText": [
+    "Chile",
+    "El Tatio: Geysers at Dawn · Tier 4 · Expert Explorer",
+    "COMPLETED · VISUAL REVIEW PENDING",
+    "A high Andean geyser field at dawn: sinter crusts that crack underfoot, lava ledges, steaming terraces and warned geyser jets that must be timed. This playable level is still awaiting human visual and device review.",
+    "Chile is grouped in South America in UN M49. Capital: Santiago.",
+    "Capital / seat",
+    "Santiago",
+    "Languages",
+    "Spanish",
+    "Currency"
+   ],
+   "saved": {
+    "completed": true,
+    "bestCoins": 20,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "cl-discovery"
+    ],
+    "completedAt": "2026-11-02T22:19:18.400Z",
+    "bestTimeMs": 21617
+   },
+   "screens": [
+    "screens/chl-card-after-reload.jpg"
+   ],
+   "ok": true
+  },
+  "COL": {
+   "completedOnCard": true,
+   "cardText": [
+    "Colombia",
+    "Cocora Valley: Cloud Forest Climb · Tier 4 · Expert Explorer",
+    "COMPLETED · VISUAL REVIEW PENDING",
+    "Vertical cloud-forest climb: mossy climbable cliff faces and wax-palm trunks, a cable crossing basket and crumbling moss ledges in the mist. This playable level is still awaiting human visual and device review.",
+    "Colombia is grouped in South America in UN M49. Capital: Bogotá.",
+    "Capital / seat",
+    "Bogotá",
+    "Languages",
+    "Spanish",
+    "Currency"
+   ],
+   "saved": {
+    "completed": true,
+    "bestCoins": 19,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "co-discovery"
+    ],
+    "completedAt": "2026-11-02T22:21:08.676Z",
+    "bestTimeMs": 21683
+   },
+   "screens": [
+    "screens/col-card-after-reload.jpg"
+   ],
+   "ok": true
+  },
+  "ECU": {
+   "completedOnCard": true,
+   "cardText": [
+    "Ecuador",
+    "Galápagos: Lava Coast · Tier 3 · Challenger",
+    "COMPLETED · VISUAL REVIEW PENDING",
+    "Black lava shoreline: warned wave surges over tide-pool rocks, lava-crust ledges that crack and a lava tube, with a higher ridge route. This playable level is still awaiting human visual and device review.",
+    "Ecuador is grouped in South America in UN M49. Capital: Quito.",
+    "Capital / seat",
+    "Quito",
+    "Languages",
+    "Spanish",
+    "Currency"
+   ],
+   "saved": {
+    "completed": true,
+    "bestCoins": 19,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "ec-discovery"
+    ],
+    "completedAt": "2026-11-02T22:22:50.048Z",
+    "bestTimeMs": 19100
+   },
+   "screens": [
+    "screens/ecu-card-after-reload.jpg"
+   ],
+   "ok": true
+  },
+  "GUY": {
+   "completedOnCard": true,
+   "cardText": [
+    "Guyana",
+    "Kaieteur Falls: Potaro Gorge · Tier 2 · Adventurer",
+    "COMPLETED · VISUAL REVIEW PENDING",
+    "Rock shelves in the Potaro River whose current carries the player, then the cliff path beside the falls with spray-wet rock and a rope basket. This playable level is still awaiting human visual and device review.",
+    "Guyana is grouped in South America in UN M49. Capital: Georgetown.",
+    "Capital / seat",
+    "Georgetown",
+    "Languages",
+    "English",
+    "Currency"
+   ],
+   "saved": {
+    "completed": true,
+    "bestCoins": 23,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "gy-discovery"
+    ],
+    "completedAt": "2026-11-02T22:24:39.139Z",
+    "bestTimeMs": 18817
+   },
+   "screens": [
+    "screens/guy-card-after-reload.jpg"
+   ],
+   "ok": true
+  }
+ },
+ "pageErrors": [
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico"
+ ],
+ "finishedAt": "2026-11-02T22:26:41.630Z"
+}

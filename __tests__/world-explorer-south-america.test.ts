@@ -182,11 +182,12 @@ describe.each(built.map(e=>[e.code,e.landmarks] as const))('%s environment',(cod
   }
  },30000);
  it('keeps platform bodies to a sculpted visual depth in the polished levels (no walls running out of view)',async()=>{
-  if(!['BOL','BRA','VEN'].includes(code))return;
+  // All twelve are polished. Colombia's climbable faces stay sheer on purpose,
+  // and rooftop platforms that are whole houses (Uruguay, Suriname) are buildings.
   const {level,environment,context}=await mount(code);
   for(const definition of level.platforms){
    const scene=new T.Scene(),root=island(scene,0,0,definition.width,definition.depth,'temperate',3,definition.thickness);environment.dressPlatform(root,definition,{...context,scene});
-   const body=root.getObjectByName('country-platform-cliff') as T.Mesh|undefined;if(!body||definition.style==='salt-hotel'||definition.style?.startsWith('rusted'))continue;
+   const body=root.getObjectByName('country-platform-cliff') as T.Mesh|undefined;if(!body||definition.style==='salt-hotel'||definition.style?.startsWith('rusted')||definition.climbable||(definition.terrain==='rooftop'&&definition.thickness>4))continue;
    body.geometry.computeBoundingBox();const height=body.geometry.boundingBox!.max.y-body.geometry.boundingBox!.min.y;expect(height,definition.id).toBeLessThan(10.5);
   }
  },30000);

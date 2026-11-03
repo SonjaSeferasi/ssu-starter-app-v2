@@ -24,8 +24,19 @@ const info={
 };
 const timber:LandmassPalette={top:'#8a6a4a',topAlt:'#7a5a3e',edge:'#f4f1ea',face:'#f2efe8',faceDark:'#c9c4b8',band:'#e2ded4',rough:.02,strata:.28};
 const brick:LandmassPalette={top:'#9a8a78',topAlt:'#8a7a68',edge:'#b9a48a',face:'#a85a3e',faceDark:'#6f3a28',band:'#8f4a32',maps:{set:'red-brick',tint:'#ffe8dc',repeat:.7},capMaps:{set:'paris-stone',tint:'#d9cfc0',repeat:.8},rough:.05,strata:.6};
+const quay:LandmassPalette={top:'#7a5a3e',topAlt:'#6a4a32',edge:'#a89c8a',face:'#8f877a',faceDark:'#5f584e',band:'#7a7266',rough:.12,strata:.7};
 const deck:DeckPalette={wood:'#6a4a32',woodAlt:'#7a5a3e',rope:'#c8b48e',stone:'#9a8a78',stoneAlt:'#8a7a68',metal:'#3e4650',accent:'#377e3f'};
 
+/** The Cathedral Basilica of Saints Peter and Paul: a large timber church,
+ * cream boards and grey roofs, with twin towers and spires over the front. */
+function cathedral(b:Builder,x:number,y:number,z:number){
+ const cream='#efe6d2',grey='#6a6f75';
+ b.add(new T.BoxGeometry(8,6,18),cream,[x,y+3,z-6]);for(let i=0;i<18;i++)b.add(new T.BoxGeometry(8.02,.03,18.02),'#d9cfb8',[x,y+.3+i*.33,z-6]);
+ const nave=new T.CylinderGeometry(.01,1,1,4,1);nave.rotateY(Math.PI/4);b.add(nave,grey,[x,y+7.4,z-6],[0,0,0],[6.2,2.8,13]);
+ for(const s of [-1,1]){b.add(new T.BoxGeometry(2.4,10,2.4),cream,[x+s*2.6,y+5,z+3]);b.add(new T.BoxGeometry(2.6,.4,2.6),grey,[x+s*2.6,y+10.1,z+3]);b.add(new T.ConeGeometry(1.5,4.2,8),grey,[x+s*2.6,y+12.4,z+3]);for(let k=0;k<2;k++)b.add(new T.BoxGeometry(.7,1.6,.06),'#4a4f55',[x+s*2.6,y+3+k*3.6,z+4.22]);}
+ b.add(new T.BoxGeometry(2.6,7,.4),cream,[x,y+3.5,z+3.6]);b.add(new T.ConeGeometry(1.6,1.6,4),grey,[x,y+7.8,z+3.6],[0,Math.PI/4,0],[1,1,.3]);b.add(new T.BoxGeometry(1.2,2.4,.06),'#5a3e2c',[x,y+1.2,z+3.82]);
+ for(let i=0;i<5;i++)b.add(new T.BoxGeometry(.6,1.8,.06),'#4a4f55',[x+4.03,y+3.2,z-12+i*3.4],[0,Math.PI/2,0]);
+}
 /** A two-storey Paramaribo timber house: white boards, dark gabled roof,
  * green shutters and a front gallery. */
 function timberHouse(b:Builder,x:number,y:number,z:number,w:number,h:number,r:()=>number){
@@ -46,11 +57,15 @@ export const environment:CountryEnvironment={
   const {root,staticRoot,features}=shell,r=random(940);
   const riverTop=Math.max(...level.hazards.map(h=>h.y+h.height))-.05;
   const river=createWaterSurface(features,{x:finish/2,y:riverTop,z:4,width:finish+300,depth:120,shallow:'#8a7a55',deep:'#5a4f3a',roughness:.2,segments:40,name:'suriname-river',flow:[.03,.004],repeat:.06});
-  createHeightfield(features,{name:'far-bank-forest',x:finish/2,y:-1.4,z:-120,width:finish+400,depth:20,segments:[low?40:90,4],height:(u,v)=>v*4+valueNoise(u*60,v,4)*2,color:gradientColor([[0,'#3f6a35'],[4,'#2f5a2d']])});
+  createHeightfield(features,{name:'far-bank-forest',x:finish/2,y:-1.4,z:-120,width:finish+400,depth:20,segments:[low?40:90,4],height:(u,v)=>(1-v)*4+valueNoise(u*60,v,4)*2,color:gradientColor([[0,'#2f5a2d'],[2,'#3f6a35'],[5,'#4f7a3a']])});
+  // Mangroves along the far bank, low and dense, roots in the water.
+  const mangrove=new Builder();for(let x=-30;x<finish+40;x+=2.2+r()*2){const z=-108-r()*4;for(let k=0;k<3;k++)mangrove.add(new T.IcosahedronGeometry(1.4+r()*.8,0),k%2?'#2f5a2d':'#3f6a35',[x+(r()-.5)*2,riverTop+1.2+r()*.8,z+(r()-.5)*2],[0,r()*3,0],[1.6,.7,1.2]);for(let k=0;k<3;k++)mangrove.strut(v3(x+(r()-.5)*1.6,riverTop-.2,z+.8),v3(x+(r()-.5)*.8,riverTop+1.1,z),.06,'#4a3a2a',4);}
+  mangrove.mesh(features,vertexMaterial(.9),'mangrove-far-bank');
   // The old town: rows of timber houses behind the route; the market and fort open to the river.
   const town=new Builder(),old=new T.Group();old.name='paramaribo-wooden-buildings';features.add(old);
   for(const [x0,x1] of [[-12,32],[84,finish+12]] as const)for(let x=x0;x<x1;x+=4.2+r()*1.4){timberHouse(town,x,0,-6.5-r(),3.4+r()*.8,3+r()*1.2,r);}
   for(let x=-10;x<finish+10;x+=5+r()*2)timberHouse(town,x,.3,-13-r()*2,3.6,3.4+r(),r);
+  cathedral(town,30,0,-22);
   town.mesh(old,vertexMaterial(.8),'timber-houses');
   // Fort Zeelandia: red brick bastion walls and a gatehouse by the river.
   const yard=level.platforms.find(p=>p.id==='sr-fort-yard')!,fort=new T.Group();fort.name='fort-zeelandia';features.add(fort);
@@ -71,8 +86,14 @@ export const environment:CountryEnvironment={
   if(style==='river-boat'){dressDeck(root,definition,'dock',deck);built(root,'boat-hull',b=>{b.add(new T.CylinderGeometry(1.25,.85,w+.8,12,1,false,0,Math.PI).rotateZ(Math.PI/2).rotateX(Math.PI),seed%2?'#c4272f':'#377e3f',[0,-.2,0],[0,0,0],[1,.55,1.25]);b.add(new T.BoxGeometry(1,.9,1.6),'#f4f1ea',[-w/2+.6,.45,-1.9]);},seed);return;}
   if(style==='jetty'||style==='pontoon'){dressDeck(root,definition,'dock',deck,{below:2.5});return;}
   if(style==='cargo-hoist'){dressDeck(root,definition,'lift',deck);built(root,'hoist-chains',b=>{for(const x of [-w/2+.15,w/2-.15])b.strut(v3(x,0,-1.1),v3(x,6,-1.1),.03,'#3e4650',4);},seed);return;}
-  const fortStyle=style==='fort-yard'||style==='market';
-  const details=dressLandmass(root,definition,fortStyle?brick:timber,{low,kind:definition.terrain==='stairs'?'stairs':definition.terrain==='rooftop'?'block':'ground'});
+  const fortStyle=style==='fort-yard'||style==='market'||style==='cathedral-square';
+  // The waterkant is a stone quay on timber pilings; the fort and market are
+  // brick; galleries and roofs are the timber houses themselves.
+  const quayStyle=style==='waterkant'||style==='wooden-stairs';
+  // Only the stone quay, fort and market are sculpted masses; timber stays timber.
+  const house=!(quayStyle||fortStyle);
+  const details=dressLandmass(root,definition,fortStyle?brick:quayStyle?quay:timber,{low,kind:definition.terrain==='stairs'?'stairs':definition.terrain==='rooftop'?'block':'ground',...(house?{}:{profile:'mass' as const,visualDepth:Math.max(1,Math.min(definition.thickness,definition.y+(definition.slope||0)*.5+.75+1.2))})});
+  if(quayStyle||fortStyle)built(details,'quay-pilings',(b,rr)=>{const d=Math.max(2,definition.depth)/2,water=-.75-definition.y;for(let x=-w/2+.4;x<w/2;x+=1.1+rr()*.3)b.add(new T.CylinderGeometry(.13,.15,Math.max(.8,-water+1.4),7),'#3a2e24',[x,water+.2,d+.25]);b.add(new T.BoxGeometry(w,.18,.22),'#5a4532',[0,-.25,d+.2]);b.add(new T.BoxGeometry(w+.2,.3,.4),'#3f5a2f',[0,water-.05,d+.1]);},seed);
   if(definition.terrain==='rooftop')built(details,'gallery-railing',(b,rr)=>{const d=Math.max(2,definition.depth)/2;for(let i=0;i<=Math.round(w/.5);i++)b.add(new T.BoxGeometry(.05,.7,.05),'#f4f1ea',[-w/2+i*w/Math.round(w/.5),.35,-d+.15]);b.add(new T.BoxGeometry(w,.06,.08),'#f4f1ea',[0,.72,-d+.15]);if(style==='shop-sign')b.add(new T.BoxGeometry(w*.9,.6,.08),['#ffd04a','#c4272f'][Math.floor(rr()*2)],[0,-.5,d+.06]);},seed);
   if(style==='waterkant')built(details,'quay-bollards',b=>{for(let x=-w/2+1;x<w/2;x+=3)b.add(new T.CylinderGeometry(.14,.18,.5,8),'#3e4650',[x,.25,-2.4]);},seed);
  },

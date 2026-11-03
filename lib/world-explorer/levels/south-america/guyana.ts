@@ -16,7 +16,9 @@ const p={
  cliffPath:platform('gy-cliff-path',50.6,-1.9,14,{terrain:'cliff',style:'cliff-path'}),
  ledge1:platform('gy-ledge-1',66.8,-1.5,2.6,{terrain:'cliff',surface:'ice',style:'spray-ledge'}),
  ledge2:platform('gy-ledge-2',71.6,-.9,2.6,{terrain:'cliff',surface:'ice',style:'spray-ledge'}),
- ledge3:platform('gy-ledge-3',76.4,-.3,2.6,{terrain:'cliff',surface:'ice',style:'spray-ledge'}),
+ // The last spray ledge carries a star in the gust zone, so it keeps its grip:
+ // stopping there for the star must not slide a player off into the gorge.
+ ledge3:platform('gy-ledge-3',76.4,-.3,2.6,{terrain:'cliff',style:'mossy-spray-ledge'}),
  lookout:platform('gy-gorge-lookout',81.6,.3,8,{terrain:'ground',style:'falls-lookout'}),
  steps:platform('gy-steps',89.6,.3,5,{terrain:'stairs',slope:1.2,steps:4,style:'rock-steps'}),
  finish:platform('gy-kaieteur-view',97.2,1.5,13,{terrain:'ground',style:'falls-lookout'}),

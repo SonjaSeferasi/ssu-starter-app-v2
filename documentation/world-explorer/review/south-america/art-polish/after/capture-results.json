@@ -1,5 +1,5 @@
 {
- "capturedAt": "2026-11-02T14:33:50.683Z",
+ "capturedAt": "2026-11-02T20:48:04.061Z",
  "browser": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
  "base": "http://localhost:3000",
  "renderer": "hardware (ANGLE D3D11) in headless Edge",
@@ -7,49 +7,49 @@
  "note": "Measured on the development laptop in a headless browser while the level idles at its start. The phone figures emulate an 844x390 viewport on the laptop GPU; they are not a phone. Real-device testing is still required.",
  "results": [
   {
-   "code": "VEN",
+   "code": "SUR",
    "shots": {
     "b": {
-     "x": 56,
-     "label": "climbable escarpment face"
+     "x": 62,
+     "label": "riverboat crossing"
     },
     "c": {
      "position": [
-      80,
-      8,
-      17
+      40,
+      3,
+      13
      ],
      "target": [
-      98,
-      4,
-      -18
+      51,
+      2,
+      -5
      ],
-     "label": "Angel Falls"
+     "label": "Fort Zeelandia"
     }
    },
    "desktop": {
-    "readyMs": 7661,
+    "readyMs": 2715,
     "frames": 600,
-    "averageFps": 120,
-    "onePercentLowFps": 115,
-    "worstFrameMs": 9.2,
-    "drawCalls": 97,
-    "triangles": 220954,
-    "geometries": 63,
-    "textures": 11,
+    "averageFps": 119,
+    "onePercentLowFps": 70,
+    "worstFrameMs": 41.4,
+    "drawCalls": 87,
+    "triangles": 133592,
+    "geometries": 44,
+    "textures": 6,
     "jsHeapMB": 94
    },
    "phone": {
-    "readyMs": 2670,
+    "readyMs": 1149,
     "frames": 600,
     "averageFps": 120,
-    "onePercentLowFps": 116,
+    "onePercentLowFps": 117,
     "worstFrameMs": 8.6,
-    "drawCalls": 103,
-    "triangles": 227004,
-    "geometries": 64,
-    "textures": 11,
-    "jsHeapMB": 150
+    "drawCalls": 91,
+    "triangles": 135896,
+    "geometries": 45,
+    "textures": 6,
+    "jsHeapMB": 119
    }
   }
  ]

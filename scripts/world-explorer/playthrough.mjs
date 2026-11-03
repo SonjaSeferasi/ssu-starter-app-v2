@@ -14,7 +14,8 @@
 //     heart and respawn at that checkpoint.
 //  3. keyboard: real key events move the player and make it jump.
 //  4. touch: in an 844x390 touch viewport, the on-screen buttons jump and move
-//     (--only touch reruns just this check and updates the existing report).
+//     (--only touch or --only keyboard reruns just that check and updates the
+//     existing report).
 //  5. saved progress: localStorage holds the completed result, and after a
 //     reload the country card reads "Completed".
 // Writes <out>/playthrough-results.json and screenshots to <out>/screens/.
@@ -91,10 +92,12 @@ async function keyboard(code){
  const lower=code.toLowerCase(),checks=[];await viewport(1600,900,false);
  await page('Page.navigate',{url:`${base}/world-explorer?country=${code}&play=1&review=1`});if(!await ready())return{error:'not ready'};await wait(1500);
  await evaluate(`document.querySelector('canvas[data-ready="true"]').focus()`);
- const a=await state();await key('rawKeyDown','ArrowRight');await wait(900);await key('rawKeyDown','Space');
+ // Jump in place at the spawn first (a "?" block or a patrol further on can
+ // cut a running jump short), then run right.
+ const a=await state();await key('rawKeyDown','Space');
  let peak=-Infinity;for(let i=0;i<10;i++){await wait(60);const s=await state();peak=Math.max(peak,s.y);}
- await key('keyUp','Space');await wait(500);await key('keyUp','ArrowRight');await wait(400);const b=await state();const screen=await shot(`${lower}-keyboard`);
- checks.push({check:'ArrowRight moves the player right',ok:b.x>a.x+2,actual:+(b.x-a.x).toFixed(2)},{check:'Space makes the player jump',ok:peak>a.y+.6,actual:+(peak-a.y).toFixed(2)});
+ await key('keyUp','Space');await wait(700);const before=await state();await key('rawKeyDown','ArrowRight');await wait(900);await key('keyUp','ArrowRight');await wait(400);const b=await state();const screen=await shot(`${lower}-keyboard`);
+ checks.push({check:'ArrowRight moves the player right',ok:b.x>before.x+2,actual:+(b.x-before.x).toFixed(2)},{check:'Space makes the player jump',ok:peak>a.y+.6,actual:+(peak-a.y).toFixed(2)});
  return{checks,ok:checks.every(c=>c.ok),screens:[screen]};
 }
 /** On-screen touch buttons in a phone-landscape touch viewport (an emulation, not a phone). */
@@ -125,10 +128,10 @@ async function touch(code){
 }
 
 const only=args.only;
-if(only==='touch'){
- const report=JSON.parse(readFileSync(join(out,'playthrough-results.json'),'utf8'));
- for(const code of codes){const entry=report.countries[code]??={};try{entry.touch=await touch(code);}catch(error){entry.touch={error:String(error.message||error)};}console.log(code,'touch',entry.touch.ok?'PASS':'FAIL',JSON.stringify(entry.touch.attempts));}
- report.touchRerunAt=new Date().toISOString();writeFileSync(join(out,'playthrough-results.json'),JSON.stringify(report,null,1));await Promise.race([send('Browser.close').catch(()=>{}),wait(3000)]);socket.close();child.kill();process.exit(0);
+if(only==='touch'||only==='keyboard'){
+ const report=JSON.parse(readFileSync(join(out,'playthrough-results.json'),'utf8')),check=only==='touch'?touch:keyboard;
+ for(const code of codes){const entry=report.countries[code]??={};try{entry[only]=await check(code);}catch(error){entry[only]={error:String(error.message||error)};}console.log(code,only,entry[only].ok?'PASS':'FAIL',JSON.stringify(entry[only].checks));}
+ report[only+'RerunAt']=new Date().toISOString();writeFileSync(join(out,'playthrough-results.json'),JSON.stringify(report,null,1));await Promise.race([send('Browser.close').catch(()=>{}),wait(3000)]);socket.close();child.kill();process.exit(0);
 }
 const report={base,startedAt:new Date().toISOString(),browser:version.Browser,countries:{}};
 for(const code of codes){

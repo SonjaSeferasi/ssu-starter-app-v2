@@ -55,10 +55,20 @@ export const environment:CountryEnvironment={
   const gorge=new T.Group();gorge.name='urubamba-river-gorge';features.add(gorge);
   createHeightfield(gorge,{name:'gorge-walls',x:finish/2,y:-26,z:-48,width:finish+300,depth:70,segments:[low?60:130,low?20:36],height:(u,v)=>{const valley=Math.abs(v-.35)*2;return valley**1.4*34+valueNoise(u*30,v*12,3)*6+valueNoise(u*90,v*30,7)*1.6;},color:gradientColor([[0,'#3f6a35'],[14,'#4f7a3a'],[26,'#6f8a4f'],[34,'#8a8a6c']])});
   const river=createWaterSurface(gorge,{x:finish/2,y:-24.5,z:-32,width:finish+300,depth:5,shallow:'#8fa88a',deep:'#5c7c6a',segments:30,name:'urubamba-river',flow:[.06,.0],repeat:.1});
-  createHeightfield(features,{name:'andean-snow-peaks',x:finish/2,y:-6,z:-160,width:finish+500,depth:60,segments:[low?70:150,low?16:28],height:ridgedRange(19,{peaks:8,height:42,sharpness:1.5,width:.85}),color:mountainColor({snowLine:30,rock:'#76705f',forest:'#3f6a35',snow:'#f7f8fa',treeLine:12,grass:'#7d8a4f'})});
+  createHeightfield(features,{name:'andean-snow-peaks',x:finish/2,y:-6,z:-160,width:finish+500,depth:60,segments:[low?70:150,low?16:28],height:ridgedRange(19,{peaks:8,height:30,sharpness:1.5,width:.85}),color:mountainColor({snowLine:30,rock:'#76705f',forest:'#3f6a35',snow:'#f7f8fa',treeLine:12,grass:'#7d8a4f'})});
+  // Steep, forested granite sugarloaf peaks stand around the gorge, as around
+  // Machu Picchu; the snow peaks of the Vilcabamba are lower and further off.
+  const peaks=new Builder(),seg=low?12:22;
+  for(const [x,z,h,rad] of [[finish*.06,-92,40,12],[finish*.3,-104,48,13],[finish*.55,-96,36,11],[finish*.8,-108,52,14],[finish*1.05,-98,42,12]] as const){
+   // Sugarloaf: steep flanks rising to a rounded summit, darker forest below,
+   // paler grassy shoulders and a grey granite crown.
+   const prof=(t:number)=>rad*Math.pow(Math.max(0,1-Math.pow(t,2.4)),.5)+.4,rings:[number,number,string][]=[[0,.55,'#355f30'],[.55,.82,'#4f7a3a'],[.82,1,'#8a877a']];
+   for(const [t0,t1,colour] of rings){const pts=Array.from({length:6},(_,i)=>{const t=t0+(t1-t0)*i/5;return new T.Vector2(prof(t),t*h);});peaks.add(new T.LatheGeometry(pts,seg),colour,[x,-26,z],[0,r()*3,0],[1,1,.8],.08);}
+  }
+  const peakMesh=peaks.mesh(features,vertexMaterial(.95),'sugarloaf-peaks');peakMesh.castShadow=false;
   // Huayna Picchu: the steep sugarloaf peak behind the citadel.
   const citadel=level.platforms.find(p=>p.id==='pe-citadel')!,peakRoot=new T.Group();peakRoot.name='huayna-picchu-peak';features.add(peakRoot);
-  createHeightfield(peakRoot,{name:'huayna-picchu-slopes',x:citadel.x+citadel.width*.7,y:-14,z:-34,width:40,depth:30,segments:[low?30:64,low?24:48],height:(u,v)=>Math.max(0,1-Math.hypot((u-.5)*2.1,(v-.5)*2.4))**.9*42+valueNoise(u*14,v*14,6)*2.5,color:(h,slope)=>new T.Color(slope>.62?'#7d7a6c':h>36?'#5f7a45':'#3f6a35').multiplyScalar(.9+valueNoise(h,slope*9,2)*.2)});
+  createHeightfield(peakRoot,{name:'huayna-picchu-slopes',x:citadel.x+citadel.width*.7,y:-14,z:-34,width:40,depth:30,segments:[low?30:64,low?24:48],height:(u,v)=>Math.max(0,1-Math.hypot((u-.5)*2.1,(v-.5)*2.4))**.9*42+valueNoise(u*14,v*14,6)*2.5,color:(h,slope)=>new T.Color(slope>.86?'#7d7a6c':h>38?'#5f7a45':slope>.7?'#4a6f3a':'#3f6a35').multiplyScalar(.9+valueNoise(h,slope*9,2)*.2)});
   // The citadel: terraces and gabled houses stepping down a ridge.
   const town=new Builder(.5),cx=citadel.x+3;
   for(let row=0;row<5;row++){const y=4.4-row*1.3-.6,z=-6-row*2.4;town.add(new T.BoxGeometry(citadel.width+10-row*2,1.3,2.4),row%2?'#b4ab96':'#a89f8a',[cx+5,y-.65,z],[0,0,0],[1,1,1],.04);town.add(new T.BoxGeometry(citadel.width+10-row*2,.12,2.4),'#6f9a45',[cx+5,y+.06,z]);for(let i=0;i<4;i++)if(r()<.75)incaHouse(town,cx-2+i*4+r()*1.2,y,z-.3,2.4,1.6,r);}
@@ -96,7 +106,10 @@ export const environment:CountryEnvironment={
   if(style==='gorge-lift'){dressDeck(root,definition,'lift',deck);return;}
   const kind=definition.terrain==='stairs'?'stairs':definition.terrain==='cliff'?'cliff':'ground';
   const palette=definition.terrain==='terrace'?terrace:style==='inca-stairs'||style==='citadel'||style==='inti-punku'?paving:definition.terrain==='cliff'?granite:terrace;
-  const details=dressLandmass(root,definition,palette,{low,kind});
+  // Terraces keep upright fitted-stone retaining walls one step high; cliffs,
+  // ridge rocks and the trail are sculpted rock reaching down the slope.
+  const ridge=style==='ridge-rock',terraceWall=definition.terrain==='terrace';
+  const details=dressLandmass(root,definition,palette,{low,kind,profile:ridge?'island':terraceWall?'shelf':'mass',visualDepth:ridge?2.6:terraceWall?Math.min(definition.thickness,1.6):kind==='stairs'?2.4:3.2});
   if(definition.terrain==='terrace'||kind==='stairs')built(details,'fitted-stone-courses',(b,rr)=>{const d=Math.max(2,definition.depth)/2+.02;for(let y=-.25;y>-Math.min(4,definition.thickness);y-=.45)for(let x=-w/2+rr()*.3;x<w/2;x+=.6+rr()*.5)b.add(new T.BoxGeometry(.03,.42,.02),'#7d7465',[x,y,d]);},seed,.9);
   plantGrove(details,'golden-tuft',rearSpots(definition,Math.max(2,Math.floor(w/2.5)),seed).map(s=>({x:s.x,y:s.y,z:Math.min(-.9,s.z),scale:.7+s.r*.4})),{low});
   if(style==='trail'&&w>10)scatter(details,new T.DodecahedronGeometry(.35,0),standard('#9a947f',.95),rearSpots(definition,6,seed+1).map(s=>({x:s.x,y:s.y+.1,z:Math.min(-1,s.z),scale:.6+s.r*.6,rotation:s.r*4})),'trail-stones');

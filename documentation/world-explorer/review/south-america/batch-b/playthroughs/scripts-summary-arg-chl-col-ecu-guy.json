@@ -1,0 +1,693 @@
+{
+ "ARG": {
+  "coinsAcrossRuns": "27/27",
+  "starsAcrossRuns": "3/3",
+  "completions": [
+   {
+    "code": "ARG",
+    "kind": "complete-bonus",
+    "difficulty": 2,
+    "frames": 2395,
+    "seconds": 39.9,
+    "expected": {
+     "status": "completed",
+     "coins": 26,
+     "totalCoins": 27,
+     "stars": 3,
+     "totalStars": 3,
+     "hearts": 3,
+     "discoveryFound": true,
+     "checkpoints": 2,
+     "coinIds": [
+      "ar-coin-01",
+      "ar-coin-02",
+      "ar-coin-03",
+      "ar-coin-04",
+      "ar-coin-06",
+      "ar-coin-07",
+      "ar-coin-08",
+      "ar-coin-09",
+      "ar-coin-10",
+      "ar-coin-11",
+      "ar-coin-12",
+      "ar-coin-13",
+      "ar-coin-14",
+      "ar-coin-15",
+      "ar-coin-16",
+      "ar-coin-17",
+      "ar-coin-18",
+      "ar-coin-19",
+      "ar-coin-20",
+      "ar-coin-21",
+      "ar-coin-22",
+      "ar-coin-23",
+      "ar-coin-24",
+      "ar-coin-25",
+      "ar-coin-26",
+      "ar-coin-27"
+     ],
+     "starIds": [
+      "ar-star-01",
+      "ar-star-02",
+      "ar-star-03"
+     ],
+     "tally": {
+      "hazard-warning": 13,
+      "coin": 26,
+      "hazard": 12,
+      "wind-warning": 5,
+      "star": 3,
+      "wind": 5,
+      "checkpoint": 2,
+      "block": 1,
+      "discovery": 1,
+      "finish": 1
+     }
+    }
+   },
+   {
+    "code": "ARG",
+    "kind": "complete-main",
+    "difficulty": 2,
+    "frames": 2579,
+    "seconds": 43,
+    "expected": {
+     "status": "completed",
+     "coins": 25,
+     "totalCoins": 27,
+     "stars": 2,
+     "totalStars": 3,
+     "hearts": 3,
+     "discoveryFound": true,
+     "checkpoints": 2,
+     "coinIds": [
+      "ar-coin-01",
+      "ar-coin-02",
+      "ar-coin-03",
+      "ar-coin-04",
+      "ar-coin-05",
+      "ar-coin-06",
+      "ar-coin-07",
+      "ar-coin-08",
+      "ar-coin-09",
+      "ar-coin-10",
+      "ar-coin-11",
+      "ar-coin-12",
+      "ar-coin-13",
+      "ar-coin-14",
+      "ar-coin-15",
+      "ar-coin-16",
+      "ar-coin-17",
+      "ar-coin-18",
+      "ar-coin-19",
+      "ar-coin-20",
+      "ar-coin-21",
+      "ar-coin-22",
+      "ar-coin-23",
+      "ar-coin-24",
+      "ar-coin-25"
+     ],
+     "starIds": [
+      "ar-star-02",
+      "ar-star-03"
+     ],
+     "tally": {
+      "hazard-warning": 14,
+      "coin": 25,
+      "hazard": 13,
+      "wind-warning": 6,
+      "wind": 6,
+      "checkpoint": 2,
+      "star": 2,
+      "block": 1,
+      "discovery": 1,
+      "finish": 1
+     }
+    }
+   }
+  ],
+  "hazard": {
+   "code": "ARG",
+   "kind": "hazard",
+   "difficulty": 2,
+   "frames": 639,
+   "seconds": 10.7,
+   "checkpoint": "ar-shore",
+   "expected": {
+    "status": "playing",
+    "hearts": 2,
+    "standing": "ar-shore",
+    "x": 36.9,
+    "checkpointX": 36.9,
+    "coins": 8,
+    "tally": {
+     "hazard-warning": 4,
+     "coin": 8,
+     "hazard": 3,
+     "wind-warning": 2,
+     "wind": 1,
+     "checkpoint": 1,
+     "damage": 1,
+     "respawn": 1
+    }
+   }
+  }
+ },
+ "CHL": {
+  "coinsAcrossRuns": "23/24",
+  "starsAcrossRuns": "3/3",
+  "completions": [
+   {
+    "code": "CHL",
+    "kind": "complete-bonus",
+    "difficulty": 3,
+    "frames": 1378,
+    "seconds": 23,
+    "expected": {
+     "status": "completed",
+     "coins": 19,
+     "totalCoins": 24,
+     "stars": 3,
+     "totalStars": 3,
+     "hearts": 3,
+     "discoveryFound": true,
+     "checkpoints": 2,
+     "coinIds": [
+      "cl-coin-01",
+      "cl-coin-02",
+      "cl-coin-03",
+      "cl-coin-04",
+      "cl-coin-05",
+      "cl-coin-06",
+      "cl-coin-07",
+      "cl-coin-08",
+      "cl-coin-09",
+      "cl-coin-11",
+      "cl-coin-12",
+      "cl-coin-13",
+      "cl-coin-17",
+      "cl-coin-18",
+      "cl-coin-20",
+      "cl-coin-21",
+      "cl-coin-22",
+      "cl-coin-23",
+      "cl-coin-24"
+     ],
+     "starIds": [
+      "cl-star-01",
+      "cl-star-02",
+      "cl-star-03"
+     ],
+     "tally": {
+      "hazard": 13,
+      "coin": 19,
+      "hazard-warning": 13,
+      "collapse": 3,
+      "checkpoint": 2,
+      "star": 3,
+      "discovery": 1,
+      "finish": 1
+     }
+    }
+   },
+   {
+    "code": "CHL",
+    "kind": "complete-main",
+    "difficulty": 3,
+    "frames": 1297,
+    "seconds": 21.6,
+    "expected": {
+     "status": "completed",
+     "coins": 20,
+     "totalCoins": 24,
+     "stars": 1,
+     "totalStars": 3,
+     "hearts": 3,
+     "discoveryFound": true,
+     "checkpoints": 2,
+     "coinIds": [
+      "cl-coin-01",
+      "cl-coin-02",
+      "cl-coin-03",
+      "cl-coin-04",
+      "cl-coin-05",
+      "cl-coin-06",
+      "cl-coin-07",
+      "cl-coin-08",
+      "cl-coin-09",
+      "cl-coin-11",
+      "cl-coin-12",
+      "cl-coin-13",
+      "cl-coin-14",
+      "cl-coin-15",
+      "cl-coin-16",
+      "cl-coin-17",
+      "cl-coin-18",
+      "cl-coin-19",
+      "cl-coin-20",
+      "cl-coin-21"
+     ],
+     "starIds": [
+      "cl-star-03"
+     ],
+     "tally": {
+      "hazard": 12,
+      "coin": 20,
+      "hazard-warning": 12,
+      "collapse": 3,
+      "checkpoint": 2,
+      "star": 1,
+      "discovery": 1,
+      "finish": 1
+     }
+    }
+   }
+  ],
+  "hazard": {
+   "code": "CHL",
+   "kind": "hazard",
+   "difficulty": 3,
+   "frames": 655,
+   "seconds": 10.9,
+   "checkpoint": "cl-sinter-mound",
+   "expected": {
+    "status": "playing",
+    "hearts": 2,
+    "standing": "cl-sinter-mound",
+    "x": 39,
+    "checkpointX": 39,
+    "coins": 7,
+    "tally": {
+     "hazard": 6,
+     "coin": 7,
+     "hazard-warning": 6,
+     "collapse": 2,
+     "checkpoint": 1,
+     "damage": 1,
+     "respawn": 1
+    }
+   }
+  }
+ },
+ "COL": {
+  "coinsAcrossRuns": "21/21",
+  "starsAcrossRuns": "3/3",
+  "completions": [
+   {
+    "code": "COL",
+    "kind": "complete-bonus",
+    "difficulty": 3,
+    "frames": 1301,
+    "seconds": 21.7,
+    "expected": {
+     "status": "completed",
+     "coins": 19,
+     "totalCoins": 21,
+     "stars": 3,
+     "totalStars": 3,
+     "hearts": 3,
+     "discoveryFound": true,
+     "checkpoints": 2,
+     "coinIds": [
+      "co-coin-01",
+      "co-coin-02",
+      "co-coin-03",
+      "co-coin-04",
+      "co-coin-05",
+      "co-coin-06",
+      "co-coin-07",
+      "co-coin-08",
+      "co-coin-09",
+      "co-coin-10",
+      "co-coin-13",
+      "co-coin-14",
+      "co-coin-15",
+      "co-coin-16",
+      "co-coin-17",
+      "co-coin-18",
+      "co-coin-19",
+      "co-coin-20",
+      "co-coin-21"
+     ],
+     "starIds": [
+      "co-star-01",
+      "co-star-02",
+      "co-star-03"
+     ],
+     "tally": {
+      "coin": 19,
+      "climb": 6,
+      "collapse": 2,
+      "checkpoint": 2,
+      "star": 3,
+      "discovery": 1,
+      "finish": 1
+     }
+    }
+   },
+   {
+    "code": "COL",
+    "kind": "complete-main",
+    "difficulty": 3,
+    "frames": 1336,
+    "seconds": 22.3,
+    "expected": {
+     "status": "completed",
+     "coins": 18,
+     "totalCoins": 21,
+     "stars": 2,
+     "totalStars": 3,
+     "hearts": 3,
+     "discoveryFound": true,
+     "checkpoints": 2,
+     "coinIds": [
+      "co-coin-01",
+      "co-coin-02",
+      "co-coin-03",
+      "co-coin-04",
+      "co-coin-05",
+      "co-coin-06",
+      "co-coin-07",
+      "co-coin-08",
+      "co-coin-09",
+      "co-coin-10",
+      "co-coin-11",
+      "co-coin-12",
+      "co-coin-13",
+      "co-coin-14",
+      "co-coin-15",
+      "co-coin-16",
+      "co-coin-17",
+      "co-coin-18"
+     ],
+     "starIds": [
+      "co-star-02",
+      "co-star-03"
+     ],
+     "tally": {
+      "coin": 18,
+      "climb": 4,
+      "collapse": 2,
+      "checkpoint": 2,
+      "star": 2,
+      "discovery": 1,
+      "finish": 1
+     }
+    }
+   }
+  ],
+  "hazard": {
+   "code": "COL",
+   "kind": "hazard",
+   "difficulty": 3,
+   "frames": 666,
+   "seconds": 11.1,
+   "checkpoint": "co-wall-2",
+   "expected": {
+    "status": "playing",
+    "hearts": 2,
+    "standing": "co-wall-2",
+    "x": 28.8,
+    "checkpointX": 28.8,
+    "coins": 9,
+    "tally": {
+     "coin": 9,
+     "climb": 2,
+     "collapse": 1,
+     "checkpoint": 1,
+     "damage": 1,
+     "respawn": 1
+    }
+   }
+  }
+ },
+ "ECU": {
+  "coinsAcrossRuns": "19/19",
+  "starsAcrossRuns": "3/3",
+  "completions": [
+   {
+    "code": "ECU",
+    "kind": "complete-bonus",
+    "difficulty": 2,
+    "frames": 1146,
+    "seconds": 19.1,
+    "expected": {
+     "status": "completed",
+     "coins": 19,
+     "totalCoins": 19,
+     "stars": 3,
+     "totalStars": 3,
+     "hearts": 3,
+     "discoveryFound": true,
+     "checkpoints": 2,
+     "coinIds": [
+      "ec-coin-01",
+      "ec-coin-02",
+      "ec-coin-03",
+      "ec-coin-04",
+      "ec-coin-05",
+      "ec-coin-06",
+      "ec-coin-07",
+      "ec-coin-08",
+      "ec-coin-09",
+      "ec-coin-10",
+      "ec-coin-11",
+      "ec-coin-12",
+      "ec-coin-13",
+      "ec-coin-14",
+      "ec-coin-15",
+      "ec-coin-16",
+      "ec-coin-17",
+      "ec-coin-18",
+      "ec-coin-19"
+     ],
+     "starIds": [
+      "ec-star-01",
+      "ec-star-02",
+      "ec-star-03"
+     ],
+     "tally": {
+      "coin": 19,
+      "hazard": 7,
+      "hazard-warning": 8,
+      "collapse": 2,
+      "checkpoint": 2,
+      "star": 3,
+      "discovery": 1,
+      "finish": 1
+     }
+    }
+   },
+   {
+    "code": "ECU",
+    "kind": "complete-main",
+    "difficulty": 2,
+    "frames": 1212,
+    "seconds": 20.2,
+    "expected": {
+     "status": "completed",
+     "coins": 17,
+     "totalCoins": 19,
+     "stars": 2,
+     "totalStars": 3,
+     "hearts": 3,
+     "discoveryFound": true,
+     "checkpoints": 2,
+     "coinIds": [
+      "ec-coin-01",
+      "ec-coin-02",
+      "ec-coin-03",
+      "ec-coin-04",
+      "ec-coin-05",
+      "ec-coin-06",
+      "ec-coin-07",
+      "ec-coin-08",
+      "ec-coin-09",
+      "ec-coin-10",
+      "ec-coin-11",
+      "ec-coin-12",
+      "ec-coin-13",
+      "ec-coin-14",
+      "ec-coin-15",
+      "ec-coin-16",
+      "ec-coin-17"
+     ],
+     "starIds": [
+      "ec-star-02",
+      "ec-star-03"
+     ],
+     "tally": {
+      "coin": 17,
+      "hazard": 9,
+      "hazard-warning": 8,
+      "collapse": 2,
+      "checkpoint": 2,
+      "star": 2,
+      "discovery": 1,
+      "finish": 1
+     }
+    }
+   }
+  ],
+  "hazard": {
+   "code": "ECU",
+   "kind": "hazard",
+   "difficulty": 2,
+   "frames": 723,
+   "seconds": 12.1,
+   "checkpoint": "ec-lava-cliff",
+   "expected": {
+    "status": "playing",
+    "hearts": 2,
+    "standing": "ec-lava-cliff",
+    "x": 33.3,
+    "checkpointX": 33.3,
+    "coins": 8,
+    "tally": {
+     "coin": 8,
+     "hazard": 4,
+     "hazard-warning": 5,
+     "collapse": 2,
+     "checkpoint": 1,
+     "damage": 1,
+     "respawn": 1
+    }
+   }
+  }
+ },
+ "GUY": {
+  "coinsAcrossRuns": "25/25",
+  "starsAcrossRuns": "3/3",
+  "completions": [
+   {
+    "code": "GUY",
+    "kind": "complete-bonus",
+    "difficulty": 1,
+    "frames": 1223,
+    "seconds": 20.4,
+    "expected": {
+     "status": "completed",
+     "coins": 21,
+     "totalCoins": 25,
+     "stars": 3,
+     "totalStars": 3,
+     "hearts": 3,
+     "discoveryFound": true,
+     "checkpoints": 2,
+     "coinIds": [
+      "gy-coin-01",
+      "gy-coin-02",
+      "gy-coin-03",
+      "gy-coin-04",
+      "gy-coin-05",
+      "gy-coin-06",
+      "gy-coin-07",
+      "gy-coin-08",
+      "gy-coin-10",
+      "gy-coin-11",
+      "gy-coin-12",
+      "gy-coin-13",
+      "gy-coin-16",
+      "gy-coin-17",
+      "gy-coin-18",
+      "gy-coin-19",
+      "gy-coin-21",
+      "gy-coin-22",
+      "gy-coin-23",
+      "gy-coin-24",
+      "gy-coin-25"
+     ],
+     "starIds": [
+      "gy-star-01",
+      "gy-star-02",
+      "gy-star-03"
+     ],
+     "tally": {
+      "coin": 21,
+      "wind-warning": 3,
+      "wind": 3,
+      "star": 3,
+      "checkpoint": 2,
+      "discovery": 1,
+      "finish": 1
+     }
+    }
+   },
+   {
+    "code": "GUY",
+    "kind": "complete-main",
+    "difficulty": 1,
+    "frames": 1129,
+    "seconds": 18.8,
+    "expected": {
+     "status": "completed",
+     "coins": 23,
+     "totalCoins": 25,
+     "stars": 0,
+     "totalStars": 3,
+     "hearts": 3,
+     "discoveryFound": true,
+     "checkpoints": 2,
+     "coinIds": [
+      "gy-coin-01",
+      "gy-coin-02",
+      "gy-coin-03",
+      "gy-coin-04",
+      "gy-coin-05",
+      "gy-coin-06",
+      "gy-coin-07",
+      "gy-coin-08",
+      "gy-coin-09",
+      "gy-coin-10",
+      "gy-coin-11",
+      "gy-coin-12",
+      "gy-coin-13",
+      "gy-coin-14",
+      "gy-coin-15",
+      "gy-coin-16",
+      "gy-coin-17",
+      "gy-coin-18",
+      "gy-coin-19",
+      "gy-coin-20",
+      "gy-coin-21",
+      "gy-coin-22",
+      "gy-coin-23"
+     ],
+     "starIds": [],
+     "tally": {
+      "coin": 23,
+      "wind-warning": 3,
+      "wind": 3,
+      "checkpoint": 2,
+      "discovery": 1,
+      "finish": 1
+     }
+    }
+   }
+  ],
+  "hazard": {
+   "code": "GUY",
+   "kind": "hazard",
+   "difficulty": 1,
+   "frames": 974,
+   "seconds": 16.2,
+   "checkpoint": "gy-brink",
+   "expected": {
+    "status": "playing",
+    "hearts": 2,
+    "standing": "gy-brink",
+    "x": 42.1,
+    "checkpointX": 42.1,
+    "coins": 13,
+    "tally": {
+     "coin": 13,
+     "wind-warning": 3,
+     "wind": 2,
+     "checkpoint": 1,
+     "damage": 1,
+     "respawn": 1
+    }
+   }
+  }
+ }
+}
