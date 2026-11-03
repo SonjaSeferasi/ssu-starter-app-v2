@@ -1,0 +1,612 @@
+{
+ "id": "ca-level-01",
+ "countryId": "CA",
+ "legacyCode": "CAN",
+ "title": "Rocky Mountains: Alpine Adventure",
+ "environmentId": "canada-rockies-alpine",
+ "difficulty": "medium",
+ "environment": {
+  "biome": "alpine-mountain-forest",
+  "locationReference": "Canadian Rockies near Banff, Alberta — Canadian Rocky Mountain Parks",
+  "terrainMaterial": "grey-limestone-and-snow",
+  "vegetationPack": "spruce-pine-and-alpine-grass",
+  "architecturePack": "timber-bridges-and-log-cabins",
+  "landmarkAssets": [
+   "snow-capped-peaks",
+   "glacier",
+   "turquoise-glacial-lake",
+   "mountain-waterfall",
+   "log-cabin",
+   "distant-elk"
+  ],
+  "lightingPreset": "crisp-alpine-morning",
+  "skyPreset": "clear-cold-blue",
+  "weatherPreset": "light-snow-at-altitude"
+ },
+ "sections": [
+  {
+   "id": "A",
+   "label": "Pine ledge trailhead",
+   "x": 0
+  },
+  {
+   "id": "B",
+   "label": "First rocky steps",
+   "x": 15.5
+  },
+  {
+   "id": "C",
+   "label": "Timber gorge bridge",
+   "x": 31
+  },
+  {
+   "id": "D",
+   "label": "Snow-capped rock climb",
+   "x": 33
+  },
+  {
+   "id": "E",
+   "label": "Snowy island star",
+   "x": 52
+  },
+  {
+   "id": "F",
+   "label": "Frozen ice ledge",
+   "x": 66
+  },
+  {
+   "id": "G",
+   "label": "Pinecone patrol and checkpoint",
+   "x": 84
+  },
+  {
+   "id": "H",
+   "label": "Turquoise lake viewpoint",
+   "x": 103.5
+  }
+ ],
+ "camera": {
+  "height": 4.4,
+  "look": 1.35,
+  "follow": 0.42,
+  "maxRise": 1.8
+ },
+ "spawn": {
+  "platformId": "ca-start",
+  "offset": 3
+ },
+ "platforms": [
+  {
+   "id": "ca-start",
+   "x": 0,
+   "y": 0,
+   "width": 14,
+   "depth": 3.4,
+   "thickness": 8,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "ca-b1",
+   "x": 16,
+   "y": 0.6,
+   "width": 5,
+   "depth": 3.4,
+   "thickness": 3,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "ca-b2",
+   "x": 23.2,
+   "y": 0,
+   "width": 5.6,
+   "depth": 3.4,
+   "thickness": 4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "ca-bridge",
+   "x": 31,
+   "y": -2.2,
+   "width": 15,
+   "depth": 3.4,
+   "thickness": 0.4,
+   "type": "bridge",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "timber"
+  },
+  {
+   "id": "ca-snow-ledge",
+   "x": 48,
+   "y": -1.2,
+   "width": 8,
+   "depth": 3.4,
+   "thickness": 4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "ca-up-1",
+   "x": 31.2,
+   "y": 1,
+   "width": 3.2,
+   "depth": 3.4,
+   "thickness": 1,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper"
+  },
+  {
+   "id": "ca-up-2",
+   "x": 36.8,
+   "y": 2,
+   "width": 3.4,
+   "depth": 3.4,
+   "thickness": 1.4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper",
+   "style": "overhang"
+  },
+  {
+   "id": "ca-lift",
+   "x": 42.6,
+   "y": 2.6,
+   "width": 2.6,
+   "depth": 3.4,
+   "thickness": 0.6,
+   "type": "moving",
+   "motion": "vertical",
+   "amplitude": 0.7,
+   "phase": 0,
+   "period": 6,
+   "route": "upper",
+   "style": "masonry-lift",
+   "pause": 0.9
+  },
+  {
+   "id": "ca-up-3",
+   "x": 47.4,
+   "y": 3.6,
+   "width": 2.4,
+   "depth": 3.4,
+   "thickness": 1.2,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper"
+  },
+  {
+   "id": "ca-star-island",
+   "x": 52,
+   "y": 4.2,
+   "width": 4,
+   "depth": 3.4,
+   "thickness": 1.6,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper"
+  },
+  {
+   "id": "ca-e1",
+   "x": 58,
+   "y": -0.4,
+   "width": 6,
+   "depth": 3.4,
+   "thickness": 4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "ca-ice",
+   "x": 66.2,
+   "y": -0.8,
+   "width": 9,
+   "depth": 3.4,
+   "thickness": 3,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "surface": "ice"
+  },
+  {
+   "id": "ca-f2",
+   "x": 76.2,
+   "y": -1.3,
+   "width": 6,
+   "depth": 3.4,
+   "thickness": 4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "ca-g-island",
+   "x": 84.6,
+   "y": -0.6,
+   "width": 10,
+   "depth": 3.4,
+   "thickness": 4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "ca-g-safe",
+   "x": 97,
+   "y": 0,
+   "width": 5,
+   "depth": 3.4,
+   "thickness": 3,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "ca-h-step",
+   "x": 104.2,
+   "y": 0.8,
+   "width": 2.8,
+   "depth": 3.4,
+   "thickness": 1.4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "ca-finish",
+   "x": 109.4,
+   "y": 0.2,
+   "width": 14,
+   "depth": 3.4,
+   "thickness": 5,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  }
+ ],
+ "coins": [
+  {
+   "id": "ca-coin-01",
+   "platformId": "ca-start",
+   "offset": 5.5,
+   "height": 1.1
+  },
+  {
+   "id": "ca-coin-02",
+   "platformId": "ca-start",
+   "offset": 8,
+   "height": 1.1
+  },
+  {
+   "id": "ca-coin-03",
+   "platformId": "ca-start",
+   "offset": 10.5,
+   "height": 1.1
+  },
+  {
+   "id": "ca-coin-04",
+   "platformId": "ca-start",
+   "offset": 15,
+   "height": 1.9
+  },
+  {
+   "id": "ca-coin-05",
+   "platformId": "ca-b1",
+   "offset": 2.5,
+   "height": 1.1
+  },
+  {
+   "id": "ca-coin-06",
+   "platformId": "ca-b2",
+   "offset": 1.6,
+   "height": 1.1
+  },
+  {
+   "id": "ca-coin-07",
+   "platformId": "ca-b2",
+   "offset": 4,
+   "height": 1.1
+  },
+  {
+   "id": "ca-coin-08",
+   "platformId": "ca-bridge",
+   "offset": 1.5,
+   "height": 1
+  },
+  {
+   "id": "ca-coin-09",
+   "platformId": "ca-bridge",
+   "offset": 3.5,
+   "height": 1
+  },
+  {
+   "id": "ca-coin-10",
+   "platformId": "ca-bridge",
+   "offset": 5.5,
+   "height": 1
+  },
+  {
+   "id": "ca-coin-11",
+   "platformId": "ca-bridge",
+   "offset": 7.5,
+   "height": 1
+  },
+  {
+   "id": "ca-coin-12",
+   "platformId": "ca-bridge",
+   "offset": 9.5,
+   "height": 1
+  },
+  {
+   "id": "ca-coin-13",
+   "platformId": "ca-bridge",
+   "offset": 11.5,
+   "height": 1
+  },
+  {
+   "id": "ca-coin-14",
+   "platformId": "ca-bridge",
+   "offset": 13.5,
+   "height": 1
+  },
+  {
+   "id": "ca-coin-15",
+   "platformId": "ca-snow-ledge",
+   "offset": 2.5,
+   "height": 1.1
+  },
+  {
+   "id": "ca-coin-16",
+   "platformId": "ca-snow-ledge",
+   "offset": 5.5,
+   "height": 1.1
+  },
+  {
+   "id": "ca-coin-17",
+   "platformId": "ca-up-1",
+   "offset": 1.6,
+   "height": 1.2
+  },
+  {
+   "id": "ca-coin-18",
+   "platformId": "ca-up-2",
+   "offset": 1.7,
+   "height": 1.2
+  },
+  {
+   "id": "ca-coin-19",
+   "platformId": "ca-up-2",
+   "offset": 4.5,
+   "height": 2
+  },
+  {
+   "id": "ca-coin-20",
+   "platformId": "ca-up-3",
+   "offset": 1.2,
+   "height": 1.2
+  },
+  {
+   "id": "ca-coin-21",
+   "platformId": "ca-e1",
+   "offset": 4.5,
+   "height": 1.1
+  },
+  {
+   "id": "ca-coin-22",
+   "platformId": "ca-ice",
+   "offset": 2,
+   "height": 1.1
+  },
+  {
+   "id": "ca-coin-23",
+   "platformId": "ca-ice",
+   "offset": 6.5,
+   "height": 1.1
+  },
+  {
+   "id": "ca-coin-24",
+   "platformId": "ca-f2",
+   "offset": 2,
+   "height": 1.1
+  },
+  {
+   "id": "ca-coin-25",
+   "platformId": "ca-f2",
+   "offset": 4.2,
+   "height": 1.1
+  },
+  {
+   "id": "ca-coin-26",
+   "platformId": "ca-g-island",
+   "offset": 1.2,
+   "height": 1.1
+  },
+  {
+   "id": "ca-coin-27",
+   "platformId": "ca-g-island",
+   "offset": 8.8,
+   "height": 1.1
+  },
+  {
+   "id": "ca-coin-28",
+   "platformId": "ca-g-safe",
+   "offset": 2.5,
+   "height": 1.1
+  },
+  {
+   "id": "ca-coin-29",
+   "platformId": "ca-finish",
+   "offset": 3,
+   "height": 1.1
+  },
+  {
+   "id": "ca-coin-30",
+   "platformId": "ca-finish",
+   "offset": 6,
+   "height": 1.1
+  }
+ ],
+ "stars": [
+  {
+   "id": "ca-star-01",
+   "platformId": "ca-star-island",
+   "offset": 2.2,
+   "height": 1.15
+  },
+  {
+   "id": "ca-star-02",
+   "platformId": "ca-ice",
+   "offset": 4.5,
+   "height": 2.2
+  },
+  {
+   "id": "ca-star-03",
+   "platformId": "ca-h-step",
+   "offset": 1.4,
+   "height": 2.3
+  }
+ ],
+ "checkpoints": [
+  {
+   "id": "ca-checkpoint-01",
+   "platformId": "ca-e1",
+   "offset": 1
+  },
+  {
+   "id": "ca-checkpoint-02",
+   "platformId": "ca-g-safe",
+   "offset": 1
+  }
+ ],
+ "discovery": {
+  "id": "ca-discovery",
+  "platformId": "ca-e1",
+  "offset": 2.6,
+  "factId": "ca-discovery"
+ },
+ "finish": {
+  "platformId": "ca-finish",
+  "offset": 11
+ },
+ "hazards": [],
+ "enemies": [
+  {
+   "id": "ca-pinecone",
+   "platformId": "ca-g-island",
+   "minOffset": 3.5,
+   "maxOffset": 7.5,
+   "speed": 0.8,
+   "turnPause": 0.6
+  }
+ ],
+ "discoveryBlocks": [
+  {
+   "id": "ca-discovery-block",
+   "x": 35.6,
+   "y": 0.28,
+   "width": 0.75,
+   "height": 0.8,
+   "factId": "ca-discovery"
+  }
+ ],
+ "mainRoute": [
+  "ca-start",
+  "ca-b1",
+  "ca-b2",
+  "ca-bridge",
+  "ca-snow-ledge",
+  "ca-e1",
+  "ca-ice",
+  "ca-f2",
+  "ca-g-island",
+  "ca-g-safe",
+  "ca-h-step",
+  "ca-finish"
+ ],
+ "upperRoute": [
+  "ca-start",
+  "ca-b1",
+  "ca-b2",
+  "ca-up-1",
+  "ca-up-2",
+  "ca-lift",
+  "ca-up-3",
+  "ca-star-island",
+  "ca-e1",
+  "ca-ice",
+  "ca-f2",
+  "ca-g-island",
+  "ca-g-safe",
+  "ca-h-step",
+  "ca-finish"
+ ],
+ "physics": {
+  "gravity": 20,
+  "jumpSpeed": 9,
+  "runSpeed": 6,
+  "acceleration": 25,
+  "airControl": 0.65,
+  "coyoteTime": 0.12,
+  "jumpBuffer": 0.12,
+  "playerRadius": 0.2,
+  "playerHeight": 1.83,
+  "killY": -7,
+  "iceGrip": 0.3
+ }
+}

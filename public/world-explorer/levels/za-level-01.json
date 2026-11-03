@@ -1,0 +1,627 @@
+{
+ "id": "za-level-01",
+ "countryId": "ZA",
+ "legacyCode": "ZAF",
+ "title": "Savanna Wildlife Adventure",
+ "environmentId": "south-africa-savanna",
+ "difficulty": "easy-medium",
+ "environment": {
+  "biome": "savanna-grassland",
+  "locationReference": "Kruger National Park-inspired lowveld savanna, Mpumalanga and Limpopo",
+  "terrainMaterial": "weathered-granite-kopjes-and-red-earth",
+  "vegetationPack": "umbrella-acacias-golden-grass-and-shrubs",
+  "architecturePack": "rustic-timber-bridges-and-cable-platforms",
+  "landmarkAssets": [
+   "granite-kopjes",
+   "river-valley",
+   "giraffes",
+   "african-elephants",
+   "zebras",
+   "antelope"
+  ],
+  "lightingPreset": "warm-golden-afternoon",
+  "skyPreset": "wide-savanna-sky",
+  "weatherPreset": "warm-dust-motes"
+ },
+ "sections": [
+  {
+   "id": "A",
+   "label": "Red-earth kopje",
+   "x": 0
+  },
+  {
+   "id": "B",
+   "label": "Dry-grass steps",
+   "x": 16.5
+  },
+  {
+   "id": "C",
+   "label": "Rustic river bridge",
+   "x": 31.5
+  },
+  {
+   "id": "D",
+   "label": "Earthy rock climb",
+   "x": 32
+  },
+  {
+   "id": "E",
+   "label": "Kopje star with a view",
+   "x": 54
+  },
+  {
+   "id": "F",
+   "label": "Suspended wooden platform",
+   "x": 60.5
+  },
+  {
+   "id": "G",
+   "label": "Thorn-bush roller and checkpoint",
+   "x": 85.5
+  },
+  {
+   "id": "H",
+   "label": "Wildlife observation point",
+   "x": 105.5
+  }
+ ],
+ "camera": {
+  "height": 4.4,
+  "look": 1.35,
+  "follow": 0.42,
+  "maxRise": 1.8
+ },
+ "spawn": {
+  "platformId": "za-start",
+  "offset": 3
+ },
+ "platforms": [
+  {
+   "id": "za-start",
+   "x": 0,
+   "y": 0,
+   "width": 15,
+   "depth": 3.4,
+   "thickness": 6,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "za-b1",
+   "x": 17,
+   "y": 0.5,
+   "width": 5,
+   "depth": 3.4,
+   "thickness": 3,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "za-b2",
+   "x": 24.4,
+   "y": 0,
+   "width": 5.2,
+   "depth": 3.4,
+   "thickness": 3.5,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "za-bridge",
+   "x": 31.6,
+   "y": -2,
+   "width": 11,
+   "depth": 3.4,
+   "thickness": 0.4,
+   "type": "bridge",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "timber"
+  },
+  {
+   "id": "za-rock-mid",
+   "x": 44.8,
+   "y": -1.6,
+   "width": 5.5,
+   "depth": 3.4,
+   "thickness": 3,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "za-c-exit",
+   "x": 52.3,
+   "y": -0.8,
+   "width": 6,
+   "depth": 3.4,
+   "thickness": 4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "za-up-1",
+   "x": 31.9,
+   "y": 1.1,
+   "width": 3.2,
+   "depth": 3.4,
+   "thickness": 1,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper"
+  },
+  {
+   "id": "za-up-2",
+   "x": 37.6,
+   "y": 2.1,
+   "width": 3,
+   "depth": 3.4,
+   "thickness": 1.1,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper"
+  },
+  {
+   "id": "za-up-swing",
+   "x": 43.4,
+   "y": 3,
+   "width": 2.8,
+   "depth": 3.4,
+   "thickness": 0.4,
+   "type": "moving",
+   "motion": "horizontal",
+   "amplitude": 0.8,
+   "phase": 0,
+   "period": 6,
+   "route": "upper",
+   "style": "suspended",
+   "pause": 0.7
+  },
+  {
+   "id": "za-up-3",
+   "x": 48.8,
+   "y": 3.8,
+   "width": 2.8,
+   "depth": 3.4,
+   "thickness": 1.2,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper"
+  },
+  {
+   "id": "za-kopje",
+   "x": 54,
+   "y": 4.4,
+   "width": 4.4,
+   "depth": 3.4,
+   "thickness": 1.6,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper"
+  },
+  {
+   "id": "za-e1",
+   "x": 60.6,
+   "y": -0.2,
+   "width": 6.5,
+   "depth": 3.4,
+   "thickness": 4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "za-suspended",
+   "x": 70,
+   "y": -0.5,
+   "width": 3.6,
+   "depth": 3.4,
+   "thickness": 0.4,
+   "type": "moving",
+   "motion": "horizontal",
+   "amplitude": 1.6,
+   "phase": 0,
+   "period": 7.5,
+   "route": "main",
+   "style": "suspended",
+   "pause": 1
+  },
+  {
+   "id": "za-f2",
+   "x": 77.6,
+   "y": 0.1,
+   "width": 6,
+   "depth": 3.4,
+   "thickness": 4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "za-g-island",
+   "x": 86,
+   "y": 0.4,
+   "width": 10,
+   "depth": 3.4,
+   "thickness": 4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "za-g-safe",
+   "x": 98.4,
+   "y": 0.9,
+   "width": 5,
+   "depth": 3.4,
+   "thickness": 3,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "za-h-step",
+   "x": 105.6,
+   "y": 1.7,
+   "width": 2.8,
+   "depth": 3.4,
+   "thickness": 1.4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "za-finish",
+   "x": 110.8,
+   "y": 1.1,
+   "width": 14,
+   "depth": 3.4,
+   "thickness": 5,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  }
+ ],
+ "coins": [
+  {
+   "id": "za-coin-01",
+   "platformId": "za-start",
+   "offset": 5.5,
+   "height": 1.1
+  },
+  {
+   "id": "za-coin-02",
+   "platformId": "za-start",
+   "offset": 8,
+   "height": 1.1
+  },
+  {
+   "id": "za-coin-03",
+   "platformId": "za-start",
+   "offset": 10.5,
+   "height": 1.1
+  },
+  {
+   "id": "za-coin-04",
+   "platformId": "za-start",
+   "offset": 16,
+   "height": 1.9
+  },
+  {
+   "id": "za-coin-05",
+   "platformId": "za-b1",
+   "offset": 2.5,
+   "height": 1.1
+  },
+  {
+   "id": "za-coin-06",
+   "platformId": "za-b2",
+   "offset": 1.6,
+   "height": 1.1
+  },
+  {
+   "id": "za-coin-07",
+   "platformId": "za-b2",
+   "offset": 3.8,
+   "height": 1.1
+  },
+  {
+   "id": "za-coin-08",
+   "platformId": "za-bridge",
+   "offset": 1.5,
+   "height": 1
+  },
+  {
+   "id": "za-coin-09",
+   "platformId": "za-bridge",
+   "offset": 3.5,
+   "height": 1
+  },
+  {
+   "id": "za-coin-10",
+   "platformId": "za-bridge",
+   "offset": 5.5,
+   "height": 1
+  },
+  {
+   "id": "za-coin-11",
+   "platformId": "za-bridge",
+   "offset": 7.5,
+   "height": 1
+  },
+  {
+   "id": "za-coin-12",
+   "platformId": "za-bridge",
+   "offset": 9.5,
+   "height": 1
+  },
+  {
+   "id": "za-coin-13",
+   "platformId": "za-bridge",
+   "offset": 12,
+   "height": 1.7
+  },
+  {
+   "id": "za-coin-14",
+   "platformId": "za-rock-mid",
+   "offset": 2.7,
+   "height": 1.1
+  },
+  {
+   "id": "za-coin-15",
+   "platformId": "za-c-exit",
+   "offset": 2,
+   "height": 1.1
+  },
+  {
+   "id": "za-coin-16",
+   "platformId": "za-c-exit",
+   "offset": 4.2,
+   "height": 1.1
+  },
+  {
+   "id": "za-coin-17",
+   "platformId": "za-up-1",
+   "offset": 1.6,
+   "height": 1.2
+  },
+  {
+   "id": "za-coin-18",
+   "platformId": "za-up-2",
+   "offset": 1.5,
+   "height": 1.2
+  },
+  {
+   "id": "za-coin-19",
+   "platformId": "za-up-2",
+   "offset": 4.2,
+   "height": 2
+  },
+  {
+   "id": "za-coin-20",
+   "platformId": "za-up-3",
+   "offset": 1.4,
+   "height": 1.2
+  },
+  {
+   "id": "za-coin-21",
+   "platformId": "za-up-3",
+   "offset": 3.8,
+   "height": 2
+  },
+  {
+   "id": "za-coin-22",
+   "platformId": "za-e1",
+   "offset": 4.5,
+   "height": 1.1
+  },
+  {
+   "id": "za-coin-23",
+   "platformId": "za-suspended",
+   "offset": 1.8,
+   "height": 1.1
+  },
+  {
+   "id": "za-coin-24",
+   "platformId": "za-f2",
+   "offset": 1.5,
+   "height": 1.1
+  },
+  {
+   "id": "za-coin-25",
+   "platformId": "za-f2",
+   "offset": 4.5,
+   "height": 1.1
+  },
+  {
+   "id": "za-coin-26",
+   "platformId": "za-g-island",
+   "offset": 1.2,
+   "height": 1.1
+  },
+  {
+   "id": "za-coin-27",
+   "platformId": "za-g-island",
+   "offset": 8.8,
+   "height": 1.1
+  },
+  {
+   "id": "za-coin-28",
+   "platformId": "za-g-safe",
+   "offset": 2.5,
+   "height": 1.1
+  },
+  {
+   "id": "za-coin-29",
+   "platformId": "za-finish",
+   "offset": 3,
+   "height": 1.1
+  },
+  {
+   "id": "za-coin-30",
+   "platformId": "za-finish",
+   "offset": 6,
+   "height": 1.1
+  }
+ ],
+ "stars": [
+  {
+   "id": "za-star-01",
+   "platformId": "za-kopje",
+   "offset": 2.2,
+   "height": 1.15
+  },
+  {
+   "id": "za-star-02",
+   "platformId": "za-f2",
+   "offset": 3,
+   "height": 2.2
+  },
+  {
+   "id": "za-star-03",
+   "platformId": "za-h-step",
+   "offset": 1.4,
+   "height": 2.3
+  }
+ ],
+ "checkpoints": [
+  {
+   "id": "za-checkpoint-01",
+   "platformId": "za-e1",
+   "offset": 1
+  },
+  {
+   "id": "za-checkpoint-02",
+   "platformId": "za-g-safe",
+   "offset": 1
+  }
+ ],
+ "discovery": {
+  "id": "za-discovery",
+  "platformId": "za-e1",
+  "offset": 2.6,
+  "factId": "za-discovery"
+ },
+ "finish": {
+  "platformId": "za-finish",
+  "offset": 11
+ },
+ "hazards": [],
+ "enemies": [
+  {
+   "id": "za-thorn-bush-roller",
+   "platformId": "za-g-island",
+   "minOffset": 3.5,
+   "maxOffset": 7.5,
+   "speed": 0.9,
+   "turnPause": 0.3
+  }
+ ],
+ "discoveryBlocks": [
+  {
+   "id": "za-discovery-block",
+   "x": 36.3,
+   "y": 0.48,
+   "width": 0.75,
+   "height": 0.8,
+   "factId": "za-discovery"
+  }
+ ],
+ "mainRoute": [
+  "za-start",
+  "za-b1",
+  "za-b2",
+  "za-bridge",
+  "za-rock-mid",
+  "za-c-exit",
+  "za-e1",
+  "za-suspended",
+  "za-f2",
+  "za-g-island",
+  "za-g-safe",
+  "za-h-step",
+  "za-finish"
+ ],
+ "upperRoute": [
+  "za-start",
+  "za-b1",
+  "za-b2",
+  "za-up-1",
+  "za-up-2",
+  "za-up-swing",
+  "za-up-3",
+  "za-kopje",
+  "za-e1",
+  "za-suspended",
+  "za-f2",
+  "za-g-island",
+  "za-g-safe",
+  "za-h-step",
+  "za-finish"
+ ],
+ "physics": {
+  "gravity": 20,
+  "jumpSpeed": 9,
+  "runSpeed": 6,
+  "acceleration": 25,
+  "airControl": 0.65,
+  "coyoteTime": 0.12,
+  "jumpBuffer": 0.12,
+  "playerRadius": 0.2,
+  "playerHeight": 1.83,
+  "killY": -7,
+  "iceGrip": 0.3
+ }
+}

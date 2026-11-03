@@ -1,0 +1,333 @@
+{
+  "recordedAt": "2026-11-03T16:05:22.976Z",
+  "batch": "west",
+  "countries": 17,
+  "beforeBuildId": "5Jl92vlcKt4VBmHduiRpu",
+  "productionBuildId": "b4spftz4ZxSIya5Kh9Aj-",
+  "simulationRuns": 544,
+  "recoveryChecks": 1088,
+  "edgeChecks": 544,
+  "runtimeSettings": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "startTimings": [
+    0,
+    0.7,
+    1.9,
+    3.1
+  ],
+  "renderedRoutes": 34,
+  "captures": 238,
+  "responsiveLayouts": 136,
+  "tests": {
+    "files": 3,
+    "tests": 92,
+    "passed": true
+  },
+  "productionBuildPassed": true,
+  "preservation": [
+    {
+      "file": "lib/world-explorer/simulation.ts",
+      "unchanged": true,
+      "sha256": "e7fcd66ebcc71bca6e7bf5352a6bb86c02462542c691a791df722d9a017f2eba"
+    },
+    {
+      "file": "lib/world-explorer/difficulty.ts",
+      "unchanged": true,
+      "sha256": "eda3d13fded618bcf30718280f1fc405efb65a2d72441bcb4b6be0d7ba498ffc"
+    },
+    {
+      "file": "lib/world-explorer/game-types.ts",
+      "unchanged": true,
+      "sha256": "8b2d04fbcb155917d4787f00d2ac9a5f6c61502aa7c2fa1a7ef775df8795ccb3"
+    },
+    {
+      "file": "lib/world-explorer/level-manifest.ts",
+      "unchanged": true,
+      "sha256": "0b333887410d7a895c6ddf323c14912022f0654b576dc72172f9e741c0059041"
+    },
+    {
+      "file": "components/world-explorer/country-scene.ts",
+      "unchanged": true,
+      "sha256": "be2be87347732484a50331aa7da4a6cab9bca0219c7cc089f9f246cf7105d570"
+    },
+    {
+      "file": "components/world-explorer/kit/surface-maps.ts",
+      "unchanged": true,
+      "sha256": "3fa06435fe5717a244e90f10d070375eab2d22d74324848d1ef0865bceacdf6e"
+    },
+    {
+      "file": "components/world-explorer/japan-materials.ts",
+      "unchanged": true,
+      "sha256": "583a0fd83a9f7eec8a04919587e58ecee618526770db944d824c95c5a14825c3"
+    },
+    {
+      "file": "lib/world-explorer/levels/author.ts",
+      "unchanged": true,
+      "sha256": "372e8f40ef97d3801979b631854a954c911c3769d6722e3e89905a1a30be4e25"
+    },
+    {
+      "file": "lib/world-explorer/levels/central-asia/index.ts",
+      "unchanged": true,
+      "sha256": "01429104a44c8b9f5646695606a1a727fc81f9ada4a32524076cf9aecfdf13bc"
+    },
+    {
+      "file": "lib/world-explorer/levels/central-asia/kaz.ts",
+      "unchanged": true,
+      "sha256": "beba1faa2c31bf6d789311be1b2e4d20c8d09975eb43f8a3d0277078d7e360e5"
+    },
+    {
+      "file": "lib/world-explorer/levels/central-asia/kgz.ts",
+      "unchanged": true,
+      "sha256": "481d0c8356d670059b8b9167c4641b8ecaf7f0e0bd4678dba5e8ce36946d8d0e"
+    },
+    {
+      "file": "lib/world-explorer/levels/central-asia/tjk.ts",
+      "unchanged": true,
+      "sha256": "3641813f1fb6f7cd4abd6aa89a423c64a4a11827e147532bb8132daf3175e87e"
+    },
+    {
+      "file": "lib/world-explorer/levels/central-asia/tkm.ts",
+      "unchanged": true,
+      "sha256": "0300316f5a81ba2074b2b641b8d161940f2b0a6d555f0773f6f5490bf462e986"
+    },
+    {
+      "file": "lib/world-explorer/levels/central-asia/uzb.ts",
+      "unchanged": true,
+      "sha256": "ab0cd66c8f5455dfa0a426ee50512f164901f0b14de36a78adee324575f69ad8"
+    },
+    {
+      "file": "lib/world-explorer/levels/south-asia/afg.ts",
+      "unchanged": true,
+      "sha256": "88c24d99051e7225239a50c0d8350f9f3d901f3f1915b4dbeae2b12605d99717"
+    },
+    {
+      "file": "lib/world-explorer/levels/south-asia/bgd.ts",
+      "unchanged": true,
+      "sha256": "6a2befe2d661e0f2ea3499e75c5e95ddb335ac946215d29aaf2af1cce35ad9f6"
+    },
+    {
+      "file": "lib/world-explorer/levels/south-asia/btn.ts",
+      "unchanged": true,
+      "sha256": "5cb31438bc7c70db8127310121e56f505e235b10b07a8fa1405ccc417dcb7759"
+    },
+    {
+      "file": "lib/world-explorer/levels/south-asia/ind.ts",
+      "unchanged": true,
+      "sha256": "7e2c308641811c2afbfb45ca736bf5ea3cf8b8d66ef0bf7567cfe4bf86b61831"
+    },
+    {
+      "file": "lib/world-explorer/levels/south-asia/index.ts",
+      "unchanged": true,
+      "sha256": "1335ce8657f31a89a2641a303be3a10bf90bcb19c70234baf26e41fd27dabe23"
+    },
+    {
+      "file": "lib/world-explorer/levels/south-asia/irn.ts",
+      "unchanged": true,
+      "sha256": "60a4edd7a0b97cbf73b090b19e9b7da8169da215647910353decc795349f5e14"
+    },
+    {
+      "file": "lib/world-explorer/levels/south-asia/lka.ts",
+      "unchanged": true,
+      "sha256": "a8d007df1f104a4abf42ced165713ca58ade12c494bd3dee33b5bc0a4deff520"
+    },
+    {
+      "file": "lib/world-explorer/levels/south-asia/mdv.ts",
+      "unchanged": true,
+      "sha256": "716638ee5da7b93b886c5bff3e735fce28905d1a825a6252002b02dc0d709bb8"
+    },
+    {
+      "file": "lib/world-explorer/levels/south-asia/npl.ts",
+      "unchanged": true,
+      "sha256": "5289fbd89f5c17425cd80b09af7d3e699e4f2cfbe7a09f5bd3f4e2d88b9ce282"
+    },
+    {
+      "file": "lib/world-explorer/levels/south-asia/pak.ts",
+      "unchanged": true,
+      "sha256": "8ef449700a90b7a5b59ce1bab1f2331fdf4060fb7bf17abd95307b70235a3568"
+    },
+    {
+      "file": "lib/world-explorer/levels/southeast-asia/brn.ts",
+      "unchanged": true,
+      "sha256": "26efb67d47a168345496b29f40b9696b2d1e196e9a143fd739515d2b8883531d"
+    },
+    {
+      "file": "lib/world-explorer/levels/southeast-asia/idn.ts",
+      "unchanged": true,
+      "sha256": "e09c6a7be60d1ef9b7e722b5cfdea84de7c7044f85c1fa8c7656ab2e2dadbd58"
+    },
+    {
+      "file": "lib/world-explorer/levels/southeast-asia/index.ts",
+      "unchanged": true,
+      "sha256": "7b46303f3589e5b6689d4c6b367fc0fa26ed44944971288bc00c0e2e25a7bd30"
+    },
+    {
+      "file": "lib/world-explorer/levels/southeast-asia/khm.ts",
+      "unchanged": true,
+      "sha256": "630500409b6fe73a73d4790e71b73d4ae5e4607eec1d85309546f6197ba880d4"
+    },
+    {
+      "file": "lib/world-explorer/levels/southeast-asia/lao.ts",
+      "unchanged": true,
+      "sha256": "c2cbb7eea32e66e14fd473a48b9aacbad3066de5f22cf2566ef6cea330008a50"
+    },
+    {
+      "file": "lib/world-explorer/levels/southeast-asia/mmr.ts",
+      "unchanged": true,
+      "sha256": "c57d5396bfcffa3c9e17fadaa27cf8e75d5e684188f3bf77c0df526561b78afb"
+    },
+    {
+      "file": "lib/world-explorer/levels/southeast-asia/mys.ts",
+      "unchanged": true,
+      "sha256": "eeb24db8cefa786a31e52bb3e74334ec8842fd089d4aeb1dc0fe8a21b4f15633"
+    },
+    {
+      "file": "lib/world-explorer/levels/southeast-asia/phl.ts",
+      "unchanged": true,
+      "sha256": "f9a5cef4c793359513cef706df61fb3970d8370487fe4955768bd56b4e67e442"
+    },
+    {
+      "file": "lib/world-explorer/levels/southeast-asia/sgp.ts",
+      "unchanged": true,
+      "sha256": "5b2aaf3e5f41539e2bc821133b218ad45e0b7065f26de66bcf35cded34ea7fc7"
+    },
+    {
+      "file": "lib/world-explorer/levels/southeast-asia/tha.ts",
+      "unchanged": true,
+      "sha256": "100092f51aa66740f5595c094edc67200f7b39e978a2a5120fa0ee377febaec4"
+    },
+    {
+      "file": "lib/world-explorer/levels/southeast-asia/tls.ts",
+      "unchanged": true,
+      "sha256": "61e6fe44744fc9ed49e6759990565c97bde59afc89ae3365c4e80b90f90cbfe5"
+    },
+    {
+      "file": "lib/world-explorer/levels/southeast-asia/vnm.ts",
+      "unchanged": true,
+      "sha256": "355e34a5e24fb5b15633d8d1428b9581e257fc36e61c00f4a4a09b3c9113357f"
+    },
+    {
+      "file": "lib/world-explorer/levels/west-asia/are.ts",
+      "unchanged": true,
+      "sha256": "cbdc4e34eb3be94d79b1172f82ed5223eeed794526b556e04ce6bfa16e1fab39"
+    },
+    {
+      "file": "lib/world-explorer/levels/west-asia/arm.ts",
+      "unchanged": true,
+      "sha256": "dfc566330f96677a20fc066174ad055f6cbe5162d701e6a519468f0af7abe845"
+    },
+    {
+      "file": "lib/world-explorer/levels/west-asia/aze.ts",
+      "unchanged": true,
+      "sha256": "283229ab48518eed7da2a61bab343fed5b4355164ff3f880315f64c2fef3651e"
+    },
+    {
+      "file": "lib/world-explorer/levels/west-asia/bhr.ts",
+      "unchanged": true,
+      "sha256": "ae6116ef220dcac7c1fa7e6122f729d471fb04df3040b373cd881f84c78f5bcc"
+    },
+    {
+      "file": "lib/world-explorer/levels/west-asia/cyp.ts",
+      "unchanged": true,
+      "sha256": "fa22e74ba60446be9d05160e1449349a2e331ab355c29b832bf69fda3b9020e9"
+    },
+    {
+      "file": "lib/world-explorer/levels/west-asia/geo.ts",
+      "unchanged": true,
+      "sha256": "5c6b5c948b62c804f2b89cc44f4fc955579dc705c259d07a5b08b7e531519763"
+    },
+    {
+      "file": "lib/world-explorer/levels/west-asia/index.ts",
+      "unchanged": true,
+      "sha256": "c11bafe1216c6b4df27c4d7d273aace66a394ab3ae9e718a985a8ae4aa9c25a3"
+    },
+    {
+      "file": "lib/world-explorer/levels/west-asia/irq.ts",
+      "unchanged": true,
+      "sha256": "3cdc5d30db2f832da52755b692c56e615fb712273c870269ecc49249f42b6c0c"
+    },
+    {
+      "file": "lib/world-explorer/levels/west-asia/isr.ts",
+      "unchanged": true,
+      "sha256": "abae43b0fcc989bb3e64ba6d601bbc1f8dafe8ef0750554b1e97afa95c0c42e9"
+    },
+    {
+      "file": "lib/world-explorer/levels/west-asia/jor.ts",
+      "unchanged": true,
+      "sha256": "3abeb3f466896524322b42bfb8ab5a0a9eb4b172b0cc44528bba15d6ed037823"
+    },
+    {
+      "file": "lib/world-explorer/levels/west-asia/kwt.ts",
+      "unchanged": true,
+      "sha256": "a28f3fec54511c9cc36ca63ef6d55a2e77a9575b9d9ce18ab5b623568b40933b"
+    },
+    {
+      "file": "lib/world-explorer/levels/west-asia/lbn.ts",
+      "unchanged": true,
+      "sha256": "1773f1ed69f12b9a6d22d281390dfaf7a528c38a366dcf1ea6965a5c7490865d"
+    },
+    {
+      "file": "lib/world-explorer/levels/west-asia/omn.ts",
+      "unchanged": true,
+      "sha256": "d56bc482eb41fbe0d72527834235a13236664f761f9f745b4d98f5322c5ab8d3"
+    },
+    {
+      "file": "lib/world-explorer/levels/west-asia/qat.ts",
+      "unchanged": true,
+      "sha256": "c00e77a38da5a294bf221d0b12ea3a16bc64cd43d326f3e2f26fbca7f1904717"
+    },
+    {
+      "file": "lib/world-explorer/levels/west-asia/sau.ts",
+      "unchanged": true,
+      "sha256": "121f11283016feb20a32581322196a45e7c84762dfe4d268cae52f77d3f64c2d"
+    },
+    {
+      "file": "lib/world-explorer/levels/west-asia/syr.ts",
+      "unchanged": true,
+      "sha256": "b0bf3bfe75a97a78c6a55429d3a21447b9b3ce08d25b18a0db7cfc7df60815d4"
+    },
+    {
+      "file": "lib/world-explorer/levels/west-asia/tur.ts",
+      "unchanged": true,
+      "sha256": "9e0bde2a44847127bf638981e301fd7bf0deaebe0f378b43cd51c7be01655b4f"
+    },
+    {
+      "file": "lib/world-explorer/levels/west-asia/yem.ts",
+      "unchanged": true,
+      "sha256": "b6b6e5b38abc42dbfa8949f887963cfed4576a74b703c5fbd5e3bd75c6ad34d1"
+    },
+    {
+      "file": "public/world-explorer/levels/cn-level-01.json",
+      "unchanged": true,
+      "sha256": "2766ed74180b84bbf72d113c2a5fb539a7e8e5169fe8552b14c2da9f61030388"
+    },
+    {
+      "file": "public/world-explorer/levels/jp-level-01.json",
+      "unchanged": true,
+      "sha256": "ab9c0af9a51648a4ca7122506eb3ba408b8f5101cdc8be094e09b3337c675264"
+    },
+    {
+      "file": "public/world-explorer/levels/mn-level-01.json",
+      "unchanged": true,
+      "sha256": "b4a50b678a800639f8f58893b483b93c9edd21af3bcbd36cffa6d909c8787973"
+    },
+    {
+      "file": "public/world-explorer/levels/kp-level-01.json",
+      "unchanged": true,
+      "sha256": "0dcbe1cb794b29272434ae81d00c6f2b262b038813d2d99bfad1c5574bbbcb06"
+    },
+    {
+      "file": "public/world-explorer/levels/kr-level-01.json",
+      "unchanged": true,
+      "sha256": "b216b2223f6feb6657b37f5c74405ba6ad5f1dcd96916f04c36e5c7ed2f525ed"
+    }
+  ],
+  "humanPlaytests": "PENDING",
+  "accountSave": "PENDING",
+  "physicalPhone": "PENDING",
+  "confirmedPerformance": "PENDING",
+  "released": false
+}

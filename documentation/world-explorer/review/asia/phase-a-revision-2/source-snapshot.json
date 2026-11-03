@@ -1,0 +1,17 @@
+{
+  "buildId": "um9nGOnV6b5-uBzo7h9C6",
+  "files": {
+    "components/world-explorer/countries/east-asia.ts": "e028b1f45ab67b9b91c9f21a0d68e4004f56fa00cdbcd36d1e7edebb9e758dc5",
+    "components/world-explorer/countries/east-asia-terrain.ts": "ce07ff0a58ab55f4827a9b768fca0f1fbeda9d508bf23a5c675a5937edda11e5",
+    "components/world-explorer/country-scene.ts": "3daece05a2cc2c5b32ad9bf1f93929ca583da88a1556fe11e9e8f5cf576d89d5",
+    "components/world-explorer/country-run.tsx": "22c739f2b39006c2cd352073a9c75b167f944a9cb3a32137d177088c528d847b",
+    "components/world-explorer/world-explorer.module.css": "a2054bccc8ddecdbea7cf16bb61ed27ac88bc21c3f16a99dd0dbf3f9e7c84f52",
+    "lib/world-explorer/asia-playtest.ts": "2722bbf5189b2c89d30c3ac0b76bbc8e060f4773d2c28bff4d40cc475d8fe9f4",
+    "public/world-explorer/levels/cn-level-01.json": "2766ed74180b84bbf72d113c2a5fb539a7e8e5169fe8552b14c2da9f61030388",
+    "public/world-explorer/levels/jp-level-01.json": "ab9c0af9a51648a4ca7122506eb3ba408b8f5101cdc8be094e09b3337c675264",
+    "public/world-explorer/levels/mn-level-01.json": "b4a50b678a800639f8f58893b483b93c9edd21af3bcbd36cffa6d909c8787973",
+    "public/world-explorer/levels/kp-level-01.json": "0dcbe1cb794b29272434ae81d00c6f2b262b038813d2d99bfad1c5574bbbcb06",
+    "public/world-explorer/levels/kr-level-01.json": "b216b2223f6feb6657b37f5c74405ba6ad5f1dcd96916f04c36e5c7ed2f525ed"
+  },
+  "scope": "Build and full suite use the current checkout. Separate avatar and South America development remains in the working tree; hashes bind this evidence to the actual tested runtime."
+}

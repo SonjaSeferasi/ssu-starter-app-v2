@@ -1,0 +1,958 @@
+{
+ "id": "eg-level-01",
+ "countryId": "EG",
+ "legacyCode": "EGY",
+ "title": "Giza Plateau: The Sun Gate",
+ "environmentId": "egypt-giza-desert",
+ "difficulty": "easy-medium",
+ "difficultyTier": 2,
+ "design": {
+  "archetype": "desert-ruins-mechanism",
+  "signatureMechanic": "pressure-plate-timed-gate",
+  "mechanics": [
+   "pressure-plate",
+   "timed-gate",
+   "sand-gusts",
+   "stone-stairs",
+   "scarab-patrol",
+   "elevated-colonnade"
+  ],
+  "terrain": [
+   "ground",
+   "sand",
+   "stairs",
+   "cliff",
+   "arch"
+  ],
+  "verticality": "medium",
+  "enemyProfile": "light",
+  "targetDurationSeconds": 60,
+  "seed": 2026101
+ },
+ "environment": {
+  "biome": "hot-desert-plateau",
+  "locationReference": "Giza Plateau, Greater Cairo — Pyramids of Giza and the Great Sphinx",
+  "terrainMaterial": "layered-sandstone-and-wind-blown-sand",
+  "vegetationPack": "clustered-date-palms-and-desert-shrubs",
+  "architecturePack": "sandstone-stairs-colonnade-pylon-gate",
+  "landmarkAssets": [
+   "great-pyramid",
+   "pyramid-of-khafre",
+   "pyramid-of-menkaure",
+   "queens-pyramids",
+   "great-sphinx",
+   "obelisk",
+   "papyrus-columns"
+  ],
+  "lightingPreset": "hot-midday-long-shadows",
+  "skyPreset": "clear-desert-haze",
+  "weatherPreset": "predictable-sand-gusts"
+ },
+ "sections": [
+  {
+   "id": "A",
+   "label": "Plateau entrance",
+   "x": 0
+  },
+  {
+   "id": "B",
+   "label": "Sandstone stairs",
+   "x": 28
+  },
+  {
+   "id": "C",
+   "label": "Wind canyon",
+   "x": 47
+  },
+  {
+   "id": "D",
+   "label": "Sunken courtyard",
+   "x": 73
+  },
+  {
+   "id": "E",
+   "label": "Sun gate and colonnade",
+   "x": 81
+  },
+  {
+   "id": "F",
+   "label": "Scarab terrace",
+   "x": 95
+  },
+  {
+   "id": "G",
+   "label": "Pyramid overlook",
+   "x": 112
+  }
+ ],
+ "camera": {
+  "height": 2.6,
+  "look": 1.75,
+  "follow": 1,
+  "maxRise": 0,
+  "distance": 20.5
+ },
+ "spawn": {
+  "platformId": "eg-start",
+  "offset": 6
+ },
+ "platforms": [
+  {
+   "id": "eg-start",
+   "x": -6,
+   "y": 0,
+   "width": 30,
+   "depth": 6,
+   "thickness": 14,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "ground"
+  },
+  {
+   "id": "eg-dune",
+   "x": 24,
+   "y": 0,
+   "width": 6,
+   "depth": 6,
+   "thickness": 14,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "sand",
+   "slope": 0.6
+  },
+  {
+   "id": "eg-stairs-1",
+   "x": 30,
+   "y": 0.6,
+   "width": 5,
+   "depth": 4.6,
+   "thickness": 14,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "stairs",
+   "slope": 1.2,
+   "steps": 4
+  },
+  {
+   "id": "eg-stairs-2",
+   "x": 37.6,
+   "y": 1.8,
+   "width": 3.6,
+   "depth": 4.6,
+   "thickness": 14,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "stairs",
+   "slope": 0.8,
+   "steps": 3
+  },
+  {
+   "id": "eg-terrace-b",
+   "x": 41.2,
+   "y": 2.6,
+   "width": 6.8,
+   "depth": 6,
+   "thickness": 15,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "ground"
+  },
+  {
+   "id": "eg-pillar-1",
+   "x": 50.6,
+   "y": 2.4,
+   "width": 2.6,
+   "depth": 3.8,
+   "thickness": 18,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "hoodoo",
+   "terrain": "cliff"
+  },
+  {
+   "id": "eg-pillar-2",
+   "x": 55.8,
+   "y": 2.8,
+   "width": 2.4,
+   "depth": 3.8,
+   "thickness": 18,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "hoodoo",
+   "terrain": "cliff"
+  },
+  {
+   "id": "eg-pillar-3",
+   "x": 60.8,
+   "y": 2.4,
+   "width": 2.6,
+   "depth": 3.8,
+   "thickness": 18,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "hoodoo",
+   "terrain": "cliff"
+  },
+  {
+   "id": "eg-canyon-far",
+   "x": 66,
+   "y": 2.2,
+   "width": 8.4,
+   "depth": 6,
+   "thickness": 15,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "ground"
+  },
+  {
+   "id": "eg-courtyard-a",
+   "x": 74.4,
+   "y": 0.4,
+   "width": 5,
+   "depth": 6,
+   "thickness": 12,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "paving",
+   "terrain": "ground"
+  },
+  {
+   "id": "eg-dais",
+   "x": 79.4,
+   "y": 1,
+   "width": 2,
+   "depth": 3,
+   "thickness": 12,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "dais",
+   "terrain": "mechanical"
+  },
+  {
+   "id": "eg-gate-court",
+   "x": 81.4,
+   "y": 0.4,
+   "width": 8.6,
+   "depth": 6,
+   "thickness": 12,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "paving",
+   "terrain": "ground"
+  },
+  {
+   "id": "eg-gate-exit",
+   "x": 90,
+   "y": 0.4,
+   "width": 5,
+   "depth": 6,
+   "thickness": 12,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "paving",
+   "terrain": "ground"
+  },
+  {
+   "id": "eg-stairs-3",
+   "x": 95,
+   "y": 0.4,
+   "width": 4,
+   "depth": 4.6,
+   "thickness": 13,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "stairs",
+   "slope": 1.2,
+   "steps": 4
+  },
+  {
+   "id": "eg-scarab-terrace",
+   "x": 99,
+   "y": 1.6,
+   "width": 13,
+   "depth": 6,
+   "thickness": 14,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "ground"
+  },
+  {
+   "id": "eg-overlook-slope",
+   "x": 114.4,
+   "y": 1.6,
+   "width": 7,
+   "depth": 6,
+   "thickness": 15,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "slope",
+   "slope": 1.4
+  },
+  {
+   "id": "eg-overlook",
+   "x": 121.4,
+   "y": 3,
+   "width": 14,
+   "depth": 6,
+   "thickness": 16,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "ground"
+  },
+  {
+   "id": "eg-col-1",
+   "x": 75.6,
+   "y": 3,
+   "width": 2.2,
+   "depth": 2.8,
+   "thickness": 0.55,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper",
+   "style": "lintel",
+   "terrain": "arch"
+  },
+  {
+   "id": "eg-col-2",
+   "x": 80,
+   "y": 3.6,
+   "width": 2.2,
+   "depth": 2.8,
+   "thickness": 0.55,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper",
+   "style": "lintel",
+   "terrain": "arch"
+  },
+  {
+   "id": "eg-col-3",
+   "x": 84.4,
+   "y": 4,
+   "width": 7.2,
+   "depth": 2.8,
+   "thickness": 0.55,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper",
+   "style": "lintel",
+   "terrain": "arch"
+  }
+ ],
+ "coins": [
+  {
+   "id": "eg-coin-01",
+   "platformId": "eg-start",
+   "offset": 9,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-02",
+   "platformId": "eg-start",
+   "offset": 12,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-03",
+   "platformId": "eg-start",
+   "offset": 15,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-04",
+   "platformId": "eg-start",
+   "offset": 18,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-05",
+   "platformId": "eg-start",
+   "offset": 21,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-06",
+   "platformId": "eg-dune",
+   "offset": 3,
+   "height": 1.2
+  },
+  {
+   "id": "eg-coin-07",
+   "platformId": "eg-stairs-1",
+   "offset": 2.2,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-08",
+   "platformId": "eg-stairs-1",
+   "offset": 3.2,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-09",
+   "platformId": "eg-stairs-1",
+   "offset": 4.2,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-10",
+   "platformId": "eg-stairs-1",
+   "offset": 6.3,
+   "height": 1.9
+  },
+  {
+   "id": "eg-coin-11",
+   "platformId": "eg-stairs-2",
+   "offset": 1.8,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-12",
+   "platformId": "eg-terrace-b",
+   "offset": 3,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-13",
+   "platformId": "eg-terrace-b",
+   "offset": 5,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-14",
+   "platformId": "eg-pillar-1",
+   "offset": 1.3,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-15",
+   "platformId": "eg-pillar-3",
+   "offset": 1.3,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-16",
+   "platformId": "eg-canyon-far",
+   "offset": 4.5,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-17",
+   "platformId": "eg-canyon-far",
+   "offset": 6.5,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-18",
+   "platformId": "eg-courtyard-a",
+   "offset": 2.5,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-19",
+   "platformId": "eg-gate-court",
+   "offset": 2,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-20",
+   "platformId": "eg-gate-court",
+   "offset": 4,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-21",
+   "platformId": "eg-gate-court",
+   "offset": 6,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-22",
+   "platformId": "eg-gate-exit",
+   "offset": 3.2,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-23",
+   "platformId": "eg-col-1",
+   "offset": 1.1,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-24",
+   "platformId": "eg-col-2",
+   "offset": 1.1,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-25",
+   "platformId": "eg-col-3",
+   "offset": 1.5,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-26",
+   "platformId": "eg-col-3",
+   "offset": 5.5,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-27",
+   "platformId": "eg-stairs-3",
+   "offset": 2,
+   "height": 1.2
+  },
+  {
+   "id": "eg-coin-28",
+   "platformId": "eg-scarab-terrace",
+   "offset": 3,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-29",
+   "platformId": "eg-scarab-terrace",
+   "offset": 7,
+   "height": 2.2
+  },
+  {
+   "id": "eg-coin-30",
+   "platformId": "eg-scarab-terrace",
+   "offset": 11,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-31",
+   "platformId": "eg-overlook-slope",
+   "offset": 3.5,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-32",
+   "platformId": "eg-overlook",
+   "offset": 5.5,
+   "height": 1.1
+  },
+  {
+   "id": "eg-coin-33",
+   "platformId": "eg-overlook",
+   "offset": 7.5,
+   "height": 1.1
+  }
+ ],
+ "stars": [
+  {
+   "id": "eg-star-01",
+   "platformId": "eg-pillar-2",
+   "offset": 1.2,
+   "height": 2.3
+  },
+  {
+   "id": "eg-star-02",
+   "platformId": "eg-col-3",
+   "offset": 3.6,
+   "height": 1.2
+  },
+  {
+   "id": "eg-star-03",
+   "platformId": "eg-canyon-far",
+   "offset": 3,
+   "height": 2.7
+  }
+ ],
+ "checkpoints": [
+  {
+   "id": "eg-checkpoint-01",
+   "platformId": "eg-canyon-far",
+   "offset": 1.5
+  },
+  {
+   "id": "eg-checkpoint-02",
+   "platformId": "eg-gate-exit",
+   "offset": 2.4
+  }
+ ],
+ "discovery": {
+  "id": "eg-discovery",
+  "platformId": "eg-overlook",
+  "offset": 4,
+  "factId": "eg-discovery"
+ },
+ "finish": {
+  "platformId": "eg-overlook",
+  "offset": 11
+ },
+ "hazards": [],
+ "enemies": [
+  {
+   "id": "eg-scarab",
+   "platformId": "eg-scarab-terrace",
+   "minOffset": 4.5,
+   "maxOffset": 9.5,
+   "speed": 0.9,
+   "turnPause": 0.5,
+   "height": 0.7
+  }
+ ],
+ "discoveryBlocks": [
+  {
+   "id": "eg-discovery-block",
+   "x": 93.2,
+   "y": 3.05,
+   "width": 0.75,
+   "height": 0.8,
+   "factId": "eg-discovery"
+  }
+ ],
+ "zones": [
+  {
+   "id": "eg-canyon-gust",
+   "type": "wind",
+   "x": 48,
+   "width": 18.4,
+   "bottom": 0,
+   "top": 10,
+   "force": -2,
+   "period": 7,
+   "warning": 1.8,
+   "duration": 2.2,
+   "phase": 0
+  }
+ ],
+ "gates": [
+  {
+   "id": "eg-sun-gate",
+   "x": 90.15,
+   "y": 0.4,
+   "width": 0.9,
+   "height": 2.4,
+   "openSeconds": 6
+  }
+ ],
+ "switches": [
+  {
+   "id": "eg-sun-plate",
+   "platformId": "eg-dais",
+   "offset": 1,
+   "gateIds": [
+    "eg-sun-gate"
+   ]
+  }
+ ],
+ "routeGraph": {
+  "nodes": [
+   {
+    "id": "eg-start",
+    "type": "START",
+    "platformId": "eg-start"
+   },
+   {
+    "id": "eg-dune",
+    "type": "SAFE_PLATFORM",
+    "platformId": "eg-dune"
+   },
+   {
+    "id": "eg-stairs-1",
+    "type": "SAFE_PLATFORM",
+    "platformId": "eg-stairs-1"
+   },
+   {
+    "id": "eg-stairs-2",
+    "type": "JUMP_PLATFORM",
+    "platformId": "eg-stairs-2"
+   },
+   {
+    "id": "eg-terrace-b",
+    "type": "SAFE_PLATFORM",
+    "platformId": "eg-terrace-b"
+   },
+   {
+    "id": "eg-pillar-1",
+    "type": "JUMP_PLATFORM",
+    "platformId": "eg-pillar-1"
+   },
+   {
+    "id": "eg-pillar-2",
+    "type": "JUMP_PLATFORM",
+    "platformId": "eg-pillar-2"
+   },
+   {
+    "id": "eg-pillar-3",
+    "type": "JUMP_PLATFORM",
+    "platformId": "eg-pillar-3"
+   },
+   {
+    "id": "eg-canyon-far",
+    "type": "CHECKPOINT",
+    "platformId": "eg-canyon-far"
+   },
+   {
+    "id": "eg-courtyard-a",
+    "type": "SAFE_PLATFORM",
+    "platformId": "eg-courtyard-a"
+   },
+   {
+    "id": "eg-dais",
+    "type": "PUZZLE",
+    "platformId": "eg-dais"
+   },
+   {
+    "id": "eg-gate-court",
+    "type": "PUZZLE",
+    "platformId": "eg-gate-court"
+   },
+   {
+    "id": "eg-gate-exit",
+    "type": "CHECKPOINT",
+    "platformId": "eg-gate-exit"
+   },
+   {
+    "id": "eg-stairs-3",
+    "type": "SAFE_PLATFORM",
+    "platformId": "eg-stairs-3"
+   },
+   {
+    "id": "eg-scarab-terrace",
+    "type": "ENEMY_AREA",
+    "platformId": "eg-scarab-terrace"
+   },
+   {
+    "id": "eg-overlook-slope",
+    "type": "JUMP_PLATFORM",
+    "platformId": "eg-overlook-slope"
+   },
+   {
+    "id": "eg-overlook",
+    "type": "FINISH",
+    "platformId": "eg-overlook"
+   },
+   {
+    "id": "eg-col-1",
+    "type": "OPTIONAL_REWARD",
+    "platformId": "eg-col-1"
+   },
+   {
+    "id": "eg-col-2",
+    "type": "OPTIONAL_REWARD",
+    "platformId": "eg-col-2"
+   },
+   {
+    "id": "eg-col-3",
+    "type": "OPTIONAL_REWARD",
+    "platformId": "eg-col-3"
+   }
+  ],
+  "edges": [
+   {
+    "from": "eg-start",
+    "to": "eg-dune",
+    "action": "WALK",
+    "mandatory": true
+   },
+   {
+    "from": "eg-dune",
+    "to": "eg-stairs-1",
+    "action": "CLIMB",
+    "mandatory": true
+   },
+   {
+    "from": "eg-stairs-1",
+    "to": "eg-stairs-2",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "eg-stairs-2",
+    "to": "eg-terrace-b",
+    "action": "CLIMB",
+    "mandatory": true
+   },
+   {
+    "from": "eg-terrace-b",
+    "to": "eg-pillar-1",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "eg-pillar-1",
+    "to": "eg-pillar-2",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "eg-pillar-2",
+    "to": "eg-pillar-3",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "eg-pillar-3",
+    "to": "eg-canyon-far",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "eg-canyon-far",
+    "to": "eg-courtyard-a",
+    "action": "DROP",
+    "mandatory": true
+   },
+   {
+    "from": "eg-courtyard-a",
+    "to": "eg-dais",
+    "action": "ACTIVATE_SWITCH",
+    "mandatory": true
+   },
+   {
+    "from": "eg-dais",
+    "to": "eg-gate-court",
+    "action": "DROP",
+    "mandatory": true
+   },
+   {
+    "from": "eg-gate-court",
+    "to": "eg-gate-exit",
+    "action": "PASS_GATE",
+    "mandatory": true
+   },
+   {
+    "from": "eg-gate-exit",
+    "to": "eg-stairs-3",
+    "action": "CLIMB",
+    "mandatory": true
+   },
+   {
+    "from": "eg-stairs-3",
+    "to": "eg-scarab-terrace",
+    "action": "CLIMB",
+    "mandatory": true
+   },
+   {
+    "from": "eg-scarab-terrace",
+    "to": "eg-overlook-slope",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "eg-overlook-slope",
+    "to": "eg-overlook",
+    "action": "WALK",
+    "mandatory": true
+   },
+   {
+    "from": "eg-canyon-far",
+    "to": "eg-col-1",
+    "action": "JUMP",
+    "mandatory": false
+   },
+   {
+    "from": "eg-col-1",
+    "to": "eg-col-2",
+    "action": "JUMP",
+    "mandatory": false
+   },
+   {
+    "from": "eg-col-2",
+    "to": "eg-col-3",
+    "action": "JUMP",
+    "mandatory": false
+   },
+   {
+    "from": "eg-col-3",
+    "to": "eg-gate-exit",
+    "action": "DROP",
+    "mandatory": false
+   }
+  ]
+ },
+ "physics": {
+  "gravity": 20,
+  "jumpSpeed": 9,
+  "runSpeed": 6,
+  "acceleration": 25,
+  "airControl": 0.65,
+  "coyoteTime": 0.12,
+  "jumpBuffer": 0.12,
+  "playerRadius": 0.2,
+  "playerHeight": 1.83,
+  "killY": -7,
+  "iceGrip": 0.3,
+  "stepHeight": 0.4
+ }
+}

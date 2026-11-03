@@ -1,0 +1,152 @@
+{
+  "recordedAt": "2026-11-02T15:35:32.226Z",
+  "candidate": {
+    "commit": "1c7ed65",
+    "revision": 2,
+    "preserved": [
+      {
+        "file": "lib/world-explorer/simulation.ts",
+        "sha256": "e7fcd66ebcc71bca6e7bf5352a6bb86c02462542c691a791df722d9a017f2eba",
+        "matchesCandidate": true
+      },
+      {
+        "file": "lib/world-explorer/difficulty.ts",
+        "sha256": "eda3d13fded618bcf30718280f1fc405efb65a2d72441bcb4b6be0d7ba498ffc",
+        "matchesCandidate": true
+      },
+      {
+        "file": "components/world-explorer/country-scene.ts",
+        "sha256": "3daece05a2cc2c5b32ad9bf1f93929ca583da88a1556fe11e9e8f5cf576d89d5",
+        "matchesCandidate": true
+      },
+      {
+        "file": "components/world-explorer/countries/east-asia.ts",
+        "sha256": "8395111905bd08d8bcd1d1bb280c3544b569b3cdadf9e50891e9148dbc50c81b",
+        "matchesCandidate": true
+      },
+      {
+        "file": "components/world-explorer/countries/east-asia-terrain.ts",
+        "sha256": "ce07ff0a58ab55f4827a9b768fca0f1fbeda9d508bf23a5c675a5937edda11e5",
+        "matchesCandidate": true
+      },
+      {
+        "file": "components/world-explorer/countries/japan.ts",
+        "sha256": "885fb2357b6ff34eca4897b7527476740c6c9857f34db41a5ab90175653ae22c",
+        "matchesCandidate": true
+      },
+      {
+        "file": "components/world-explorer/japan-architecture.ts",
+        "sha256": "86258fec5cb2264cbfd0663f267637563e25d6d3ac1d6a088ddc7cd4500f4fca",
+        "matchesCandidate": true
+      },
+      {
+        "file": "components/world-explorer/japan-environment.ts",
+        "sha256": "0a2fe7af4f2b0d58ab911514eaad73315d04e44f9620e7bb607138a3273a0e07",
+        "matchesCandidate": true
+      },
+      {
+        "file": "components/world-explorer/japan-grove.ts",
+        "sha256": "dfe58903edb832f5ad91b888b50321432b871890eed83680db5e33a04bd45153",
+        "matchesCandidate": true
+      },
+      {
+        "file": "components/world-explorer/japan-interactives.ts",
+        "sha256": "0b8163b42fa00c040c916ef27e9853615548510eaaa68e625c67568755243f5c",
+        "matchesCandidate": true
+      },
+      {
+        "file": "components/world-explorer/japan-materials.ts",
+        "sha256": "44bfe061f510788a16b637608e2ca31b910c184fb54a38c431025dfa774edbf8",
+        "matchesCandidate": true
+      },
+      {
+        "file": "components/world-explorer/japan-terrain.ts",
+        "sha256": "92b97388f43ff2773d4de68b72a8ec42e02eaf15be58c0f77a8c165bde7a6eca",
+        "matchesCandidate": true
+      },
+      {
+        "file": "components/world-explorer/japan-vista.ts",
+        "sha256": "9d9a1f96f6c8d72e8381da8e28ef5a1922ea970d924861a9c5076d9610c758eb",
+        "matchesCandidate": true
+      },
+      {
+        "file": "components/world-explorer/japan-water.ts",
+        "sha256": "20edd38ce8569e0b6ffe7c65606744b014ef1cc9b0960fcea9e04b92f8874aa7",
+        "matchesCandidate": true
+      },
+      {
+        "file": "public/world-explorer/levels/cn-level-01.json",
+        "sha256": "2766ed74180b84bbf72d113c2a5fb539a7e8e5169fe8552b14c2da9f61030388",
+        "matchesCandidate": true
+      },
+      {
+        "file": "public/world-explorer/levels/jp-level-01.json",
+        "sha256": "ab9c0af9a51648a4ca7122506eb3ba408b8f5101cdc8be094e09b3337c675264",
+        "matchesCandidate": true
+      },
+      {
+        "file": "public/world-explorer/levels/mn-level-01.json",
+        "sha256": "b4a50b678a800639f8f58893b483b93c9edd21af3bcbd36cffa6d909c8787973",
+        "matchesCandidate": true
+      },
+      {
+        "file": "public/world-explorer/levels/kp-level-01.json",
+        "sha256": "0dcbe1cb794b29272434ae81d00c6f2b262b038813d2d99bfad1c5574bbbcb06",
+        "matchesCandidate": true
+      },
+      {
+        "file": "public/world-explorer/levels/kr-level-01.json",
+        "sha256": "b216b2223f6feb6657b37f5c74405ba6ad5f1dcd96916f04c36e5c7ed2f525ed",
+        "matchesCandidate": true
+      }
+    ]
+  },
+  "batch": "Southeast Asia",
+  "countries": 11,
+  "remainingProposals": 31,
+  "simulationRuns": 352,
+  "edgeChecks": 388,
+  "runtimeChallengeSettings": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "structuralSimilarityThreshold": 0.72,
+  "similarityFlags": [],
+  "productionBuildId": "WR5uBFBpPbzCKJQjGU45P",
+  "captureBuildId": "wkx81hDEcMB_KtOogJ81N",
+  "renderedRunBuildId": "wkx81hDEcMB_KtOogJ81N",
+  "fullSuite": {
+    "files": 100,
+    "tests": 1149,
+    "passed": true
+  },
+  "finalFocused": {
+    "files": 3,
+    "tests": 39,
+    "passed": true
+  },
+  "renderedRoutes": 22,
+  "browserCaptures": 99,
+  "humanSessions": 0,
+  "humanPlaytests": "QUEUED_JAPAN_BEGINNER_FIRST",
+  "accountSave": "PENDING",
+  "physicalPhone": "PENDING",
+  "fps60": "UNVERIFIED_CONFIRMED_60HZ_REQUIRED",
+  "releaseFlags": false,
+  "captureProvenanceNote": "Captures and rendered runs retain their actual production build ID. The final follow-up build corrects UTF-8 punctuation in the teaching copy only; scenery, routes, physics and runtime settings are unchanged.",
+  "gallery": {
+    "decodedImages": 99,
+    "imageErrors": [],
+    "horizontalOverflow": false,
+    "missingLinks": [],
+    "mobileOverflow": false,
+    "finalPreview": {
+      "buildId": "WR5uBFBpPbzCKJQjGU45P",
+      "httpStatus": 200,
+      "countryGuideHasCorrectApostrophe": true,
+      "noMojibake": true
+    }
+  }
+}

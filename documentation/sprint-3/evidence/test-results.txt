@@ -1,0 +1,92 @@
+ FAIL  __tests__/world-explorer-level-design.test.ts > Design manifest and production tracker > covers the 193 member 
+states at exactly the 39/39/39/38/38 tier split, all unreviewed
+AssertionError: expected { '1': 32, '2': 56, '3': 47, …(2) } to deeply equal { '1': 39, '2': 39, '3': 39, …(2) }
+
+- Expected
++ Received
+
+  Object {
+-   "1": 39,
+-   "2": 39,
+-   "3": 39,
+-   "4": 38,
+-   "5": 38,
++   "1": 32,
++   "2": 56,
++   "3": 47,
++   "4": 28,
++   "5": 30,
+  }
+
+ ❯ __tests__/world-explorer-level-design.test.ts:133:91
+    131| describe('Design manifest and production tracker',()=>{
+    132|  it('covers the 193 member states at exactly the 39/39/39/38/38 tier s…
+    133|   const summary=productionSummary();expect(summary.total).toBe(193);ex…
+       |                                                                                           ^
+    134|   const built=Object.values(authoredLevels),designed=built.filter(leve…
+    135|   expect(summary.reviewed).toBe(0);expect(summary.status).toEqual({pla…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  __tests__/world-explorer-melanesia.test.ts > FJI Melanesia adventure > has a distinct animated patrol model 
+with room to land at each checkpoint
+ FAIL  __tests__/world-explorer-melanesia.test.ts > VUT Melanesia adventure > has a distinct animated patrol model 
+with room to land at each checkpoint
+TypeError: actual value must be number or bigint, received "undefined"
+ ❯ __tests__/world-explorer-melanesia.test.ts:62:96
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  __tests__/world-explorer-oceania-audit.test.ts > audits the current catalogue and protects gameplay outside 
+this four-country batch
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ __tests__/world-explorer-oceania-audit.test.ts:13:32
+     11|  const protectedLevels=Object.fromEntries(countries.filter(c=>!batch.i…
+     12|  if(process.env.OCEANIA_BASELINE==='1')writeFileSync(path,JSON.stringi…
+     13|  else{expect(existsSync(path)).toBe(true);expect(protectedLevels).toEq…
+       |                                ^
+     14| });
+     15| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  __tests__/world-explorer-west-asia.test.ts > SAU West Asia review candidate > uses its sourced setting and 
+measures at the authored tier in the runtime configuration
+AssertionError: expected [ { id: 12, …(3) } ] to deeply equal []
+
+- Expected
++ Received
+
+- Array []
++ Array [
++   Object {
++     "detail": "No earlier plate for: sa-gate.",
++     "id": 12,
++     "name": "Every gate is opened by a plate placed before it",
++     "ok": false,
++   },
++ ]
+
+ ❯ __tests__/world-explorer-west-asia.test.ts:32:74
+     30|  it('uses its sourced setting and measures at the authored tier in the…
+     31|   const l=levelDefinitionFor(code,authoredDifficulty(code));
+     32|   expect(validateLevelDesign(l,{physics:false}).checks.filter(c=>!c.ok…
+       |                                                                          ^
+     33|   expect(analyzeDifficulty(l).measuredTier).toBe(westAsiaPlaces[code].…
+     34|   expect(countryProfile(code)?.landmarkName).toBe(westAsiaPlaces[code]…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ Test Files  4 failed | 117 passed (121)
+      Tests  5 failed | 2107 passed (2112)
+   Start at  11:37:11
+   Duration  870.21s (transform 108.19s, setup 0ms, collect 362.17s, tests 2891.65s, environment 82ms, prepare 49.00s)
+

@@ -1,0 +1,357 @@
+{
+  "scope": "Committed baseline: five East Asia routes versus Brazil, Egypt and Norway. Other South America development is a separate snapshot.",
+  "threshold": 0.72,
+  "analyzer": "lib/world-explorer/level-similarity.ts; unchanged default threshold",
+  "pairs": [
+    {
+      "a": "kp-level-01",
+      "b": "kr-level-01",
+      "score": 0.43308384808257694,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.3333333333333333,
+        "terrain": 0.14285714285714285,
+        "rhythm": 0.5714285714285714,
+        "shape": 0.8637639637588793
+      },
+      "review": false
+    },
+    {
+      "a": "mn-level-01",
+      "b": "kp-level-01",
+      "score": 0.406238586524036,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0,
+        "terrain": 0.3333333333333333,
+        "rhythm": 0.5714285714285714,
+        "shape": 0.9201924413342393
+      },
+      "review": false
+    },
+    {
+      "a": "mn-level-01",
+      "b": "kr-level-01",
+      "score": 0.37664386317804155,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0,
+        "terrain": 0,
+        "rhythm": 0.7142857142857143,
+        "shape": 0.7922897384264518
+      },
+      "review": false
+    },
+    {
+      "a": "cn-level-01",
+      "b": "jp-level-01",
+      "score": 0.37474255935369216,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.3333333333333333,
+        "terrain": 0.4,
+        "rhythm": 0.30000000000000004,
+        "shape": 0.7989702374147685
+      },
+      "review": false
+    },
+    {
+      "a": "jp-level-01",
+      "b": "kr-level-01",
+      "score": 0.3707300005559022,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.3333333333333333,
+        "terrain": 0.2,
+        "rhythm": 0.4,
+        "shape": 0.762920002223609
+      },
+      "review": false
+    },
+    {
+      "a": "mn-level-01",
+      "b": "eg-level-01",
+      "score": 0.35201181158398004,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.4,
+        "terrain": 0.25,
+        "rhythm": 0.375,
+        "shape": 0.6450472463359201
+      },
+      "review": false
+    },
+    {
+      "a": "cn-level-01",
+      "b": "kp-level-01",
+      "score": 0.349097165410471,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0,
+        "terrain": 0.5,
+        "rhythm": 0.5,
+        "shape": 0.6963886616418841
+      },
+      "review": false
+    },
+    {
+      "a": "kp-level-01",
+      "b": "eg-level-01",
+      "score": 0.3382970345837535,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.16666666666666666,
+        "terrain": 0.3333333333333333,
+        "rhythm": 0.375,
+        "shape": 0.7248548050016808
+      },
+      "review": false
+    },
+    {
+      "a": "cn-level-01",
+      "b": "kr-level-01",
+      "score": 0.3380672568792913,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.3333333333333333,
+        "terrain": 0.16666666666666666,
+        "rhythm": 0.375,
+        "shape": 0.6706023608504986
+      },
+      "review": false
+    },
+    {
+      "a": "kr-level-01",
+      "b": "br-level-01",
+      "score": 0.3152909651118152,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.4,
+        "terrain": 0.14285714285714285,
+        "rhythm": 0.3076923076923077,
+        "shape": 0.6083286956120958
+      },
+      "review": false
+    },
+    {
+      "a": "jp-level-01",
+      "b": "br-level-01",
+      "score": 0.303068966278218,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.4,
+        "terrain": 0,
+        "rhythm": 0.3076923076923077,
+        "shape": 0.6165835574205644
+      },
+      "review": false
+    },
+    {
+      "a": "jp-level-01",
+      "b": "mn-level-01",
+      "score": 0.2997043733085966,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0,
+        "terrain": 0.2,
+        "rhythm": 0.4,
+        "shape": 0.7188174932343865
+      },
+      "review": false
+    },
+    {
+      "a": "kr-level-01",
+      "b": "eg-level-01",
+      "score": 0.2930591686440337,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.16666666666666666,
+        "terrain": 0.25,
+        "rhythm": 0.3125,
+        "shape": 0.6397366745761349
+      },
+      "review": false
+    },
+    {
+      "a": "cn-level-01",
+      "b": "br-level-01",
+      "score": 0.28691246809222753,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.16666666666666666,
+        "terrain": 0.2857142857142857,
+        "rhythm": 0.3076923076923077,
+        "shape": 0.6056718503908882
+      },
+      "review": false
+    },
+    {
+      "a": "mn-level-01",
+      "b": "no-level-01",
+      "score": 0.2848272673351161,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.4,
+        "terrain": 0.2,
+        "rhythm": 0.3125,
+        "shape": 0.45880906934046445
+      },
+      "review": false
+    },
+    {
+      "a": "jp-level-01",
+      "b": "eg-level-01",
+      "score": 0.2720512543370211,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.16666666666666666,
+        "terrain": 0.1111111111111111,
+        "rhythm": 0.375,
+        "shape": 0.54876057290364
+      },
+      "review": false
+    },
+    {
+      "a": "kp-level-01",
+      "b": "br-level-01",
+      "score": 0.2698867179562968,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.16666666666666666,
+        "terrain": 0.42857142857142855,
+        "rhythm": 0.3076923076923077,
+        "shape": 0.4804259927043083
+      },
+      "review": false
+    },
+    {
+      "a": "jp-level-01",
+      "b": "kp-level-01",
+      "score": 0.26964831697548985,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0,
+        "terrain": 0.14285714285714285,
+        "rhythm": 0.30000000000000004,
+        "shape": 0.7214504107591021
+      },
+      "review": false
+    },
+    {
+      "a": "cn-level-01",
+      "b": "mn-level-01",
+      "score": 0.26656393602929207,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0,
+        "terrain": 0.4,
+        "rhythm": 0.25,
+        "shape": 0.6562557441171684
+      },
+      "review": false
+    },
+    {
+      "a": "kr-level-01",
+      "b": "no-level-01",
+      "score": 0.25600483272850316,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.16666666666666666,
+        "terrain": 0.3333333333333333,
+        "rhythm": 0.3125,
+        "shape": 0.45818599758067924
+      },
+      "review": false
+    },
+    {
+      "a": "cn-level-01",
+      "b": "no-level-01",
+      "score": 0.2547818283644082,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.16666666666666666,
+        "terrain": 0.3,
+        "rhythm": 0.25,
+        "shape": 0.529127313457633
+      },
+      "review": false
+    },
+    {
+      "a": "kp-level-01",
+      "b": "no-level-01",
+      "score": 0.25442688427428356,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0.16666666666666666,
+        "terrain": 0.2727272727272727,
+        "rhythm": 0.25,
+        "shape": 0.5386166280062252
+      },
+      "review": false
+    },
+    {
+      "a": "cn-level-01",
+      "b": "eg-level-01",
+      "score": 0.20904970594660552,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0,
+        "terrain": 0.375,
+        "rhythm": 0.1875,
+        "shape": 0.49869882378642205
+      },
+      "review": false
+    },
+    {
+      "a": "jp-level-01",
+      "b": "no-level-01",
+      "score": 0.2082399739770461,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0,
+        "terrain": 0.2,
+        "rhythm": 0.3125,
+        "shape": 0.4404598959081844
+      },
+      "review": false
+    },
+    {
+      "a": "mn-level-01",
+      "b": "br-level-01",
+      "score": 0.17647290826543663,
+      "parts": {
+        "archetype": 0,
+        "signature": 0,
+        "mechanics": 0,
+        "terrain": 0.14285714285714285,
+        "rhythm": 0.23076923076923073,
+        "shape": 0.4179795451496586
+      },
+      "review": false
+    }
+  ]
+}

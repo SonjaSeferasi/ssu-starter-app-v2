@@ -1,0 +1,262 @@
+{
+ "FJI": {
+  "b": {
+   "x": 23.1,
+   "label": "moving-platform"
+  },
+  "c": {
+   "position": [
+    68.6,
+    9,
+    22
+   ],
+   "target": [
+    82.6,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Levuka Historical Port Town"
+  }
+ },
+ "KIR": {
+  "b": {
+   "x": 66.9,
+   "label": "moving-platform"
+  },
+  "c": {
+   "position": [
+    74,
+    9,
+    22
+   ],
+   "target": [
+    88,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Phoenix Islands Protected Area"
+  }
+ },
+ "MHL": {
+  "b": {
+   "x": 53.8,
+   "label": "water-hazard"
+  },
+  "c": {
+   "position": [
+    71.7,
+    9,
+    22
+   ],
+   "target": [
+    85.7,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Bikini Atoll Nuclear Test Site"
+  }
+ },
+ "FSM": {
+  "b": {
+   "x": 15.9,
+   "label": "bounce-pad"
+  },
+  "c": {
+   "position": [
+    61.5,
+    9,
+    22
+   ],
+   "target": [
+    75.5,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Nan Madol: Ceremonial Centre of Eastern Micronesia"
+  }
+ },
+ "NRU": {
+  "b": {
+   "x": 20,
+   "label": "collapsing-ledge"
+  },
+  "c": {
+   "position": [
+    61.7,
+    9,
+    22
+   ],
+   "target": [
+    75.7,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Buada Lagoon"
+  }
+ },
+ "NZL": {
+  "b": {
+   "x": 15.5,
+   "label": "ice-surface"
+  },
+  "c": {
+   "position": [
+    86.9,
+    9,
+    22
+   ],
+   "target": [
+    100.9,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Te Wahipounamu – South West New Zealand"
+  }
+ },
+ "PLW": {
+  "b": {
+   "x": 13.3,
+   "label": "moving-platform"
+  },
+  "c": {
+   "position": [
+    69.9,
+    9,
+    22
+   ],
+   "target": [
+    83.9,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Rock Islands Southern Lagoon"
+  }
+ },
+ "PNG": {
+  "b": {
+   "x": 13.5,
+   "label": "moving-platform"
+  },
+  "c": {
+   "position": [
+    66,
+    9,
+    22
+   ],
+   "target": [
+    80,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Kuk Early Agricultural Site"
+  }
+ },
+ "WSM": {
+  "b": {
+   "x": 22,
+   "label": "water-hazard"
+  },
+  "c": {
+   "position": [
+    72.7,
+    9,
+    22
+   ],
+   "target": [
+    86.7,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "To Sua Ocean Trench"
+  }
+ },
+ "SLB": {
+  "b": {
+   "x": 55.5,
+   "label": "water-hazard"
+  },
+  "c": {
+   "position": [
+    63.4,
+    9,
+    22
+   ],
+   "target": [
+    77.4,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "East Rennell"
+  }
+ },
+ "TON": {
+  "b": {
+   "x": 31.2,
+   "label": "pressure-plate"
+  },
+  "c": {
+   "position": [
+    73.2,
+    9,
+    22
+   ],
+   "target": [
+    87.2,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Ha'amonga 'a Maui trilithon"
+  }
+ },
+ "TUV": {
+  "b": {
+   "x": 12.2,
+   "label": "water-hazard"
+  },
+  "c": {
+   "position": [
+    75.5,
+    9,
+    22
+   ],
+   "target": [
+    89.5,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Funafuti Conservation Area"
+  }
+ },
+ "VUT": {
+  "b": {
+   "x": 19.6,
+   "label": "bounce-pad"
+  },
+  "c": {
+   "position": [
+    71.7,
+    9,
+    22
+   ],
+   "target": [
+    85.7,
+    6,
+    -22
+   ],
+   "fov": 52,
+   "label": "Chief Roi Mata’s Domain"
+  }
+ }
+}

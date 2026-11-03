@@ -1,0 +1,388 @@
+{
+  "scope": "Phase A art review; no release approval",
+  "records": [
+    {
+      "code": "CHN",
+      "url": "http://127.0.0.1:3006/world-explorer?country=CHN&play=1",
+      "reviewUrl": "http://127.0.0.1:3006/world-explorer?country=CHN&play=1&review=1",
+      "httpStatus": 200,
+      "reviewHttpStatus": 200,
+      "capturedAt": "2026-10-31T03:40:14.087Z",
+      "viewport": {
+        "width": 1600,
+        "height": 900
+      },
+      "screenshots": [
+        "chn-start.png",
+        "chn-mechanic.png",
+        "chn-landmark.png",
+        "chn-overview.png"
+      ],
+      "errors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "location": {
+            "url": "http://127.0.0.1:3006/favicon.ico",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        }
+      ],
+      "failedRequests": [],
+      "httpErrors": [],
+      "loadingMilliseconds": 13683,
+      "statistics": "Player cameraScenery review · gameplay paused · 1 FPS · 102 draws · 137,217 triangles",
+      "jsHeapBytes": 23216732,
+      "frameSample": {
+        "frames": 8,
+        "averageFps": 2.32490555071301,
+        "meanFrameMs": 430.12499999981355,
+        "p95FrameMs": 483.2999999999993
+      },
+      "mobile": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "emulated": true,
+        "physicalDevice": false,
+        "pageErrors": [],
+        "horizontalOverflow": false,
+        "controls": [
+          {
+            "label": "Move left",
+            "visible": true,
+            "width": 64,
+            "height": 64,
+            "inViewport": true
+          },
+          {
+            "label": "Move right",
+            "visible": true,
+            "width": 64,
+            "height": 64,
+            "inViewport": true
+          },
+          {
+            "label": "Jump",
+            "visible": true,
+            "width": 72,
+            "height": 64,
+            "inViewport": true
+          }
+        ],
+        "movementResponse": true,
+        "inputMethod": "Mouse pointer held on the emulated touch control; not a physical touch-device test"
+      },
+      "renderer": "Headless Edge / ANGLE SwiftShader; not a representative hardware benchmark",
+      "humanPlaytest": "not-run",
+      "physicalMobileTest": "not-run",
+      "released": false
+    },
+    {
+      "code": "JPN",
+      "url": "http://127.0.0.1:3006/world-explorer?country=JPN&play=1",
+      "reviewUrl": "http://127.0.0.1:3006/world-explorer?country=JPN&play=1&review=1",
+      "httpStatus": 200,
+      "reviewHttpStatus": 200,
+      "capturedAt": "2026-10-31T03:41:33.459Z",
+      "viewport": {
+        "width": 1600,
+        "height": 900
+      },
+      "screenshots": [
+        "jpn-start.png",
+        "jpn-mechanic.png",
+        "jpn-landmark.png",
+        "jpn-overview.png"
+      ],
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "httpErrors": [],
+      "loadingMilliseconds": 18166,
+      "statistics": "Player cameraScenery review · gameplay paused · 1 FPS · 367 draws · 375,086 triangles",
+      "jsHeapBytes": 40944851,
+      "frameSample": {
+        "frames": 5,
+        "averageFps": 1.4925818681167948,
+        "meanFrameMs": 669.9799999994036,
+        "p95FrameMs": 683.1999999970212
+      },
+      "mobile": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "emulated": true,
+        "physicalDevice": false,
+        "pageErrors": [],
+        "horizontalOverflow": false,
+        "controls": [
+          {
+            "label": "Move left",
+            "visible": true,
+            "width": 64,
+            "height": 64,
+            "inViewport": true
+          },
+          {
+            "label": "Move right",
+            "visible": true,
+            "width": 64,
+            "height": 64,
+            "inViewport": true
+          },
+          {
+            "label": "Jump",
+            "visible": true,
+            "width": 72,
+            "height": 64,
+            "inViewport": true
+          }
+        ],
+        "movementResponse": true,
+        "inputMethod": "Mouse pointer held on the emulated touch control; not a physical touch-device test"
+      },
+      "renderer": "Headless Edge / ANGLE SwiftShader; not a representative hardware benchmark",
+      "humanPlaytest": "not-run",
+      "physicalMobileTest": "not-run",
+      "released": false
+    },
+    {
+      "code": "MNG",
+      "url": "http://127.0.0.1:3006/world-explorer?country=MNG&play=1",
+      "reviewUrl": "http://127.0.0.1:3006/world-explorer?country=MNG&play=1&review=1",
+      "httpStatus": 200,
+      "reviewHttpStatus": 200,
+      "capturedAt": "2026-10-31T03:42:15.802Z",
+      "viewport": {
+        "width": 1600,
+        "height": 900
+      },
+      "screenshots": [
+        "mng-start.png",
+        "mng-mechanic.png",
+        "mng-landmark.png",
+        "mng-overview.png"
+      ],
+      "errors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "location": {
+            "url": "http://127.0.0.1:3006/favicon.ico",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        }
+      ],
+      "failedRequests": [],
+      "httpErrors": [],
+      "loadingMilliseconds": 9070,
+      "statistics": "Player cameraScenery review · gameplay paused · 4 FPS · 62 draws · 45,514 triangles",
+      "jsHeapBytes": 27517781,
+      "frameSample": {
+        "frames": 17,
+        "averageFps": 5.60390295358099,
+        "meanFrameMs": 178.4470588237048,
+        "p95FrameMs": 208.39999999999782
+      },
+      "mobile": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "emulated": true,
+        "physicalDevice": false,
+        "pageErrors": [],
+        "horizontalOverflow": false,
+        "controls": [
+          {
+            "label": "Move left",
+            "visible": true,
+            "width": 64,
+            "height": 64,
+            "inViewport": true
+          },
+          {
+            "label": "Move right",
+            "visible": true,
+            "width": 64,
+            "height": 64,
+            "inViewport": true
+          },
+          {
+            "label": "Jump",
+            "visible": true,
+            "width": 72,
+            "height": 64,
+            "inViewport": true
+          }
+        ],
+        "movementResponse": true,
+        "inputMethod": "Mouse pointer held on the emulated touch control; not a physical touch-device test"
+      },
+      "renderer": "Headless Edge / ANGLE SwiftShader; not a representative hardware benchmark",
+      "humanPlaytest": "not-run",
+      "physicalMobileTest": "not-run",
+      "released": false
+    },
+    {
+      "code": "PRK",
+      "url": "http://127.0.0.1:3006/world-explorer?country=PRK&play=1",
+      "reviewUrl": "http://127.0.0.1:3006/world-explorer?country=PRK&play=1&review=1",
+      "httpStatus": 200,
+      "reviewHttpStatus": 200,
+      "capturedAt": "2026-10-31T03:43:01.536Z",
+      "viewport": {
+        "width": 1600,
+        "height": 900
+      },
+      "screenshots": [
+        "prk-start.png",
+        "prk-mechanic.png",
+        "prk-landmark.png",
+        "prk-overview.png"
+      ],
+      "errors": [],
+      "consoleErrors": [
+        {
+          "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "location": {
+            "url": "http://127.0.0.1:3006/favicon.ico",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        }
+      ],
+      "failedRequests": [],
+      "httpErrors": [],
+      "loadingMilliseconds": 9725,
+      "statistics": "Player cameraScenery review · gameplay paused · 4 FPS · 84 draws · 50,056 triangles",
+      "jsHeapBytes": 18904593,
+      "frameSample": {
+        "frames": 16,
+        "averageFps": 5.046840992958849,
+        "meanFrameMs": 198.1437500002794,
+        "p95FrameMs": 241.59999999999854
+      },
+      "mobile": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "emulated": true,
+        "physicalDevice": false,
+        "pageErrors": [],
+        "horizontalOverflow": false,
+        "controls": [
+          {
+            "label": "Move left",
+            "visible": true,
+            "width": 64,
+            "height": 64,
+            "inViewport": true
+          },
+          {
+            "label": "Move right",
+            "visible": true,
+            "width": 64,
+            "height": 64,
+            "inViewport": true
+          },
+          {
+            "label": "Jump",
+            "visible": true,
+            "width": 72,
+            "height": 64,
+            "inViewport": true
+          }
+        ],
+        "movementResponse": true,
+        "inputMethod": "Mouse pointer held on the emulated touch control; not a physical touch-device test"
+      },
+      "renderer": "Headless Edge / ANGLE SwiftShader; not a representative hardware benchmark",
+      "humanPlaytest": "not-run",
+      "physicalMobileTest": "not-run",
+      "released": false
+    },
+    {
+      "code": "KOR",
+      "url": "http://127.0.0.1:3006/world-explorer?country=KOR&play=1",
+      "reviewUrl": "http://127.0.0.1:3006/world-explorer?country=KOR&play=1&review=1",
+      "httpStatus": 200,
+      "reviewHttpStatus": 200,
+      "capturedAt": "2026-10-31T03:43:34.051Z",
+      "viewport": {
+        "width": 1600,
+        "height": 900
+      },
+      "screenshots": [
+        "kor-start.png",
+        "kor-mechanic.png",
+        "kor-landmark.png",
+        "kor-overview.png"
+      ],
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "httpErrors": [],
+      "loadingMilliseconds": 7227,
+      "statistics": "Player cameraScenery review · gameplay paused · 3 FPS · 84 draws · 104,806 triangles",
+      "jsHeapBytes": 26714116,
+      "frameSample": {
+        "frames": 14,
+        "averageFps": 4.392156862745098,
+        "meanFrameMs": 227.67857142857142,
+        "p95FrameMs": 266.7000000000007
+      },
+      "mobile": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "emulated": true,
+        "physicalDevice": false,
+        "pageErrors": [],
+        "horizontalOverflow": false,
+        "controls": [
+          {
+            "label": "Move left",
+            "visible": true,
+            "width": 64,
+            "height": 64,
+            "inViewport": true
+          },
+          {
+            "label": "Move right",
+            "visible": true,
+            "width": 64,
+            "height": 64,
+            "inViewport": true
+          },
+          {
+            "label": "Jump",
+            "visible": true,
+            "width": 72,
+            "height": 64,
+            "inViewport": true
+          }
+        ],
+        "movementResponse": true,
+        "inputMethod": "Mouse pointer held on the emulated touch control; not a physical touch-device test"
+      },
+      "renderer": "Headless Edge / ANGLE SwiftShader; not a representative hardware benchmark",
+      "humanPlaytest": "not-run",
+      "physicalMobileTest": "not-run",
+      "released": false
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+/* Distinguish the browser's refresh ceiling from scene complexity. */
+const fs=require('node:fs'),{chromium}=require(process.env.EXPLORER_PLAYWRIGHT_MODULE||'../../tmp/tools/asia-browser/node_modules/playwright');
+(async()=>{const records=[];for(const uncapped of [false,true]){
+ const args=['--use-angle=d3d11',...(uncapped?['--disable-frame-rate-limit','--disable-gpu-vsync']:[])],browser=await chromium.launch({executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',headless:true,args});
+ try{const page=await browser.newPage({viewport:{width:1600,height:900}});await page.goto('about:blank');const sample=await page.evaluate(()=>new Promise(resolve=>{const times=[];let previous=performance.now(),count=0;const next=t=>{if(count++>10)times.push(t-previous);previous=t;if(times.length>=120){const mean=times.reduce((a,b)=>a+b,0)/times.length;resolve({averageFps:1000/mean,meanFrameMs:mean,frames:times.length,visibility:document.visibilityState});}else requestAnimationFrame(next);};requestAnimationFrame(next);}));records.push({page:'blank',uncapped,args,...sample});await page.close();}finally{await browser.close();}}
+ fs.writeFileSync('documentation/world-explorer/review/asia/phase-a-revision-2/frame-baseline.json',JSON.stringify({scope:'Empty-page requestAnimationFrame diagnostic only. Uncapped flags do not establish normal gameplay performance.',records},null,2)+'\n');console.log(JSON.stringify(records));
+})().catch(e=>{console.error(e);process.exitCode=1;});

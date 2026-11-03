@@ -1,0 +1,2142 @@
+{
+ "base": "http://localhost:3100",
+ "startedAt": "2026-11-02T21:15:46.564Z",
+ "browser": "Edg/156.0.4314.50",
+ "countries": {
+  "PRY": {
+   "complete-bonus": {
+    "kind": "complete-bonus",
+    "seconds": 20.1,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 23,
+      "expected": 23
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 23,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 5
+      },
+      "expected": {
+       "coin": 23,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 5
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "py-coin-01",
+       "py-coin-02",
+       "py-coin-03",
+       "py-coin-04",
+       "py-coin-05",
+       "py-coin-06",
+       "py-coin-07",
+       "py-coin-08",
+       "py-coin-11",
+       "py-coin-12",
+       "py-coin-15",
+       "py-coin-16",
+       "py-coin-17",
+       "py-coin-18",
+       "py-coin-19",
+       "py-coin-20",
+       "py-coin-21",
+       "py-coin-22",
+       "py-coin-23",
+       "py-coin-24",
+       "py-coin-25",
+       "py-coin-26",
+       "py-coin-27"
+      ],
+      "expected": [
+       "py-coin-01",
+       "py-coin-02",
+       "py-coin-03",
+       "py-coin-04",
+       "py-coin-05",
+       "py-coin-06",
+       "py-coin-07",
+       "py-coin-08",
+       "py-coin-11",
+       "py-coin-12",
+       "py-coin-15",
+       "py-coin-16",
+       "py-coin-17",
+       "py-coin-18",
+       "py-coin-19",
+       "py-coin-20",
+       "py-coin-21",
+       "py-coin-22",
+       "py-coin-23",
+       "py-coin-24",
+       "py-coin-25",
+       "py-coin-26",
+       "py-coin-27"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "py-star-01",
+       "py-star-02",
+       "py-star-03"
+      ],
+      "expected": [
+       "py-star-01",
+       "py-star-02",
+       "py-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/pry-complete-bonus-collapse-1.jpg",
+     "screens/pry-complete-bonus-checkpoint-1.jpg",
+     "screens/pry-complete-bonus-checkpoint-2.jpg",
+     "screens/pry-complete-bonus-discovery.jpg",
+     "screens/pry-complete-bonus-result.jpg"
+    ],
+    "readyMs": 2968,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Paraguay explored!",
+     "23 / 27 coins",
+     "0:20",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "Mission towns of the Guaraní",
+     "La Santísima Trinidad de Paraná and Jesús de Tavarangue are ruins of Jesuit missions built in the 17th and 18th centuries, where Jesuits and Guaraní people lived and built together. They became World Heritage sites in 1993."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 23,
+     "stars": 3,
+     "discoveryFound": true,
+     "x": 107.86,
+     "standing": "py-trinidad",
+     "elapsed": 20.05,
+     "replayed": "1203/1203"
+    },
+    "ok": true
+   },
+   "hazard": {
+    "kind": "hazard",
+    "seconds": 9.6,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "playing",
+      "expected": "playing"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 2,
+      "expected": 2
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 7,
+      "expected": 7
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 7,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1,
+       "collapse": 3
+      },
+      "expected": {
+       "coin": 7,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1,
+       "collapse": 3
+      }
+     },
+     {
+      "check": "respawned on the checkpoint platform",
+      "ok": true,
+      "actual": "py-clearing",
+      "expected": "py-clearing"
+     },
+     {
+      "check": "respawned at the checkpoint position",
+      "ok": true,
+      "actual": 31.3,
+      "expected": 31.3
+     }
+    ],
+    "screens": [
+     "screens/pry-hazard-collapse-1.jpg",
+     "screens/pry-hazard-checkpoint-1.jpg",
+     "screens/pry-hazard-damage-1.jpg",
+     "screens/pry-hazard-respawn-1.jpg",
+     "screens/pry-hazard-after-respawn.jpg"
+    ],
+    "readyMs": 779,
+    "final": {
+     "status": "playing",
+     "hearts": 2,
+     "coins": 7,
+     "stars": 0,
+     "discoveryFound": false,
+     "x": 31.3,
+     "standing": "py-clearing",
+     "elapsed": 10.5,
+     "replayed": "578/578"
+    },
+    "ok": true
+   },
+   "complete-main": {
+    "kind": "complete-main",
+    "seconds": 19.9,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 24,
+      "expected": 24
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 24,
+       "star": 1,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 5
+      },
+      "expected": {
+       "coin": 24,
+       "star": 1,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 5
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 1,
+      "expected": 1
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "py-coin-01",
+       "py-coin-02",
+       "py-coin-03",
+       "py-coin-04",
+       "py-coin-05",
+       "py-coin-06",
+       "py-coin-07",
+       "py-coin-08",
+       "py-coin-09",
+       "py-coin-10",
+       "py-coin-12",
+       "py-coin-13",
+       "py-coin-14",
+       "py-coin-15",
+       "py-coin-16",
+       "py-coin-17",
+       "py-coin-18",
+       "py-coin-19",
+       "py-coin-20",
+       "py-coin-21",
+       "py-coin-22",
+       "py-coin-23",
+       "py-coin-24",
+       "py-coin-25"
+      ],
+      "expected": [
+       "py-coin-01",
+       "py-coin-02",
+       "py-coin-03",
+       "py-coin-04",
+       "py-coin-05",
+       "py-coin-06",
+       "py-coin-07",
+       "py-coin-08",
+       "py-coin-09",
+       "py-coin-10",
+       "py-coin-12",
+       "py-coin-13",
+       "py-coin-14",
+       "py-coin-15",
+       "py-coin-16",
+       "py-coin-17",
+       "py-coin-18",
+       "py-coin-19",
+       "py-coin-20",
+       "py-coin-21",
+       "py-coin-22",
+       "py-coin-23",
+       "py-coin-24",
+       "py-coin-25"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "py-star-03"
+      ],
+      "expected": [
+       "py-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/pry-complete-main-collapse-1.jpg",
+     "screens/pry-complete-main-checkpoint-1.jpg",
+     "screens/pry-complete-main-checkpoint-2.jpg",
+     "screens/pry-complete-main-discovery.jpg",
+     "screens/pry-complete-main-result.jpg"
+    ],
+    "readyMs": 845,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Paraguay explored!",
+     "24 / 27 coins",
+     "0:19",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "Mission towns of the Guaraní",
+     "La Santísima Trinidad de Paraná and Jesús de Tavarangue are ruins of Jesuit missions built in the 17th and 18th centuries, where Jesuits and Guaraní people lived and built together. They became World Heritage sites in 1993."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 24,
+     "stars": 1,
+     "discoveryFound": true,
+     "x": 107.9,
+     "standing": "py-trinidad",
+     "elapsed": 19.93,
+     "replayed": "1196/1196"
+    },
+    "ok": true
+   },
+   "keyboard": {
+    "checks": [
+     {
+      "check": "ArrowRight moves the player right",
+      "ok": true,
+      "actual": 5.5
+     },
+     {
+      "check": "Space makes the player jump",
+      "ok": true,
+      "actual": 1.94
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/pry-keyboard.jpg"
+    ]
+   },
+   "touch": {
+    "checks": [
+     {
+      "check": "touch buttons are shown in a touch viewport",
+      "ok": true
+     },
+     {
+      "check": "holding the right button moves the player",
+      "ok": true,
+      "actual": 4.83
+     },
+     {
+      "check": "the jump button makes the player jump",
+      "ok": true,
+      "actual": 1.95
+     }
+    ],
+    "attempts": [
+     {
+      "attempt": 1,
+      "buttons": true,
+      "pointerEventsReachedPage": 2,
+      "status": "playing",
+      "moved": 4.83,
+      "jumped": 1.95
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/pry-touch-viewport.jpg"
+    ],
+    "note": "Chromium touch emulation on a laptop; not a real phone."
+   }
+  },
+  "PER": {
+   "complete-bonus": {
+    "kind": "complete-bonus",
+    "seconds": 42.8,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 26,
+      "expected": 26
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 26,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 2
+      },
+      "expected": {
+       "coin": 26,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 2
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "pe-coin-01",
+       "pe-coin-02",
+       "pe-coin-03",
+       "pe-coin-04",
+       "pe-coin-05",
+       "pe-coin-06",
+       "pe-coin-07",
+       "pe-coin-08",
+       "pe-coin-09",
+       "pe-coin-10",
+       "pe-coin-12",
+       "pe-coin-13",
+       "pe-coin-14",
+       "pe-coin-15",
+       "pe-coin-16",
+       "pe-coin-17",
+       "pe-coin-18",
+       "pe-coin-19",
+       "pe-coin-20",
+       "pe-coin-22",
+       "pe-coin-23",
+       "pe-coin-24",
+       "pe-coin-25",
+       "pe-coin-26",
+       "pe-coin-27",
+       "pe-coin-28"
+      ],
+      "expected": [
+       "pe-coin-01",
+       "pe-coin-02",
+       "pe-coin-03",
+       "pe-coin-04",
+       "pe-coin-05",
+       "pe-coin-06",
+       "pe-coin-07",
+       "pe-coin-08",
+       "pe-coin-09",
+       "pe-coin-10",
+       "pe-coin-12",
+       "pe-coin-13",
+       "pe-coin-14",
+       "pe-coin-15",
+       "pe-coin-16",
+       "pe-coin-17",
+       "pe-coin-18",
+       "pe-coin-19",
+       "pe-coin-20",
+       "pe-coin-22",
+       "pe-coin-23",
+       "pe-coin-24",
+       "pe-coin-25",
+       "pe-coin-26",
+       "pe-coin-27",
+       "pe-coin-28"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "pe-star-01",
+       "pe-star-02",
+       "pe-star-03"
+      ],
+      "expected": [
+       "pe-star-01",
+       "pe-star-02",
+       "pe-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/per-complete-bonus-wind-1.jpg",
+     "screens/per-complete-bonus-collapse-1.jpg",
+     "screens/per-complete-bonus-checkpoint-1.jpg",
+     "screens/per-complete-bonus-checkpoint-2.jpg",
+     "screens/per-complete-bonus-discovery.jpg",
+     "screens/per-complete-bonus-result.jpg"
+    ],
+    "readyMs": 1304,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Peru explored!",
+     "26 / 28 coins",
+     "0:42",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "A citadel high in the Andes",
+     "Machu Picchu stands about 2,430 metres above sea level among steep mountain forest. The Inca built it in the 15th century, and it was abandoned around the time of the Spanish conquest. It has been a World Heritage site since 1983."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 26,
+     "stars": 3,
+     "discoveryFound": true,
+     "x": 142.86,
+     "standing": "pe-citadel",
+     "elapsed": 42.77,
+     "replayed": "2566/2566"
+    },
+    "ok": true
+   },
+   "hazard": {
+    "kind": "hazard",
+    "seconds": 15.6,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "playing",
+      "expected": "playing"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 2,
+      "expected": 2
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 13,
+      "expected": 13
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 13,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1,
+       "collapse": 3
+      },
+      "expected": {
+       "coin": 13,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1,
+       "collapse": 3
+      }
+     },
+     {
+      "check": "respawned on the checkpoint platform",
+      "ok": true,
+      "actual": "pe-gorge-far",
+      "expected": "pe-gorge-far"
+     },
+     {
+      "check": "respawned at the checkpoint position",
+      "ok": true,
+      "actual": 57.6,
+      "expected": 57.6
+     }
+    ],
+    "screens": [
+     "screens/per-hazard-wind-1.jpg",
+     "screens/per-hazard-collapse-1.jpg",
+     "screens/per-hazard-checkpoint-1.jpg",
+     "screens/per-hazard-damage-1.jpg",
+     "screens/per-hazard-respawn-1.jpg",
+     "screens/per-hazard-after-respawn.jpg"
+    ],
+    "readyMs": 831,
+    "final": {
+     "status": "playing",
+     "hearts": 2,
+     "coins": 13,
+     "stars": 0,
+     "discoveryFound": false,
+     "x": 57.6,
+     "standing": "pe-gorge-far",
+     "elapsed": 16.48,
+     "replayed": "937/937"
+    },
+    "ok": true
+   },
+   "complete-main": {
+    "kind": "complete-main",
+    "seconds": 35.6,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 26,
+      "expected": 26
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 26,
+       "star": 1,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 3
+      },
+      "expected": {
+       "coin": 26,
+       "star": 1,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "collapse": 3
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 1,
+      "expected": 1
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "pe-coin-01",
+       "pe-coin-02",
+       "pe-coin-03",
+       "pe-coin-04",
+       "pe-coin-05",
+       "pe-coin-06",
+       "pe-coin-07",
+       "pe-coin-08",
+       "pe-coin-09",
+       "pe-coin-10",
+       "pe-coin-11",
+       "pe-coin-12",
+       "pe-coin-15",
+       "pe-coin-16",
+       "pe-coin-17",
+       "pe-coin-18",
+       "pe-coin-19",
+       "pe-coin-20",
+       "pe-coin-21",
+       "pe-coin-22",
+       "pe-coin-23",
+       "pe-coin-24",
+       "pe-coin-25",
+       "pe-coin-26",
+       "pe-coin-27",
+       "pe-coin-28"
+      ],
+      "expected": [
+       "pe-coin-01",
+       "pe-coin-02",
+       "pe-coin-03",
+       "pe-coin-04",
+       "pe-coin-05",
+       "pe-coin-06",
+       "pe-coin-07",
+       "pe-coin-08",
+       "pe-coin-09",
+       "pe-coin-10",
+       "pe-coin-11",
+       "pe-coin-12",
+       "pe-coin-15",
+       "pe-coin-16",
+       "pe-coin-17",
+       "pe-coin-18",
+       "pe-coin-19",
+       "pe-coin-20",
+       "pe-coin-21",
+       "pe-coin-22",
+       "pe-coin-23",
+       "pe-coin-24",
+       "pe-coin-25",
+       "pe-coin-26",
+       "pe-coin-27",
+       "pe-coin-28"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "pe-star-02"
+      ],
+      "expected": [
+       "pe-star-02"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/per-complete-main-wind-1.jpg",
+     "screens/per-complete-main-collapse-1.jpg",
+     "screens/per-complete-main-checkpoint-1.jpg",
+     "screens/per-complete-main-checkpoint-2.jpg",
+     "screens/per-complete-main-discovery.jpg",
+     "screens/per-complete-main-result.jpg"
+    ],
+    "readyMs": 723,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Peru explored!",
+     "26 / 28 coins",
+     "0:35",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "A citadel high in the Andes",
+     "Machu Picchu stands about 2,430 metres above sea level among steep mountain forest. The Inca built it in the 15th century, and it was abandoned around the time of the Spanish conquest. It has been a World Heritage site since 1983."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 26,
+     "stars": 1,
+     "discoveryFound": true,
+     "x": 142.83,
+     "standing": "pe-citadel",
+     "elapsed": 35.6,
+     "replayed": "2136/2136"
+    },
+    "ok": true
+   },
+   "keyboard": {
+    "checks": [
+     {
+      "check": "ArrowRight moves the player right",
+      "ok": true,
+      "actual": 5.4
+     },
+     {
+      "check": "Space makes the player jump",
+      "ok": true,
+      "actual": 1.95
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/per-keyboard.jpg"
+    ]
+   },
+   "touch": {
+    "checks": [
+     {
+      "check": "touch buttons are shown in a touch viewport",
+      "ok": true
+     },
+     {
+      "check": "holding the right button moves the player",
+      "ok": true,
+      "actual": 4.73
+     },
+     {
+      "check": "the jump button makes the player jump",
+      "ok": true,
+      "actual": 1.95
+     }
+    ],
+    "attempts": [
+     {
+      "attempt": 1,
+      "buttons": true,
+      "pointerEventsReachedPage": 2,
+      "status": "playing",
+      "moved": 4.73,
+      "jumped": 1.95
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/per-touch-viewport.jpg"
+    ],
+    "note": "Chromium touch emulation on a laptop; not a real phone."
+   }
+  },
+  "SUR": {
+   "complete-bonus": {
+    "kind": "complete-bonus",
+    "seconds": 21.7,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 23,
+      "expected": 23
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 23,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "switch": 1
+      },
+      "expected": {
+       "coin": 23,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "switch": 1
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "sr-coin-01",
+       "sr-coin-02",
+       "sr-coin-03",
+       "sr-coin-04",
+       "sr-coin-05",
+       "sr-coin-06",
+       "sr-coin-07",
+       "sr-coin-08",
+       "sr-coin-09",
+       "sr-coin-12",
+       "sr-coin-13",
+       "sr-coin-14",
+       "sr-coin-15",
+       "sr-coin-16",
+       "sr-coin-17",
+       "sr-coin-18",
+       "sr-coin-19",
+       "sr-coin-20",
+       "sr-coin-21",
+       "sr-coin-22",
+       "sr-coin-23",
+       "sr-coin-24",
+       "sr-coin-25"
+      ],
+      "expected": [
+       "sr-coin-01",
+       "sr-coin-02",
+       "sr-coin-03",
+       "sr-coin-04",
+       "sr-coin-05",
+       "sr-coin-06",
+       "sr-coin-07",
+       "sr-coin-08",
+       "sr-coin-09",
+       "sr-coin-12",
+       "sr-coin-13",
+       "sr-coin-14",
+       "sr-coin-15",
+       "sr-coin-16",
+       "sr-coin-17",
+       "sr-coin-18",
+       "sr-coin-19",
+       "sr-coin-20",
+       "sr-coin-21",
+       "sr-coin-22",
+       "sr-coin-23",
+       "sr-coin-24",
+       "sr-coin-25"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "sr-star-01",
+       "sr-star-02",
+       "sr-star-03"
+      ],
+      "expected": [
+       "sr-star-01",
+       "sr-star-02",
+       "sr-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/sur-complete-bonus-checkpoint-1.jpg",
+     "screens/sur-complete-bonus-checkpoint-2.jpg",
+     "screens/sur-complete-bonus-discovery.jpg",
+     "screens/sur-complete-bonus-result.jpg"
+    ],
+    "readyMs": 869,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Suriname explored!",
+     "23 / 25 coins",
+     "0:21",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "A city built of wood",
+     "Paramaribo, Suriname's capital, grew as a Dutch colonial town in the 17th and 18th centuries. Its historic centre keeps its original street plan and is made up mainly of wooden buildings, blending European design with local materials and crafts. It became a World Heritage site in 2002."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 23,
+     "stars": 3,
+     "discoveryFound": true,
+     "x": 112.01,
+     "standing": "sr-cathedral-square",
+     "elapsed": 21.67,
+     "replayed": "1300/1300"
+    },
+    "ok": true
+   },
+   "hazard": {
+    "kind": "hazard",
+    "seconds": 10.4,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "playing",
+      "expected": "playing"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 2,
+      "expected": 2
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 7,
+      "expected": 7
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 7,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1
+      },
+      "expected": {
+       "coin": 7,
+       "checkpoint": 1,
+       "damage": 1,
+       "respawn": 1
+      }
+     },
+     {
+      "check": "respawned on the checkpoint platform",
+      "ok": true,
+      "actual": "sr-market",
+      "expected": "sr-market"
+     },
+     {
+      "check": "respawned at the checkpoint position",
+      "ok": true,
+      "actual": 34.3,
+      "expected": 34.3
+     }
+    ],
+    "screens": [
+     "screens/sur-hazard-checkpoint-1.jpg",
+     "screens/sur-hazard-damage-1.jpg",
+     "screens/sur-hazard-respawn-1.jpg",
+     "screens/sur-hazard-after-respawn.jpg"
+    ],
+    "readyMs": 768,
+    "final": {
+     "status": "playing",
+     "hearts": 2,
+     "coins": 7,
+     "stars": 0,
+     "discoveryFound": false,
+     "x": 34.3,
+     "standing": "sr-market",
+     "elapsed": 11.28,
+     "replayed": "627/627"
+    },
+    "ok": true
+   },
+   "complete-main": {
+    "kind": "complete-main",
+    "seconds": 28.2,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 23,
+      "expected": 23
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 23,
+       "star": 2,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "switch": 1
+      },
+      "expected": {
+       "coin": 23,
+       "star": 2,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "switch": 1
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 2,
+      "expected": 2
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "sr-coin-01",
+       "sr-coin-02",
+       "sr-coin-03",
+       "sr-coin-04",
+       "sr-coin-05",
+       "sr-coin-06",
+       "sr-coin-07",
+       "sr-coin-08",
+       "sr-coin-09",
+       "sr-coin-10",
+       "sr-coin-11",
+       "sr-coin-12",
+       "sr-coin-13",
+       "sr-coin-14",
+       "sr-coin-15",
+       "sr-coin-16",
+       "sr-coin-17",
+       "sr-coin-18",
+       "sr-coin-19",
+       "sr-coin-20",
+       "sr-coin-21",
+       "sr-coin-22",
+       "sr-coin-23"
+      ],
+      "expected": [
+       "sr-coin-01",
+       "sr-coin-02",
+       "sr-coin-03",
+       "sr-coin-04",
+       "sr-coin-05",
+       "sr-coin-06",
+       "sr-coin-07",
+       "sr-coin-08",
+       "sr-coin-09",
+       "sr-coin-10",
+       "sr-coin-11",
+       "sr-coin-12",
+       "sr-coin-13",
+       "sr-coin-14",
+       "sr-coin-15",
+       "sr-coin-16",
+       "sr-coin-17",
+       "sr-coin-18",
+       "sr-coin-19",
+       "sr-coin-20",
+       "sr-coin-21",
+       "sr-coin-22",
+       "sr-coin-23"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "sr-star-02",
+       "sr-star-03"
+      ],
+      "expected": [
+       "sr-star-02",
+       "sr-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/sur-complete-main-checkpoint-1.jpg",
+     "screens/sur-complete-main-checkpoint-2.jpg",
+     "screens/sur-complete-main-discovery.jpg",
+     "screens/sur-complete-main-result.jpg"
+    ],
+    "readyMs": 755,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Suriname explored!",
+     "23 / 25 coins",
+     "0:28",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "A city built of wood",
+     "Paramaribo, Suriname's capital, grew as a Dutch colonial town in the 17th and 18th centuries. Its historic centre keeps its original street plan and is made up mainly of wooden buildings, blending European design with local materials and crafts. It became a World Heritage site in 2002."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 23,
+     "stars": 2,
+     "discoveryFound": true,
+     "x": 112.05,
+     "standing": "sr-cathedral-square",
+     "elapsed": 28.22,
+     "replayed": "1693/1693"
+    },
+    "ok": true
+   },
+   "keyboard": {
+    "checks": [
+     {
+      "check": "ArrowRight moves the player right",
+      "ok": true,
+      "actual": 5.5
+     },
+     {
+      "check": "Space makes the player jump",
+      "ok": true,
+      "actual": 1.94
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/sur-keyboard.jpg"
+    ]
+   },
+   "touch": {
+    "checks": [
+     {
+      "check": "touch buttons are shown in a touch viewport",
+      "ok": true
+     },
+     {
+      "check": "holding the right button moves the player",
+      "ok": true,
+      "actual": 4.73
+     },
+     {
+      "check": "the jump button makes the player jump",
+      "ok": true,
+      "actual": 1.93
+     }
+    ],
+    "attempts": [
+     {
+      "attempt": 1,
+      "buttons": true,
+      "pointerEventsReachedPage": 2,
+      "status": "playing",
+      "moved": 4.73,
+      "jumped": 1.93
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/sur-touch-viewport.jpg"
+    ],
+    "note": "Chromium touch emulation on a laptop; not a real phone."
+   }
+  },
+  "URY": {
+   "complete-bonus": {
+    "kind": "complete-bonus",
+    "seconds": 25.3,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 33,
+      "expected": 33
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 33,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "bounce": 1,
+       "switch": 1
+      },
+      "expected": {
+       "coin": 33,
+       "star": 3,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "bounce": 1,
+       "switch": 1
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "uy-coin-01",
+       "uy-coin-02",
+       "uy-coin-03",
+       "uy-coin-04",
+       "uy-coin-05",
+       "uy-coin-06",
+       "uy-coin-07",
+       "uy-coin-08",
+       "uy-coin-09",
+       "uy-coin-10",
+       "uy-coin-11",
+       "uy-coin-12",
+       "uy-coin-13",
+       "uy-coin-14",
+       "uy-coin-15",
+       "uy-coin-16",
+       "uy-coin-17",
+       "uy-coin-18",
+       "uy-coin-19",
+       "uy-coin-20",
+       "uy-coin-21",
+       "uy-coin-22",
+       "uy-coin-23",
+       "uy-coin-24",
+       "uy-coin-27",
+       "uy-coin-28",
+       "uy-coin-29",
+       "uy-coin-30",
+       "uy-coin-31",
+       "uy-coin-32",
+       "uy-coin-33",
+       "uy-coin-34",
+       "uy-coin-35"
+      ],
+      "expected": [
+       "uy-coin-01",
+       "uy-coin-02",
+       "uy-coin-03",
+       "uy-coin-04",
+       "uy-coin-05",
+       "uy-coin-06",
+       "uy-coin-07",
+       "uy-coin-08",
+       "uy-coin-09",
+       "uy-coin-10",
+       "uy-coin-11",
+       "uy-coin-12",
+       "uy-coin-13",
+       "uy-coin-14",
+       "uy-coin-15",
+       "uy-coin-16",
+       "uy-coin-17",
+       "uy-coin-18",
+       "uy-coin-19",
+       "uy-coin-20",
+       "uy-coin-21",
+       "uy-coin-22",
+       "uy-coin-23",
+       "uy-coin-24",
+       "uy-coin-27",
+       "uy-coin-28",
+       "uy-coin-29",
+       "uy-coin-30",
+       "uy-coin-31",
+       "uy-coin-32",
+       "uy-coin-33",
+       "uy-coin-34",
+       "uy-coin-35"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [
+       "uy-star-01",
+       "uy-star-02",
+       "uy-star-03"
+      ],
+      "expected": [
+       "uy-star-01",
+       "uy-star-02",
+       "uy-star-03"
+      ]
+     }
+    ],
+    "screens": [
+     "screens/ury-complete-bonus-checkpoint-1.jpg",
+     "screens/ury-complete-bonus-bounce-1.jpg",
+     "screens/ury-complete-bonus-checkpoint-2.jpg",
+     "screens/ury-complete-bonus-discovery.jpg",
+     "screens/ury-complete-bonus-result.jpg"
+    ],
+    "readyMs": 890,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Uruguay explored!",
+     "33 / 35 coins",
+     "0:25",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "A river port shaped by two empires",
+     "Colonia del Sacramento was founded by the Portuguese in 1680 on the Río de la Plata, where it helped them resist Spanish expansion. The town changed hands between Portugal and Spain many times, and its historic quarter, a World Heritage site since 1995, still mixes Portuguese and Spanish ways of building."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 33,
+     "stars": 3,
+     "discoveryFound": true,
+     "x": 133.27,
+     "standing": "uy-faro",
+     "elapsed": 25.25,
+     "replayed": "1515/1515"
+    },
+    "ok": true
+   },
+   "hazard": {
+    "kind": "hazard",
+    "seconds": 23.8,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "playing",
+      "expected": "playing"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 2,
+      "expected": 2
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 22,
+      "expected": 22
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 22,
+       "checkpoint": 2,
+       "damage": 1,
+       "respawn": 1,
+       "bounce": 1,
+       "switch": 1
+      },
+      "expected": {
+       "coin": 22,
+       "checkpoint": 2,
+       "damage": 1,
+       "respawn": 1,
+       "bounce": 1,
+       "switch": 1
+      }
+     },
+     {
+      "check": "respawned on the checkpoint platform",
+      "ok": true,
+      "actual": "uy-convent",
+      "expected": "uy-convent"
+     },
+     {
+      "check": "respawned at the checkpoint position",
+      "ok": true,
+      "actual": 85.8,
+      "expected": 85.8
+     }
+    ],
+    "screens": [
+     "screens/ury-hazard-checkpoint-1.jpg",
+     "screens/ury-hazard-bounce-1.jpg",
+     "screens/ury-hazard-checkpoint-2.jpg",
+     "screens/ury-hazard-damage-1.jpg",
+     "screens/ury-hazard-respawn-1.jpg",
+     "screens/ury-hazard-after-respawn.jpg"
+    ],
+    "readyMs": 714,
+    "final": {
+     "status": "playing",
+     "hearts": 2,
+     "coins": 22,
+     "stars": 0,
+     "discoveryFound": false,
+     "x": 85.8,
+     "standing": "uy-convent",
+     "elapsed": 24.75,
+     "replayed": "1425/1425"
+    },
+    "ok": true
+   },
+   "complete-main": {
+    "kind": "complete-main",
+    "seconds": 25.8,
+    "checks": [
+     {
+      "check": "held at the start until the script arrives",
+      "ok": true,
+      "actual": {
+       "elapsed": 0,
+       "status": "playing"
+      },
+      "expected": {
+       "elapsed": 0,
+       "status": "playing"
+      }
+     },
+     {
+      "check": "discovery dialog shown and continued with its button",
+      "ok": true
+     },
+     {
+      "check": "status",
+      "ok": true,
+      "actual": "completed",
+      "expected": "completed"
+     },
+     {
+      "check": "hearts",
+      "ok": true,
+      "actual": 3,
+      "expected": 3
+     },
+     {
+      "check": "coins",
+      "ok": true,
+      "actual": 33,
+      "expected": 33
+     },
+     {
+      "check": "events (page tally vs recorded run)",
+      "ok": true,
+      "actual": {
+       "coin": 33,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "bounce": 1,
+       "switch": 1
+      },
+      "expected": {
+       "coin": 33,
+       "checkpoint": 2,
+       "discovery": 1,
+       "finish": 1,
+       "bounce": 1,
+       "switch": 1
+      }
+     },
+     {
+      "check": "stars",
+      "ok": true,
+      "actual": 0,
+      "expected": 0
+     },
+     {
+      "check": "discovery found",
+      "ok": true,
+      "actual": true,
+      "expected": true
+     },
+     {
+      "check": "collected coin ids",
+      "ok": true,
+      "actual": [
+       "uy-coin-01",
+       "uy-coin-02",
+       "uy-coin-03",
+       "uy-coin-04",
+       "uy-coin-05",
+       "uy-coin-06",
+       "uy-coin-07",
+       "uy-coin-08",
+       "uy-coin-09",
+       "uy-coin-10",
+       "uy-coin-11",
+       "uy-coin-12",
+       "uy-coin-13",
+       "uy-coin-14",
+       "uy-coin-15",
+       "uy-coin-16",
+       "uy-coin-17",
+       "uy-coin-18",
+       "uy-coin-19",
+       "uy-coin-20",
+       "uy-coin-21",
+       "uy-coin-22",
+       "uy-coin-25",
+       "uy-coin-26",
+       "uy-coin-27",
+       "uy-coin-28",
+       "uy-coin-29",
+       "uy-coin-30",
+       "uy-coin-31",
+       "uy-coin-32",
+       "uy-coin-33",
+       "uy-coin-34",
+       "uy-coin-35"
+      ],
+      "expected": [
+       "uy-coin-01",
+       "uy-coin-02",
+       "uy-coin-03",
+       "uy-coin-04",
+       "uy-coin-05",
+       "uy-coin-06",
+       "uy-coin-07",
+       "uy-coin-08",
+       "uy-coin-09",
+       "uy-coin-10",
+       "uy-coin-11",
+       "uy-coin-12",
+       "uy-coin-13",
+       "uy-coin-14",
+       "uy-coin-15",
+       "uy-coin-16",
+       "uy-coin-17",
+       "uy-coin-18",
+       "uy-coin-19",
+       "uy-coin-20",
+       "uy-coin-21",
+       "uy-coin-22",
+       "uy-coin-25",
+       "uy-coin-26",
+       "uy-coin-27",
+       "uy-coin-28",
+       "uy-coin-29",
+       "uy-coin-30",
+       "uy-coin-31",
+       "uy-coin-32",
+       "uy-coin-33",
+       "uy-coin-34",
+       "uy-coin-35"
+      ]
+     },
+     {
+      "check": "collected star ids",
+      "ok": true,
+      "actual": [],
+      "expected": []
+     }
+    ],
+    "screens": [
+     "screens/ury-complete-main-checkpoint-1.jpg",
+     "screens/ury-complete-main-bounce-1.jpg",
+     "screens/ury-complete-main-checkpoint-2.jpg",
+     "screens/ury-complete-main-discovery.jpg",
+     "screens/ury-complete-main-result.jpg"
+    ],
+    "readyMs": 744,
+    "resultScreen": [
+     "PASSPORT STAMP EARNED",
+     "Uruguay explored!",
+     "33 / 35 coins",
+     "0:25",
+     "Discovery learned",
+     "Progress stays on this device. Sign in to sync your passport.",
+     "A river port shaped by two empires",
+     "Colonia del Sacramento was founded by the Portuguese in 1680 on the Río de la Plata, where it helped them resist Spanish expansion. The town changed hands between Portugal and Spain many times, and its historic quarter, a World Heritage site since 1995, still mixes Portuguese and Spanish ways of building."
+    ],
+    "final": {
+     "status": "completed",
+     "hearts": 3,
+     "coins": 33,
+     "stars": 0,
+     "discoveryFound": true,
+     "x": 133.2,
+     "standing": "uy-faro",
+     "elapsed": 25.75,
+     "replayed": "1545/1545"
+    },
+    "ok": true
+   },
+   "keyboard": {
+    "checks": [
+     {
+      "check": "ArrowRight moves the player right",
+      "ok": true,
+      "actual": 5.5
+     },
+     {
+      "check": "Space makes the player jump",
+      "ok": true,
+      "actual": 1.95
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/ury-keyboard.jpg"
+    ]
+   },
+   "touch": {
+    "checks": [
+     {
+      "check": "touch buttons are shown in a touch viewport",
+      "ok": true
+     },
+     {
+      "check": "holding the right button moves the player",
+      "ok": true,
+      "actual": 4.73
+     },
+     {
+      "check": "the jump button makes the player jump",
+      "ok": true,
+      "actual": 1.94
+     }
+    ],
+    "attempts": [
+     {
+      "attempt": 1,
+      "buttons": true,
+      "pointerEventsReachedPage": 2,
+      "status": "playing",
+      "moved": 4.73,
+      "jumped": 1.94
+     }
+    ],
+    "ok": true,
+    "screens": [
+     "screens/ury-touch-viewport.jpg"
+    ],
+    "note": "Chromium touch emulation on a laptop; not a real phone."
+   }
+  }
+ },
+ "savedProgress": {
+  "version": 1,
+  "countries": {
+   "PRY": {
+    "completed": true,
+    "bestCoins": 24,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "py-discovery"
+    ],
+    "completedAt": "2026-11-02T21:16:11.727Z",
+    "bestTimeMs": 19933
+   },
+   "PER": {
+    "completed": true,
+    "bestCoins": 26,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "pe-discovery"
+    ],
+    "completedAt": "2026-11-02T21:18:07.942Z",
+    "bestTimeMs": 35600
+   },
+   "SUR": {
+    "completed": true,
+    "bestCoins": 23,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "sr-discovery"
+    ],
+    "completedAt": "2026-11-02T21:20:03.574Z",
+    "bestTimeMs": 21667
+   },
+   "URY": {
+    "completed": true,
+    "bestCoins": 33,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "uy-discovery"
+    ],
+    "completedAt": "2026-11-02T21:21:49.831Z",
+    "bestTimeMs": 25250
+   }
+  }
+ },
+ "cards": {
+  "PRY": {
+   "completedOnCard": true,
+   "cardText": [
+    "Paraguay",
+    "Trinidad: The Jesuit Mission Trail · Tier 1 · Explorer",
+    "COMPLETED · VISUAL REVIEW PENDING",
+    "Beginner countryside trail: cracked earth banks that crumble after a pause, flowering lapacho trees and pindó palms, ending at the red-sandstone church and bell tower of Trinidad. This playable level is still awaiting human visual and device review.",
+    "Paraguay is grouped in South America in UN M49. Capital: Asunción.",
+    "Capital / seat",
+    "Asunción",
+    "Languages",
+    "Guaraní · Spanish",
+    "Currency"
+   ],
+   "saved": {
+    "completed": true,
+    "bestCoins": 24,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "py-discovery"
+    ],
+    "completedAt": "2026-11-02T21:16:11.727Z",
+    "bestTimeMs": 19933
+   },
+   "screens": [
+    "screens/pry-card-after-reload.jpg"
+   ],
+   "ok": true
+  },
+  "PER": {
+   "completedOnCard": true,
+   "cardText": [
+    "Peru",
+    "Inca Trail: Terraces to the Sun Gate · Tier 4 · Expert Explorer",
+    "COMPLETED · VISUAL REVIEW PENDING",
+    "Ascent: tall terrace risers, a washed-out rope bridge whose planks give way, an oroya cable basket, a headwind at Inti Punku and a stair down to the citadel; a gorge ledge and lift catch falls and hold a star. This playable level is still awaiting human visual and device review.",
+    "Peru is grouped in South America in UN M49. Capital: Lima.",
+    "Capital / seat",
+    "Lima",
+    "Languages",
+    "Aymara · Quechua · Spanish",
+    "Currency"
+   ],
+   "saved": {
+    "completed": true,
+    "bestCoins": 26,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "pe-discovery"
+    ],
+    "completedAt": "2026-11-02T21:18:07.942Z",
+    "bestTimeMs": 35600
+   },
+   "screens": [
+    "screens/per-card-after-reload.jpg"
+   ],
+   "ok": true
+  },
+  "SUR": {
+   "completedOnCard": true,
+   "cardText": [
+    "Suriname",
+    "Paramaribo: Historic Waterfront · Tier 2 · Adventurer",
+    "COMPLETED · VISUAL REVIEW PENDING",
+    "White wooden colonial buildings, a Fort Zeelandia gate puzzle, balconies and riverboats crossing the Suriname River. This playable level is still awaiting human visual and device review.",
+    "Suriname is grouped in South America in UN M49. Capital: Paramaribo.",
+    "Capital / seat",
+    "Paramaribo",
+    "Languages",
+    "Dutch",
+    "Currency"
+   ],
+   "saved": {
+    "completed": true,
+    "bestCoins": 23,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "sr-discovery"
+    ],
+    "completedAt": "2026-11-02T21:20:03.574Z",
+    "bestTimeMs": 21667
+   },
+   "screens": [
+    "screens/sur-card-after-reload.jpg"
+   ],
+   "ok": true
+  },
+  "URY": {
+   "completedOnCard": true,
+   "cardText": [
+    "Uruguay",
+    "Colonia del Sacramento: Lighthouse Quarter · Tier 1 · Explorer",
+    "COMPLETED · VISUAL REVIEW PENDING",
+    "Beginner urban-coastal walk: Rambla promenade, the Portón de Campo plate and timed gate over the moat, cobbled streets, a café-awning launch onto rooftops, convent ruins and a moored boat to the lighthouse. This playable level is still awaiting human visual and device review.",
+    "Uruguay is grouped in South America in UN M49. Capital: Montevideo.",
+    "Capital / seat",
+    "Montevideo",
+    "Languages",
+    "Spanish",
+    "Currency"
+   ],
+   "saved": {
+    "completed": true,
+    "bestCoins": 33,
+    "attempts": 2,
+    "starsEarned": 3,
+    "discoveredFactIds": [
+     "uy-discovery"
+    ],
+    "completedAt": "2026-11-02T21:21:49.831Z",
+    "bestTimeMs": 25250
+   },
+   "screens": [
+    "screens/ury-card-after-reload.jpg"
+   ],
+   "ok": true
+  }
+ },
+ "pageErrors": [
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico",
+  "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:3100/favicon.ico"
+ ],
+ "finishedAt": "2026-11-02T21:23:39.793Z"
+}

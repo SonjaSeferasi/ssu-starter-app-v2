@@ -1,0 +1,102 @@
+{
+ "capturedAt": "2026-11-02T00:45:08.614Z",
+ "browser": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+ "base": "http://localhost:3000",
+ "renderer": "hardware (ANGLE D3D11) in headless Edge",
+ "frameRate": "browser default (capped)",
+ "note": "Measured on the development laptop in a headless browser while the level idles at its start. The phone figures emulate an 844x390 viewport on the laptop GPU; they are not a phone. Real-device testing is still required.",
+ "results": [
+  {
+   "code": "CHL",
+   "shots": {
+    "b": {
+     "x": 70,
+     "label": "El Tatio geysers"
+    },
+    "c": {
+     "position": [
+      64,
+      3,
+      14
+     ],
+     "target": [
+      78,
+      4,
+      -20
+     ],
+     "label": "El Tatio geyser field and volcanoes"
+    }
+   },
+   "desktop": {
+    "readyMs": 7150,
+    "frames": 600,
+    "averageFps": 108,
+    "onePercentLowFps": 34,
+    "worstFrameMs": 33.4,
+    "drawCalls": 83,
+    "triangles": 119883,
+    "geometries": 43,
+    "textures": 7,
+    "jsHeapMB": 93
+   },
+   "phone": {
+    "readyMs": 36695,
+    "frames": 600,
+    "averageFps": 119,
+    "onePercentLowFps": 69,
+    "worstFrameMs": 42.1,
+    "drawCalls": 86,
+    "triangles": 120247,
+    "geometries": 43,
+    "textures": 7,
+    "jsHeapMB": 125
+   }
+  },
+  {
+   "code": "PRY",
+   "shots": {
+    "b": {
+     "x": 20,
+     "label": "crumbling earth banks"
+    },
+    "c": {
+     "position": [
+      92,
+      4,
+      13
+     ],
+     "target": [
+      104,
+      3,
+      -5
+     ],
+     "label": "Trinidad mission ruins"
+    }
+   },
+   "desktop": {
+    "readyMs": 7640,
+    "frames": 600,
+    "averageFps": 102,
+    "onePercentLowFps": 29,
+    "worstFrameMs": 41.7,
+    "drawCalls": 90,
+    "triangles": 145380,
+    "geometries": 49,
+    "textures": 8,
+    "jsHeapMB": 93
+   },
+   "phone": {
+    "readyMs": 2200,
+    "frames": 600,
+    "averageFps": 119,
+    "onePercentLowFps": 71,
+    "worstFrameMs": 25,
+    "drawCalls": 95,
+    "triangles": 146024,
+    "geometries": 49,
+    "textures": 8,
+    "jsHeapMB": 116
+   }
+  }
+ ]
+}

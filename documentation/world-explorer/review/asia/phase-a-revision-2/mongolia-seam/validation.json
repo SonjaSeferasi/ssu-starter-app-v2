@@ -1,0 +1,106 @@
+{
+  "candidate": "East Asia revision 2, presentation-only Mongolia seam patch",
+  "revision2Commit": "6b2a0ca",
+  "buildId": "vYkkB-c3zNeg70POZnLAY",
+  "productionBuild": "passed",
+  "focusedTests": {
+    "passed": 37,
+    "files": 4,
+    "includesNewSeamCases": 2
+  },
+  "protectedSource": {
+    "public/world-explorer/levels/cn-level-01.json": {
+      "sha256": "2766ed74180b84bbf72d113c2a5fb539a7e8e5169fe8552b14c2da9f61030388",
+      "identicalToRevision2": true
+    },
+    "public/world-explorer/levels/jp-level-01.json": {
+      "sha256": "ab9c0af9a51648a4ca7122506eb3ba408b8f5101cdc8be094e09b3337c675264",
+      "identicalToRevision2": true
+    },
+    "public/world-explorer/levels/mn-level-01.json": {
+      "sha256": "b4a50b678a800639f8f58893b483b93c9edd21af3bcbd36cffa6d909c8787973",
+      "identicalToRevision2": true
+    },
+    "public/world-explorer/levels/kp-level-01.json": {
+      "sha256": "0dcbe1cb794b29272434ae81d00c6f2b262b038813d2d99bfad1c5574bbbcb06",
+      "identicalToRevision2": true
+    },
+    "public/world-explorer/levels/kr-level-01.json": {
+      "sha256": "b216b2223f6feb6657b37f5c74405ba6ad5f1dcd96916f04c36e5c7ed2f525ed",
+      "identicalToRevision2": true
+    },
+    "lib/world-explorer/simulation.ts": {
+      "sha256": "e7fcd66ebcc71bca6e7bf5352a6bb86c02462542c691a791df722d9a017f2eba",
+      "identicalToRevision2": true
+    },
+    "lib/world-explorer/difficulty.ts": {
+      "sha256": "eda3d13fded618bcf30718280f1fc405efb65a2d72441bcb4b6be0d7ba498ffc",
+      "identicalToRevision2": true
+    },
+    "components/world-explorer/japan-terrain.ts": {
+      "sha256": "92b97388f43ff2773d4de68b72a8ec42e02eaf15be58c0f77a8c165bde7a6eca",
+      "identicalToRevision2": true
+    }
+  },
+  "collisionsChanged": false,
+  "mechanicsChanged": false,
+  "tiers": [
+    5,
+    1,
+    2,
+    4,
+    3
+  ],
+  "screenshotsAfter": [
+    "desktop-start-after.png",
+    "desktop-riverbank-after.png",
+    "desktop-far-bank-after.png",
+    "phone-start-after.png",
+    "phone-riverbank-after.png",
+    "phone-far-bank-after.png",
+    "small-phone-start-after.png",
+    "landscape-phone-start-after.png"
+  ],
+  "viewports": [
+    {
+      "id": "desktop",
+      "width": 1600,
+      "height": 900,
+      "mobile": false
+    },
+    {
+      "id": "phone",
+      "width": 390,
+      "height": 844,
+      "mobile": true
+    },
+    {
+      "id": "small-phone",
+      "width": 320,
+      "height": 693,
+      "mobile": true
+    },
+    {
+      "id": "landscape-phone",
+      "width": 844,
+      "height": 390,
+      "mobile": true
+    }
+  ],
+  "uncaughtBrowserExceptions": 0,
+  "headingFitsAllViews": true,
+  "horizontalOverflow": false,
+  "visualFinding": "Pale bank/foreground slit closed in the reviewed desktop, portrait, small-phone and landscape views. River crossing and far-bank scan views are included.",
+  "humanPlaytests": {
+    "status": "pending at user request",
+    "completedSessions": 0,
+    "plannedSessions": 10,
+    "findings": []
+  },
+  "accountSave": "pending",
+  "physicalPhone": "pending",
+  "fps60": "unverified; requires a confirmed 60+ Hz browser environment",
+  "newPerformanceMeasurements": false,
+  "releasedCountries": 0,
+  "other42Countries": "PROPOSED"
+}

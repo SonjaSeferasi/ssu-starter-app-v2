@@ -1,0 +1,507 @@
+[
+ {
+  "code": "EGY",
+  "place": "Pyramids of Giza",
+  "mediaSearch": "Pyramids of Giza Egypt",
+  "subjects": [
+   "Pyramids of Giza"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "ZAF",
+  "place": "Kruger National Park",
+  "mediaSearch": "Kruger National Park South Africa",
+  "subjects": [
+   "Kruger National Park"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "MAR",
+  "place": "Chefchaouen medina",
+  "mediaSearch": "Chefchaouen medina",
+  "subjects": [
+   "Chefchaouen"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "DZA",
+  "place": "Tassili n’Ajjer",
+  "mediaSearch": "Tassili n Ajjer",
+  "subjects": [
+   "Tassili"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "TUN",
+  "place": "Amphitheatre of El Jem",
+  "mediaSearch": "El Djem amphitheatre",
+  "subjects": [
+   "El Djem",
+   "El Jem"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "LBY",
+  "place": "Archaeological Site of Leptis Magna",
+  "mediaSearch": "Leptis Magna",
+  "subjects": [
+   "Leptis Magna"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "SDN",
+  "place": "Archaeological Sites of the Island of Meroe",
+  "mediaSearch": "Meroe pyramids",
+  "subjects": [
+   "Meroë"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "MLI",
+  "place": "Great Mosque of Djenné",
+  "mediaSearch": "Great Mosque of Djenné",
+  "subjects": [
+   "Djenné"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "NER",
+  "place": "Kouré giraffe zone",
+  "mediaSearch": "Koure giraffes Niger",
+  "subjects": [
+   "Koure giraffe",
+   "Koure giraffes"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "MRT",
+  "place": "Mauritania Railway",
+  "mediaSearch": "Mauritania iron ore train",
+  "subjects": [
+   "Mauritania train",
+   "Mauritania Railway"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "SEN",
+  "place": "Lake Retba (Lac Rose)",
+  "mediaSearch": "Lake Retba Senegal",
+  "subjects": [
+   "Retba",
+   "Lac Rose Senegal"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "GMB",
+  "place": "River Gambia National Park",
+  "mediaSearch": "River Gambia National Park",
+  "subjects": [
+   "River Gambia"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "GNB",
+  "place": "Bijagós Archipelago",
+  "mediaSearch": "Bijagos hippo",
+  "subjects": [
+   "Bijagós"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "GIN",
+  "place": "Voile de la Mariée, Fouta Djallon",
+  "mediaSearch": "Voile de la Mariée Kindia",
+  "subjects": [
+   "Voile Mariée"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "SLE",
+  "place": "Tiwai Island Wildlife Sanctuary",
+  "mediaSearch": "Tiwai Island",
+  "subjects": [
+   "Tiwai"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "LBR",
+  "place": "Robertsport and Cape Mount",
+  "mediaSearch": "Robertsport Liberia",
+  "subjects": [
+   "Robertsport"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "CIV",
+  "place": "Basilica of Our Lady of Peace of Yamoussoukro",
+  "mediaSearch": "Basilica of Our Lady of Peace Yamoussoukro",
+  "subjects": [
+   "Basilica Yamoussoukro",
+   "Basilique Yamoussoukro",
+   "Notre-Dame de la Paix"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "GHA",
+  "place": "Kakum National Park canopy walkway",
+  "mediaSearch": "Kakum canopy walkway",
+  "subjects": [
+   "Kakum"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "TGO",
+  "place": "Koutammakou, the Land of the Batammariba",
+  "mediaSearch": "Koutammakou takienta",
+  "subjects": [
+   "Koutammakou"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "BEN",
+  "place": "Ganvié, Lake Nokoué",
+  "mediaSearch": "Ganvié stilt village",
+  "subjects": [
+   "Ganvié"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "BFA",
+  "place": "Royal Court of Tiébélé",
+  "mediaSearch": "Tiébélé painted houses",
+  "subjects": [
+   "Tiébélé"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "NGA",
+  "place": "Zuma Rock",
+  "mediaSearch": "Zuma Rock",
+  "subjects": [
+   "Zuma Rock"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "CPV",
+  "place": "Pico do Fogo",
+  "mediaSearch": "Pico do Fogo",
+  "subjects": [
+   "Pico Fogo"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "CMR",
+  "place": "Mount Cameroon",
+  "mediaSearch": "Mount Cameroon",
+  "subjects": [
+   "Mount Cameroon",
+   "Mont Cameroun"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "CAF",
+  "place": "Dzanga Bai, Dzanga-Sangha",
+  "mediaSearch": "Dzanga Bai elephants",
+  "subjects": [
+   "Dzanga"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "TCD",
+  "place": "Ennedi Massif",
+  "mediaSearch": "Aloba Arch Ennedi",
+  "subjects": [
+   "Ennedi"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "COD",
+  "place": "Mount Nyiragongo, Virunga National Park",
+  "mediaSearch": "Nyiragongo lava lake",
+  "subjects": [
+   "Nyiragongo"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "COG",
+  "place": "Congo River rapids",
+  "mediaSearch": "Congo River rapids Brazzaville",
+  "subjects": [
+   "Congo rapids"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "GAB",
+  "place": "Loango National Park",
+  "mediaSearch": "Loango National Park elephants beach",
+  "subjects": [
+   "Loango"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "GNQ",
+  "place": "Lago Biao, Bioko Island",
+  "mediaSearch": "Bioko Island crater lake",
+  "subjects": [
+   "Bioko",
+   "Lago Biao"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "STP",
+  "place": "Pico Cão Grande",
+  "mediaSearch": "Pico Cão Grande",
+  "subjects": [
+   "Pico Grande"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "AGO",
+  "place": "Serra da Leba pass",
+  "mediaSearch": "Serra da Leba road",
+  "subjects": [
+   "Serra da Leba",
+   "Serra de Leba"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "KEN",
+  "place": "Maasai Mara and the Mara River",
+  "mediaSearch": "Mara River wildebeest crossing",
+  "subjects": [
+   "Mara River",
+   "Maasai Mara",
+   "Masai Mara"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "TZA",
+  "place": "Mount Kilimanjaro",
+  "mediaSearch": "Kilimanjaro Kibo glacier",
+  "subjects": [
+   "Kilimanjaro"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "ETH",
+  "place": "Rock-Hewn Churches, Lalibela",
+  "mediaSearch": "Bete Giyorgis Lalibela",
+  "subjects": [
+   "Lalibela"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "ERI",
+  "place": "Asmara: A Modernist African City",
+  "mediaSearch": "Fiat Tagliero Asmara",
+  "subjects": [
+   "Tagliero"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "DJI",
+  "place": "Lake Abbé",
+  "mediaSearch": "Lac Abbé chimneys",
+  "subjects": [
+   "Lac Abbé",
+   "Lake Abbé"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "SOM",
+  "place": "Laas Geel rock shelters (Somaliland region)",
+  "mediaSearch": "Laas Geel paintings",
+  "subjects": [
+   "Laas Geel",
+   "Las Geel"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "SSD",
+  "place": "The Sudd wetland",
+  "mediaSearch": "Sudd wetland",
+  "subjects": [
+   "Sudd"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "UGA",
+  "place": "Murchison Falls",
+  "mediaSearch": "Murchison Falls",
+  "subjects": [
+   "Murchison Falls"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "RWA",
+  "place": "Volcanoes National Park",
+  "mediaSearch": "Volcanoes National Park Rwanda",
+  "subjects": [
+   "Volcanoes National Park Rwanda",
+   "Parc National des Volcans"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "BDI",
+  "place": "Gishora Drum Sanctuary",
+  "mediaSearch": "Burundi royal drummers",
+  "subjects": [
+   "Burundi drummers",
+   "Burundi drum",
+   "Gishora"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "MWI",
+  "place": "Lake Malawi National Park",
+  "mediaSearch": "Lake Malawi National Park",
+  "subjects": [
+   "Lake Malawi"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "MOZ",
+  "place": "Bazaruto Archipelago",
+  "mediaSearch": "Bazaruto dhow",
+  "subjects": [
+   "Bazaruto"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "MDG",
+  "place": "Tsingy de Bemaraha",
+  "mediaSearch": "Tsingy de Bemaraha",
+  "subjects": [
+   "Tsingy de Bemaraha",
+   "Bemaraha"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "MUS",
+  "place": "Chamarel Seven Coloured Earths",
+  "mediaSearch": "Chamarel Seven Coloured Earths",
+  "subjects": [
+   "Chamarel"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "SYC",
+  "place": "Anse Source d’Argent, La Digue",
+  "mediaSearch": "Anse Source d Argent",
+  "subjects": [
+   "Anse Source Argent"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "COM",
+  "place": "Mount Karthala",
+  "mediaSearch": "Mount Karthala",
+  "subjects": [
+   "Karthala"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "ZMB",
+  "place": "Mosi-oa-Tunya / Victoria Falls",
+  "mediaSearch": "Victoria Falls",
+  "subjects": [
+   "Victoria Falls",
+   "Mosi-oa-Tunya"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "ZWE",
+  "place": "Great Zimbabwe National Monument",
+  "mediaSearch": "Great Zimbabwe Great Enclosure",
+  "subjects": [
+   "Great Zimbabwe"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "NAM",
+  "place": "Sossusvlei and Deadvlei",
+  "mediaSearch": "Deadvlei",
+  "subjects": [
+   "Deadvlei",
+   "Dead Vlei"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "BWA",
+  "place": "Okavango Delta",
+  "mediaSearch": "Okavango mokoro",
+  "subjects": [
+   "Okavango"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "LSO",
+  "place": "Maletsunyane Falls",
+  "mediaSearch": "Maletsunyane Falls",
+  "subjects": [
+   "Maletsunyane"
+  ],
+  "photoFile": null
+ },
+ {
+  "code": "SWZ",
+  "place": "Mantenga Cultural Village",
+  "mediaSearch": "Mantenga cultural village",
+  "subjects": [
+   "Mantenga"
+  ],
+  "photoFile": null
+ }
+]

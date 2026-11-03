@@ -1,0 +1,357 @@
+{
+ "about": "Guide photographs pinned by Commons file title after a person (or the reviewing agent) looked at the image and confirmed it shows the destination. A pinned file is fetched by title, not by search, so search ranking cannot change it; it still passes the app's licence, attribution and host checks. 'aliases' are the names in the file title that identify the place; 'why' says how that name relates to the destination when it differs from the guide's place name.",
+ "photos": {
+  "PRK": {
+   "file": "File:Paektu Mountain's Heaven Lake.jpg",
+   "aliases": [
+    "Paektu"
+   ],
+   "why": "Heaven Lake is the crater lake at the summit of Mt Paektu",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "BRN": {
+   "file": "File:Ulu Temburong Canopy Walk 2013 02.jpg",
+   "aliases": [
+    "Temburong"
+   ],
+   "why": "canopy walk in Ulu Temburong National Park rainforest",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "KHM": {
+   "file": "File:Angkor Wat, Camboya, 2013-08-15, DD 059.JPG",
+   "aliases": [
+    "Angkor"
+   ],
+   "why": "Angkor Wat, the central temple of the Angkor archaeological landscape",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "MMR": {
+   "file": "File:20160731 Bagan temples 6746.jpg",
+   "aliases": [
+    "Bagan"
+   ],
+   "why": "temples on the Bagan plain",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "VNM": {
+   "file": "File:Ha Long Bay, Vietnam, View from above.jpg",
+   "aliases": [
+    "Ha Long"
+   ],
+   "why": "Ha Long Bay seascape",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "AFG": {
+   "file": "File:Lake Band-e-Amir.jpg",
+   "aliases": [
+    "Band Amir"
+   ],
+   "why": "one of the Band-e Amir lakes",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "BGD": {
+   "file": "File:Tower View of Kotka Wildlife Sanctuary, Sundarbans.JPG",
+   "aliases": [
+    "Sundarbans"
+   ],
+   "why": "Kotka, in the Bangladesh Sundarbans mangrove forest",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "BTN": {
+   "file": "File:Taktsang Monastery, Bhutan 01.jpg",
+   "aliases": [
+    "Taktsang"
+   ],
+   "why": "Taktsang (Tiger's Nest) monastery on the Paro valley cliff",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "MDV": {
+   "file": "File:Baa Atoll Maldives.JPG",
+   "aliases": [
+    "Baa Atoll"
+   ],
+   "why": "reef life in Baa Atoll",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "NPL": {
+   "file": "File:Khumbu Glacier.jpg",
+   "aliases": [
+    "Khumbu"
+   ],
+   "why": "Khumbu Glacier in the Khumbu region of Sagarmatha",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "KGZ": {
+   "file": "File:Kyrgyzstan Ala Archa National Park 03.jpg",
+   "aliases": [
+    "Ala Archa"
+   ],
+   "why": "Ala Archa National Park valley",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "TJK": {
+   "file": "File:Pamir Mountains, Tajikistan, 06-04-2008.jpg",
+   "aliases": [
+    "Pamir"
+   ],
+   "why": "aerial view of the Pamir mountains in Tajikistan",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "UZB": {
+   "file": "File:Memorial complex \"Registan\" in Samarkand (12).jpg",
+   "aliases": [
+    "Registan"
+   ],
+   "why": "the Registan square in Samarkand",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "BRA": {
+   "file": "File:Arquipélago de Anavilhanas 12.jpg",
+   "aliases": [
+    "Anavilhanas"
+   ],
+   "why": "Anavilhanas archipelago, a river-island forest of the Central Amazon in Amazonas",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "NOR": {
+   "file": "File:Vågakallen from Storvågan, Austvågøya, Lofoten, Norway, 2015 April.jpg",
+   "aliases": [
+    "Lofoten"
+   ],
+   "why": "Vågakallen peak, Austvågøya, Lofoten Islands",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "BEL": {
+   "file": "File:Brugge Begijnhof R01.jpg",
+   "aliases": [
+    "Begijnhof"
+   ],
+   "why": "Begijnhof is the Dutch name of the béguinage (Bruges)",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "IRL": {
+   "file": "File:Newgrange Passage Tomb - geograph.org.uk - 2857133.jpg",
+   "aliases": [
+    "Newgrange"
+   ],
+   "why": "Newgrange is the principal passage tomb of Brú na Bóinne",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "PNG": {
+   "file": "File:Kuk New Guinea 2002.jpg",
+   "aliases": [
+    "Kuk"
+   ],
+   "why": "NASA/JPL ASTER satellite view (2002) of the Kuk site area; its Commons description names the site. A ground photograph would show it better",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "VUT": {
+   "file": "File:Eretoka.jpg",
+   "aliases": [
+    "Eretoka"
+   ],
+   "why": "Eretoka (Hat Island) is one of the three islands of Chief Roi Mata's Domain",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "ATG": {
+   "file": "File:Nelson's Dockyard.jpg",
+   "aliases": [
+    "Nelson Dockyard"
+   ],
+   "why": "Nelson's Dockyard is the Antigua Naval Dockyard",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "BRB": {
+   "file": "File:Bridgetown, Parliament of Barbados.jpg",
+   "aliases": [
+    "Bridgetown"
+   ],
+   "why": "Parliament buildings in Historic Bridgetown",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "BLZ": {
+   "file": "File:Belize Barrier Reef - 55445964204.jpg",
+   "aliases": [
+    "Belize Barrier Reef"
+   ],
+   "why": "aerial view of the Belize Barrier Reef",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "CUB": {
+   "file": "File:Old Square, Havana.jpg",
+   "aliases": [
+    "Havana"
+   ],
+   "why": "Old Square (Plaza Vieja) in Old Havana",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "DMA": {
+   "file": "File:Middleham Falls at Morne Trois Pitons National Park.jpg",
+   "aliases": [
+    "Morne Trois Pitons"
+   ],
+   "why": "Middleham Falls in Morne Trois Pitons National Park",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "SLV": {
+   "file": "File:Joya de Ceren, La Libertad.JPG",
+   "aliases": [
+    "Joya Ceren"
+   ],
+   "why": "excavated structure at Joya de Cerén",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "HTI": {
+   "file": "File:Citadelle Laferrière.jpg",
+   "aliases": [
+    "Citadelle"
+   ],
+   "why": "the Citadelle Laferrière of the National History Park",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "NIC": {
+   "file": "File:Ometepe Island as seen from the ferry.JPG",
+   "aliases": [
+    "Ometepe"
+   ],
+   "why": "Ometepe Island from the lake ferry",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "LCA": {
+   "file": "File:St Lucia Pitons 2008.jpg",
+   "aliases": [
+    "Pitons"
+   ],
+   "why": "the Gros and Petit Pitons",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "TTO": {
+   "file": "File:Caroni Swamp, Trinidad.jpg",
+   "aliases": [
+    "Caroni"
+   ],
+   "why": "boats in the Caroni Swamp",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "TUN": {
+   "file": "File:Anfiteatro, El Jem, Túnez, 2016-09-04, DD 11.jpg",
+   "aliases": [
+    "El Jem"
+   ],
+   "why": "the amphitheatre of El Jem (Túnez is Spanish for Tunisia)",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "LBY": {
+   "file": "File:Leptis Magna le théâtre.jpg",
+   "aliases": [
+    "Leptis"
+   ],
+   "why": "the Roman theatre at Leptis Magna",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "SEN": {
+   "file": "File:Lac Retba.jpg",
+   "aliases": [
+    "Retba"
+   ],
+   "why": "Lake Retba (Lac Rose)",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "GNB": {
+   "file": "File:Ilhas Bijagos, GUine Bissau.jpg",
+   "aliases": [
+    "Bijagos"
+   ],
+   "why": "an island shore in the Bijagós archipelago",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "BFA": {
+   "file": "File:Tiebele traditional house decoration Burkina Faso.jpg",
+   "aliases": [
+    "Tiebele"
+   ],
+   "why": "painted houses of the royal court at Tiébélé",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "GNQ": {
+   "file": "File:Lago Biaó.jpg",
+   "aliases": [
+    "Biao"
+   ],
+   "why": "Lago Biaó crater lake on Bioko",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "ERI": {
+   "file": "File:Fiat Tagliero building in Asmara.jpg",
+   "aliases": [
+    "Asmara"
+   ],
+   "why": "the Fiat Tagliero building, a landmark of Asmara's modernist city",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "BDI": {
+   "file": "File:Gishora sanctuary-Burundi Tour.jpg",
+   "aliases": [
+    "Gishora"
+   ],
+   "why": "drummers at the Gishora drum sanctuary",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "MOZ": {
+   "file": "File:Bazaruto-Island-2009.jpg",
+   "aliases": [
+    "Bazaruto"
+   ],
+   "why": "Bazaruto Island shore",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "ZMB": {
+   "file": "File:Mosi-oa-Tunya, Livingstone (20260519-P1075665).jpg",
+   "aliases": [
+    "Mosi Tunya"
+   ],
+   "why": "Mosi-oa-Tunya is the Victoria Falls",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "MNG": {
+   "file": "File:Orkhon River Valley (25156845687).jpg",
+   "aliases": [
+    "Orkhon"
+   ],
+   "why": "grassland of the Orkhon River valley",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "IDN": {
+   "file": "File:Mount Bromo at sunrise, showing its volcanoes and Mount Semeru (background).jpg",
+   "aliases": [
+    "Bromo"
+   ],
+   "why": "Bromo caldera with Semeru behind, in the Bromo Tengger Semeru landscape",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "PHL": {
+   "file": "File:Banaue Philippines Batad-Rice-Terraces-02.jpg",
+   "aliases": [
+    "Banaue"
+   ],
+   "why": "the Batad rice terraces of Banaue, Ifugao",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "PAK": {
+   "file": "File:Passu Cones and the Hunza River.jpg",
+   "aliases": [
+    "Passu"
+   ],
+   "why": "the Passu Cones above the Hunza River",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  },
+  "LKA": {
+   "file": "File:The Sigiriya Rock Fortress.jpg",
+   "aliases": [
+    "Sigiriya"
+   ],
+   "why": "the Sigiriya rock fortress in its forest landscape",
+   "verified": "2026-11-03: image viewed and its Commons title/description checked by the reviewing agent; human source review pending"
+  }
+ }
+}

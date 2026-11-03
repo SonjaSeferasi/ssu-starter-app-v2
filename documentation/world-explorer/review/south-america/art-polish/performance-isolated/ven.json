@@ -1,0 +1,56 @@
+{
+ "capturedAt": "2026-10-31T03:46:15.406Z",
+ "browser": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+ "base": "http://localhost:3000",
+ "renderer": "hardware (ANGLE D3D11) in headless Edge",
+ "frameRate": "browser default (capped)",
+ "note": "Measured on the development laptop in a headless browser while the level idles at its start. The phone figures emulate an 844x390 viewport on the laptop GPU; they are not a phone. Real-device testing is still required.",
+ "results": [
+  {
+   "code": "VEN",
+   "shots": {
+    "b": {
+     "x": 56,
+     "label": "climbable escarpment face"
+    },
+    "c": {
+     "position": [
+      80,
+      8,
+      17
+     ],
+     "target": [
+      98,
+      4,
+      -18
+     ],
+     "label": "Angel Falls"
+    }
+   },
+   "desktop": {
+    "readyMs": 8171,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 113,
+    "worstFrameMs": 8.9,
+    "drawCalls": 93,
+    "triangles": 188968,
+    "geometries": 59,
+    "textures": 10,
+    "jsHeapMB": 90
+   },
+   "phone": {
+    "readyMs": 2705,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 112,
+    "worstFrameMs": 9,
+    "drawCalls": 99,
+    "triangles": 195018,
+    "geometries": 60,
+    "textures": 10,
+    "jsHeapMB": 152
+   }
+  }
+ ]
+}

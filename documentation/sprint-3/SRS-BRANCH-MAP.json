@@ -1,0 +1,251 @@
+{
+  "sourceBase": "f51dc47c99cb46301cca8c0af4ae71d72738c16a",
+  "strategy": "Additive dependent branch stack; user working tree and index unchanged. Main integration is not performed.",
+  "branches": [
+    {
+      "group": "requirements",
+      "branch": "srs-sprint-3-requirements-and-traceability",
+      "commit": "1b4e26058e32ffbb9260f2087174567f640a7883",
+      "parent": "f51dc47c99cb46301cca8c0af4ae71d72738c16a",
+      "files": 1,
+      "pushed": true,
+      "requirements": [
+        "611.2",
+        "611.3",
+        "616.9",
+        "628.6",
+        "628.7",
+        "628.8",
+        "628.9",
+        "610.1",
+        "610.2",
+        "628.2",
+        "628.5"
+      ],
+      "issues": [
+        {
+          "srs": "SRS-611.2",
+          "number": 1046,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1046"
+        },
+        {
+          "srs": "SRS-611.3",
+          "number": 1047,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1047"
+        },
+        {
+          "srs": "SRS-616.9",
+          "number": 1052,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1052"
+        },
+        {
+          "srs": "SRS-628.6",
+          "number": 1055,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1055"
+        },
+        {
+          "srs": "SRS-628.7",
+          "number": 1058,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1058"
+        },
+        {
+          "srs": "SRS-628.8",
+          "number": 1061,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1061"
+        },
+        {
+          "srs": "SRS-628.9",
+          "number": 1064,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1064"
+        },
+        {
+          "srs": "SRS-610.1",
+          "number": 519,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/519"
+        },
+        {
+          "srs": "SRS-610.2",
+          "number": 520,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/520"
+        },
+        {
+          "srs": "SRS-628.2",
+          "number": 933,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/933"
+        },
+        {
+          "srs": "SRS-628.5",
+          "number": 936,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/936"
+        }
+      ],
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-sprint-3-requirements-and-traceability",
+      "acceptance": "PENDING",
+      "releaseApproved": false
+    },
+    {
+      "group": "avatar",
+      "branch": "srs-610.1-611.2-611.3-avatar-appearance-and-restoration",
+      "commit": "f5b73cb6ef35ef9d8c7a621df880181e61395eaf",
+      "parent": "1b4e26058e32ffbb9260f2087174567f640a7883",
+      "files": 106,
+      "pushed": true,
+      "requirements": [
+        "610.1",
+        "610.2",
+        "611.2",
+        "611.3"
+      ],
+      "issues": [
+        {
+          "srs": "SRS-610.1",
+          "number": 519,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/519"
+        },
+        {
+          "srs": "SRS-610.2",
+          "number": 520,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/520"
+        },
+        {
+          "srs": "SRS-611.2",
+          "number": 1046,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1046"
+        },
+        {
+          "srs": "SRS-611.3",
+          "number": 1047,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1047"
+        }
+      ],
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-610.1-611.2-611.3-avatar-appearance-and-restoration",
+      "acceptance": "PENDING",
+      "releaseApproved": false
+    },
+    {
+      "group": "legacy",
+      "branch": "srs-616.9-jumpyland-3d-scenery-and-camera",
+      "commit": "64a63bf412850cfb3017fcd2a4292eb8809808e4",
+      "parent": "f5b73cb6ef35ef9d8c7a621df880181e61395eaf",
+      "files": 7,
+      "pushed": true,
+      "requirements": [
+        "616.9"
+      ],
+      "issues": [
+        {
+          "srs": "SRS-616.9",
+          "number": 1052,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1052"
+        }
+      ],
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-616.9-jumpyland-3d-scenery-and-camera",
+      "acceptance": "PENDING",
+      "releaseApproved": false
+    },
+    {
+      "group": "countries",
+      "branch": "srs-628.2-628.5-628.6-country-adventures-and-environments",
+      "commit": "47629fd821f17905e075a915ae99ee70774b3857",
+      "parent": "64a63bf412850cfb3017fcd2a4292eb8809808e4",
+      "files": 423,
+      "pushed": true,
+      "requirements": [
+        "628.2",
+        "628.5",
+        "628.6"
+      ],
+      "issues": [
+        {
+          "srs": "SRS-628.2",
+          "number": 933,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/933"
+        },
+        {
+          "srs": "SRS-628.5",
+          "number": 936,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/936"
+        },
+        {
+          "srs": "SRS-628.6",
+          "number": 1055,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1055"
+        }
+      ],
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-628.2-628.5-628.6-country-adventures-and-environments",
+      "acceptance": "PENDING",
+      "releaseApproved": false
+    },
+    {
+      "group": "photos",
+      "branch": "srs-628.8-country-guide-photos-and-attribution",
+      "commit": "a2076255f71893b2ddb37ce548b78e6d768be34b",
+      "parent": "47629fd821f17905e075a915ae99ee70774b3857",
+      "files": 29,
+      "pushed": true,
+      "requirements": [
+        "628.8"
+      ],
+      "issues": [
+        {
+          "srs": "SRS-628.8",
+          "number": 1061,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1061"
+        }
+      ],
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-628.8-country-guide-photos-and-attribution",
+      "acceptance": "PENDING",
+      "releaseApproved": false
+    },
+    {
+      "group": "mechanics",
+      "branch": "srs-628.7-oman-water-and-saudi-light-puzzles",
+      "commit": "58c4ab42ebc5b154ff87988c893747027c1406db",
+      "parent": "a2076255f71893b2ddb37ce548b78e6d768be34b",
+      "files": 13,
+      "pushed": true,
+      "requirements": [
+        "628.7"
+      ],
+      "issues": [
+        {
+          "srs": "SRS-628.7",
+          "number": 1058,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1058"
+        }
+      ],
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-628.7-oman-water-and-saudi-light-puzzles",
+      "acceptance": "PENDING",
+      "releaseApproved": false
+    },
+    {
+      "group": "loading",
+      "branch": "srs-628.9-late-texture-loading-without-play-interruption",
+      "commit": "9a45331e6fe61b86e2d1a83a9b97ff38b9585df9",
+      "parent": "58c4ab42ebc5b154ff87988c893747027c1406db",
+      "files": 4,
+      "pushed": true,
+      "requirements": [
+        "628.9"
+      ],
+      "issues": [
+        {
+          "srs": "SRS-628.9",
+          "number": 1064,
+          "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1064"
+        }
+      ],
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-628.9-late-texture-loading-without-play-interruption",
+      "acceptance": "PENDING",
+      "releaseApproved": false
+    }
+  ],
+  "validation": {
+    "productionBuild": "PASSED",
+    "fullSuite": "2107 passed; 5 failed across 4 files",
+    "reportedFailures": 5,
+    "humanAcceptance": "PENDING",
+    "mainMerged": false,
+    "capturedEvidenceFiles": 123
+  }
+}
