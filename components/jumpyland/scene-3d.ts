@@ -25,9 +25,19 @@ export function clayMaterial(color:string){
 // Scanned fractured rock with moss below the turf; silhouettes remain real meshes.
 const mossTint:Record<number,[number,number,number]>={1:[.82,1.12,.62],2:[.8,1.08,.6],3:[.78,1.05,.64]};
 export function terrainMaterials(world:number){
- const rock=new T.MeshStandardMaterial({map:pbr('mossy_rock-Diffuse',true),normalMap:pbr('mossy_rock-nor_gl'),roughnessMap:pbr('mossy_rock-Rough'),color:world===2?'#ebc49c':world===3?'#c9c4ab':'#e4d6bd',vertexColors:true,roughness:.96});
- rock.normalScale.set(.48,.48);
- rock.color.multiplyScalar(1.55);
+ // Warm limestone stays visible below the green turf. The former all-over
+ // moss photograph made every world a dark green cylinder, including bare rock.
+ const rock=new T.MeshStandardMaterial({map:pbr('mossy_rock-Diffuse',true),normalMap:pbr('mossy_rock-nor_gl'),roughnessMap:pbr('mossy_rock-Rough'),vertexColors:true,roughness:.95});
+ rock.normalScale.set(.42,.42);
+ // Retain the scanned cracks and mineral grain, grading the green source
+ // photograph into limestone instead of stamping masonry cells on a cliff.
+ rock.onBeforeCompile=shader=>{
+  shader.uniforms.cliffTint={value:new T.Color(world===3?'#c3ad88':world===2?'#d8a570':'#d8b38b')};
+  shader.fragmentShader='uniform vec3 cliffTint;\n'+shader.fragmentShader;
+  shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',`#include <map_fragment>
+   float mineral = .25 + .95 * sqrt(clamp(dot(diffuseColor.rgb, vec3(.2126,.7152,.0722)),0.,1.));
+   diffuseColor.rgb = cliffTint * mineral;`);
+ };
  return{rock,...fringeMaterials(world)};
 }
 export function island(parent:T.Object3D,p:Platform,world:number,mats:ReturnType<typeof terrainMaterials>,seed=1,grounded=false,bottom?:number,detail:FringeDetail='lane'){

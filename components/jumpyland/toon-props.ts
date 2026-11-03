@@ -97,9 +97,9 @@ let leafyCrown:T.BufferGeometry|null=null;
  * draw calls and clouds can keep their softer shape. */
 function crownGeometry(){
  if(leafyCrown)return leafyCrown;
- const core=blobGeometry().clone().scale(.86,.84,.86),parts=[core.index?core.toNonIndexed():core];
+ const core=blobGeometry().clone().scale(.72,.7,.72),parts=[core.index?core.toNonIndexed():core];
  const leaf=new T.BufferGeometry();leaf.setAttribute('position',new T.Float32BufferAttribute([-.15,0,0,0,.07,.025,.17,0,0,0,-.07,.025,0,0,.065],3));leaf.setAttribute('uv',new T.Float32BufferAttribute([0,.5,.5,1,1,.5,.5,0,.5,.5],2));leaf.setIndex([0,1,4,1,2,4,2,3,4,3,0,4]);leaf.computeVertexNormals();
- const count=88,goldenAngle=Math.PI*(3-Math.sqrt(5));
+ const count=160,goldenAngle=Math.PI*(3-Math.sqrt(5));
  for(let i=0;i<count;i++){
   const y=1-(i+.5)/count*2,r=Math.sqrt(1-y*y),angle=i*goldenAngle,normal=new T.Vector3(Math.cos(angle)*r,y,Math.sin(angle)*r),tangent=new T.Vector3(-Math.sin(angle),0,Math.cos(angle)),bitangent=new T.Vector3().crossVectors(normal,tangent);
   const frame=new T.Matrix4().makeBasis(tangent,bitangent,normal),size=.78+(Math.sin(i*7.4)+1)*.22;
@@ -145,8 +145,13 @@ export function bonsaiPine(b:Batch,leaves:Puffs,kit:Kit,x:number,y:number,z:numb
  }
 }
 export function cloud(p:Puffs,x:number,y:number,z:number,size:number,r:()=>number){
- p.add(x,y,z,size*1.15,size*.72,size*.8,'#ffffff');
- for(let i=0;i<6;i++){const s=size*(.42+r()*.38),dx=(i-2.5)*size*.5+(r()-.5)*size*.25;p.add(x+dx,y-size*.12+s*.3+r()*size*.12,z+(r()-.5)*size*.35,s,s*.78,s*.8,'#ffffff');}
+ p.add(x,y,z,size*1.05,size*.4,size*.72,'#ffffff');
+ // Smaller asymmetric billows break the old six-ball silhouette. White
+ // sun-facing tops and blue-grey lower lobes give the cloud actual volume.
+ for(let i=0;i<16;i++){
+  const s=size*(.2+r()*.3),dx=(r()-.5)*size*2.7,up=Math.max(0,1-Math.abs(dx)/(size*1.6));
+  p.add(x+dx,y+s*.25+up*size*.42+r()*size*.12,z+(r()-.5)*size*.65,s,s*(.78+r()*.4),s,'#ffffff');
+ }
 }
 
 // ---- Mushrooms (instanced caps and stems, shared spotted texture) ----
@@ -366,8 +371,13 @@ export function pillHills(parent:T.Object3D,items:{x:number;y:number;z:number;ra
 }
 export function waterfallMaterial(){return new T.MeshBasicMaterial({map:waterfallTexture(),color:'#f4ffff',transparent:true,depthWrite:false,side:T.DoubleSide});}
 export function waterfall(parent:T.Object3D,material:T.Material,x:number,top:number,bottom:number,z:number,width:number,foam?:Puffs){
- const height=top-bottom,geometry=new T.PlaneGeometry(width,height),uv=geometry.getAttribute('uv');
- for(let i=0;i<uv.count;i++)uv.setY(i,uv.getY(i)*height/2.6);
+ const height=top-bottom,geometry=new T.PlaneGeometry(width,height,6,24),uv=geometry.getAttribute('uv'),p=geometry.getAttribute('position');
+ for(let i=0;i<uv.count;i++){
+  const t=1-uv.getY(i),flare=1+t*.28;
+  p.setX(i,p.getX(i)*flare+Math.sin(t*10+x)*width*.035);
+  p.setZ(i,Math.sin(t*Math.PI)*.14+Math.sin(t*18+p.getX(i)*7)*width*.025);
+  uv.setY(i,uv.getY(i)*height/2.6);
+ }geometry.computeVertexNormals();
  const sheet=new T.Mesh(geometry,material);sheet.position.set(x,bottom+height/2,z);sheet.renderOrder=2;parent.add(sheet);
  if(foam)for(let i=0;i<4;i++)foam.add(x+(i-1.5)*width*.45,bottom+.15,z+.1,width*.55,width*.32,width*.45,'#ffffff');
  return sheet;

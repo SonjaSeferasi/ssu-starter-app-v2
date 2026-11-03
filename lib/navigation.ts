@@ -17,7 +17,7 @@ export function isCurrentDestination(pathname: string, href: string) {
 }
 
 export function isGamePage(pathname: string) {
-  return ['/game-1', '/wordle', '/game-room/game-1', '/game-room/wordle']
+  return ['/game-1', '/wordle', '/game-room/game-1', '/game-room/wordle', '/dev/jumpyland']
     .some((path) => pathname === path || pathname.startsWith(`${path}/`));
 }
 
