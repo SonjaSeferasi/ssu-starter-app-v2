@@ -1,0 +1,2125 @@
+{
+ "code": "ECU",
+ "base": "http://localhost:3000",
+ "browser": "Edg/156.0.4314.50",
+ "startedAt": "2026-11-02T17:35:20.497Z",
+ "runs": [
+  {
+   "run": 1,
+   "cache": "cold (fresh profile)",
+   "readyMs": 6488,
+   "frames": 291,
+   "worstFrameMs": 250,
+   "framesOver50ms": 3,
+   "framesOver20ms": 291,
+   "long": [
+    {
+     "kind": "animation-frame",
+     "ts": 273474105563,
+     "dur": 2846131,
+     "atMsFromStart": 3900,
+     "durMs": 2846,
+     "traceEventsMs": {
+      "Edge_RunTask": 9269,
+      "RunTask": 5541,
+      "ThreadControllerImpl::RunTask": 5539,
+      "ThreadPool_RunTask": 3737,
+      "ANGLEPlatformImpl::RunWorkerTask": 3023,
+      "FireAnimationFrame": 2846,
+      "v8.callFunction": 2846,
+      "FunctionCall country-scene.ts": 2846,
+      "ImplementationBase::WaitForCmd": 2664,
+      "CommandBufferHelper::Finish": 2664,
+      "CommandBufferProxyImpl::WaitForGetOffset": 2660,
+      "Scheduler::RunTask": 2652
+     },
+     "jsSamples": [
+      [
+       "onFirstUse@three.module.js:7469",
+       2493
+      ],
+      [
+       "computeBoundingSphere@three.core.js:19528",
+       56
+      ],
+      [
+       "WebGLShader@three.module.js:6605",
+       17
+      ],
+      [
+       "replaceLightNums@three.module.js:6820",
+       14
+      ],
+      [
+       "createBuffer@three.module.js:513",
+       8
+      ],
+      [
+       "WebGLUniforms@three.module.js:6511",
+       8
+      ],
+      [
+       "(garbage collector)@:-1",
+       5
+      ],
+      [
+       "fetchAttributeLocations@three.module.js:6784",
+       4
+      ],
+      [
+       "fromBufferAttribute@three.core.js:6446",
+       3
+      ],
+      [
+       "uploadTexture@three.module.js:12365",
+       3
+      ]
+     ],
+     "topStack": [
+      "onFirstUse@three.module.js:7469",
+      "WebGLProgram.getUniforms@three.module.js:7568",
+      "setProgram@three.module.js:18854",
+      "WebGLRenderer.renderBufferDirect@three.module.js:17680",
+      "renderObject@three.module.js:10016",
+      "renderObject@three.module.js:10016",
+      "renderObject@three.module.js:10016"
+     ]
+    },
+    {
+     "kind": "animation-frame",
+     "ts": 273477037638,
+     "dur": 278046,
+     "atMsFromStart": 6832,
+     "durMs": 278,
+     "traceEventsMs": {
+      "Edge_RunTask": 784,
+      "RunTask": 507,
+      "ThreadControllerImpl::RunTask": 507,
+      "FireAnimationFrame": 278,
+      "v8.callFunction": 278,
+      "FunctionCall country-scene.ts": 278,
+      "ThreadPool_RunTask": 277,
+      "ANGLEPlatformImpl::RunWorkerTask": 266,
+      "GLES2Implementation::GetProgramiv": 241,
+      "ImplementationBase::WaitForCmd": 241,
+      "CommandBufferHelper::Finish": 241,
+      "CommandBufferProxyImpl::WaitForGetOffset": 241
+     },
+     "jsSamples": [
+      [
+       "onFirstUse@three.module.js:7469",
+       227
+      ],
+      [
+       "texSubImage2D@three.module.js:11106",
+       15
+      ],
+      [
+       "replaceLightNums@three.module.js:6820",
+       3
+      ],
+      [
+       "(program)@:-1",
+       1
+      ],
+      [
+       "update@hazards.ts:136",
+       1
+      ],
+      [
+       "updateMatrixWorld@three.core.js:13516",
+       1
+      ],
+      [
+       "onUploadCallback@three.core.js:17508",
+       1
+      ],
+      [
+       "RegExp: #pragma unroll_loop_start\\s+for\\s*\\(\\s*int\\s+i\\s*=\\s*(\\d+)\\s*;\\s*i\\s*<\\s*(\\d+)\\s*;\\s*i\\s*\\+\\+\\s*\\)\\s*{([\\s\\S]+?)}\\s+#pragma unroll_loop_end@:-1",
+       1
+      ],
+      [
+       "WebGLProgram@three.module.js:7020",
+       1
+      ],
+      [
+       "WebGLUniforms@three.module.js:6511",
+       1
+      ]
+     ],
+     "topStack": [
+      "onFirstUse@three.module.js:7469",
+      "WebGLProgram.getUniforms@three.module.js:7568",
+      "setProgram@three.module.js:18854",
+      "WebGLRenderer.renderBufferDirect@three.module.js:17680",
+      "renderObject@three.module.js:18639",
+      "renderObjects@three.module.js:18612",
+      "renderScene@three.module.js:18462"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273470994704,
+     "dur": 125905,
+     "atMsFromStart": 789,
+     "durMs": 126,
+     "traceEventsMs": {
+      "Edge_RunTask": 199,
+      "RunTask": 194,
+      "ThreadControllerImpl::RunTask": 194,
+      "EvaluateScript main-app.js?v=1793640920788": 125,
+      "v8.run": 118,
+      "RunMicrotasks": 22,
+      "WaitForVSync Sleep": 9,
+      "v8.compile main-app.js?v=1793640920788": 7,
+      "ThreadPool_RunTask": 5
+     },
+     "jsSamples": [
+      [
+       "__webpack_require__.ts@webpack.js?v=1793640920788:300",
+       57
+      ],
+      [
+       "(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js@main-app.js?v=1793640920788:1832",
+       38
+      ],
+      [
+       "(program)@:-1",
+       11
+      ],
+      [
+       "(app-pages-browser)/./node_modules/next/dist/compiled/react/cjs/react.development.js@main-app.js?v=1793640920788:1909",
+       3
+      ],
+      [
+       "(garbage collector)@:-1",
+       3
+      ],
+      [
+       "(anonymous)@react-dom.development.js:13",
+       2
+      ],
+      [
+       "(app-pages-browser)/./node_modules/next/dist/compiled/react-server-dom-webpack/cjs/react-server-dom-webpack-client.browser.development.js@main-app.js?v=1793640920788:1865",
+       2
+      ],
+      [
+       "(anonymous)@webpack.js?v=1793640920788:331",
+       2
+      ],
+      [
+       "createRequire@webpack.js?v=1793640920788:344",
+       2
+      ],
+      [
+       "__webpack_exec__@main-app.js?v=1793640920788:1995",
+       1
+      ]
+     ],
+     "topStack": [
+      "__webpack_require__.ts@webpack.js?v=1793640920788:300",
+      "(app-pages-browser)/./node_modules/next/dist/compiled/react-refresh/runtime.js@main-app.js?v=1793640920788:98",
+      "options.factory@webpack.js?v=1793640920788:710",
+      "__webpack_require__@webpack.js?v=1793640920788:16",
+      "fn@webpack.js?v=1793640920788:347",
+      "(anonymous)@runtime.js:0",
+      "(app-pages-browser)/./node_modules/next/dist/compiled/@next/react-refresh-utils/dist/runtime.js@main-app.js?v=1793640920788:46"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273470994705,
+     "dur": 125859,
+     "atMsFromStart": 789,
+     "durMs": 126,
+     "traceEventsMs": {
+      "Edge_RunTask": 199,
+      "ThreadControllerImpl::RunTask": 194,
+      "EvaluateScript main-app.js?v=1793640920788": 125,
+      "v8.run": 118,
+      "RunTask": 68,
+      "RunMicrotasks": 22,
+      "WaitForVSync Sleep": 9,
+      "v8.compile main-app.js?v=1793640920788": 7,
+      "ThreadPool_RunTask": 5
+     },
+     "jsSamples": [
+      [
+       "__webpack_require__.ts@webpack.js?v=1793640920788:300",
+       57
+      ],
+      [
+       "(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js@main-app.js?v=1793640920788:1832",
+       38
+      ],
+      [
+       "(program)@:-1",
+       11
+      ],
+      [
+       "(app-pages-browser)/./node_modules/next/dist/compiled/react/cjs/react.development.js@main-app.js?v=1793640920788:1909",
+       3
+      ],
+      [
+       "(garbage collector)@:-1",
+       3
+      ],
+      [
+       "(anonymous)@react-dom.development.js:13",
+       2
+      ],
+      [
+       "(app-pages-browser)/./node_modules/next/dist/compiled/react-server-dom-webpack/cjs/react-server-dom-webpack-client.browser.development.js@main-app.js?v=1793640920788:1865",
+       2
+      ],
+      [
+       "(anonymous)@webpack.js?v=1793640920788:331",
+       2
+      ],
+      [
+       "createRequire@webpack.js?v=1793640920788:344",
+       2
+      ],
+      [
+       "__webpack_exec__@main-app.js?v=1793640920788:1995",
+       1
+      ]
+     ],
+     "topStack": [
+      "__webpack_require__.ts@webpack.js?v=1793640920788:300",
+      "(app-pages-browser)/./node_modules/next/dist/compiled/react-refresh/runtime.js@main-app.js?v=1793640920788:98",
+      "options.factory@webpack.js?v=1793640920788:710",
+      "__webpack_require__@webpack.js?v=1793640920788:16",
+      "fn@webpack.js?v=1793640920788:347",
+      "(anonymous)@runtime.js:0",
+      "(app-pages-browser)/./node_modules/next/dist/compiled/@next/react-refresh-utils/dist/runtime.js@main-app.js?v=1793640920788:46"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273471352713,
+     "dur": 64249,
+     "atMsFromStart": 1147,
+     "durMs": 64,
+     "traceEventsMs": {
+      "RunTask": 64,
+      "ThreadControllerImpl::RunTask": 64,
+      "Edge_RunTask": 64,
+      "EvaluateScript _app-pages-browser_components_world-explorer_world-explorer_tsx.js": 63,
+      "v8.run": 60,
+      "RunMicrotasks": 59,
+      "v8.compile _app-pages-browser_components_world-explorer_world-explorer_tsx.js": 4
+     },
+     "jsSamples": [
+      [
+       "__webpack_require__.ts@webpack.js?v=1793640920788:300",
+       105
+      ],
+      [
+       "(program)@:-1",
+       9
+      ],
+      [
+       "(garbage collector)@:-1",
+       3
+      ],
+      [
+       "(app-pages-browser)/./components/world-explorer/world-explorer.tsx@_app-pages-browser_components_world-explorer_world-explorer_tsx.js:89",
+       2
+      ],
+      [
+       "authorLevel@author.ts:71",
+       2
+      ],
+      [
+       "(anonymous)@_app-pages-browser_components_world-explorer_world-explorer_tsx.js:0",
+       1
+      ],
+      [
+       "(app-pages-browser)/./node_modules/lucide-react/dist/esm/createLucideIcon.mjs@_app-pages-browser_components_world-explorer_world-explorer_tsx.js:1035",
+       1
+      ],
+      [
+       "(app-pages-browser)/./node_modules/lucide-react/dist/esm/shared/src/build/buildLucideIconNode.mjs@_app-pages-browser_components_world-explorer_world-explorer_tsx.js:1277",
+       1
+      ],
+      [
+       "setSignature@react-refresh-runtime.development.js:329",
+       1
+      ],
+      [
+       "(app-pages-browser)/./node_modules/lucide-react/dist/esm/icons/settings.mjs@_app-pages-browser_components_world-explorer_world-explorer_tsx.js:1211",
+       1
+      ]
+     ],
+     "topStack": [
+      "__webpack_require__.ts@webpack.js?v=1793640920788:300",
+      "(app-pages-browser)/./components/world-explorer/world-explorer.tsx@_app-pages-browser_components_world-explorer_world-explorer_tsx.js:89",
+      "options.factory@webpack.js?v=1793640920788:710",
+      "__webpack_require__@webpack.js?v=1793640920788:16",
+      "fn@webpack.js?v=1793640920788:347",
+      "(root)@:-1"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273471352714,
+     "dur": 64062,
+     "atMsFromStart": 1147,
+     "durMs": 64,
+     "traceEventsMs": {
+      "ThreadControllerImpl::RunTask": 64,
+      "Edge_RunTask": 64,
+      "EvaluateScript _app-pages-browser_components_world-explorer_world-explorer_tsx.js": 63,
+      "v8.run": 60,
+      "RunMicrotasks": 59,
+      "v8.compile _app-pages-browser_components_world-explorer_world-explorer_tsx.js": 4
+     },
+     "jsSamples": [
+      [
+       "__webpack_require__.ts@webpack.js?v=1793640920788:300",
+       105
+      ],
+      [
+       "(program)@:-1",
+       9
+      ],
+      [
+       "(garbage collector)@:-1",
+       3
+      ],
+      [
+       "(app-pages-browser)/./components/world-explorer/world-explorer.tsx@_app-pages-browser_components_world-explorer_world-explorer_tsx.js:89",
+       2
+      ],
+      [
+       "authorLevel@author.ts:71",
+       2
+      ],
+      [
+       "(anonymous)@_app-pages-browser_components_world-explorer_world-explorer_tsx.js:0",
+       1
+      ],
+      [
+       "(app-pages-browser)/./node_modules/lucide-react/dist/esm/createLucideIcon.mjs@_app-pages-browser_components_world-explorer_world-explorer_tsx.js:1035",
+       1
+      ],
+      [
+       "(app-pages-browser)/./node_modules/lucide-react/dist/esm/shared/src/build/buildLucideIconNode.mjs@_app-pages-browser_components_world-explorer_world-explorer_tsx.js:1277",
+       1
+      ],
+      [
+       "setSignature@react-refresh-runtime.development.js:329",
+       1
+      ],
+      [
+       "(app-pages-browser)/./node_modules/lucide-react/dist/esm/icons/settings.mjs@_app-pages-browser_components_world-explorer_world-explorer_tsx.js:1211",
+       1
+      ]
+     ],
+     "topStack": [
+      "__webpack_require__.ts@webpack.js?v=1793640920788:300",
+      "(app-pages-browser)/./components/world-explorer/world-explorer.tsx@_app-pages-browser_components_world-explorer_world-explorer_tsx.js:89",
+      "options.factory@webpack.js?v=1793640920788:710",
+      "__webpack_require__@webpack.js?v=1793640920788:16",
+      "fn@webpack.js?v=1793640920788:347",
+      "(root)@:-1"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273471457722,
+     "dur": 50966,
+     "atMsFromStart": 1252,
+     "durMs": 51,
+     "traceEventsMs": {
+      "Edge_RunTask": 96,
+      "RunTask": 93,
+      "ThreadControllerImpl::RunTask": 93,
+      "Layout": 38,
+      "v8.parseOnBackgroundWaiting": 28,
+      "Paint": 10,
+      "ThreadPool_RunTask": 5,
+      "UpdateLayoutTree": 4,
+      "v8.parseOnBackgroundParsing": 3,
+      "Commit": 3
+     },
+     "jsSamples": [
+      [
+       "(program)@:-1",
+       45
+      ]
+     ],
+     "topStack": [
+      "(program)@:-1",
+      "(root)@:-1"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273471457722,
+     "dur": 50939,
+     "atMsFromStart": 1252,
+     "durMs": 51,
+     "traceEventsMs": {
+      "Edge_RunTask": 96,
+      "ThreadControllerImpl::RunTask": 93,
+      "RunTask": 42,
+      "Layout": 38,
+      "v8.parseOnBackgroundWaiting": 28,
+      "Paint": 10,
+      "ThreadPool_RunTask": 5,
+      "UpdateLayoutTree": 4,
+      "v8.parseOnBackgroundParsing": 3,
+      "Commit": 3
+     },
+     "jsSamples": [
+      [
+       "(program)@:-1",
+       45
+      ]
+     ],
+     "topStack": [
+      "(program)@:-1",
+      "(root)@:-1"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273471597312,
+     "dur": 399621,
+     "atMsFromStart": 1392,
+     "durMs": 400,
+     "traceEventsMs": {
+      "Edge_RunTask": 1897,
+      "RunTask": 1465,
+      "ThreadControllerImpl::RunTask": 1465,
+      "v8.parseOnBackgroundWaiting": 944,
+      "ThreadPool_RunTask": 433,
+      "ANGLEPlatformImpl::RunWorkerTask": 430,
+      "CommandBufferHelper::Finish": 287,
+      "CommandBufferProxyImpl::WaitForGetOffset": 287,
+      "Scheduler::RunTask": 275,
+      "RasterImplementation::Finish": 265,
+      "GpuChannel::ExecuteDeferredRequest": 228,
+      "GPUTask": 228
+     },
+     "jsSamples": [
+      [
+       "(program)@:-1",
+       379
+      ]
+     ],
+     "topStack": [
+      "(program)@:-1",
+      "(root)@:-1"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273471597326,
+     "dur": 399558,
+     "atMsFromStart": 1392,
+     "durMs": 400,
+     "traceEventsMs": {
+      "Edge_RunTask": 1897,
+      "ThreadControllerImpl::RunTask": 1465,
+      "RunTask": 1066,
+      "v8.parseOnBackgroundWaiting": 944,
+      "ThreadPool_RunTask": 433,
+      "ANGLEPlatformImpl::RunWorkerTask": 430,
+      "CommandBufferHelper::Finish": 287,
+      "CommandBufferProxyImpl::WaitForGetOffset": 287,
+      "Scheduler::RunTask": 275,
+      "RasterImplementation::Finish": 265,
+      "GpuChannel::ExecuteDeferredRequest": 228,
+      "GPUTask": 228
+     },
+     "jsSamples": [
+      [
+       "(program)@:-1",
+       379
+      ]
+     ],
+     "topStack": [
+      "(program)@:-1",
+      "(root)@:-1"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273472356687,
+     "dur": 89688,
+     "atMsFromStart": 2151,
+     "durMs": 90,
+     "traceEventsMs": {
+      "Edge_RunTask": 255,
+      "RunTask": 173,
+      "ThreadControllerImpl::RunTask": 173,
+      "v8.parseOnBackgroundWaiting": 125,
+      "EvaluateScript _app-pages-browser_components_world-explorer_atlas-scene_ts.js": 89,
+      "v8.run": 84,
+      "RunMicrotasks": 84,
+      "ThreadPool_RunTask": 82,
+      "v8.parseOnBackgroundParsing": 11,
+      "v8.compile _app-pages-browser_components_world-explorer_atlas-scene_ts.js": 5
+     },
+     "jsSamples": [
+      [
+       "(app-pages-browser)/./node_modules/three/build/three.core.js@_app-pages-browser_components_world-explorer_atlas-scene_ts.js:35",
+       41
+      ],
+      [
+       "(app-pages-browser)/./node_modules/three/build/three.module.js@_app-pages-browser_components_world-explorer_atlas-scene_ts.js:45",
+       18
+      ],
+      [
+       "__webpack_require__.ts@webpack.js?v=1793640920788:300",
+       12
+      ],
+      [
+       "(program)@:-1",
+       8
+      ],
+      [
+       "(anonymous)@three.core.js:0",
+       3
+      ],
+      [
+       "set@three.core.js:14665",
+       2
+      ],
+      [
+       "(app-pages-browser)/./node_modules/three/examples/jsm/utils/BufferGeometryUtils.js@_app-pages-browser_components_world-explorer_atlas-scene_ts.js:55",
+       2
+      ],
+      [
+       "__webpack_require__.d@webpack.js?v=1793640920788:138",
+       1
+      ],
+      [
+       "Object3D@three.core.js:12409",
+       1
+      ],
+      [
+       "mergeUniforms@three.core.js:38474",
+       1
+      ]
+     ],
+     "topStack": [
+      "(app-pages-browser)/./node_modules/three/build/three.core.js@_app-pages-browser_components_world-explorer_atlas-scene_ts.js:35",
+      "options.factory@webpack.js?v=1793640920788:710",
+      "__webpack_require__@webpack.js?v=1793640920788:16",
+      "fn@webpack.js?v=1793640920788:347",
+      "(anonymous)@atlas-scene.ts:0",
+      "(app-pages-browser)/./components/world-explorer/atlas-scene.ts@_app-pages-browser_components_world-explorer_atlas-scene_ts.js:15",
+      "options.factory@webpack.js?v=1793640920788:710"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273472356687,
+     "dur": 89495,
+     "atMsFromStart": 2151,
+     "durMs": 89,
+     "traceEventsMs": {
+      "Edge_RunTask": 255,
+      "ThreadControllerImpl::RunTask": 173,
+      "v8.parseOnBackgroundWaiting": 125,
+      "EvaluateScript _app-pages-browser_components_world-explorer_atlas-scene_ts.js": 89,
+      "v8.run": 84,
+      "RunMicrotasks": 84,
+      "RunTask": 84,
+      "ThreadPool_RunTask": 82,
+      "v8.parseOnBackgroundParsing": 11,
+      "v8.compile _app-pages-browser_components_world-explorer_atlas-scene_ts.js": 5
+     },
+     "jsSamples": [
+      [
+       "(app-pages-browser)/./node_modules/three/build/three.core.js@_app-pages-browser_components_world-explorer_atlas-scene_ts.js:35",
+       41
+      ],
+      [
+       "(app-pages-browser)/./node_modules/three/build/three.module.js@_app-pages-browser_components_world-explorer_atlas-scene_ts.js:45",
+       18
+      ],
+      [
+       "__webpack_require__.ts@webpack.js?v=1793640920788:300",
+       12
+      ],
+      [
+       "(program)@:-1",
+       8
+      ],
+      [
+       "(anonymous)@three.core.js:0",
+       3
+      ],
+      [
+       "set@three.core.js:14665",
+       2
+      ],
+      [
+       "(app-pages-browser)/./node_modules/three/examples/jsm/utils/BufferGeometryUtils.js@_app-pages-browser_components_world-explorer_atlas-scene_ts.js:55",
+       2
+      ],
+      [
+       "__webpack_require__.d@webpack.js?v=1793640920788:138",
+       1
+      ],
+      [
+       "Object3D@three.core.js:12409",
+       1
+      ],
+      [
+       "mergeUniforms@three.core.js:38474",
+       1
+      ]
+     ],
+     "topStack": [
+      "(app-pages-browser)/./node_modules/three/build/three.core.js@_app-pages-browser_components_world-explorer_atlas-scene_ts.js:35",
+      "options.factory@webpack.js?v=1793640920788:710",
+      "__webpack_require__@webpack.js?v=1793640920788:16",
+      "fn@webpack.js?v=1793640920788:347",
+      "(anonymous)@atlas-scene.ts:0",
+      "(app-pages-browser)/./components/world-explorer/atlas-scene.ts@_app-pages-browser_components_world-explorer_atlas-scene_ts.js:15",
+      "options.factory@webpack.js?v=1793640920788:710"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273472512966,
+     "dur": 1587094,
+     "atMsFromStart": 2308,
+     "durMs": 1587,
+     "traceEventsMs": {
+      "Edge_RunTask": 5670,
+      "RunTask": 4257,
+      "ThreadControllerImpl::RunTask": 4255,
+      "EvaluateScript _app-pages-browser_components_world-explorer_country-scene_ts.js": 1585,
+      "v8.run": 1578,
+      "RunMicrotasks": 1578,
+      "ThreadPool_RunTask": 1417,
+      "ImplementationBase::WaitForCmd": 1077,
+      "CommandBufferHelper::Finish": 1077,
+      "CommandBufferProxyImpl::WaitForGetOffset": 1077,
+      "ANGLEPlatformImpl::RunWorkerTask": 1074,
+      "Scheduler::RunTask": 1055
+     },
+     "jsSamples": [
+      [
+       "onFirstUse@three.module.js:7469",
+       994
+      ],
+      [
+       "convertBufferAttribute@three.core.js:19935",
+       70
+      ],
+      [
+       "(garbage collector)@:-1",
+       32
+      ],
+      [
+       "(anonymous)@water.ts:19",
+       20
+      ],
+      [
+       "__webpack_require__.ts@webpack.js?v=1793640920788:300",
+       13
+      ],
+      [
+       "WebGLRenderer.setSize@three.module.js:17155",
+       13
+      ],
+      [
+       "(program)@:-1",
+       12
+      ],
+      [
+       "mergeAttributes@BufferGeometryUtils.js:335",
+       10
+      ],
+      [
+       "getContext@three.module.js:16856",
+       9
+      ],
+      [
+       "getExtension@three.module.js:4524",
+       9
+      ]
+     ],
+     "topStack": [
+      "onFirstUse@three.module.js:7469",
+      "WebGLProgram.getUniforms@three.module.js:7568",
+      "setProgram@three.module.js:18854",
+      "WebGLRenderer.renderBufferDirect@three.module.js:17680",
+      "renderObject@three.module.js:18639",
+      "renderObjects@three.module.js:18612",
+      "renderScene@three.module.js:18462"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273472512967,
+     "dur": 1585589,
+     "atMsFromStart": 2308,
+     "durMs": 1586,
+     "traceEventsMs": {
+      "Edge_RunTask": 5670,
+      "ThreadControllerImpl::RunTask": 4255,
+      "RunTask": 2670,
+      "EvaluateScript _app-pages-browser_components_world-explorer_country-scene_ts.js": 1585,
+      "v8.run": 1578,
+      "RunMicrotasks": 1578,
+      "ThreadPool_RunTask": 1417,
+      "ImplementationBase::WaitForCmd": 1077,
+      "CommandBufferHelper::Finish": 1077,
+      "CommandBufferProxyImpl::WaitForGetOffset": 1077,
+      "ANGLEPlatformImpl::RunWorkerTask": 1074,
+      "Scheduler::RunTask": 1055
+     },
+     "jsSamples": [
+      [
+       "onFirstUse@three.module.js:7469",
+       994
+      ],
+      [
+       "convertBufferAttribute@three.core.js:19935",
+       70
+      ],
+      [
+       "(garbage collector)@:-1",
+       32
+      ],
+      [
+       "(anonymous)@water.ts:19",
+       20
+      ],
+      [
+       "__webpack_require__.ts@webpack.js?v=1793640920788:300",
+       13
+      ],
+      [
+       "WebGLRenderer.setSize@three.module.js:17155",
+       13
+      ],
+      [
+       "(program)@:-1",
+       12
+      ],
+      [
+       "mergeAttributes@BufferGeometryUtils.js:335",
+       10
+      ],
+      [
+       "getContext@three.module.js:16856",
+       9
+      ],
+      [
+       "getExtension@three.module.js:4524",
+       9
+      ]
+     ],
+     "topStack": [
+      "onFirstUse@three.module.js:7469",
+      "WebGLProgram.getUniforms@three.module.js:7568",
+      "setProgram@three.module.js:18854",
+      "WebGLRenderer.renderBufferDirect@three.module.js:17680",
+      "renderObject@three.module.js:18639",
+      "renderObjects@three.module.js:18612",
+      "renderScene@three.module.js:18462"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273474105499,
+     "dur": 2849975,
+     "atMsFromStart": 3900,
+     "durMs": 2850,
+     "traceEventsMs": {
+      "Edge_RunTask": 12119,
+      "RunTask": 8391,
+      "ThreadControllerImpl::RunTask": 8389,
+      "ThreadPool_RunTask": 3737,
+      "ANGLEPlatformImpl::RunWorkerTask": 3023,
+      "FireAnimationFrame": 2846,
+      "v8.callFunction": 2846,
+      "FunctionCall country-scene.ts": 2846,
+      "ImplementationBase::WaitForCmd": 2664,
+      "CommandBufferHelper::Finish": 2664,
+      "CommandBufferProxyImpl::WaitForGetOffset": 2660,
+      "Scheduler::RunTask": 2652
+     },
+     "jsSamples": [
+      [
+       "onFirstUse@three.module.js:7469",
+       2493
+      ],
+      [
+       "computeBoundingSphere@three.core.js:19528",
+       56
+      ],
+      [
+       "WebGLShader@three.module.js:6605",
+       17
+      ],
+      [
+       "replaceLightNums@three.module.js:6820",
+       14
+      ],
+      [
+       "createBuffer@three.module.js:513",
+       8
+      ],
+      [
+       "WebGLUniforms@three.module.js:6511",
+       8
+      ],
+      [
+       "(program)@:-1",
+       7
+      ],
+      [
+       "(garbage collector)@:-1",
+       5
+      ],
+      [
+       "fetchAttributeLocations@three.module.js:6784",
+       4
+      ],
+      [
+       "fromBufferAttribute@three.core.js:6446",
+       3
+      ]
+     ],
+     "topStack": [
+      "onFirstUse@three.module.js:7469",
+      "WebGLProgram.getUniforms@three.module.js:7568",
+      "setProgram@three.module.js:18854",
+      "WebGLRenderer.renderBufferDirect@three.module.js:17680",
+      "renderObject@three.module.js:10016",
+      "renderObject@three.module.js:10016",
+      "renderObject@three.module.js:10016"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273474105500,
+     "dur": 2849827,
+     "atMsFromStart": 3900,
+     "durMs": 2850,
+     "traceEventsMs": {
+      "Edge_RunTask": 12119,
+      "ThreadControllerImpl::RunTask": 8389,
+      "RunTask": 5541,
+      "ThreadPool_RunTask": 3737,
+      "ANGLEPlatformImpl::RunWorkerTask": 3023,
+      "FireAnimationFrame": 2846,
+      "v8.callFunction": 2846,
+      "FunctionCall country-scene.ts": 2846,
+      "ImplementationBase::WaitForCmd": 2664,
+      "CommandBufferHelper::Finish": 2664,
+      "CommandBufferProxyImpl::WaitForGetOffset": 2660,
+      "Scheduler::RunTask": 2652
+     },
+     "jsSamples": [
+      [
+       "onFirstUse@three.module.js:7469",
+       2493
+      ],
+      [
+       "computeBoundingSphere@three.core.js:19528",
+       56
+      ],
+      [
+       "WebGLShader@three.module.js:6605",
+       17
+      ],
+      [
+       "replaceLightNums@three.module.js:6820",
+       14
+      ],
+      [
+       "createBuffer@three.module.js:513",
+       8
+      ],
+      [
+       "WebGLUniforms@three.module.js:6511",
+       8
+      ],
+      [
+       "(program)@:-1",
+       7
+      ],
+      [
+       "(garbage collector)@:-1",
+       5
+      ],
+      [
+       "fetchAttributeLocations@three.module.js:6784",
+       4
+      ],
+      [
+       "fromBufferAttribute@three.core.js:6446",
+       3
+      ]
+     ],
+     "topStack": [
+      "onFirstUse@three.module.js:7469",
+      "WebGLProgram.getUniforms@three.module.js:7568",
+      "setProgram@three.module.js:18854",
+      "WebGLRenderer.renderBufferDirect@three.module.js:17680",
+      "renderObject@three.module.js:10016",
+      "renderObject@three.module.js:10016",
+      "renderObject@three.module.js:10016"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273477037592,
+     "dur": 283816,
+     "atMsFromStart": 6832,
+     "durMs": 284,
+     "traceEventsMs": {
+      "Edge_RunTask": 1084,
+      "RunTask": 806,
+      "ThreadControllerImpl::RunTask": 805,
+      "ThreadPool_RunTask": 279,
+      "FireAnimationFrame": 278,
+      "v8.callFunction": 278,
+      "FunctionCall country-scene.ts": 278,
+      "ANGLEPlatformImpl::RunWorkerTask": 266,
+      "Scheduler::RunTask": 245,
+      "GpuChannel::ExecuteDeferredRequest": 245,
+      "GPUTask": 245,
+      "WebGL": 245
+     },
+     "jsSamples": [
+      [
+       "onFirstUse@three.module.js:7469",
+       227
+      ],
+      [
+       "texSubImage2D@three.module.js:11106",
+       15
+      ],
+      [
+       "(program)@:-1",
+       7
+      ],
+      [
+       "replaceLightNums@three.module.js:6820",
+       3
+      ],
+      [
+       "update@hazards.ts:136",
+       1
+      ],
+      [
+       "updateMatrixWorld@three.core.js:13516",
+       1
+      ],
+      [
+       "onUploadCallback@three.core.js:17508",
+       1
+      ],
+      [
+       "RegExp: #pragma unroll_loop_start\\s+for\\s*\\(\\s*int\\s+i\\s*=\\s*(\\d+)\\s*;\\s*i\\s*<\\s*(\\d+)\\s*;\\s*i\\s*\\+\\+\\s*\\)\\s*{([\\s\\S]+?)}\\s+#pragma unroll_loop_end@:-1",
+       1
+      ],
+      [
+       "WebGLProgram@three.module.js:7020",
+       1
+      ],
+      [
+       "WebGLUniforms@three.module.js:6511",
+       1
+      ]
+     ],
+     "topStack": [
+      "onFirstUse@three.module.js:7469",
+      "WebGLProgram.getUniforms@three.module.js:7568",
+      "setProgram@three.module.js:18854",
+      "WebGLRenderer.renderBufferDirect@three.module.js:17680",
+      "renderObject@three.module.js:18639",
+      "renderObjects@three.module.js:18612",
+      "renderScene@three.module.js:18462"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273477037593,
+     "dur": 283759,
+     "atMsFromStart": 6832,
+     "durMs": 284,
+     "traceEventsMs": {
+      "Edge_RunTask": 1084,
+      "ThreadControllerImpl::RunTask": 805,
+      "RunTask": 522,
+      "ThreadPool_RunTask": 279,
+      "FireAnimationFrame": 278,
+      "v8.callFunction": 278,
+      "FunctionCall country-scene.ts": 278,
+      "ANGLEPlatformImpl::RunWorkerTask": 266,
+      "Scheduler::RunTask": 245,
+      "GpuChannel::ExecuteDeferredRequest": 245,
+      "GPUTask": 245,
+      "WebGL": 245
+     },
+     "jsSamples": [
+      [
+       "onFirstUse@three.module.js:7469",
+       227
+      ],
+      [
+       "texSubImage2D@three.module.js:11106",
+       15
+      ],
+      [
+       "(program)@:-1",
+       7
+      ],
+      [
+       "replaceLightNums@three.module.js:6820",
+       3
+      ],
+      [
+       "update@hazards.ts:136",
+       1
+      ],
+      [
+       "updateMatrixWorld@three.core.js:13516",
+       1
+      ],
+      [
+       "onUploadCallback@three.core.js:17508",
+       1
+      ],
+      [
+       "RegExp: #pragma unroll_loop_start\\s+for\\s*\\(\\s*int\\s+i\\s*=\\s*(\\d+)\\s*;\\s*i\\s*<\\s*(\\d+)\\s*;\\s*i\\s*\\+\\+\\s*\\)\\s*{([\\s\\S]+?)}\\s+#pragma unroll_loop_end@:-1",
+       1
+      ],
+      [
+       "WebGLProgram@three.module.js:7020",
+       1
+      ],
+      [
+       "WebGLUniforms@three.module.js:6511",
+       1
+      ]
+     ],
+     "topStack": [
+      "onFirstUse@three.module.js:7469",
+      "WebGLProgram.getUniforms@three.module.js:7568",
+      "setProgram@three.module.js:18854",
+      "WebGLRenderer.renderBufferDirect@three.module.js:17680",
+      "renderObject@three.module.js:18639",
+      "renderObjects@three.module.js:18612",
+      "renderScene@three.module.js:18462"
+     ]
+    }
+   ]
+  },
+  {
+   "run": 2,
+   "cache": "warm (same browser, reload)",
+   "readyMs": 2664,
+   "frames": 301,
+   "worstFrameMs": 250,
+   "framesOver50ms": 2,
+   "framesOver20ms": 301,
+   "long": [
+    {
+     "kind": "animation-frame",
+     "ts": 273494371152,
+     "dur": 390422,
+     "atMsFromStart": 12262,
+     "durMs": 390,
+     "traceEventsMs": {
+      "Edge_RunTask": 859,
+      "RunTask": 593,
+      "ThreadControllerImpl::RunTask": 592,
+      "FireAnimationFrame": 390,
+      "v8.callFunction": 390,
+      "FunctionCall country-scene.ts": 390,
+      "ThreadPool_RunTask": 270,
+      "ImplementationBase::WaitForCmd": 227,
+      "CommandBufferHelper::Finish": 227,
+      "ANGLEPlatformImpl::RunWorkerTask": 225,
+      "CommandBufferProxyImpl::WaitForGetOffset": 224,
+      "GLES2Implementation::GetProgramiv": 220
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       207
+      ],
+      [
+       "computeBoundingSphere@:19528",
+       31
+      ],
+      [
+       "getShaderInfoLog@:-1",
+       26
+      ],
+      [
+       "computeBoundingSphere@three.core.js:19528",
+       21
+      ],
+      [
+       "shaderSource@:-1",
+       14
+      ],
+      [
+       "replaceLightNums@three.module.js:6820",
+       13
+      ],
+      [
+       "getProgramParameter@:-1",
+       11
+      ],
+      [
+       "(garbage collector)@:-1",
+       9
+      ],
+      [
+       "fromBufferAttribute@three.core.js:6446",
+       5
+      ],
+      [
+       "getUniformLocation@:-1",
+       4
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "onFirstUse@three.module.js:7469",
+      "WebGLProgram.getUniforms@three.module.js:7568",
+      "setProgram@three.module.js:18854",
+      "WebGLRenderer.renderBufferDirect@three.module.js:17680",
+      "renderObject@three.module.js:10016",
+      "renderObject@three.module.js:10016"
+     ]
+    },
+    {
+     "kind": "animation-frame",
+     "ts": 273494803804,
+     "dur": 56772,
+     "atMsFromStart": 12695,
+     "durMs": 57,
+     "traceEventsMs": {
+      "Edge_RunTask": 101,
+      "RunTask": 75,
+      "ThreadControllerImpl::RunTask": 75,
+      "FireAnimationFrame": 57,
+      "v8.callFunction": 57,
+      "FunctionCall country-scene.ts": 57,
+      "ThreadPool_RunTask": 26,
+      "Scheduler::RunTask": 25,
+      "GpuChannel::ExecuteDeferredRequest": 25,
+      "GPUTask": 25,
+      "CommandBuffer::Flush": 25,
+      "CommandBufferStub::OnAsyncFlush": 25
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       20
+      ],
+      [
+       "texSubImage2D@:-1",
+       16
+      ],
+      [
+       "replaceLightNums@three.module.js:6820",
+       2
+      ],
+      [
+       "(program)@:-1",
+       1
+      ],
+      [
+       "render@country-scene.ts:464",
+       1
+      ],
+      [
+       "renderObject@three.module.js:10016",
+       1
+      ],
+      [
+       "RegExp: #pragma unroll_loop_start\\s+for\\s*\\(\\s*int\\s+i\\s*=\\s*(\\d+)\\s*;\\s*i\\s*<\\s*(\\d+)\\s*;\\s*i\\s*\\+\\+\\s*\\)\\s*{([\\s\\S]+?)}\\s+#pragma unroll_loop_end@:-1",
+       1
+      ],
+      [
+       "shaderSource@:-1",
+       1
+      ],
+      [
+       "getShaderInfoLog@:-1",
+       1
+      ],
+      [
+       "parseUniform@three.module.js:6456",
+       1
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "onFirstUse@three.module.js:7469",
+      "WebGLProgram.getUniforms@three.module.js:7568",
+      "setProgram@three.module.js:18854",
+      "WebGLRenderer.renderBufferDirect@three.module.js:17680",
+      "renderObject@three.module.js:18639",
+      "renderObjects@three.module.js:18612"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273491973895,
+     "dur": 130468,
+     "atMsFromStart": 9865,
+     "durMs": 130,
+     "traceEventsMs": {
+      "Edge_RunTask": 262,
+      "RunTask": 255,
+      "ThreadControllerImpl::RunTask": 255,
+      "Receive mojo message": 130,
+      "CpuProfiler::StartProfiling": 130,
+      "ThreadPool_RunTask": 7,
+      "SimpleWatcher::OnHandleReady": 7,
+      "SimpleURLLoader_BodyReader mojo callback": 7
+     },
+     "jsSamples": [],
+     "topStack": []
+    },
+    {
+     "kind": "task",
+     "ts": 273491973897,
+     "dur": 130416,
+     "atMsFromStart": 9865,
+     "durMs": 130,
+     "traceEventsMs": {
+      "Edge_RunTask": 262,
+      "ThreadControllerImpl::RunTask": 255,
+      "Receive mojo message": 130,
+      "CpuProfiler::StartProfiling": 130,
+      "RunTask": 125,
+      "ThreadPool_RunTask": 7,
+      "SimpleWatcher::OnHandleReady": 7,
+      "SimpleURLLoader_BodyReader mojo callback": 7
+     },
+     "jsSamples": [],
+     "topStack": []
+    },
+    {
+     "kind": "task",
+     "ts": 273492475096,
+     "dur": 138452,
+     "atMsFromStart": 10366,
+     "durMs": 138,
+     "traceEventsMs": {
+      "Edge_RunTask": 299,
+      "RunTask": 272,
+      "ThreadControllerImpl::RunTask": 272,
+      "Receive mojo message": 138,
+      "CpuProfiler::StartProfiling": 137,
+      "ThreadPool_RunTask": 27,
+      "SimpleWatcher::OnHandleReady": 2,
+      "SimpleURLLoader_BodyReader mojo callback": 2
+     },
+     "jsSamples": [
+      [
+       "(program)@:-1",
+       1
+      ]
+     ],
+     "topStack": [
+      "(program)@:-1",
+      "(root)@:-1"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273492475097,
+     "dur": 138394,
+     "atMsFromStart": 10366,
+     "durMs": 138,
+     "traceEventsMs": {
+      "Edge_RunTask": 299,
+      "ThreadControllerImpl::RunTask": 272,
+      "Receive mojo message": 138,
+      "CpuProfiler::StartProfiling": 137,
+      "RunTask": 133,
+      "ThreadPool_RunTask": 27,
+      "SimpleWatcher::OnHandleReady": 2,
+      "SimpleURLLoader_BodyReader mojo callback": 2
+     },
+     "jsSamples": [
+      [
+       "(program)@:-1",
+       1
+      ]
+     ],
+     "topStack": [
+      "(program)@:-1",
+      "(root)@:-1"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273492989184,
+     "dur": 124602,
+     "atMsFromStart": 10880,
+     "durMs": 125,
+     "traceEventsMs": {
+      "Edge_RunTask": 243,
+      "RunTask": 241,
+      "ThreadControllerImpl::RunTask": 241,
+      "EvaluateScript main-app.js?v=1793640942468": 123,
+      "v8.run": 113,
+      "RunMicrotasks": 15,
+      "v8.compile main-app.js?v=1793640942468": 9,
+      "ThreadPool_RunTask": 2,
+      "v8.callFunction": 2,
+      "FunctionCall react-dom.development.js": 2
+     },
+     "jsSamples": [
+      [
+       "createScript@:-1",
+       50
+      ],
+      [
+       "(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js@main-app.js?v=1793640942468:1832",
+       38
+      ],
+      [
+       "(program)@:-1",
+       12
+      ],
+      [
+       "(app-pages-browser)/./node_modules/next/dist/compiled/react/cjs/react.development.js@main-app.js?v=1793640942468:1909",
+       3
+      ],
+      [
+       "(anonymous)@react-dom.development.js:13",
+       2
+      ],
+      [
+       "(app-pages-browser)/./node_modules/next/dist/compiled/react-server-dom-webpack/cjs/react-server-dom-webpack-client.browser.development.js@main-app.js?v=1793640942468:1865",
+       2
+      ],
+      [
+       "createPolicy@:-1",
+       1
+      ],
+      [
+       "(app-pages-browser)/./node_modules/next/dist/compiled/react-refresh/cjs/react-refresh-runtime.development.js@main-app.js?v=1793640942468:87",
+       1
+      ],
+      [
+       "options.factory@webpack.js?v=1793640942468:710",
+       1
+      ],
+      [
+       "(app-pages-browser)/./node_modules/next/dist/client/app-bootstrap.js@main-app.js?v=1793640942468:218",
+       1
+      ]
+     ],
+     "topStack": [
+      "createScript@:-1",
+      "__webpack_require__.ts@webpack.js?v=1793640942468:300",
+      "(app-pages-browser)/./node_modules/next/dist/client/components/router-reducer/apply-flight-data.js@main-app.js?v=1793640942468:1140",
+      "options.factory@webpack.js?v=1793640942468:710",
+      "__webpack_require__@webpack.js?v=1793640942468:16",
+      "fn@webpack.js?v=1793640942468:347",
+      "(anonymous)@refetch-inactive-parallel-segments.js:0"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273492989185,
+     "dur": 124540,
+     "atMsFromStart": 10880,
+     "durMs": 125,
+     "traceEventsMs": {
+      "Edge_RunTask": 243,
+      "ThreadControllerImpl::RunTask": 241,
+      "EvaluateScript main-app.js?v=1793640942468": 123,
+      "RunTask": 117,
+      "v8.run": 113,
+      "RunMicrotasks": 15,
+      "v8.compile main-app.js?v=1793640942468": 9,
+      "ThreadPool_RunTask": 2,
+      "v8.callFunction": 2,
+      "FunctionCall react-dom.development.js": 2
+     },
+     "jsSamples": [
+      [
+       "createScript@:-1",
+       50
+      ],
+      [
+       "(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js@main-app.js?v=1793640942468:1832",
+       38
+      ],
+      [
+       "(program)@:-1",
+       12
+      ],
+      [
+       "(app-pages-browser)/./node_modules/next/dist/compiled/react/cjs/react.development.js@main-app.js?v=1793640942468:1909",
+       3
+      ],
+      [
+       "(anonymous)@react-dom.development.js:13",
+       2
+      ],
+      [
+       "(app-pages-browser)/./node_modules/next/dist/compiled/react-server-dom-webpack/cjs/react-server-dom-webpack-client.browser.development.js@main-app.js?v=1793640942468:1865",
+       2
+      ],
+      [
+       "createPolicy@:-1",
+       1
+      ],
+      [
+       "(app-pages-browser)/./node_modules/next/dist/compiled/react-refresh/cjs/react-refresh-runtime.development.js@main-app.js?v=1793640942468:87",
+       1
+      ],
+      [
+       "options.factory@webpack.js?v=1793640942468:710",
+       1
+      ],
+      [
+       "(app-pages-browser)/./node_modules/next/dist/client/app-bootstrap.js@main-app.js?v=1793640942468:218",
+       1
+      ]
+     ],
+     "topStack": [
+      "createScript@:-1",
+      "__webpack_require__.ts@webpack.js?v=1793640942468:300",
+      "(app-pages-browser)/./node_modules/next/dist/client/components/router-reducer/apply-flight-data.js@main-app.js?v=1793640942468:1140",
+      "options.factory@webpack.js?v=1793640942468:710",
+      "__webpack_require__@webpack.js?v=1793640942468:16",
+      "fn@webpack.js?v=1793640942468:347",
+      "(anonymous)@refetch-inactive-parallel-segments.js:0"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273493129915,
+     "dur": 51484,
+     "atMsFromStart": 11021,
+     "durMs": 51,
+     "traceEventsMs": {
+      "Edge_RunTask": 100,
+      "RunTask": 93,
+      "ThreadControllerImpl::RunTask": 93,
+      "v8.callFunction": 51,
+      "FunctionCall scheduler.development.js": 51,
+      "ThreadPool_RunTask": 7,
+      "SimpleWatcher::OnHandleReady": 5,
+      "SimpleURLLoader_BodyReader mojo callback": 4
+     },
+     "jsSamples": [
+      [
+       "(anonymous)@platform.js:7",
+       5
+      ],
+      [
+       "(program)@:-1",
+       3
+      ],
+      [
+       "registerExportsForReactRefresh@helpers.js:40",
+       3
+      ],
+      [
+       "(app-pages-browser)/./node_modules/next/dist/client/components/react-dev-overlay/internal/components/Overlay/maintain--tab-focus.js@main-app.js?v=1793640942468:635",
+       3
+      ],
+      [
+       "parse@platform.js:7",
+       3
+      ],
+      [
+       "isLikelyComponentType@react-refresh-runtime.development.js:586",
+       2
+      ],
+      [
+       "adoptClassInstance@react-dom.development.js:14740",
+       1
+      ],
+      [
+       "applyDerivedStateFromProps@react-dom.development.js:14487",
+       1
+      ],
+      [
+       "renderWithHooks@react-dom.development.js:11049",
+       1
+      ],
+      [
+       "Router@app-router.js:204",
+       1
+      ]
+     ],
+     "topStack": [
+      "(anonymous)@platform.js:7",
+      "541@platform.js:1",
+      "__nccwpck_require__@platform.js:7",
+      "(anonymous)@platform.js:1",
+      "(anonymous)@platform.js:0",
+      "(app-pages-browser)/./node_modules/next/dist/compiled/platform/platform.js@main-app.js?v=1793640942468:77",
+      "options.factory@webpack.js?v=1793640942468:710"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273493129920,
+     "dur": 51374,
+     "atMsFromStart": 11021,
+     "durMs": 51,
+     "traceEventsMs": {
+      "Edge_RunTask": 100,
+      "ThreadControllerImpl::RunTask": 93,
+      "v8.callFunction": 51,
+      "FunctionCall scheduler.development.js": 51,
+      "RunTask": 42,
+      "ThreadPool_RunTask": 7,
+      "SimpleWatcher::OnHandleReady": 5,
+      "SimpleURLLoader_BodyReader mojo callback": 4
+     },
+     "jsSamples": [
+      [
+       "(anonymous)@platform.js:7",
+       5
+      ],
+      [
+       "(program)@:-1",
+       3
+      ],
+      [
+       "registerExportsForReactRefresh@helpers.js:40",
+       3
+      ],
+      [
+       "(app-pages-browser)/./node_modules/next/dist/client/components/react-dev-overlay/internal/components/Overlay/maintain--tab-focus.js@main-app.js?v=1793640942468:635",
+       3
+      ],
+      [
+       "parse@platform.js:7",
+       3
+      ],
+      [
+       "isLikelyComponentType@react-refresh-runtime.development.js:586",
+       2
+      ],
+      [
+       "adoptClassInstance@react-dom.development.js:14740",
+       1
+      ],
+      [
+       "applyDerivedStateFromProps@react-dom.development.js:14487",
+       1
+      ],
+      [
+       "renderWithHooks@react-dom.development.js:11049",
+       1
+      ],
+      [
+       "Router@app-router.js:204",
+       1
+      ]
+     ],
+     "topStack": [
+      "(anonymous)@platform.js:7",
+      "541@platform.js:1",
+      "__nccwpck_require__@platform.js:7",
+      "(anonymous)@platform.js:1",
+      "(anonymous)@platform.js:0",
+      "(app-pages-browser)/./node_modules/next/dist/compiled/platform/platform.js@main-app.js?v=1793640942468:77",
+      "options.factory@webpack.js?v=1793640942468:710"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273493888651,
+     "dur": 475092,
+     "atMsFromStart": 11780,
+     "durMs": 475,
+     "traceEventsMs": {
+      "Edge_RunTask": 1137,
+      "RunTask": 964,
+      "ThreadControllerImpl::RunTask": 964,
+      "EvaluateScript _app-pages-browser_components_world-explorer_country-scene_ts.js": 474,
+      "v8.run": 472,
+      "RunMicrotasks": 471,
+      "ThreadPool_RunTask": 175,
+      "V8.GC_MC_BACKGROUND_MARKING": 40,
+      "ImplementationBase::WaitForCmd": 28,
+      "CommandBufferHelper::Finish": 28,
+      "CommandBufferProxyImpl::WaitForGetOffset": 27,
+      "Scheduler::RunTask": 20
+     },
+     "jsSamples": [
+      [
+       "convertBufferAttribute@three.core.js:19935",
+       139
+      ],
+      [
+       "(garbage collector)@:-1",
+       22
+      ],
+      [
+       "(anonymous)@water.ts:19",
+       20
+      ],
+      [
+       "getProgramInfoLog@:-1",
+       18
+      ],
+      [
+       "SphereGeometry@three.core.js:37293",
+       15
+      ],
+      [
+       "noise2@common.ts:45",
+       14
+      ],
+      [
+       "setXYZ@three.core.js:17943",
+       14
+      ],
+      [
+       "createScript@:-1",
+       13
+      ],
+      [
+       "WebGLRenderer.setSize@three.module.js:17155",
+       13
+      ],
+      [
+       "sculptedBodyGeometry@landmass.ts:118",
+       12
+      ]
+     ],
+     "topStack": [
+      "convertBufferAttribute@three.core.js:19935",
+      "toNonIndexed@three.core.js:19933",
+      "sculptedBodyGeometry@landmass.ts:118",
+      "dressLandmass@landmass.ts:357",
+      "dressPlatform@ecuador.ts:580",
+      "(anonymous)@country-scene.ts:122",
+      "mountCountryStage@country-scene.ts:73"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273493888651,
+     "dur": 474841,
+     "atMsFromStart": 11780,
+     "durMs": 475,
+     "traceEventsMs": {
+      "Edge_RunTask": 1137,
+      "ThreadControllerImpl::RunTask": 964,
+      "RunTask": 489,
+      "EvaluateScript _app-pages-browser_components_world-explorer_country-scene_ts.js": 474,
+      "v8.run": 472,
+      "RunMicrotasks": 471,
+      "ThreadPool_RunTask": 175,
+      "V8.GC_MC_BACKGROUND_MARKING": 40,
+      "ImplementationBase::WaitForCmd": 28,
+      "CommandBufferHelper::Finish": 28,
+      "CommandBufferProxyImpl::WaitForGetOffset": 27,
+      "Scheduler::RunTask": 20
+     },
+     "jsSamples": [
+      [
+       "convertBufferAttribute@three.core.js:19935",
+       139
+      ],
+      [
+       "(garbage collector)@:-1",
+       22
+      ],
+      [
+       "(anonymous)@water.ts:19",
+       20
+      ],
+      [
+       "getProgramInfoLog@:-1",
+       18
+      ],
+      [
+       "SphereGeometry@three.core.js:37293",
+       15
+      ],
+      [
+       "noise2@common.ts:45",
+       14
+      ],
+      [
+       "setXYZ@three.core.js:17943",
+       14
+      ],
+      [
+       "createScript@:-1",
+       13
+      ],
+      [
+       "WebGLRenderer.setSize@three.module.js:17155",
+       13
+      ],
+      [
+       "sculptedBodyGeometry@landmass.ts:118",
+       12
+      ]
+     ],
+     "topStack": [
+      "convertBufferAttribute@three.core.js:19935",
+      "toNonIndexed@three.core.js:19933",
+      "sculptedBodyGeometry@landmass.ts:118",
+      "dressLandmass@landmass.ts:357",
+      "dressPlatform@ecuador.ts:580",
+      "(anonymous)@country-scene.ts:122",
+      "mountCountryStage@country-scene.ts:73"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273494371064,
+     "dur": 393581,
+     "atMsFromStart": 12262,
+     "durMs": 394,
+     "traceEventsMs": {
+      "Edge_RunTask": 1253,
+      "RunTask": 986,
+      "ThreadControllerImpl::RunTask": 986,
+      "FireAnimationFrame": 390,
+      "v8.callFunction": 390,
+      "FunctionCall country-scene.ts": 390,
+      "ThreadPool_RunTask": 270,
+      "ImplementationBase::WaitForCmd": 227,
+      "CommandBufferHelper::Finish": 227,
+      "ANGLEPlatformImpl::RunWorkerTask": 225,
+      "CommandBufferProxyImpl::WaitForGetOffset": 224,
+      "GLES2Implementation::GetProgramiv": 220
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       207
+      ],
+      [
+       "computeBoundingSphere@:19528",
+       31
+      ],
+      [
+       "getShaderInfoLog@:-1",
+       26
+      ],
+      [
+       "computeBoundingSphere@three.core.js:19528",
+       21
+      ],
+      [
+       "shaderSource@:-1",
+       14
+      ],
+      [
+       "replaceLightNums@three.module.js:6820",
+       13
+      ],
+      [
+       "getProgramParameter@:-1",
+       11
+      ],
+      [
+       "(garbage collector)@:-1",
+       9
+      ],
+      [
+       "fromBufferAttribute@three.core.js:6446",
+       5
+      ],
+      [
+       "(program)@:-1",
+       4
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "onFirstUse@three.module.js:7469",
+      "WebGLProgram.getUniforms@three.module.js:7568",
+      "setProgram@three.module.js:18854",
+      "WebGLRenderer.renderBufferDirect@three.module.js:17680",
+      "renderObject@three.module.js:10016",
+      "renderObject@three.module.js:10016"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273494371065,
+     "dur": 393502,
+     "atMsFromStart": 12262,
+     "durMs": 394,
+     "traceEventsMs": {
+      "Edge_RunTask": 1253,
+      "ThreadControllerImpl::RunTask": 986,
+      "RunTask": 593,
+      "FireAnimationFrame": 390,
+      "v8.callFunction": 390,
+      "FunctionCall country-scene.ts": 390,
+      "ThreadPool_RunTask": 270,
+      "ImplementationBase::WaitForCmd": 227,
+      "CommandBufferHelper::Finish": 227,
+      "ANGLEPlatformImpl::RunWorkerTask": 225,
+      "CommandBufferProxyImpl::WaitForGetOffset": 224,
+      "GLES2Implementation::GetProgramiv": 220
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       207
+      ],
+      [
+       "computeBoundingSphere@:19528",
+       31
+      ],
+      [
+       "getShaderInfoLog@:-1",
+       26
+      ],
+      [
+       "computeBoundingSphere@three.core.js:19528",
+       21
+      ],
+      [
+       "shaderSource@:-1",
+       14
+      ],
+      [
+       "replaceLightNums@three.module.js:6820",
+       13
+      ],
+      [
+       "getProgramParameter@:-1",
+       11
+      ],
+      [
+       "(garbage collector)@:-1",
+       9
+      ],
+      [
+       "fromBufferAttribute@three.core.js:6446",
+       5
+      ],
+      [
+       "(program)@:-1",
+       4
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "onFirstUse@three.module.js:7469",
+      "WebGLProgram.getUniforms@three.module.js:7568",
+      "setProgram@three.module.js:18854",
+      "WebGLRenderer.renderBufferDirect@three.module.js:17680",
+      "renderObject@three.module.js:10016",
+      "renderObject@three.module.js:10016"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273494803757,
+     "dur": 59146,
+     "atMsFromStart": 12695,
+     "durMs": 59,
+     "traceEventsMs": {
+      "Edge_RunTask": 165,
+      "RunTask": 139,
+      "ThreadControllerImpl::RunTask": 139,
+      "FireAnimationFrame": 57,
+      "v8.callFunction": 57,
+      "FunctionCall country-scene.ts": 57,
+      "Scheduler::RunTask": 30,
+      "GpuChannel::ExecuteDeferredRequest": 30,
+      "GPUTask": 30,
+      "CommandBuffer::Flush": 30,
+      "CommandBufferStub::OnAsyncFlush": 30,
+      "CommandBufferService:PutChanged": 30
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       20
+      ],
+      [
+       "texSubImage2D@:-1",
+       16
+      ],
+      [
+       "(program)@:-1",
+       3
+      ],
+      [
+       "replaceLightNums@three.module.js:6820",
+       2
+      ],
+      [
+       "render@country-scene.ts:464",
+       1
+      ],
+      [
+       "renderObject@three.module.js:10016",
+       1
+      ],
+      [
+       "RegExp: #pragma unroll_loop_start\\s+for\\s*\\(\\s*int\\s+i\\s*=\\s*(\\d+)\\s*;\\s*i\\s*<\\s*(\\d+)\\s*;\\s*i\\s*\\+\\+\\s*\\)\\s*{([\\s\\S]+?)}\\s+#pragma unroll_loop_end@:-1",
+       1
+      ],
+      [
+       "shaderSource@:-1",
+       1
+      ],
+      [
+       "getShaderInfoLog@:-1",
+       1
+      ],
+      [
+       "parseUniform@three.module.js:6456",
+       1
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "onFirstUse@three.module.js:7469",
+      "WebGLProgram.getUniforms@three.module.js:7568",
+      "setProgram@three.module.js:18854",
+      "WebGLRenderer.renderBufferDirect@three.module.js:17680",
+      "renderObject@three.module.js:18639",
+      "renderObjects@three.module.js:18612"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273494803758,
+     "dur": 59093,
+     "atMsFromStart": 12695,
+     "durMs": 59,
+     "traceEventsMs": {
+      "Edge_RunTask": 165,
+      "ThreadControllerImpl::RunTask": 139,
+      "RunTask": 80,
+      "FireAnimationFrame": 57,
+      "v8.callFunction": 57,
+      "FunctionCall country-scene.ts": 57,
+      "Scheduler::RunTask": 30,
+      "GpuChannel::ExecuteDeferredRequest": 30,
+      "GPUTask": 30,
+      "CommandBuffer::Flush": 30,
+      "CommandBufferStub::OnAsyncFlush": 30,
+      "CommandBufferService:PutChanged": 30
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       20
+      ],
+      [
+       "texSubImage2D@:-1",
+       16
+      ],
+      [
+       "(program)@:-1",
+       3
+      ],
+      [
+       "replaceLightNums@three.module.js:6820",
+       2
+      ],
+      [
+       "render@country-scene.ts:464",
+       1
+      ],
+      [
+       "renderObject@three.module.js:10016",
+       1
+      ],
+      [
+       "RegExp: #pragma unroll_loop_start\\s+for\\s*\\(\\s*int\\s+i\\s*=\\s*(\\d+)\\s*;\\s*i\\s*<\\s*(\\d+)\\s*;\\s*i\\s*\\+\\+\\s*\\)\\s*{([\\s\\S]+?)}\\s+#pragma unroll_loop_end@:-1",
+       1
+      ],
+      [
+       "shaderSource@:-1",
+       1
+      ],
+      [
+       "getShaderInfoLog@:-1",
+       1
+      ],
+      [
+       "parseUniform@three.module.js:6456",
+       1
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "onFirstUse@three.module.js:7469",
+      "WebGLProgram.getUniforms@three.module.js:7568",
+      "setProgram@three.module.js:18854",
+      "WebGLRenderer.renderBufferDirect@three.module.js:17680",
+      "renderObject@three.module.js:18639",
+      "renderObjects@three.module.js:18612"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273504793189,
+     "dur": 69566,
+     "atMsFromStart": 22684,
+     "durMs": 70,
+     "traceEventsMs": {
+      "RunTask": 128,
+      "ThreadControllerImpl::RunTask": 128,
+      "Edge_RunTask": 128,
+      "Receive mojo message": 69
+     },
+     "jsSamples": [
+      [
+       "(program)@:-1",
+       1
+      ]
+     ],
+     "topStack": [
+      "(program)@:-1",
+      "(root)@:-1"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273504793195,
+     "dur": 69519,
+     "atMsFromStart": 22684,
+     "durMs": 70,
+     "traceEventsMs": {
+      "ThreadControllerImpl::RunTask": 128,
+      "Edge_RunTask": 128,
+      "Receive mojo message": 69,
+      "RunTask": 58
+     },
+     "jsSamples": [
+      [
+       "(program)@:-1",
+       1
+      ]
+     ],
+     "topStack": [
+      "(program)@:-1",
+      "(root)@:-1"
+     ]
+    }
+   ]
+  }
+ ]
+}

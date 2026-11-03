@@ -1,0 +1,242 @@
+{
+ "capturedAt": "2026-11-02T16:36:00.392Z",
+ "browser": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+ "base": "http://localhost:3100",
+ "renderer": "hardware (ANGLE D3D11) in headless Edge",
+ "frameRate": "browser default (capped)",
+ "note": "Measured on the development laptop in a headless browser while the level idles at its start. The phone figures emulate an 844x390 viewport on the laptop GPU; they are not a phone. Real-device testing is still required.",
+ "results": [
+  {
+   "code": "ARG",
+   "shots": {
+    "b": {
+     "x": 77,
+     "label": "glacier front with calving seracs"
+    },
+    "c": {
+     "position": [
+      60,
+      5,
+      18
+     ],
+     "target": [
+      82,
+      9,
+      -30
+     ],
+     "fov": 50,
+     "label": "Perito Moreno glacier front"
+    }
+   },
+   "desktop": {
+    "readyMs": 4541,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 113,
+    "worstFrameMs": 8.9,
+    "drawCalls": 86,
+    "triangles": 99812,
+    "geometries": 51,
+    "textures": 8,
+    "jsHeapMB": 25
+   },
+   "phone": {
+    "readyMs": 1186,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 113,
+    "worstFrameMs": 8.9,
+    "drawCalls": 97,
+    "triangles": 101371,
+    "geometries": 55,
+    "textures": 9,
+    "jsHeapMB": 27
+   }
+  },
+  {
+   "code": "CHL",
+   "shots": {
+    "b": {
+     "x": 70,
+     "label": "El Tatio geysers"
+    },
+    "c": {
+     "position": [
+      64,
+      3,
+      14
+     ],
+     "target": [
+      78,
+      4,
+      -20
+     ],
+     "label": "El Tatio geyser field and volcanoes"
+    }
+   },
+   "desktop": {
+    "readyMs": 1394,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 113,
+    "worstFrameMs": 8.9,
+    "drawCalls": 82,
+    "triangles": 117555,
+    "geometries": 43,
+    "textures": 7,
+    "jsHeapMB": 22
+   },
+   "phone": {
+    "readyMs": 922,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 113,
+    "worstFrameMs": 8.9,
+    "drawCalls": 86,
+    "triangles": 118769,
+    "geometries": 44,
+    "textures": 7,
+    "jsHeapMB": 50
+   }
+  },
+  {
+   "code": "COL",
+   "shots": {
+    "b": {
+     "x": 28,
+     "label": "climbable moss face"
+    },
+    "c": {
+     "position": [
+      40,
+      10,
+      15
+     ],
+     "target": [
+      48,
+      14,
+      -20
+     ],
+     "label": "Quindío wax palms"
+    }
+   },
+   "desktop": {
+    "readyMs": 1261,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 113,
+    "worstFrameMs": 8.9,
+    "drawCalls": 88,
+    "triangles": 285044,
+    "geometries": 47,
+    "textures": 9,
+    "jsHeapMB": 31
+   },
+   "phone": {
+    "readyMs": 1131,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 113,
+    "worstFrameMs": 8.9,
+    "drawCalls": 94,
+    "triangles": 287284,
+    "geometries": 49,
+    "textures": 9,
+    "jsHeapMB": 72
+   }
+  },
+  {
+   "code": "ECU",
+   "shots": {
+    "b": {
+     "x": 44,
+     "label": "wave surges over the tide shelf"
+    },
+    "c": {
+     "position": [
+      60,
+      4,
+      15
+     ],
+     "target": [
+      70,
+      8,
+      -110
+     ],
+     "label": "lava coast and volcanic cones"
+    }
+   },
+   "desktop": {
+    "readyMs": 1109,
+    "frames": 600,
+    "averageFps": 116,
+    "onePercentLowFps": 28,
+    "worstFrameMs": 166.6,
+    "drawCalls": 85,
+    "triangles": 120254,
+    "geometries": 55,
+    "textures": 9,
+    "jsHeapMB": 22
+   },
+   "phone": {
+    "readyMs": 941,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 98,
+    "worstFrameMs": 16.5,
+    "drawCalls": 91,
+    "triangles": 121632,
+    "geometries": 57,
+    "textures": 9,
+    "jsHeapMB": 39
+   }
+  },
+  {
+   "code": "GUY",
+   "shots": {
+    "b": {
+     "x": 18,
+     "label": "river-current shelves"
+    },
+    "c": {
+     "position": [
+      84,
+      6,
+      14
+     ],
+     "target": [
+      72,
+      -14,
+      -50
+     ],
+     "fov": 50,
+     "label": "Kaieteur Falls from the gorge lookout"
+    }
+   },
+   "desktop": {
+    "readyMs": 1671,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 112,
+    "worstFrameMs": 9.2,
+    "drawCalls": 104,
+    "triangles": 180734,
+    "geometries": 58,
+    "textures": 15,
+    "jsHeapMB": 29
+   },
+   "phone": {
+    "readyMs": 1245,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 112,
+    "worstFrameMs": 8.9,
+    "drawCalls": 109,
+    "triangles": 181814,
+    "geometries": 59,
+    "textures": 15,
+    "jsHeapMB": 47
+   }
+  }
+ ]
+}

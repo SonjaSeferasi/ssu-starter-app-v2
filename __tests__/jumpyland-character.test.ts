@@ -24,6 +24,16 @@ describe('saved campus avatar in the 3D game', () => {
     expect(characterStyle(look('campus-v4-hijab-6-3-glasses')).skin).toBe('#4b2f22');
   });
 
+  it('carries the chosen skin colour and body shape into the 3D figure, keeping the head size', () => {
+    const chosen = { ...look('campus-v4-male-3-1-natural'), skinColor: 'ivory', bodyShape: 'plus' } as const;
+    expect(characterStyle(chosen)).toMatchObject({ skin: '#e4b8a4', bodyWidth: 1.27 });
+    expect(characterStyle(look('campus-v4-male-3-1-natural')).bodyWidth).toBe(1);
+    const rig = characterRig(new T.Texture(), null, chosen), head = rig.root.getObjectByName('modeled-head')!;
+    head.updateWorldMatrix(true, false);
+    expect(new T.Vector3().setFromMatrixScale(head.matrixWorld).x).toBeCloseTo(1);
+    expect(rig.root.children[0].scale.x).toBeCloseTo(1.27);
+  });
+
   it('uses the saved face as surface detail on the curved head while retaining a modeled nose', () => {
     const source = new T.Texture({ width: 3072, height: 384 } as TexImageSource);
     const rig = characterRig(source, null, look('campus-v4-female-1-1-natural'));

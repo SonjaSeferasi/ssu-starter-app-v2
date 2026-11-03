@@ -1,0 +1,86 @@
+
+ RUN  v2.1.8 C:/Csc 351/ssu-starter-app-v2
+
+ ✓ __tests__/world-explorer-media.test.ts (4 tests) 13ms
+ ✓ __tests__/world-explorer-guide-destination.test.ts (17 tests) 46ms
+ ✓ __tests__/world-explorer-south-america.test.ts (140 tests) 852791ms
+   ✓ BRA level > passes every LevelValidator check, including physics at every timing 22146ms
+   ✓ BRA level > finishes with no damage at every challenge setting, including the one the game plays, and in Explorer assist 3997ms
+   ✓ BRA level > collects every coin and all three stars without damage at its runtime difficulty, at start delays of 0, 1.8, 3.6 s 11553ms
+   ✓ BRA level > survives untidy play: backtracking and pausing at every checkpoint 5741ms
+   ✓ BOL level > passes every LevelValidator check, including physics at every timing 4101ms
+   ✓ BOL level > finishes with no damage at every challenge setting, including the one the game plays, and in Explorer assist 2101ms
+   ✓ BOL level > collects every coin and all three stars without damage at its runtime difficulty, at start delays of 0, 1.8, 3.6 s 35738ms
+   ✓ BOL level > survives untidy play: backtracking and pausing at every checkpoint 1340ms
+   ✓ URY level > passes every LevelValidator check, including physics at every timing 7426ms
+   ✓ URY level > finishes with no damage at every challenge setting, including the one the game plays, and in Explorer assist 3377ms
+   ✓ URY level > collects every coin and all three stars without damage at its runtime difficulty, at start delays of 0, 1.8, 3.6 s 6008ms
+   ✓ URY level > survives untidy play: backtracking and pausing at every checkpoint 1919ms
+   ✓ PER level > passes every LevelValidator check, including physics at every timing 141968ms
+   ✓ PER level > finishes with no damage at every challenge setting, including the one the game plays, and in Explorer assist 86953ms
+   ✓ PER level > collects every coin and all three stars without damage at its runtime difficulty, at start delays of 0, 1.8, 3.6 s 80307ms
+   ✓ PER level > survives untidy play: backtracking and pausing at every checkpoint 16379ms
+   ✓ ARG level > passes every LevelValidator check, including physics at every timing 18180ms
+   ✓ ARG level > finishes with no damage at every challenge setting, including the one the game plays, and in Explorer assist 10748ms
+   ✓ ARG level > collects every coin and all three stars without damage at its runtime difficulty, at start delays of 0, 1.8, 3.6 s 12086ms
+   ✓ ARG level > survives untidy play: backtracking and pausing at every checkpoint 10869ms
+   ✓ CHL level > passes every LevelValidator check, including physics at every timing 13165ms
+   ✓ CHL level > finishes with no damage at every challenge setting, including the one the game plays, and in Explorer assist 6652ms
+   ✓ CHL level > collects every coin and all three stars without damage at its runtime difficulty, at start delays of 0, 1.8, 3.6 s 5433ms
+   ✓ CHL level > survives untidy play: backtracking and pausing at every checkpoint 3407ms
+   ✓ COL level > passes every LevelValidator check, including physics at every timing 57708ms
+   ✓ COL level > finishes with no damage at every challenge setting, including the one the game plays, and in Explorer assist 5615ms
+   ✓ COL level > collects every coin and all three stars without damage at its runtime difficulty, at start delays of 0, 1.8, 3.6 s 32649ms
+   ✓ COL level > survives untidy play: backtracking and pausing at every checkpoint 29552ms
+   ✓ ECU level > passes every LevelValidator check, including physics at every timing 7636ms
+   ✓ ECU level > finishes with no damage at every challenge setting, including the one the game plays, and in Explorer assist 3485ms
+   ✓ ECU level > collects every coin and all three stars without damage at its runtime difficulty, at start delays of 0, 1.8, 3.6 s 3229ms
+   ✓ ECU level > survives untidy play: backtracking and pausing at every checkpoint 1708ms
+   ✓ GUY level > passes every LevelValidator check, including physics at every timing 5284ms
+   ✓ GUY level > finishes with no damage at every challenge setting, including the one the game plays, and in Explorer assist 1473ms
+   ✓ GUY level > collects every coin and all three stars without damage at its runtime difficulty, at start delays of 0, 1.8, 3.6 s 1789ms
+   ✓ GUY level > survives untidy play: backtracking and pausing at every checkpoint 834ms
+   ✓ PRY level > passes every LevelValidator check, including physics at every timing 2374ms
+   ✓ PRY level > finishes with no damage at every challenge setting, including the one the game plays, and in Explorer assist 1183ms
+   ✓ PRY level > collects every coin and all three stars without damage at its runtime difficulty, at start delays of 0, 1.8, 3.6 s 2217ms
+   ✓ PRY level > survives untidy play: backtracking and pausing at every checkpoint 860ms
+   ✓ SUR level > passes every LevelValidator check, including physics at every timing 31963ms
+   ✓ SUR level > finishes with no damage at every challenge setting, including the one the game plays, and in Explorer assist 20106ms
+   ✓ SUR level > collects every coin and all three stars without damage at its runtime difficulty, at start delays of 0, 1.8, 3.6 s 15836ms
+   ✓ SUR level > survives untidy play: backtracking and pausing at every checkpoint 12223ms
+   ✓ VEN level > passes every LevelValidator check, including physics at every timing 33450ms
+   ✓ VEN level > finishes with no damage at every challenge setting, including the one the game plays, and in Explorer assist 18890ms
+   ✓ VEN level > collects every coin and all three stars without damage at its runtime difficulty, at start delays of 0, 1.8, 3.6 s 25868ms
+   ✓ VEN level > survives untidy play: backtracking and pausing at every checkpoint 3362ms
+   ✓ BRA environment > builds its named landmarks, depth layers and finite real geometry, and cleans up 1860ms
+   ✓ BRA environment > dresses every platform with a flat walking cap at the collision height, clear of decoration 630ms
+   ✓ BRA environment > keeps platform bodies to a sculpted visual depth in the polished levels (no walls running out of view) 335ms
+   ✓ BOL environment > builds its named landmarks, depth layers and finite real geometry, and cleans up 2540ms
+   ✓ BOL environment > dresses every platform with a flat walking cap at the collision height, clear of decoration 524ms
+   ✓ BOL environment > keeps platform bodies to a sculpted visual depth in the polished levels (no walls running out of view) 344ms
+   ✓ URY environment > builds its named landmarks, depth layers and finite real geometry, and cleans up 1121ms
+   ✓ URY environment > dresses every platform with a flat walking cap at the collision height, clear of decoration 540ms
+   ✓ URY environment > keeps platform bodies to a sculpted visual depth in the polished levels (no walls running out of view) 379ms
+   ✓ PER environment > builds its named landmarks, depth layers and finite real geometry, and cleans up 430ms
+   ✓ PER environment > dresses every platform with a flat walking cap at the collision height, clear of decoration 346ms
+   ✓ ARG environment > builds its named landmarks, depth layers and finite real geometry, and cleans up 318ms
+   ✓ CHL environment > builds its named landmarks, depth layers and finite real geometry, and cleans up 478ms
+   ✓ COL environment > builds its named landmarks, depth layers and finite real geometry, and cleans up 1548ms
+   ✓ COL environment > dresses every platform with a flat walking cap at the collision height, clear of decoration 446ms
+   ✓ COL environment > keeps platform bodies to a sculpted visual depth in the polished levels (no walls running out of view) 330ms
+   ✓ ECU environment > builds its named landmarks, depth layers and finite real geometry, and cleans up 472ms
+   ✓ GUY environment > builds its named landmarks, depth layers and finite real geometry, and cleans up 727ms
+   ✓ GUY environment > dresses every platform with a flat walking cap at the collision height, clear of decoration 484ms
+   ✓ GUY environment > keeps platform bodies to a sculpted visual depth in the polished levels (no walls running out of view) 408ms
+   ✓ PRY environment > builds its named landmarks, depth layers and finite real geometry, and cleans up 350ms
+   ✓ SUR environment > builds its named landmarks, depth layers and finite real geometry, and cleans up 804ms
+   ✓ SUR environment > dresses every platform with a flat walking cap at the collision height, clear of decoration 362ms
+   ✓ VEN environment > builds its named landmarks, depth layers and finite real geometry, and cleans up 644ms
+   ✓ VEN environment > dresses every platform with a flat walking cap at the collision height, clear of decoration 390ms
+   ✓ VEN environment > keeps platform bodies to a sculpted visual depth in the polished levels (no walls running out of view) 305ms
+
+ Test Files  3 passed (3)
+      Tests  161 passed (161)
+   Start at  16:54:58
+   Duration  857.64s (transform 3.65s, setup 0ms, collect 7.15s, tests 852.85s, environment 1ms, prepare 656ms)
+

@@ -1,0 +1,952 @@
+{
+ "id": "no-level-01",
+ "countryId": "NO",
+ "legacyCode": "NOR",
+ "title": "Lofoten Cliffs: Ice and Wind",
+ "environmentId": "norway-lofoten-fjords",
+ "difficulty": "hard",
+ "difficultyTier": 4,
+ "design": {
+  "archetype": "vertical-cliff-precision",
+  "signatureMechanic": "collapsing-ice-ledges",
+  "mechanics": [
+   "collapsing-ice",
+   "ice-surface",
+   "headwind-gusts",
+   "vertical-ledge-climb",
+   "sea-cave-crane-lift",
+   "rooftop-run"
+  ],
+  "terrain": [
+   "ground",
+   "stairs",
+   "cliff",
+   "ice-shelf",
+   "slope",
+   "rooftop",
+   "mechanical"
+  ],
+  "verticality": "high",
+  "enemyProfile": "none",
+  "targetDurationSeconds": 70,
+  "seed": 2026103
+ },
+ "environment": {
+  "biome": "arctic-coastal-fjord",
+  "locationReference": "Lofoten Islands, Nordland — granite peaks above a fishing harbour with red rorbuer",
+  "terrainMaterial": "gneiss-and-granite-cliffs-with-ice",
+  "vegetationPack": "sparse-birch-heather-and-snow-conifers",
+  "architecturePack": "red-rorbu-cabins-quay-and-crane",
+  "landmarkAssets": [
+   "lofoten-far-peaks",
+   "red-rorbu-fishing-village",
+   "dark-blue-fjord-water"
+  ],
+  "lightingPreset": "low-arctic-sun",
+  "skyPreset": "clear-arctic-cold",
+  "weatherPreset": "headwind-gusts-and-spindrift"
+ },
+ "sections": [
+  {
+   "id": "A",
+   "label": "Fishing quay",
+   "x": 0
+  },
+  {
+   "id": "B",
+   "label": "Cliff path",
+   "x": 11
+  },
+  {
+   "id": "C",
+   "label": "Ledge climb",
+   "x": 17
+  },
+  {
+   "id": "D",
+   "label": "Collapsing ice",
+   "x": 38
+  },
+  {
+   "id": "E",
+   "label": "Wind ridge",
+   "x": 59
+  },
+  {
+   "id": "F",
+   "label": "Summit",
+   "x": 75
+  },
+  {
+   "id": "G",
+   "label": "Rorbu rooftops",
+   "x": 89
+  },
+  {
+   "id": "H",
+   "label": "Harbour pier",
+   "x": 106
+  }
+ ],
+ "camera": {
+  "height": 2.7,
+  "look": 1.8,
+  "follow": 1,
+  "maxRise": 0,
+  "distance": 21
+ },
+ "spawn": {
+  "platformId": "no-start",
+  "offset": 7
+ },
+ "platforms": [
+  {
+   "id": "no-start",
+   "x": -6,
+   "y": 0,
+   "width": 18,
+   "depth": 6,
+   "thickness": 12,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "quay",
+   "terrain": "ground"
+  },
+  {
+   "id": "no-cliff-stairs",
+   "x": 12,
+   "y": 0,
+   "width": 5,
+   "depth": 4.6,
+   "thickness": 14,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "stairs",
+   "slope": 1.6,
+   "steps": 5
+  },
+  {
+   "id": "no-ledge-1",
+   "x": 17,
+   "y": 1.6,
+   "width": 4,
+   "depth": 3.8,
+   "thickness": 16,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "cliff"
+  },
+  {
+   "id": "no-ledge-2",
+   "x": 22.4,
+   "y": 2.7,
+   "width": 3,
+   "depth": 3.8,
+   "thickness": 17,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "cliff"
+  },
+  {
+   "id": "no-ledge-3",
+   "x": 27,
+   "y": 3.8,
+   "width": 3,
+   "depth": 3.8,
+   "thickness": 18,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "cliff"
+  },
+  {
+   "id": "no-shelf",
+   "x": 31.6,
+   "y": 4.6,
+   "width": 6,
+   "depth": 3.8,
+   "thickness": 19,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "cliff"
+  },
+  {
+   "id": "no-ice-1",
+   "x": 40.6,
+   "y": 4.4,
+   "width": 2.4,
+   "depth": 3.6,
+   "thickness": 0.7,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "surface": "ice",
+   "terrain": "ice-shelf",
+   "collapse": {
+    "delay": 0.9,
+    "respawn": 4
+   }
+  },
+  {
+   "id": "no-ice-2",
+   "x": 46.6,
+   "y": 4.6,
+   "width": 2.4,
+   "depth": 3.6,
+   "thickness": 0.7,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "surface": "ice",
+   "terrain": "ice-shelf",
+   "collapse": {
+    "delay": 0.9,
+    "respawn": 4
+   }
+  },
+  {
+   "id": "no-ice-shelf",
+   "x": 52.6,
+   "y": 4.4,
+   "width": 3.6,
+   "depth": 3.6,
+   "thickness": 19,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "surface": "ice",
+   "terrain": "ice-shelf"
+  },
+  {
+   "id": "no-lip",
+   "x": 56.2,
+   "y": 4.4,
+   "width": 2.4,
+   "depth": 3.8,
+   "thickness": 19,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "cliff"
+  },
+  {
+   "id": "no-ridge-1",
+   "x": 62.2,
+   "y": 5.2,
+   "width": 3,
+   "depth": 3.8,
+   "thickness": 20,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "cliff"
+  },
+  {
+   "id": "no-ridge-2",
+   "x": 69,
+   "y": 5,
+   "width": 2.6,
+   "depth": 3.8,
+   "thickness": 20,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "cliff"
+  },
+  {
+   "id": "no-summit",
+   "x": 75.4,
+   "y": 5.6,
+   "width": 7,
+   "depth": 3.8,
+   "thickness": 21,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "cliff"
+  },
+  {
+   "id": "no-descent",
+   "x": 82.4,
+   "y": 5.6,
+   "width": 7,
+   "depth": 6,
+   "thickness": 18,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "terrain": "slope",
+   "slope": -3
+  },
+  {
+   "id": "no-roof-1",
+   "x": 92.4,
+   "y": 2.6,
+   "width": 4,
+   "depth": 3.6,
+   "thickness": 3,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "rorbu",
+   "terrain": "rooftop"
+  },
+  {
+   "id": "no-roof-2",
+   "x": 99.8,
+   "y": 3,
+   "width": 4,
+   "depth": 3.6,
+   "thickness": 3.4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "rorbu",
+   "terrain": "rooftop"
+  },
+  {
+   "id": "no-pier",
+   "x": 107.2,
+   "y": 1.8,
+   "width": 12,
+   "depth": 3.4,
+   "thickness": 2,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "pier",
+   "terrain": "bridge"
+  },
+  {
+   "id": "no-cave-1",
+   "x": 38.6,
+   "y": 1,
+   "width": 5,
+   "depth": 4.2,
+   "thickness": 8,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper",
+   "terrain": "cave"
+  },
+  {
+   "id": "no-cave-2",
+   "x": 44.4,
+   "y": 1.4,
+   "width": 4,
+   "depth": 4.2,
+   "thickness": 8,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper",
+   "terrain": "cave"
+  },
+  {
+   "id": "no-lift",
+   "x": 49.8,
+   "y": 3,
+   "width": 2,
+   "depth": 3,
+   "thickness": 0.4,
+   "type": "moving",
+   "motion": "vertical",
+   "amplitude": 1.6,
+   "phase": 0,
+   "period": 7,
+   "route": "upper",
+   "style": "crane-lift",
+   "pause": 1.2,
+   "terrain": "mechanical"
+  }
+ ],
+ "coins": [
+  {
+   "id": "no-coin-01",
+   "platformId": "no-start",
+   "offset": 9,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-02",
+   "platformId": "no-start",
+   "offset": 11,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-03",
+   "platformId": "no-start",
+   "offset": 13,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-04",
+   "platformId": "no-cliff-stairs",
+   "offset": 2.5,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-05",
+   "platformId": "no-cliff-stairs",
+   "offset": 3.8,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-06",
+   "platformId": "no-ledge-1",
+   "offset": 2,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-07",
+   "platformId": "no-ledge-2",
+   "offset": 1.5,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-08",
+   "platformId": "no-ledge-3",
+   "offset": 1.5,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-09",
+   "platformId": "no-shelf",
+   "offset": 2.5,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-10",
+   "platformId": "no-shelf",
+   "offset": 4.5,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-11",
+   "platformId": "no-shelf",
+   "offset": 7.5,
+   "height": 1.6
+  },
+  {
+   "id": "no-coin-12",
+   "platformId": "no-ice-1",
+   "offset": 1.2,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-13",
+   "platformId": "no-ice-2",
+   "offset": 1.2,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-14",
+   "platformId": "no-ice-shelf",
+   "offset": 2,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-15",
+   "platformId": "no-ridge-1",
+   "offset": 1.5,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-16",
+   "platformId": "no-ridge-2",
+   "offset": 1.3,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-17",
+   "platformId": "no-summit",
+   "offset": 3,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-18",
+   "platformId": "no-summit",
+   "offset": 5.6,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-19",
+   "platformId": "no-summit",
+   "offset": 6.5,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-20",
+   "platformId": "no-descent",
+   "offset": 5.5,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-21",
+   "platformId": "no-roof-1",
+   "offset": 2,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-22",
+   "platformId": "no-roof-1",
+   "offset": 3.1,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-23",
+   "platformId": "no-roof-2",
+   "offset": 2,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-24",
+   "platformId": "no-pier",
+   "offset": 2,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-25",
+   "platformId": "no-pier",
+   "offset": 5,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-26",
+   "platformId": "no-cave-1",
+   "offset": 2,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-27",
+   "platformId": "no-cave-1",
+   "offset": 4,
+   "height": 1.1
+  },
+  {
+   "id": "no-coin-28",
+   "platformId": "no-cave-2",
+   "offset": 1,
+   "height": 1.1
+  }
+ ],
+ "stars": [
+  {
+   "id": "no-star-01",
+   "platformId": "no-cave-2",
+   "offset": 2.6,
+   "height": 1.2
+  },
+  {
+   "id": "no-star-02",
+   "platformId": "no-ridge-2",
+   "offset": 1.3,
+   "height": 2.4
+  },
+  {
+   "id": "no-star-03",
+   "platformId": "no-summit",
+   "offset": 4.5,
+   "height": 2.6
+  }
+ ],
+ "checkpoints": [
+  {
+   "id": "no-checkpoint-01",
+   "platformId": "no-shelf",
+   "offset": 1.2
+  },
+  {
+   "id": "no-checkpoint-02",
+   "platformId": "no-summit",
+   "offset": 1.5
+  }
+ ],
+ "discovery": {
+  "id": "no-discovery",
+  "platformId": "no-pier",
+  "offset": 3,
+  "factId": "no-discovery"
+ },
+ "finish": {
+  "platformId": "no-pier",
+  "offset": 8
+ },
+ "hazards": [
+  {
+   "id": "no-fjord-water-1",
+   "x": -6,
+   "y": -1.2,
+   "width": 18.4,
+   "height": 0.8
+  },
+  {
+   "id": "no-fjord-water-2",
+   "x": 12.399999999999999,
+   "y": -1.2,
+   "width": 18.4,
+   "height": 0.8
+  },
+  {
+   "id": "no-fjord-water-3",
+   "x": 30.799999999999997,
+   "y": -1.2,
+   "width": 18.4,
+   "height": 0.8
+  },
+  {
+   "id": "no-fjord-water-4",
+   "x": 49.199999999999996,
+   "y": -1.2,
+   "width": 18.4,
+   "height": 0.8
+  },
+  {
+   "id": "no-fjord-water-5",
+   "x": 67.6,
+   "y": -1.2,
+   "width": 18.4,
+   "height": 0.8
+  },
+  {
+   "id": "no-fjord-water-6",
+   "x": 86,
+   "y": -1.2,
+   "width": 18.4,
+   "height": 0.8
+  },
+  {
+   "id": "no-fjord-water-7",
+   "x": 104.39999999999999,
+   "y": -1.2,
+   "width": 18.4,
+   "height": 0.8
+  }
+ ],
+ "discoveryBlocks": [
+  {
+   "id": "no-discovery-block",
+   "x": 80.4,
+   "y": 8.25,
+   "width": 0.75,
+   "height": 0.8,
+   "factId": "no-discovery"
+  }
+ ],
+ "zones": [
+  {
+   "id": "no-ridge-gust",
+   "type": "wind",
+   "x": 59,
+   "width": 24,
+   "bottom": 3,
+   "top": 14,
+   "force": -2.6,
+   "period": 7.5,
+   "warning": 1.8,
+   "duration": 2.4,
+   "phase": 0
+  }
+ ],
+ "routeGraph": {
+  "nodes": [
+   {
+    "id": "no-start",
+    "type": "START",
+    "platformId": "no-start"
+   },
+   {
+    "id": "no-cliff-stairs",
+    "type": "SAFE_PLATFORM",
+    "platformId": "no-cliff-stairs"
+   },
+   {
+    "id": "no-ledge-1",
+    "type": "SAFE_PLATFORM",
+    "platformId": "no-ledge-1"
+   },
+   {
+    "id": "no-ledge-2",
+    "type": "JUMP_PLATFORM",
+    "platformId": "no-ledge-2"
+   },
+   {
+    "id": "no-ledge-3",
+    "type": "JUMP_PLATFORM",
+    "platformId": "no-ledge-3"
+   },
+   {
+    "id": "no-shelf",
+    "type": "CHECKPOINT",
+    "platformId": "no-shelf"
+   },
+   {
+    "id": "no-ice-1",
+    "type": "JUMP_PLATFORM",
+    "platformId": "no-ice-1"
+   },
+   {
+    "id": "no-ice-2",
+    "type": "JUMP_PLATFORM",
+    "platformId": "no-ice-2"
+   },
+   {
+    "id": "no-ice-shelf",
+    "type": "JUMP_PLATFORM",
+    "platformId": "no-ice-shelf"
+   },
+   {
+    "id": "no-lip",
+    "type": "SAFE_PLATFORM",
+    "platformId": "no-lip"
+   },
+   {
+    "id": "no-ridge-1",
+    "type": "JUMP_PLATFORM",
+    "platformId": "no-ridge-1"
+   },
+   {
+    "id": "no-ridge-2",
+    "type": "JUMP_PLATFORM",
+    "platformId": "no-ridge-2"
+   },
+   {
+    "id": "no-summit",
+    "type": "CHECKPOINT",
+    "platformId": "no-summit"
+   },
+   {
+    "id": "no-descent",
+    "type": "SAFE_PLATFORM",
+    "platformId": "no-descent"
+   },
+   {
+    "id": "no-roof-1",
+    "type": "JUMP_PLATFORM",
+    "platformId": "no-roof-1"
+   },
+   {
+    "id": "no-roof-2",
+    "type": "JUMP_PLATFORM",
+    "platformId": "no-roof-2"
+   },
+   {
+    "id": "no-pier",
+    "type": "FINISH",
+    "platformId": "no-pier"
+   },
+   {
+    "id": "no-cave-1",
+    "type": "OPTIONAL_REWARD",
+    "platformId": "no-cave-1"
+   },
+   {
+    "id": "no-cave-2",
+    "type": "OPTIONAL_REWARD",
+    "platformId": "no-cave-2"
+   },
+   {
+    "id": "no-lift",
+    "type": "MOVING_PLATFORM",
+    "platformId": "no-lift"
+   }
+  ],
+  "edges": [
+   {
+    "from": "no-start",
+    "to": "no-cliff-stairs",
+    "action": "CLIMB",
+    "mandatory": true
+   },
+   {
+    "from": "no-cliff-stairs",
+    "to": "no-ledge-1",
+    "action": "CLIMB",
+    "mandatory": true
+   },
+   {
+    "from": "no-ledge-1",
+    "to": "no-ledge-2",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "no-ledge-2",
+    "to": "no-ledge-3",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "no-ledge-3",
+    "to": "no-shelf",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "no-shelf",
+    "to": "no-ice-1",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "no-ice-1",
+    "to": "no-ice-2",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "no-ice-2",
+    "to": "no-ice-shelf",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "no-ice-shelf",
+    "to": "no-lip",
+    "action": "WALK",
+    "mandatory": true
+   },
+   {
+    "from": "no-lip",
+    "to": "no-ridge-1",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "no-ridge-1",
+    "to": "no-ridge-2",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "no-ridge-2",
+    "to": "no-summit",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "no-summit",
+    "to": "no-descent",
+    "action": "WALK",
+    "mandatory": true
+   },
+   {
+    "from": "no-descent",
+    "to": "no-roof-1",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "no-roof-1",
+    "to": "no-roof-2",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "no-roof-2",
+    "to": "no-pier",
+    "action": "JUMP",
+    "mandatory": true
+   },
+   {
+    "from": "no-shelf",
+    "to": "no-cave-1",
+    "action": "DROP",
+    "mandatory": false
+   },
+   {
+    "from": "no-cave-1",
+    "to": "no-cave-2",
+    "action": "JUMP",
+    "mandatory": false
+   },
+   {
+    "from": "no-cave-2",
+    "to": "no-lift",
+    "action": "RIDE_PLATFORM",
+    "mandatory": false
+   },
+   {
+    "from": "no-lift",
+    "to": "no-ice-shelf",
+    "action": "JUMP",
+    "mandatory": false
+   }
+  ]
+ },
+ "physics": {
+  "gravity": 20,
+  "jumpSpeed": 9,
+  "runSpeed": 6,
+  "acceleration": 25,
+  "airControl": 0.65,
+  "coyoteTime": 0.12,
+  "jumpBuffer": 0.12,
+  "playerRadius": 0.2,
+  "playerHeight": 1.83,
+  "killY": -7,
+  "iceGrip": 0.3,
+  "stepHeight": 0.4
+ }
+}

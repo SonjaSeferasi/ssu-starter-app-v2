@@ -1,0 +1,57 @@
+{
+ "capturedAt": "2026-11-02T23:42:23.554Z",
+ "browser": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+ "base": "http://localhost:3100",
+ "renderer": "hardware (ANGLE D3D11) in headless Edge",
+ "frameRate": "browser default (capped)",
+ "note": "Measured on the development laptop in a headless browser while the level idles at its start. The phone figures emulate an 844x390 viewport on the laptop GPU; they are not a phone. Real-device testing is still required.",
+ "results": [
+  {
+   "code": "ARG",
+   "shots": {
+    "b": {
+     "x": 77,
+     "label": "glacier front with calving seracs"
+    },
+    "c": {
+     "position": [
+      70,
+      14,
+      -70
+     ],
+     "target": [
+      86,
+      24,
+      -150
+     ],
+     "fov": 42,
+     "label": "Fitz Roy needles close-up"
+    }
+   },
+   "desktop": {
+    "readyMs": 2763,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 113,
+    "worstFrameMs": 9.1,
+    "drawCalls": 86,
+    "triangles": 100232,
+    "geometries": 62,
+    "textures": 8,
+    "jsHeapMB": 21
+   },
+   "phone": {
+    "readyMs": 2057,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 86,
+    "worstFrameMs": 16.8,
+    "drawCalls": 97,
+    "triangles": 101791,
+    "geometries": 64,
+    "textures": 9,
+    "jsHeapMB": 26
+   }
+  }
+ ]
+}

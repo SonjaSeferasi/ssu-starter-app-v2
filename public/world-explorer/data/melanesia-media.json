@@ -1,0 +1,73 @@
+{
+  "method": "Four fixed, unmodified Commons photographs with individually verified attribution and subject. Public domain claims checked on their file pages. PNG is explicitly a regional satellite view.",
+  "records": [
+    {
+      "code": "FJI",
+      "setting": "Levuka Historical Port Town",
+      "originalTitle": "BeachStreetLevuka.jpg",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/5/52/BeachStreetLevuka.jpg",
+      "sha256": "85efd506e78d13720011b012c2eb28b2bae6821970ac1200e9c08acc1a574063",
+      "subjectReview": "Developer compared file description and actual image with the named setting; not human art acceptance.",
+      "image": {
+        "title": "Beach Street, Levuka",
+        "url": "/world-explorer/photos/melanesia/fji.jpg",
+        "pageUrl": "https://commons.wikimedia.org/wiki/File:BeachStreetLevuka.jpg",
+        "author": "Anton Leddin",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+        "retrievedAt": "2026-11-03T16:02:01.478295+00:00"
+      }
+    },
+    {
+      "code": "PNG",
+      "setting": "Kuk Early Agricultural Site",
+      "originalTitle": "Kuk New Guinea 2002.jpg",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7a/Kuk_New_Guinea_2002.jpg",
+      "sha256": "149b8e3a7fdfec1d38b0bdfa43f06cd9c2f77d7d3bd0fec39d6b72ea76cbabcf",
+      "subjectReview": "Developer compared file description and actual image with the named setting; not human art acceptance.",
+      "image": {
+        "title": "Kuk region, New Guinea \u2014 satellite view (2002)",
+        "url": "/world-explorer/photos/melanesia/png.jpg",
+        "pageUrl": "https://commons.wikimedia.org/wiki/File:Kuk_New_Guinea_2002.jpg",
+        "author": "NASA / JPL",
+        "license": "Public domain",
+        "licenseUrl": "https://commons.wikimedia.org/wiki/File:Kuk_New_Guinea_2002.jpg",
+        "retrievedAt": "2026-11-03T16:02:01.484934+00:00"
+      }
+    },
+    {
+      "code": "SLB",
+      "setting": "East Rennell",
+      "originalTitle": "LakeTeganoRennell.jpg",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cf/LakeTeganoRennell.jpg",
+      "sha256": "11e3bbd253e0d0c92f1958b8c00fb9941257d8a057bc05a16a1520dfea39caca",
+      "subjectReview": "Developer compared file description and actual image with the named setting; not human art acceptance.",
+      "image": {
+        "title": "Lake Tegano, East Rennell",
+        "url": "/world-explorer/photos/melanesia/slb.jpg",
+        "pageUrl": "https://commons.wikimedia.org/wiki/File:LakeTeganoRennell.jpg",
+        "author": "Phenss",
+        "license": "Public domain",
+        "licenseUrl": "https://commons.wikimedia.org/wiki/File:LakeTeganoRennell.jpg",
+        "retrievedAt": "2026-11-03T16:02:01.492968+00:00"
+      }
+    },
+    {
+      "code": "VUT",
+      "setting": "Chief Roi Mata\u2019s Domain",
+      "originalTitle": "Eretoka.jpg",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fc/Eretoka.jpg",
+      "sha256": "0cc090ad039975462a4b9ebe3bd0220323ddc5531cca445bdb010e853c1aca6f",
+      "subjectReview": "Developer compared file description and actual image with the named setting; not human art acceptance.",
+      "image": {
+        "title": "Eretoka (Artok), Roi Mata\u2019s Domain",
+        "url": "/world-explorer/photos/melanesia/vut.jpg",
+        "pageUrl": "https://commons.wikimedia.org/wiki/File:Eretoka.jpg",
+        "author": "Phillip Capper",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+        "retrievedAt": "2026-11-03T16:03:20.864140+00:00"
+      }
+    }
+  ]
+}

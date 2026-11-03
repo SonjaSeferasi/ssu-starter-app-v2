@@ -1,0 +1,14 @@
+Full suite
+ Test Files  100 passed (100)
+      Tests  1149 passed (1149)
+   Start at  10:00:59
+   Duration  921.15s (transform 13.09s, setup 0ms, collect 37.97s, tests 1307.91s, environment 55ms, prepare 43.26s)
+
+
+Final focused follow-up
+ Test Files  3 passed (3)
+      Tests  39 passed (39)
+   Start at  10:27:07
+   Duration  9.31s (transform 1.25s, setup 0ms, collect 3.01s, tests 6.34s, environment 1ms, prepare 612ms)
+
+

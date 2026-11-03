@@ -88,6 +88,8 @@ function Editor({ profile }: { profile: StudentProfile }) {
       form.set('displayName', values.displayName); form.set('major', values.major); form.set('classYear', values.classYear); form.set('bio', values.bio);
       if (photo) form.set('photo', photo);
       const { response, data } = await profileFetch('/api/profile/details', { method: 'PUT', body: form });
+      // The host answers 413 in plain text when the upload is too large, so there is no JSON error.
+      if (response.status === 413) throw new Error('That photo is too large to upload. Choose a smaller photo and try again.');
       if (!response.ok) throw new Error(data.error || 'Unable to save your profile. Please try again.');
       dirtyRef.current = false;
       window.dispatchEvent(new Event('socialu-session-changed'));

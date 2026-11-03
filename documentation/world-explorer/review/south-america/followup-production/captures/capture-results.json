@@ -1,0 +1,426 @@
+{
+ "capturedAt": "2026-11-02T21:27:41.521Z",
+ "browser": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+ "base": "http://localhost:3100",
+ "renderer": "hardware (ANGLE D3D11) in headless Edge",
+ "frameRate": "browser default (capped)",
+ "note": "Measured on the development laptop in a headless browser while the level idles at its start. The phone figures emulate an 844x390 viewport on the laptop GPU; they are not a phone. Real-device testing is still required.",
+ "results": [
+  {
+   "code": "ARG",
+   "shots": {
+    "b": {
+     "x": 77,
+     "label": "glacier front with calving seracs"
+    },
+    "c": {
+     "position": [
+      60,
+      5,
+      18
+     ],
+     "target": [
+      82,
+      9,
+      -30
+     ],
+     "fov": 50,
+     "label": "Perito Moreno glacier front"
+    }
+   },
+   "desktop": {
+    "readyMs": 3212,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 117,
+    "worstFrameMs": 8.8,
+    "drawCalls": 86,
+    "triangles": 99812,
+    "geometries": 51,
+    "textures": 8,
+    "jsHeapMB": 23
+   },
+   "phone": {
+    "readyMs": 793,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 117,
+    "worstFrameMs": 8.6,
+    "drawCalls": 97,
+    "triangles": 101371,
+    "geometries": 55,
+    "textures": 9,
+    "jsHeapMB": 41
+   }
+  },
+  {
+   "code": "CHL",
+   "shots": {
+    "b": {
+     "x": 70,
+     "label": "El Tatio geysers"
+    },
+    "c": {
+     "position": [
+      64,
+      3,
+      14
+     ],
+     "target": [
+      78,
+      4,
+      -20
+     ],
+     "label": "El Tatio geyser field and volcanoes"
+    }
+   },
+   "desktop": {
+    "readyMs": 947,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 114,
+    "worstFrameMs": 9.2,
+    "drawCalls": 82,
+    "triangles": 117555,
+    "geometries": 43,
+    "textures": 7,
+    "jsHeapMB": 26
+   },
+   "phone": {
+    "readyMs": 612,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 118,
+    "worstFrameMs": 8.5,
+    "drawCalls": 86,
+    "triangles": 118769,
+    "geometries": 44,
+    "textures": 7,
+    "jsHeapMB": 47
+   }
+  },
+  {
+   "code": "COL",
+   "shots": {
+    "b": {
+     "x": 28,
+     "label": "climbable moss face"
+    },
+    "c": {
+     "position": [
+      40,
+      10,
+      15
+     ],
+     "target": [
+      48,
+      14,
+      -20
+     ],
+     "label": "Quindío wax palms"
+    }
+   },
+   "desktop": {
+    "readyMs": 693,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 114,
+    "worstFrameMs": 9.2,
+    "drawCalls": 88,
+    "triangles": 285044,
+    "geometries": 47,
+    "textures": 9,
+    "jsHeapMB": 32
+   },
+   "phone": {
+    "readyMs": 852,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 113,
+    "worstFrameMs": 8.9,
+    "drawCalls": 94,
+    "triangles": 287284,
+    "geometries": 49,
+    "textures": 9,
+    "jsHeapMB": 54
+   }
+  },
+  {
+   "code": "ECU",
+   "shots": {
+    "b": {
+     "x": 44,
+     "label": "wave surges over the tide shelf"
+    },
+    "c": {
+     "position": [
+      60,
+      4,
+      15
+     ],
+     "target": [
+      70,
+      8,
+      -110
+     ],
+     "label": "lava coast and volcanic cones"
+    }
+   },
+   "desktop": {
+    "readyMs": 786,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 118,
+    "worstFrameMs": 8.5,
+    "drawCalls": 85,
+    "triangles": 120254,
+    "geometries": 55,
+    "textures": 9,
+    "jsHeapMB": 27
+   },
+   "phone": {
+    "readyMs": 690,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 115,
+    "worstFrameMs": 8.8,
+    "drawCalls": 91,
+    "triangles": 121632,
+    "geometries": 57,
+    "textures": 9,
+    "jsHeapMB": 47
+   }
+  },
+  {
+   "code": "GUY",
+   "shots": {
+    "b": {
+     "x": 18,
+     "label": "river-current shelves"
+    },
+    "c": {
+     "position": [
+      84,
+      6,
+      14
+     ],
+     "target": [
+      72,
+      -14,
+      -50
+     ],
+     "fov": 50,
+     "label": "Kaieteur Falls from the gorge lookout"
+    }
+   },
+   "desktop": {
+    "readyMs": 1307,
+    "frames": 600,
+    "averageFps": 119,
+    "onePercentLowFps": 77,
+    "worstFrameMs": 33.3,
+    "drawCalls": 104,
+    "triangles": 180734,
+    "geometries": 58,
+    "textures": 15,
+    "jsHeapMB": 24
+   },
+   "phone": {
+    "readyMs": 1072,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 114,
+    "worstFrameMs": 8.9,
+    "drawCalls": 109,
+    "triangles": 181814,
+    "geometries": 59,
+    "textures": 15,
+    "jsHeapMB": 39
+   }
+  },
+  {
+   "code": "PRY",
+   "shots": {
+    "b": {
+     "x": 20,
+     "label": "crumbling earth banks"
+    },
+    "c": {
+     "position": [
+      92,
+      4,
+      13
+     ],
+     "target": [
+      104,
+      3,
+      -5
+     ],
+     "label": "Trinidad mission ruins"
+    }
+   },
+   "desktop": {
+    "readyMs": 831,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 116,
+    "worstFrameMs": 8.7,
+    "drawCalls": 88,
+    "triangles": 141372,
+    "geometries": 48,
+    "textures": 8,
+    "jsHeapMB": 26
+   },
+   "phone": {
+    "readyMs": 835,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 116,
+    "worstFrameMs": 8.9,
+    "drawCalls": 94,
+    "triangles": 142916,
+    "geometries": 49,
+    "textures": 8,
+    "jsHeapMB": 52
+   }
+  },
+  {
+   "code": "PER",
+   "shots": {
+    "b": {
+     "x": 45,
+     "label": "frayed rope bridge"
+    },
+    "c": {
+     "position": [
+      117,
+      10,
+      17
+     ],
+     "target": [
+      138,
+      6,
+      -30
+     ],
+     "label": "citadel and Huayna Picchu"
+    }
+   },
+   "desktop": {
+    "readyMs": 828,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 113,
+    "worstFrameMs": 8.9,
+    "drawCalls": 80,
+    "triangles": 108648,
+    "geometries": 46,
+    "textures": 8,
+    "jsHeapMB": 25
+   },
+   "phone": {
+    "readyMs": 866,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 116,
+    "worstFrameMs": 9,
+    "drawCalls": 88,
+    "triangles": 113727,
+    "geometries": 48,
+    "textures": 8,
+    "jsHeapMB": 51
+   }
+  },
+  {
+   "code": "SUR",
+   "shots": {
+    "b": {
+     "x": 62,
+     "label": "riverboat crossing"
+    },
+    "c": {
+     "position": [
+      40,
+      3,
+      13
+     ],
+     "target": [
+      51,
+      2,
+      -5
+     ],
+     "label": "Fort Zeelandia"
+    }
+   },
+   "desktop": {
+    "readyMs": 918,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 115,
+    "worstFrameMs": 8.9,
+    "drawCalls": 87,
+    "triangles": 133592,
+    "geometries": 44,
+    "textures": 6,
+    "jsHeapMB": 24
+   },
+   "phone": {
+    "readyMs": 825,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 117,
+    "worstFrameMs": 8.6,
+    "drawCalls": 91,
+    "triangles": 135896,
+    "geometries": 45,
+    "textures": 6,
+    "jsHeapMB": 55
+   }
+  },
+  {
+   "code": "URY",
+   "shots": {
+    "b": {
+     "x": 68,
+     "label": "tiled rooftops"
+    },
+    "c": {
+     "position": [
+      117,
+      3,
+      13
+     ],
+     "target": [
+      130,
+      6,
+      -6
+     ],
+     "label": "Colonia lighthouse"
+    }
+   },
+   "desktop": {
+    "readyMs": 1014,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 116,
+    "worstFrameMs": 8.8,
+    "drawCalls": 75,
+    "triangles": 129492,
+    "geometries": 42,
+    "textures": 11,
+    "jsHeapMB": 27
+   },
+   "phone": {
+    "readyMs": 975,
+    "frames": 600,
+    "averageFps": 120,
+    "onePercentLowFps": 116,
+    "worstFrameMs": 8.8,
+    "drawCalls": 79,
+    "triangles": 135956,
+    "geometries": 44,
+    "textures": 11,
+    "jsHeapMB": 51
+   }
+  }
+ ]
+}

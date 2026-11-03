@@ -11,6 +11,7 @@ it('preserves legacy selections and saves all 126 complete avatar ids with accou
     const before = await avatar(1);
     await db.exec(readFileSync('supabase/migrations/20261022020000_complete_avatars.sql', 'utf8'));
     await db.exec(readFileSync('supabase/migrations/20261022030000_avatar_variants.sql', 'utf8'));
+    await db.exec(readFileSync('supabase/migrations/20261027000100_avatar_body_skin.sql', 'utf8'));
     await db.exec('SET ROLE service_role');
     expect((await avatar(1)).appearance).toEqual(before.appearance);
     const classic = { ...before.appearance, faceStyle: 'natural', shirtColor: 'navy', pantsColor: 'denim' };
@@ -22,6 +23,15 @@ it('preserves legacy selections and saves all 126 complete avatar ids with accou
     expect((await avatar(2)).appearance).not.toHaveProperty('avatarId');
     await expect(avatar(1, { ...classic, avatarId: 'unknown' })).rejects.toThrow();
     await expect(avatar(1, { ...classic, avatarId: 'campus-male-1', outfitId: '999999' })).rejects.toThrow();
+    for (const [bodyShape, skinColor] of [['slim', 'ivory'], ['plus', 'deep'], ['broad', 'olive']]) {
+      const selected = { ...classic, avatarId: 'campus-v4-female-2-3-glasses', bodyShape, skinColor };
+      expect((await avatar(1, selected)).appearance).toMatchObject(selected);
+      expect((await avatar(1)).appearance).toMatchObject(selected);
+    }
+    await expect(avatar(1, { ...classic, avatarId: 'campus-male-1', bodyShape: 'huge' })).rejects.toThrow();
+    await expect(avatar(1, { ...classic, avatarId: 'campus-male-1', skinColor: 'green' })).rejects.toThrow();
+    await expect(avatar(1, { ...classic, avatarId: 'campus-male-1', skinColor: 7 })).rejects.toThrow();
     expect((await avatar(1, classic)).appearance).not.toHaveProperty('avatarId');
+    expect((await avatar(1)).appearance).not.toHaveProperty('bodyShape');
   } finally { await db.close(); }
 }, 25000);

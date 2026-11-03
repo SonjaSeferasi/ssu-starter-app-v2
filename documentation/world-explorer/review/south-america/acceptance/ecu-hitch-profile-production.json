@@ -1,0 +1,2841 @@
+{
+ "code": "ECU",
+ "base": "http://localhost:3100",
+ "browser": "Edg/156.0.4314.50",
+ "startedAt": "2026-11-02T17:33:17.842Z",
+ "runs": [
+  {
+   "run": 1,
+   "cache": "cold (fresh profile)",
+   "readyMs": 5723,
+   "frames": 286,
+   "worstFrameMs": 250,
+   "framesOver50ms": 4,
+   "framesOver20ms": 285,
+   "long": [
+    {
+     "kind": "animation-frame",
+     "ts": 273350384057,
+     "dur": 3012353,
+     "atMsFromStart": 2798,
+     "durMs": 3012,
+     "traceEventsMs": {
+      "Edge_RunTask": 10121,
+      "RunTask": 6059,
+      "ThreadControllerImpl::RunTask": 6049,
+      "ThreadPool_RunTask": 4084,
+      "ANGLEPlatformImpl::RunWorkerTask": 3193,
+      "FireAnimationFrame": 3012,
+      "v8.callFunction": 3012,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 3012,
+      "ImplementationBase::WaitForCmd": 2868,
+      "CommandBufferHelper::Finish": 2868,
+      "CommandBufferProxyImpl::WaitForGetOffset": 2867,
+      "Scheduler::RunTask": 2848
+     },
+     "jsSamples": [
+      [
+       "C@b536a0f1.a04ad93084ccf56e.js:317",
+       2624
+      ],
+      [
+       "computeBoundingSphere@bd904a5c.1238770c7851acf5.js:0",
+       71
+      ],
+      [
+       "eQ@b536a0f1.a04ad93084ccf56e.js:295",
+       13
+      ],
+      [
+       "eX@b536a0f1.a04ad93084ccf56e.js:295",
+       11
+      ],
+      [
+       "(garbage collector)@:-1",
+       7
+      ],
+      [
+       "ez@b536a0f1.a04ad93084ccf56e.js:295",
+       6
+      ],
+      [
+       "(anonymous)@b536a0f1.a04ad93084ccf56e.js:0",
+       4
+      ],
+      [
+       "RegExp: ^[ \\t]*#include +<([\\w\\d./]+)>@:-1",
+       4
+      ],
+      [
+       "RegExp: #pragma unroll_loop_start\\s+for\\s*\\(\\s*int\\s+i\\s*=\\s*(\\d+)\\s*;\\s*i\\s*<\\s*(\\d+)\\s*;\\s*i\\s*\\+\\+\\s*\\)\\s*{([\\s\\S]+?)}\\s+#pragma unroll_loop_end@:-1",
+       3
+      ],
+      [
+       "aa@bd904a5c.1238770c7851acf5.js:0",
+       3
+      ]
+     ],
+     "topStack": [
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "F@b536a0f1.a04ad93084ccf56e.js:317",
+      "B@b536a0f1.a04ad93084ccf56e.js:317",
+      "setupRenderTarget@b536a0f1.a04ad93084ccf56e.js:317",
+      "setRenderTarget@b536a0f1.a04ad93084ccf56e.js:341",
+      "render@b536a0f1.a04ad93084ccf56e.js:317",
+      "render@b536a0f1.a04ad93084ccf56e.js:341"
+     ]
+    },
+    {
+     "kind": "animation-frame",
+     "ts": 273353508683,
+     "dur": 338854,
+     "atMsFromStart": 5923,
+     "durMs": 339,
+     "traceEventsMs": {
+      "Edge_RunTask": 1095,
+      "RunTask": 648,
+      "ThreadControllerImpl::RunTask": 648,
+      "ThreadPool_RunTask": 448,
+      "ANGLEPlatformImpl::RunWorkerTask": 341,
+      "FireAnimationFrame": 339,
+      "v8.callFunction": 339,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 339,
+      "Scheduler::RunTask": 313,
+      "GpuChannel::ExecuteDeferredRequest": 313,
+      "GPUTask": 313,
+      "CommandBuffer::Flush": 313
+     },
+     "jsSamples": [
+      [
+       "C@b536a0f1.a04ad93084ccf56e.js:317",
+       299
+      ],
+      [
+       "texSubImage2D@b536a0f1.a04ad93084ccf56e.js:317",
+       12
+      ],
+      [
+       "(program)@:-1",
+       1
+      ],
+      [
+       "tu@6279.c99b3dde772e4a7b.js:0",
+       1
+      ],
+      [
+       "updateMatrix@bd904a5c.1238770c7851acf5.js:0",
+       1
+      ],
+      [
+       "e3@b536a0f1.a04ad93084ccf56e.js:341",
+       1
+      ],
+      [
+       "t@b536a0f1.a04ad93084ccf56e.js:317",
+       1
+      ],
+      [
+       "get@b536a0f1.a04ad93084ccf56e.js:317",
+       1
+      ],
+      [
+       "eQ@b536a0f1.a04ad93084ccf56e.js:295",
+       1
+      ],
+      [
+       "eX@b536a0f1.a04ad93084ccf56e.js:295",
+       1
+      ]
+     ],
+     "topStack": [
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "e6@b536a0f1.a04ad93084ccf56e.js:341",
+      "e5@b536a0f1.a04ad93084ccf56e.js:341",
+      "e2@b536a0f1.a04ad93084ccf56e.js:341"
+     ]
+    },
+    {
+     "kind": "animation-frame",
+     "ts": 273356652693,
+     "dur": 253379,
+     "atMsFromStart": 9067,
+     "durMs": 253,
+     "traceEventsMs": {
+      "Edge_RunTask": 847,
+      "RunTask": 486,
+      "ThreadControllerImpl::RunTask": 485,
+      "ThreadPool_RunTask": 362,
+      "ANGLEPlatformImpl::RunWorkerTask": 275,
+      "FireAnimationFrame": 253,
+      "v8.callFunction": 253,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 253,
+      "GLES2Implementation::GetProgramiv": 245,
+      "ImplementationBase::WaitForCmd": 245,
+      "CommandBufferHelper::Finish": 245,
+      "CommandBufferProxyImpl::WaitForGetOffset": 245
+     },
+     "jsSamples": [
+      [
+       "C@b536a0f1.a04ad93084ccf56e.js:317",
+       234
+      ],
+      [
+       "(program)@:-1",
+       2
+      ],
+      [
+       "t@b536a0f1.a04ad93084ccf56e.js:317",
+       1
+      ],
+      [
+       "acquireProgram@b536a0f1.a04ad93084ccf56e.js:317",
+       1
+      ],
+      [
+       "eQ@b536a0f1.a04ad93084ccf56e.js:295",
+       1
+      ],
+      [
+       "eX@b536a0f1.a04ad93084ccf56e.js:295",
+       1
+      ],
+      [
+       "(anonymous)@b536a0f1.a04ad93084ccf56e.js:317",
+       1
+      ],
+      [
+       "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+       1
+      ]
+     ],
+     "topStack": [
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "e6@b536a0f1.a04ad93084ccf56e.js:341",
+      "e5@b536a0f1.a04ad93084ccf56e.js:341",
+      "e2@b536a0f1.a04ad93084ccf56e.js:341"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273348131371,
+     "dur": 2248129,
+     "atMsFromStart": 545,
+     "durMs": 2248,
+     "traceEventsMs": {
+      "Edge_RunTask": 8596,
+      "RunTask": 6257,
+      "ThreadControllerImpl::RunTask": 6255,
+      "ThreadPool_RunTask": 2350,
+      "EvaluateScript 9599.0b45e2c6a38de0ca.js": 2247,
+      "v8.run": 2247,
+      "RunMicrotasks": 2247,
+      "ANGLEPlatformImpl::RunWorkerTask": 1927,
+      "ImplementationBase::WaitForCmd": 1711,
+      "CommandBufferHelper::Finish": 1711,
+      "CommandBufferProxyImpl::WaitForGetOffset": 1711,
+      "Scheduler::RunTask": 1678
+     },
+     "jsSamples": [
+      [
+       "C@b536a0f1.a04ad93084ccf56e.js:317",
+       1071
+      ],
+      [
+       "ek@b536a0f1.a04ad93084ccf56e.js:341",
+       668
+      ],
+      [
+       "t@bd904a5c.1238770c7851acf5.js:0",
+       68
+      ],
+      [
+       "(anonymous)@4535.98d1851339c157cc.js:0",
+       21
+      ],
+      [
+       "(garbage collector)@:-1",
+       18
+      ],
+      [
+       "s@1909.50f859c037b2b67f.js:0",
+       15
+      ],
+      [
+       "setSize@b536a0f1.a04ad93084ccf56e.js:341",
+       13
+      ],
+      [
+       "(anonymous)@bd904a5c.1238770c7851acf5.js:0",
+       12
+      ],
+      [
+       "t@b536a0f1.a04ad93084ccf56e.js:249",
+       11
+      ],
+      [
+       "ae@bd904a5c.1238770c7851acf5.js:0",
+       10
+      ]
+     ],
+     "topStack": [
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "e6@b536a0f1.a04ad93084ccf56e.js:341",
+      "e5@b536a0f1.a04ad93084ccf56e.js:341",
+      "e2@b536a0f1.a04ad93084ccf56e.js:341"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273348131372,
+     "dur": 2247553,
+     "atMsFromStart": 545,
+     "durMs": 2248,
+     "traceEventsMs": {
+      "Edge_RunTask": 8596,
+      "ThreadControllerImpl::RunTask": 6255,
+      "RunTask": 4009,
+      "ThreadPool_RunTask": 2350,
+      "EvaluateScript 9599.0b45e2c6a38de0ca.js": 2247,
+      "v8.run": 2247,
+      "RunMicrotasks": 2247,
+      "ANGLEPlatformImpl::RunWorkerTask": 1927,
+      "ImplementationBase::WaitForCmd": 1711,
+      "CommandBufferHelper::Finish": 1711,
+      "CommandBufferProxyImpl::WaitForGetOffset": 1711,
+      "Scheduler::RunTask": 1678
+     },
+     "jsSamples": [
+      [
+       "C@b536a0f1.a04ad93084ccf56e.js:317",
+       1071
+      ],
+      [
+       "ek@b536a0f1.a04ad93084ccf56e.js:341",
+       668
+      ],
+      [
+       "t@bd904a5c.1238770c7851acf5.js:0",
+       68
+      ],
+      [
+       "(anonymous)@4535.98d1851339c157cc.js:0",
+       21
+      ],
+      [
+       "(garbage collector)@:-1",
+       18
+      ],
+      [
+       "s@1909.50f859c037b2b67f.js:0",
+       15
+      ],
+      [
+       "setSize@b536a0f1.a04ad93084ccf56e.js:341",
+       13
+      ],
+      [
+       "(anonymous)@bd904a5c.1238770c7851acf5.js:0",
+       12
+      ],
+      [
+       "t@b536a0f1.a04ad93084ccf56e.js:249",
+       11
+      ],
+      [
+       "ae@bd904a5c.1238770c7851acf5.js:0",
+       10
+      ]
+     ],
+     "topStack": [
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "e6@b536a0f1.a04ad93084ccf56e.js:341",
+      "e5@b536a0f1.a04ad93084ccf56e.js:341",
+      "e2@b536a0f1.a04ad93084ccf56e.js:341"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273350383760,
+     "dur": 3019714,
+     "atMsFromStart": 2798,
+     "durMs": 3020,
+     "traceEventsMs": {
+      "Edge_RunTask": 13149,
+      "RunTask": 9087,
+      "ThreadControllerImpl::RunTask": 9077,
+      "ThreadPool_RunTask": 4084,
+      "ANGLEPlatformImpl::RunWorkerTask": 3193,
+      "FireAnimationFrame": 3012,
+      "v8.callFunction": 3012,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 3012,
+      "ImplementationBase::WaitForCmd": 2868,
+      "CommandBufferHelper::Finish": 2868,
+      "CommandBufferProxyImpl::WaitForGetOffset": 2867,
+      "Scheduler::RunTask": 2848
+     },
+     "jsSamples": [
+      [
+       "C@b536a0f1.a04ad93084ccf56e.js:317",
+       2624
+      ],
+      [
+       "computeBoundingSphere@bd904a5c.1238770c7851acf5.js:0",
+       71
+      ],
+      [
+       "eQ@b536a0f1.a04ad93084ccf56e.js:295",
+       13
+      ],
+      [
+       "(program)@:-1",
+       11
+      ],
+      [
+       "eX@b536a0f1.a04ad93084ccf56e.js:295",
+       11
+      ],
+      [
+       "(garbage collector)@:-1",
+       7
+      ],
+      [
+       "ez@b536a0f1.a04ad93084ccf56e.js:295",
+       6
+      ],
+      [
+       "(anonymous)@b536a0f1.a04ad93084ccf56e.js:0",
+       4
+      ],
+      [
+       "RegExp: ^[ \\t]*#include +<([\\w\\d./]+)>@:-1",
+       4
+      ],
+      [
+       "RegExp: #pragma unroll_loop_start\\s+for\\s*\\(\\s*int\\s+i\\s*=\\s*(\\d+)\\s*;\\s*i\\s*<\\s*(\\d+)\\s*;\\s*i\\s*\\+\\+\\s*\\)\\s*{([\\s\\S]+?)}\\s+#pragma unroll_loop_end@:-1",
+       3
+      ]
+     ],
+     "topStack": [
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "F@b536a0f1.a04ad93084ccf56e.js:317",
+      "B@b536a0f1.a04ad93084ccf56e.js:317",
+      "setupRenderTarget@b536a0f1.a04ad93084ccf56e.js:317",
+      "setRenderTarget@b536a0f1.a04ad93084ccf56e.js:341",
+      "render@b536a0f1.a04ad93084ccf56e.js:317",
+      "render@b536a0f1.a04ad93084ccf56e.js:341"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273350383760,
+     "dur": 3019637,
+     "atMsFromStart": 2798,
+     "durMs": 3020,
+     "traceEventsMs": {
+      "Edge_RunTask": 13149,
+      "ThreadControllerImpl::RunTask": 9077,
+      "RunTask": 6067,
+      "ThreadPool_RunTask": 4084,
+      "ANGLEPlatformImpl::RunWorkerTask": 3193,
+      "FireAnimationFrame": 3012,
+      "v8.callFunction": 3012,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 3012,
+      "ImplementationBase::WaitForCmd": 2868,
+      "CommandBufferHelper::Finish": 2868,
+      "CommandBufferProxyImpl::WaitForGetOffset": 2867,
+      "Scheduler::RunTask": 2848
+     },
+     "jsSamples": [
+      [
+       "C@b536a0f1.a04ad93084ccf56e.js:317",
+       2624
+      ],
+      [
+       "computeBoundingSphere@bd904a5c.1238770c7851acf5.js:0",
+       71
+      ],
+      [
+       "eQ@b536a0f1.a04ad93084ccf56e.js:295",
+       13
+      ],
+      [
+       "(program)@:-1",
+       11
+      ],
+      [
+       "eX@b536a0f1.a04ad93084ccf56e.js:295",
+       11
+      ],
+      [
+       "(garbage collector)@:-1",
+       7
+      ],
+      [
+       "ez@b536a0f1.a04ad93084ccf56e.js:295",
+       6
+      ],
+      [
+       "(anonymous)@b536a0f1.a04ad93084ccf56e.js:0",
+       4
+      ],
+      [
+       "RegExp: ^[ \\t]*#include +<([\\w\\d./]+)>@:-1",
+       4
+      ],
+      [
+       "RegExp: #pragma unroll_loop_start\\s+for\\s*\\(\\s*int\\s+i\\s*=\\s*(\\d+)\\s*;\\s*i\\s*<\\s*(\\d+)\\s*;\\s*i\\s*\\+\\+\\s*\\)\\s*{([\\s\\S]+?)}\\s+#pragma unroll_loop_end@:-1",
+       3
+      ]
+     ],
+     "topStack": [
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "F@b536a0f1.a04ad93084ccf56e.js:317",
+      "B@b536a0f1.a04ad93084ccf56e.js:317",
+      "setupRenderTarget@b536a0f1.a04ad93084ccf56e.js:317",
+      "setRenderTarget@b536a0f1.a04ad93084ccf56e.js:341",
+      "render@b536a0f1.a04ad93084ccf56e.js:317",
+      "render@b536a0f1.a04ad93084ccf56e.js:341"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273353508603,
+     "dur": 341520,
+     "atMsFromStart": 5922,
+     "durMs": 342,
+     "traceEventsMs": {
+      "Edge_RunTask": 1436,
+      "RunTask": 990,
+      "ThreadControllerImpl::RunTask": 990,
+      "ThreadPool_RunTask": 448,
+      "ANGLEPlatformImpl::RunWorkerTask": 341,
+      "FireAnimationFrame": 339,
+      "v8.callFunction": 339,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 339,
+      "Scheduler::RunTask": 313,
+      "GpuChannel::ExecuteDeferredRequest": 313,
+      "GPUTask": 313,
+      "CommandBuffer::Flush": 313
+     },
+     "jsSamples": [
+      [
+       "C@b536a0f1.a04ad93084ccf56e.js:317",
+       299
+      ],
+      [
+       "texSubImage2D@b536a0f1.a04ad93084ccf56e.js:317",
+       12
+      ],
+      [
+       "(program)@:-1",
+       3
+      ],
+      [
+       "tu@6279.c99b3dde772e4a7b.js:0",
+       1
+      ],
+      [
+       "updateMatrix@bd904a5c.1238770c7851acf5.js:0",
+       1
+      ],
+      [
+       "e3@b536a0f1.a04ad93084ccf56e.js:341",
+       1
+      ],
+      [
+       "t@b536a0f1.a04ad93084ccf56e.js:317",
+       1
+      ],
+      [
+       "get@b536a0f1.a04ad93084ccf56e.js:317",
+       1
+      ],
+      [
+       "eQ@b536a0f1.a04ad93084ccf56e.js:295",
+       1
+      ],
+      [
+       "eX@b536a0f1.a04ad93084ccf56e.js:295",
+       1
+      ]
+     ],
+     "topStack": [
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "e6@b536a0f1.a04ad93084ccf56e.js:341",
+      "e5@b536a0f1.a04ad93084ccf56e.js:341",
+      "e2@b536a0f1.a04ad93084ccf56e.js:341"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273353508605,
+     "dur": 341448,
+     "atMsFromStart": 5922,
+     "durMs": 341,
+     "traceEventsMs": {
+      "Edge_RunTask": 1436,
+      "ThreadControllerImpl::RunTask": 990,
+      "RunTask": 648,
+      "ThreadPool_RunTask": 448,
+      "ANGLEPlatformImpl::RunWorkerTask": 341,
+      "FireAnimationFrame": 339,
+      "v8.callFunction": 339,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 339,
+      "Scheduler::RunTask": 313,
+      "GpuChannel::ExecuteDeferredRequest": 313,
+      "GPUTask": 313,
+      "CommandBuffer::Flush": 313
+     },
+     "jsSamples": [
+      [
+       "C@b536a0f1.a04ad93084ccf56e.js:317",
+       299
+      ],
+      [
+       "texSubImage2D@b536a0f1.a04ad93084ccf56e.js:317",
+       12
+      ],
+      [
+       "(program)@:-1",
+       3
+      ],
+      [
+       "tu@6279.c99b3dde772e4a7b.js:0",
+       1
+      ],
+      [
+       "updateMatrix@bd904a5c.1238770c7851acf5.js:0",
+       1
+      ],
+      [
+       "e3@b536a0f1.a04ad93084ccf56e.js:341",
+       1
+      ],
+      [
+       "t@b536a0f1.a04ad93084ccf56e.js:317",
+       1
+      ],
+      [
+       "get@b536a0f1.a04ad93084ccf56e.js:317",
+       1
+      ],
+      [
+       "eQ@b536a0f1.a04ad93084ccf56e.js:295",
+       1
+      ],
+      [
+       "eX@b536a0f1.a04ad93084ccf56e.js:295",
+       1
+      ]
+     ],
+     "topStack": [
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "e6@b536a0f1.a04ad93084ccf56e.js:341",
+      "e5@b536a0f1.a04ad93084ccf56e.js:341",
+      "e2@b536a0f1.a04ad93084ccf56e.js:341"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273356652613,
+     "dur": 254403,
+     "atMsFromStart": 9066,
+     "durMs": 254,
+     "traceEventsMs": {
+      "Edge_RunTask": 1101,
+      "RunTask": 740,
+      "ThreadControllerImpl::RunTask": 740,
+      "ThreadPool_RunTask": 362,
+      "ANGLEPlatformImpl::RunWorkerTask": 275,
+      "FireAnimationFrame": 253,
+      "v8.callFunction": 253,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 253,
+      "GLES2Implementation::GetProgramiv": 245,
+      "ImplementationBase::WaitForCmd": 245,
+      "CommandBufferHelper::Finish": 245,
+      "CommandBufferProxyImpl::WaitForGetOffset": 245
+     },
+     "jsSamples": [
+      [
+       "C@b536a0f1.a04ad93084ccf56e.js:317",
+       234
+      ],
+      [
+       "(program)@:-1",
+       3
+      ],
+      [
+       "t@b536a0f1.a04ad93084ccf56e.js:317",
+       1
+      ],
+      [
+       "acquireProgram@b536a0f1.a04ad93084ccf56e.js:317",
+       1
+      ],
+      [
+       "eQ@b536a0f1.a04ad93084ccf56e.js:295",
+       1
+      ],
+      [
+       "eX@b536a0f1.a04ad93084ccf56e.js:295",
+       1
+      ],
+      [
+       "(anonymous)@b536a0f1.a04ad93084ccf56e.js:317",
+       1
+      ],
+      [
+       "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+       1
+      ]
+     ],
+     "topStack": [
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "e6@b536a0f1.a04ad93084ccf56e.js:341",
+      "e5@b536a0f1.a04ad93084ccf56e.js:341",
+      "e2@b536a0f1.a04ad93084ccf56e.js:341"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273356652619,
+     "dur": 254203,
+     "atMsFromStart": 9066,
+     "durMs": 254,
+     "traceEventsMs": {
+      "Edge_RunTask": 1101,
+      "ThreadControllerImpl::RunTask": 740,
+      "RunTask": 486,
+      "ThreadPool_RunTask": 362,
+      "ANGLEPlatformImpl::RunWorkerTask": 275,
+      "FireAnimationFrame": 253,
+      "v8.callFunction": 253,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 253,
+      "GLES2Implementation::GetProgramiv": 245,
+      "ImplementationBase::WaitForCmd": 245,
+      "CommandBufferHelper::Finish": 245,
+      "CommandBufferProxyImpl::WaitForGetOffset": 245
+     },
+     "jsSamples": [
+      [
+       "C@b536a0f1.a04ad93084ccf56e.js:317",
+       234
+      ],
+      [
+       "(program)@:-1",
+       2
+      ],
+      [
+       "t@b536a0f1.a04ad93084ccf56e.js:317",
+       1
+      ],
+      [
+       "acquireProgram@b536a0f1.a04ad93084ccf56e.js:317",
+       1
+      ],
+      [
+       "eQ@b536a0f1.a04ad93084ccf56e.js:295",
+       1
+      ],
+      [
+       "eX@b536a0f1.a04ad93084ccf56e.js:295",
+       1
+      ],
+      [
+       "(anonymous)@b536a0f1.a04ad93084ccf56e.js:317",
+       1
+      ],
+      [
+       "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+       1
+      ]
+     ],
+     "topStack": [
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "e6@b536a0f1.a04ad93084ccf56e.js:341",
+      "e5@b536a0f1.a04ad93084ccf56e.js:341",
+      "e2@b536a0f1.a04ad93084ccf56e.js:341"
+     ]
+    }
+   ]
+  },
+  {
+   "run": 2,
+   "cache": "warm (same browser, reload)",
+   "readyMs": 1976,
+   "frames": 300,
+   "worstFrameMs": 250,
+   "framesOver50ms": 3,
+   "framesOver20ms": 300,
+   "long": [
+    {
+     "kind": "animation-frame",
+     "ts": 273369790195,
+     "dur": 185291,
+     "atMsFromStart": 1030,
+     "durMs": 185,
+     "traceEventsMs": {
+      "Edge_RunTask": 475,
+      "RunTask": 302,
+      "ThreadControllerImpl::RunTask": 302,
+      "FireAnimationFrame": 185,
+      "v8.callFunction": 185,
+      "FunctionCall 2307.ad73fe6776308706.js": 185,
+      "ThreadPool_RunTask": 174,
+      "ANGLEPlatformImpl::RunWorkerTask": 161,
+      "ImplementationBase::WaitForCmd": 131,
+      "CommandBufferHelper::Finish": 131,
+      "CommandBufferProxyImpl::WaitForGetOffset": 131,
+      "GLES2Implementation::GetProgramiv": 128
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       123
+      ],
+      [
+       "(garbage collector)@:-1",
+       9
+      ],
+      [
+       "getShaderInfoLog@:-1",
+       8
+      ],
+      [
+       "getExtension@:-1",
+       3
+      ],
+      [
+       "aa@bd904a5c.1238770c7851acf5.js:0",
+       3
+      ],
+      [
+       "(program)@:-1",
+       2
+      ],
+      [
+       "e5@b536a0f1.a04ad93084ccf56e.js:295",
+       2
+      ],
+      [
+       "el@b536a0f1.a04ad93084ccf56e.js:295",
+       2
+      ],
+      [
+       "ek@b536a0f1.a04ad93084ccf56e.js:295",
+       2
+      ],
+      [
+       "vertexAttribPointer@:-1",
+       2
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "t@b536a0f1.a04ad93084ccf56e.js:317",
+      "t@b536a0f1.a04ad93084ccf56e.js:317"
+     ]
+    },
+    {
+     "kind": "animation-frame",
+     "ts": 273370706323,
+     "dur": 378257,
+     "atMsFromStart": 1946,
+     "durMs": 378,
+     "traceEventsMs": {
+      "Edge_RunTask": 836,
+      "RunTask": 585,
+      "ThreadControllerImpl::RunTask": 585,
+      "FireAnimationFrame": 378,
+      "v8.callFunction": 378,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 378,
+      "ThreadPool_RunTask": 252,
+      "ImplementationBase::WaitForCmd": 232,
+      "CommandBufferHelper::Finish": 232,
+      "ANGLEPlatformImpl::RunWorkerTask": 231,
+      "CommandBufferProxyImpl::WaitForGetOffset": 231,
+      "GLES2Implementation::GetProgramiv": 228
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       212
+      ],
+      [
+       "getShaderInfoLog@:-1",
+       27
+      ],
+      [
+       "shaderSource@:-1",
+       17
+      ],
+      [
+       "eQ@b536a0f1.a04ad93084ccf56e.js:295",
+       14
+      ],
+      [
+       "getProgramParameter@:-1",
+       10
+      ],
+      [
+       "bufferData@:-1",
+       9
+      ],
+      [
+       "getActiveUniform@:-1",
+       4
+      ],
+      [
+       "getParameters@b536a0f1.a04ad93084ccf56e.js:317",
+       4
+      ],
+      [
+       "e1@b536a0f1.a04ad93084ccf56e.js:295",
+       4
+      ],
+      [
+       "setFromBufferAttribute@bd904a5c.1238770c7851acf5.js:0",
+       3
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "t@b536a0f1.a04ad93084ccf56e.js:317",
+      "t@b536a0f1.a04ad93084ccf56e.js:317"
+     ]
+    },
+    {
+     "kind": "animation-frame",
+     "ts": 273371105731,
+     "dur": 56652,
+     "atMsFromStart": 2345,
+     "durMs": 57,
+     "traceEventsMs": {
+      "Edge_RunTask": 115,
+      "RunTask": 68,
+      "ThreadControllerImpl::RunTask": 68,
+      "FireAnimationFrame": 57,
+      "v8.callFunction": 57,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 57,
+      "ThreadPool_RunTask": 47,
+      "ANGLEPlatformImpl::RunWorkerTask": 22,
+      "GLES2Implementation::GetProgramiv": 22,
+      "ImplementationBase::WaitForCmd": 19,
+      "CommandBufferHelper::Finish": 19,
+      "CommandBufferProxyImpl::WaitForGetOffset": 19
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       18
+      ],
+      [
+       "texSubImage2D@:-1",
+       14
+      ],
+      [
+       "eQ@b536a0f1.a04ad93084ccf56e.js:295",
+       3
+      ],
+      [
+       "getProgramParameter@:-1",
+       2
+      ],
+      [
+       "(program)@:-1",
+       1
+      ],
+      [
+       "(anonymous)@471.18895ee69ba3bfc4.js:0",
+       1
+      ],
+      [
+       "advance@471.18895ee69ba3bfc4.js:0",
+       1
+      ],
+      [
+       "setScalar@bd904a5c.1238770c7851acf5.js:0",
+       1
+      ],
+      [
+       "compose@bd904a5c.1238770c7851acf5.js:0",
+       1
+      ],
+      [
+       "bindVertexArray@:-1",
+       1
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "e6@b536a0f1.a04ad93084ccf56e.js:341",
+      "e5@b536a0f1.a04ad93084ccf56e.js:341"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273369039078,
+     "dur": 78819,
+     "atMsFromStart": 279,
+     "durMs": 79,
+     "traceEventsMs": {
+      "RunTask": 145,
+      "ThreadControllerImpl::RunTask": 145,
+      "Edge_RunTask": 145,
+      "Receive mojo message": 79,
+      "CpuProfiler::StartProfiling": 78
+     },
+     "jsSamples": [],
+     "topStack": []
+    },
+    {
+     "kind": "task",
+     "ts": 273369039081,
+     "dur": 78781,
+     "atMsFromStart": 279,
+     "durMs": 79,
+     "traceEventsMs": {
+      "ThreadControllerImpl::RunTask": 145,
+      "Edge_RunTask": 145,
+      "Receive mojo message": 79,
+      "CpuProfiler::StartProfiling": 78,
+      "RunTask": 66
+     },
+     "jsSamples": [],
+     "topStack": []
+    },
+    {
+     "kind": "task",
+     "ts": 273369171590,
+     "dur": 85126,
+     "atMsFromStart": 411,
+     "durMs": 85,
+     "traceEventsMs": {
+      "RunTask": 161,
+      "ThreadControllerImpl::RunTask": 160,
+      "Edge_RunTask": 160,
+      "Receive mojo message": 85,
+      "CpuProfiler::StartProfiling": 85
+     },
+     "jsSamples": [
+      [
+       "(program)@:-1",
+       1
+      ]
+     ],
+     "topStack": [
+      "(program)@:-1",
+      "(root)@:-1"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273369171591,
+     "dur": 85065,
+     "atMsFromStart": 411,
+     "durMs": 85,
+     "traceEventsMs": {
+      "ThreadControllerImpl::RunTask": 160,
+      "Edge_RunTask": 160,
+      "Receive mojo message": 85,
+      "CpuProfiler::StartProfiling": 85,
+      "RunTask": 75
+     },
+     "jsSamples": [
+      [
+       "(program)@:-1",
+       1
+      ]
+     ],
+     "topStack": [
+      "(program)@:-1",
+      "(root)@:-1"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273369498153,
+     "dur": 291876,
+     "atMsFromStart": 738,
+     "durMs": 292,
+     "traceEventsMs": {
+      "Edge_RunTask": 923,
+      "RunTask": 677,
+      "ThreadControllerImpl::RunTask": 677,
+      "EvaluateScript 2307.ad73fe6776308706.js": 292,
+      "v8.run": 291,
+      "RunMicrotasks": 291,
+      "ThreadPool_RunTask": 247,
+      "ANGLEPlatformImpl::RunWorkerTask": 233,
+      "RasterDecoderImpl::DoEndRasterCHROMIUM": 216,
+      "RasterDecoderImpl::DoEndRasterCHROMIUM::Flush": 215,
+      "GpuChannelHost::CreateViewCommandBuffer": 127,
+      "CommandBufferProxyImpl::Initialize": 127
+     },
+     "jsSamples": [
+      [
+       "getContext@:-1",
+       225
+      ],
+      [
+       "setSize@b536a0f1.a04ad93084ccf56e.js:341",
+       12
+      ],
+      [
+       "getExtension@:-1",
+       9
+      ],
+      [
+       "as@bd904a5c.1238770c7851acf5.js:0",
+       4
+      ],
+      [
+       "(program)@:-1",
+       4
+      ],
+      [
+       "ek@b536a0f1.a04ad93084ccf56e.js:341",
+       3
+      ],
+      [
+       "set@bd904a5c.1238770c7851acf5.js:0",
+       2
+      ],
+      [
+       "sK@bd904a5c.1238770c7851acf5.js:0",
+       2
+      ],
+      [
+       "p.d@webpack-4173e624eb4447ab.js:0",
+       1
+      ],
+      [
+       "e7@bd904a5c.1238770c7851acf5.js:0",
+       1
+      ]
+     ],
+     "topStack": [
+      "getContext@:-1",
+      "ek@b536a0f1.a04ad93084ccf56e.js:341",
+      "nF@b536a0f1.a04ad93084ccf56e.js:341",
+      "p@2307.ad73fe6776308706.js:0",
+      "c@2307.ad73fe6776308706.js:0",
+      "(anonymous)@471.18895ee69ba3bfc4.js:0",
+      "(root)@:-1"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273369498154,
+     "dur": 291788,
+     "atMsFromStart": 738,
+     "durMs": 292,
+     "traceEventsMs": {
+      "Edge_RunTask": 923,
+      "ThreadControllerImpl::RunTask": 677,
+      "RunTask": 385,
+      "EvaluateScript 2307.ad73fe6776308706.js": 292,
+      "v8.run": 291,
+      "RunMicrotasks": 291,
+      "ThreadPool_RunTask": 247,
+      "ANGLEPlatformImpl::RunWorkerTask": 233,
+      "RasterDecoderImpl::DoEndRasterCHROMIUM": 216,
+      "RasterDecoderImpl::DoEndRasterCHROMIUM::Flush": 215,
+      "GpuChannelHost::CreateViewCommandBuffer": 127,
+      "CommandBufferProxyImpl::Initialize": 127
+     },
+     "jsSamples": [
+      [
+       "getContext@:-1",
+       225
+      ],
+      [
+       "setSize@b536a0f1.a04ad93084ccf56e.js:341",
+       12
+      ],
+      [
+       "getExtension@:-1",
+       9
+      ],
+      [
+       "as@bd904a5c.1238770c7851acf5.js:0",
+       4
+      ],
+      [
+       "(program)@:-1",
+       4
+      ],
+      [
+       "ek@b536a0f1.a04ad93084ccf56e.js:341",
+       3
+      ],
+      [
+       "set@bd904a5c.1238770c7851acf5.js:0",
+       2
+      ],
+      [
+       "sK@bd904a5c.1238770c7851acf5.js:0",
+       2
+      ],
+      [
+       "p.d@webpack-4173e624eb4447ab.js:0",
+       1
+      ],
+      [
+       "e7@bd904a5c.1238770c7851acf5.js:0",
+       1
+      ]
+     ],
+     "topStack": [
+      "getContext@:-1",
+      "ek@b536a0f1.a04ad93084ccf56e.js:341",
+      "nF@b536a0f1.a04ad93084ccf56e.js:341",
+      "p@2307.ad73fe6776308706.js:0",
+      "c@2307.ad73fe6776308706.js:0",
+      "(anonymous)@471.18895ee69ba3bfc4.js:0",
+      "(root)@:-1"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273369790143,
+     "dur": 190991,
+     "atMsFromStart": 1030,
+     "durMs": 191,
+     "traceEventsMs": {
+      "Edge_RunTask": 674,
+      "RunTask": 501,
+      "ThreadControllerImpl::RunTask": 501,
+      "FireAnimationFrame": 185,
+      "v8.callFunction": 185,
+      "FunctionCall 2307.ad73fe6776308706.js": 185,
+      "ThreadPool_RunTask": 174,
+      "ANGLEPlatformImpl::RunWorkerTask": 161,
+      "ImplementationBase::WaitForCmd": 131,
+      "CommandBufferHelper::Finish": 131,
+      "CommandBufferProxyImpl::WaitForGetOffset": 131,
+      "GLES2Implementation::GetProgramiv": 128
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       123
+      ],
+      [
+       "(garbage collector)@:-1",
+       9
+      ],
+      [
+       "getShaderInfoLog@:-1",
+       8
+      ],
+      [
+       "(program)@:-1",
+       7
+      ],
+      [
+       "getExtension@:-1",
+       3
+      ],
+      [
+       "aa@bd904a5c.1238770c7851acf5.js:0",
+       3
+      ],
+      [
+       "e5@b536a0f1.a04ad93084ccf56e.js:295",
+       2
+      ],
+      [
+       "el@b536a0f1.a04ad93084ccf56e.js:295",
+       2
+      ],
+      [
+       "ek@b536a0f1.a04ad93084ccf56e.js:295",
+       2
+      ],
+      [
+       "vertexAttribPointer@:-1",
+       2
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "t@b536a0f1.a04ad93084ccf56e.js:317",
+      "t@b536a0f1.a04ad93084ccf56e.js:317"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273369790143,
+     "dur": 190897,
+     "atMsFromStart": 1030,
+     "durMs": 191,
+     "traceEventsMs": {
+      "Edge_RunTask": 674,
+      "ThreadControllerImpl::RunTask": 501,
+      "RunTask": 310,
+      "FireAnimationFrame": 185,
+      "v8.callFunction": 185,
+      "FunctionCall 2307.ad73fe6776308706.js": 185,
+      "ThreadPool_RunTask": 174,
+      "ANGLEPlatformImpl::RunWorkerTask": 161,
+      "ImplementationBase::WaitForCmd": 131,
+      "CommandBufferHelper::Finish": 131,
+      "CommandBufferProxyImpl::WaitForGetOffset": 131,
+      "GLES2Implementation::GetProgramiv": 128
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       123
+      ],
+      [
+       "(garbage collector)@:-1",
+       9
+      ],
+      [
+       "getShaderInfoLog@:-1",
+       8
+      ],
+      [
+       "(program)@:-1",
+       7
+      ],
+      [
+       "getExtension@:-1",
+       3
+      ],
+      [
+       "aa@bd904a5c.1238770c7851acf5.js:0",
+       3
+      ],
+      [
+       "e5@b536a0f1.a04ad93084ccf56e.js:295",
+       2
+      ],
+      [
+       "el@b536a0f1.a04ad93084ccf56e.js:295",
+       2
+      ],
+      [
+       "ek@b536a0f1.a04ad93084ccf56e.js:295",
+       2
+      ],
+      [
+       "vertexAttribPointer@:-1",
+       2
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "t@b536a0f1.a04ad93084ccf56e.js:317",
+      "t@b536a0f1.a04ad93084ccf56e.js:317"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273370114920,
+     "dur": 582820,
+     "atMsFromStart": 1354,
+     "durMs": 583,
+     "traceEventsMs": {
+      "Edge_RunTask": 1353,
+      "RunTask": 1187,
+      "ThreadControllerImpl::RunTask": 1187,
+      "EvaluateScript 9599.0b45e2c6a38de0ca.js": 582,
+      "v8.run": 581,
+      "RunMicrotasks": 581,
+      "ThreadPool_RunTask": 167,
+      "ImplementationBase::WaitForCmd": 39,
+      "CommandBufferHelper::Finish": 39,
+      "CommandBufferProxyImpl::WaitForGetOffset": 38,
+      "Scheduler::RunTask": 26,
+      "GLES2Implementation::GetProgramiv": 23
+     },
+     "jsSamples": [
+      [
+       "t@bd904a5c.1238770c7851acf5.js:0",
+       158
+      ],
+      [
+       "(garbage collector)@:-1",
+       40
+      ],
+      [
+       "(anonymous)@4535.98d1851339c157cc.js:0",
+       34
+      ],
+      [
+       "(anonymous)@bd904a5c.1238770c7851acf5.js:0",
+       24
+      ],
+      [
+       "getProgramInfoLog@:-1",
+       22
+      ],
+      [
+       "setSize@b536a0f1.a04ad93084ccf56e.js:341",
+       19
+      ],
+      [
+       "s@1909.50f859c037b2b67f.js:0",
+       16
+      ],
+      [
+       "getExtension@:-1",
+       15
+      ],
+      [
+       "ae@bd904a5c.1238770c7851acf5.js:0",
+       14
+      ],
+      [
+       "sk@bd904a5c.1238770c7851acf5.js:0",
+       13
+      ]
+     ],
+     "topStack": [
+      "t@bd904a5c.1238770c7851acf5.js:0",
+      "toNonIndexed@bd904a5c.1238770c7851acf5.js:0",
+      "s@1909.50f859c037b2b67f.js:0",
+      "h@1909.50f859c037b2b67f.js:0",
+      "dressPlatform@9599.0b45e2c6a38de0ca.js:0",
+      "(anonymous)@6279.c99b3dde772e4a7b.js:0",
+      "Z@6279.c99b3dde772e4a7b.js:0"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273370114921,
+     "dur": 582466,
+     "atMsFromStart": 1354,
+     "durMs": 582,
+     "traceEventsMs": {
+      "Edge_RunTask": 1353,
+      "ThreadControllerImpl::RunTask": 1187,
+      "RunTask": 605,
+      "EvaluateScript 9599.0b45e2c6a38de0ca.js": 582,
+      "v8.run": 581,
+      "RunMicrotasks": 581,
+      "ThreadPool_RunTask": 167,
+      "ImplementationBase::WaitForCmd": 39,
+      "CommandBufferHelper::Finish": 39,
+      "CommandBufferProxyImpl::WaitForGetOffset": 38,
+      "Scheduler::RunTask": 26,
+      "GLES2Implementation::GetProgramiv": 23
+     },
+     "jsSamples": [
+      [
+       "t@bd904a5c.1238770c7851acf5.js:0",
+       158
+      ],
+      [
+       "(garbage collector)@:-1",
+       40
+      ],
+      [
+       "(anonymous)@4535.98d1851339c157cc.js:0",
+       34
+      ],
+      [
+       "(anonymous)@bd904a5c.1238770c7851acf5.js:0",
+       24
+      ],
+      [
+       "getProgramInfoLog@:-1",
+       22
+      ],
+      [
+       "setSize@b536a0f1.a04ad93084ccf56e.js:341",
+       19
+      ],
+      [
+       "s@1909.50f859c037b2b67f.js:0",
+       16
+      ],
+      [
+       "getExtension@:-1",
+       15
+      ],
+      [
+       "ae@bd904a5c.1238770c7851acf5.js:0",
+       14
+      ],
+      [
+       "sk@bd904a5c.1238770c7851acf5.js:0",
+       13
+      ]
+     ],
+     "topStack": [
+      "t@bd904a5c.1238770c7851acf5.js:0",
+      "toNonIndexed@bd904a5c.1238770c7851acf5.js:0",
+      "s@1909.50f859c037b2b67f.js:0",
+      "h@1909.50f859c037b2b67f.js:0",
+      "dressPlatform@9599.0b45e2c6a38de0ca.js:0",
+      "(anonymous)@6279.c99b3dde772e4a7b.js:0",
+      "Z@6279.c99b3dde772e4a7b.js:0"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273370706132,
+     "dur": 381536,
+     "atMsFromStart": 1946,
+     "durMs": 382,
+     "traceEventsMs": {
+      "Edge_RunTask": 1226,
+      "RunTask": 975,
+      "ThreadControllerImpl::RunTask": 974,
+      "FireAnimationFrame": 378,
+      "v8.callFunction": 378,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 378,
+      "ThreadPool_RunTask": 252,
+      "ImplementationBase::WaitForCmd": 232,
+      "CommandBufferHelper::Finish": 232,
+      "ANGLEPlatformImpl::RunWorkerTask": 231,
+      "CommandBufferProxyImpl::WaitForGetOffset": 231,
+      "GLES2Implementation::GetProgramiv": 228
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       212
+      ],
+      [
+       "getShaderInfoLog@:-1",
+       27
+      ],
+      [
+       "shaderSource@:-1",
+       17
+      ],
+      [
+       "eQ@b536a0f1.a04ad93084ccf56e.js:295",
+       14
+      ],
+      [
+       "getProgramParameter@:-1",
+       10
+      ],
+      [
+       "bufferData@:-1",
+       9
+      ],
+      [
+       "(program)@:-1",
+       5
+      ],
+      [
+       "getActiveUniform@:-1",
+       4
+      ],
+      [
+       "getParameters@b536a0f1.a04ad93084ccf56e.js:317",
+       4
+      ],
+      [
+       "e1@b536a0f1.a04ad93084ccf56e.js:295",
+       4
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "t@b536a0f1.a04ad93084ccf56e.js:317",
+      "t@b536a0f1.a04ad93084ccf56e.js:317"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273370706136,
+     "dur": 381403,
+     "atMsFromStart": 1946,
+     "durMs": 381,
+     "traceEventsMs": {
+      "Edge_RunTask": 1226,
+      "ThreadControllerImpl::RunTask": 974,
+      "RunTask": 593,
+      "FireAnimationFrame": 378,
+      "v8.callFunction": 378,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 378,
+      "ThreadPool_RunTask": 252,
+      "ImplementationBase::WaitForCmd": 232,
+      "CommandBufferHelper::Finish": 232,
+      "ANGLEPlatformImpl::RunWorkerTask": 231,
+      "CommandBufferProxyImpl::WaitForGetOffset": 231,
+      "GLES2Implementation::GetProgramiv": 228
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       212
+      ],
+      [
+       "getShaderInfoLog@:-1",
+       27
+      ],
+      [
+       "shaderSource@:-1",
+       17
+      ],
+      [
+       "eQ@b536a0f1.a04ad93084ccf56e.js:295",
+       14
+      ],
+      [
+       "getProgramParameter@:-1",
+       10
+      ],
+      [
+       "bufferData@:-1",
+       9
+      ],
+      [
+       "(program)@:-1",
+       5
+      ],
+      [
+       "getActiveUniform@:-1",
+       4
+      ],
+      [
+       "getParameters@b536a0f1.a04ad93084ccf56e.js:317",
+       4
+      ],
+      [
+       "e1@b536a0f1.a04ad93084ccf56e.js:295",
+       4
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "t@b536a0f1.a04ad93084ccf56e.js:317",
+      "t@b536a0f1.a04ad93084ccf56e.js:317"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273371105667,
+     "dur": 60469,
+     "atMsFromStart": 2345,
+     "durMs": 60,
+     "traceEventsMs": {
+      "Edge_RunTask": 179,
+      "RunTask": 132,
+      "ThreadControllerImpl::RunTask": 132,
+      "FireAnimationFrame": 57,
+      "v8.callFunction": 57,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 57,
+      "ThreadPool_RunTask": 47,
+      "Scheduler::RunTask": 22,
+      "GpuChannel::ExecuteDeferredRequest": 22,
+      "GPUTask": 22,
+      "ANGLEPlatformImpl::RunWorkerTask": 22,
+      "GLES2Implementation::GetProgramiv": 22
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       18
+      ],
+      [
+       "texSubImage2D@:-1",
+       14
+      ],
+      [
+       "(program)@:-1",
+       5
+      ],
+      [
+       "eQ@b536a0f1.a04ad93084ccf56e.js:295",
+       3
+      ],
+      [
+       "getProgramParameter@:-1",
+       2
+      ],
+      [
+       "(anonymous)@471.18895ee69ba3bfc4.js:0",
+       1
+      ],
+      [
+       "advance@471.18895ee69ba3bfc4.js:0",
+       1
+      ],
+      [
+       "setScalar@bd904a5c.1238770c7851acf5.js:0",
+       1
+      ],
+      [
+       "compose@bd904a5c.1238770c7851acf5.js:0",
+       1
+      ],
+      [
+       "bindVertexArray@:-1",
+       1
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "e6@b536a0f1.a04ad93084ccf56e.js:341",
+      "e5@b536a0f1.a04ad93084ccf56e.js:341"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273371105668,
+     "dur": 60426,
+     "atMsFromStart": 2345,
+     "durMs": 60,
+     "traceEventsMs": {
+      "Edge_RunTask": 179,
+      "ThreadControllerImpl::RunTask": 132,
+      "RunTask": 72,
+      "FireAnimationFrame": 57,
+      "v8.callFunction": 57,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 57,
+      "ThreadPool_RunTask": 47,
+      "Scheduler::RunTask": 22,
+      "GpuChannel::ExecuteDeferredRequest": 22,
+      "GPUTask": 22,
+      "ANGLEPlatformImpl::RunWorkerTask": 22,
+      "GLES2Implementation::GetProgramiv": 22
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       18
+      ],
+      [
+       "texSubImage2D@:-1",
+       14
+      ],
+      [
+       "(program)@:-1",
+       5
+      ],
+      [
+       "eQ@b536a0f1.a04ad93084ccf56e.js:295",
+       3
+      ],
+      [
+       "getProgramParameter@:-1",
+       2
+      ],
+      [
+       "(anonymous)@471.18895ee69ba3bfc4.js:0",
+       1
+      ],
+      [
+       "advance@471.18895ee69ba3bfc4.js:0",
+       1
+      ],
+      [
+       "setScalar@bd904a5c.1238770c7851acf5.js:0",
+       1
+      ],
+      [
+       "compose@bd904a5c.1238770c7851acf5.js:0",
+       1
+      ],
+      [
+       "bindVertexArray@:-1",
+       1
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "e6@b536a0f1.a04ad93084ccf56e.js:341",
+      "e5@b536a0f1.a04ad93084ccf56e.js:341"
+     ]
+    }
+   ]
+  },
+  {
+   "run": 3,
+   "cache": "warm (same browser, reload)",
+   "readyMs": 1472,
+   "frames": 300,
+   "worstFrameMs": 250,
+   "framesOver50ms": 2,
+   "framesOver20ms": 300,
+   "long": [
+    {
+     "kind": "animation-frame",
+     "ts": 273385590604,
+     "dur": 64533,
+     "atMsFromStart": 12272,
+     "durMs": 65,
+     "traceEventsMs": {
+      "Edge_RunTask": 103,
+      "RunTask": 82,
+      "ThreadControllerImpl::RunTask": 82,
+      "FireAnimationFrame": 65,
+      "v8.callFunction": 64,
+      "FunctionCall 2307.ad73fe6776308706.js": 64,
+      "GLES2Implementation::GetProgramiv": 30,
+      "ImplementationBase::WaitForCmd": 30,
+      "CommandBufferHelper::Finish": 30,
+      "CommandBufferProxyImpl::WaitForGetOffset": 29,
+      "Scheduler::RunTask": 24,
+      "GpuChannel::ExecuteDeferredRequest": 24
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       28
+      ],
+      [
+       "getShaderInfoLog@:-1",
+       6
+      ],
+      [
+       "getProgramParameter@:-1",
+       3
+      ],
+      [
+       "onUploadCallback@bd904a5c.1238770c7851acf5.js:0",
+       2
+      ],
+      [
+       "getExtension@:-1",
+       2
+      ],
+      [
+       "getParameters@b536a0f1.a04ad93084ccf56e.js:317",
+       2
+      ],
+      [
+       "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+       2
+      ],
+      [
+       "shaderSource@:-1",
+       2
+      ],
+      [
+       "(program)@:-1",
+       1
+      ],
+      [
+       "updateMatrixWorld@bd904a5c.1238770c7851acf5.js:0",
+       1
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "t@b536a0f1.a04ad93084ccf56e.js:317",
+      "t@b536a0f1.a04ad93084ccf56e.js:317"
+     ]
+    },
+    {
+     "kind": "animation-frame",
+     "ts": 273386291454,
+     "dur": 349853,
+     "atMsFromStart": 12973,
+     "durMs": 350,
+     "traceEventsMs": {
+      "Edge_RunTask": 757,
+      "RunTask": 543,
+      "ThreadControllerImpl::RunTask": 542,
+      "FireAnimationFrame": 350,
+      "v8.callFunction": 350,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 350,
+      "ThreadPool_RunTask": 215,
+      "ImplementationBase::WaitForCmd": 214,
+      "CommandBufferHelper::Finish": 214,
+      "ANGLEPlatformImpl::RunWorkerTask": 213,
+      "CommandBufferProxyImpl::WaitForGetOffset": 212,
+      "GLES2Implementation::GetProgramiv": 207
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       194
+      ],
+      [
+       "getShaderInfoLog@:-1",
+       25
+      ],
+      [
+       "getProgramParameter@:-1",
+       10
+      ],
+      [
+       "bufferData@:-1",
+       9
+      ],
+      [
+       "eQ@b536a0f1.a04ad93084ccf56e.js:295",
+       9
+      ],
+      [
+       "shaderSource@:-1",
+       9
+      ],
+      [
+       "nt@b536a0f1.a04ad93084ccf56e.js:312",
+       4
+      ],
+      [
+       "aa@bd904a5c.1238770c7851acf5.js:0",
+       4
+      ],
+      [
+       "getActiveUniform@:-1",
+       4
+      ],
+      [
+       "min@bd904a5c.1238770c7851acf5.js:0",
+       3
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "t@b536a0f1.a04ad93084ccf56e.js:317",
+      "t@b536a0f1.a04ad93084ccf56e.js:317"
+     ]
+    },
+    {
+     "kind": "animation-frame",
+     "ts": 273386659699,
+     "dur": 52738,
+     "atMsFromStart": 13341,
+     "durMs": 53,
+     "traceEventsMs": {
+      "Edge_RunTask": 105,
+      "RunTask": 68,
+      "ThreadControllerImpl::RunTask": 68,
+      "FireAnimationFrame": 53,
+      "v8.callFunction": 53,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 52,
+      "ThreadPool_RunTask": 40,
+      "Scheduler::RunTask": 18,
+      "GpuChannel::ExecuteDeferredRequest": 18,
+      "GPUTask": 18,
+      "WebGL": 17,
+      "CommandBuffer::Flush": 17
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       15
+      ],
+      [
+       "texSubImage2D@:-1",
+       12
+      ],
+      [
+       "(garbage collector)@:-1",
+       3
+      ],
+      [
+       "(program)@:-1",
+       1
+      ],
+      [
+       "signalHazards@471.18895ee69ba3bfc4.js:0",
+       1
+      ],
+      [
+       "step@471.18895ee69ba3bfc4.js:0",
+       1
+      ],
+      [
+       "position@471.18895ee69ba3bfc4.js:0",
+       1
+      ],
+      [
+       "getX@bd904a5c.1238770c7851acf5.js:0",
+       1
+      ],
+      [
+       "X@b536a0f1.a04ad93084ccf56e.js:317",
+       1
+      ],
+      [
+       "nt@b536a0f1.a04ad93084ccf56e.js:312",
+       1
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "e6@b536a0f1.a04ad93084ccf56e.js:341",
+      "e5@b536a0f1.a04ad93084ccf56e.js:341"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273385086225,
+     "dur": 95404,
+     "atMsFromStart": 11768,
+     "durMs": 95,
+     "traceEventsMs": {
+      "RunTask": 178,
+      "ThreadControllerImpl::RunTask": 178,
+      "Edge_RunTask": 178,
+      "Receive mojo message": 95,
+      "CpuProfiler::StartProfiling": 95
+     },
+     "jsSamples": [],
+     "topStack": []
+    },
+    {
+     "kind": "task",
+     "ts": 273385086229,
+     "dur": 95352,
+     "atMsFromStart": 11768,
+     "durMs": 95,
+     "traceEventsMs": {
+      "ThreadControllerImpl::RunTask": 178,
+      "Edge_RunTask": 178,
+      "Receive mojo message": 95,
+      "CpuProfiler::StartProfiling": 95,
+      "RunTask": 83
+     },
+     "jsSamples": [],
+     "topStack": []
+    },
+    {
+     "kind": "task",
+     "ts": 273385242115,
+     "dur": 131020,
+     "atMsFromStart": 11923,
+     "durMs": 131,
+     "traceEventsMs": {
+      "RunTask": 259,
+      "ThreadControllerImpl::RunTask": 259,
+      "Edge_RunTask": 258,
+      "Receive mojo message": 131,
+      "CpuProfiler::StartProfiling": 130
+     },
+     "jsSamples": [
+      [
+       "(program)@:-1",
+       1
+      ]
+     ],
+     "topStack": [
+      "(program)@:-1",
+      "(root)@:-1"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273385242116,
+     "dur": 130947,
+     "atMsFromStart": 11923,
+     "durMs": 131,
+     "traceEventsMs": {
+      "ThreadControllerImpl::RunTask": 259,
+      "Edge_RunTask": 258,
+      "Receive mojo message": 131,
+      "CpuProfiler::StartProfiling": 130,
+      "RunTask": 128
+     },
+     "jsSamples": [
+      [
+       "(program)@:-1",
+       1
+      ]
+     ],
+     "topStack": [
+      "(program)@:-1",
+      "(root)@:-1"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273385519546,
+     "dur": 62516,
+     "atMsFromStart": 12201,
+     "durMs": 63,
+     "traceEventsMs": {
+      "Edge_RunTask": 125,
+      "RunTask": 122,
+      "ThreadControllerImpl::RunTask": 122,
+      "EvaluateScript 2307.ad73fe6776308706.js": 62,
+      "v8.run": 62,
+      "RunMicrotasks": 62,
+      "ImplementationBase::WaitForCmd": 6,
+      "CommandBufferHelper::Finish": 6,
+      "CommandBufferProxyImpl::WaitForGetOffset": 6,
+      "GpuChannelHost::CreateViewCommandBuffer": 5,
+      "CommandBufferProxyImpl::Initialize": 5,
+      "Scheduler::RunTask": 5
+     },
+     "jsSamples": [
+      [
+       "getContext@:-1",
+       13
+      ],
+      [
+       "setSize@b536a0f1.a04ad93084ccf56e.js:341",
+       11
+      ],
+      [
+       "getExtension@:-1",
+       7
+      ],
+      [
+       "W@2307.ad73fe6776308706.js:0",
+       5
+      ],
+      [
+       "as@bd904a5c.1238770c7851acf5.js:0",
+       3
+      ],
+      [
+       "(program)@:-1",
+       3
+      ],
+      [
+       "iX@bd904a5c.1238770c7851acf5.js:0",
+       2
+      ],
+      [
+       "ek@b536a0f1.a04ad93084ccf56e.js:341",
+       2
+      ],
+      [
+       "c@2307.ad73fe6776308706.js:0",
+       2
+      ],
+      [
+       "2079@bd904a5c.1238770c7851acf5.js:0",
+       1
+      ]
+     ],
+     "topStack": [
+      "getContext@:-1",
+      "ek@b536a0f1.a04ad93084ccf56e.js:341",
+      "nF@b536a0f1.a04ad93084ccf56e.js:341",
+      "p@2307.ad73fe6776308706.js:0",
+      "c@2307.ad73fe6776308706.js:0",
+      "(anonymous)@471.18895ee69ba3bfc4.js:0",
+      "(root)@:-1"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273385519546,
+     "dur": 62480,
+     "atMsFromStart": 12201,
+     "durMs": 62,
+     "traceEventsMs": {
+      "Edge_RunTask": 125,
+      "ThreadControllerImpl::RunTask": 122,
+      "EvaluateScript 2307.ad73fe6776308706.js": 62,
+      "v8.run": 62,
+      "RunMicrotasks": 62,
+      "RunTask": 60,
+      "ImplementationBase::WaitForCmd": 6,
+      "CommandBufferHelper::Finish": 6,
+      "CommandBufferProxyImpl::WaitForGetOffset": 6,
+      "GpuChannelHost::CreateViewCommandBuffer": 5,
+      "CommandBufferProxyImpl::Initialize": 5,
+      "Scheduler::RunTask": 5
+     },
+     "jsSamples": [
+      [
+       "getContext@:-1",
+       13
+      ],
+      [
+       "setSize@b536a0f1.a04ad93084ccf56e.js:341",
+       11
+      ],
+      [
+       "getExtension@:-1",
+       7
+      ],
+      [
+       "W@2307.ad73fe6776308706.js:0",
+       5
+      ],
+      [
+       "as@bd904a5c.1238770c7851acf5.js:0",
+       3
+      ],
+      [
+       "(program)@:-1",
+       3
+      ],
+      [
+       "iX@bd904a5c.1238770c7851acf5.js:0",
+       2
+      ],
+      [
+       "ek@b536a0f1.a04ad93084ccf56e.js:341",
+       2
+      ],
+      [
+       "c@2307.ad73fe6776308706.js:0",
+       2
+      ],
+      [
+       "2079@bd904a5c.1238770c7851acf5.js:0",
+       1
+      ]
+     ],
+     "topStack": [
+      "getContext@:-1",
+      "ek@b536a0f1.a04ad93084ccf56e.js:341",
+      "nF@b536a0f1.a04ad93084ccf56e.js:341",
+      "p@2307.ad73fe6776308706.js:0",
+      "c@2307.ad73fe6776308706.js:0",
+      "(anonymous)@471.18895ee69ba3bfc4.js:0",
+      "(root)@:-1"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273385590510,
+     "dur": 83151,
+     "atMsFromStart": 12272,
+     "durMs": 83,
+     "traceEventsMs": {
+      "Edge_RunTask": 203,
+      "RunTask": 182,
+      "ThreadControllerImpl::RunTask": 182,
+      "v8.callFunction": 72,
+      "FunctionCall 2307.ad73fe6776308706.js": 72,
+      "FireAnimationFrame": 65,
+      "GLES2Implementation::GetProgramiv": 30,
+      "ImplementationBase::WaitForCmd": 30,
+      "CommandBufferHelper::Finish": 30,
+      "CommandBufferProxyImpl::WaitForGetOffset": 29,
+      "Scheduler::RunTask": 24,
+      "GpuChannel::ExecuteDeferredRequest": 24
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       28
+      ],
+      [
+       "(program)@:-1",
+       12
+      ],
+      [
+       "getShaderInfoLog@:-1",
+       6
+      ],
+      [
+       "setSize@b536a0f1.a04ad93084ccf56e.js:341",
+       6
+      ],
+      [
+       "getProgramParameter@:-1",
+       3
+      ],
+      [
+       "onUploadCallback@bd904a5c.1238770c7851acf5.js:0",
+       2
+      ],
+      [
+       "getExtension@:-1",
+       2
+      ],
+      [
+       "getParameters@b536a0f1.a04ad93084ccf56e.js:317",
+       2
+      ],
+      [
+       "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+       2
+      ],
+      [
+       "shaderSource@:-1",
+       2
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "t@b536a0f1.a04ad93084ccf56e.js:317",
+      "t@b536a0f1.a04ad93084ccf56e.js:317"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273385590511,
+     "dur": 82842,
+     "atMsFromStart": 12272,
+     "durMs": 83,
+     "traceEventsMs": {
+      "Edge_RunTask": 203,
+      "ThreadControllerImpl::RunTask": 182,
+      "RunTask": 99,
+      "v8.callFunction": 72,
+      "FunctionCall 2307.ad73fe6776308706.js": 72,
+      "FireAnimationFrame": 65,
+      "GLES2Implementation::GetProgramiv": 30,
+      "ImplementationBase::WaitForCmd": 30,
+      "CommandBufferHelper::Finish": 30,
+      "CommandBufferProxyImpl::WaitForGetOffset": 29,
+      "Scheduler::RunTask": 24,
+      "GpuChannel::ExecuteDeferredRequest": 24
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       28
+      ],
+      [
+       "(program)@:-1",
+       12
+      ],
+      [
+       "getShaderInfoLog@:-1",
+       6
+      ],
+      [
+       "setSize@b536a0f1.a04ad93084ccf56e.js:341",
+       6
+      ],
+      [
+       "getProgramParameter@:-1",
+       3
+      ],
+      [
+       "onUploadCallback@bd904a5c.1238770c7851acf5.js:0",
+       2
+      ],
+      [
+       "getExtension@:-1",
+       2
+      ],
+      [
+       "getParameters@b536a0f1.a04ad93084ccf56e.js:317",
+       2
+      ],
+      [
+       "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+       2
+      ],
+      [
+       "shaderSource@:-1",
+       2
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "t@b536a0f1.a04ad93084ccf56e.js:317",
+      "t@b536a0f1.a04ad93084ccf56e.js:317"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273385750076,
+     "dur": 533839,
+     "atMsFromStart": 12431,
+     "durMs": 534,
+     "traceEventsMs": {
+      "Edge_RunTask": 1271,
+      "RunTask": 1081,
+      "ThreadControllerImpl::RunTask": 1080,
+      "EvaluateScript 9599.0b45e2c6a38de0ca.js": 533,
+      "v8.run": 533,
+      "RunMicrotasks": 533,
+      "ThreadPool_RunTask": 192,
+      "ImplementationBase::WaitForCmd": 33,
+      "CommandBufferHelper::Finish": 33,
+      "CommandBufferProxyImpl::WaitForGetOffset": 33,
+      "MinorGC": 27,
+      "V8.GCScavenger": 27
+     },
+     "jsSamples": [
+      [
+       "t@bd904a5c.1238770c7851acf5.js:0",
+       665
+      ],
+      [
+       "(anonymous)@4535.98d1851339c157cc.js:0",
+       33
+      ],
+      [
+       "(garbage collector)@:-1",
+       31
+      ],
+      [
+       "ae@bd904a5c.1238770c7851acf5.js:0",
+       22
+      ],
+      [
+       "getProgramInfoLog@:-1",
+       19
+      ],
+      [
+       "setSize@b536a0f1.a04ad93084ccf56e.js:341",
+       16
+      ],
+      [
+       "applyMatrix4@bd904a5c.1238770c7851acf5.js:0",
+       14
+      ],
+      [
+       "s@1909.50f859c037b2b67f.js:0",
+       13
+      ],
+      [
+       "sk@bd904a5c.1238770c7851acf5.js:0",
+       11
+      ],
+      [
+       "u@5201.39d22f76a0984638.js:0",
+       11
+      ]
+     ],
+     "topStack": [
+      "t@bd904a5c.1238770c7851acf5.js:0",
+      "toNonIndexed@bd904a5c.1238770c7851acf5.js:0",
+      "s@1909.50f859c037b2b67f.js:0",
+      "h@1909.50f859c037b2b67f.js:0",
+      "dressPlatform@9599.0b45e2c6a38de0ca.js:0",
+      "(anonymous)@6279.c99b3dde772e4a7b.js:0",
+      "Z@6279.c99b3dde772e4a7b.js:0"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273385750077,
+     "dur": 533482,
+     "atMsFromStart": 12431,
+     "durMs": 533,
+     "traceEventsMs": {
+      "Edge_RunTask": 1271,
+      "ThreadControllerImpl::RunTask": 1080,
+      "RunTask": 547,
+      "EvaluateScript 9599.0b45e2c6a38de0ca.js": 533,
+      "v8.run": 533,
+      "RunMicrotasks": 533,
+      "ThreadPool_RunTask": 192,
+      "ImplementationBase::WaitForCmd": 33,
+      "CommandBufferHelper::Finish": 33,
+      "CommandBufferProxyImpl::WaitForGetOffset": 33,
+      "MinorGC": 27,
+      "V8.GCScavenger": 27
+     },
+     "jsSamples": [
+      [
+       "t@bd904a5c.1238770c7851acf5.js:0",
+       665
+      ],
+      [
+       "(anonymous)@4535.98d1851339c157cc.js:0",
+       33
+      ],
+      [
+       "(garbage collector)@:-1",
+       31
+      ],
+      [
+       "ae@bd904a5c.1238770c7851acf5.js:0",
+       22
+      ],
+      [
+       "getProgramInfoLog@:-1",
+       19
+      ],
+      [
+       "setSize@b536a0f1.a04ad93084ccf56e.js:341",
+       16
+      ],
+      [
+       "applyMatrix4@bd904a5c.1238770c7851acf5.js:0",
+       14
+      ],
+      [
+       "s@1909.50f859c037b2b67f.js:0",
+       13
+      ],
+      [
+       "sk@bd904a5c.1238770c7851acf5.js:0",
+       11
+      ],
+      [
+       "u@5201.39d22f76a0984638.js:0",
+       11
+      ]
+     ],
+     "topStack": [
+      "t@bd904a5c.1238770c7851acf5.js:0",
+      "toNonIndexed@bd904a5c.1238770c7851acf5.js:0",
+      "s@1909.50f859c037b2b67f.js:0",
+      "h@1909.50f859c037b2b67f.js:0",
+      "dressPlatform@9599.0b45e2c6a38de0ca.js:0",
+      "(anonymous)@6279.c99b3dde772e4a7b.js:0",
+      "Z@6279.c99b3dde772e4a7b.js:0"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273386291394,
+     "dur": 354258,
+     "atMsFromStart": 12973,
+     "durMs": 354,
+     "traceEventsMs": {
+      "Edge_RunTask": 1119,
+      "RunTask": 905,
+      "ThreadControllerImpl::RunTask": 905,
+      "FireAnimationFrame": 350,
+      "v8.callFunction": 350,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 350,
+      "ThreadPool_RunTask": 215,
+      "ImplementationBase::WaitForCmd": 214,
+      "CommandBufferHelper::Finish": 214,
+      "ANGLEPlatformImpl::RunWorkerTask": 213,
+      "CommandBufferProxyImpl::WaitForGetOffset": 212,
+      "GLES2Implementation::GetProgramiv": 207
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       194
+      ],
+      [
+       "getShaderInfoLog@:-1",
+       25
+      ],
+      [
+       "getProgramParameter@:-1",
+       10
+      ],
+      [
+       "bufferData@:-1",
+       9
+      ],
+      [
+       "eQ@b536a0f1.a04ad93084ccf56e.js:295",
+       9
+      ],
+      [
+       "shaderSource@:-1",
+       9
+      ],
+      [
+       "(program)@:-1",
+       5
+      ],
+      [
+       "nt@b536a0f1.a04ad93084ccf56e.js:312",
+       4
+      ],
+      [
+       "aa@bd904a5c.1238770c7851acf5.js:0",
+       4
+      ],
+      [
+       "getActiveUniform@:-1",
+       4
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "t@b536a0f1.a04ad93084ccf56e.js:317",
+      "t@b536a0f1.a04ad93084ccf56e.js:317"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273386291395,
+     "dur": 354101,
+     "atMsFromStart": 12973,
+     "durMs": 354,
+     "traceEventsMs": {
+      "Edge_RunTask": 1119,
+      "ThreadControllerImpl::RunTask": 905,
+      "RunTask": 551,
+      "FireAnimationFrame": 350,
+      "v8.callFunction": 350,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 350,
+      "ThreadPool_RunTask": 215,
+      "ImplementationBase::WaitForCmd": 214,
+      "CommandBufferHelper::Finish": 214,
+      "ANGLEPlatformImpl::RunWorkerTask": 213,
+      "CommandBufferProxyImpl::WaitForGetOffset": 212,
+      "GLES2Implementation::GetProgramiv": 207
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       194
+      ],
+      [
+       "getShaderInfoLog@:-1",
+       25
+      ],
+      [
+       "getProgramParameter@:-1",
+       10
+      ],
+      [
+       "bufferData@:-1",
+       9
+      ],
+      [
+       "eQ@b536a0f1.a04ad93084ccf56e.js:295",
+       9
+      ],
+      [
+       "shaderSource@:-1",
+       9
+      ],
+      [
+       "(program)@:-1",
+       5
+      ],
+      [
+       "nt@b536a0f1.a04ad93084ccf56e.js:312",
+       4
+      ],
+      [
+       "aa@bd904a5c.1238770c7851acf5.js:0",
+       4
+      ],
+      [
+       "getActiveUniform@:-1",
+       4
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "t@b536a0f1.a04ad93084ccf56e.js:317",
+      "t@b536a0f1.a04ad93084ccf56e.js:317"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273386659620,
+     "dur": 57059,
+     "atMsFromStart": 13341,
+     "durMs": 57,
+     "traceEventsMs": {
+      "Edge_RunTask": 168,
+      "RunTask": 130,
+      "ThreadControllerImpl::RunTask": 130,
+      "FireAnimationFrame": 53,
+      "v8.callFunction": 53,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 52,
+      "ThreadPool_RunTask": 40,
+      "Scheduler::RunTask": 23,
+      "GpuChannel::ExecuteDeferredRequest": 23,
+      "GPUTask": 23,
+      "WebGL": 23,
+      "CommandBuffer::Flush": 22
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       15
+      ],
+      [
+       "texSubImage2D@:-1",
+       12
+      ],
+      [
+       "(program)@:-1",
+       5
+      ],
+      [
+       "(garbage collector)@:-1",
+       3
+      ],
+      [
+       "signalHazards@471.18895ee69ba3bfc4.js:0",
+       1
+      ],
+      [
+       "step@471.18895ee69ba3bfc4.js:0",
+       1
+      ],
+      [
+       "position@471.18895ee69ba3bfc4.js:0",
+       1
+      ],
+      [
+       "getX@bd904a5c.1238770c7851acf5.js:0",
+       1
+      ],
+      [
+       "X@b536a0f1.a04ad93084ccf56e.js:317",
+       1
+      ],
+      [
+       "nt@b536a0f1.a04ad93084ccf56e.js:312",
+       1
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "e6@b536a0f1.a04ad93084ccf56e.js:341",
+      "e5@b536a0f1.a04ad93084ccf56e.js:341"
+     ]
+    },
+    {
+     "kind": "task",
+     "ts": 273386659621,
+     "dur": 56986,
+     "atMsFromStart": 13341,
+     "durMs": 57,
+     "traceEventsMs": {
+      "Edge_RunTask": 168,
+      "ThreadControllerImpl::RunTask": 130,
+      "RunTask": 73,
+      "FireAnimationFrame": 53,
+      "v8.callFunction": 53,
+      "FunctionCall 6279.c99b3dde772e4a7b.js": 52,
+      "ThreadPool_RunTask": 40,
+      "Scheduler::RunTask": 23,
+      "GpuChannel::ExecuteDeferredRequest": 23,
+      "GPUTask": 23,
+      "WebGL": 23,
+      "CommandBuffer::Flush": 22
+     },
+     "jsSamples": [
+      [
+       "getProgramInfoLog@:-1",
+       15
+      ],
+      [
+       "texSubImage2D@:-1",
+       12
+      ],
+      [
+       "(program)@:-1",
+       5
+      ],
+      [
+       "(garbage collector)@:-1",
+       3
+      ],
+      [
+       "signalHazards@471.18895ee69ba3bfc4.js:0",
+       1
+      ],
+      [
+       "step@471.18895ee69ba3bfc4.js:0",
+       1
+      ],
+      [
+       "position@471.18895ee69ba3bfc4.js:0",
+       1
+      ],
+      [
+       "getX@bd904a5c.1238770c7851acf5.js:0",
+       1
+      ],
+      [
+       "X@b536a0f1.a04ad93084ccf56e.js:317",
+       1
+      ],
+      [
+       "nt@b536a0f1.a04ad93084ccf56e.js:312",
+       1
+      ]
+     ],
+     "topStack": [
+      "getProgramInfoLog@:-1",
+      "C@b536a0f1.a04ad93084ccf56e.js:317",
+      "getUniforms@b536a0f1.a04ad93084ccf56e.js:317",
+      "(anonymous)@b536a0f1.a04ad93084ccf56e.js:341",
+      "renderBufferDirect@b536a0f1.a04ad93084ccf56e.js:341",
+      "e6@b536a0f1.a04ad93084ccf56e.js:341",
+      "e5@b536a0f1.a04ad93084ccf56e.js:341"
+     ]
+    }
+   ]
+  }
+ ]
+}

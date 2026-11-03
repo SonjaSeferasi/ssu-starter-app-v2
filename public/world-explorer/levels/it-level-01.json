@@ -1,0 +1,611 @@
+{
+ "id": "it-level-01",
+ "countryId": "IT",
+ "legacyCode": "ITA",
+ "title": "Ancient Rome: Colosseum Adventure",
+ "environmentId": "italy-rome-colosseum",
+ "difficulty": "easy",
+ "environment": {
+  "biome": "mediterranean-city",
+  "locationReference": "Rome, Lazio — Colosseum (Flavian Amphitheatre)",
+  "terrainMaterial": "weathered-limestone-and-travertine",
+  "vegetationPack": "cypress-umbrella-pine-olive",
+  "architecturePack": "roman-arches-columns-terracotta",
+  "landmarkAssets": [
+   "colosseum",
+   "roman-arch-bridge",
+   "aqueduct",
+   "corinthian-columns",
+   "terracotta-houses"
+  ],
+  "lightingPreset": "warm-mediterranean-afternoon",
+  "skyPreset": "clear-warm-haze"
+ },
+ "sections": [
+  {
+   "id": "A",
+   "label": "Limestone forum terrace",
+   "x": 0
+  },
+  {
+   "id": "B",
+   "label": "First broken steps",
+   "x": 16.5
+  },
+  {
+   "id": "C",
+   "label": "Roman arch bridge",
+   "x": 32.5
+  },
+  {
+   "id": "D",
+   "label": "Floating masonry climb",
+   "x": 36
+  },
+  {
+   "id": "E",
+   "label": "Column of the golden star",
+   "x": 50
+  },
+  {
+   "id": "F",
+   "label": "Sliding slab between columns",
+   "x": 59.5
+  },
+  {
+   "id": "G",
+   "label": "Bronze sentry and checkpoint",
+   "x": 85
+  },
+  {
+   "id": "H",
+   "label": "Triumphal finish arch",
+   "x": 104
+  }
+ ],
+ "camera": {
+  "height": 4.4,
+  "look": 1.35,
+  "follow": 0.4,
+  "maxRise": 1.5
+ },
+ "spawn": {
+  "platformId": "it-start",
+  "offset": 3
+ },
+ "platforms": [
+  {
+   "id": "it-start",
+   "x": 0,
+   "y": 0,
+   "width": 15,
+   "depth": 3.4,
+   "thickness": 7,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "it-b1",
+   "x": 17,
+   "y": 0.6,
+   "width": 5,
+   "depth": 3.4,
+   "thickness": 3,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "it-b2",
+   "x": 24.2,
+   "y": 0,
+   "width": 6.8,
+   "depth": 3.4,
+   "thickness": 4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "it-bridge-a",
+   "x": 33.2,
+   "y": -2.4,
+   "width": 9.8,
+   "depth": 3.4,
+   "thickness": 0.6,
+   "type": "bridge",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "roman-arch"
+  },
+  {
+   "id": "it-bridge-b",
+   "x": 45,
+   "y": -2.4,
+   "width": 5.2,
+   "depth": 3.4,
+   "thickness": 0.6,
+   "type": "bridge",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "roman-arch"
+  },
+  {
+   "id": "it-c-exit",
+   "x": 52.2,
+   "y": -1.3,
+   "width": 5.5,
+   "depth": 3.4,
+   "thickness": 3,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "it-up-1",
+   "x": 33.4,
+   "y": 0.8,
+   "width": 3.4,
+   "depth": 3.4,
+   "thickness": 1.1,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper"
+  },
+  {
+   "id": "it-up-2",
+   "x": 39.2,
+   "y": 1.6,
+   "width": 3.2,
+   "depth": 3.4,
+   "thickness": 1.5,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper"
+  },
+  {
+   "id": "it-up-3",
+   "x": 44.8,
+   "y": 2.6,
+   "width": 3,
+   "depth": 3.4,
+   "thickness": 0.8,
+   "type": "moving",
+   "motion": "horizontal",
+   "amplitude": 0.9,
+   "phase": 0,
+   "period": 6,
+   "route": "upper",
+   "style": "masonry-lift",
+   "pause": 0.8
+  },
+  {
+   "id": "it-up-4",
+   "x": 50.3,
+   "y": 3.2,
+   "width": 4.6,
+   "depth": 3.4,
+   "thickness": 1.5,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper"
+  },
+  {
+   "id": "it-e1",
+   "x": 59.8,
+   "y": -0.3,
+   "width": 7,
+   "depth": 3.4,
+   "thickness": 3.5,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "it-slab",
+   "x": 70,
+   "y": -0.3,
+   "width": 3.2,
+   "depth": 3.4,
+   "thickness": 0.5,
+   "type": "moving",
+   "motion": "horizontal",
+   "amplitude": 1.6,
+   "phase": 0,
+   "period": 7,
+   "route": "main",
+   "style": "slab",
+   "pause": 1
+  },
+  {
+   "id": "it-f2",
+   "x": 77,
+   "y": 0,
+   "width": 6,
+   "depth": 3.4,
+   "thickness": 4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "it-g-island",
+   "x": 85.4,
+   "y": 0.4,
+   "width": 10,
+   "depth": 3.4,
+   "thickness": 4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "it-g-safe",
+   "x": 97.8,
+   "y": 0.8,
+   "width": 5,
+   "depth": 3.4,
+   "thickness": 3,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "it-h-step",
+   "x": 105,
+   "y": 1.4,
+   "width": 3,
+   "depth": 3.4,
+   "thickness": 1.6,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "it-finish",
+   "x": 110.3,
+   "y": 0.9,
+   "width": 13,
+   "depth": 3.4,
+   "thickness": 5,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  }
+ ],
+ "coins": [
+  {
+   "id": "it-coin-01",
+   "platformId": "it-start",
+   "offset": 6,
+   "height": 1.1
+  },
+  {
+   "id": "it-coin-02",
+   "platformId": "it-start",
+   "offset": 8.5,
+   "height": 1.1
+  },
+  {
+   "id": "it-coin-03",
+   "platformId": "it-start",
+   "offset": 11,
+   "height": 1.1
+  },
+  {
+   "id": "it-coin-04",
+   "platformId": "it-start",
+   "offset": 16.2,
+   "height": 1.9
+  },
+  {
+   "id": "it-coin-05",
+   "platformId": "it-b1",
+   "offset": 1.6,
+   "height": 1.1
+  },
+  {
+   "id": "it-coin-06",
+   "platformId": "it-b1",
+   "offset": 3.6,
+   "height": 1.1
+  },
+  {
+   "id": "it-coin-07",
+   "platformId": "it-b2",
+   "offset": 2,
+   "height": 1.1
+  },
+  {
+   "id": "it-coin-08",
+   "platformId": "it-b2",
+   "offset": 4.2,
+   "height": 1.1
+  },
+  {
+   "id": "it-coin-09",
+   "platformId": "it-bridge-a",
+   "offset": 1.5,
+   "height": 1
+  },
+  {
+   "id": "it-coin-10",
+   "platformId": "it-bridge-a",
+   "offset": 3.5,
+   "height": 1
+  },
+  {
+   "id": "it-coin-11",
+   "platformId": "it-bridge-a",
+   "offset": 5.5,
+   "height": 1
+  },
+  {
+   "id": "it-coin-12",
+   "platformId": "it-bridge-a",
+   "offset": 7.5,
+   "height": 1
+  },
+  {
+   "id": "it-coin-13",
+   "platformId": "it-bridge-a",
+   "offset": 10.8,
+   "height": 1.6
+  },
+  {
+   "id": "it-coin-14",
+   "platformId": "it-bridge-b",
+   "offset": 2.6,
+   "height": 1
+  },
+  {
+   "id": "it-coin-15",
+   "platformId": "it-bridge-b",
+   "offset": 4.4,
+   "height": 1
+  },
+  {
+   "id": "it-coin-16",
+   "platformId": "it-c-exit",
+   "offset": 2.2,
+   "height": 1.1
+  },
+  {
+   "id": "it-coin-17",
+   "platformId": "it-c-exit",
+   "offset": 4.2,
+   "height": 1.1
+  },
+  {
+   "id": "it-coin-18",
+   "platformId": "it-up-1",
+   "offset": 1.7,
+   "height": 1.2
+  },
+  {
+   "id": "it-coin-19",
+   "platformId": "it-up-1",
+   "offset": 4.6,
+   "height": 2
+  },
+  {
+   "id": "it-coin-20",
+   "platformId": "it-up-2",
+   "offset": 1.6,
+   "height": 1.2
+  },
+  {
+   "id": "it-coin-21",
+   "platformId": "it-up-3",
+   "offset": 1.5,
+   "height": 1.2
+  },
+  {
+   "id": "it-coin-22",
+   "platformId": "it-up-4",
+   "offset": 1,
+   "height": 1.2
+  },
+  {
+   "id": "it-coin-23",
+   "platformId": "it-slab",
+   "offset": 1.6,
+   "height": 1.1
+  },
+  {
+   "id": "it-coin-24",
+   "platformId": "it-f2",
+   "offset": 1.5,
+   "height": 1.1
+  },
+  {
+   "id": "it-coin-25",
+   "platformId": "it-f2",
+   "offset": 4.5,
+   "height": 1.1
+  },
+  {
+   "id": "it-coin-26",
+   "platformId": "it-g-island",
+   "offset": 1.2,
+   "height": 1.1
+  },
+  {
+   "id": "it-coin-27",
+   "platformId": "it-g-island",
+   "offset": 8.8,
+   "height": 1.1
+  },
+  {
+   "id": "it-coin-28",
+   "platformId": "it-g-safe",
+   "offset": 2.5,
+   "height": 1.1
+  },
+  {
+   "id": "it-coin-29",
+   "platformId": "it-g-safe",
+   "offset": 4,
+   "height": 1.1
+  },
+  {
+   "id": "it-coin-30",
+   "platformId": "it-finish",
+   "offset": 3,
+   "height": 1.1
+  }
+ ],
+ "stars": [
+  {
+   "id": "it-star-01",
+   "platformId": "it-up-4",
+   "offset": 3.1,
+   "height": 1.15
+  },
+  {
+   "id": "it-star-02",
+   "platformId": "it-f2",
+   "offset": 3,
+   "height": 2.2
+  },
+  {
+   "id": "it-star-03",
+   "platformId": "it-h-step",
+   "offset": 1.5,
+   "height": 2.3
+  }
+ ],
+ "checkpoints": [
+  {
+   "id": "it-checkpoint-01",
+   "platformId": "it-e1",
+   "offset": 1
+  },
+  {
+   "id": "it-checkpoint-02",
+   "platformId": "it-g-safe",
+   "offset": 1
+  }
+ ],
+ "discovery": {
+  "id": "it-discovery",
+  "platformId": "it-e1",
+  "offset": 3.2,
+  "factId": "it-discovery"
+ },
+ "finish": {
+  "platformId": "it-finish",
+  "offset": 10
+ },
+ "hazards": [],
+ "enemies": [
+  {
+   "id": "it-bronze-sentry",
+   "platformId": "it-g-island",
+   "minOffset": 3,
+   "maxOffset": 7.2,
+   "speed": 1,
+   "turnPause": 0.6
+  }
+ ],
+ "discoveryBlocks": [
+  {
+   "id": "it-discovery-block",
+   "x": 46.4,
+   "y": 0.1,
+   "width": 0.75,
+   "height": 0.8,
+   "factId": "it-discovery"
+  }
+ ],
+ "mainRoute": [
+  "it-start",
+  "it-b1",
+  "it-b2",
+  "it-bridge-a",
+  "it-bridge-b",
+  "it-c-exit",
+  "it-e1",
+  "it-slab",
+  "it-f2",
+  "it-g-island",
+  "it-g-safe",
+  "it-h-step",
+  "it-finish"
+ ],
+ "upperRoute": [
+  "it-start",
+  "it-b1",
+  "it-b2",
+  "it-up-1",
+  "it-up-2",
+  "it-up-3",
+  "it-up-4",
+  "it-e1",
+  "it-slab",
+  "it-f2",
+  "it-g-island",
+  "it-g-safe",
+  "it-h-step",
+  "it-finish"
+ ],
+ "physics": {
+  "gravity": 20,
+  "jumpSpeed": 9,
+  "runSpeed": 6,
+  "acceleration": 25,
+  "airControl": 0.65,
+  "coyoteTime": 0.12,
+  "jumpBuffer": 0.12,
+  "playerRadius": 0.2,
+  "playerHeight": 1.83,
+  "killY": -7,
+  "iceGrip": 0.3
+ }
+}

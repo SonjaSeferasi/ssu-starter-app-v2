@@ -31,9 +31,15 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    ".next/dev/types/**/*.ts",
+    ".next-review/types/**/*.ts",
+    ".next-asia-phase-a/types/**/*.ts",
+    "tmp/tools/north-america-preview/.next/types/**/*.ts",
+    "tmp/tools/north-america-build/.next/types/**/*.ts",
+    "tmp/tools/oceania-a-preview/.next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "documentation/world-explorer/review/**/shared-loading-baseline/**"
   ]
 }

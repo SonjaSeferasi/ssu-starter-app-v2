@@ -1,0 +1,454 @@
+{
+ "BOL": {
+  "coinsAcrossRuns": "33/33",
+  "starsAcrossRuns": "3/3",
+  "completions": [
+   {
+    "code": "BOL",
+    "kind": "complete-bonus",
+    "difficulty": 1,
+    "frames": 1704,
+    "seconds": 28.4,
+    "expected": {
+     "status": "completed",
+     "coins": 31,
+     "totalCoins": 33,
+     "stars": 3,
+     "totalStars": 3,
+     "hearts": 3,
+     "discoveryFound": true,
+     "checkpoints": 2,
+     "coinIds": [
+      "bo-coin-01",
+      "bo-coin-02",
+      "bo-coin-03",
+      "bo-coin-04",
+      "bo-coin-05",
+      "bo-coin-06",
+      "bo-coin-07",
+      "bo-coin-08",
+      "bo-coin-09",
+      "bo-coin-12",
+      "bo-coin-13",
+      "bo-coin-14",
+      "bo-coin-15",
+      "bo-coin-16",
+      "bo-coin-17",
+      "bo-coin-18",
+      "bo-coin-19",
+      "bo-coin-20",
+      "bo-coin-21",
+      "bo-coin-22",
+      "bo-coin-23",
+      "bo-coin-24",
+      "bo-coin-25",
+      "bo-coin-26",
+      "bo-coin-27",
+      "bo-coin-28",
+      "bo-coin-29",
+      "bo-coin-30",
+      "bo-coin-31",
+      "bo-coin-32",
+      "bo-coin-33"
+     ],
+     "starIds": [
+      "bo-star-01",
+      "bo-star-02",
+      "bo-star-03"
+     ],
+     "tally": {
+      "coin": 31,
+      "star": 3,
+      "switch": 3,
+      "raise": 9,
+      "checkpoint": 2,
+      "lower": 9,
+      "discovery": 1,
+      "finish": 1
+     }
+    }
+   },
+   {
+    "code": "BOL",
+    "kind": "complete-main",
+    "difficulty": 1,
+    "frames": 2004,
+    "seconds": 33.4,
+    "expected": {
+     "status": "completed",
+     "coins": 33,
+     "totalCoins": 33,
+     "stars": 3,
+     "totalStars": 3,
+     "hearts": 3,
+     "discoveryFound": true,
+     "checkpoints": 2,
+     "coinIds": [
+      "bo-coin-01",
+      "bo-coin-02",
+      "bo-coin-03",
+      "bo-coin-04",
+      "bo-coin-05",
+      "bo-coin-06",
+      "bo-coin-07",
+      "bo-coin-08",
+      "bo-coin-09",
+      "bo-coin-10",
+      "bo-coin-11",
+      "bo-coin-12",
+      "bo-coin-13",
+      "bo-coin-14",
+      "bo-coin-15",
+      "bo-coin-16",
+      "bo-coin-17",
+      "bo-coin-18",
+      "bo-coin-19",
+      "bo-coin-20",
+      "bo-coin-21",
+      "bo-coin-22",
+      "bo-coin-23",
+      "bo-coin-24",
+      "bo-coin-25",
+      "bo-coin-26",
+      "bo-coin-27",
+      "bo-coin-28",
+      "bo-coin-29",
+      "bo-coin-30",
+      "bo-coin-31",
+      "bo-coin-32",
+      "bo-coin-33"
+     ],
+     "starIds": [
+      "bo-star-01",
+      "bo-star-02",
+      "bo-star-03"
+     ],
+     "tally": {
+      "coin": 33,
+      "star": 3,
+      "switch": 3,
+      "raise": 9,
+      "lower": 9,
+      "checkpoint": 2,
+      "discovery": 1,
+      "finish": 1
+     }
+    }
+   }
+  ],
+  "hazard": {
+   "code": "BOL",
+   "kind": "hazard",
+   "difficulty": 1,
+   "frames": 880,
+   "seconds": 14.7,
+   "checkpoint": "bo-flat-3",
+   "expected": {
+    "status": "playing",
+    "hearts": 2,
+    "standing": "bo-flat-3",
+    "x": 51.4,
+    "checkpointX": 51.4,
+    "coins": 15,
+    "tally": {
+     "coin": 15,
+     "star": 2,
+     "switch": 2,
+     "raise": 7,
+     "checkpoint": 1,
+     "damage": 1,
+     "respawn": 1,
+     "lower": 5
+    }
+   }
+  }
+ },
+ "BRA": {
+  "coinsAcrossRuns": "29/29",
+  "starsAcrossRuns": "3/3",
+  "completions": [
+   {
+    "code": "BRA",
+    "kind": "complete-bonus",
+    "difficulty": 2,
+    "frames": 1539,
+    "seconds": 25.6,
+    "expected": {
+     "status": "completed",
+     "coins": 22,
+     "totalCoins": 29,
+     "stars": 3,
+     "totalStars": 3,
+     "hearts": 3,
+     "discoveryFound": true,
+     "checkpoints": 2,
+     "coinIds": [
+      "br-coin-01",
+      "br-coin-02",
+      "br-coin-03",
+      "br-coin-06",
+      "br-coin-07",
+      "br-coin-08",
+      "br-coin-09",
+      "br-coin-10",
+      "br-coin-11",
+      "br-coin-12",
+      "br-coin-13",
+      "br-coin-19",
+      "br-coin-20",
+      "br-coin-21",
+      "br-coin-22",
+      "br-coin-23",
+      "br-coin-24",
+      "br-coin-25",
+      "br-coin-26",
+      "br-coin-27",
+      "br-coin-28",
+      "br-coin-29"
+     ],
+     "starIds": [
+      "br-star-01",
+      "br-star-02",
+      "br-star-03"
+     ],
+     "tally": {
+      "coin": 22,
+      "bounce": 1,
+      "star": 3,
+      "checkpoint": 2,
+      "discovery": 1,
+      "finish": 1
+     }
+    }
+   },
+   {
+    "code": "BRA",
+    "kind": "complete-main",
+    "difficulty": 2,
+    "frames": 1840,
+    "seconds": 30.7,
+    "expected": {
+     "status": "completed",
+     "coins": 25,
+     "totalCoins": 29,
+     "stars": 1,
+     "totalStars": 3,
+     "hearts": 2,
+     "discoveryFound": true,
+     "checkpoints": 2,
+     "coinIds": [
+      "br-coin-01",
+      "br-coin-02",
+      "br-coin-03",
+      "br-coin-04",
+      "br-coin-05",
+      "br-coin-06",
+      "br-coin-07",
+      "br-coin-08",
+      "br-coin-09",
+      "br-coin-10",
+      "br-coin-11",
+      "br-coin-12",
+      "br-coin-13",
+      "br-coin-14",
+      "br-coin-15",
+      "br-coin-16",
+      "br-coin-17",
+      "br-coin-18",
+      "br-coin-19",
+      "br-coin-20",
+      "br-coin-21",
+      "br-coin-22",
+      "br-coin-23",
+      "br-coin-24",
+      "br-coin-25"
+     ],
+     "starIds": [
+      "br-star-02"
+     ],
+     "tally": {
+      "coin": 25,
+      "bounce": 1,
+      "star": 1,
+      "checkpoint": 2,
+      "damage": 1,
+      "respawn": 1,
+      "discovery": 1,
+      "finish": 1
+     }
+    }
+   }
+  ],
+  "hazard": {
+   "code": "BRA",
+   "kind": "hazard",
+   "difficulty": 2,
+   "frames": 1050,
+   "seconds": 17.5,
+   "checkpoint": "br-canopy-3",
+   "expected": {
+    "status": "playing",
+    "hearts": 2,
+    "standing": "br-canopy-3",
+    "x": 51,
+    "checkpointX": 51,
+    "coins": 14,
+    "tally": {
+     "coin": 14,
+     "bounce": 1,
+     "star": 1,
+     "checkpoint": 1,
+     "damage": 1,
+     "respawn": 1
+    }
+   }
+  }
+ },
+ "VEN": {
+  "coinsAcrossRuns": "23/24",
+  "starsAcrossRuns": "3/3",
+  "completions": [
+   {
+    "code": "VEN",
+    "kind": "complete-bonus",
+    "difficulty": 3,
+    "frames": 1889,
+    "seconds": 31.5,
+    "expected": {
+     "status": "completed",
+     "coins": 21,
+     "totalCoins": 24,
+     "stars": 3,
+     "totalStars": 3,
+     "hearts": 3,
+     "discoveryFound": true,
+     "checkpoints": 2,
+     "coinIds": [
+      "ve-coin-02",
+      "ve-coin-03",
+      "ve-coin-04",
+      "ve-coin-05",
+      "ve-coin-06",
+      "ve-coin-07",
+      "ve-coin-08",
+      "ve-coin-09",
+      "ve-coin-10",
+      "ve-coin-11",
+      "ve-coin-12",
+      "ve-coin-13",
+      "ve-coin-14",
+      "ve-coin-15",
+      "ve-coin-18",
+      "ve-coin-19",
+      "ve-coin-20",
+      "ve-coin-21",
+      "ve-coin-22",
+      "ve-coin-23",
+      "ve-coin-24"
+     ],
+     "starIds": [
+      "ve-star-01",
+      "ve-star-02",
+      "ve-star-03"
+     ],
+     "tally": {
+      "block": 1,
+      "discovery": 1,
+      "wind-warning": 4,
+      "coin": 21,
+      "collapse": 3,
+      "wind": 4,
+      "checkpoint": 2,
+      "climb": 2,
+      "star": 3,
+      "finish": 1
+     }
+    }
+   },
+   {
+    "code": "VEN",
+    "kind": "complete-main",
+    "difficulty": 3,
+    "frames": 1928,
+    "seconds": 32.1,
+    "expected": {
+     "status": "completed",
+     "coins": 22,
+     "totalCoins": 24,
+     "stars": 2,
+     "totalStars": 3,
+     "hearts": 3,
+     "discoveryFound": true,
+     "checkpoints": 2,
+     "coinIds": [
+      "ve-coin-02",
+      "ve-coin-03",
+      "ve-coin-04",
+      "ve-coin-05",
+      "ve-coin-06",
+      "ve-coin-07",
+      "ve-coin-08",
+      "ve-coin-09",
+      "ve-coin-10",
+      "ve-coin-11",
+      "ve-coin-12",
+      "ve-coin-13",
+      "ve-coin-14",
+      "ve-coin-15",
+      "ve-coin-16",
+      "ve-coin-17",
+      "ve-coin-18",
+      "ve-coin-19",
+      "ve-coin-20",
+      "ve-coin-21",
+      "ve-coin-22",
+      "ve-coin-23"
+     ],
+     "starIds": [
+      "ve-star-02",
+      "ve-star-03"
+     ],
+     "tally": {
+      "block": 1,
+      "discovery": 1,
+      "wind-warning": 4,
+      "coin": 22,
+      "collapse": 3,
+      "wind": 4,
+      "checkpoint": 2,
+      "climb": 2,
+      "star": 2,
+      "finish": 1
+     }
+    }
+   }
+  ],
+  "hazard": {
+   "code": "VEN",
+   "kind": "hazard",
+   "difficulty": 3,
+   "frames": 759,
+   "seconds": 12.7,
+   "checkpoint": "ve-terrace-1",
+   "expected": {
+    "status": "playing",
+    "hearts": 2,
+    "standing": "ve-terrace-1",
+    "x": 28.9,
+    "checkpointX": 28.9,
+    "coins": 6,
+    "tally": {
+     "block": 1,
+     "discovery": 1,
+     "wind-warning": 2,
+     "coin": 6,
+     "collapse": 2,
+     "wind": 1,
+     "checkpoint": 1,
+     "damage": 1,
+     "respawn": 1
+    }
+   }
+  }
+ }
+}

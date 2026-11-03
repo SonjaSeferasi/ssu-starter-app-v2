@@ -1,0 +1,509 @@
+{
+  "id": "jp-level-01",
+  "countryId": "JP",
+  "legacyCode": "JPN",
+  "title": "Cherry Blossom Path",
+  "environmentId": "japan-mountain-spring",
+  "spawn": {
+    "platformId": "jp-start",
+    "offset": 10.8
+  },
+  "platforms": [
+    {
+      "id": "jp-start",
+      "x": 0,
+      "y": 0,
+      "width": 14,
+      "depth": 3.4,
+      "thickness": 7,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.2,
+      "route": "main"
+    },
+    {
+      "id": "jp-lower-bridge",
+      "x": 14,
+      "y": -1.7,
+      "width": 16,
+      "depth": 3.4,
+      "thickness": 0.24,
+      "type": "wooden-bridge",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.2,
+      "route": "main",
+      "sagDepth": 0.22
+    },
+    {
+      "id": "jp-upper-01",
+      "x": 16.3,
+      "y": 1.2,
+      "width": 3,
+      "depth": 3.4,
+      "thickness": 0.15,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.2,
+      "route": "upper"
+    },
+    {
+      "id": "jp-upper-02",
+      "x": 20.2,
+      "y": 2.3,
+      "width": 3,
+      "depth": 3.4,
+      "thickness": 0.65,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.2,
+      "route": "upper"
+    },
+    {
+      "id": "jp-star-terrace",
+      "x": 24.1,
+      "y": 3.4,
+      "width": 3.4,
+      "depth": 3.4,
+      "thickness": 1.25,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.2,
+      "route": "upper"
+    },
+    {
+      "id": "jp-descent",
+      "x": 27.8,
+      "y": 2.05,
+      "width": 1.7,
+      "depth": 3.4,
+      "thickness": 0.75,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.2,
+      "route": "upper"
+    },
+    {
+      "id": "jp-bridge-exit",
+      "x": 30,
+      "y": -1.7,
+      "width": 3.5,
+      "depth": 3.4,
+      "thickness": 1.1,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.2,
+      "route": "main",
+      "slope": 2,
+      "steps": 6,
+      "terrain": "stairs"
+    },
+    {
+      "id": "jp-enemy-island",
+      "x": 33.5,
+      "y": 0.3,
+      "width": 10,
+      "depth": 3.4,
+      "thickness": 4,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.2,
+      "route": "main"
+    },
+    {
+      "id": "jp-main-05",
+      "x": 45.1,
+      "y": 0.35,
+      "width": 8,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.2,
+      "route": "main"
+    },
+    {
+      "id": "jp-main-06",
+      "x": 54.6,
+      "y": 0.15,
+      "width": 7.2,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.2,
+      "route": "main"
+    },
+    {
+      "id": "jp-main-07",
+      "x": 63.4,
+      "y": 0.65,
+      "width": 7,
+      "depth": 3.4,
+      "thickness": 0.24,
+      "type": "wooden-moving",
+      "motion": "horizontal",
+      "amplitude": 0.32,
+      "phase": 0,
+      "period": 7.2,
+      "route": "main"
+    },
+    {
+      "id": "jp-main-08",
+      "x": 72,
+      "y": 0.9,
+      "width": 8,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.2,
+      "route": "main"
+    },
+    {
+      "id": "jp-main-09",
+      "x": 81.8,
+      "y": 0.5,
+      "width": 6.6,
+      "depth": 3.4,
+      "thickness": 0.24,
+      "type": "wooden-moving",
+      "motion": "vertical",
+      "amplitude": 0.25,
+      "phase": 0,
+      "period": 7.2,
+      "route": "main"
+    },
+    {
+      "id": "jp-main-10",
+      "x": 90,
+      "y": 0.7,
+      "width": 7,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.2,
+      "route": "main"
+    },
+    {
+      "id": "jp-finish",
+      "x": 98.8,
+      "y": 0.45,
+      "width": 10,
+      "depth": 3.4,
+      "thickness": 3,
+      "type": "stone",
+      "motion": null,
+      "amplitude": 0,
+      "phase": 0,
+      "period": 7.2,
+      "route": "main"
+    }
+  ],
+  "coins": [
+    {
+      "id": "jp-coin-01",
+      "platformId": "jp-start",
+      "offset": 10.4,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-02",
+      "platformId": "jp-start",
+      "offset": 11.6,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-03",
+      "platformId": "jp-start",
+      "offset": 12.8,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-04",
+      "platformId": "jp-lower-bridge",
+      "offset": 1.2,
+      "height": 2
+    },
+    {
+      "id": "jp-coin-05",
+      "platformId": "jp-lower-bridge",
+      "offset": 2.5,
+      "height": 1.25
+    },
+    {
+      "id": "jp-coin-06",
+      "platformId": "jp-lower-bridge",
+      "offset": 3.8,
+      "height": 1.35
+    },
+    {
+      "id": "jp-coin-07",
+      "platformId": "jp-lower-bridge",
+      "offset": 5.2,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-08",
+      "platformId": "jp-lower-bridge",
+      "offset": 8.4,
+      "height": 1.25
+    },
+    {
+      "id": "jp-coin-09",
+      "platformId": "jp-lower-bridge",
+      "offset": 11.8,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-10",
+      "platformId": "jp-upper-01",
+      "offset": 1.62,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-11",
+      "platformId": "jp-upper-02",
+      "offset": 1.62,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-12",
+      "platformId": "jp-star-terrace",
+      "offset": 1.836,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-13",
+      "platformId": "jp-descent",
+      "offset": 1.1880000000000002,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-14",
+      "platformId": "jp-bridge-exit",
+      "offset": 1.2,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-15",
+      "platformId": "jp-bridge-exit",
+      "offset": 2.5,
+      "height": 1.25
+    },
+    {
+      "id": "jp-coin-16",
+      "platformId": "jp-enemy-island",
+      "offset": 1.6,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-17",
+      "platformId": "jp-enemy-island",
+      "offset": 4.4,
+      "height": 2.35
+    },
+    {
+      "id": "jp-coin-18",
+      "platformId": "jp-enemy-island",
+      "offset": 7.4,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-19",
+      "platformId": "jp-main-05",
+      "offset": 2.56,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-20",
+      "platformId": "jp-main-05",
+      "offset": 5.28,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-21",
+      "platformId": "jp-main-06",
+      "offset": 2.304,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-22",
+      "platformId": "jp-main-06",
+      "offset": 4.752,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-23",
+      "platformId": "jp-main-07",
+      "offset": 2.24,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-24",
+      "platformId": "jp-main-07",
+      "offset": 4.62,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-25",
+      "platformId": "jp-main-08",
+      "offset": 2.56,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-26",
+      "platformId": "jp-main-08",
+      "offset": 5.28,
+      "height": 1.45
+    },
+    {
+      "id": "jp-coin-27",
+      "platformId": "jp-main-09",
+      "offset": 2.112,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-28",
+      "platformId": "jp-main-10",
+      "offset": 2.24,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-29",
+      "platformId": "jp-finish",
+      "offset": 3.2,
+      "height": 1.1
+    },
+    {
+      "id": "jp-coin-30",
+      "platformId": "jp-finish",
+      "offset": 6.6,
+      "height": 1.45
+    }
+  ],
+  "stars": [
+    {
+      "id": "jp-star-01",
+      "platformId": "jp-star-terrace",
+      "offset": 0.65,
+      "height": 1.15
+    },
+    {
+      "id": "jp-star-02",
+      "platformId": "jp-main-08",
+      "offset": 5.4,
+      "height": 2.2
+    },
+    {
+      "id": "jp-star-03",
+      "platformId": "jp-main-09",
+      "offset": 3.3,
+      "height": 2.15
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "jp-checkpoint-01",
+      "platformId": "jp-bridge-exit",
+      "offset": 1.1
+    },
+    {
+      "id": "jp-checkpoint-02",
+      "platformId": "jp-main-08",
+      "offset": 1.6
+    }
+  ],
+  "discovery": {
+    "id": "jp-discovery-fuji",
+    "platformId": "jp-main-06",
+    "offset": 4.6,
+    "factId": "mount-fuji"
+  },
+  "finish": {
+    "platformId": "jp-finish",
+    "offset": 8.2
+  },
+  "hazards": [],
+  "enemies": [
+    {
+      "id": "jp-red-wayfinder",
+      "platformId": "jp-enemy-island",
+      "minOffset": 4,
+      "maxOffset": 7.5,
+      "speed": 1.2,
+      "turnPause": 0.24,
+      "height": 1.25
+    }
+  ],
+  "discoveryBlocks": [
+    {
+      "id": "jp-wood-discovery",
+      "x": 23.65,
+      "y": 2,
+      "width": 0.7,
+      "height": 0.8,
+      "factId": "mount-fuji"
+    }
+  ],
+  "mainRoute": [
+    "jp-start",
+    "jp-lower-bridge",
+    "jp-bridge-exit",
+    "jp-enemy-island",
+    "jp-main-05",
+    "jp-main-06",
+    "jp-main-07",
+    "jp-main-08",
+    "jp-main-09",
+    "jp-main-10",
+    "jp-finish"
+  ],
+  "upperRoute": [
+    "jp-start",
+    "jp-upper-01",
+    "jp-upper-02",
+    "jp-star-terrace",
+    "jp-descent",
+    "jp-bridge-exit",
+    "jp-enemy-island"
+  ],
+  "physics": {
+    "gravity": 20,
+    "jumpSpeed": 9,
+    "runSpeed": 6,
+    "acceleration": 25,
+    "airControl": 0.65,
+    "coyoteTime": 0.12,
+    "jumpBuffer": 0.12,
+    "playerRadius": 0.2,
+    "playerHeight": 1.83,
+    "killY": -7,
+    "stepHeight": 0.42
+  },
+  "difficultyTier": 1
+}

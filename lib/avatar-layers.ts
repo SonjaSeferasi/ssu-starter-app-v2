@@ -78,6 +78,8 @@ export type LayerCell = {
   size: number;
   /** Tops only: y of the hem. */
   hem?: number;
+  /** Tops only: see-through neck opening [top y, bottom y, half width]; half width 0 = painted collar. */
+  neck?: [number, number, number];
   /** Heads only, optional: [left x, left y, right x, right y]. Glasses and freckles need it. */
   eyes?: [number, number, number, number] | null;
   /** Measured face width keeps different hair and hijab silhouettes in proportion. */
@@ -103,7 +105,8 @@ export function parseAvatarManifest(value: unknown): AvatarManifest | null {
     && Number.isFinite(v.size) && v.size > 0 && point(v.anchor, 2)
     && (v.hem === undefined || Number.isFinite(v.hem))
     && (v.faceWidth === undefined || Number.isFinite(v.faceWidth) && v.faceWidth > 0)
-    && (v.eyes == null || point(v.eyes, 4));
+    && (v.eyes == null || point(v.eyes, 4))
+    && (v.neck === undefined || point(v.neck, 3));
   for (const group of ['heads', 'tops', 'bottoms'] as const) {
     const items = manifest[group];
     if (!items || typeof items !== 'object' || Array.isArray(items)) return null;
@@ -121,11 +124,16 @@ export function parseAvatarManifest(value: unknown): AvatarManifest | null {
 export const LAYOUT = {
   canvas: { width: 341.333333, height: 512, margin: 10 },
   centerX: 170,
-  top: { collarY: 128, shoulderWidth: 150, torsoHeight: 164 },
-  hair: { neckWidth: 30, neckOverlap: 14 },          // neck base tucks this far into the collar
+  top: { collarY: 128, shoulderWidth: 150 },        // tops keep their painted proportions
+  hair: { neckWidth: 30, neckDepth: 18, edgeCover: 6 },            // neck base sits this far below the collar, behind the top
   hijab: { headWidth: 92, drapeOverlap: 40 },        // drape lies over the top of the shirt
   faceWidth: 52,
-  bottom: { legHeight: 234, hemOverlap: 24 },       // waistband hides under the top's hem
+  headRoom: 130,                                     // space above the collar reserved for the head
+  // Trousers match the body (waist about 70% of the shoulders) and hang from a fixed waist line
+  // with a constant leg length, so changing clothes never moves the waist or feet. The waist sits
+  // high enough that the shortest top still covers the waistband. Widening is capped so fabric
+  // is not visibly stretched.
+  bottom: { waistY: 268, waistWidth: 105, legHeight: 274, maxWiden: 1.25 },
 };
 
 export type PlacedLayer = { href: string; x: number; y: number; width: number; height: number; part: 'bottom' | 'top' | 'head' };
@@ -133,6 +141,12 @@ export type AvatarLayout = {
   layers: PlacedLayer[];
   head: { x: number; y: number; width: number; height: number };
   eyes: [number, number, number, number] | null;
+  /**
+   * Hair heads: the neck is drawn behind the top so it shows through the collar opening,
+   * then the head is drawn again in front, clipped above frontY (the collar line).
+   * Hijab heads skip this and lie fully in front, so neckBehind is null.
+   */
+  neckBehind: { frontY: number; opening: { x: number; y: number; width: number; height: number; color: string } | null } | null;
 };
 
 const indexOf = (options: readonly { id: string }[], id: string) => Math.max(0, options.findIndex(option => option.id === id));
@@ -149,30 +163,49 @@ export function layoutAvatar(manifest: AvatarManifest, look: LayeredLook): Avata
     href: cell.file, part, width: cell.width * sx, height: cell.height * sy,
     x: anchorX - cell.anchor[0] * sx, y: anchorY - cell.anchor[1] * sy,
   });
-  // The generated sheets have different crop dimensions. Match anatomical
-  // landmarks rather than stretching long trousers to a fixed waistband width.
-  // Outfit changes keep the collar, waistband and feet in the same places.
-  const topScaleX = LAYOUT.top.shoulderWidth / top.size;
-  const topScaleY = LAYOUT.top.torsoHeight / ((top.hem ?? top.height) - top.anchor[1]);
-  const topLayer = place(top, topScaleX, topScaleY, centerX, LAYOUT.top.collarY, 'top');
-  const hemY = LAYOUT.top.collarY + LAYOUT.top.torsoHeight;
-  const bottomScale = LAYOUT.bottom.legHeight / (bottom.height - bottom.anchor[1]);
-  const bottomLayer = place(bottom, bottomScale, bottomScale, centerX, hemY - LAYOUT.bottom.hemOverlap, 'bottom');
+  // Tops keep their painted proportions; the collar anchor is the fixed point.
+  const topScale = LAYOUT.top.shoulderWidth / top.size;
+  const topLayer = place(top, topScale, topScale, centerX, LAYOUT.top.collarY, 'top');
+  const bottomScaleY = LAYOUT.bottom.legHeight / (bottom.height - bottom.anchor[1]);
+  const bottomScaleX = Math.min(LAYOUT.bottom.waistWidth / bottom.size, bottomScaleY * LAYOUT.bottom.maxWiden);
+  const bottomLayer = place(bottom, bottomScaleX, bottomScaleY, centerX, LAYOUT.bottom.waistY, 'bottom');
   const hijab = headKind(look.headStyle) === 'hijab';
   const headScale = head.faceWidth ? LAYOUT.faceWidth / head.faceWidth : hijab ? LAYOUT.hijab.headWidth / head.size : LAYOUT.hair.neckWidth / head.size;
-  const headLayer = place(head, headScale, headScale, centerX, LAYOUT.top.collarY + (hijab && !head.faceWidth ? LAYOUT.hijab.drapeOverlap : LAYOUT.hair.neckOverlap), 'head');
-  // Fit the whole figure inside the canvas without distorting it.
+  const headY = LAYOUT.top.collarY + (hijab ? (head.faceWidth ? LAYOUT.hair.neckDepth : LAYOUT.hijab.drapeOverlap) : LAYOUT.hair.neckDepth);
+  const headLayer = place(head, headScale, headScale, centerX, headY, 'head');
+  // Where the neck meets the top, in unfitted canvas units.
+  const neck = top.neck;
+  const toTopY = (y: number) => topLayer.y + y * topScale;
+  const opening = neck && neck[2] > 0 ? {
+    x: topLayer.x + top.anchor[0] * topScale - neck[2] * topScale, y: toTopY(neck[0]),
+    width: neck[2] * 2 * topScale, height: (neck[1] - neck[0]) * topScale, color: shade(top.color || '#333333', 0.45),
+  } : null;
+  // A few pixels into the opening so the opening's soft painted edge never draws a line across the neck.
+  const frontY = neck ? toTopY(neck[2] > 0 ? Math.min(neck[0] + LAYOUT.hair.edgeCover, neck[1]) : neck[1]) : LAYOUT.top.collarY;
+  // Fit the whole figure inside the canvas without distorting it. Every avatar gets the same
+  // head room, so all bodies are the same size; only an unusually tall hairstyle shrinks the
+  // figure. Clothing never affects the fit, so changing clothes never moves the head.
   const layers = [bottomLayer, topLayer, headLayer];
-  const minY = Math.min(...layers.map(layer => layer.y)), maxY = Math.max(...layers.map(layer => layer.y + layer.height));
+  const minY = Math.min(headLayer.y, LAYOUT.top.collarY - LAYOUT.headRoom), maxY = LAYOUT.bottom.waistY + LAYOUT.bottom.legHeight;
   const { height, margin } = LAYOUT.canvas;
   const fit = Math.min(1, (height - margin * 2) / (maxY - minY));
-  const fitted = layers.map(layer => ({ ...layer,
-    x: centerX + (layer.x - centerX) * fit, y: margin + (layer.y - minY) * fit, width: layer.width * fit, height: layer.height * fit }));
+  const fx = (x: number) => centerX + (x - centerX) * fit, fy = (y: number) => margin + (y - minY) * fit;
+  const fitted = layers.map(layer => ({ ...layer, x: fx(layer.x), y: fy(layer.y), width: layer.width * fit, height: layer.height * fit }));
   const placedHead = fitted[2];
   const eyes = head.eyes ? [0, 1, 2, 3].map(index => index % 2 === 0
     ? placedHead.x + head.eyes![index] * headScale * fit
     : placedHead.y + head.eyes![index] * headScale * fit) as [number, number, number, number] : null;
-  return { layers: fitted, head: { x: placedHead.x, y: placedHead.y, width: placedHead.width, height: placedHead.height }, eyes };
+  const neckBehind = hijab ? null : {
+    frontY: fy(frontY),
+    opening: opening && { x: fx(opening.x), y: fy(opening.y), width: opening.width * fit, height: opening.height * fit, color: opening.color },
+  };
+  return { layers: fitted, head: { x: placedHead.x, y: placedHead.y, width: placedHead.width, height: placedHead.height }, eyes, neckBehind };
+}
+
+/** Darker version of a colour, used for the inside of a collar opening. */
+function shade(hex: string, amount: number) {
+  const channels = [1, 3, 5].map(start => Math.round(parseInt(hex.slice(start, start + 2), 16) * (1 - amount)));
+  return '#' + channels.map(value => value.toString(16).padStart(2, '0')).join('');
 }
 
 /** The first look that has art for every piece, used as the starting avatar. */

@@ -1,0 +1,645 @@
+{
+ "id": "au-level-01",
+ "countryId": "AU",
+ "legacyCode": "AUS",
+ "title": "Great Barrier Reef: Tropical Coast Adventure",
+ "environmentId": "australia-reef-coast",
+ "difficulty": "easy-medium",
+ "environment": {
+  "biome": "tropical-coast-and-reef",
+  "locationReference": "Great Barrier Reef, Queensland — reef islands and shallow lagoons",
+  "terrainMaterial": "coastal-limestone-and-white-sand",
+  "vegetationPack": "coconut-palms-and-island-shrubs",
+  "architecturePack": "timber-boardwalks-and-piers",
+  "landmarkAssets": [
+   "coral-reef-formations",
+   "sand-cays",
+   "shallow-turquoise-lagoon",
+   "reef-fish",
+   "sea-turtles",
+   "manta-rays"
+  ],
+  "lightingPreset": "bright-tropical-sun",
+  "skyPreset": "clear-tropical",
+  "weatherPreset": "gentle-sea-breeze"
+ },
+ "sections": [
+  {
+   "id": "A",
+   "label": "Island rock and pier",
+   "x": 0
+  },
+  {
+   "id": "B",
+   "label": "Sandy steps",
+   "x": 16.5
+  },
+  {
+   "id": "C",
+   "label": "Boardwalk over the lagoon",
+   "x": 31.5
+  },
+  {
+   "id": "D",
+   "label": "Rising coastal rocks",
+   "x": 33
+  },
+  {
+   "id": "E",
+   "label": "Reef lookout star",
+   "x": 53
+  },
+  {
+   "id": "F",
+   "label": "Floating raft on the waves",
+   "x": 65.5
+  },
+  {
+   "id": "G",
+   "label": "Driftwood patrol and checkpoint",
+   "x": 90.5
+  },
+  {
+   "id": "H",
+   "label": "Reef observation island",
+   "x": 110.5
+  }
+ ],
+ "camera": {
+  "height": 4.4,
+  "look": 1.35,
+  "follow": 0.42,
+  "maxRise": 1.8
+ },
+ "spawn": {
+  "platformId": "au-start",
+  "offset": 3
+ },
+ "platforms": [
+  {
+   "id": "au-start",
+   "x": 0,
+   "y": 0,
+   "width": 15,
+   "depth": 3.4,
+   "thickness": 5,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "au-b1",
+   "x": 17,
+   "y": 0.5,
+   "width": 5,
+   "depth": 3.4,
+   "thickness": 3,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "au-b2",
+   "x": 24.4,
+   "y": 0,
+   "width": 5.2,
+   "depth": 3.4,
+   "thickness": 3.5,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "au-boardwalk-a",
+   "x": 31.6,
+   "y": -2,
+   "width": 10,
+   "depth": 3.4,
+   "thickness": 0.4,
+   "type": "bridge",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "boardwalk"
+  },
+  {
+   "id": "au-float-rock",
+   "x": 43.6,
+   "y": -1.4,
+   "width": 3.6,
+   "depth": 3.4,
+   "thickness": 2,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "au-boardwalk-b",
+   "x": 49.2,
+   "y": -2,
+   "width": 7,
+   "depth": 3.4,
+   "thickness": 0.4,
+   "type": "bridge",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "boardwalk"
+  },
+  {
+   "id": "au-c-exit",
+   "x": 58.2,
+   "y": -0.8,
+   "width": 5.5,
+   "depth": 3.4,
+   "thickness": 3.5,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "au-up-1",
+   "x": 32,
+   "y": 1.2,
+   "width": 3.2,
+   "depth": 3.4,
+   "thickness": 1,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper"
+  },
+  {
+   "id": "au-up-2",
+   "x": 37.6,
+   "y": 2.2,
+   "width": 3,
+   "depth": 3.4,
+   "thickness": 1.2,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper"
+  },
+  {
+   "id": "au-up-raft",
+   "x": 43,
+   "y": 3.1,
+   "width": 3,
+   "depth": 3.4,
+   "thickness": 0.5,
+   "type": "moving",
+   "motion": "vertical",
+   "amplitude": 0.6,
+   "phase": 0,
+   "period": 5.5,
+   "route": "upper",
+   "style": "raft",
+   "pause": 0.6
+  },
+  {
+   "id": "au-up-3",
+   "x": 48.4,
+   "y": 3.8,
+   "width": 2.8,
+   "depth": 3.4,
+   "thickness": 1,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper"
+  },
+  {
+   "id": "au-lookout",
+   "x": 53.2,
+   "y": 4.4,
+   "width": 4.4,
+   "depth": 3.4,
+   "thickness": 1.6,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper"
+  },
+  {
+   "id": "au-e1",
+   "x": 65.8,
+   "y": -0.2,
+   "width": 6.5,
+   "depth": 3.4,
+   "thickness": 4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "au-raft",
+   "x": 75.2,
+   "y": -1,
+   "width": 4,
+   "depth": 3.4,
+   "thickness": 0.5,
+   "type": "moving",
+   "motion": "horizontal",
+   "amplitude": 1.4,
+   "phase": 0,
+   "period": 7,
+   "route": "main",
+   "style": "raft",
+   "pause": 0.8,
+   "bob": 0.25
+  },
+  {
+   "id": "au-f2",
+   "x": 82.8,
+   "y": -0.2,
+   "width": 6,
+   "depth": 3.4,
+   "thickness": 4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "au-g-island",
+   "x": 91.2,
+   "y": 0.3,
+   "width": 10,
+   "depth": 3.4,
+   "thickness": 4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "au-g-safe",
+   "x": 103.6,
+   "y": 0.8,
+   "width": 5,
+   "depth": 3.4,
+   "thickness": 3,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "au-h-step",
+   "x": 110.8,
+   "y": 1.6,
+   "width": 2.8,
+   "depth": 3.4,
+   "thickness": 1.4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "au-finish",
+   "x": 116,
+   "y": 1,
+   "width": 14,
+   "depth": 3.4,
+   "thickness": 5,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  }
+ ],
+ "coins": [
+  {
+   "id": "au-coin-01",
+   "platformId": "au-start",
+   "offset": 5.5,
+   "height": 1.1
+  },
+  {
+   "id": "au-coin-02",
+   "platformId": "au-start",
+   "offset": 8,
+   "height": 1.1
+  },
+  {
+   "id": "au-coin-03",
+   "platformId": "au-start",
+   "offset": 10.5,
+   "height": 1.1
+  },
+  {
+   "id": "au-coin-04",
+   "platformId": "au-start",
+   "offset": 16,
+   "height": 1.9
+  },
+  {
+   "id": "au-coin-05",
+   "platformId": "au-b1",
+   "offset": 2.5,
+   "height": 1.1
+  },
+  {
+   "id": "au-coin-06",
+   "platformId": "au-b2",
+   "offset": 1.6,
+   "height": 1.1
+  },
+  {
+   "id": "au-coin-07",
+   "platformId": "au-b2",
+   "offset": 3.8,
+   "height": 1.1
+  },
+  {
+   "id": "au-coin-08",
+   "platformId": "au-boardwalk-a",
+   "offset": 1.5,
+   "height": 1
+  },
+  {
+   "id": "au-coin-09",
+   "platformId": "au-boardwalk-a",
+   "offset": 3.5,
+   "height": 1
+  },
+  {
+   "id": "au-coin-10",
+   "platformId": "au-boardwalk-a",
+   "offset": 5.5,
+   "height": 1
+  },
+  {
+   "id": "au-coin-11",
+   "platformId": "au-boardwalk-a",
+   "offset": 7.5,
+   "height": 1
+  },
+  {
+   "id": "au-coin-12",
+   "platformId": "au-boardwalk-a",
+   "offset": 11,
+   "height": 1.6
+  },
+  {
+   "id": "au-coin-13",
+   "platformId": "au-float-rock",
+   "offset": 1.8,
+   "height": 1.1
+  },
+  {
+   "id": "au-coin-14",
+   "platformId": "au-boardwalk-b",
+   "offset": 1.5,
+   "height": 1
+  },
+  {
+   "id": "au-coin-15",
+   "platformId": "au-boardwalk-b",
+   "offset": 3.5,
+   "height": 1
+  },
+  {
+   "id": "au-coin-16",
+   "platformId": "au-boardwalk-b",
+   "offset": 5.5,
+   "height": 1
+  },
+  {
+   "id": "au-coin-17",
+   "platformId": "au-c-exit",
+   "offset": 3,
+   "height": 1.1
+  },
+  {
+   "id": "au-coin-18",
+   "platformId": "au-up-1",
+   "offset": 1.6,
+   "height": 1.2
+  },
+  {
+   "id": "au-coin-19",
+   "platformId": "au-up-2",
+   "offset": 1.5,
+   "height": 1.2
+  },
+  {
+   "id": "au-coin-20",
+   "platformId": "au-up-2",
+   "offset": 4.3,
+   "height": 2
+  },
+  {
+   "id": "au-coin-21",
+   "platformId": "au-up-3",
+   "offset": 1.4,
+   "height": 1.2
+  },
+  {
+   "id": "au-coin-22",
+   "platformId": "au-e1",
+   "offset": 4.5,
+   "height": 1.1
+  },
+  {
+   "id": "au-coin-23",
+   "platformId": "au-raft",
+   "offset": 2,
+   "height": 1.1
+  },
+  {
+   "id": "au-coin-24",
+   "platformId": "au-f2",
+   "offset": 1.5,
+   "height": 1.1
+  },
+  {
+   "id": "au-coin-25",
+   "platformId": "au-f2",
+   "offset": 4.5,
+   "height": 1.1
+  },
+  {
+   "id": "au-coin-26",
+   "platformId": "au-g-island",
+   "offset": 1.2,
+   "height": 1.1
+  },
+  {
+   "id": "au-coin-27",
+   "platformId": "au-g-island",
+   "offset": 8.8,
+   "height": 1.1
+  },
+  {
+   "id": "au-coin-28",
+   "platformId": "au-g-safe",
+   "offset": 2.5,
+   "height": 1.1
+  },
+  {
+   "id": "au-coin-29",
+   "platformId": "au-finish",
+   "offset": 3,
+   "height": 1.1
+  },
+  {
+   "id": "au-coin-30",
+   "platformId": "au-finish",
+   "offset": 6,
+   "height": 1.1
+  }
+ ],
+ "stars": [
+  {
+   "id": "au-star-01",
+   "platformId": "au-lookout",
+   "offset": 2.2,
+   "height": 1.15
+  },
+  {
+   "id": "au-star-02",
+   "platformId": "au-f2",
+   "offset": 3,
+   "height": 2.2
+  },
+  {
+   "id": "au-star-03",
+   "platformId": "au-h-step",
+   "offset": 1.4,
+   "height": 2.3
+  }
+ ],
+ "checkpoints": [
+  {
+   "id": "au-checkpoint-01",
+   "platformId": "au-e1",
+   "offset": 1
+  },
+  {
+   "id": "au-checkpoint-02",
+   "platformId": "au-g-safe",
+   "offset": 1
+  }
+ ],
+ "discovery": {
+  "id": "au-discovery",
+  "platformId": "au-e1",
+  "offset": 2.6,
+  "factId": "au-discovery"
+ },
+ "finish": {
+  "platformId": "au-finish",
+  "offset": 11
+ },
+ "hazards": [],
+ "enemies": [
+  {
+   "id": "au-driftwood-shell",
+   "platformId": "au-g-island",
+   "minOffset": 3.5,
+   "maxOffset": 7.5,
+   "speed": 0.85,
+   "turnPause": 0.4
+  }
+ ],
+ "discoveryBlocks": [
+  {
+   "id": "au-discovery-block",
+   "x": 36.4,
+   "y": 0.48,
+   "width": 0.75,
+   "height": 0.8,
+   "factId": "au-discovery"
+  }
+ ],
+ "mainRoute": [
+  "au-start",
+  "au-b1",
+  "au-b2",
+  "au-boardwalk-a",
+  "au-float-rock",
+  "au-boardwalk-b",
+  "au-c-exit",
+  "au-e1",
+  "au-raft",
+  "au-f2",
+  "au-g-island",
+  "au-g-safe",
+  "au-h-step",
+  "au-finish"
+ ],
+ "upperRoute": [
+  "au-start",
+  "au-b1",
+  "au-b2",
+  "au-up-1",
+  "au-up-2",
+  "au-up-raft",
+  "au-up-3",
+  "au-lookout",
+  "au-c-exit",
+  "au-e1",
+  "au-raft",
+  "au-f2",
+  "au-g-island",
+  "au-g-safe",
+  "au-h-step",
+  "au-finish"
+ ],
+ "physics": {
+  "gravity": 20,
+  "jumpSpeed": 9,
+  "runSpeed": 6,
+  "acceleration": 25,
+  "airControl": 0.65,
+  "coyoteTime": 0.12,
+  "jumpBuffer": 0.12,
+  "playerRadius": 0.2,
+  "playerHeight": 1.83,
+  "killY": -7,
+  "iceGrip": 0.3
+ }
+}

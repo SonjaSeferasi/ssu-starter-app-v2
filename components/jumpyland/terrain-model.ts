@@ -31,10 +31,11 @@ export function cliffGeometry(p:Platform,bottom:number,seed=1,moss?:[number,numb
   const grounded=bottom>=1599,low=-bottom/100;
   for(let row=0;row<=rings;row++)for(let k=0;k<=rim.length;k++){
     const index=rim[k%rim.length],x=top[index*3],y=top[index*3+1],z=top[index*3+2],t=row/rings;
-    const strata=Math.sin(t*23+seed*.7+x*.4)*.035+Math.sin(t*63+seed+x*2)*.026;
+    const strata=Math.sin(t*23+seed*.7+x*.4)*.055+Math.sin(t*63+seed+x*2)*.036;
     const scale=row===0?1:grounded?1+t*.09+strata:(1-Math.pow(t,1.8)*.86)*(1+strata);
-    const fracture=(Math.sin(x*3.15+seed+Math.floor(row/5)*.55)*.21+Math.sin(x*8.7+row*.7)*.065)*Math.sin(t*Math.PI);
-    side.push(w/2+(x-w/2)*scale+fracture,y+(low-y)*t,z*scale+(Math.sin(x*3.7+row*.34+seed)*.15+Math.sin(x*8.1+seed)*.065)*Math.sin(t*Math.PI));
+    const fracture=(Math.sin(x*3.15+seed+Math.floor(row/5)*.55)*.32+Math.sin(x*8.7+row*.7)*.09)*Math.sin(t*Math.PI);
+    const ledge=(Math.sin(t*31+Math.sin(x*2+seed)*.6)*.12+Math.sin(x*4.7+Math.floor(row/3)*1.4+seed)*.18)*Math.sin(t*Math.PI);
+    side.push(w/2+(x-w/2)*scale+fracture,y+(low-y)*t,z*scale+(Math.sin(x*3.7+row*.34+seed)*.22+Math.sin(x*8.1+seed)*.085+ledge)*Math.sin(t*Math.PI));
     su.push(k/rim.length*(w+depth)/1.7+seed*.13,(y+(low-y)*t)/1.7+seed*.17);
     const light=.82+(1-t)*.16+Math.sin(k*.8+row*2.1+seed)*.025,green=moss&&t<.09?(1-t/.09)*(.6+.4*Math.sin(k*1.7+seed)**2):0;
     sc.push(light*(1+(moss?moss[0]-1:0)*green),light*.99*(1+(moss?moss[1]-1:0)*green),light*.97*(1+(moss?moss[2]-1:0)*green));
@@ -120,7 +121,7 @@ export function meadowFringe(p:Platform,seed:number,world:number,detail:FringeDe
     root.add(ferns);
   }
   // Flowers grow behind the route and along the front lip, never in the walking line.
-  const flowers:Flower[]=[],density=world===1?15:world===2?6:3;
+    const flowers:Flower[]=[],density=world===1?22:world===2?8:5;
   for(let i=0;i<Math.floor(w*density*scale);i++){
     const x=.12+r()*(w-.24),front=r()<.35,z=front?depth*(.2+r()*.24):-depth*(.14+r()*.32),y=-landingHeight(p,p.x+x*100)/100;
     flowers.push({x,y,z,color:style.flowers[Math.floor(r()*style.flowers.length)],size:(front?.65:.8)+r()*.5,stem:front?.04+r()*.07:.08+r()*.16,yaw:(r()-.5)*.9});

@@ -1,0 +1,4033 @@
+{
+  "reviewed": "2026-10-27",
+  "source": "UNESCO World Heritage Centre via UNESCO Datahub; country facts from Mohammed Le Doze and contributors; government, tourism, protected-area, monument-operator and scientific sources linked per record.",
+  "license": "UNESCO-derived facts CC BY-SA 4.0; country reference facts ODbL 1.0. Original trait labels and rendering classifications indicate changes.",
+  "representation": "Every country has a source-linked named natural or cultural place. These places are represented by stylized scene archetypes, not scans or measured reconstructions. Palettes are art direction, not verified historical paint colours. No invented monument identity or national stereotype is substituted for a source-linked place.",
+  "profiles": [
+    {
+      "code": "AFG",
+      "levelTitle": "Minaret and Archaeological Remains of Jam Route",
+      "landmarkName": "Minaret and Archaeological Remains of Jam",
+      "landmarkKind": "tower",
+      "palette": {
+        "stone": "#b77351",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Brickwork",
+        "Minaret",
+        "Mountain setting"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/211/",
+      "representation": "stylized",
+      "mediaSearch": "Minaret and Archaeological Remains of Jam Afghanistan"
+    },
+    {
+      "code": "ALB",
+      "levelTitle": "Butrint Route",
+      "landmarkName": "Butrint",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Byzantine architecture",
+        "Wetlands",
+        "Archaeological remains"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/570/",
+      "representation": "stylized",
+      "mediaSearch": "Butrint Albania"
+    },
+    {
+      "code": "DZA",
+      "levelTitle": "Al Qal'a of Beni Hammad Route",
+      "landmarkName": "Al Qal'a of Beni Hammad",
+      "landmarkKind": "castle",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Mosque architecture",
+        "Fortified structures",
+        "Mountain setting"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/102/",
+      "representation": "stylized",
+      "mediaSearch": "Al Qal'a of Beni Hammad Algeria"
+    },
+    {
+      "code": "AND",
+      "levelTitle": "Madriu-Perafita-Claror Valley Route",
+      "landmarkName": "Madriu-Perafita-Claror Valley",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Terraced landscape",
+        "Glacial landscape",
+        "Cliff setting"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/1160/",
+      "representation": "stylized",
+      "mediaSearch": "Madriu-Perafita-Claror Valley Andorra"
+    },
+    {
+      "code": "AGO",
+      "levelTitle": "Mbanza Kongo, Vestiges of the Capital of the former Kingd… Route",
+      "landmarkName": "Mbanza Kongo, Vestiges of the Capital of the former Kingdom of Kongo",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Stone buildings"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/1511/",
+      "representation": "stylized",
+      "mediaSearch": "Mbanza Kongo, Vestiges of the Capital of the former Kingdom of Kongo Angola"
+    },
+    {
+      "code": "ATG",
+      "levelTitle": "Antigua Naval Dockyard and Related Archaeological Sites Route",
+      "landmarkName": "Antigua Naval Dockyard and Related Archaeological Sites",
+      "landmarkKind": "harbour",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Defensive walls",
+        "Island setting",
+        "Archaeological remains"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/1499/",
+      "representation": "stylized",
+      "mediaSearch": "Antigua Naval Dockyard and Related Archaeological Sites Antigua and Barbuda"
+    },
+    {
+      "code": "ARG",
+      "levelTitle": "Los Glaciares National Park Route",
+      "landmarkName": "Los Glaciares National Park",
+      "landmarkKind": "glacier",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Glacial landscape",
+        "Mountain setting",
+        "Lake setting"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/145/",
+      "representation": "stylized",
+      "mediaSearch": "Los Glaciares National Park Argentina"
+    },
+    {
+      "code": "ARM",
+      "levelTitle": "Monasteries of Haghpat and Sanahin Route",
+      "landmarkName": "Monasteries of Haghpat and Sanahin",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Byzantine architecture",
+        "Monastic buildings"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/777/",
+      "representation": "stylized",
+      "mediaSearch": "Monasteries of Haghpat and Sanahin Armenia"
+    },
+    {
+      "code": "AUS",
+      "levelTitle": "Great Barrier Reef: Tropical Coast Adventure",
+      "landmarkName": "Great Barrier Reef",
+      "landmarkKind": "island",
+      "palette": {
+        "stone": "#d8c9a3",
+        "roof": "#8f6a48",
+        "accent": "#2fc2c9",
+        "foliage": "#3f9a48"
+      },
+      "features": [
+        "Coral reef ecosystem",
+        "Tropical islands",
+        "Shallow turquoise water"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/154/",
+      "representation": "stylized",
+      "mediaSearch": "Great Barrier Reef Australia"
+    },
+    {
+      "code": "AUT",
+      "levelTitle": "Historic Centre of the City of Salzburg Route",
+      "landmarkName": "Historic Centre of the City of Salzburg",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Gothic architecture",
+        "Baroque architecture",
+        "Historic urban fabric"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/784/",
+      "representation": "stylized",
+      "mediaSearch": "Historic Centre of the City of Salzburg Austria"
+    },
+    {
+      "code": "AZE",
+      "levelTitle": "Walled City of Baku with the Shirvanshah's Palace and Mai… Route",
+      "landmarkName": "Walled City of Baku with the Shirvanshah's Palace and Maiden Tower",
+      "landmarkKind": "palace",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Palatial buildings",
+        "Towers",
+        "Defensive walls"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/958/",
+      "representation": "stylized",
+      "mediaSearch": "Walled City of Baku with the Shirvanshah's Palace and Maiden Tower Azerbaijan"
+    },
+    {
+      "code": "BHS",
+      "levelTitle": "Queen's Staircase Route",
+      "landmarkName": "Queen's Staircase",
+      "landmarkKind": "civic",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Carved limestone stair corridor",
+        "High stone walls",
+        "Tropical plants"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://www.bahamas.com/natural-wonders/queens-staircase",
+      "representation": "stylized",
+      "mediaSearch": "Queen's Staircase Bahamas"
+    },
+    {
+      "code": "BHR",
+      "levelTitle": "Qal’at al-Bahrain – Ancient Harbour and Capital of Dilmun Route",
+      "landmarkName": "Qal’at al-Bahrain – Ancient Harbour and Capital of Dilmun",
+      "landmarkKind": "castle",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Harbour setting",
+        "Archaeological remains"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/1192/",
+      "representation": "stylized",
+      "mediaSearch": "Qal’at al-Bahrain – Ancient Harbour and Capital of Dilmun Bahrain"
+    },
+    {
+      "code": "BGD",
+      "levelTitle": "Historic Mosque City of Bagerhat Route",
+      "landmarkName": "Historic Mosque City of Bagerhat",
+      "landmarkKind": "mosque",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Mosque architecture",
+        "River setting",
+        "Historic urban fabric"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://whc.unesco.org/en/list/321/",
+      "representation": "stylized",
+      "mediaSearch": "Historic Mosque City of Bagerhat Bangladesh"
+    },
+    {
+      "code": "BRB",
+      "levelTitle": "Historic Bridgetown and its Garrison Route",
+      "landmarkName": "Historic Bridgetown and its Garrison",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Bridge crossing",
+        "Historic urban fabric"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/1376/",
+      "representation": "stylized",
+      "mediaSearch": "Historic Bridgetown and its Garrison Barbados"
+    },
+    {
+      "code": "BLR",
+      "levelTitle": "Mir Castle Complex Route",
+      "landmarkName": "Mir Castle Complex",
+      "landmarkKind": "castle",
+      "palette": {
+        "stone": "#b9b1a2",
+        "roof": "#a76b4c",
+        "accent": "#d7b16a",
+        "foliage": "#3d784e"
+      },
+      "features": [
+        "Gothic architecture",
+        "Baroque architecture",
+        "Castle structures"
+      ],
+      "biome": "forest",
+      "sourceUrl": "https://whc.unesco.org/en/list/625/",
+      "representation": "stylized",
+      "mediaSearch": "Mir Castle Complex Belarus"
+    },
+    {
+      "code": "BEL",
+      "levelTitle": "Flemish Béguinages Route",
+      "landmarkName": "Flemish Béguinages",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Church buildings"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://whc.unesco.org/en/list/855/",
+      "representation": "stylized",
+      "mediaSearch": "Flemish Béguinages Belgium"
+    },
+    {
+      "code": "BLZ",
+      "levelTitle": "Belize Barrier Reef Reserve System Route",
+      "landmarkName": "Belize Barrier Reef Reserve System",
+      "landmarkKind": "island",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Reef environment",
+        "Coastal setting",
+        "Island setting"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/764/",
+      "representation": "stylized",
+      "mediaSearch": "Belize Barrier Reef Reserve System Belize"
+    },
+    {
+      "code": "BEN",
+      "levelTitle": "Royal Palaces of Abomey Route",
+      "landmarkName": "Royal Palaces of Abomey",
+      "landmarkKind": "palace",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Palatial buildings"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/323/",
+      "representation": "stylized",
+      "mediaSearch": "Royal Palaces of Abomey Benin"
+    },
+    {
+      "code": "BTN",
+      "levelTitle": "Paro Taktsang Route",
+      "landmarkName": "Paro Taktsang",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Cliffside monastery",
+        "Paro valley setting",
+        "Mountain landscape"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://dcdd.moha.gov.bt/collection/paro-taktshang/",
+      "representation": "stylized",
+      "mediaSearch": "Paro Taktsang Bhutan"
+    },
+    {
+      "code": "BOL",
+      "levelTitle": "City of Potosí Route",
+      "landmarkName": "City of Potosí",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Church buildings",
+        "Lake setting"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/420/",
+      "representation": "stylized",
+      "mediaSearch": "City of Potosí Bolivia"
+    },
+    {
+      "code": "BIH",
+      "levelTitle": "Old Bridge Area of the Old City of Mostar Route",
+      "landmarkName": "Old Bridge Area of the Old City of Mostar",
+      "landmarkKind": "bridge",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Bridge crossing",
+        "Valley setting",
+        "River setting"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/946/",
+      "representation": "stylized",
+      "mediaSearch": "Old Bridge Area of the Old City of Mostar Bosnia and Herzegovina"
+    },
+    {
+      "code": "BWA",
+      "levelTitle": "Tsodilo Route",
+      "landmarkName": "Tsodilo",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Rock art",
+        "Desert setting",
+        "Archaeological remains"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/1021/",
+      "representation": "stylized",
+      "mediaSearch": "Tsodilo Botswana"
+    },
+    {
+      "code": "BRA",
+      "levelTitle": "Amazon Rainforest Expedition",
+      "landmarkName": "Central Amazon Conservation Complex",
+      "landmarkKind": "rainforest",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Tropical forest",
+        "Seasonally flooded forest",
+        "Lakes and river channels"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/998/",
+      "representation": "stylized",
+      "mediaSearch": "Central Amazon Conservation Complex Brazil"
+    },
+    {
+      "code": "BRN",
+      "levelTitle": "Omar Ali Saifuddien Mosque Route",
+      "landmarkName": "Omar Ali Saifuddien Mosque",
+      "landmarkKind": "mosque",
+      "palette": {
+        "stone": "#eee9dd",
+        "roof": "#d7b04d",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Golden dome",
+        "Marble columns",
+        "Lagoon and ceremonial barge"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://www.bruneitourism.com/places/omar-ali-saifuddien-mosque/",
+      "representation": "stylized",
+      "mediaSearch": "Omar Ali Saifuddien Mosque Brunei",
+      "shapeHints": {
+        "roof": "dome"
+      }
+    },
+    {
+      "code": "BGR",
+      "levelTitle": "Boyana Church Route",
+      "landmarkName": "Boyana Church",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Church buildings"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://whc.unesco.org/en/list/42/",
+      "representation": "stylized",
+      "mediaSearch": "Boyana Church Bulgaria"
+    },
+    {
+      "code": "BFA",
+      "levelTitle": "Ruins of Loropéni Route",
+      "landmarkName": "Ruins of Loropéni",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Stone walls",
+        "Fortified enclosures",
+        "Archaeological settlement"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/1225/",
+      "representation": "stylized",
+      "mediaSearch": "Ruins of Loropéni Burkina Faso"
+    },
+    {
+      "code": "BDI",
+      "levelTitle": "Gishora Royal Residence Route",
+      "landmarkName": "Gishora Royal Residence",
+      "landmarkKind": "palace",
+      "palette": {
+        "stone": "#aa895d",
+        "roof": "#a98949",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Circular thatched royal houses",
+        "Papyrus and reed construction",
+        "Hilltop courtyards"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/tentativelists/6927/",
+      "representation": "stylized",
+      "mediaSearch": "Gishora Royal Residence Burundi",
+      "shapeHints": {
+        "roof": "dome"
+      }
+    },
+    {
+      "code": "CPV",
+      "levelTitle": "Cidade Velha, Historic Centre of Ribeira Grande Route",
+      "landmarkName": "Cidade Velha, Historic Centre of Ribeira Grande",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Church buildings",
+        "Fortified structures",
+        "Island setting"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/1310/",
+      "representation": "stylized",
+      "mediaSearch": "Cidade Velha, Historic Centre of Ribeira Grande Cabo Verde"
+    },
+    {
+      "code": "KHM",
+      "levelTitle": "Angkor Route",
+      "landmarkName": "Angkor",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Khmer temple complex",
+        "Sculptural decoration",
+        "Forested setting"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/668/",
+      "representation": "stylized",
+      "mediaSearch": "Angkor Cambodia"
+    },
+    {
+      "code": "CMR",
+      "levelTitle": "Dja Faunal Reserve Route",
+      "landmarkName": "Dja Faunal Reserve",
+      "landmarkKind": "rainforest",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Tropical forest",
+        "River setting",
+        "Forested landscape"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/407/",
+      "representation": "stylized",
+      "mediaSearch": "Dja Faunal Reserve Cameroon"
+    },
+    {
+      "code": "CAN",
+      "levelTitle": "Rocky Mountains: Alpine Adventure",
+      "landmarkName": "Canadian Rocky Mountain Parks",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#7d929e",
+        "roof": "#f0f6f8",
+        "accent": "#3fa0b7",
+        "foliage": "#39765f"
+      },
+      "features": [
+        "Rugged mountain peaks",
+        "Glaciers and turquoise lakes",
+        "Conifer forest"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/304/",
+      "representation": "stylized",
+      "mediaSearch": "Canadian Rocky Mountain Parks Canada"
+    },
+    {
+      "code": "CAF",
+      "levelTitle": "Manovo-Gounda St Floris National Park Route",
+      "landmarkName": "Manovo-Gounda St Floris National Park",
+      "landmarkKind": "savanna",
+      "palette": {
+        "stone": "#c6ac8d",
+        "roof": "#9b6342",
+        "accent": "#deba5f",
+        "foliage": "#94a653"
+      },
+      "features": [
+        "Savanna landscape"
+      ],
+      "biome": "grassland",
+      "sourceUrl": "https://whc.unesco.org/en/list/475/",
+      "representation": "stylized",
+      "mediaSearch": "Manovo-Gounda St Floris National Park Central African Republic"
+    },
+    {
+      "code": "TCD",
+      "levelTitle": "Lakes of Ounianga Route",
+      "landmarkName": "Lakes of Ounianga",
+      "landmarkKind": "wetland",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Desert setting",
+        "Dunes",
+        "Lake setting"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/1400/",
+      "representation": "stylized",
+      "mediaSearch": "Lakes of Ounianga Chad"
+    },
+    {
+      "code": "CHL",
+      "levelTitle": "Rapa Nui National Park Route",
+      "landmarkName": "Rapa Nui National Park",
+      "landmarkKind": "island",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Island setting"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/715/",
+      "representation": "stylized",
+      "mediaSearch": "Rapa Nui National Park Chile"
+    },
+    {
+      "code": "CHN",
+      "levelTitle": "Imperial Palaces of the Ming and Qing Dynasties in Beijin… Route",
+      "landmarkName": "Imperial Palaces of the Ming and Qing Dynasties in Beijing and Shenyang",
+      "landmarkKind": "palace",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Palatial buildings",
+        "Gardens"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://whc.unesco.org/en/list/439/",
+      "representation": "stylized",
+      "mediaSearch": "Imperial Palaces of the Ming and Qing Dynasties in Beijing and Shenyang China"
+    },
+    {
+      "code": "COL",
+      "levelTitle": "Port, Fortresses and Group of Monuments, Cartagena Route",
+      "landmarkName": "Port, Fortresses and Group of Monuments, Cartagena",
+      "landmarkKind": "harbour",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Cathedral architecture",
+        "Palatial buildings",
+        "Fortified structures"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/285/",
+      "representation": "stylized",
+      "mediaSearch": "Port, Fortresses and Group of Monuments, Cartagena Colombia"
+    },
+    {
+      "code": "COM",
+      "levelTitle": "The Medinas of the Historic Sultanates of the Comoros Route",
+      "landmarkName": "The Medinas of the Historic Sultanates of the Comoros",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Island setting",
+        "Historic urban fabric"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/1768/",
+      "representation": "stylized",
+      "mediaSearch": "The Medinas of the Historic Sultanates of the Comoros Comoros"
+    },
+    {
+      "code": "CRI",
+      "levelTitle": "Cocos Island National Park Route",
+      "landmarkName": "Cocos Island National Park",
+      "landmarkKind": "island",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Tropical forest",
+        "Coastal setting",
+        "Island setting"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/820/",
+      "representation": "stylized",
+      "mediaSearch": "Cocos Island National Park Costa Rica"
+    },
+    {
+      "code": "CIV",
+      "levelTitle": "Taï National Park Route",
+      "landmarkName": "Taï National Park",
+      "landmarkKind": "rainforest",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Tropical forest",
+        "Forested landscape"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/195/",
+      "representation": "stylized",
+      "mediaSearch": "Taï National Park Côte d’Ivoire"
+    },
+    {
+      "code": "HRV",
+      "levelTitle": "Historical Complex of Split with the Palace of Diocletian Route",
+      "landmarkName": "Historical Complex of Split with the Palace of Diocletian",
+      "landmarkKind": "palace",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Gothic architecture",
+        "Baroque architecture",
+        "Romanesque architecture"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/97/",
+      "representation": "stylized",
+      "mediaSearch": "Historical Complex of Split with the Palace of Diocletian Croatia"
+    },
+    {
+      "code": "CUB",
+      "levelTitle": "Old Havana and its Fortification System Route",
+      "landmarkName": "Old Havana and its Fortification System",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Baroque architecture",
+        "Fortified structures",
+        "Courtyards"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/204/",
+      "representation": "stylized",
+      "mediaSearch": "Old Havana and its Fortification System Cuba"
+    },
+    {
+      "code": "CYP",
+      "levelTitle": "Paphos Route",
+      "landmarkName": "Paphos",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Palatial buildings",
+        "Fortified structures",
+        "Island setting"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/79/",
+      "representation": "stylized",
+      "mediaSearch": "Paphos Cyprus"
+    },
+    {
+      "code": "CZE",
+      "levelTitle": "Historic Centre of Český Krumlov Route",
+      "landmarkName": "Historic Centre of Český Krumlov",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Gothic architecture",
+        "Baroque architecture",
+        "Castle structures"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://whc.unesco.org/en/list/617/",
+      "representation": "stylized",
+      "mediaSearch": "Historic Centre of Český Krumlov Czechia"
+    },
+    {
+      "code": "COD",
+      "levelTitle": "Virunga National Park Route",
+      "landmarkName": "Virunga National Park",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#b9b1a2",
+        "roof": "#a76b4c",
+        "accent": "#d7b16a",
+        "foliage": "#3d784e"
+      },
+      "features": [
+        "Savanna landscape",
+        "Wetlands",
+        "Mountain setting"
+      ],
+      "biome": "forest",
+      "sourceUrl": "https://whc.unesco.org/en/list/63/",
+      "representation": "stylized",
+      "mediaSearch": "Virunga National Park Democratic Republic of the Congo"
+    },
+    {
+      "code": "DNK",
+      "levelTitle": "Jelling Mounds, Runic Stones and Church Route",
+      "landmarkName": "Jelling Mounds, Runic Stones and Church",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Church buildings",
+        "Burial mounds"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/697/",
+      "representation": "stylized",
+      "mediaSearch": "Jelling Mounds, Runic Stones and Church Denmark"
+    },
+    {
+      "code": "DJI",
+      "levelTitle": "Lake Assal Route",
+      "landmarkName": "Lake Assal",
+      "landmarkKind": "wetland",
+      "palette": {
+        "stone": "#d3d0b9",
+        "roof": "#9a6548",
+        "accent": "#65ced2",
+        "foliage": "#94865e"
+      },
+      "features": [
+        "Salt lake",
+        "White salt and gypsum shoreline",
+        "Arid volcanic depression"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://guide.visitdjibouti.dj/explorer-ce-quil-faut-voir/explorer-3/sites-touristiques-naturels/le-lac-assal/",
+      "representation": "stylized",
+      "mediaSearch": "Lake Assal Djibouti"
+    },
+    {
+      "code": "DMA",
+      "levelTitle": "Morne Trois Pitons National Park Route",
+      "landmarkName": "Morne Trois Pitons National Park",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Tropical forest",
+        "Valley setting",
+        "Volcanic landscape"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/814/",
+      "representation": "stylized",
+      "mediaSearch": "Morne Trois Pitons National Park Dominica"
+    },
+    {
+      "code": "DOM",
+      "levelTitle": "Colonial City of Santo Domingo Route",
+      "landmarkName": "Colonial City of Santo Domingo",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Cathedral architecture",
+        "Island setting"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/526/",
+      "representation": "stylized",
+      "mediaSearch": "Colonial City of Santo Domingo Dominican Republic"
+    },
+    {
+      "code": "ECU",
+      "levelTitle": "City of Quito Route",
+      "landmarkName": "City of Quito",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Baroque architecture",
+        "Church buildings",
+        "Monastic buildings"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/2/",
+      "representation": "stylized",
+      "mediaSearch": "City of Quito Ecuador"
+    },
+    {
+      "code": "EGY",
+      "levelTitle": "Pyramids of Giza: Desert Adventure",
+      "landmarkName": "Pyramids of Giza",
+      "landmarkKind": "pyramid",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Three main Giza pyramids",
+        "Stone funerary monuments",
+        "Giza plateau"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/86/",
+      "representation": "stylized",
+      "mediaSearch": "Pyramids of Giza Egypt"
+    },
+    {
+      "code": "SLV",
+      "levelTitle": "Joya de Cerén Archaeological Site Route",
+      "landmarkName": "Joya de Cerén Archaeological Site",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Volcanic landscape",
+        "Archaeological remains"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/675/",
+      "representation": "stylized",
+      "mediaSearch": "Joya de Cerén Archaeological Site El Salvador"
+    },
+    {
+      "code": "GNQ",
+      "levelTitle": "Basilica of the Immaculate Conception, Mongomo Route",
+      "landmarkName": "Basilica of the Immaculate Conception, Mongomo",
+      "landmarkKind": "cathedral",
+      "palette": {
+        "stone": "#b9b1a2",
+        "roof": "#a76b4c",
+        "accent": "#d7b16a",
+        "foliage": "#3d784e"
+      },
+      "features": [
+        "Domed basilica",
+        "Hilltop setting",
+        "Colonnaded square"
+      ],
+      "biome": "forest",
+      "sourceUrl": "https://www.osservatoreromano.va/it/news/2026-04/quo-092/un-abbraccio-a-sorpresa.html",
+      "representation": "stylized",
+      "mediaSearch": "Basilica of the Immaculate Conception, Mongomo Equatorial Guinea",
+      "shapeHints": {
+        "roof": "dome"
+      }
+    },
+    {
+      "code": "ERI",
+      "levelTitle": "Asmara: A Modernist African City Route",
+      "landmarkName": "Asmara: A Modernist African City",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Mosque architecture",
+        "Church buildings"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/1550/",
+      "representation": "stylized",
+      "mediaSearch": "Asmara: A Modernist African City Eritrea"
+    },
+    {
+      "code": "EST",
+      "levelTitle": "Historic Centre (Old Town) of Tallinn Route",
+      "landmarkName": "Historic Centre (Old Town) of Tallinn",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b9b1a2",
+        "roof": "#a76b4c",
+        "accent": "#d7b16a",
+        "foliage": "#3d784e"
+      },
+      "features": [
+        "Church buildings",
+        "Castle structures",
+        "Historic urban fabric"
+      ],
+      "biome": "forest",
+      "sourceUrl": "https://whc.unesco.org/en/list/822/",
+      "representation": "stylized",
+      "mediaSearch": "Historic Centre (Old Town) of Tallinn Estonia",
+      "shapeHints": {
+        "roof": "dome"
+      }
+    },
+    {
+      "code": "SWZ",
+      "levelTitle": "Sibebe Rock Route",
+      "landmarkName": "Sibebe Rock",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Exposed granite dome",
+        "Rounded rocky slopes",
+        "Grassy and wooded clefts"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://www.thekingdomofeswatini.com/central-eswatini/sibebe-rock/",
+      "representation": "stylized",
+      "mediaSearch": "Sibebe Rock Eswatini"
+    },
+    {
+      "code": "ETH",
+      "levelTitle": "Rock-Hewn Churches, Lalibela Route",
+      "landmarkName": "Rock-Hewn Churches, Lalibela",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Rock-cut structures",
+        "Church buildings",
+        "Cave formations"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/18/",
+      "representation": "stylized",
+      "mediaSearch": "Rock-Hewn Churches, Lalibela Ethiopia"
+    },
+    {
+      "code": "FJI",
+      "levelTitle": "Levuka Historical Port Town Route",
+      "landmarkName": "Levuka Historical Port Town",
+      "landmarkKind": "harbour",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Harbour setting",
+        "Island setting",
+        "Historic urban fabric"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/1399/",
+      "representation": "stylized",
+      "mediaSearch": "Levuka Historical Port Town Fiji"
+    },
+    {
+      "code": "FIN",
+      "levelTitle": "Fortress of Suomenlinna Route",
+      "landmarkName": "Fortress of Suomenlinna",
+      "landmarkKind": "castle",
+      "palette": {
+        "stone": "#b9b1a2",
+        "roof": "#a76b4c",
+        "accent": "#d7b16a",
+        "foliage": "#3d784e"
+      },
+      "features": [
+        "Fortified structures",
+        "Harbour setting",
+        "Island setting"
+      ],
+      "biome": "forest",
+      "sourceUrl": "https://whc.unesco.org/en/list/583/",
+      "representation": "stylized",
+      "mediaSearch": "Fortress of Suomenlinna Finland"
+    },
+    {
+      "code": "FRA",
+      "levelTitle": "Paris: Eiffel Tower Rooftop Adventure",
+      "landmarkName": "Eiffel Tower",
+      "landmarkKind": "tower",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Iron lattice structure",
+        "Four base piers",
+        "Open observation levels"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://www.toureiffel.paris/en/the-monument/history",
+      "representation": "stylized",
+      "mediaSearch": "Eiffel Tower France"
+    },
+    {
+      "code": "GAB",
+      "levelTitle": "Ecosystem and Relict Cultural Landscape of Lopé-Okanda Route",
+      "landmarkName": "Ecosystem and Relict Cultural Landscape of Lopé-Okanda",
+      "landmarkKind": "rainforest",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Tropical rainforest",
+        "Relict savanna",
+        "Hilltop rock-art sites"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/1147/",
+      "representation": "stylized",
+      "mediaSearch": "Ecosystem and Relict Cultural Landscape of Lopé-Okanda Gabon"
+    },
+    {
+      "code": "GMB",
+      "levelTitle": "Kunta Kinteh Island and Related Sites Route",
+      "landmarkName": "Kunta Kinteh Island and Related Sites",
+      "landmarkKind": "island",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Island setting",
+        "River setting"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/761/",
+      "representation": "stylized",
+      "mediaSearch": "Kunta Kinteh Island and Related Sites Gambia"
+    },
+    {
+      "code": "GEO",
+      "levelTitle": "Gelati Monastery Route",
+      "landmarkName": "Gelati Monastery",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Monastic buildings",
+        "Arcades and arches"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/710/",
+      "representation": "stylized",
+      "mediaSearch": "Gelati Monastery Georgia"
+    },
+    {
+      "code": "DEU",
+      "levelTitle": "Aachen Cathedral Route",
+      "landmarkName": "Aachen Cathedral",
+      "landmarkKind": "cathedral",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Cathedral architecture",
+        "Church buildings",
+        "Basilica"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://whc.unesco.org/en/list/3/",
+      "representation": "stylized",
+      "mediaSearch": "Aachen Cathedral Germany",
+      "shapeHints": {
+        "roof": "dome"
+      }
+    },
+    {
+      "code": "GHA",
+      "levelTitle": "Forts and Castles, Volta, Greater Accra, Central and West… Route",
+      "landmarkName": "Forts and Castles, Volta, Greater Accra, Central and Western Regions",
+      "landmarkKind": "castle",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Castle structures",
+        "Fortified structures",
+        "Coastal setting"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/34/",
+      "representation": "stylized",
+      "mediaSearch": "Forts and Castles, Volta, Greater Accra, Central and Western Regions Ghana"
+    },
+    {
+      "code": "GRC",
+      "levelTitle": "Acropolis of Athens Route",
+      "landmarkName": "Acropolis of Athens",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Rocky hill",
+        "Classical temple complex",
+        "Parthenon monument"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/404/",
+      "representation": "stylized",
+      "mediaSearch": "Acropolis of Athens Greece",
+      "shapeHints": {
+        "roof": "spire"
+      }
+    },
+    {
+      "code": "GRD",
+      "levelTitle": "Molinere Underwater Sculpture Park Route",
+      "landmarkName": "Molinere Underwater Sculpture Park",
+      "landmarkKind": "island",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Underwater sculptures",
+        "Artificial reef setting",
+        "Sandy seabed"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://www.puregrenada.com/underwatersculpturepark/",
+      "representation": "stylized",
+      "mediaSearch": "Molinere Underwater Sculpture Park Grenada"
+    },
+    {
+      "code": "GTM",
+      "levelTitle": "Antigua Guatemala Route",
+      "landmarkName": "Antigua Guatemala",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Archaeological remains"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/65/",
+      "representation": "stylized",
+      "mediaSearch": "Antigua Guatemala Guatemala",
+      "shapeHints": {
+        "roof": "spire"
+      }
+    },
+    {
+      "code": "GIN",
+      "levelTitle": "Mount Nimba Strict Nature Reserve Route",
+      "landmarkName": "Mount Nimba Strict Nature Reserve",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#b9b1a2",
+        "roof": "#a76b4c",
+        "accent": "#d7b16a",
+        "foliage": "#3d784e"
+      },
+      "features": [
+        "Mountain slopes",
+        "Dense forest",
+        "Grassy mountain pastures"
+      ],
+      "biome": "forest",
+      "sourceUrl": "https://whc.unesco.org/en/list/155/",
+      "representation": "stylized",
+      "mediaSearch": "Mount Nimba Strict Nature Reserve Guinea"
+    },
+    {
+      "code": "GNB",
+      "levelTitle": "Coastal and Marine Ecosystems of the Bijagós Archipelago … Route",
+      "landmarkName": "Coastal and Marine Ecosystems of the Bijagós Archipelago – Omatí Minhô",
+      "landmarkKind": "island",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Coastal setting",
+        "Island setting"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/1431/",
+      "representation": "stylized",
+      "mediaSearch": "Coastal and Marine Ecosystems of the Bijagós Archipelago – Omatí Minhô Guinea-Bissau"
+    },
+    {
+      "code": "GUY",
+      "levelTitle": "Kaieteur Falls Route",
+      "landmarkName": "Kaieteur Falls",
+      "landmarkKind": "wetland",
+      "palette": {
+        "stone": "#b9b1a2",
+        "roof": "#a76b4c",
+        "accent": "#d7b16a",
+        "foliage": "#3d784e"
+      },
+      "features": [
+        "Single-drop waterfall",
+        "Potaro River gorge",
+        "Rainforest setting"
+      ],
+      "biome": "forest",
+      "sourceUrl": "https://www.pac.gov.gy/kaieteur-national-park/",
+      "representation": "stylized",
+      "mediaSearch": "Kaieteur Falls Guyana"
+    },
+    {
+      "code": "HTI",
+      "levelTitle": "National History Park – Citadel, Sans Souci, Ramiers Route",
+      "landmarkName": "National History Park – Citadel, Sans Souci, Ramiers",
+      "landmarkKind": "castle",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Palatial buildings"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/180/",
+      "representation": "stylized",
+      "mediaSearch": "National History Park – Citadel, Sans Souci, Ramiers Haiti"
+    },
+    {
+      "code": "HND",
+      "levelTitle": "Maya Site of Copan Route",
+      "landmarkName": "Maya Site of Copan",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Archaeological remains"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/129/",
+      "representation": "stylized",
+      "mediaSearch": "Maya Site of Copan Honduras"
+    },
+    {
+      "code": "HUN",
+      "levelTitle": "Budapest, including the Banks of the Danube, the Buda Cas… Route",
+      "landmarkName": "Budapest, including the Banks of the Danube, the Buda Castle Quarter and Andrássy Avenue",
+      "landmarkKind": "castle",
+      "palette": {
+        "stone": "#c6ac8d",
+        "roof": "#9b6342",
+        "accent": "#deba5f",
+        "foliage": "#94a653"
+      },
+      "features": [
+        "Gothic architecture",
+        "Castle structures",
+        "Archaeological remains"
+      ],
+      "biome": "grassland",
+      "sourceUrl": "https://whc.unesco.org/en/list/400/",
+      "representation": "stylized",
+      "mediaSearch": "Budapest, including the Banks of the Danube, the Buda Castle Quarter and Andrássy Avenue Hungary"
+    },
+    {
+      "code": "ISL",
+      "levelTitle": "Þingvellir National Park Route",
+      "landmarkName": "Þingvellir National Park",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Archaeological remains"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/1152/",
+      "representation": "stylized",
+      "mediaSearch": "Þingvellir National Park Iceland"
+    },
+    {
+      "code": "IND",
+      "levelTitle": "Taj Mahal: Garden Journey",
+      "landmarkName": "Taj Mahal",
+      "landmarkKind": "palace",
+      "palette": {
+        "stone": "#f3eee0",
+        "roof": "#d9c6a6",
+        "accent": "#b76e4f",
+        "foliage": "#4b793a"
+      },
+      "features": [
+        "White marble mausoleum",
+        "Four corner minarets",
+        "Mughal charbagh garden"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://whc.unesco.org/en/list/252/",
+      "representation": "stylized",
+      "mediaSearch": "Taj Mahal India",
+      "shapeHints": {
+        "roof": "dome",
+        "towers": 4
+      }
+    },
+    {
+      "code": "IDN",
+      "levelTitle": "Borobudur Temple Compounds Route",
+      "landmarkName": "Borobudur Temple Compounds",
+      "landmarkKind": "pyramid",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Buddhist temple",
+        "Stepped terraces",
+        "Bell-shaped stupas"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/592/",
+      "representation": "stylized",
+      "mediaSearch": "Borobudur Temple Compounds Indonesia"
+    },
+    {
+      "code": "IRN",
+      "levelTitle": "Meidan Emam, Esfahan Route",
+      "landmarkName": "Meidan Emam, Esfahan",
+      "landmarkKind": "mosque",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Mosque architecture",
+        "Palatial buildings",
+        "Arcades and arches"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/115/",
+      "representation": "stylized",
+      "mediaSearch": "Meidan Emam, Esfahan Iran"
+    },
+    {
+      "code": "IRQ",
+      "levelTitle": "Hatra Route",
+      "landmarkName": "Hatra",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Fortified structures",
+        "Towers",
+        "Archaeological remains"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/277/",
+      "representation": "stylized",
+      "mediaSearch": "Hatra Iraq"
+    },
+    {
+      "code": "IRL",
+      "levelTitle": "Brú na Bóinne - Archaeological Ensemble of the Bend of th… Route",
+      "landmarkName": "Brú na Bóinne - Archaeological Ensemble of the Bend of the Boyne",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "River setting",
+        "Archaeological remains"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/659/",
+      "representation": "stylized",
+      "mediaSearch": "Brú na Bóinne - Archaeological Ensemble of the Bend of the Boyne Ireland"
+    },
+    {
+      "code": "ISR",
+      "levelTitle": "Masada Route",
+      "landmarkName": "Masada",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Palatial buildings",
+        "Fortified structures",
+        "Desert setting"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/1040/",
+      "representation": "stylized",
+      "mediaSearch": "Masada Israel"
+    },
+    {
+      "code": "ITA",
+      "levelTitle": "Ancient Rome: Colosseum Adventure",
+      "landmarkName": "Colosseum",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Roman amphitheatre",
+        "Arcaded exterior",
+        "Open arena"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://colosseo.it/en/area/colosseo/",
+      "representation": "stylized",
+      "mediaSearch": "Colosseum Italy"
+    },
+    {
+      "code": "JAM",
+      "levelTitle": "Blue and John Crow Mountains Route",
+      "landmarkName": "Blue and John Crow Mountains",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Island setting",
+        "Mountain setting",
+        "Forested landscape"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/1356/",
+      "representation": "stylized",
+      "mediaSearch": "Blue and John Crow Mountains Jamaica"
+    },
+    {
+      "code": "JPN",
+      "levelTitle": "Cherry Blossom Path",
+      "landmarkName": "Mount Fuji",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Stratovolcano",
+        "Often snow-capped summit",
+        "Pilgrimage landscape"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://whc.unesco.org/en/list/1418/",
+      "representation": "stylized",
+      "mediaSearch": "Mount Fuji Japan"
+    },
+    {
+      "code": "JOR",
+      "levelTitle": "Petra Route",
+      "landmarkName": "Petra",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Rock-carved structures",
+        "Mountain setting",
+        "Passages and gorges"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/326/",
+      "representation": "stylized",
+      "mediaSearch": "Petra Jordan"
+    },
+    {
+      "code": "KAZ",
+      "levelTitle": "Mausoleum of Khoja Ahmed Yasawi Route",
+      "landmarkName": "Mausoleum of Khoja Ahmed Yasawi",
+      "landmarkKind": "civic",
+      "palette": {
+        "stone": "#c6ac8d",
+        "roof": "#9b6342",
+        "accent": "#deba5f",
+        "foliage": "#94a653"
+      },
+      "features": [
+        "Domed mausoleum",
+        "Entrance portal",
+        "Patterned masonry"
+      ],
+      "biome": "grassland",
+      "sourceUrl": "https://whc.unesco.org/en/list/1103/",
+      "representation": "stylized",
+      "mediaSearch": "Mausoleum of Khoja Ahmed Yasawi Kazakhstan",
+      "shapeHints": {
+        "roof": "dome"
+      }
+    },
+    {
+      "code": "KEN",
+      "levelTitle": "Lake Turkana National Parks Route",
+      "landmarkName": "Lake Turkana National Parks",
+      "landmarkKind": "wetland",
+      "palette": {
+        "stone": "#c6ac8d",
+        "roof": "#9b6342",
+        "accent": "#deba5f",
+        "foliage": "#94a653"
+      },
+      "features": [
+        "Lake setting",
+        "Archaeological remains"
+      ],
+      "biome": "grassland",
+      "sourceUrl": "https://whc.unesco.org/en/list/801/",
+      "representation": "stylized",
+      "mediaSearch": "Lake Turkana National Parks Kenya"
+    },
+    {
+      "code": "KIR",
+      "levelTitle": "Phoenix Islands Protected Area Route",
+      "landmarkName": "Phoenix Islands Protected Area",
+      "landmarkKind": "island",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Reef environment",
+        "Island setting",
+        "Volcanic landscape"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/1325/",
+      "representation": "stylized",
+      "mediaSearch": "Phoenix Islands Protected Area Kiribati"
+    },
+    {
+      "code": "KWT",
+      "levelTitle": "Kuwait Towers Route",
+      "landmarkName": "Kuwait Towers",
+      "landmarkKind": "tower",
+      "palette": {
+        "stone": "#d6d0ba",
+        "roof": "#5d9a9c",
+        "accent": "#58a4a6",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Three slender waterfront towers",
+        "Spheres on two towers",
+        "Blue-green mosaic sphere surfaces"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://www.e.gov.kw/sites/kgoenglish/Pages/Visitors/TourismInKuwait/ActivitiesInKuwaitAttractiveSpots.aspx",
+      "representation": "stylized",
+      "mediaSearch": "Kuwait Towers Kuwait",
+      "shapeHints": {
+        "towers": 3
+      }
+    },
+    {
+      "code": "KGZ",
+      "levelTitle": "Sulaiman-Too Sacred Mountain Route",
+      "landmarkName": "Sulaiman-Too Sacred Mountain",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Mosque architecture",
+        "Cave formations",
+        "Rock art"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/1230/",
+      "representation": "stylized",
+      "mediaSearch": "Sulaiman-Too Sacred Mountain Kyrgyzstan"
+    },
+    {
+      "code": "LAO",
+      "levelTitle": "Town of Luang Prabang Route",
+      "landmarkName": "Town of Luang Prabang",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b9b1a2",
+        "roof": "#a76b4c",
+        "accent": "#d7b16a",
+        "foliage": "#3d784e"
+      },
+      "features": [
+        "Lao urban architecture",
+        "Colonial-era buildings",
+        "Preserved townscape"
+      ],
+      "biome": "forest",
+      "sourceUrl": "https://whc.unesco.org/en/list/479/",
+      "representation": "stylized",
+      "mediaSearch": "Town of Luang Prabang Laos"
+    },
+    {
+      "code": "LVA",
+      "levelTitle": "Historic Centre of Riga Route",
+      "landmarkName": "Historic Centre of Riga",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b9b1a2",
+        "roof": "#a76b4c",
+        "accent": "#d7b16a",
+        "foliage": "#3d784e"
+      },
+      "features": [
+        "Timber buildings"
+      ],
+      "biome": "forest",
+      "sourceUrl": "https://whc.unesco.org/en/list/852/",
+      "representation": "stylized",
+      "mediaSearch": "Historic Centre of Riga Latvia"
+    },
+    {
+      "code": "LBN",
+      "levelTitle": "Anjar Route",
+      "landmarkName": "Anjar",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Palatial buildings",
+        "Archaeological remains"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://whc.unesco.org/en/list/293/",
+      "representation": "stylized",
+      "mediaSearch": "Anjar Lebanon"
+    },
+    {
+      "code": "LSO",
+      "levelTitle": "Maloti-Drakensberg Park Route",
+      "landmarkName": "Maloti-Drakensberg Park",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Basaltic buttresses",
+        "Sandstone cliffs",
+        "Rock shelters and paintings"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/985/",
+      "representation": "stylized",
+      "mediaSearch": "Maloti-Drakensberg Park Lesotho"
+    },
+    {
+      "code": "LBR",
+      "levelTitle": "Providence Island Route",
+      "landmarkName": "Providence Island",
+      "landmarkKind": "island",
+      "palette": {
+        "stone": "#b9b1a2",
+        "roof": "#a76b4c",
+        "accent": "#d7b16a",
+        "foliage": "#3d784e"
+      },
+      "features": [
+        "River island",
+        "Historic landing place",
+        "Mangrove margins"
+      ],
+      "biome": "forest",
+      "sourceUrl": "https://whc.unesco.org/en/tentativelists/6247/",
+      "representation": "stylized",
+      "mediaSearch": "Providence Island Liberia"
+    },
+    {
+      "code": "LBY",
+      "levelTitle": "Archaeological Site of Cyrene Route",
+      "landmarkName": "Archaeological Site of Cyrene",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Archaeological remains"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/190/",
+      "representation": "stylized",
+      "mediaSearch": "Archaeological Site of Cyrene Libya"
+    },
+    {
+      "code": "LIE",
+      "levelTitle": "Vaduz Castle Route",
+      "landmarkName": "Vaduz Castle",
+      "landmarkKind": "castle",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Medieval residential tower",
+        "Round fortifications",
+        "Renaissance hall"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://www.vaduz.li/en/living-environment/living-building/listed-buildings/schloss-vaduz",
+      "representation": "stylized",
+      "mediaSearch": "Vaduz Castle Liechtenstein"
+    },
+    {
+      "code": "LTU",
+      "levelTitle": "Vilnius Historic Centre Route",
+      "landmarkName": "Vilnius Historic Centre",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b9b1a2",
+        "roof": "#a76b4c",
+        "accent": "#d7b16a",
+        "foliage": "#3d784e"
+      },
+      "features": [
+        "Gothic architecture",
+        "Baroque architecture"
+      ],
+      "biome": "forest",
+      "sourceUrl": "https://whc.unesco.org/en/list/541/",
+      "representation": "stylized",
+      "mediaSearch": "Vilnius Historic Centre Lithuania"
+    },
+    {
+      "code": "LUX",
+      "levelTitle": "City of Luxembourg: its Old Quarters and Fortifications Route",
+      "landmarkName": "City of Luxembourg: its Old Quarters and Fortifications",
+      "landmarkKind": "castle",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Fortified structures"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://whc.unesco.org/en/list/699/",
+      "representation": "stylized",
+      "mediaSearch": "City of Luxembourg: its Old Quarters and Fortifications Luxembourg"
+    },
+    {
+      "code": "MDG",
+      "levelTitle": "Andrefana Dry Forests Route",
+      "landmarkName": "Andrefana Dry Forests",
+      "landmarkKind": "forest",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Dry forest landscapes",
+        "Baobabs",
+        "Limestone tsingy formations"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/494/",
+      "representation": "stylized",
+      "mediaSearch": "Andrefana Dry Forests Madagascar"
+    },
+    {
+      "code": "MWI",
+      "levelTitle": "Lake Malawi National Park Route",
+      "landmarkName": "Lake Malawi National Park",
+      "landmarkKind": "wetland",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Island setting",
+        "Mountain setting",
+        "Lake setting"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/289/",
+      "representation": "stylized",
+      "mediaSearch": "Lake Malawi National Park Malawi"
+    },
+    {
+      "code": "MYS",
+      "levelTitle": "Gunung Mulu National Park Route",
+      "landmarkName": "Gunung Mulu National Park",
+      "landmarkKind": "rainforest",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Sandstone surfaces",
+        "Cave formations",
+        "Island setting"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/1013/",
+      "representation": "stylized",
+      "mediaSearch": "Gunung Mulu National Park Malaysia"
+    },
+    {
+      "code": "MDV",
+      "levelTitle": "Male Friday Mosque Route",
+      "landmarkName": "Male Friday Mosque",
+      "landmarkKind": "mosque",
+      "palette": {
+        "stone": "#e2ddd1",
+        "roof": "#806751",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Carved coral stone",
+        "Timber roof structure",
+        "Cylindrical minaret"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/tentativelists/5812/",
+      "representation": "stylized",
+      "mediaSearch": "Male Friday Mosque Maldives",
+      "shapeHints": {
+        "roof": "tiered"
+      }
+    },
+    {
+      "code": "MLI",
+      "levelTitle": "Old Towns of Djenné Route",
+      "landmarkName": "Old Towns of Djenné",
+      "landmarkKind": "mosque",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Historic urban fabric"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/116/",
+      "representation": "stylized",
+      "mediaSearch": "Old Towns of Djenné Mali"
+    },
+    {
+      "code": "MLT",
+      "levelTitle": "City of Valletta Route",
+      "landmarkName": "City of Valletta",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Byzantine architecture"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/131/",
+      "representation": "stylized",
+      "mediaSearch": "City of Valletta Malta"
+    },
+    {
+      "code": "MHL",
+      "levelTitle": "Bikini Atoll Nuclear Test Site Route",
+      "landmarkName": "Bikini Atoll Nuclear Test Site",
+      "landmarkKind": "island",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Island setting",
+        "Wetlands"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/1339/",
+      "representation": "stylized",
+      "mediaSearch": "Bikini Atoll Nuclear Test Site Marshall Islands"
+    },
+    {
+      "code": "MRT",
+      "levelTitle": "Banc d'Arguin National Park Route",
+      "landmarkName": "Banc d'Arguin National Park",
+      "landmarkKind": "wetland",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Coastal setting",
+        "Island setting",
+        "Wetlands"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/506/",
+      "representation": "stylized",
+      "mediaSearch": "Banc d'Arguin National Park Mauritania"
+    },
+    {
+      "code": "MUS",
+      "levelTitle": "Aapravasi Ghat Route",
+      "landmarkName": "Aapravasi Ghat",
+      "landmarkKind": "harbour",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Harbour setting",
+        "Island setting"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/1227/",
+      "representation": "stylized",
+      "mediaSearch": "Aapravasi Ghat Mauritius"
+    },
+    {
+      "code": "MEX",
+      "levelTitle": "Chichen-Itza Route",
+      "landmarkName": "Chichen-Itza",
+      "landmarkKind": "pyramid",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Maya stone monuments",
+        "El Castillo temple",
+        "Circular observatory"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/483/",
+      "representation": "stylized",
+      "mediaSearch": "Chichen-Itza Mexico"
+    },
+    {
+      "code": "FSM",
+      "levelTitle": "Nan Madol: Ceremonial Centre of Eastern Micronesia Route",
+      "landmarkName": "Nan Madol: Ceremonial Centre of Eastern Micronesia",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Palatial buildings",
+        "Reef environment",
+        "Coastal setting"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/1503/",
+      "representation": "stylized",
+      "mediaSearch": "Nan Madol: Ceremonial Centre of Eastern Micronesia Micronesia"
+    },
+    {
+      "code": "MDA",
+      "levelTitle": "Struve Geodetic Arc Route",
+      "landmarkName": "Struve Geodetic Arc",
+      "landmarkKind": "civic",
+      "palette": {
+        "stone": "#c6ac8d",
+        "roof": "#9b6342",
+        "accent": "#deba5f",
+        "foliage": "#94a653"
+      },
+      "features": [
+        "Survey triangulation points",
+        "Geodetic measurement chain",
+        "Ten-country property"
+      ],
+      "biome": "grassland",
+      "sourceUrl": "https://whc.unesco.org/en/list/1187/",
+      "representation": "stylized",
+      "mediaSearch": "Struve Geodetic Arc Moldova"
+    },
+    {
+      "code": "MCO",
+      "levelTitle": "Prince's Palace of Monaco Route",
+      "landmarkName": "Prince's Palace of Monaco",
+      "landmarkKind": "palace",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Palace on the Rock of Monaco",
+        "State apartments",
+        "Renaissance frescoes"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://www.visitepalaisdemonaco.com/en/organized-visits/",
+      "representation": "stylized",
+      "mediaSearch": "Prince's Palace of Monaco Monaco"
+    },
+    {
+      "code": "MNG",
+      "levelTitle": "Orkhon Valley Cultural Landscape Route",
+      "landmarkName": "Orkhon Valley Cultural Landscape",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#c6ac8d",
+        "roof": "#9b6342",
+        "accent": "#deba5f",
+        "foliage": "#94a653"
+      },
+      "features": [
+        "Grassland",
+        "Valley setting",
+        "River setting"
+      ],
+      "biome": "grassland",
+      "sourceUrl": "https://whc.unesco.org/en/list/1081/",
+      "representation": "stylized",
+      "mediaSearch": "Orkhon Valley Cultural Landscape Mongolia"
+    },
+    {
+      "code": "MNE",
+      "levelTitle": "Natural and Culturo-Historical Region of Kotor Route",
+      "landmarkName": "Natural and Culturo-Historical Region of Kotor",
+      "landmarkKind": "harbour",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Romanesque architecture",
+        "Church buildings",
+        "Coastal setting"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/125/",
+      "representation": "stylized",
+      "mediaSearch": "Natural and Culturo-Historical Region of Kotor Montenegro"
+    },
+    {
+      "code": "MAR",
+      "levelTitle": "Medina of Marrakesh Route",
+      "landmarkName": "Medina of Marrakesh",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Historic medina",
+        "Monumental gates",
+        "Gardens"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/331/",
+      "representation": "stylized",
+      "mediaSearch": "Medina of Marrakesh Morocco"
+    },
+    {
+      "code": "MOZ",
+      "levelTitle": "Island of Mozambique Route",
+      "landmarkName": "Island of Mozambique",
+      "landmarkKind": "island",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Fortified structures",
+        "Island setting"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/599/",
+      "representation": "stylized",
+      "mediaSearch": "Island of Mozambique Mozambique"
+    },
+    {
+      "code": "MMR",
+      "levelTitle": "Pyu Ancient Cities Route",
+      "landmarkName": "Pyu Ancient Cities",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#b9b1a2",
+        "roof": "#a76b4c",
+        "accent": "#d7b16a",
+        "foliage": "#3d784e"
+      },
+      "features": [
+        "Stupas",
+        "Palatial buildings",
+        "River setting"
+      ],
+      "biome": "forest",
+      "sourceUrl": "https://whc.unesco.org/en/list/1444/",
+      "representation": "stylized",
+      "mediaSearch": "Pyu Ancient Cities Myanmar"
+    },
+    {
+      "code": "NAM",
+      "levelTitle": "Twyfelfontein or /Ui-//aes Route",
+      "landmarkName": "Twyfelfontein or /Ui-//aes",
+      "landmarkKind": "desert",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Rock art"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/1255/",
+      "representation": "stylized",
+      "mediaSearch": "Twyfelfontein or /Ui-//aes Namibia"
+    },
+    {
+      "code": "NRU",
+      "levelTitle": "Buada Lagoon Route",
+      "landmarkName": "Buada Lagoon",
+      "landmarkKind": "wetland",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Landlocked waterbody",
+        "Coral-limestone island setting",
+        "Interior island basin"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://www.spc.int/sites/default/files/tenderfiles/2022-07/Annex%20I-%20pre%20feasability%20study.pdf",
+      "representation": "stylized",
+      "mediaSearch": "Buada Lagoon Nauru"
+    },
+    {
+      "code": "NPL",
+      "levelTitle": "Sagarmatha National Park and Mount Everest Route",
+      "landmarkName": "Sagarmatha National Park and Mount Everest",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "High mountain landscape",
+        "Glaciers",
+        "Deep valleys"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/120/",
+      "representation": "stylized",
+      "mediaSearch": "Sagarmatha National Park and Mount Everest Nepal"
+    },
+    {
+      "code": "NLD",
+      "levelTitle": "Schokland and Surroundings Route",
+      "landmarkName": "Schokland and Surroundings",
+      "landmarkKind": "island",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Island setting"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://whc.unesco.org/en/list/739/",
+      "representation": "stylized",
+      "mediaSearch": "Schokland and Surroundings Netherlands"
+    },
+    {
+      "code": "NZL",
+      "levelTitle": "Te Wahipounamu – South West New Zealand Route",
+      "landmarkName": "Te Wahipounamu – South West New Zealand",
+      "landmarkKind": "glacier",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Glaciated fjords",
+        "Rocky coasts and cliffs",
+        "Lakes and waterfalls"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/551/",
+      "representation": "stylized",
+      "mediaSearch": "Te Wahipounamu – South West New Zealand New Zealand"
+    },
+    {
+      "code": "NIC",
+      "levelTitle": "Ruins of León Viejo Route",
+      "landmarkName": "Ruins of León Viejo",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Archaeological remains"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/613/",
+      "representation": "stylized",
+      "mediaSearch": "Ruins of León Viejo Nicaragua"
+    },
+    {
+      "code": "NER",
+      "levelTitle": "Air and Ténéré Natural Reserves Route",
+      "landmarkName": "Air and Ténéré Natural Reserves",
+      "landmarkKind": "desert",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Desert setting",
+        "Volcanic landscape"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/573/",
+      "representation": "stylized",
+      "mediaSearch": "Air and Ténéré Natural Reserves Niger"
+    },
+    {
+      "code": "NGA",
+      "levelTitle": "Sukur Cultural Landscape Route",
+      "landmarkName": "Sukur Cultural Landscape",
+      "landmarkKind": "palace",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Palatial buildings",
+        "Terraced landscape",
+        "Archaeological remains"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/938/",
+      "representation": "stylized",
+      "mediaSearch": "Sukur Cultural Landscape Nigeria"
+    },
+    {
+      "code": "PRK",
+      "levelTitle": "Complex of Koguryo Tombs Route",
+      "landmarkName": "Complex of Koguryo Tombs",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Archaeological remains"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://whc.unesco.org/en/list/1091/",
+      "representation": "stylized",
+      "mediaSearch": "Complex of Koguryo Tombs North Korea"
+    },
+    {
+      "code": "MKD",
+      "levelTitle": "Natural and Cultural Heritage of the Ohrid region Route",
+      "landmarkName": "Natural and Cultural Heritage of the Ohrid region",
+      "landmarkKind": "wetland",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Byzantine architecture",
+        "Church buildings",
+        "Monastic buildings"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/99/",
+      "representation": "stylized",
+      "mediaSearch": "Natural and Cultural Heritage of the Ohrid region North Macedonia"
+    },
+    {
+      "code": "NOR",
+      "levelTitle": "Northern Fjords: Mountain and Ice Adventure",
+      "landmarkName": "Lofoten Islands",
+      "landmarkKind": "harbour",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Steep coastal mountains",
+        "Fishing villages",
+        "Glacier-carved peaks"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://snl.no/Lofoten",
+      "representation": "stylized",
+      "mediaSearch": "Lofoten Islands Norway"
+    },
+    {
+      "code": "OMN",
+      "levelTitle": "Bahla Fort Route",
+      "landmarkName": "Bahla Fort",
+      "landmarkKind": "castle",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Fortified structures",
+        "Towers",
+        "Archaeological remains"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/433/",
+      "representation": "stylized",
+      "mediaSearch": "Bahla Fort Oman"
+    },
+    {
+      "code": "PAK",
+      "levelTitle": "Archaeological Ruins at Moenjodaro Route",
+      "landmarkName": "Archaeological Ruins at Moenjodaro",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Defensive walls",
+        "Valley setting",
+        "Archaeological remains"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/138/",
+      "representation": "stylized",
+      "mediaSearch": "Archaeological Ruins at Moenjodaro Pakistan"
+    },
+    {
+      "code": "PLW",
+      "levelTitle": "Rock Islands Southern Lagoon Route",
+      "landmarkName": "Rock Islands Southern Lagoon",
+      "landmarkKind": "island",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Limestone formations",
+        "Reef environment",
+        "Rock art"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/1386/",
+      "representation": "stylized",
+      "mediaSearch": "Rock Islands Southern Lagoon Palau"
+    },
+    {
+      "code": "PAN",
+      "levelTitle": "Fortifications on the Caribbean Side of Panama: Portobelo… Route",
+      "landmarkName": "Fortifications on the Caribbean Side of Panama: Portobelo-San Lorenzo",
+      "landmarkKind": "castle",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Fortified structures",
+        "Coastal setting"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/135/",
+      "representation": "stylized",
+      "mediaSearch": "Fortifications on the Caribbean Side of Panama: Portobelo-San Lorenzo Panama"
+    },
+    {
+      "code": "PNG",
+      "levelTitle": "Kuk Early Agricultural Site Route",
+      "landmarkName": "Kuk Early Agricultural Site",
+      "landmarkKind": "wetland",
+      "palette": {
+        "stone": "#b9b1a2",
+        "roof": "#a76b4c",
+        "accent": "#d7b16a",
+        "foliage": "#3d784e"
+      },
+      "features": [
+        "Wetlands",
+        "Archaeological remains"
+      ],
+      "biome": "forest",
+      "sourceUrl": "https://whc.unesco.org/en/list/887/",
+      "representation": "stylized",
+      "mediaSearch": "Kuk Early Agricultural Site Papua New Guinea"
+    },
+    {
+      "code": "PRY",
+      "levelTitle": "Jesuit Missions of La Santísima Trinidad de Paraná and Je… Route",
+      "landmarkName": "Jesuit Missions of La Santísima Trinidad de Paraná and Jesús de Tavarangue",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#c6ac8d",
+        "roof": "#9b6342",
+        "accent": "#deba5f",
+        "foliage": "#94a653"
+      },
+      "features": [
+        "Source-listed cultural landscape"
+      ],
+      "biome": "grassland",
+      "sourceUrl": "https://whc.unesco.org/en/list/648/",
+      "representation": "stylized",
+      "mediaSearch": "Jesuit Missions of La Santísima Trinidad de Paraná and Jesús de Tavarangue Paraguay"
+    },
+    {
+      "code": "PER",
+      "levelTitle": "City of Cuzco Route",
+      "landmarkName": "City of Cuzco",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Baroque architecture",
+        "Church buildings",
+        "Palatial buildings"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/273/",
+      "representation": "stylized",
+      "mediaSearch": "City of Cuzco Peru"
+    },
+    {
+      "code": "PHL",
+      "levelTitle": "Baroque Churches of the Philippines Route",
+      "landmarkName": "Baroque Churches of the Philippines",
+      "landmarkKind": "cathedral",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Baroque architecture",
+        "Church buildings"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/677/",
+      "representation": "stylized",
+      "mediaSearch": "Baroque Churches of the Philippines Philippines"
+    },
+    {
+      "code": "POL",
+      "levelTitle": "Historic Centre of Kraków Route",
+      "landmarkName": "Historic Centre of Kraków",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Gothic architecture",
+        "Cathedral architecture",
+        "Church buildings"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://whc.unesco.org/en/list/29/",
+      "representation": "stylized",
+      "mediaSearch": "Historic Centre of Kraków Poland"
+    },
+    {
+      "code": "PRT",
+      "levelTitle": "Central Zone of the Town of Angra do Heroismo in the Azores Route",
+      "landmarkName": "Central Zone of the Town of Angra do Heroismo in the Azores",
+      "landmarkKind": "harbour",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Fortified structures",
+        "Harbour setting",
+        "Island setting"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/206/",
+      "representation": "stylized",
+      "mediaSearch": "Central Zone of the Town of Angra do Heroismo in the Azores Portugal"
+    },
+    {
+      "code": "QAT",
+      "levelTitle": "Al Zubarah Archaeological Site Route",
+      "landmarkName": "Al Zubarah Archaeological Site",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Mosque architecture",
+        "Palatial buildings",
+        "Courtyards"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/1402/",
+      "representation": "stylized",
+      "mediaSearch": "Al Zubarah Archaeological Site Qatar"
+    },
+    {
+      "code": "COG",
+      "levelTitle": "Forest Massif of Odzala-Kokoua Route",
+      "landmarkName": "Forest Massif of Odzala-Kokoua",
+      "landmarkKind": "rainforest",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Congolese forest",
+        "Forest-savanna transition",
+        "Forest regeneration"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/692/",
+      "representation": "stylized",
+      "mediaSearch": "Forest Massif of Odzala-Kokoua Republic of the Congo"
+    },
+    {
+      "code": "ROU",
+      "levelTitle": "Danube Delta Route",
+      "landmarkName": "Danube Delta",
+      "landmarkKind": "wetland",
+      "palette": {
+        "stone": "#c6ac8d",
+        "roof": "#9b6342",
+        "accent": "#deba5f",
+        "foliage": "#94a653"
+      },
+      "features": [
+        "Wetlands",
+        "Lake setting"
+      ],
+      "biome": "grassland",
+      "sourceUrl": "https://whc.unesco.org/en/list/588/",
+      "representation": "stylized",
+      "mediaSearch": "Danube Delta Romania"
+    },
+    {
+      "code": "RUS",
+      "levelTitle": "Historic Centre of Saint Petersburg and Related Groups of… Route",
+      "landmarkName": "Historic Centre of Saint Petersburg and Related Groups of Monuments",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Baroque architecture",
+        "Palatial buildings",
+        "Bridge crossing"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/540/",
+      "representation": "stylized",
+      "mediaSearch": "Historic Centre of Saint Petersburg and Related Groups of Monuments Russia"
+    },
+    {
+      "code": "RWA",
+      "levelTitle": "Nyungwe National Park Route",
+      "landmarkName": "Nyungwe National Park",
+      "landmarkKind": "rainforest",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Rainforest conservation",
+        "Peat bogs and moors",
+        "Grassland habitats"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/1697/",
+      "representation": "stylized",
+      "mediaSearch": "Nyungwe National Park Rwanda"
+    },
+    {
+      "code": "KNA",
+      "levelTitle": "Brimstone Hill Fortress National Park Route",
+      "landmarkName": "Brimstone Hill Fortress National Park",
+      "landmarkKind": "castle",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Fortified structures"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/910/",
+      "representation": "stylized",
+      "mediaSearch": "Brimstone Hill Fortress National Park Saint Kitts and Nevis"
+    },
+    {
+      "code": "LCA",
+      "levelTitle": "Pitons Management Area Route",
+      "landmarkName": "Pitons Management Area",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Reef environment",
+        "Volcanic landscape",
+        "Forested landscape"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/1161/",
+      "representation": "stylized",
+      "mediaSearch": "Pitons Management Area Saint Lucia",
+      "shapeHints": {
+        "roof": "spire"
+      }
+    },
+    {
+      "code": "VCT",
+      "levelTitle": "La Soufriere, Saint Vincent Route",
+      "landmarkName": "La Soufriere, Saint Vincent",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Stratovolcano",
+        "Summit crater",
+        "Volcanic island landscape"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://volcano.si.edu/volcano.cfm?vn=360150",
+      "representation": "stylized",
+      "mediaSearch": "La Soufriere, Saint Vincent Saint Vincent and the Grenadines"
+    },
+    {
+      "code": "WSM",
+      "levelTitle": "To Sua Ocean Trench Route",
+      "landmarkName": "To Sua Ocean Trench",
+      "landmarkKind": "wetland",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Steep-sided swimming hole",
+        "Long access ladder",
+        "Wooden platform"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://www.samoa.travel/plan-book/activities/to-sua-ocean-trench/",
+      "representation": "stylized",
+      "mediaSearch": "To Sua Ocean Trench Samoa"
+    },
+    {
+      "code": "SMR",
+      "levelTitle": "San Marino Historic Centre and Mount Titano Route",
+      "landmarkName": "San Marino Historic Centre and Mount Titano",
+      "landmarkKind": "castle",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Fortified structures",
+        "Towers",
+        "Basilica"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://whc.unesco.org/en/list/1245/",
+      "representation": "stylized",
+      "mediaSearch": "San Marino Historic Centre and Mount Titano San Marino"
+    },
+    {
+      "code": "STP",
+      "levelTitle": "The Roças of Sao Tome and Principe: Colonial Agricultural… Route",
+      "landmarkName": "The Roças of Sao Tome and Principe: Colonial Agricultural System and Forced Migration",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Island setting"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/1750/",
+      "representation": "stylized",
+      "mediaSearch": "The Roças of Sao Tome and Principe: Colonial Agricultural System and Forced Migration São Tomé and Príncipe"
+    },
+    {
+      "code": "SAU",
+      "levelTitle": "Hegra Archaeological Site (al-Hijr / Madā ͐ in Ṣāliḥ) Route",
+      "landmarkName": "Hegra Archaeological Site (al-Hijr / Madā ͐ in Ṣāliḥ)",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Rock-cut tombs",
+        "Decorated facades",
+        "Water wells"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/1293/",
+      "representation": "stylized",
+      "mediaSearch": "Hegra Archaeological Site (al-Hijr / Madā ͐ in Ṣāliḥ) Saudi Arabia"
+    },
+    {
+      "code": "SEN",
+      "levelTitle": "Island of Gorée Route",
+      "landmarkName": "Island of Gorée",
+      "landmarkKind": "island",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Coastal setting",
+        "Island setting"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/26/",
+      "representation": "stylized",
+      "mediaSearch": "Island of Gorée Senegal"
+    },
+    {
+      "code": "SRB",
+      "levelTitle": "Stari Ras and Sopoćani Route",
+      "landmarkName": "Stari Ras and Sopoćani",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#c6ac8d",
+        "roof": "#9b6342",
+        "accent": "#deba5f",
+        "foliage": "#94a653"
+      },
+      "features": [
+        "Byzantine architecture",
+        "Church buildings",
+        "Monastic buildings"
+      ],
+      "biome": "grassland",
+      "sourceUrl": "https://whc.unesco.org/en/list/96/",
+      "representation": "stylized",
+      "mediaSearch": "Stari Ras and Sopoćani Serbia"
+    },
+    {
+      "code": "SYC",
+      "levelTitle": "Aldabra Atoll Route",
+      "landmarkName": "Aldabra Atoll",
+      "landmarkKind": "island",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Reef environment",
+        "Island setting"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/185/",
+      "representation": "stylized",
+      "mediaSearch": "Aldabra Atoll Seychelles"
+    },
+    {
+      "code": "SLE",
+      "levelTitle": "Gola-Tiwai Complex Route",
+      "landmarkName": "Gola-Tiwai Complex",
+      "landmarkKind": "rainforest",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Tropical forest",
+        "Island setting",
+        "Forested landscape"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/1746/",
+      "representation": "stylized",
+      "mediaSearch": "Gola-Tiwai Complex Sierra Leone"
+    },
+    {
+      "code": "SGP",
+      "levelTitle": "Singapore Botanic Gardens Route",
+      "landmarkName": "Singapore Botanic Gardens",
+      "landmarkKind": "forest",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Tropical botanic garden",
+        "Historic plantings and buildings",
+        "Plant conservation setting"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/1483/",
+      "representation": "stylized",
+      "mediaSearch": "Singapore Botanic Gardens Singapore"
+    },
+    {
+      "code": "SVK",
+      "levelTitle": "Historic Town of Banská Štiavnica and the Technical Monum… Route",
+      "landmarkName": "Historic Town of Banská Štiavnica and the Technical Monuments in its Vicinity",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Church buildings",
+        "Palatial buildings",
+        "Castle structures"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/618/",
+      "representation": "stylized",
+      "mediaSearch": "Historic Town of Banská Štiavnica and the Technical Monuments in its Vicinity Slovakia"
+    },
+    {
+      "code": "SVN",
+      "levelTitle": "Škocjan Caves Route",
+      "landmarkName": "Škocjan Caves",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Limestone formations",
+        "Cave formations",
+        "Waterfalls"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/390/",
+      "representation": "stylized",
+      "mediaSearch": "Škocjan Caves Slovenia"
+    },
+    {
+      "code": "SLB",
+      "levelTitle": "East Rennell Route",
+      "landmarkName": "East Rennell",
+      "landmarkKind": "island",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Limestone formations",
+        "Reef environment",
+        "Island setting"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/854/",
+      "representation": "stylized",
+      "mediaSearch": "East Rennell Solomon Islands"
+    },
+    {
+      "code": "SOM",
+      "levelTitle": "Laas Geel rock shelters, Somaliland region Route",
+      "landmarkName": "Laas Geel rock shelters, Somaliland region",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Rock shelters",
+        "Cattle and human rock paintings",
+        "Rocky setting near Hargeisa"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://tourism.gov.so/posts/de0b51ab-db1f-43b9-8571-3d606744a509",
+      "representation": "stylized",
+      "mediaSearch": "Laas Geel rock shelters, Somaliland region Somalia"
+    },
+    {
+      "code": "ZAF",
+      "levelTitle": "Savanna Wildlife Adventure",
+      "landmarkName": "Kruger National Park",
+      "landmarkKind": "savanna",
+      "palette": {
+        "stone": "#a98e66",
+        "roof": "#796247",
+        "accent": "#d1ac6a",
+        "foliage": "#718142"
+      },
+      "features": [
+        "Savanna woodland",
+        "River and waterhole habitats",
+        "Elephants and giraffes"
+      ],
+      "biome": "grassland",
+      "sourceUrl": "https://www.sanparks.org/parks/kruger/explore/fauna-flora/mammals",
+      "representation": "stylized",
+      "mediaSearch": "Kruger National Park South Africa"
+    },
+    {
+      "code": "KOR",
+      "levelTitle": "Haeinsa Temple Janggyeong Panjeon, the Depositories for t… Route",
+      "landmarkName": "Haeinsa Temple Janggyeong Panjeon, the Depositories for the Tripitaka Koreana Woodblocks",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Buddhist temple",
+        "Woodblock depository buildings",
+        "Mount Gaya setting"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://whc.unesco.org/en/list/737/",
+      "representation": "stylized",
+      "mediaSearch": "Haeinsa Temple Janggyeong Panjeon, the Depositories for the Tripitaka Koreana Woodblocks South Korea",
+      "shapeHints": {
+        "roof": "tiered"
+      }
+    },
+    {
+      "code": "SSD",
+      "levelTitle": "Boma–Badingilo Migratory Landscape Route",
+      "landmarkName": "Boma–Badingilo Migratory Landscape",
+      "landmarkKind": "savanna",
+      "palette": {
+        "stone": "#c6ac8d",
+        "roof": "#9b6342",
+        "accent": "#deba5f",
+        "foliage": "#94a653"
+      },
+      "features": [
+        "Savanna landscape",
+        "Grassland",
+        "Wetlands"
+      ],
+      "biome": "grassland",
+      "sourceUrl": "https://whc.unesco.org/en/list/1808/",
+      "representation": "stylized",
+      "mediaSearch": "Boma–Badingilo Migratory Landscape South Sudan"
+    },
+    {
+      "code": "ESP",
+      "levelTitle": "Alhambra and Generalife Route",
+      "landmarkName": "Alhambra and Generalife",
+      "landmarkKind": "palace",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Hilltop fortress",
+        "Palatial residences",
+        "Generalife gardens"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/314/",
+      "representation": "stylized",
+      "mediaSearch": "Alhambra and Generalife Spain"
+    },
+    {
+      "code": "LKA",
+      "levelTitle": "Ancient City of Polonnaruwa Route",
+      "landmarkName": "Ancient City of Polonnaruwa",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Gardens",
+        "Archaeological remains"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/201/",
+      "representation": "stylized",
+      "mediaSearch": "Ancient City of Polonnaruwa Sri Lanka"
+    },
+    {
+      "code": "SDN",
+      "levelTitle": "Gebel Barkal and the Sites of the Napatan Region Route",
+      "landmarkName": "Gebel Barkal and the Sites of the Napatan Region",
+      "landmarkKind": "pyramid",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Palatial buildings",
+        "Valley setting",
+        "Archaeological remains"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/1073/",
+      "representation": "stylized",
+      "mediaSearch": "Gebel Barkal and the Sites of the Napatan Region Sudan"
+    },
+    {
+      "code": "SUR",
+      "levelTitle": "Central Suriname Nature Reserve Route",
+      "landmarkName": "Central Suriname Nature Reserve",
+      "landmarkKind": "rainforest",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Tropical forest",
+        "River setting",
+        "Forested landscape"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/1017/",
+      "representation": "stylized",
+      "mediaSearch": "Central Suriname Nature Reserve Suriname"
+    },
+    {
+      "code": "SWE",
+      "levelTitle": "Royal Domain of Drottningholm Route",
+      "landmarkName": "Royal Domain of Drottningholm",
+      "landmarkKind": "palace",
+      "palette": {
+        "stone": "#b9b1a2",
+        "roof": "#a76b4c",
+        "accent": "#d7b16a",
+        "foliage": "#3d784e"
+      },
+      "features": [
+        "Palatial buildings",
+        "Castle structures",
+        "Island setting"
+      ],
+      "biome": "forest",
+      "sourceUrl": "https://whc.unesco.org/en/list/559/",
+      "representation": "stylized",
+      "mediaSearch": "Royal Domain of Drottningholm Sweden",
+      "shapeHints": {
+        "roof": "spire"
+      }
+    },
+    {
+      "code": "CHE",
+      "levelTitle": "Abbey of St Gall Route",
+      "landmarkName": "Abbey of St Gall",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Baroque architecture",
+        "Cathedral architecture",
+        "Monastic buildings"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/268/",
+      "representation": "stylized",
+      "mediaSearch": "Abbey of St Gall Switzerland"
+    },
+    {
+      "code": "SYR",
+      "levelTitle": "Ancient City of Damascus Route",
+      "landmarkName": "Ancient City of Damascus",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Mosque architecture"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://whc.unesco.org/en/list/20/",
+      "representation": "stylized",
+      "mediaSearch": "Ancient City of Damascus Syria"
+    },
+    {
+      "code": "TJK",
+      "levelTitle": "Proto-urban Site of Sarazm Route",
+      "landmarkName": "Proto-urban Site of Sarazm",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Mountain setting",
+        "Valley setting",
+        "Archaeological remains"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/1141/",
+      "representation": "stylized",
+      "mediaSearch": "Proto-urban Site of Sarazm Tajikistan"
+    },
+    {
+      "code": "TZA",
+      "levelTitle": "Kilimanjaro National Park Route",
+      "landmarkName": "Kilimanjaro National Park",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#b2b9be",
+        "roof": "#586a74",
+        "accent": "#e3b84c",
+        "foliage": "#65836a"
+      },
+      "features": [
+        "Volcanic massif",
+        "Mountain forest",
+        "Surrounding savanna plains"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://whc.unesco.org/en/list/403/",
+      "representation": "stylized",
+      "mediaSearch": "Kilimanjaro National Park Tanzania"
+    },
+    {
+      "code": "THA",
+      "levelTitle": "Historic City of Ayutthaya Route",
+      "landmarkName": "Historic City of Ayutthaya",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Monastic buildings",
+        "Towers",
+        "Archaeological remains"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/576/",
+      "representation": "stylized",
+      "mediaSearch": "Historic City of Ayutthaya Thailand"
+    },
+    {
+      "code": "TLS",
+      "levelTitle": "Cristo Rei, Dili Route",
+      "landmarkName": "Cristo Rei, Dili",
+      "landmarkKind": "tower",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Statue with outstretched arms",
+        "Globe pedestal",
+        "Cape Fatucama hilltop"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://timorleste.tl/tet/destinations/cristo-rei",
+      "representation": "stylized",
+      "mediaSearch": "Cristo Rei, Dili Timor-Leste"
+    },
+    {
+      "code": "TGO",
+      "levelTitle": "Koutammakou, the Land of the Batammariba Route",
+      "landmarkName": "Koutammakou, the Land of the Batammariba",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Towers",
+        "Forested landscape"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/1140/",
+      "representation": "stylized",
+      "mediaSearch": "Koutammakou, the Land of the Batammariba Togo"
+    },
+    {
+      "code": "TON",
+      "levelTitle": "Ha'amonga 'a Maui trilithon Route",
+      "landmarkName": "Ha'amonga 'a Maui trilithon",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Coral-limestone slabs",
+        "Two upright stones",
+        "Horizontal lintel"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/tentativelists/5167/",
+      "representation": "stylized",
+      "mediaSearch": "Ha'amonga 'a Maui trilithon Tonga"
+    },
+    {
+      "code": "TTO",
+      "levelTitle": "La Brea Pitch Lake Route",
+      "landmarkName": "La Brea Pitch Lake",
+      "landmarkKind": "wetland",
+      "palette": {
+        "stone": "#45433e",
+        "roof": "#bd7858",
+        "accent": "#3b3935",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Natural asphalt deposit",
+        "Dark low-lying surface",
+        "Water pools"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://nationaltrust.tt/location/pitch-lake/",
+      "representation": "stylized",
+      "mediaSearch": "La Brea Pitch Lake Trinidad and Tobago"
+    },
+    {
+      "code": "TUN",
+      "levelTitle": "Amphitheatre of El Jem Route",
+      "landmarkName": "Amphitheatre of El Jem",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Archaeological remains"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/38/",
+      "representation": "stylized",
+      "mediaSearch": "Amphitheatre of El Jem Tunisia"
+    },
+    {
+      "code": "TUR",
+      "levelTitle": "Göreme National Park and the Rock Sites of Cappadocia Route",
+      "landmarkName": "Göreme National Park and the Rock Sites of Cappadocia",
+      "landmarkKind": "mountain",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Rock-cut structures",
+        "Byzantine architecture",
+        "Valley setting"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://whc.unesco.org/en/list/357/",
+      "representation": "stylized",
+      "mediaSearch": "Göreme National Park and the Rock Sites of Cappadocia Türkiye"
+    },
+    {
+      "code": "TKM",
+      "levelTitle": "State Historical and Cultural Park “Ancient Merv” Route",
+      "landmarkName": "State Historical and Cultural Park “Ancient Merv”",
+      "landmarkKind": "ruins",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Archaeological remains"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/886/",
+      "representation": "stylized",
+      "mediaSearch": "State Historical and Cultural Park “Ancient Merv” Turkmenistan"
+    },
+    {
+      "code": "TUV",
+      "levelTitle": "Funafuti Conservation Area Route",
+      "landmarkName": "Funafuti Conservation Area",
+      "landmarkKind": "island",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Atoll reef and lagoon",
+        "Low wooded islets",
+        "Coral-sand beaches"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://kaupulefunafuti.tv/conservation-area",
+      "representation": "stylized",
+      "mediaSearch": "Funafuti Conservation Area Tuvalu"
+    },
+    {
+      "code": "UGA",
+      "levelTitle": "Bwindi Impenetrable National Park Route",
+      "landmarkName": "Bwindi Impenetrable National Park",
+      "landmarkKind": "rainforest",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Mountain setting",
+        "Forested landscape"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/682/",
+      "representation": "stylized",
+      "mediaSearch": "Bwindi Impenetrable National Park Uganda"
+    },
+    {
+      "code": "UKR",
+      "levelTitle": "Kyiv: Saint-Sophia Cathedral and Related Monastic Buildin… Route",
+      "landmarkName": "Kyiv: Saint-Sophia Cathedral and Related Monastic Buildings, Kyiv-Pechersk Lavra",
+      "landmarkKind": "cathedral",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Cathedral architecture"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://whc.unesco.org/en/list/527/",
+      "representation": "stylized",
+      "mediaSearch": "Kyiv: Saint-Sophia Cathedral and Related Monastic Buildings, Kyiv-Pechersk Lavra Ukraine"
+    },
+    {
+      "code": "ARE",
+      "levelTitle": "Cultural Sites of Al Ain (Hafit, Hili, Bidaa Bint Saud an… Route",
+      "landmarkName": "Cultural Sites of Al Ain (Hafit, Hili, Bidaa Bint Saud and Oases Areas)",
+      "landmarkKind": "desert",
+      "palette": {
+        "stone": "#b98762",
+        "roof": "#8d5f43",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Earthen architecture",
+        "Palatial buildings",
+        "Towers"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/1343/",
+      "representation": "stylized",
+      "mediaSearch": "Cultural Sites of Al Ain (Hafit, Hili, Bidaa Bint Saud and Oases Areas) United Arab Emirates"
+    },
+    {
+      "code": "GBR",
+      "levelTitle": "Elizabeth Tower and Palace of Westminster Route",
+      "landmarkName": "Elizabeth Tower and Palace of Westminster",
+      "landmarkKind": "tower",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Four-faced clock",
+        "Clock tower",
+        "Neo-Gothic palace"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://www.parliament.uk/about/living-heritage/building/palace/architecture/palacestructure/towers-of-parliament/",
+      "representation": "stylized",
+      "mediaSearch": "Elizabeth Tower and Palace of Westminster United Kingdom"
+    },
+    {
+      "code": "USA",
+      "levelTitle": "New York Harbor Adventure",
+      "landmarkName": "Statue of Liberty",
+      "landmarkKind": "tower",
+      "palette": {
+        "stone": "#c6bdaa",
+        "roof": "#a65e4b",
+        "accent": "#cba553",
+        "foliage": "#5b8c5b"
+      },
+      "features": [
+        "Copper statue",
+        "Raised torch",
+        "Harbour island"
+      ],
+      "biome": "temperate",
+      "sourceUrl": "https://www.nps.gov/npnh/learn/news/fact-sheet-stli.htm",
+      "representation": "stylized",
+      "mediaSearch": "Statue of Liberty United States"
+    },
+    {
+      "code": "URY",
+      "levelTitle": "Historic Quarter of the City of Colonia del Sacramento Route",
+      "landmarkName": "Historic Quarter of the City of Colonia del Sacramento",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#c6ac8d",
+        "roof": "#9b6342",
+        "accent": "#deba5f",
+        "foliage": "#94a653"
+      },
+      "features": [
+        "Historic urban fabric"
+      ],
+      "biome": "grassland",
+      "sourceUrl": "https://whc.unesco.org/en/list/747/",
+      "representation": "stylized",
+      "mediaSearch": "Historic Quarter of the City of Colonia del Sacramento Uruguay"
+    },
+    {
+      "code": "UZB",
+      "levelTitle": "Itchan Kala Route",
+      "landmarkName": "Itchan Kala",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Mosque architecture",
+        "Palatial buildings",
+        "Desert setting"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/543/",
+      "representation": "stylized",
+      "mediaSearch": "Itchan Kala Uzbekistan"
+    },
+    {
+      "code": "VUT",
+      "levelTitle": "Chief Roi Mata’s Domain Route",
+      "landmarkName": "Chief Roi Mata’s Domain",
+      "landmarkKind": "island",
+      "palette": {
+        "stone": "#c1bba8",
+        "roof": "#bd7858",
+        "accent": "#7bd8df",
+        "foliage": "#4c8d61"
+      },
+      "features": [
+        "Island setting",
+        "Archaeological remains"
+      ],
+      "biome": "coastal",
+      "sourceUrl": "https://whc.unesco.org/en/list/1280/",
+      "representation": "stylized",
+      "mediaSearch": "Chief Roi Mata’s Domain Vanuatu"
+    },
+    {
+      "code": "VEN",
+      "levelTitle": "Coro and its Port Route",
+      "landmarkName": "Coro and its Port",
+      "landmarkKind": "harbour",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "Harbour setting"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/658/",
+      "representation": "stylized",
+      "mediaSearch": "Coro and its Port Venezuela"
+    },
+    {
+      "code": "VNM",
+      "levelTitle": "Complex of Hué Monuments Route",
+      "landmarkName": "Complex of Hué Monuments",
+      "landmarkKind": "palace",
+      "palette": {
+        "stone": "#b0a387",
+        "roof": "#8c5144",
+        "accent": "#e8bc64",
+        "foliage": "#36764a"
+      },
+      "features": [
+        "River setting"
+      ],
+      "biome": "tropical",
+      "sourceUrl": "https://whc.unesco.org/en/list/678/",
+      "representation": "stylized",
+      "mediaSearch": "Complex of Hué Monuments Vietnam"
+    },
+    {
+      "code": "YEM",
+      "levelTitle": "Old Walled City of Shibam Route",
+      "landmarkName": "Old Walled City of Shibam",
+      "landmarkKind": "old-town",
+      "palette": {
+        "stone": "#d6b075",
+        "roof": "#9a6548",
+        "accent": "#55b7b0",
+        "foliage": "#768f49"
+      },
+      "features": [
+        "Fortified structures",
+        "Towers",
+        "Cliff setting"
+      ],
+      "biome": "desert",
+      "sourceUrl": "https://whc.unesco.org/en/list/192/",
+      "representation": "stylized",
+      "mediaSearch": "Old Walled City of Shibam Yemen"
+    },
+    {
+      "code": "ZMB",
+      "levelTitle": "Mosi-oa-Tunya / Victoria Falls Route",
+      "landmarkName": "Mosi-oa-Tunya / Victoria Falls",
+      "landmarkKind": "wetland",
+      "palette": {
+        "stone": "#c6ac8d",
+        "roof": "#9b6342",
+        "accent": "#deba5f",
+        "foliage": "#94a653"
+      },
+      "features": [
+        "River setting",
+        "Waterfalls"
+      ],
+      "biome": "grassland",
+      "sourceUrl": "https://whc.unesco.org/en/list/509/",
+      "representation": "stylized",
+      "mediaSearch": "Mosi-oa-Tunya / Victoria Falls Zambia"
+    },
+    {
+      "code": "ZWE",
+      "levelTitle": "Mana Pools National Park, Sapi and Chewore Safari Areas Route",
+      "landmarkName": "Mana Pools National Park, Sapi and Chewore Safari Areas",
+      "landmarkKind": "savanna",
+      "palette": {
+        "stone": "#c6ac8d",
+        "roof": "#9b6342",
+        "accent": "#deba5f",
+        "foliage": "#94a653"
+      },
+      "features": [
+        "Cliff setting",
+        "River setting"
+      ],
+      "biome": "grassland",
+      "sourceUrl": "https://whc.unesco.org/en/list/302/",
+      "representation": "stylized",
+      "mediaSearch": "Mana Pools National Park, Sapi and Chewore Safari Areas Zimbabwe"
+    },
+    {
+      "code": "ANTARCTICA",
+      "levelTitle": "Polar Research Trail",
+      "landmarkName": "Antarctic research expedition",
+      "landmarkKind": "research-station",
+      "palette": {
+        "stone": "#b7d7ea",
+        "roof": "#426e8c",
+        "accent": "#e8b252",
+        "foliage": "#c7e5ec"
+      },
+      "features": [
+        "Ice landscape",
+        "Research station illustration",
+        "Peace and science"
+      ],
+      "biome": "alpine",
+      "sourceUrl": "https://www.dfat.gov.au/international-relations/antarctic-treaty-system",
+      "representation": "stylized",
+      "mediaSearch": "Antarctica research station"
+    }
+  ]
+}

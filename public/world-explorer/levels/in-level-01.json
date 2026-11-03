@@ -1,0 +1,644 @@
+{
+ "id": "in-level-01",
+ "countryId": "IN",
+ "legacyCode": "IND",
+ "title": "Taj Mahal: Garden Journey",
+ "environmentId": "india-taj-gardens",
+ "difficulty": "easy-medium",
+ "environment": {
+  "biome": "mughal-garden",
+  "locationReference": "Agra, Uttar Pradesh — Taj Mahal and its charbagh garden",
+  "terrainMaterial": "red-sandstone-and-white-marble",
+  "vegetationPack": "cypress-rows-flowerbeds-and-shade-trees",
+  "architecturePack": "mughal-arches-chhatris-and-water-channels",
+  "landmarkAssets": [
+   "taj-mahal-domed-mausoleum",
+   "four-minarets",
+   "red-sandstone-gateway",
+   "charbagh-water-channels",
+   "fountains",
+   "chhatri-pavilions"
+  ],
+  "lightingPreset": "warm-late-afternoon",
+  "skyPreset": "soft-golden-haze",
+  "weatherPreset": "floating-petals"
+ },
+ "sections": [
+  {
+   "id": "A",
+   "label": "Garden terrace and archway",
+   "x": 0
+  },
+  {
+   "id": "B",
+   "label": "Ornamental steps",
+   "x": 16.5
+  },
+  {
+   "id": "C",
+   "label": "Carved bridges over the channel",
+   "x": 31.5
+  },
+  {
+   "id": "D",
+   "label": "Sandstone terraces",
+   "x": 32
+  },
+  {
+   "id": "E",
+   "label": "Garden pavilion star",
+   "x": 50
+  },
+  {
+   "id": "F",
+   "label": "Moving garden platform",
+   "x": 64
+  },
+  {
+   "id": "G",
+   "label": "Clockwork beetle and checkpoint",
+   "x": 88.5
+  },
+  {
+   "id": "H",
+   "label": "Raised pavilion with the view",
+   "x": 108.5
+  }
+ ],
+ "camera": {
+  "height": 4.4,
+  "look": 1.35,
+  "follow": 0.42,
+  "maxRise": 1.8
+ },
+ "spawn": {
+  "platformId": "in-start",
+  "offset": 3
+ },
+ "platforms": [
+  {
+   "id": "in-start",
+   "x": 0,
+   "y": 0,
+   "width": 15,
+   "depth": 3.4,
+   "thickness": 5,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "in-b1",
+   "x": 17,
+   "y": 0.4,
+   "width": 5,
+   "depth": 3.4,
+   "thickness": 3,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "in-b2",
+   "x": 24.4,
+   "y": -0.1,
+   "width": 5.2,
+   "depth": 3.4,
+   "thickness": 3.5,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "in-bridge-a",
+   "x": 31.8,
+   "y": -2,
+   "width": 7.6,
+   "depth": 3.4,
+   "thickness": 0.5,
+   "type": "bridge",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "carved"
+  },
+  {
+   "id": "in-fountain",
+   "x": 41.4,
+   "y": -1.8,
+   "width": 4.4,
+   "depth": 3.4,
+   "thickness": 2.5,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "in-bridge-b",
+   "x": 47.8,
+   "y": -2,
+   "width": 7,
+   "depth": 3.4,
+   "thickness": 0.5,
+   "type": "bridge",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main",
+   "style": "carved"
+  },
+  {
+   "id": "in-c-exit",
+   "x": 56.8,
+   "y": -0.9,
+   "width": 5.5,
+   "depth": 3.4,
+   "thickness": 3.5,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "in-up-1",
+   "x": 31.8,
+   "y": 1,
+   "width": 3,
+   "depth": 3.4,
+   "thickness": 1,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper"
+  },
+  {
+   "id": "in-up-2",
+   "x": 35.6,
+   "y": 2,
+   "width": 2.6,
+   "depth": 3.4,
+   "thickness": 1,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper"
+  },
+  {
+   "id": "in-lift",
+   "x": 40.4,
+   "y": 3.2,
+   "width": 2.6,
+   "depth": 3.4,
+   "thickness": 0.5,
+   "type": "moving",
+   "motion": "vertical",
+   "amplitude": 0.5,
+   "phase": 0,
+   "period": 5.5,
+   "route": "upper",
+   "style": "garden",
+   "pause": 0.8
+  },
+  {
+   "id": "in-up-4",
+   "x": 45.4,
+   "y": 3.8,
+   "width": 2.8,
+   "depth": 3.4,
+   "thickness": 1,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper"
+  },
+  {
+   "id": "in-pavilion",
+   "x": 50.6,
+   "y": 4.4,
+   "width": 4.6,
+   "depth": 3.4,
+   "thickness": 1.6,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "upper"
+  },
+  {
+   "id": "in-e1",
+   "x": 64.4,
+   "y": -0.3,
+   "width": 6.5,
+   "depth": 3.4,
+   "thickness": 4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "in-garden-lift",
+   "x": 73.6,
+   "y": -0.6,
+   "width": 3.6,
+   "depth": 3.4,
+   "thickness": 0.5,
+   "type": "moving",
+   "motion": "horizontal",
+   "amplitude": 1.5,
+   "phase": 0,
+   "period": 7,
+   "route": "main",
+   "style": "garden",
+   "pause": 1
+  },
+  {
+   "id": "in-f2",
+   "x": 81,
+   "y": 0,
+   "width": 6,
+   "depth": 3.4,
+   "thickness": 4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "in-g-island",
+   "x": 89.4,
+   "y": 0.4,
+   "width": 10,
+   "depth": 3.4,
+   "thickness": 4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "in-g-safe",
+   "x": 101.8,
+   "y": 0.9,
+   "width": 5,
+   "depth": 3.4,
+   "thickness": 3,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "in-h-step",
+   "x": 109,
+   "y": 1.7,
+   "width": 2.8,
+   "depth": 3.4,
+   "thickness": 1.4,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  },
+  {
+   "id": "in-finish",
+   "x": 114.2,
+   "y": 1.1,
+   "width": 14,
+   "depth": 3.4,
+   "thickness": 5,
+   "type": "stone",
+   "motion": null,
+   "amplitude": 0,
+   "phase": 0,
+   "period": 7.2,
+   "route": "main"
+  }
+ ],
+ "coins": [
+  {
+   "id": "in-coin-01",
+   "platformId": "in-start",
+   "offset": 5.5,
+   "height": 1.1
+  },
+  {
+   "id": "in-coin-02",
+   "platformId": "in-start",
+   "offset": 8,
+   "height": 1.1
+  },
+  {
+   "id": "in-coin-03",
+   "platformId": "in-start",
+   "offset": 10.5,
+   "height": 1.1
+  },
+  {
+   "id": "in-coin-04",
+   "platformId": "in-start",
+   "offset": 16,
+   "height": 1.9
+  },
+  {
+   "id": "in-coin-05",
+   "platformId": "in-b1",
+   "offset": 2.5,
+   "height": 1.1
+  },
+  {
+   "id": "in-coin-06",
+   "platformId": "in-b2",
+   "offset": 1.6,
+   "height": 1.1
+  },
+  {
+   "id": "in-coin-07",
+   "platformId": "in-b2",
+   "offset": 3.8,
+   "height": 1.1
+  },
+  {
+   "id": "in-coin-08",
+   "platformId": "in-bridge-a",
+   "offset": 1.5,
+   "height": 1
+  },
+  {
+   "id": "in-coin-09",
+   "platformId": "in-bridge-a",
+   "offset": 3.5,
+   "height": 1
+  },
+  {
+   "id": "in-coin-10",
+   "platformId": "in-bridge-a",
+   "offset": 5.5,
+   "height": 1
+  },
+  {
+   "id": "in-coin-11",
+   "platformId": "in-bridge-a",
+   "offset": 8.6,
+   "height": 1.6
+  },
+  {
+   "id": "in-coin-12",
+   "platformId": "in-fountain",
+   "offset": 2.2,
+   "height": 1.1
+  },
+  {
+   "id": "in-coin-13",
+   "platformId": "in-bridge-b",
+   "offset": 1.5,
+   "height": 1
+  },
+  {
+   "id": "in-coin-14",
+   "platformId": "in-bridge-b",
+   "offset": 3.5,
+   "height": 1
+  },
+  {
+   "id": "in-coin-15",
+   "platformId": "in-bridge-b",
+   "offset": 5.5,
+   "height": 1
+  },
+  {
+   "id": "in-coin-16",
+   "platformId": "in-c-exit",
+   "offset": 3,
+   "height": 1.1
+  },
+  {
+   "id": "in-coin-17",
+   "platformId": "in-up-1",
+   "offset": 1.5,
+   "height": 1.2
+  },
+  {
+   "id": "in-coin-18",
+   "platformId": "in-up-2",
+   "offset": 1.3,
+   "height": 1.2
+  },
+  {
+   "id": "in-coin-19",
+   "platformId": "in-up-4",
+   "offset": 1.4,
+   "height": 1.2
+  },
+  {
+   "id": "in-coin-20",
+   "platformId": "in-up-4",
+   "offset": 3.6,
+   "height": 2
+  },
+  {
+   "id": "in-coin-21",
+   "platformId": "in-e1",
+   "offset": 4.5,
+   "height": 1.1
+  },
+  {
+   "id": "in-coin-22",
+   "platformId": "in-garden-lift",
+   "offset": 1.8,
+   "height": 1.1
+  },
+  {
+   "id": "in-coin-23",
+   "platformId": "in-f2",
+   "offset": 1.5,
+   "height": 1.1
+  },
+  {
+   "id": "in-coin-24",
+   "platformId": "in-f2",
+   "offset": 4.5,
+   "height": 1.1
+  },
+  {
+   "id": "in-coin-25",
+   "platformId": "in-g-island",
+   "offset": 1.2,
+   "height": 1.1
+  },
+  {
+   "id": "in-coin-26",
+   "platformId": "in-g-island",
+   "offset": 8.8,
+   "height": 1.1
+  },
+  {
+   "id": "in-coin-27",
+   "platformId": "in-g-safe",
+   "offset": 2.5,
+   "height": 1.1
+  },
+  {
+   "id": "in-coin-28",
+   "platformId": "in-finish",
+   "offset": 3,
+   "height": 1.1
+  },
+  {
+   "id": "in-coin-29",
+   "platformId": "in-finish",
+   "offset": 6,
+   "height": 1.1
+  },
+  {
+   "id": "in-coin-30",
+   "platformId": "in-finish",
+   "offset": 9,
+   "height": 1.1
+  }
+ ],
+ "stars": [
+  {
+   "id": "in-star-01",
+   "platformId": "in-pavilion",
+   "offset": 2.2,
+   "height": 1.15
+  },
+  {
+   "id": "in-star-02",
+   "platformId": "in-f2",
+   "offset": 3,
+   "height": 2.2
+  },
+  {
+   "id": "in-star-03",
+   "platformId": "in-h-step",
+   "offset": 1.4,
+   "height": 2.3
+  }
+ ],
+ "checkpoints": [
+  {
+   "id": "in-checkpoint-01",
+   "platformId": "in-e1",
+   "offset": 1
+  },
+  {
+   "id": "in-checkpoint-02",
+   "platformId": "in-g-safe",
+   "offset": 1
+  }
+ ],
+ "discovery": {
+  "id": "in-discovery",
+  "platformId": "in-e1",
+  "offset": 2.6,
+  "factId": "in-discovery"
+ },
+ "finish": {
+  "platformId": "in-finish",
+  "offset": 11
+ },
+ "hazards": [],
+ "enemies": [
+  {
+   "id": "in-clockwork-beetle",
+   "platformId": "in-g-island",
+   "minOffset": 3.5,
+   "maxOffset": 7.5,
+   "speed": 0.8,
+   "turnPause": 0.5
+  }
+ ],
+ "discoveryBlocks": [
+  {
+   "id": "in-discovery-block",
+   "x": 35.2,
+   "y": 0.48,
+   "width": 0.75,
+   "height": 0.8,
+   "factId": "in-discovery"
+  }
+ ],
+ "mainRoute": [
+  "in-start",
+  "in-b1",
+  "in-b2",
+  "in-bridge-a",
+  "in-fountain",
+  "in-bridge-b",
+  "in-c-exit",
+  "in-e1",
+  "in-garden-lift",
+  "in-f2",
+  "in-g-island",
+  "in-g-safe",
+  "in-h-step",
+  "in-finish"
+ ],
+ "upperRoute": [
+  "in-start",
+  "in-b1",
+  "in-b2",
+  "in-up-1",
+  "in-up-2",
+  "in-lift",
+  "in-up-4",
+  "in-pavilion",
+  "in-c-exit",
+  "in-e1",
+  "in-garden-lift",
+  "in-f2",
+  "in-g-island",
+  "in-g-safe",
+  "in-h-step",
+  "in-finish"
+ ],
+ "physics": {
+  "gravity": 20,
+  "jumpSpeed": 9,
+  "runSpeed": 6,
+  "acceleration": 25,
+  "airControl": 0.65,
+  "coyoteTime": 0.12,
+  "jumpBuffer": 0.12,
+  "playerRadius": 0.2,
+  "playerHeight": 1.83,
+  "killY": -7,
+  "iceGrip": 0.3
+ }
+}

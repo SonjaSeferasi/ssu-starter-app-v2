@@ -1,0 +1,4391 @@
+{
+  "CAN": {
+    "validation": {
+      "levelId": "ca-level-01",
+      "ok": true,
+      "checks": [
+        {
+          "id": 1,
+          "name": "Manifest schema and bounds",
+          "ok": true,
+          "detail": "validateLevel accepted the configuration."
+        },
+        {
+          "id": 2,
+          "name": "One START on the spawn and one FINISH on the goal",
+          "ok": true,
+          "detail": "START ca-start, FINISH ca-finish."
+        },
+        {
+          "id": 3,
+          "name": "Every playable platform is part of the route graph",
+          "ok": true,
+          "detail": "11 nodes cover 11 platforms."
+        },
+        {
+          "id": 4,
+          "name": "FINISH is reachable from START by mandatory edges",
+          "ok": true,
+          "detail": "Critical path of 10 nodes."
+        },
+        {
+          "id": 5,
+          "name": "Every node is reachable from START",
+          "ok": true,
+          "detail": "All nodes reachable."
+        },
+        {
+          "id": 6,
+          "name": "No dead ends: every node can still reach FINISH",
+          "ok": true,
+          "detail": "Optional branches all rejoin the route."
+        },
+        {
+          "id": 7,
+          "name": "Checkpoints lie on the critical path and split it fairly",
+          "ok": true,
+          "detail": "Largest stretch without a checkpoint: 46.0 units of 97.5."
+        },
+        {
+          "id": 8,
+          "name": "Collectibles sit on graph nodes; stars reward an optional route",
+          "ok": true,
+          "detail": "1 of 3 stars are off the critical path."
+        },
+        {
+          "id": 9,
+          "name": "No solid geometry intrudes into headroom on the critical path",
+          "ok": true,
+          "detail": "Headroom clear."
+        },
+        {
+          "id": 10,
+          "name": "Every mandatory jump fits the measured jump envelope",
+          "ok": true,
+          "detail": "Dmax 5.40, Hmax 1.95; hardest gap 57%, step 15%."
+        },
+        {
+          "id": 11,
+          "name": "Measured tier matches the declared tier",
+          "ok": true,
+          "detail": "Declared 3, measured 3 (score 3.12)."
+        },
+        {
+          "id": 12,
+          "name": "Every gate is opened by a plate placed before it",
+          "ok": true,
+          "detail": "0 gate(s) paired."
+        },
+        {
+          "id": 13,
+          "name": "Physics: every mandatory edge succeeds at every timing",
+          "ok": true,
+          "detail": "9 edges verified at up to 4 timings each."
+        },
+        {
+          "id": 14,
+          "name": "Physics: every optional edge succeeds at every timing",
+          "ok": true,
+          "detail": "2 optional edges verified."
+        },
+        {
+          "id": 15,
+          "name": "Physics: full runs from four start delays finish without damage",
+          "ok": true,
+          "detail": "Completed in 22.9 s with no damage at every start delay."
+        },
+        {
+          "id": 16,
+          "name": "Completion time suits the target duration",
+          "ok": true,
+          "detail": "Bot 22.9 s vs target 55 s (a person exploring takes longer)."
+        }
+      ],
+      "completionSeconds": 22.883333333333315
+    },
+    "collectibles": {
+      "difficulty": 2,
+      "level": {
+        "id": "ca-level-01",
+        "countryId": "CA",
+        "legacyCode": "CAN",
+        "title": "Rockies: Glacier Pass",
+        "environmentId": "canada-rockies-alpine",
+        "difficulty": "medium",
+        "difficultyTier": 3,
+        "design": {
+          "archetype": "alpine-expedition",
+          "signatureMechanic": "ice-and-gorge-lift",
+          "mechanics": [
+            "ice-and-gorge-lift",
+            "optional-star-detour",
+            "checkpoint-recovery",
+            "country-patrol"
+          ],
+          "terrain": [
+            "ground",
+            "ice-shelf",
+            "bridge",
+            "mechanical",
+            "rock"
+          ],
+          "verticality": "medium",
+          "enemyProfile": "light",
+          "targetDurationSeconds": 55,
+          "seed": 20261167
+        },
+        "environment": {
+          "biome": "alpine",
+          "locationReference": "Canadian Rocky Mountain Parks",
+          "terrainMaterial": "alpine-rock",
+          "vegetationPack": "spruce",
+          "architecturePack": "trail-and-crossing",
+          "landmarkAssets": [
+            "rockies-far-range",
+            "turquoise-glacial-lake",
+            "spruce-forest"
+          ],
+          "lightingPreset": "warm-directional-daylight",
+          "skyPreset": "clear-layered-sky"
+        },
+        "sections": [
+          {
+            "id": "A",
+            "label": "Trailhead / learn to brake",
+            "x": 0
+          },
+          {
+            "id": "B",
+            "label": "Timber gorge",
+            "x": 23
+          },
+          {
+            "id": "C",
+            "label": "Lift crossing",
+            "x": 45
+          },
+          {
+            "id": "D",
+            "label": "Exposed pass",
+            "x": 73
+          },
+          {
+            "id": "E",
+            "label": "Alpine lookout",
+            "x": 97
+          }
+        ],
+        "camera": {
+          "height": 2.8,
+          "look": 1.8,
+          "follow": 1,
+          "maxRise": 5,
+          "distance": 21
+        },
+        "spawn": {
+          "platformId": "ca-start",
+          "offset": 2
+        },
+        "platforms": [
+          {
+            "id": "ca-start",
+            "x": -5,
+            "y": 0.4,
+            "width": 15,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "ca-snow-ledge",
+            "x": 12.5,
+            "y": 0.7,
+            "width": 7,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ice-shelf",
+            "surface": "ice"
+          },
+          {
+            "id": "ca-ridge",
+            "x": 22.2,
+            "y": 1,
+            "width": 8,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "ca-bridge",
+            "x": 30.2,
+            "y": 1,
+            "width": 12,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "bridge",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "bridge"
+          },
+          {
+            "id": "ca-rest",
+            "x": 44.8,
+            "y": 1,
+            "width": 10,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "ca-lift",
+            "x": 57.7,
+            "y": 0.8,
+            "width": 4,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "moving",
+            "motion": "vertical",
+            "amplitude": 0.55,
+            "phase": 0,
+            "period": 6.8,
+            "route": "main",
+            "terrain": "mechanical"
+          },
+          {
+            "id": "ca-pass",
+            "x": 64.6,
+            "y": 1.3,
+            "width": 8,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "ca-ice",
+            "x": 75.6,
+            "y": 1.6,
+            "width": 7,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ice-shelf",
+            "surface": "ice"
+          },
+          {
+            "id": "ca-summit",
+            "x": 85.7,
+            "y": 1.6,
+            "width": 9,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "ca-finish",
+            "x": 97.5,
+            "y": 1.2,
+            "width": 13,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "ca-star-island",
+            "x": 42.5,
+            "y": 2.3,
+            "width": 1.8,
+            "depth": 3,
+            "thickness": 0.5,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "bonus",
+            "terrain": "rock"
+          }
+        ],
+        "coins": [
+          {
+            "id": "ca-coin-01",
+            "platformId": "ca-start",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-02",
+            "platformId": "ca-start",
+            "offset": 8.3,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-03",
+            "platformId": "ca-start",
+            "offset": 13.399999999999999,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-04",
+            "platformId": "ca-snow-ledge",
+            "offset": 3.5,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-05",
+            "platformId": "ca-ridge",
+            "offset": 1.5,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-06",
+            "platformId": "ca-bridge",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-07",
+            "platformId": "ca-bridge",
+            "offset": 6.800000000000001,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-08",
+            "platformId": "ca-bridge",
+            "offset": 10.4,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-09",
+            "platformId": "ca-rest",
+            "offset": 3,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-10",
+            "platformId": "ca-rest",
+            "offset": 5.7,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-11",
+            "platformId": "ca-rest",
+            "offset": 8.4,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-12",
+            "platformId": "ca-lift",
+            "offset": 2,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-13",
+            "platformId": "ca-pass",
+            "offset": 4,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-14",
+            "platformId": "ca-ice",
+            "offset": 3.5,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-15",
+            "platformId": "ca-summit",
+            "offset": 2.6999999999999997,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-16",
+            "platformId": "ca-summit",
+            "offset": 5.050000000000001,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-17",
+            "platformId": "ca-summit",
+            "offset": 7.4,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-18",
+            "platformId": "ca-finish",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-19",
+            "platformId": "ca-finish",
+            "offset": 7.3,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-20",
+            "platformId": "ca-finish",
+            "offset": 11.399999999999999,
+            "height": 1.05
+          },
+          {
+            "id": "ca-coin-21",
+            "platformId": "ca-star-island",
+            "offset": 0.9,
+            "height": 1.05
+          }
+        ],
+        "stars": [
+          {
+            "id": "ca-star-01",
+            "platformId": "ca-star-island",
+            "offset": 0.9,
+            "height": 1.2
+          },
+          {
+            "id": "ca-star-02",
+            "platformId": "ca-pass",
+            "offset": 4,
+            "height": 2.4
+          },
+          {
+            "id": "ca-star-03",
+            "platformId": "ca-ice",
+            "offset": 3.5,
+            "height": 2.3
+          }
+        ],
+        "checkpoints": [
+          {
+            "id": "ca-checkpoint-01",
+            "platformId": "ca-rest",
+            "offset": 1.2
+          },
+          {
+            "id": "ca-checkpoint-02",
+            "platformId": "ca-summit",
+            "offset": 1.2
+          }
+        ],
+        "discovery": {
+          "id": "ca-discovery",
+          "platformId": "ca-finish",
+          "offset": 2.2,
+          "factId": "ca-discovery"
+        },
+        "finish": {
+          "platformId": "ca-finish",
+          "offset": 11
+        },
+        "hazards": [],
+        "enemies": [
+          {
+            "id": "ca-marmot",
+            "platformId": "ca-ridge",
+            "minOffset": 3.5,
+            "maxOffset": 6.2,
+            "speed": 0.77,
+            "turnPause": 0.9,
+            "height": 0.7
+          }
+        ],
+        "zones": [
+          {
+            "id": "ca-pass-gust",
+            "type": "wind",
+            "x": 74,
+            "width": 10,
+            "bottom": -1,
+            "top": 6,
+            "force": -1.4,
+            "period": 7,
+            "warning": 1.8,
+            "duration": 1.2,
+            "phase": 0
+          }
+        ],
+        "routeGraph": {
+          "nodes": [
+            {
+              "id": "ca-start",
+              "type": "START",
+              "platformId": "ca-start"
+            },
+            {
+              "id": "ca-snow-ledge",
+              "type": "JUMP_PLATFORM",
+              "platformId": "ca-snow-ledge"
+            },
+            {
+              "id": "ca-ridge",
+              "type": "ENEMY_AREA",
+              "platformId": "ca-ridge"
+            },
+            {
+              "id": "ca-bridge",
+              "type": "JUMP_PLATFORM",
+              "platformId": "ca-bridge"
+            },
+            {
+              "id": "ca-rest",
+              "type": "CHECKPOINT",
+              "platformId": "ca-rest"
+            },
+            {
+              "id": "ca-lift",
+              "type": "MOVING_PLATFORM",
+              "platformId": "ca-lift"
+            },
+            {
+              "id": "ca-pass",
+              "type": "SAFE_PLATFORM",
+              "platformId": "ca-pass"
+            },
+            {
+              "id": "ca-ice",
+              "type": "JUMP_PLATFORM",
+              "platformId": "ca-ice"
+            },
+            {
+              "id": "ca-summit",
+              "type": "CHECKPOINT",
+              "platformId": "ca-summit"
+            },
+            {
+              "id": "ca-finish",
+              "type": "FINISH",
+              "platformId": "ca-finish"
+            },
+            {
+              "id": "ca-star-island",
+              "type": "OPTIONAL_REWARD",
+              "platformId": "ca-star-island"
+            }
+          ],
+          "edges": [
+            {
+              "from": "ca-start",
+              "to": "ca-snow-ledge",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "ca-snow-ledge",
+              "to": "ca-ridge",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "ca-ridge",
+              "to": "ca-bridge",
+              "action": "WALK",
+              "mandatory": true
+            },
+            {
+              "from": "ca-bridge",
+              "to": "ca-rest",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "ca-rest",
+              "to": "ca-lift",
+              "action": "RIDE_PLATFORM",
+              "mandatory": true
+            },
+            {
+              "from": "ca-lift",
+              "to": "ca-pass",
+              "action": "RIDE_PLATFORM",
+              "mandatory": true
+            },
+            {
+              "from": "ca-pass",
+              "to": "ca-ice",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "ca-ice",
+              "to": "ca-summit",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "ca-summit",
+              "to": "ca-finish",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "ca-bridge",
+              "to": "ca-star-island",
+              "action": "JUMP",
+              "mandatory": false
+            },
+            {
+              "from": "ca-star-island",
+              "to": "ca-rest",
+              "action": "JUMP",
+              "mandatory": false
+            }
+          ]
+        },
+        "physics": {
+          "gravity": 20,
+          "jumpSpeed": 9,
+          "runSpeed": 6,
+          "acceleration": 25,
+          "airControl": 0.65,
+          "coyoteTime": 0.12,
+          "jumpBuffer": 0.12,
+          "playerRadius": 0.2,
+          "playerHeight": 1.83,
+          "killY": -7,
+          "iceGrip": 0.3,
+          "stepHeight": 0.4,
+          "climbSpeed": 3.4
+        }
+      },
+      "runs": [
+        {
+          "route": "main",
+          "wait": 0,
+          "status": "completed",
+          "damage": 0,
+          "coins": 21,
+          "stars": 2
+        },
+        {
+          "route": "bonus",
+          "wait": 0,
+          "status": "completed",
+          "damage": 0,
+          "coins": 18,
+          "stars": 3
+        },
+        {
+          "route": "main",
+          "wait": 1.8,
+          "status": "completed",
+          "damage": 0,
+          "coins": 21,
+          "stars": 2
+        },
+        {
+          "route": "bonus",
+          "wait": 1.8,
+          "status": "completed",
+          "damage": 0,
+          "coins": 18,
+          "stars": 3
+        },
+        {
+          "route": "main",
+          "wait": 3.6,
+          "status": "completed",
+          "damage": 0,
+          "coins": 21,
+          "stars": 2
+        },
+        {
+          "route": "bonus",
+          "wait": 3.6,
+          "status": "completed",
+          "damage": 0,
+          "coins": 18,
+          "stars": 3
+        }
+      ],
+      "incomplete": [],
+      "damaged": [],
+      "cleanRoutes": [
+        "bonus",
+        "main"
+      ],
+      "missingCoins": [],
+      "missingStars": [],
+      "coins": "21/21",
+      "stars": "3/3"
+    }
+  },
+  "USA": {
+    "validation": {
+      "levelId": "us-level-01",
+      "ok": true,
+      "checks": [
+        {
+          "id": 1,
+          "name": "Manifest schema and bounds",
+          "ok": true,
+          "detail": "validateLevel accepted the configuration."
+        },
+        {
+          "id": 2,
+          "name": "One START on the spawn and one FINISH on the goal",
+          "ok": true,
+          "detail": "START us-start, FINISH us-finish."
+        },
+        {
+          "id": 3,
+          "name": "Every playable platform is part of the route graph",
+          "ok": true,
+          "detail": "10 nodes cover 10 platforms."
+        },
+        {
+          "id": 4,
+          "name": "FINISH is reachable from START by mandatory edges",
+          "ok": true,
+          "detail": "Critical path of 9 nodes."
+        },
+        {
+          "id": 5,
+          "name": "Every node is reachable from START",
+          "ok": true,
+          "detail": "All nodes reachable."
+        },
+        {
+          "id": 6,
+          "name": "No dead ends: every node can still reach FINISH",
+          "ok": true,
+          "detail": "Optional branches all rejoin the route."
+        },
+        {
+          "id": 7,
+          "name": "Checkpoints lie on the critical path and split it fairly",
+          "ok": true,
+          "detail": "Largest stretch without a checkpoint: 36.4 units of 89.9."
+        },
+        {
+          "id": 8,
+          "name": "Collectibles sit on graph nodes; stars reward an optional route",
+          "ok": true,
+          "detail": "1 of 3 stars are off the critical path."
+        },
+        {
+          "id": 9,
+          "name": "No solid geometry intrudes into headroom on the critical path",
+          "ok": true,
+          "detail": "Headroom clear."
+        },
+        {
+          "id": 10,
+          "name": "Every mandatory jump fits the measured jump envelope",
+          "ok": true,
+          "detail": "Dmax 5.40, Hmax 1.95; hardest gap 50%, step 15%."
+        },
+        {
+          "id": 11,
+          "name": "Measured tier matches the declared tier",
+          "ok": true,
+          "detail": "Declared 2, measured 2 (score 2.36)."
+        },
+        {
+          "id": 12,
+          "name": "Every gate is opened by a plate placed before it",
+          "ok": true,
+          "detail": "1 gate(s) paired."
+        },
+        {
+          "id": 13,
+          "name": "Physics: every mandatory edge succeeds at every timing",
+          "ok": true,
+          "detail": "8 edges verified at up to 4 timings each."
+        },
+        {
+          "id": 14,
+          "name": "Physics: every optional edge succeeds at every timing",
+          "ok": true,
+          "detail": "2 optional edges verified."
+        },
+        {
+          "id": 15,
+          "name": "Physics: full runs from four start delays finish without damage",
+          "ok": true,
+          "detail": "Completed in 21.1 s with no damage at every start delay."
+        },
+        {
+          "id": 16,
+          "name": "Completion time suits the target duration",
+          "ok": true,
+          "detail": "Bot 21.1 s vs target 55 s (a person exploring takes longer)."
+        }
+      ],
+      "completionSeconds": 21.100000000000083
+    },
+    "collectibles": {
+      "difficulty": 1,
+      "level": {
+        "id": "us-level-01",
+        "countryId": "US",
+        "legacyCode": "USA",
+        "title": "New York: Harbor Shift",
+        "environmentId": "usa-new-york-harbor",
+        "difficulty": "easy-medium",
+        "difficultyTier": 2,
+        "design": {
+          "archetype": "harbor-expedition",
+          "signatureMechanic": "cargo-lifts-and-dock-gate",
+          "mechanics": [
+            "cargo-lifts-and-dock-gate",
+            "optional-star-detour",
+            "checkpoint-recovery",
+            "country-patrol"
+          ],
+          "terrain": [
+            "ground",
+            "rooftop",
+            "water-raft",
+            "mechanical",
+            "terrace"
+          ],
+          "verticality": "medium",
+          "enemyProfile": "light",
+          "targetDurationSeconds": 55,
+          "seed": 20261185
+        },
+        "environment": {
+          "biome": "harbor",
+          "locationReference": "Statue of Liberty",
+          "terrainMaterial": "harbor-brick",
+          "vegetationPack": "harbor-trees",
+          "architecturePack": "trail-and-crossing",
+          "landmarkAssets": [
+            "statue-of-liberty",
+            "new-york-harbor-water",
+            "lower-manhattan-skyline"
+          ],
+          "lightingPreset": "warm-directional-daylight",
+          "skyPreset": "clear-layered-sky"
+        },
+        "sections": [
+          {
+            "id": "A",
+            "label": "Dock plate",
+            "x": 0
+          },
+          {
+            "id": "B",
+            "label": "Ferry timing",
+            "x": 24
+          },
+          {
+            "id": "C",
+            "label": "Cargo lift",
+            "x": 44
+          },
+          {
+            "id": "D",
+            "label": "Warehouse patrol",
+            "x": 55
+          },
+          {
+            "id": "E",
+            "label": "Liberty lookout",
+            "x": 89
+          }
+        ],
+        "camera": {
+          "height": 2.8,
+          "look": 1.8,
+          "follow": 1,
+          "maxRise": 5,
+          "distance": 21
+        },
+        "spawn": {
+          "platformId": "us-start",
+          "offset": 2
+        },
+        "platforms": [
+          {
+            "id": "us-start",
+            "x": -5,
+            "y": 0.4,
+            "width": 15,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "us-dock",
+            "x": 12.2,
+            "y": 0.4,
+            "width": 12,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "rooftop"
+          },
+          {
+            "id": "us-ferry",
+            "x": 26.4,
+            "y": 0.4,
+            "width": 5,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "moving",
+            "motion": "horizontal",
+            "amplitude": 0.55,
+            "phase": 0,
+            "period": 6.5,
+            "route": "main",
+            "terrain": "water-raft"
+          },
+          {
+            "id": "us-quay",
+            "x": 34.2,
+            "y": 0.4,
+            "width": 12,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "us-cargo-lift",
+            "x": 48.6,
+            "y": 0.5,
+            "width": 4,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "moving",
+            "motion": "vertical",
+            "amplitude": 0.5,
+            "phase": 0,
+            "period": 6,
+            "route": "main",
+            "terrain": "mechanical"
+          },
+          {
+            "id": "us-warehouse",
+            "x": 55,
+            "y": 1,
+            "width": 13,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "rooftop"
+          },
+          {
+            "id": "us-brick",
+            "x": 70.6,
+            "y": 1,
+            "width": 8,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "terrace"
+          },
+          {
+            "id": "us-gantry",
+            "x": 81.3,
+            "y": 1.3,
+            "width": 6,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "mechanical"
+          },
+          {
+            "id": "us-finish",
+            "x": 89.9,
+            "y": 1,
+            "width": 14,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "us-roof-star",
+            "x": 68.5,
+            "y": 2.2,
+            "width": 1.6,
+            "depth": 3,
+            "thickness": 0.4,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "bonus",
+            "terrain": "rooftop"
+          }
+        ],
+        "coins": [
+          {
+            "id": "us-coin-01",
+            "platformId": "us-start",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-02",
+            "platformId": "us-start",
+            "offset": 8.3,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-03",
+            "platformId": "us-start",
+            "offset": 13.399999999999999,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-04",
+            "platformId": "us-dock",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-05",
+            "platformId": "us-dock",
+            "offset": 6.800000000000001,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-06",
+            "platformId": "us-dock",
+            "offset": 10.4,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-07",
+            "platformId": "us-ferry",
+            "offset": 2.5,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-08",
+            "platformId": "us-quay",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-09",
+            "platformId": "us-quay",
+            "offset": 6.800000000000001,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-10",
+            "platformId": "us-quay",
+            "offset": 10.4,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-11",
+            "platformId": "us-cargo-lift",
+            "offset": 2,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-12",
+            "platformId": "us-warehouse",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-13",
+            "platformId": "us-warehouse",
+            "offset": 7.3,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-14",
+            "platformId": "us-warehouse",
+            "offset": 11.399999999999999,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-15",
+            "platformId": "us-brick",
+            "offset": 4,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-16",
+            "platformId": "us-gantry",
+            "offset": 3,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-17",
+            "platformId": "us-finish",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-18",
+            "platformId": "us-finish",
+            "offset": 7.8,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-19",
+            "platformId": "us-finish",
+            "offset": 12.399999999999999,
+            "height": 1.05
+          },
+          {
+            "id": "us-coin-20",
+            "platformId": "us-roof-star",
+            "offset": 0.8,
+            "height": 1.05
+          }
+        ],
+        "stars": [
+          {
+            "id": "us-star-01",
+            "platformId": "us-roof-star",
+            "offset": 0.8,
+            "height": 1.15
+          },
+          {
+            "id": "us-star-02",
+            "platformId": "us-dock",
+            "offset": 8,
+            "height": 2.4
+          },
+          {
+            "id": "us-star-03",
+            "platformId": "us-gantry",
+            "offset": 3,
+            "height": 2.3
+          }
+        ],
+        "checkpoints": [
+          {
+            "id": "us-checkpoint-01",
+            "platformId": "us-quay",
+            "offset": 1.2
+          },
+          {
+            "id": "us-checkpoint-02",
+            "platformId": "us-brick",
+            "offset": 1.2
+          }
+        ],
+        "discovery": {
+          "id": "us-discovery",
+          "platformId": "us-finish",
+          "offset": 2.2,
+          "factId": "us-discovery"
+        },
+        "finish": {
+          "platformId": "us-finish",
+          "offset": 12
+        },
+        "hazards": [],
+        "enemies": [
+          {
+            "id": "us-dock-robot",
+            "platformId": "us-warehouse",
+            "minOffset": 5,
+            "maxOffset": 10,
+            "speed": 1,
+            "turnPause": 0.65,
+            "height": 0.7
+          }
+        ],
+        "switches": [
+          {
+            "id": "us-dock-plate",
+            "platformId": "us-dock",
+            "offset": 3,
+            "gateIds": [
+              "us-dock-gate"
+            ]
+          }
+        ],
+        "gates": [
+          {
+            "id": "us-dock-gate",
+            "x": 22,
+            "y": 0.4,
+            "width": 0.6,
+            "height": 2.5,
+            "openSeconds": 7
+          }
+        ],
+        "routeGraph": {
+          "nodes": [
+            {
+              "id": "us-start",
+              "type": "START",
+              "platformId": "us-start"
+            },
+            {
+              "id": "us-dock",
+              "type": "PUZZLE",
+              "platformId": "us-dock"
+            },
+            {
+              "id": "us-ferry",
+              "type": "MOVING_PLATFORM",
+              "platformId": "us-ferry"
+            },
+            {
+              "id": "us-quay",
+              "type": "CHECKPOINT",
+              "platformId": "us-quay"
+            },
+            {
+              "id": "us-cargo-lift",
+              "type": "MOVING_PLATFORM",
+              "platformId": "us-cargo-lift"
+            },
+            {
+              "id": "us-warehouse",
+              "type": "ENEMY_AREA",
+              "platformId": "us-warehouse"
+            },
+            {
+              "id": "us-brick",
+              "type": "CHECKPOINT",
+              "platformId": "us-brick"
+            },
+            {
+              "id": "us-gantry",
+              "type": "JUMP_PLATFORM",
+              "platformId": "us-gantry"
+            },
+            {
+              "id": "us-finish",
+              "type": "FINISH",
+              "platformId": "us-finish"
+            },
+            {
+              "id": "us-roof-star",
+              "type": "OPTIONAL_REWARD",
+              "platformId": "us-roof-star"
+            }
+          ],
+          "edges": [
+            {
+              "from": "us-start",
+              "to": "us-dock",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "us-dock",
+              "to": "us-ferry",
+              "action": "RIDE_PLATFORM",
+              "mandatory": true
+            },
+            {
+              "from": "us-ferry",
+              "to": "us-quay",
+              "action": "RIDE_PLATFORM",
+              "mandatory": true
+            },
+            {
+              "from": "us-quay",
+              "to": "us-cargo-lift",
+              "action": "RIDE_PLATFORM",
+              "mandatory": true
+            },
+            {
+              "from": "us-cargo-lift",
+              "to": "us-warehouse",
+              "action": "RIDE_PLATFORM",
+              "mandatory": true
+            },
+            {
+              "from": "us-warehouse",
+              "to": "us-brick",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "us-brick",
+              "to": "us-gantry",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "us-gantry",
+              "to": "us-finish",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "us-warehouse",
+              "to": "us-roof-star",
+              "action": "JUMP",
+              "mandatory": false
+            },
+            {
+              "from": "us-roof-star",
+              "to": "us-brick",
+              "action": "JUMP",
+              "mandatory": false
+            }
+          ]
+        },
+        "physics": {
+          "gravity": 20,
+          "jumpSpeed": 9,
+          "runSpeed": 6,
+          "acceleration": 25,
+          "airControl": 0.65,
+          "coyoteTime": 0.12,
+          "jumpBuffer": 0.12,
+          "playerRadius": 0.2,
+          "playerHeight": 1.83,
+          "killY": -7,
+          "iceGrip": 0.3,
+          "stepHeight": 0.4,
+          "climbSpeed": 3.4
+        }
+      },
+      "runs": [
+        {
+          "route": "main",
+          "wait": 0,
+          "status": "completed",
+          "damage": 0,
+          "coins": 19,
+          "stars": 2
+        },
+        {
+          "route": "bonus",
+          "wait": 0,
+          "status": "completed",
+          "damage": 0,
+          "coins": 16,
+          "stars": 3
+        },
+        {
+          "route": "main",
+          "wait": 1.8,
+          "status": "completed",
+          "damage": 0,
+          "coins": 18,
+          "stars": 2
+        },
+        {
+          "route": "bonus",
+          "wait": 1.8,
+          "status": "completed",
+          "damage": 0,
+          "coins": 15,
+          "stars": 3
+        },
+        {
+          "route": "main",
+          "wait": 3.6,
+          "status": "completed",
+          "damage": 0,
+          "coins": 20,
+          "stars": 2
+        },
+        {
+          "route": "bonus",
+          "wait": 3.6,
+          "status": "completed",
+          "damage": 0,
+          "coins": 18,
+          "stars": 3
+        }
+      ],
+      "incomplete": [],
+      "damaged": [],
+      "cleanRoutes": [
+        "bonus",
+        "main"
+      ],
+      "missingCoins": [],
+      "missingStars": [],
+      "coins": "20/20",
+      "stars": "3/3"
+    }
+  },
+  "MEX": {
+    "validation": {
+      "levelId": "mx-level-01",
+      "ok": true,
+      "checks": [
+        {
+          "id": 1,
+          "name": "Manifest schema and bounds",
+          "ok": true,
+          "detail": "validateLevel accepted the configuration."
+        },
+        {
+          "id": 2,
+          "name": "One START on the spawn and one FINISH on the goal",
+          "ok": true,
+          "detail": "START mx-start, FINISH mx-finish."
+        },
+        {
+          "id": 3,
+          "name": "Every playable platform is part of the route graph",
+          "ok": true,
+          "detail": "10 nodes cover 10 platforms."
+        },
+        {
+          "id": 4,
+          "name": "FINISH is reachable from START by mandatory edges",
+          "ok": true,
+          "detail": "Critical path of 9 nodes."
+        },
+        {
+          "id": 5,
+          "name": "Every node is reachable from START",
+          "ok": true,
+          "detail": "All nodes reachable."
+        },
+        {
+          "id": 6,
+          "name": "No dead ends: every node can still reach FINISH",
+          "ok": true,
+          "detail": "Optional branches all rejoin the route."
+        },
+        {
+          "id": 7,
+          "name": "Checkpoints lie on the critical path and split it fairly",
+          "ok": true,
+          "detail": "Largest stretch without a checkpoint: 28.8 units of 82.5."
+        },
+        {
+          "id": 8,
+          "name": "Collectibles sit on graph nodes; stars reward an optional route",
+          "ok": true,
+          "detail": "1 of 3 stars are off the critical path."
+        },
+        {
+          "id": 9,
+          "name": "No solid geometry intrudes into headroom on the critical path",
+          "ok": true,
+          "detail": "Headroom clear."
+        },
+        {
+          "id": 10,
+          "name": "Every mandatory jump fits the measured jump envelope",
+          "ok": true,
+          "detail": "Dmax 5.40, Hmax 1.95; hardest gap 57%, step 21%."
+        },
+        {
+          "id": 11,
+          "name": "Measured tier matches the declared tier",
+          "ok": true,
+          "detail": "Declared 3, measured 3 (score 3.24)."
+        },
+        {
+          "id": 12,
+          "name": "Every gate is opened by a plate placed before it",
+          "ok": true,
+          "detail": "0 gate(s) paired."
+        },
+        {
+          "id": 13,
+          "name": "Physics: every mandatory edge succeeds at every timing",
+          "ok": true,
+          "detail": "8 edges verified at up to 4 timings each."
+        },
+        {
+          "id": 14,
+          "name": "Physics: every optional edge succeeds at every timing",
+          "ok": true,
+          "detail": "2 optional edges verified."
+        },
+        {
+          "id": 15,
+          "name": "Physics: full runs from four start delays finish without damage",
+          "ok": true,
+          "detail": "Completed in 19.8 s with no damage at every start delay."
+        },
+        {
+          "id": 16,
+          "name": "Completion time suits the target duration",
+          "ok": true,
+          "detail": "Bot 19.8 s vs target 55 s (a person exploring takes longer)."
+        }
+      ],
+      "completionSeconds": 19.83333333333349
+    },
+    "collectibles": {
+      "difficulty": 2,
+      "level": {
+        "id": "mx-level-01",
+        "countryId": "MX",
+        "legacyCode": "MEX",
+        "title": "Yucatán: Cenote Observatory",
+        "environmentId": "north-america-mx",
+        "difficulty": "medium",
+        "difficultyTier": 3,
+        "design": {
+          "archetype": "limestone-expedition",
+          "signatureMechanic": "cenote-stone-switch",
+          "mechanics": [
+            "cenote-stone-switch",
+            "optional-star-detour",
+            "checkpoint-recovery",
+            "country-patrol"
+          ],
+          "terrain": [
+            "terrace",
+            "rock",
+            "stairs"
+          ],
+          "verticality": "medium",
+          "enemyProfile": "light",
+          "targetDurationSeconds": 55,
+          "seed": 20261177
+        },
+        "environment": {
+          "biome": "limestone",
+          "locationReference": "Chichen-Itza",
+          "terrainMaterial": "weathered-limestone",
+          "vegetationPack": "tropical-forest",
+          "architecturePack": "maya-stone-monuments",
+          "landmarkAssets": [
+            "el-castillo",
+            "el-caracol",
+            "cenote-water"
+          ],
+          "lightingPreset": "warm-directional-daylight",
+          "skyPreset": "clear-layered-sky"
+        },
+        "sections": [
+          {
+            "id": "A",
+            "label": "Limestone causeway",
+            "x": 0
+          },
+          {
+            "id": "B",
+            "label": "Raise the cenote stones",
+            "x": 13
+          },
+          {
+            "id": "C",
+            "label": "Dry-bank refuge",
+            "x": 41
+          },
+          {
+            "id": "D",
+            "label": "Terrace ascent",
+            "x": 54
+          },
+          {
+            "id": "E",
+            "label": "Observatory lookout",
+            "x": 82
+          }
+        ],
+        "camera": {
+          "height": 2.8,
+          "look": 1.8,
+          "follow": 1,
+          "maxRise": 5,
+          "distance": 21
+        },
+        "spawn": {
+          "platformId": "mx-start",
+          "offset": 2
+        },
+        "platforms": [
+          {
+            "id": "mx-start",
+            "x": -5,
+            "y": 0.3,
+            "width": 15,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "terrace"
+          },
+          {
+            "id": "mx-court",
+            "x": 12.6,
+            "y": 0.7,
+            "width": 12,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "terrace"
+          },
+          {
+            "id": "mx-stone-1",
+            "x": 27.4,
+            "y": 0.7,
+            "width": 4,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "rock",
+            "raise": {
+              "switchId": "mx-cenote-plate",
+              "drop": 2.2,
+              "seconds": 12
+            }
+          },
+          {
+            "id": "mx-stone-2",
+            "x": 34.4,
+            "y": 0.7,
+            "width": 4,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "rock",
+            "raise": {
+              "switchId": "mx-cenote-plate",
+              "drop": 2.2,
+              "seconds": 12
+            }
+          },
+          {
+            "id": "mx-bank",
+            "x": 41.4,
+            "y": 0.7,
+            "width": 12,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "terrace"
+          },
+          {
+            "id": "mx-stairs",
+            "x": 53.4,
+            "y": 0.7,
+            "width": 7,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "stairs",
+            "slope": 1.2,
+            "steps": 4
+          },
+          {
+            "id": "mx-upper-court",
+            "x": 63.4,
+            "y": 1.9,
+            "width": 9,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "terrace"
+          },
+          {
+            "id": "mx-column",
+            "x": 75.4,
+            "y": 2.3,
+            "width": 4,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "terrace"
+          },
+          {
+            "id": "mx-finish",
+            "x": 82.5,
+            "y": 2.3,
+            "width": 14,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "terrace"
+          },
+          {
+            "id": "mx-observatory-spur",
+            "x": 60.8,
+            "y": 3,
+            "width": 1.6,
+            "depth": 3,
+            "thickness": 0.4,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "bonus",
+            "terrain": "rock"
+          }
+        ],
+        "coins": [
+          {
+            "id": "mx-coin-01",
+            "platformId": "mx-start",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-02",
+            "platformId": "mx-start",
+            "offset": 8.3,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-03",
+            "platformId": "mx-start",
+            "offset": 13.399999999999999,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-04",
+            "platformId": "mx-court",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-05",
+            "platformId": "mx-court",
+            "offset": 6.800000000000001,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-06",
+            "platformId": "mx-court",
+            "offset": 10.4,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-07",
+            "platformId": "mx-stone-1",
+            "offset": 2,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-08",
+            "platformId": "mx-stone-2",
+            "offset": 2,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-09",
+            "platformId": "mx-bank",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-10",
+            "platformId": "mx-bank",
+            "offset": 6.800000000000001,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-11",
+            "platformId": "mx-bank",
+            "offset": 10.4,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-12",
+            "platformId": "mx-stairs",
+            "offset": 3.5,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-13",
+            "platformId": "mx-upper-court",
+            "offset": 2.6999999999999997,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-14",
+            "platformId": "mx-upper-court",
+            "offset": 5.050000000000001,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-15",
+            "platformId": "mx-upper-court",
+            "offset": 7.4,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-16",
+            "platformId": "mx-column",
+            "offset": 2,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-17",
+            "platformId": "mx-finish",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-18",
+            "platformId": "mx-finish",
+            "offset": 7.8,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-19",
+            "platformId": "mx-finish",
+            "offset": 12.399999999999999,
+            "height": 1.05
+          },
+          {
+            "id": "mx-coin-20",
+            "platformId": "mx-observatory-spur",
+            "offset": 0.8,
+            "height": 1.05
+          }
+        ],
+        "stars": [
+          {
+            "id": "mx-star-01",
+            "platformId": "mx-observatory-spur",
+            "offset": 0.8,
+            "height": 1.2
+          },
+          {
+            "id": "mx-star-02",
+            "platformId": "mx-bank",
+            "offset": 7,
+            "height": 2.3
+          },
+          {
+            "id": "mx-star-03",
+            "platformId": "mx-column",
+            "offset": 2,
+            "height": 2.4
+          }
+        ],
+        "checkpoints": [
+          {
+            "id": "mx-checkpoint-01",
+            "platformId": "mx-court",
+            "offset": 1.2
+          },
+          {
+            "id": "mx-checkpoint-02",
+            "platformId": "mx-bank",
+            "offset": 1.2
+          },
+          {
+            "id": "mx-checkpoint-03",
+            "platformId": "mx-upper-court",
+            "offset": 1.2
+          }
+        ],
+        "discovery": {
+          "id": "mx-discovery",
+          "platformId": "mx-finish",
+          "offset": 2.2,
+          "factId": "mx-discovery"
+        },
+        "finish": {
+          "platformId": "mx-finish",
+          "offset": 12
+        },
+        "hazards": [],
+        "enemies": [
+          {
+            "id": "mx-iguana",
+            "platformId": "mx-upper-court",
+            "minOffset": 4.1,
+            "maxOffset": 7.1,
+            "speed": 0.7150000000000001,
+            "turnPause": 1,
+            "height": 0.6
+          }
+        ],
+        "switches": [
+          {
+            "id": "mx-cenote-plate",
+            "platformId": "mx-court",
+            "offset": 9,
+            "gateIds": []
+          }
+        ],
+        "routeGraph": {
+          "nodes": [
+            {
+              "id": "mx-start",
+              "type": "START",
+              "platformId": "mx-start"
+            },
+            {
+              "id": "mx-court",
+              "type": "CHECKPOINT",
+              "platformId": "mx-court"
+            },
+            {
+              "id": "mx-stone-1",
+              "type": "PUZZLE",
+              "platformId": "mx-stone-1"
+            },
+            {
+              "id": "mx-stone-2",
+              "type": "PUZZLE",
+              "platformId": "mx-stone-2"
+            },
+            {
+              "id": "mx-bank",
+              "type": "CHECKPOINT",
+              "platformId": "mx-bank"
+            },
+            {
+              "id": "mx-stairs",
+              "type": "JUMP_PLATFORM",
+              "platformId": "mx-stairs"
+            },
+            {
+              "id": "mx-upper-court",
+              "type": "CHECKPOINT",
+              "platformId": "mx-upper-court"
+            },
+            {
+              "id": "mx-column",
+              "type": "JUMP_PLATFORM",
+              "platformId": "mx-column"
+            },
+            {
+              "id": "mx-finish",
+              "type": "FINISH",
+              "platformId": "mx-finish"
+            },
+            {
+              "id": "mx-observatory-spur",
+              "type": "OPTIONAL_REWARD",
+              "platformId": "mx-observatory-spur"
+            }
+          ],
+          "edges": [
+            {
+              "from": "mx-start",
+              "to": "mx-court",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "mx-court",
+              "to": "mx-stone-1",
+              "action": "ACTIVATE_SWITCH",
+              "mandatory": true
+            },
+            {
+              "from": "mx-stone-1",
+              "to": "mx-stone-2",
+              "action": "ACTIVATE_SWITCH",
+              "mandatory": true
+            },
+            {
+              "from": "mx-stone-2",
+              "to": "mx-bank",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "mx-bank",
+              "to": "mx-stairs",
+              "action": "WALK",
+              "mandatory": true
+            },
+            {
+              "from": "mx-stairs",
+              "to": "mx-upper-court",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "mx-upper-court",
+              "to": "mx-column",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "mx-column",
+              "to": "mx-finish",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "mx-stairs",
+              "to": "mx-observatory-spur",
+              "action": "JUMP",
+              "mandatory": false
+            },
+            {
+              "from": "mx-observatory-spur",
+              "to": "mx-upper-court",
+              "action": "JUMP",
+              "mandatory": false
+            }
+          ]
+        },
+        "physics": {
+          "gravity": 20,
+          "jumpSpeed": 9,
+          "runSpeed": 6,
+          "acceleration": 25,
+          "airControl": 0.65,
+          "coyoteTime": 0.12,
+          "jumpBuffer": 0.12,
+          "playerRadius": 0.2,
+          "playerHeight": 1.83,
+          "killY": -7,
+          "iceGrip": 0.3,
+          "stepHeight": 0.4,
+          "climbSpeed": 3.4
+        }
+      },
+      "runs": [
+        {
+          "route": "main",
+          "wait": 0,
+          "status": "completed",
+          "damage": 0,
+          "coins": 18,
+          "stars": 2
+        },
+        {
+          "route": "bonus",
+          "wait": 0,
+          "status": "completed",
+          "damage": 0,
+          "coins": 17,
+          "stars": 3
+        },
+        {
+          "route": "main",
+          "wait": 1.8,
+          "status": "completed",
+          "damage": 0,
+          "coins": 18,
+          "stars": 2
+        },
+        {
+          "route": "bonus",
+          "wait": 1.8,
+          "status": "completed",
+          "damage": 0,
+          "coins": 16,
+          "stars": 3
+        },
+        {
+          "route": "main",
+          "wait": 3.6,
+          "status": "completed",
+          "damage": 0,
+          "coins": 19,
+          "stars": 2
+        },
+        {
+          "route": "bonus",
+          "wait": 3.6,
+          "status": "completed",
+          "damage": 0,
+          "coins": 16,
+          "stars": 3
+        }
+      ],
+      "incomplete": [],
+      "damaged": [],
+      "cleanRoutes": [
+        "bonus",
+        "main"
+      ],
+      "missingCoins": [],
+      "missingStars": [],
+      "coins": "20/20",
+      "stars": "3/3"
+    }
+  },
+  "GTM": {
+    "validation": {
+      "levelId": "gt-level-01",
+      "ok": true,
+      "checks": [
+        {
+          "id": 1,
+          "name": "Manifest schema and bounds",
+          "ok": true,
+          "detail": "validateLevel accepted the configuration."
+        },
+        {
+          "id": 2,
+          "name": "One START on the spawn and one FINISH on the goal",
+          "ok": true,
+          "detail": "START gt-start, FINISH gt-finish."
+        },
+        {
+          "id": 3,
+          "name": "Every playable platform is part of the route graph",
+          "ok": true,
+          "detail": "11 nodes cover 11 platforms."
+        },
+        {
+          "id": 4,
+          "name": "FINISH is reachable from START by mandatory edges",
+          "ok": true,
+          "detail": "Critical path of 10 nodes."
+        },
+        {
+          "id": 5,
+          "name": "Every node is reachable from START",
+          "ok": true,
+          "detail": "All nodes reachable."
+        },
+        {
+          "id": 6,
+          "name": "No dead ends: every node can still reach FINISH",
+          "ok": true,
+          "detail": "Optional branches all rejoin the route."
+        },
+        {
+          "id": 7,
+          "name": "Checkpoints lie on the critical path and split it fairly",
+          "ok": true,
+          "detail": "Largest stretch without a checkpoint: 33.8 units of 94.6."
+        },
+        {
+          "id": 8,
+          "name": "Collectibles sit on graph nodes; stars reward an optional route",
+          "ok": true,
+          "detail": "1 of 3 stars are off the critical path."
+        },
+        {
+          "id": 9,
+          "name": "No solid geometry intrudes into headroom on the critical path",
+          "ok": true,
+          "detail": "Headroom clear."
+        },
+        {
+          "id": 10,
+          "name": "Every mandatory jump fits the measured jump envelope",
+          "ok": true,
+          "detail": "Dmax 5.40, Hmax 1.95; hardest gap 56%, step 36%."
+        },
+        {
+          "id": 11,
+          "name": "Measured tier matches the declared tier",
+          "ok": true,
+          "detail": "Declared 3, measured 3 (score 3.24)."
+        },
+        {
+          "id": 12,
+          "name": "Every gate is opened by a plate placed before it",
+          "ok": true,
+          "detail": "0 gate(s) paired."
+        },
+        {
+          "id": 13,
+          "name": "Physics: every mandatory edge succeeds at every timing",
+          "ok": true,
+          "detail": "9 edges verified at up to 4 timings each."
+        },
+        {
+          "id": 14,
+          "name": "Physics: every optional edge succeeds at every timing",
+          "ok": true,
+          "detail": "2 optional edges verified."
+        },
+        {
+          "id": 15,
+          "name": "Physics: full runs from four start delays finish without damage",
+          "ok": true,
+          "detail": "Completed in 22.1 s with no damage at every start delay."
+        },
+        {
+          "id": 16,
+          "name": "Completion time suits the target duration",
+          "ok": true,
+          "detail": "Bot 22.1 s vs target 55 s (a person exploring takes longer)."
+        }
+      ],
+      "completionSeconds": 22.08333333333336
+    },
+    "collectibles": {
+      "difficulty": 2,
+      "level": {
+        "id": "gt-level-01",
+        "countryId": "GT",
+        "legacyCode": "GTM",
+        "title": "Tikal: Above the Forest",
+        "environmentId": "north-america-gt",
+        "difficulty": "medium",
+        "difficultyTier": 3,
+        "design": {
+          "archetype": "jungle-expedition",
+          "signatureMechanic": "forest-terrace-and-crumbling-logs",
+          "mechanics": [
+            "forest-terrace-and-crumbling-logs",
+            "optional-star-detour",
+            "checkpoint-recovery",
+            "country-patrol"
+          ],
+          "terrain": [
+            "ground",
+            "terrace",
+            "stairs",
+            "canopy"
+          ],
+          "verticality": "high",
+          "enemyProfile": "light",
+          "targetDurationSeconds": 55,
+          "seed": 20261171
+        },
+        "environment": {
+          "biome": "jungle",
+          "locationReference": "Tikal National Park",
+          "terrainMaterial": "weathered-limestone",
+          "vegetationPack": "tropical-forest",
+          "architecturePack": "maya-stone-monuments",
+          "landmarkAssets": [
+            "tikal-temple-skyline",
+            "peten-forest",
+            "forest-reservoir"
+          ],
+          "lightingPreset": "warm-directional-daylight",
+          "skyPreset": "clear-layered-sky"
+        },
+        "sections": [
+          {
+            "id": "A",
+            "label": "Forest causeway",
+            "x": 0
+          },
+          {
+            "id": "B",
+            "label": "Stone stair",
+            "x": 23
+          },
+          {
+            "id": "C",
+            "label": "Fallen-log crossing",
+            "x": 44
+          },
+          {
+            "id": "D",
+            "label": "Reservoir refuge",
+            "x": 61
+          },
+          {
+            "id": "E",
+            "label": "Temple skyline",
+            "x": 94
+          }
+        ],
+        "camera": {
+          "height": 2.8,
+          "look": 1.8,
+          "follow": 1,
+          "maxRise": 5,
+          "distance": 21
+        },
+        "spawn": {
+          "platformId": "gt-start",
+          "offset": 2
+        },
+        "platforms": [
+          {
+            "id": "gt-start",
+            "x": -5,
+            "y": 0.3,
+            "width": 15,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "gt-plaza",
+            "x": 12.6,
+            "y": 0.7,
+            "width": 10,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "terrace"
+          },
+          {
+            "id": "gt-stairs",
+            "x": 22.6,
+            "y": 0.7,
+            "width": 7,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "stairs",
+            "slope": 1.2,
+            "steps": 4
+          },
+          {
+            "id": "gt-temple-bank",
+            "x": 32.6,
+            "y": 1.9,
+            "width": 11,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "terrace"
+          },
+          {
+            "id": "gt-log-1",
+            "x": 46.6,
+            "y": 1.9,
+            "width": 4,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "canopy",
+            "collapse": {
+              "delay": 1.6,
+              "respawn": 4.5
+            }
+          },
+          {
+            "id": "gt-log-2",
+            "x": 53.6,
+            "y": 1.9,
+            "width": 4,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "canopy",
+            "collapse": {
+              "delay": 1.5,
+              "respawn": 4.5
+            }
+          },
+          {
+            "id": "gt-reservoir-bank",
+            "x": 60.6,
+            "y": 1.9,
+            "width": 11,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "gt-ruin-step",
+            "x": 74.6,
+            "y": 2.6,
+            "width": 6,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "terrace"
+          },
+          {
+            "id": "gt-upper-ruins",
+            "x": 83.6,
+            "y": 3.2,
+            "width": 8,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "terrace"
+          },
+          {
+            "id": "gt-finish",
+            "x": 94.6,
+            "y": 3.2,
+            "width": 14,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "terrace"
+          },
+          {
+            "id": "gt-canopy-spur",
+            "x": 72.3,
+            "y": 3.1,
+            "width": 1.6,
+            "depth": 3,
+            "thickness": 0.4,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "bonus",
+            "terrain": "canopy"
+          }
+        ],
+        "coins": [
+          {
+            "id": "gt-coin-01",
+            "platformId": "gt-start",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-02",
+            "platformId": "gt-start",
+            "offset": 8.3,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-03",
+            "platformId": "gt-start",
+            "offset": 13.399999999999999,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-04",
+            "platformId": "gt-plaza",
+            "offset": 3,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-05",
+            "platformId": "gt-plaza",
+            "offset": 5.7,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-06",
+            "platformId": "gt-plaza",
+            "offset": 8.4,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-07",
+            "platformId": "gt-stairs",
+            "offset": 3.5,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-08",
+            "platformId": "gt-temple-bank",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-09",
+            "platformId": "gt-temple-bank",
+            "offset": 6.300000000000001,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-10",
+            "platformId": "gt-temple-bank",
+            "offset": 9.4,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-11",
+            "platformId": "gt-log-1",
+            "offset": 2,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-12",
+            "platformId": "gt-log-2",
+            "offset": 2,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-13",
+            "platformId": "gt-reservoir-bank",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-14",
+            "platformId": "gt-reservoir-bank",
+            "offset": 6.300000000000001,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-15",
+            "platformId": "gt-reservoir-bank",
+            "offset": 9.4,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-16",
+            "platformId": "gt-ruin-step",
+            "offset": 3,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-17",
+            "platformId": "gt-upper-ruins",
+            "offset": 4,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-18",
+            "platformId": "gt-finish",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-19",
+            "platformId": "gt-finish",
+            "offset": 7.8,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-20",
+            "platformId": "gt-finish",
+            "offset": 12.399999999999999,
+            "height": 1.05
+          },
+          {
+            "id": "gt-coin-21",
+            "platformId": "gt-canopy-spur",
+            "offset": 0.8,
+            "height": 1.05
+          }
+        ],
+        "stars": [
+          {
+            "id": "gt-star-01",
+            "platformId": "gt-canopy-spur",
+            "offset": 0.8,
+            "height": 1.1
+          },
+          {
+            "id": "gt-star-02",
+            "platformId": "gt-plaza",
+            "offset": 6,
+            "height": 2.4
+          },
+          {
+            "id": "gt-star-03",
+            "platformId": "gt-upper-ruins",
+            "offset": 4,
+            "height": 2.4
+          }
+        ],
+        "checkpoints": [
+          {
+            "id": "gt-checkpoint-01",
+            "platformId": "gt-temple-bank",
+            "offset": 1.2
+          },
+          {
+            "id": "gt-checkpoint-02",
+            "platformId": "gt-reservoir-bank",
+            "offset": 1.2
+          }
+        ],
+        "discovery": {
+          "id": "gt-discovery",
+          "platformId": "gt-finish",
+          "offset": 2.2,
+          "factId": "gt-discovery"
+        },
+        "finish": {
+          "platformId": "gt-finish",
+          "offset": 12
+        },
+        "hazards": [],
+        "enemies": [
+          {
+            "id": "gt-coati",
+            "platformId": "gt-temple-bank",
+            "minOffset": 5.4,
+            "maxOffset": 8.5,
+            "speed": 0.8800000000000001,
+            "turnPause": 0.7,
+            "height": 0.7
+          }
+        ],
+        "routeGraph": {
+          "nodes": [
+            {
+              "id": "gt-start",
+              "type": "START",
+              "platformId": "gt-start"
+            },
+            {
+              "id": "gt-plaza",
+              "type": "JUMP_PLATFORM",
+              "platformId": "gt-plaza"
+            },
+            {
+              "id": "gt-stairs",
+              "type": "JUMP_PLATFORM",
+              "platformId": "gt-stairs"
+            },
+            {
+              "id": "gt-temple-bank",
+              "type": "CHECKPOINT",
+              "platformId": "gt-temple-bank"
+            },
+            {
+              "id": "gt-log-1",
+              "type": "JUMP_PLATFORM",
+              "platformId": "gt-log-1"
+            },
+            {
+              "id": "gt-log-2",
+              "type": "JUMP_PLATFORM",
+              "platformId": "gt-log-2"
+            },
+            {
+              "id": "gt-reservoir-bank",
+              "type": "CHECKPOINT",
+              "platformId": "gt-reservoir-bank"
+            },
+            {
+              "id": "gt-ruin-step",
+              "type": "JUMP_PLATFORM",
+              "platformId": "gt-ruin-step"
+            },
+            {
+              "id": "gt-upper-ruins",
+              "type": "JUMP_PLATFORM",
+              "platformId": "gt-upper-ruins"
+            },
+            {
+              "id": "gt-finish",
+              "type": "FINISH",
+              "platformId": "gt-finish"
+            },
+            {
+              "id": "gt-canopy-spur",
+              "type": "OPTIONAL_REWARD",
+              "platformId": "gt-canopy-spur"
+            }
+          ],
+          "edges": [
+            {
+              "from": "gt-start",
+              "to": "gt-plaza",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "gt-plaza",
+              "to": "gt-stairs",
+              "action": "WALK",
+              "mandatory": true
+            },
+            {
+              "from": "gt-stairs",
+              "to": "gt-temple-bank",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "gt-temple-bank",
+              "to": "gt-log-1",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "gt-log-1",
+              "to": "gt-log-2",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "gt-log-2",
+              "to": "gt-reservoir-bank",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "gt-reservoir-bank",
+              "to": "gt-ruin-step",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "gt-ruin-step",
+              "to": "gt-upper-ruins",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "gt-upper-ruins",
+              "to": "gt-finish",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "gt-reservoir-bank",
+              "to": "gt-canopy-spur",
+              "action": "JUMP",
+              "mandatory": false
+            },
+            {
+              "from": "gt-canopy-spur",
+              "to": "gt-ruin-step",
+              "action": "JUMP",
+              "mandatory": false
+            }
+          ]
+        },
+        "physics": {
+          "gravity": 20,
+          "jumpSpeed": 9,
+          "runSpeed": 6,
+          "acceleration": 25,
+          "airControl": 0.65,
+          "coyoteTime": 0.12,
+          "jumpBuffer": 0.12,
+          "playerRadius": 0.2,
+          "playerHeight": 1.83,
+          "killY": -7,
+          "iceGrip": 0.3,
+          "stepHeight": 0.4,
+          "climbSpeed": 3.4
+        }
+      },
+      "runs": [
+        {
+          "route": "main",
+          "wait": 0,
+          "status": "completed",
+          "damage": 0,
+          "coins": 20,
+          "stars": 1
+        },
+        {
+          "route": "bonus",
+          "wait": 0,
+          "status": "completed",
+          "damage": 0,
+          "coins": 17,
+          "stars": 3
+        },
+        {
+          "route": "main",
+          "wait": 1.8,
+          "status": "completed",
+          "damage": 0,
+          "coins": 19,
+          "stars": 1
+        },
+        {
+          "route": "bonus",
+          "wait": 1.8,
+          "status": "completed",
+          "damage": 0,
+          "coins": 16,
+          "stars": 3
+        },
+        {
+          "route": "main",
+          "wait": 3.6,
+          "status": "completed",
+          "damage": 0,
+          "coins": 21,
+          "stars": 1
+        },
+        {
+          "route": "bonus",
+          "wait": 3.6,
+          "status": "completed",
+          "damage": 0,
+          "coins": 18,
+          "stars": 3
+        }
+      ],
+      "incomplete": [],
+      "damaged": [],
+      "cleanRoutes": [
+        "bonus",
+        "main"
+      ],
+      "missingCoins": [],
+      "missingStars": [],
+      "coins": "21/21",
+      "stars": "3/3"
+    }
+  },
+  "CRI": {
+    "validation": {
+      "levelId": "cr-level-01",
+      "ok": true,
+      "checks": [
+        {
+          "id": 1,
+          "name": "Manifest schema and bounds",
+          "ok": true,
+          "detail": "validateLevel accepted the configuration."
+        },
+        {
+          "id": 2,
+          "name": "One START on the spawn and one FINISH on the goal",
+          "ok": true,
+          "detail": "START cr-start, FINISH cr-finish."
+        },
+        {
+          "id": 3,
+          "name": "Every playable platform is part of the route graph",
+          "ok": true,
+          "detail": "10 nodes cover 10 platforms."
+        },
+        {
+          "id": 4,
+          "name": "FINISH is reachable from START by mandatory edges",
+          "ok": true,
+          "detail": "Critical path of 9 nodes."
+        },
+        {
+          "id": 5,
+          "name": "Every node is reachable from START",
+          "ok": true,
+          "detail": "All nodes reachable."
+        },
+        {
+          "id": 6,
+          "name": "No dead ends: every node can still reach FINISH",
+          "ok": true,
+          "detail": "Optional branches all rejoin the route."
+        },
+        {
+          "id": 7,
+          "name": "Checkpoints lie on the critical path and split it fairly",
+          "ok": true,
+          "detail": "Largest stretch without a checkpoint: 30.5 units of 85.7."
+        },
+        {
+          "id": 8,
+          "name": "Collectibles sit on graph nodes; stars reward an optional route",
+          "ok": true,
+          "detail": "1 of 3 stars are off the critical path."
+        },
+        {
+          "id": 9,
+          "name": "No solid geometry intrudes into headroom on the critical path",
+          "ok": true,
+          "detail": "Headroom clear."
+        },
+        {
+          "id": 10,
+          "name": "Every mandatory jump fits the measured jump envelope",
+          "ok": true,
+          "detail": "Dmax 5.40, Hmax 1.95; hardest gap 48%, step 21%."
+        },
+        {
+          "id": 11,
+          "name": "Measured tier matches the declared tier",
+          "ok": true,
+          "detail": "Declared 2, measured 2 (score 2.24)."
+        },
+        {
+          "id": 12,
+          "name": "Every gate is opened by a plate placed before it",
+          "ok": true,
+          "detail": "0 gate(s) paired."
+        },
+        {
+          "id": 13,
+          "name": "Physics: every mandatory edge succeeds at every timing",
+          "ok": true,
+          "detail": "8 edges verified at up to 4 timings each."
+        },
+        {
+          "id": 14,
+          "name": "Physics: every optional edge succeeds at every timing",
+          "ok": true,
+          "detail": "2 optional edges verified."
+        },
+        {
+          "id": 15,
+          "name": "Physics: full runs from four start delays finish without damage",
+          "ok": true,
+          "detail": "Completed in 20.8 s with no damage at every start delay."
+        },
+        {
+          "id": 16,
+          "name": "Completion time suits the target duration",
+          "ok": true,
+          "detail": "Bot 20.8 s vs target 55 s (a person exploring takes longer)."
+        }
+      ],
+      "completionSeconds": 20.76666666666677
+    },
+    "collectibles": {
+      "difficulty": 1,
+      "level": {
+        "id": "cr-level-01",
+        "countryId": "CR",
+        "legacyCode": "CRI",
+        "title": "Monteverde: Canopy Crossing",
+        "environmentId": "north-america-cr",
+        "difficulty": "easy-medium",
+        "difficultyTier": 2,
+        "design": {
+          "archetype": "cloud-forest-expedition",
+          "signatureMechanic": "canopy-lifts-and-suspension-bridge",
+          "mechanics": [
+            "canopy-lifts-and-suspension-bridge",
+            "optional-star-detour",
+            "checkpoint-recovery",
+            "country-patrol"
+          ],
+          "terrain": [
+            "ground",
+            "mechanical",
+            "canopy",
+            "bridge"
+          ],
+          "verticality": "medium",
+          "enemyProfile": "light",
+          "targetDurationSeconds": 55,
+          "seed": 20261167
+        },
+        "environment": {
+          "biome": "cloud-forest",
+          "locationReference": "Monteverde Cloud Forest",
+          "terrainMaterial": "weathered-limestone",
+          "vegetationPack": "tropical-forest",
+          "architecturePack": "trail-and-crossing",
+          "landmarkAssets": [
+            "cloud-forest-ridges",
+            "hanging-bridge-supports",
+            "emergent-trees"
+          ],
+          "lightingPreset": "warm-directional-daylight",
+          "skyPreset": "cloud-forest-mist"
+        },
+        "sections": [
+          {
+            "id": "A",
+            "label": "Forest floor",
+            "x": 0
+          },
+          {
+            "id": "B",
+            "label": "Basket lesson",
+            "x": 21
+          },
+          {
+            "id": "C",
+            "label": "Suspension bridge",
+            "x": 41
+          },
+          {
+            "id": "D",
+            "label": "Canopy transfer",
+            "x": 67
+          },
+          {
+            "id": "E",
+            "label": "Cloud-forest lookout",
+            "x": 85
+          }
+        ],
+        "camera": {
+          "height": 2.8,
+          "look": 1.8,
+          "follow": 1,
+          "maxRise": 5,
+          "distance": 21
+        },
+        "spawn": {
+          "platformId": "cr-start",
+          "offset": 2
+        },
+        "platforms": [
+          {
+            "id": "cr-start",
+            "x": -5,
+            "y": 0.5,
+            "width": 15,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "cr-root",
+            "x": 12.2,
+            "y": 0.8,
+            "width": 8,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "cr-basket-1",
+            "x": 22.7,
+            "y": 0.7,
+            "width": 4,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "moving",
+            "motion": "vertical",
+            "amplitude": 0.5,
+            "phase": 0,
+            "period": 7,
+            "route": "main",
+            "terrain": "mechanical"
+          },
+          {
+            "id": "cr-canopy-rest",
+            "x": 29.3,
+            "y": 1.2,
+            "width": 12,
+            "depth": 3,
+            "thickness": 1.2,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "canopy"
+          },
+          {
+            "id": "cr-rope",
+            "x": 41.3,
+            "y": 1.2,
+            "width": 13,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "wooden-bridge",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "bridge",
+            "sagDepth": 0.35
+          },
+          {
+            "id": "cr-tree-bank",
+            "x": 56.8,
+            "y": 1.2,
+            "width": 10,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "cr-basket-2",
+            "x": 69.4,
+            "y": 1.1,
+            "width": 4,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "moving",
+            "motion": "horizontal",
+            "amplitude": 0.5,
+            "phase": 0,
+            "period": 6.8,
+            "route": "main",
+            "terrain": "mechanical"
+          },
+          {
+            "id": "cr-branch",
+            "x": 76.1,
+            "y": 1.5,
+            "width": 7,
+            "depth": 3,
+            "thickness": 1.1,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "canopy"
+          },
+          {
+            "id": "cr-finish",
+            "x": 85.7,
+            "y": 1.5,
+            "width": 14,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "cr-orchid-spur",
+            "x": 54.5,
+            "y": 2.4,
+            "width": 1.7,
+            "depth": 3,
+            "thickness": 0.4,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "bonus",
+            "terrain": "canopy"
+          }
+        ],
+        "coins": [
+          {
+            "id": "cr-coin-01",
+            "platformId": "cr-start",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-02",
+            "platformId": "cr-start",
+            "offset": 8.3,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-03",
+            "platformId": "cr-start",
+            "offset": 13.399999999999999,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-04",
+            "platformId": "cr-root",
+            "offset": 4,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-05",
+            "platformId": "cr-basket-1",
+            "offset": 2,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-06",
+            "platformId": "cr-canopy-rest",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-07",
+            "platformId": "cr-canopy-rest",
+            "offset": 6.800000000000001,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-08",
+            "platformId": "cr-canopy-rest",
+            "offset": 10.4,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-09",
+            "platformId": "cr-rope",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-10",
+            "platformId": "cr-rope",
+            "offset": 7.3,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-11",
+            "platformId": "cr-rope",
+            "offset": 11.399999999999999,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-12",
+            "platformId": "cr-tree-bank",
+            "offset": 3,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-13",
+            "platformId": "cr-tree-bank",
+            "offset": 5.7,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-14",
+            "platformId": "cr-tree-bank",
+            "offset": 8.4,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-15",
+            "platformId": "cr-basket-2",
+            "offset": 2,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-16",
+            "platformId": "cr-branch",
+            "offset": 3.5,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-17",
+            "platformId": "cr-finish",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-18",
+            "platformId": "cr-finish",
+            "offset": 7.8,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-19",
+            "platformId": "cr-finish",
+            "offset": 12.399999999999999,
+            "height": 1.05
+          },
+          {
+            "id": "cr-coin-20",
+            "platformId": "cr-orchid-spur",
+            "offset": 0.85,
+            "height": 1.05
+          }
+        ],
+        "stars": [
+          {
+            "id": "cr-star-01",
+            "platformId": "cr-orchid-spur",
+            "offset": 0.85,
+            "height": 1.2
+          },
+          {
+            "id": "cr-star-02",
+            "platformId": "cr-root",
+            "offset": 4,
+            "height": 2.3
+          },
+          {
+            "id": "cr-star-03",
+            "platformId": "cr-branch",
+            "offset": 3.5,
+            "height": 2.4
+          }
+        ],
+        "checkpoints": [
+          {
+            "id": "cr-checkpoint-01",
+            "platformId": "cr-canopy-rest",
+            "offset": 1.2
+          },
+          {
+            "id": "cr-checkpoint-02",
+            "platformId": "cr-tree-bank",
+            "offset": 1.2
+          }
+        ],
+        "discovery": {
+          "id": "cr-discovery",
+          "platformId": "cr-finish",
+          "offset": 2.2,
+          "factId": "cr-discovery"
+        },
+        "finish": {
+          "platformId": "cr-finish",
+          "offset": 12
+        },
+        "hazards": [],
+        "enemies": [
+          {
+            "id": "cr-leafcutter",
+            "platformId": "cr-tree-bank",
+            "minOffset": 5.3,
+            "maxOffset": 8,
+            "speed": 0.6,
+            "turnPause": 1.1,
+            "height": 0.56
+          }
+        ],
+        "routeGraph": {
+          "nodes": [
+            {
+              "id": "cr-start",
+              "type": "START",
+              "platformId": "cr-start"
+            },
+            {
+              "id": "cr-root",
+              "type": "SAFE_PLATFORM",
+              "platformId": "cr-root"
+            },
+            {
+              "id": "cr-basket-1",
+              "type": "MOVING_PLATFORM",
+              "platformId": "cr-basket-1"
+            },
+            {
+              "id": "cr-canopy-rest",
+              "type": "CHECKPOINT",
+              "platformId": "cr-canopy-rest"
+            },
+            {
+              "id": "cr-rope",
+              "type": "JUMP_PLATFORM",
+              "platformId": "cr-rope"
+            },
+            {
+              "id": "cr-tree-bank",
+              "type": "CHECKPOINT",
+              "platformId": "cr-tree-bank"
+            },
+            {
+              "id": "cr-basket-2",
+              "type": "MOVING_PLATFORM",
+              "platformId": "cr-basket-2"
+            },
+            {
+              "id": "cr-branch",
+              "type": "JUMP_PLATFORM",
+              "platformId": "cr-branch"
+            },
+            {
+              "id": "cr-finish",
+              "type": "FINISH",
+              "platformId": "cr-finish"
+            },
+            {
+              "id": "cr-orchid-spur",
+              "type": "OPTIONAL_REWARD",
+              "platformId": "cr-orchid-spur"
+            }
+          ],
+          "edges": [
+            {
+              "from": "cr-start",
+              "to": "cr-root",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "cr-root",
+              "to": "cr-basket-1",
+              "action": "RIDE_PLATFORM",
+              "mandatory": true
+            },
+            {
+              "from": "cr-basket-1",
+              "to": "cr-canopy-rest",
+              "action": "RIDE_PLATFORM",
+              "mandatory": true
+            },
+            {
+              "from": "cr-canopy-rest",
+              "to": "cr-rope",
+              "action": "WALK",
+              "mandatory": true
+            },
+            {
+              "from": "cr-rope",
+              "to": "cr-tree-bank",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "cr-tree-bank",
+              "to": "cr-basket-2",
+              "action": "RIDE_PLATFORM",
+              "mandatory": true
+            },
+            {
+              "from": "cr-basket-2",
+              "to": "cr-branch",
+              "action": "RIDE_PLATFORM",
+              "mandatory": true
+            },
+            {
+              "from": "cr-branch",
+              "to": "cr-finish",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "cr-rope",
+              "to": "cr-orchid-spur",
+              "action": "JUMP",
+              "mandatory": false
+            },
+            {
+              "from": "cr-orchid-spur",
+              "to": "cr-tree-bank",
+              "action": "JUMP",
+              "mandatory": false
+            }
+          ]
+        },
+        "physics": {
+          "gravity": 20,
+          "jumpSpeed": 9,
+          "runSpeed": 6,
+          "acceleration": 25,
+          "airControl": 0.65,
+          "coyoteTime": 0.12,
+          "jumpBuffer": 0.12,
+          "playerRadius": 0.2,
+          "playerHeight": 1.83,
+          "killY": -7,
+          "iceGrip": 0.3,
+          "stepHeight": 0.4,
+          "climbSpeed": 3.4
+        }
+      },
+      "runs": [
+        {
+          "route": "main",
+          "wait": 0,
+          "status": "completed",
+          "damage": 0,
+          "coins": 19,
+          "stars": 1
+        },
+        {
+          "route": "bonus",
+          "wait": 0,
+          "status": "completed",
+          "damage": 0,
+          "coins": 18,
+          "stars": 3
+        },
+        {
+          "route": "main",
+          "wait": 1.8,
+          "status": "completed",
+          "damage": 0,
+          "coins": 19,
+          "stars": 1
+        },
+        {
+          "route": "bonus",
+          "wait": 1.8,
+          "status": "completed",
+          "damage": 0,
+          "coins": 16,
+          "stars": 3
+        },
+        {
+          "route": "main",
+          "wait": 3.6,
+          "status": "completed",
+          "damage": 0,
+          "coins": 18,
+          "stars": 1
+        },
+        {
+          "route": "bonus",
+          "wait": 3.6,
+          "status": "completed",
+          "damage": 0,
+          "coins": 16,
+          "stars": 3
+        }
+      ],
+      "incomplete": [],
+      "damaged": [],
+      "cleanRoutes": [
+        "bonus",
+        "main"
+      ],
+      "missingCoins": [],
+      "missingStars": [],
+      "coins": "20/20",
+      "stars": "3/3"
+    }
+  },
+  "JAM": {
+    "validation": {
+      "levelId": "jm-level-01",
+      "ok": true,
+      "checks": [
+        {
+          "id": 1,
+          "name": "Manifest schema and bounds",
+          "ok": true,
+          "detail": "validateLevel accepted the configuration."
+        },
+        {
+          "id": 2,
+          "name": "One START on the spawn and one FINISH on the goal",
+          "ok": true,
+          "detail": "START jm-start, FINISH jm-finish."
+        },
+        {
+          "id": 3,
+          "name": "Every playable platform is part of the route graph",
+          "ok": true,
+          "detail": "10 nodes cover 10 platforms."
+        },
+        {
+          "id": 4,
+          "name": "FINISH is reachable from START by mandatory edges",
+          "ok": true,
+          "detail": "Critical path of 9 nodes."
+        },
+        {
+          "id": 5,
+          "name": "Every node is reachable from START",
+          "ok": true,
+          "detail": "All nodes reachable."
+        },
+        {
+          "id": 6,
+          "name": "No dead ends: every node can still reach FINISH",
+          "ok": true,
+          "detail": "Optional branches all rejoin the route."
+        },
+        {
+          "id": 7,
+          "name": "Checkpoints lie on the critical path and split it fairly",
+          "ok": true,
+          "detail": "Largest stretch without a checkpoint: 31.0 units of 87.6."
+        },
+        {
+          "id": 8,
+          "name": "Collectibles sit on graph nodes; stars reward an optional route",
+          "ok": true,
+          "detail": "1 of 3 stars are off the critical path."
+        },
+        {
+          "id": 9,
+          "name": "No solid geometry intrudes into headroom on the critical path",
+          "ok": true,
+          "detail": "Headroom clear."
+        },
+        {
+          "id": 10,
+          "name": "Every mandatory jump fits the measured jump envelope",
+          "ok": true,
+          "detail": "Dmax 5.40, Hmax 1.95; hardest gap 56%, step 31%."
+        },
+        {
+          "id": 11,
+          "name": "Measured tier matches the declared tier",
+          "ok": true,
+          "detail": "Declared 3, measured 3 (score 3.36)."
+        },
+        {
+          "id": 12,
+          "name": "Every gate is opened by a plate placed before it",
+          "ok": true,
+          "detail": "0 gate(s) paired."
+        },
+        {
+          "id": 13,
+          "name": "Physics: every mandatory edge succeeds at every timing",
+          "ok": true,
+          "detail": "8 edges verified at up to 4 timings each."
+        },
+        {
+          "id": 14,
+          "name": "Physics: every optional edge succeeds at every timing",
+          "ok": true,
+          "detail": "2 optional edges verified."
+        },
+        {
+          "id": 15,
+          "name": "Physics: full runs from four start delays finish without damage",
+          "ok": true,
+          "detail": "Completed in 23.4 s with no damage at every start delay."
+        },
+        {
+          "id": 16,
+          "name": "Completion time suits the target duration",
+          "ok": true,
+          "detail": "Bot 23.4 s vs target 55 s (a person exploring takes longer)."
+        }
+      ],
+      "completionSeconds": 23.416666666666618
+    },
+    "collectibles": {
+      "difficulty": 2,
+      "level": {
+        "id": "jm-level-01",
+        "countryId": "JM",
+        "legacyCode": "JAM",
+        "title": "Dunn’s River: Cascade Climb",
+        "environmentId": "north-america-jm",
+        "difficulty": "medium",
+        "difficultyTier": 3,
+        "design": {
+          "archetype": "cascade-expedition",
+          "signatureMechanic": "upstream-current-and-wet-steps",
+          "mechanics": [
+            "upstream-current-and-wet-steps",
+            "optional-star-detour",
+            "checkpoint-recovery",
+            "country-patrol"
+          ],
+          "terrain": [
+            "ground",
+            "rock"
+          ],
+          "verticality": "high",
+          "enemyProfile": "light",
+          "targetDurationSeconds": 55,
+          "seed": 20261174
+        },
+        "environment": {
+          "biome": "cascade",
+          "locationReference": "Dunn’s River Falls",
+          "terrainMaterial": "weathered-limestone",
+          "vegetationPack": "tropical-forest",
+          "architecturePack": "trail-and-crossing",
+          "landmarkAssets": [
+            "terraced-cascades",
+            "river-pools",
+            "caribbean-shore"
+          ],
+          "lightingPreset": "warm-directional-daylight",
+          "skyPreset": "clear-layered-sky"
+        },
+        "sections": [
+          {
+            "id": "A",
+            "label": "River mouth",
+            "x": 0
+          },
+          {
+            "id": "B",
+            "label": "Current lesson",
+            "x": 12
+          },
+          {
+            "id": "C",
+            "label": "Wet cascade steps",
+            "x": 37
+          },
+          {
+            "id": "D",
+            "label": "Dry-pool refuge",
+            "x": 55
+          },
+          {
+            "id": "E",
+            "label": "Upper falls",
+            "x": 78
+          }
+        ],
+        "camera": {
+          "height": 2.8,
+          "look": 1.8,
+          "follow": 1,
+          "maxRise": 5,
+          "distance": 21
+        },
+        "spawn": {
+          "platformId": "jm-start",
+          "offset": 2
+        },
+        "platforms": [
+          {
+            "id": "jm-start",
+            "x": -5,
+            "y": 0.2,
+            "width": 15,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "jm-shallows",
+            "x": 12.6,
+            "y": 0.2,
+            "width": 9,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "rock",
+            "current": -1.1
+          },
+          {
+            "id": "jm-dry-bank",
+            "x": 24.6,
+            "y": 0.6,
+            "width": 10,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "jm-cascade-1",
+            "x": 37.6,
+            "y": 1.2,
+            "width": 6,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "rock",
+            "current": -1.3
+          },
+          {
+            "id": "jm-cascade-2",
+            "x": 46.6,
+            "y": 1.8,
+            "width": 6,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "rock",
+            "surface": "ice"
+          },
+          {
+            "id": "jm-pool-bank",
+            "x": 55.6,
+            "y": 2.3,
+            "width": 11,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "jm-cascade-3",
+            "x": 69.6,
+            "y": 2.9,
+            "width": 6,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "rock",
+            "current": -1.4
+          },
+          {
+            "id": "jm-cascade-4",
+            "x": 78.6,
+            "y": 3.5,
+            "width": 6,
+            "depth": 3,
+            "thickness": 0.8,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "rock",
+            "surface": "ice"
+          },
+          {
+            "id": "jm-finish",
+            "x": 87.6,
+            "y": 4.1,
+            "width": 14,
+            "depth": 6,
+            "thickness": 13,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "main",
+            "terrain": "ground"
+          },
+          {
+            "id": "jm-fern-spur",
+            "x": 67.2,
+            "y": 3.5,
+            "width": 1.6,
+            "depth": 3,
+            "thickness": 0.4,
+            "type": "stone",
+            "motion": null,
+            "amplitude": 0,
+            "phase": 0,
+            "period": 7.2,
+            "route": "bonus",
+            "terrain": "rock"
+          }
+        ],
+        "coins": [
+          {
+            "id": "jm-coin-01",
+            "platformId": "jm-start",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-02",
+            "platformId": "jm-start",
+            "offset": 8.3,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-03",
+            "platformId": "jm-start",
+            "offset": 13.399999999999999,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-04",
+            "platformId": "jm-shallows",
+            "offset": 2.6999999999999997,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-05",
+            "platformId": "jm-shallows",
+            "offset": 5.050000000000001,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-06",
+            "platformId": "jm-shallows",
+            "offset": 7.4,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-07",
+            "platformId": "jm-dry-bank",
+            "offset": 3,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-08",
+            "platformId": "jm-dry-bank",
+            "offset": 5.7,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-09",
+            "platformId": "jm-dry-bank",
+            "offset": 8.4,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-10",
+            "platformId": "jm-cascade-1",
+            "offset": 3,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-11",
+            "platformId": "jm-cascade-2",
+            "offset": 3,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-12",
+            "platformId": "jm-pool-bank",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-13",
+            "platformId": "jm-pool-bank",
+            "offset": 6.300000000000001,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-14",
+            "platformId": "jm-pool-bank",
+            "offset": 9.4,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-15",
+            "platformId": "jm-cascade-3",
+            "offset": 3,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-16",
+            "platformId": "jm-cascade-4",
+            "offset": 3,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-17",
+            "platformId": "jm-finish",
+            "offset": 3.2,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-18",
+            "platformId": "jm-finish",
+            "offset": 7.8,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-19",
+            "platformId": "jm-finish",
+            "offset": 12.399999999999999,
+            "height": 1.05
+          },
+          {
+            "id": "jm-coin-20",
+            "platformId": "jm-fern-spur",
+            "offset": 0.8,
+            "height": 1.05
+          }
+        ],
+        "stars": [
+          {
+            "id": "jm-star-01",
+            "platformId": "jm-fern-spur",
+            "offset": 0.8,
+            "height": 1.2
+          },
+          {
+            "id": "jm-star-02",
+            "platformId": "jm-dry-bank",
+            "offset": 6,
+            "height": 2.4
+          },
+          {
+            "id": "jm-star-03",
+            "platformId": "jm-cascade-3",
+            "offset": 3,
+            "height": 2.2
+          }
+        ],
+        "checkpoints": [
+          {
+            "id": "jm-checkpoint-01",
+            "platformId": "jm-dry-bank",
+            "offset": 1.2
+          },
+          {
+            "id": "jm-checkpoint-02",
+            "platformId": "jm-pool-bank",
+            "offset": 1.2
+          }
+        ],
+        "discovery": {
+          "id": "jm-discovery",
+          "platformId": "jm-finish",
+          "offset": 2.2,
+          "factId": "jm-discovery"
+        },
+        "finish": {
+          "platformId": "jm-finish",
+          "offset": 12
+        },
+        "hazards": [],
+        "enemies": [
+          {
+            "id": "jm-land-crab",
+            "platformId": "jm-dry-bank",
+            "minOffset": 4.8,
+            "maxOffset": 7.6,
+            "speed": 0.7150000000000001,
+            "turnPause": 0.8,
+            "height": 0.7
+          }
+        ],
+        "routeGraph": {
+          "nodes": [
+            {
+              "id": "jm-start",
+              "type": "START",
+              "platformId": "jm-start"
+            },
+            {
+              "id": "jm-shallows",
+              "type": "JUMP_PLATFORM",
+              "platformId": "jm-shallows"
+            },
+            {
+              "id": "jm-dry-bank",
+              "type": "CHECKPOINT",
+              "platformId": "jm-dry-bank"
+            },
+            {
+              "id": "jm-cascade-1",
+              "type": "JUMP_PLATFORM",
+              "platformId": "jm-cascade-1"
+            },
+            {
+              "id": "jm-cascade-2",
+              "type": "JUMP_PLATFORM",
+              "platformId": "jm-cascade-2"
+            },
+            {
+              "id": "jm-pool-bank",
+              "type": "CHECKPOINT",
+              "platformId": "jm-pool-bank"
+            },
+            {
+              "id": "jm-cascade-3",
+              "type": "JUMP_PLATFORM",
+              "platformId": "jm-cascade-3"
+            },
+            {
+              "id": "jm-cascade-4",
+              "type": "JUMP_PLATFORM",
+              "platformId": "jm-cascade-4"
+            },
+            {
+              "id": "jm-finish",
+              "type": "FINISH",
+              "platformId": "jm-finish"
+            },
+            {
+              "id": "jm-fern-spur",
+              "type": "OPTIONAL_REWARD",
+              "platformId": "jm-fern-spur"
+            }
+          ],
+          "edges": [
+            {
+              "from": "jm-start",
+              "to": "jm-shallows",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "jm-shallows",
+              "to": "jm-dry-bank",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "jm-dry-bank",
+              "to": "jm-cascade-1",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "jm-cascade-1",
+              "to": "jm-cascade-2",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "jm-cascade-2",
+              "to": "jm-pool-bank",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "jm-pool-bank",
+              "to": "jm-cascade-3",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "jm-cascade-3",
+              "to": "jm-cascade-4",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "jm-cascade-4",
+              "to": "jm-finish",
+              "action": "JUMP",
+              "mandatory": true
+            },
+            {
+              "from": "jm-pool-bank",
+              "to": "jm-fern-spur",
+              "action": "JUMP",
+              "mandatory": false
+            },
+            {
+              "from": "jm-fern-spur",
+              "to": "jm-cascade-3",
+              "action": "JUMP",
+              "mandatory": false
+            }
+          ]
+        },
+        "physics": {
+          "gravity": 20,
+          "jumpSpeed": 9,
+          "runSpeed": 6,
+          "acceleration": 25,
+          "airControl": 0.65,
+          "coyoteTime": 0.12,
+          "jumpBuffer": 0.12,
+          "playerRadius": 0.2,
+          "playerHeight": 1.83,
+          "killY": -7,
+          "iceGrip": 0.3,
+          "stepHeight": 0.4,
+          "climbSpeed": 3.4
+        }
+      },
+      "runs": [
+        {
+          "route": "main",
+          "wait": 0,
+          "status": "completed",
+          "damage": 0,
+          "coins": 19,
+          "stars": 2
+        },
+        {
+          "route": "bonus",
+          "wait": 0,
+          "status": "completed",
+          "damage": 0,
+          "coins": 18,
+          "stars": 3
+        },
+        {
+          "route": "main",
+          "wait": 1.8,
+          "status": "completed",
+          "damage": 0,
+          "coins": 19,
+          "stars": 2
+        },
+        {
+          "route": "bonus",
+          "wait": 1.8,
+          "status": "completed",
+          "damage": 0,
+          "coins": 18,
+          "stars": 3
+        },
+        {
+          "route": "main",
+          "wait": 3.6,
+          "status": "completed",
+          "damage": 0,
+          "coins": 18,
+          "stars": 2
+        },
+        {
+          "route": "bonus",
+          "wait": 3.6,
+          "status": "completed",
+          "damage": 0,
+          "coins": 17,
+          "stars": 3
+        }
+      ],
+      "incomplete": [],
+      "damaged": [],
+      "cleanRoutes": [
+        "bonus",
+        "main"
+      ],
+      "missingCoins": [],
+      "missingStars": [],
+      "coins": "20/20",
+      "stars": "3/3"
+    }
+  }
+}

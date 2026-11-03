@@ -17,11 +17,11 @@ export function isCurrentDestination(pathname: string, href: string) {
 }
 
 export function isGamePage(pathname: string) {
-  return ['/game-1', '/wordle', '/game-room/game-1', '/game-room/wordle']
+  return ['/game-1', '/wordle', '/game-room/game-1', '/game-room/wordle', '/dev/jumpyland']
     .some((path) => pathname === path || pathname.startsWith(`${path}/`));
 }
 
 export function isStandalonePage(pathname: string) {
-  return isGamePage(pathname) || ['/login', '/register', '/verify-email', '/forgot-password', '/reset-password', '/account/security', '/dev/navigation', '/dev/game-room']
+  return isGamePage(pathname) || ['/world-explorer', '/login', '/register', '/verify-email', '/forgot-password', '/reset-password', '/account/security', '/dev/navigation', '/dev/game-room']
     .some((path) => pathname === path || pathname.startsWith(`${path}/`));
 }

@@ -1,0 +1,412 @@
+{
+  "records": [
+    {
+      "code": "KAZ",
+      "file": "lib/world-explorer/levels/central-asia/kaz.ts",
+      "sha256": "beba1faa2c31bf6d789311be1b2e4d20c8d09975eb43f8a3d0277078d7e360e5",
+      "runtimeDifficulty": 1,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "kz-descent",
+            "to": "kz-rest",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 0.75,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 38.461538461538446,
+            "tier": 2
+          },
+          {
+            "from": "kz-rest",
+            "to": "kz-bridge",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 0,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 0,
+            "tier": 1
+          },
+          {
+            "from": "kz-drop",
+            "to": "kz-terrace",
+            "action": "JUMP",
+            "gap": 1.8000000000000114,
+            "rise": 0.6999999999999997,
+            "gapPercent": 33.33333333333366,
+            "stepPercent": 35.89743589743587,
+            "tier": 2
+          },
+          {
+            "from": "kz-terrace",
+            "to": "kz-end",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 0,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "timed-hazard"
+        ],
+        "measuredTier": 2,
+        "declaredTier": 2,
+        "score": 1.7866666666666666,
+        "warnings": []
+      },
+      "edgeChecks": 36,
+      "recoveryChecks": 64,
+      "warnings": [
+        {
+          "id": "kz-hazard-0",
+          "warning": 1.5,
+          "period": 8
+        }
+      ],
+      "coins": "11/11",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "KGZ",
+      "file": "lib/world-explorer/levels/central-asia/kgz.ts",
+      "sha256": "481d0c8356d670059b8b9167c4641b8ecaf7f0e0bd4678dba5e8ce36946d8d0e",
+      "runtimeDifficulty": 3,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "kg-bridge",
+            "to": "kg-shelf",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 1.1,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 56.4102564102564,
+            "tier": 4
+          },
+          {
+            "from": "kg-shelf",
+            "to": "kg-forest",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 1.1,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 56.4102564102564,
+            "tier": 4
+          },
+          {
+            "from": "kg-steps",
+            "to": "kg-ridge",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.1,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 56.4102564102564,
+            "tier": 4
+          },
+          {
+            "from": "kg-ridge",
+            "to": "kg-snow",
+            "action": "JUMP",
+            "gap": 2.5999999999999943,
+            "rise": 1.0999999999999996,
+            "gapPercent": 48.14814814814821,
+            "stepPercent": 56.41025641025637,
+            "tier": 4
+          },
+          {
+            "from": "kg-snow",
+            "to": "kg-end",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 0,
+            "tier": 1
+          }
+        ],
+        "mechanics": [],
+        "measuredTier": 4,
+        "declaredTier": 4,
+        "score": 4,
+        "warnings": []
+      },
+      "edgeChecks": 36,
+      "recoveryChecks": 64,
+      "warnings": [],
+      "coins": "11/11",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "TJK",
+      "file": "lib/world-explorer/levels/central-asia/tjk.ts",
+      "sha256": "3641813f1fb6f7cd4abd6aa89a423c64a4a11827e147532bb8132daf3175e87e",
+      "runtimeDifficulty": 3,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "tj-face",
+            "to": "tj-high",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.7000000000000002,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 35.8974358974359,
+            "tier": 2
+          },
+          {
+            "from": "tj-high",
+            "to": "tj-peak",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 1.25,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "tj-peak",
+            "to": "tj-ledge",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 1.25,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 64.10256410256409,
+            "tier": 5
+          },
+          {
+            "from": "tj-ledge",
+            "to": "tj-rest",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 1.2500000000000009,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 64.10256410256413,
+            "tier": 5
+          },
+          {
+            "from": "tj-descent",
+            "to": "tj-end",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.2999999999999998,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 15.38461538461537,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "climbing",
+          "wind"
+        ],
+        "measuredTier": 5,
+        "declaredTier": 5,
+        "score": 5.24,
+        "warnings": []
+      },
+      "edgeChecks": 40,
+      "recoveryChecks": 64,
+      "warnings": [],
+      "coins": "12/12",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "TKM",
+      "file": "lib/world-explorer/levels/central-asia/tkm.ts",
+      "sha256": "0300316f5a81ba2074b2b641b8d161940f2b0a6d555f0773f6f5490bf462e986",
+      "runtimeDifficulty": 2,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "tm-ramp",
+            "to": "tm-terrace",
+            "action": "JUMP",
+            "gap": 1.8000000000000007,
+            "rise": 0.9500000000000002,
+            "gapPercent": 33.333333333333464,
+            "stepPercent": 48.71794871794871,
+            "tier": 3
+          },
+          {
+            "from": "tm-terrace",
+            "to": "tm-slide",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.2000000000000028,
+            "rise": 0.25,
+            "gapPercent": 22.222222222222353,
+            "stepPercent": 12.820512820512816,
+            "tier": 1
+          },
+          {
+            "from": "tm-slide",
+            "to": "tm-ledge",
+            "action": "JUMP",
+            "gap": 2.1999999999999957,
+            "rise": 0.9500000000000002,
+            "gapPercent": 40.740740740740804,
+            "stepPercent": 48.71794871794871,
+            "tier": 3
+          },
+          {
+            "from": "tm-drop",
+            "to": "tm-end",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.9499999999999997,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 48.71794871794869,
+            "tier": 3
+          }
+        ],
+        "mechanics": [
+          "moving"
+        ],
+        "measuredTier": 3,
+        "declaredTier": 3,
+        "score": 3.12,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "recoveryChecks": 64,
+      "warnings": [],
+      "coins": "10/10",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    },
+    {
+      "code": "UZB",
+      "file": "lib/world-explorer/levels/central-asia/uzb.ts",
+      "sha256": "ab0cd66c8f5455dfa0a426ee50512f164901f0b14de36a78adee324575f69ad8",
+      "runtimeDifficulty": 1,
+      "automatedPassed": true,
+      "difficulty": {
+        "envelope": {
+          "dmax": 5.399999999999981,
+          "hmax": 1.9500000000000006
+        },
+        "jumps": [
+          {
+            "from": "uz-court",
+            "to": "uz-garden",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.75,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 38.461538461538446,
+            "tier": 2
+          },
+          {
+            "from": "uz-garden",
+            "to": "uz-lift",
+            "action": "RIDE_PLATFORM",
+            "gap": 1.8000000000000043,
+            "rise": 0.050000000000000044,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 2.564102564102565,
+            "tier": 1
+          },
+          {
+            "from": "uz-lift",
+            "to": "uz-gallery",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0.7,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 35.897435897435884,
+            "tier": 2
+          },
+          {
+            "from": "uz-gallery",
+            "to": "uz-walk",
+            "action": "JUMP",
+            "gap": 1.8000000000000043,
+            "rise": 0.7000000000000002,
+            "gapPercent": 33.333333333333535,
+            "stepPercent": 35.8974358974359,
+            "tier": 2
+          },
+          {
+            "from": "uz-walk",
+            "to": "uz-end",
+            "action": "JUMP",
+            "gap": 1.7999999999999972,
+            "rise": 0,
+            "gapPercent": 33.3333333333334,
+            "stepPercent": 0,
+            "tier": 1
+          }
+        ],
+        "mechanics": [
+          "moving",
+          "timed-gate"
+        ],
+        "measuredTier": 2,
+        "declaredTier": 2,
+        "score": 2.24,
+        "warnings": []
+      },
+      "edgeChecks": 32,
+      "recoveryChecks": 64,
+      "warnings": [],
+      "coins": "10/10",
+      "stars": "3/3",
+      "humanPlaytest": "NOT_RUN",
+      "accountSave": "PENDING",
+      "physicalPhone": "PENDING",
+      "fps60": "UNVERIFIED",
+      "released": false,
+      "runs": 32,
+      "staticChecksPassed": true
+    }
+  ],
+  "similarityFlags": [],
+  "released": false
+}
