@@ -9,6 +9,7 @@ import {createCollectibleBurst} from './japan-interactives';
 import {woodenDeck} from './kit/wooden-deck';
 import {skyEnvironment} from './kit/sky';
 import {createGate,createPressurePlate,createSwingRopes} from './kit/mechanisms';
+import {materialUpgradeQueue} from './kit/material-upgrade-queue';
 import {mountCountryPuzzles} from './kit/country-puzzles';
 import {createTimedHazard} from './kit/hazards';
 import {levelDefinitionFor} from '../../lib/world-explorer/level-manifest';
@@ -119,19 +120,19 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
  // reuses finished programs and play never waits for a shader. The stand-ins'
  // materials are never disposed, which keeps those programs alive until the
  // renderer itself is disposed.
- const parallelCompile=renderer.extensions.has('KHR_parallel_shader_compile');
- scene.userData.prepareMaterials=async(changes:{object:T.Mesh;material:T.Material}[])=>{
+ let started=false;
+ const upgrades=materialUpgradeQueue(()=>!started||simulation.state.status!=='playing',state=>{canvas.dataset.materialUpgrades=state;});
+ scene.userData.prepareMaterials=(changes:{object:T.Mesh;material:T.Material}[])=>upgrades.prepare(async()=>{
   if(dead)throw new Error('The stage has closed.');
   const staging=new T.Scene();
   // A shallow clone keeps everything that shapes the program: instancing,
   // per-instance colours, morph data and the geometry's attributes.
   for(const {object,material} of changes){const standIn=object.clone(false) as T.Mesh;standIn.material=material;staging.add(standIn);}
+  // Upload candidate textures while safe as well as compiling their programs.
+  const textures=new Set<T.Texture>();for(const {material}of changes)for(const value of Object.values(material))if(value instanceof T.Texture)textures.add(value);for(const texture of textures)renderer.initTexture(texture);
   await renderer.compileAsync(staging,camera,scene);
-  // Without parallel compilation the browser still links in the background,
-  // but the first draw would wait for it; leave it time before the swap.
-  if(!parallelCompile)await new Promise(resolve=>setTimeout(resolve,1500));
   if(dead)throw new Error('The stage has closed.');
- };
+ });
  let surfacesApplied=()=>{};const surfaces=new Promise<void>(resolve=>{surfacesApplied=resolve;});
  const finalized=scenery?.finalize?.(scene,()=>{canvas.dataset.surfaceDetail='natural-rock-pbr';surfacesApplied();})||null;
  if(!scenery?.finalize)surfacesApplied();
@@ -230,7 +231,7 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
     if(event.type==='failed'&&!finishedReported){finishedReported=true;clear();audio.pause();callbacks.onFail?.();}
     if(event.type==='finish'&&!finishedReported){finishedReported=true;clear();notify();callbacks.onFinish(simulation.state.coins,{stars:simulation.state.stars,elapsedMs:Math.round(simulation.state.elapsedSeconds*1000),discoveryFound:simulation.state.discoveryFound});}
    }
-   notify();render(dt);performanceFrames++;frameTimes.push(dt*1000);if(frameTimes.length>1200)frameTimes.shift();if(stamp-performanceStart>=1000){callbacks.onPerformance?.({fps:Math.round(performanceFrames*1000/(stamp-performanceStart)),drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles});performanceStart=stamp;performanceFrames=0;}frame=requestAnimationFrame(loop);
+   void upgrades.flush();notify();render(dt);performanceFrames++;frameTimes.push(dt*1000);if(frameTimes.length>1200)frameTimes.shift();if(stamp-performanceStart>=1000){callbacks.onPerformance?.({fps:Math.round(performanceFrames*1000/(stamp-performanceStart)),drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles});performanceStart=stamp;performanceFrames=0;}frame=requestAnimationFrame(loop);
   }catch(error){graphicsFailure(error instanceof Error?error.message:'The 3D scene could not continue. Please retry.');}
  };
  // Prepare every shader program before play starts: wait for the photographic
@@ -239,12 +240,11 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
  // needed mid-play (an object hidden or off screen at the start) otherwise
  // blocks a frame for hundreds of milliseconds on a cold browser. A slow device
  // never holds the start back.
- let started=false;
  const start=()=>{if(started||dead)return;started=true;try{renderer.render(scene,camera);}catch{/* the loop reports graphics failures */}previous=performance.now();frame=requestAnimationFrame(loop);canvas.dataset.ready='true';callbacks.onReady();focus();};
  // A coin's sparkle burst is created on pickup and disposed after it; one
  // hidden sample keeps its program compiled and alive for the whole run.
  if(authored&&!reducedMotion){const sample=createCollectibleBurst(scene,0,-50,0);sample.root.visible=false;sample.root.name='collectible-burst-shader-sample';}
  const prepare=async()=>{await Promise.race([surfaces,new Promise(resolve=>setTimeout(resolve,3000))]);if(!dead)await renderer.compileAsync(scene,camera);};
  prepare().then(start,start);setTimeout(start,6000);
- return{autoplay(inputs:SimulationInput[]){autoplay={inputs,index:0,carry:0};clear();focus();},reviewState(){const s=simulation.state;return{...simulation.stats(),status:s.status,x:s.x,y:s.y,standing:s.standing,lightPuzzles:simulation.lightPuzzles.map(p=>({...p})),waterBasins:(level.waterBasins||[]).map(b=>({id:b.id,y:simulation.waterSurface(b.id)})),elapsed:s.elapsedSeconds,discoveryFound:s.discoveryFound,coinIds:[...simulation.collectedCoins].sort(),starIds:[...simulation.collectedStars].sort(),autoplayIndex:autoplay?.index??0,autoplayLength:autoplay?.inputs.length??0,tally:{...reviewTally}};},pause(){simulation.pause();clear();audio.pause();},resume(){if(finishedReported||graphicsFailed)return;simulation.resume();clear();previous=performance.now();audio.resume();focus();},reviewStats(){const memory=renderer.info.memory;return{frameTimes:[...frameTimes],calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:memory.geometries,textures:memory.textures};},setReviewCamera(view:{position:[number,number,number];target:[number,number,number];fov?:number}){reviewCamera=view;reviewView='camera';clear();scenery?.setView?.('gameplay');simulation.pause();audio.pause();render(0);},setReviewView(view:'gameplay'|'overview'|'scan',x=0,y?:number){reviewView=view;scanX=x;scanY=y;clear();scenery?.setView?.(view==='overview'?'overview':'gameplay');if(view!=='gameplay'){simulation.pause();audio.pause();}else{simulation.resume();audio.resume();const position=cameraFrame(level,simulation.state.x,simulation.state.y,camera.aspect);camera.position.set(position.x,position.y,position.z);cameraLookY=position.lookY;cameraGroundY=simulation.state.y;camera.far=190;camera.updateProjectionMatrix();focus();}render(0);},setPreferences(preferences:ExplorerRunPreferences){audio.setVolumes({musicVolume:preferences.musicVolume,effectsVolume:preferences.effectsVolume});if(preferences.reducedMotion!==undefined){reducedMotion=preferences.reducedMotion;context.reducedMotion=reducedMotion;scenery?.setReducedMotion(reducedMotion);}},destroy(){if(dead)return;dead=true;cancelAnimationFrame(frame);observer.disconnect();window.removeEventListener('keydown',keydown);window.removeEventListener('keyup',keyup);window.removeEventListener('blur',clear);window.removeEventListener('pointerdown',unlock);parent.removeEventListener('explorer-input',control);canvas.removeEventListener('pointerdown',focus);canvas.removeEventListener('webglcontextlost',contextLost);bursts.forEach(burst=>burst.effect.dispose());haloMaterial.map?.dispose();haloMaterial.dispose();audio.dispose();flag.dispose();finalized?.dispose();scenery?.dispose();scene.environment=null;reflections?.dispose();dispose(renderer,scene);}};
+ return{autoplay(inputs:SimulationInput[]){autoplay={inputs,index:0,carry:0};clear();focus();},reviewState(){const s=simulation.state;return{...simulation.stats(),status:s.status,x:s.x,y:s.y,standing:s.standing,lightPuzzles:simulation.lightPuzzles.map(p=>({...p})),waterBasins:(level.waterBasins||[]).map(b=>({id:b.id,y:simulation.waterSurface(b.id)})),elapsed:s.elapsedSeconds,discoveryFound:s.discoveryFound,coinIds:[...simulation.collectedCoins].sort(),starIds:[...simulation.collectedStars].sort(),autoplayIndex:autoplay?.index??0,autoplayLength:autoplay?.inputs.length??0,tally:{...reviewTally}};},pause(){simulation.pause();clear();audio.pause();},resume(){if(finishedReported||graphicsFailed)return;simulation.resume();clear();previous=performance.now();audio.resume();focus();},reviewStats(){const memory=renderer.info.memory;return{frameTimes:[...frameTimes],calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:memory.geometries,textures:memory.textures};},setReviewCamera(view:{position:[number,number,number];target:[number,number,number];fov?:number}){reviewCamera=view;reviewView='camera';clear();scenery?.setView?.('gameplay');simulation.pause();audio.pause();render(0);},setReviewView(view:'gameplay'|'overview'|'scan',x=0,y?:number){reviewView=view;scanX=x;scanY=y;clear();scenery?.setView?.(view==='overview'?'overview':'gameplay');if(view!=='gameplay'){simulation.pause();audio.pause();}else{simulation.resume();audio.resume();const position=cameraFrame(level,simulation.state.x,simulation.state.y,camera.aspect);camera.position.set(position.x,position.y,position.z);cameraLookY=position.lookY;cameraGroundY=simulation.state.y;camera.far=190;camera.updateProjectionMatrix();focus();}render(0);},setPreferences(preferences:ExplorerRunPreferences){audio.setVolumes({musicVolume:preferences.musicVolume,effectsVolume:preferences.effectsVolume});if(preferences.reducedMotion!==undefined){reducedMotion=preferences.reducedMotion;context.reducedMotion=reducedMotion;scenery?.setReducedMotion(reducedMotion);}},destroy(){if(dead)return;dead=true;upgrades.dispose();cancelAnimationFrame(frame);observer.disconnect();window.removeEventListener('keydown',keydown);window.removeEventListener('keyup',keyup);window.removeEventListener('blur',clear);window.removeEventListener('pointerdown',unlock);parent.removeEventListener('explorer-input',control);canvas.removeEventListener('pointerdown',focus);canvas.removeEventListener('webglcontextlost',contextLost);bursts.forEach(burst=>burst.effect.dispose());haloMaterial.map?.dispose();haloMaterial.dispose();audio.dispose();flag.dispose();finalized?.dispose();scenery?.dispose();scene.environment=null;reflections?.dispose();dispose(renderer,scene);}};
 }
