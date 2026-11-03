@@ -21,6 +21,8 @@ it('retains real provider sessions, limits owner access and survives session del
   await db.exec(migration);await db.exec(migration); // installation and backfill are idempotent
   await db.exec(readFileSync('supabase/migrations/20261029101000_complete_login_history.sql','utf8'));
   await db.exec(readFileSync('supabase/migrations/20261029102000_login_activity_status.sql','utf8'));
+  const contextMigration=readFileSync('supabase/migrations/20261103110000_login_context.sql','utf8');
+  await db.exec(contextMigration);await db.exec(contextMigration);
   const history=async(id:string)=>(await db.query<any>('SELECT public.socialu_login_history($1) AS result',[id])).rows[0].result;
   expect((await history(u)).entries).toHaveLength(1);expect(new Date((await history(u)).entries[0].signed_in_at).toISOString()).toBe('2026-10-28T12:00:00.000Z');expect((await history(other)).entries).toEqual([]);
   expect((await history(u)).entries[0].active).toBe(true);
@@ -40,6 +42,12 @@ it('retains real provider sessions, limits owner access and survives session del
   await db.query("UPDATE auth.sessions SET not_after=now()-interval '1 minute' WHERE id=$1",[newest]);
   expect((await history(u)).entries[0].active).toBe(false);
   await db.query('UPDATE auth.sessions SET not_after=NULL WHERE id=$1',[newest]);
+  expect((await db.query<any>('SELECT public.socialu_record_login_context($1,$2,$3,$4) AS recorded',[other,newest,'Unknown browser','Nowhere'])).rows[0].recorded).toBe(false);
+  await db.query('SELECT public.socialu_record_login_context($1,$2,$3,$4)',[u,newest,'Chrome on macOS','Salem, MA, US']);
+  const replacement=await db.query<any>('SELECT public.socialu_record_login_context($1,$2,$3,$4) AS recorded',[u,newest,'Changed browser','Elsewhere']);
+  expect(replacement.rows[0].recorded).toBe(false);
+  expect((await history(u)).entries[0]).toMatchObject({device:'Chrome on macOS',location:'Salem, MA, US'});
+  expect((await history(u)).entries[1].location).toBeNull();
   await db.query("INSERT INTO socialu.session_revocations VALUES($1,'2026-11-01T00:00:00Z',$2)",[u,newest]);
   const active=await history(u);expect(active.entries[0].active).toBe(true);expect(active.entries[1].active).toBe(false);
   const current=(await db.query<any>('SELECT public.socialu_login_history($1,NULL,NULL,$2) AS result',[u,newest])).rows[0].result;
@@ -47,6 +55,7 @@ it('retains real provider sessions, limits owner access and survives session del
   await db.query('UPDATE socialu.session_revocations SET preserved_session=NULL WHERE auth_user_id=$1',[u]);
   expect((await history(u)).entries.every((e:any)=>!e.active)).toBe(true);
   await db.exec("SET ROLE authenticated");
+  await expect(db.query('SELECT public.socialu_record_login_context($1,$2,$3,$4)',[u,newest,'Browser','City'])).rejects.toMatchObject({code:'42501'});
   await expect(db.query('SELECT public.socialu_login_history($1)',[u])).rejects.toMatchObject({code:'42501'});
   await db.exec('RESET ROLE');
   await db.query('UPDATE socialu.students SET is_active=false WHERE auth_user_id=$1',[u]);

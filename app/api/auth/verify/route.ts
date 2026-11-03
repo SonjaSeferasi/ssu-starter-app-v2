@@ -1,3 +1,4 @@
+import { recordLoginContext } from '../../../../lib/login-context';
 import { AccountError, accountOperation, accountResponse, authClient, checkAppSession, jsonBody } from '../../../../lib/socialu-account';
 import { authGuard, emailLinkUser, recoveryTicket, universityEmail } from '../../../../lib/auth-flows';
 
@@ -34,6 +35,7 @@ export async function POST(request: Request) {
       const { user } = await emailLinkUser(body.linkAccessToken, ['email/signup', 'otp']);
       await accountOperation('onboard', { p_auth_id: user.id,
         p_full_name: user.user_metadata.full_name, p_username: user.user_metadata.username, p_bio: '' });
+      await recordLoginContext(request, user.id, body.linkAccessToken);
       return Response.json({ verified: true }, { headers: { 'Cache-Control': 'no-store' } });
     }
     throw new AccountError('This email link is invalid or has expired. Request a new one.', 400);

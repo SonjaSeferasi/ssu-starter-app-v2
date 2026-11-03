@@ -1,5 +1,5 @@
 import { accountClient, AccountError } from './socialu-account';
-export type LoginEntry = { id: string; signed_in_at: string; active: boolean; is_current: boolean };
+export type LoginEntry = { id: string; signed_in_at: string; active: boolean; is_current: boolean; device?: string | null; location?: string | null };
 export type LoginHistory = { entries: LoginEntry[]; nextCursor: string | null };
 type Cursor = {at:string;id:string};
 export function historyCursor(value:string|null):Cursor|null{

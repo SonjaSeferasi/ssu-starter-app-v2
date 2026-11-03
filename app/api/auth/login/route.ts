@@ -1,3 +1,4 @@
+import { recordLoginContext } from '../../../../lib/login-context';
 import { AccountError, accountOperation, accountResponse, authClient, jsonBody, textField } from '../../../../lib/socialu-account';
 import { friendshipRpc } from '../../../../lib/friendships';
 import { academicEmail } from '../../../../lib/university-email';
@@ -59,6 +60,7 @@ export async function POST(request: Request) {
       }
     }
     await authGuard('success', email);
+    await recordLoginContext(request, data.user.id, data.session.access_token);
     // No token is returned until verified identity, domain and account state pass.
     return Response.json({ session: data, needsProfile: !profile }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) { return accountResponse(error); }

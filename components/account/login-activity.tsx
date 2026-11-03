@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import {useEffect,useState} from 'react';
-import {ArrowLeft,History,RefreshCw} from 'lucide-react';
+import {ArrowLeft,History,MapPin,Monitor,RefreshCw} from 'lucide-react';
 import {profileFetch} from '../profile/profile-view';
 import {loginDate,loginTime} from '../../lib/login-activity-format';
 import type {LoginEntry,LoginHistory} from '../../lib/login-activity';
@@ -29,10 +29,10 @@ export function LoginActivity(){
     <section className={styles.panel} aria-labelledby="login-activity-title">
       <header className={styles.header}><div><p className={styles.eyebrow}>ACCOUNT SECURITY</p><h1 id="login-activity-title">Login Activity</h1><p>Review the sign-ins recorded for your account.</p><p className={styles.zone}>Dates and times shown in {timeZone}.</p></div><button type="button" onClick={refresh} disabled={loading}><RefreshCw size={16}/>Refresh</button></header>
       <div aria-live="polite" aria-busy={loading}>
-        {loading&&!entries.length?<p className={styles.notice} role="status">Loading your activity…</p>:error?<div className={styles.notice} role="alert"><p>{error}</p><button type="button" onClick={()=>setRevision(x=>x+1)}>Try again</button><Link href="/login">Go to sign in</Link></div>:!entries.length?<div className={styles.notice}><History size={28}/><h2>No login activity yet</h2><p>New sign-ins will appear here once they are recorded.</p></div>:<ul className={styles.list} aria-label="Recorded sign-ins">{entries.map((entry,index)=><li key={entry.id} className={styles.entry}><History size={20} aria-hidden="true"/><div className={styles.details}><strong>Sign-in record {index+1}</strong><p className={styles.timestamp}><time dateTime={entry.signed_in_at}>{loginDate(entry.signed_in_at,timeZone)}<span aria-hidden="true"> · </span>{loginTime(entry.signed_in_at,timeZone)}</time></p></div><div className={styles.badges}>{entry.is_current&&entry.active&&<span className={styles.current}>This session</span>}<span className={entry.active?styles.active:styles.ended}>{entry.active?'Active':'Ended'}</span></div></li>)}</ul>}
+        {loading&&!entries.length?<p className={styles.notice} role="status">Loading your activity…</p>:error?<div className={styles.notice} role="alert"><p>{error}</p><button type="button" onClick={()=>setRevision(x=>x+1)}>Try again</button><Link href="/login">Go to sign in</Link></div>:!entries.length?<div className={styles.notice}><History size={28}/><h2>No login activity yet</h2><p>New sign-ins will appear here once they are recorded.</p></div>:<ul className={styles.list} aria-label="Recorded sign-ins">{entries.map((entry,index)=><li key={entry.id} className={styles.entry}><Monitor size={20} aria-hidden="true"/><div className={styles.details}><strong>{entry.device||`Sign-in record ${index+1}`}</strong><p className={styles.timestamp}><time dateTime={entry.signed_in_at}>{loginDate(entry.signed_in_at,timeZone)}<span aria-hidden="true"> · </span>{loginTime(entry.signed_in_at,timeZone)}</time></p><p className={styles.location}><MapPin size={14} aria-hidden="true"/>{entry.location?`${entry.location} · Approximate`:'Location unavailable'}</p></div><div className={styles.badges}>{entry.is_current&&entry.active&&<span className={styles.current}>This session</span>}<span className={entry.active?styles.active:styles.ended}>{entry.active?'Active':'Ended'}</span></div></li>)}</ul>}
         {entries.length>0&&nextCursor&&!error&&<div className={styles.more}><button type="button" disabled={loading} onClick={()=>setCursor(nextCursor)}>{loading?'Loading…':'Load older sign-ins'}</button></div>}
       </div>
-      <p className={styles.footnote}>Only your account can view this activity. Active status reflects the latest session check; select Refresh to check again. Older sign-ins from before history recording was enabled may be unavailable.</p>
+      <p className={styles.footnote}>Only your account can view this activity. Active status reflects the latest session check; select Refresh to check again. Locations are approximate and can reflect a VPN. Location is unavailable for older sign-ins and when the host supplies no location.</p>
     </section>
   </main>;
 }
