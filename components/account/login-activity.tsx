@@ -34,6 +34,7 @@ export function LoginActivity(){
     try{
       const {response,data}=await profileFetch('/api/account/login-activity',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:selected.id,confirm:true})});
       if(!response.ok)throw new Error(data.error||'Could not log out this device.');
+      if(data.ended!==true||data.currentSessionActive!==true)throw new Error('Could not confirm device logout. Refresh your activity and try again.');
       setSelected(null);refresh();setMessage('That session has been logged out. Your current session is still active.');
     }catch(reason){setActionError(reason instanceof Error?reason.message:'Please try again.');}
     finally{setEnding(false);}
