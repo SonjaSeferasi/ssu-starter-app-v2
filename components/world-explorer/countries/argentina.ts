@@ -39,15 +39,37 @@ function lengaGeometry(palette:string[],seed:number){
  for(let i=0;i<9;i++){const a=r()*Math.PI*2,rad=r()*1.1;b.add(new T.IcosahedronGeometry(.55+r()*.3,0),palette[i%palette.length],[Math.cos(a)*rad,2.1+r()*1.3,Math.sin(a)*rad*.8],[0,r()*3,0],[1.3,.75,1.1],.1);}
  return b.geometry();
 }
-/** The Fitz Roy massif: steep granite needles with snow on their shoulders. */
+/** Snow lying on the upper part of a faceted rock cone of the given radius and
+ * height (centred on its own origin, as ConeGeometry is). The cap repeats the
+ * rock's facets just proud of them, and its lower edge is ragged: each ridge
+ * line carries the snow a different distance down, sliding along the cone's
+ * surface, so it reads as snow on the peak rather than a disc around it. */
+function snowCap(radius:number,height:number,share:number,seed:number){
+ const r=random(seed),capHeight=height*share,apex=height/2,geometry=new T.ConeGeometry(radius*share*1.05,capHeight,5,4,true);
+ geometry.translate(0,apex-capHeight/2,0);
+ const p=geometry.getAttribute('position'),reach=new Map<string,number>();
+ for(let i=0;i<p.count;i++){
+  const y=p.getY(i);if(y>apex-1e-4)continue;
+  const length=Math.hypot(p.getX(i),p.getZ(i)),ridge=`${Math.round(p.getX(i)/length*100)},${Math.round(p.getZ(i)/length*100)}`;
+  if(!reach.has(ridge))reach.set(ridge,r());
+  const t=(apex-y)/capHeight,lowered=y-t*t*reach.get(ridge)!*capHeight*.8,k=(apex-lowered)/(apex-y);
+  p.setXYZ(i,p.getX(i)*k,lowered,p.getZ(i)*k);
+ }
+ geometry.computeVertexNormals();return geometry;
+}
+
+/** The Fitz Roy massif: steep granite needles with snow on summits and shoulders. */
 function fitzRoy(parent:T.Object3D,x:number,z:number,low:boolean){
  const b=new Builder(),r=random(3405);
  const needles:[number,number,number][]=[[0,58,7],[-11,44,5],[-19,38,4.5],[9,46,5],[16,40,4.6],[24,34,4.2],[-27,30,4]];
- for(const [dx,h,w] of needles){const lean=(r()-.5)*.06;
-  // A broad granite base, a slimmer upper tower, snow on the ledges between.
-  b.add(new T.ConeGeometry(w*1.5,h*.55,5,1),'#4f4b4c',[x+dx,h*.27-4,z],[0,r()*3,lean],[1,1,.75],.1);
-  b.add(new T.ConeGeometry(w*.8,h,5,1),'#5f5a5a',[x+dx+(r()-.5)*1.5,h/2-4,z+.5],[0,r()*3,lean],[1,1,.8],.08);
-  b.add(new T.ConeGeometry(w*1.05,h*.12,5,1),'#eef2f6',[x+dx,h*.52-4,z+.6],[0,r()*3,0],[1,1,.8]);}
+ for(const [dx,h,w] of needles){const lean=(r()-.5)*.06,baseTurn=r()*3,shift=(r()-.5)*1.5,towerTurn=r()*3,seed=Math.floor(r()*1e6);
+  // A broad granite base and a slimmer upper tower, each with snow on its
+  // upper slopes, sharing the rock's placement so the snow sits on the facets.
+  const base:[number,number,number]=[x+dx,h*.27-4,z],tower:[number,number,number]=[x+dx+shift,h/2-4,z+.5];
+  b.add(new T.ConeGeometry(w*1.5,h*.55,5,1),'#4f4b4c',base,[0,baseTurn,lean],[1,1,.75],.1);
+  b.add(snowCap(w*1.5,h*.55,.5,seed),'#e8edf2',base,[0,baseTurn,lean],[1,1,.75],.04);
+  b.add(new T.ConeGeometry(w*.8,h,5,1),'#5f5a5a',tower,[0,towerTurn,lean],[1,1,.8],.08);
+  b.add(snowCap(w*.8,h,.18,seed+1),'#f2f5f8',tower,[0,towerTurn,lean],[1,1,.8],.03);}
  const mesh=b.mesh(parent,vertexMaterial(.9,{fog:true}),'fitz-roy-needles');mesh.castShadow=false;return mesh;
 }
 
