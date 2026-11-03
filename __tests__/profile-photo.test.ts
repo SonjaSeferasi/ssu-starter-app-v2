@@ -53,6 +53,21 @@ describe('Profile photo preparation', () => {
     expect(result.type).toBe('image/jpeg');
     expect(close).toHaveBeenCalledOnce();
   });
+  it('re-encodes a small-dimension photo that is too large for the upload limit', async () => {
+    const close = vi.fn();
+    vi.stubGlobal('createImageBitmap', vi.fn().mockResolvedValue({ width: 1200, height: 1200, close }));
+    vi.stubGlobal('document', { createElement: () => ({
+      getContext: () => ({ fillRect: vi.fn(), drawImage: vi.fn() }),
+      toBlob: (callback: (blob: Blob) => void) => callback(new Blob(['jpg'], { type: 'image/jpeg' })),
+    }) });
+    const result = await prepareProfilePhoto(photo(6_000_000, 'screenshot.png'));
+    expect(result.name).toBe('screenshot.jpg');
+    expect(result.size).toBeLessThan(4_000_000);
+  });
+  it('rejects an undecodable HEIC that is too large to upload', async () => {
+    vi.stubGlobal('createImageBitmap', vi.fn().mockRejectedValue(new Error('unsupported')));
+    await expect(prepareProfilePhoto(photo(6_000_000, 'photo.heic'))).rejects.toThrow('Export it as JPG or PNG');
+  });
   it('explains how to handle an undecodable large HEIC', async () => {
     vi.stubGlobal('createImageBitmap', vi.fn().mockRejectedValue(new Error('unsupported')));
     await expect(prepareProfilePhoto(photo(11_000_000,'photo.heic'))).rejects.toThrow('Export it as JPG or PNG');
