@@ -9,7 +9,7 @@ import type { Reaction } from './reactions';
 // which are pure, generic, identity-free shaping utilities already
 // reusable as-is.
 
-export type WhisperCategory = 'funny' | 'campus_crush' | 'embarrassing' | 'rant' | 'advice' | 'unpopular_opinion';
+export type WhisperCategory = 'funny' | 'campus_crush' | 'embarrassing' | 'rant' | 'advice' | 'unpopular_opinion' | 'professor_tea';
 /** Whisper Wall reactions use the exact same global vocabulary as regular posts/comments -- see lib/reactions.ts. */
 export type WhisperReaction = Reaction;
 export type WhisperSort = 'latest' | 'trending' | 'most_discussed';

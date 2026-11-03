@@ -21,7 +21,7 @@ await db.exec(`CREATE ROLE anon;CREATE ROLE authenticated;CREATE ROLE service_ro
 CREATE SCHEMA auth;CREATE TABLE auth.users(id uuid PRIMARY KEY,email text,email_confirmed_at timestamptz);CREATE TABLE auth.sessions(id uuid PRIMARY KEY,user_id uuid,created_at timestamptz);`);
 await db.exec(readFileSync(root+'/supabase/schema.sql','utf8'));
 try {
-for(const file of ['20261008000100_link_supabase_accounts.sql','20261008000200_feed_functions.sql','20261008000300_fix_deferred_post_trigger.sql','20261008000400_seed_post_photo_upload_policy.sql','20261012230000_srs_100_105_auth.sql','20261013200000_srs_109_113_profile.sql','20261015000100_edit_post.sql','20261015120100_delete_post.sql','20261015180000_profile_social.sql','20261015190000_profile_full_name.sql','20261016000100_like_post.sql','20261016001000_optional_profile_bio.sql','20261016010000_friendships.sql','20261016020000_feed_profile_links.sql','20261016030000_edit_profile_username.sql','20261016040000_friend_accept_mutual_follow.sql','20261017000100_unlike_post.sql','20261018000100_post_comments.sql','20261018010000_integrate_profile_feed.sql','20261021000100_comment_replies.sql','20261022000000_friend_requests_notifications.sql','20261022010000_notification_read_state.sql','20261022000100_comment_notifications.sql','20261023000100_report_post.sql','20261024000100_unify_notifications.sql','20261024000200_fix_feed_functions.sql','20261024000300_optional_post_text.sql','20261025000100_profile_highlights_study_log.sql','20261025000200_profile_people_lists.sql','20261025000300_highlight_photo_limit.sql','20261026000100_school_communities.sql','20261026000200_campus_members.sql','20261026000300_srs_315_fixes.sql','20261026000400_mentions.sql','20261026000500_share_post.sql','20261027000100_reposts.sql','20261027000300_restore_school_isolation.sql','20261028000100_whisper_wall.sql','20261028000200_whisper_reactions_expansion.sql','20261028000300_global_reaction_system.sql','20261029000100_whisper_retire_categories.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
+for(const file of ['20261008000100_link_supabase_accounts.sql','20261008000200_feed_functions.sql','20261008000300_fix_deferred_post_trigger.sql','20261008000400_seed_post_photo_upload_policy.sql','20261012230000_srs_100_105_auth.sql','20261013200000_srs_109_113_profile.sql','20261015000100_edit_post.sql','20261015120100_delete_post.sql','20261015180000_profile_social.sql','20261015190000_profile_full_name.sql','20261016000100_like_post.sql','20261016001000_optional_profile_bio.sql','20261016010000_friendships.sql','20261016020000_feed_profile_links.sql','20261016030000_edit_profile_username.sql','20261016040000_friend_accept_mutual_follow.sql','20261017000100_unlike_post.sql','20261018000100_post_comments.sql','20261018010000_integrate_profile_feed.sql','20261021000100_comment_replies.sql','20261022000000_friend_requests_notifications.sql','20261022010000_notification_read_state.sql','20261022000100_comment_notifications.sql','20261023000100_report_post.sql','20261024000100_unify_notifications.sql','20261024000200_fix_feed_functions.sql','20261024000300_optional_post_text.sql','20261025000100_profile_highlights_study_log.sql','20261025000200_profile_people_lists.sql','20261025000300_highlight_photo_limit.sql','20261026000100_school_communities.sql','20261026000200_campus_members.sql','20261026000300_srs_315_fixes.sql','20261026000400_mentions.sql','20261026000500_share_post.sql','20261027000100_reposts.sql','20261027000300_restore_school_isolation.sql','20261028000100_whisper_wall.sql','20261028000200_whisper_reactions_expansion.sql','20261028000300_global_reaction_system.sql','20261029000100_whisper_retire_categories.sql','20261103000100_whisper_professor_tea.sql']) await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
 
 // A second school, same pattern as the school-isolation regression test.
 await db.query<any>("INSERT INTO socialu.university(university_id,name) VALUES(2,'Other University')");
@@ -123,6 +123,27 @@ const historicalReact=await react(4,historical.confession_id,'care');
 assert.equal(historicalReact.reaction_counts.care,1);
 const historicalReport=await db.query<any>('SELECT public.socialu_whisper_report_confession($1,$2,$3) AS r',[uid(3),historical.confession_id,'spam']);
 assert.equal(historicalReport.rows[0].r.reported,true);
+
+// --- Professor Tea (professor_tea): a fourth active category, purely
+// additive -- creatable, filterable, works end to end with the same
+// generic comment/reaction/report mechanism every other category already
+// uses (no professor-specific code path exists), and does not reopen or
+// disturb the three still-retired categories tested just above. ---
+const teaConfession=await create(2,'professor_tea','My professor said the exam would be easy. That was a lie 😭');
+assert.equal(teaConfession.category,'professor_tea');
+assert.ok((await list(1,'professor_tea')).every((c:any)=>c.category==='professor_tea'));
+assert.ok((await list(1,'professor_tea')).some((c:any)=>c.confession_id===teaConfession.confession_id));
+const teaComment=await comment(3,teaConfession.confession_id,'SAME, mine did this too');
+assert.equal(teaComment.alias_label,'Anonymous Student 1');
+const teaReacted=await react(4,teaConfession.confession_id,'haha');
+assert.equal(teaReacted.reaction_counts.haha,1);
+const teaReport=await db.query<any>('SELECT public.socialu_whisper_report_confession($1,$2,$3) AS r',[uid(4),teaConfession.confession_id,'spam']);
+assert.equal(teaReport.rows[0].r.reported,true);
+// The three already-retired categories (funny/embarrassing/rant) are still
+// rejected for new confessions -- professor_tea's addition didn't reopen them.
+for (const retired of ['funny','embarrassing','rant']) {
+  await assert.rejects(db.query('SELECT public.socialu_whisper_create($1,$2,$3)',[uid(2),retired,'nice try']), /valid category/);
+}
 
 // --- Anonymous aliasing: stable within a thread, "Original Poster" for the
 // author, uncorrelated across two different confessions. ---
@@ -281,6 +302,6 @@ assert.ok(Array.isArray(trending));
 const mostDiscussed=await list(1,null,'most_discussed');
 assert.ok(Array.isArray(mostDiscussed));
 
-console.log('PASS: Whisper Wall same-school isolation, anonymous aliasing (stable + uncorrelated), confession + comment reactions (6 kinds, set/change/remove, one per student), tombstoning (including reaction rejection on a tombstoned comment), Campus Crush opt-out (RPC + raw-text enforcement), no-notification-on-mention, whisper_comment notifications without identity leak, cooldowns, severity-tiered report thresholds, and retired-category enforcement (new confessions rejected, historical confessions fully functional and never reclassified) -- against the real schema.');
+console.log('PASS: Whisper Wall same-school isolation, anonymous aliasing (stable + uncorrelated), confession + comment reactions (6 kinds, set/change/remove, one per student), tombstoning (including reaction rejection on a tombstoned comment), Campus Crush opt-out (RPC + raw-text enforcement), no-notification-on-mention, whisper_comment notifications without identity leak, cooldowns, severity-tiered report thresholds, retired-category enforcement (new confessions rejected, historical confessions fully functional and never reclassified), and the Professor Tea category addition (creatable, filterable, full comment/reaction/report support, retired categories still not reopened) -- against the real schema.');
 } finally { await db.close(); }
 }, 30000);

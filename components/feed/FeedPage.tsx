@@ -12,6 +12,8 @@ import { LoadingFeedState, EmptyFeedState, ErrorFeedState } from './FeedStates';
 import { CampusMembersPanel } from './CampusMembersPanel';
 import { ComingSoonPanels } from './ComingSoonPanels';
 import { WhisperTab } from '../whisper/WhisperTab';
+import { useScreenTheme } from '../profile/use-screen-theme';
+import { getScreenTheme } from '../../lib/screen-themes';
 import type { FeedPost } from './types';
 import shellStyles from '../navigation/social-shell.module.css';
 
@@ -53,6 +55,23 @@ export function FeedPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [highlightedPostId, setHighlightedPostId] = useState<number | null>(null);
+
+  // "Customize Your Screen" (additional functionality, not in the
+  // official SRS): backgroundTheme paints behind the whole Campus Feed
+  // experience (For you/Friends/Whisper Wall alike); headerTheme is
+  // passed down into FeedBanner/WhisperTab, which each apply it to their
+  // own banner while keeping their existing title/icon/messaging intact.
+  // Both are null for a student who's never opened Customize Your Screen,
+  // which renders identically to before this feature existed.
+  const screenTheme = useScreenTheme();
+  const backgroundTheme = getScreenTheme(screenTheme.backgroundTheme);
+  const pageBackgroundStyle = backgroundTheme
+    ? { backgroundImage: `url(${backgroundTheme.backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' as const }
+    : undefined;
+  const pageClassName = backgroundTheme ? `${shellStyles.page} rounded-3xl` : shellStyles.page;
+  const titleClassName = backgroundTheme
+    ? `${shellStyles.title} inline-block rounded-2xl bg-white/85 px-4 py-2 backdrop-blur-sm`
+    : shellStyles.title;
 
   useEffect(() => {
     const stored = storedAccessToken() || '';
@@ -117,28 +136,28 @@ export function FeedPage() {
 
   if (tab === 'whispers') {
     return (
-      <main className={shellStyles.page}>
-        <h1 className={shellStyles.title}>Campus Feed</h1>
+      <main className={pageClassName} style={pageBackgroundStyle}>
+        <h1 className={titleClassName}>Campus Feed</h1>
         <div className="mt-6">
           <FeedSwitcher active={tab} onChange={setTab} />
         </div>
         <div className="mt-6">
-          <WhisperTab accessToken={token} />
+          <WhisperTab accessToken={token} headerTheme={screenTheme.headerTheme} />
         </div>
       </main>
     );
   }
 
   return (
-    <main className={shellStyles.page}>
-      <h1 className={shellStyles.title}>Campus Feed</h1>
+    <main className={pageClassName} style={pageBackgroundStyle}>
+      <h1 className={titleClassName}>Campus Feed</h1>
       <div className="mt-6">
         <FeedSwitcher active={tab} onChange={setTab} />
       </div>
 
       <div className="mt-6 flex flex-col items-start gap-6 lg:flex-row">
         <div className="w-full min-w-0 flex-1 space-y-4 lg:max-w-2xl">
-          <FeedBanner tab={tab} />
+          <FeedBanner tab={tab} headerTheme={screenTheme.headerTheme} />
 
           <PostComposer accessToken={token} authorInitial={authorInitial} onPublished={() => token && loadFeed(token)} />
 
