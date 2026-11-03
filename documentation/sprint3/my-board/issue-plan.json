@@ -55,14 +55,19 @@
     }
   ],
   "publication": {
-    "parent_issue": null,
-    "task_issues": [],
-    "sub_issue_links_confirmed": false,
-    "project_item_added": false,
-    "pr": null,
+    "parent_issue": 1038,
+    "task_issues": [
+      1039,
+      1040,
+      1041,
+      1042
+    ],
+    "sub_issue_links_confirmed": true,
+    "project_item_added": true,
+    "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1043",
     "code_commit": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/commit/ccd4b3f",
     "code_branch": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/linh/srs-124.1-save-my-board",
-    "status": "Code branch published; issues, project placement, sub-issue relationships and PR blocked by connector 403 and browser timeouts.",
+    "status": "Published November 3, 2026 through the connected Chrome UI. Parent and all four tasks are assigned to Dieulinhh23, labeled sprint-3-ln, added to SocialU and In progress. All remain open (0/4 completed); PR is a draft, not merged.",
     "connector_error": "403 Resource not accessible by integration (issue and PR creation)",
     "browser_error": "getState and direct Sprint 3 tab connection timed out after user reconnected."
   }
