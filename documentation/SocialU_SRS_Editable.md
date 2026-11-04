@@ -4274,11 +4274,13 @@ Traces to: UR-503.
 
 #### UR-504, DP - Represent Myself in DormSpace
 
-User requirement: As a student, I want my 2D avatar to represent me while I explore DormSpace, so that I can have a recognizable character when visiting my dorm and the dorms of my friends.
+User requirement: As a student, I want my saved Game Room avatar to represent me as a 3D character while I explore DormSpace, so that I can have a recognizable character when visiting my dorm and the dorms of my friends.
 
 ##### SRS-504.1, DP — Avatar representation.
 
-When a student enters the DormHall or an accessible dorm, the system shall display that student's current Game Room avatar in two dimensions.
+When a student enters the DormHall or an accessible dorm, the system shall display that student's current saved Game Room look, including its complete avatar or layered pieces, body shape, skin colour, hair or hijab, glasses and face details, outfit and colours, as an articulated three-dimensional character, and shall state when a saved piece has no three-dimensional version.
+
+Amended 3 November 2026 (approved): replaces the two-dimensional representation wording. The preserved classic and current campus DormSpace versions remain available.
 
 Traces to: UR-504.
 
