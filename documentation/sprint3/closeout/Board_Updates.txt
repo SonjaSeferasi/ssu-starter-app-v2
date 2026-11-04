@@ -1,0 +1,25 @@
+Sprint 3 board updates still required - November 4, 2026
+These changes are PREPARED, not saved to GitHub. The connector returned 403 and browser navigation failed.
+Only edit Linh Nguyen / Dieulinhh23 cards. Preserve exact SRS titles, shall statements, acceptance criteria and Traces to lines.
+
+1. Leave completed SRS #858, #859, #860, #861 and #879 in Done. Their 20 task issues are closed and their PRs #963-#967 are merged.
+
+2. Return unfinished SRS #878, #880, #881, #882 and #1038 to Product Backlog for Sprint 4. Keep their issues and unfinished task sub-issues OPEN; preserve sprint history and existing implementation links.
+
+3. Update #878 with this closeout note:
+November 4, 2026: Linh deferred further location work. PR #1068 is merged and storage/automated checks exist, but hosted recorded-location acceptance and its screenshot are incomplete. Carry over to Sprint 4; not Done.
+
+4. Update #880 and #881 to reflect merged PRs #1072 and #1073 respectively. Running-app controls/cancellation and selected-session termination evidence remain incomplete. Do not describe those PRs as unmerged drafts.
+
+5. Update #882: PR #1071 remains open. Commits b200336 and 2f1f0de add UI recovery and authenticated-location regression checks. November 4 targeted runs passed 32 and 51 tests respectively; the UI production build passed. Current-session continuity after remote logout is not yet observed.
+
+6. Update #1038: PR #1043 is merged. Linh reported team acceptance of the addendum. Preserve the genuine save/reload screenshot already attached. Full size/rotation reload and separate-student permission checks remain incomplete; tasks #1039-#1042 remain open. Preserve the prototype-before-SRS process finding.
+
+Task groups to carry over:
+#878: #1048, #1049, #1050, #1051
+#880: #1053, #1054, #1056, #1057
+#881: #1059, #1060, #1062, #1063
+#882: #1065, #1066, #1067, #1069
+#1038: #1039, #1040, #1041, #1042
+
+No issue is closed or moved by this file. Move cards only after actually applying the changes in GitHub.
