@@ -1,5 +1,13 @@
 /* SRS-201.1: Messages layout from documentation/UI design (Messages screen), shared by /messages and /messages/[conversationId]. */
-.page { display: grid; grid-template-columns: minmax(240px, 300px) minmax(0, 1fr); gap: 16px; max-width: 1280px; min-height: calc(100dvh - 76px); margin: 0 auto; padding: clamp(16px, 2.5vw, 28px); }
+/* #1032: the conversation column is the one with a floor, not the list.
+   It used to be minmax(240px, 300px) minmax(0, 1fr): the list could never go below 240px while the
+   conversation could shrink to nothing, so every pixel of lost width came out of the conversation. Measured in
+   the running application, that left the conversation 449px at a 1100px viewport and the header wrapped onto
+   two lines (134px tall instead of 92px).
+   500px is measured, not guessed: at 500px the header sits on one line, at 480px it wraps. The list yields
+   first now, and below 1080px the layout drops to one column (see the media query) rather than squeezing the
+   list down to nothing -- at 910px it was reaching 69px wide. */
+.page { display: grid; grid-template-columns: minmax(0, 300px) minmax(500px, 1fr); gap: 16px; max-width: 1280px; min-height: calc(100dvh - 76px); margin: 0 auto; padding: clamp(16px, 2.5vw, 28px); }
 .listPanel, .conversation { border: 1px solid #d3e2da; border-radius: 16px; background: #f8fbf8; }
 .listPanel { padding: 24px 12px; }
 /* The Messages list stays pinned beside the conversation and scrolls on its own: the heading, tabs and New group
@@ -101,7 +109,12 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 .findPeople { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; margin: 10px 4px 0; color: #28634e; font-size: 14px; font-weight: 700; text-decoration: none; }
 .findPeople:hover { text-decoration: underline; }
 .findPeople:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; border-radius: 4px; }
-.conversation { display: flex; flex-direction: column; min-height: 520px; overflow: clip; }
+/* --below-header is where anything that wants to sit under the sticky conversation header should stick.
+   The header below is sticky at --header-height and is 92px tall at every width where it stays on one line
+   (measured at 1024, 1100, 1200, 1280 and 1440). Publishing it as a variable means the Snipe panel can sit
+   under it without snipe.module.css repeating a number that belongs to this file. Phones override it to
+   'static' there, because the header wraps to two rows below 900px and its height stops being predictable. */
+.conversation { display: flex; flex-direction: column; min-height: 520px; overflow: clip; --below-header: calc(var(--header-height, 76px) + 92px); }
 /* The conversation header stays visible under the app's top bar while the conversation scrolls.
    (overflow: clip on .conversation keeps the rounded corners without blocking sticky.) */
 .header { position: sticky; top: var(--header-height, 76px); z-index: 1; display: flex; align-items: center; gap: 14px; padding: 18px 24px; border-bottom: 1px solid #d3e2da; border-radius: 16px 16px 0 0; background: #f8fbf8; }
@@ -234,6 +247,16 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 .backLink { display: inline-flex; align-items: center; min-height: 44px; margin-top: 8px; padding: 10px 20px; border-radius: 10px; background: #c0ddcb; color: #102c30; font-weight: 700; text-decoration: none; }
 .backLink:hover { background: #b0d3be; }
 .backLink:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+/* #1032: narrow laptops drop to one column before the list is squeezed into uselessness. Kept separate from
+   the 900px block below, which carries the phone-only header and back-button rules (SRS-510.1, measured at
+   390 x 844) -- those should not start applying to a 1024px laptop window.
+   At 1081px the list is 230px and the conversation 500px, which is the last width where both are usable;
+   under that the conversation takes the page and the list is one click away, as it already is on phones. */
+@media (max-width: 1080px) {
+  .page { grid-template-columns: minmax(0, 1fr); }
+  .withConversation .listPanel, .emptyConversation { display: none; }
+}
+
 /* Phones: the list page shows the list; a conversation page shows the conversation. */
 @media (max-width: 900px) {
   .page { grid-template-columns: minmax(0, 1fr); padding: 16px; }
