@@ -19,10 +19,16 @@ Owner: Linh Nguyen (LN), Dieulinhh23. Sprint: 3.
 
 Automated checks verify validation, preservation of unrelated profile settings, authenticated saves with confirmation, stored coordinates/width/rotation, authorized visitor reads and denied cross-owner writes. Database checks use disposable PostgreSQL; they are not live browser screenshots.
 
+## Student-supplied save/reload confirmation — November 4, 2026
+
+Linh supplied two screenshots in the conversation: an editor view with a selected smaller laptop sticker, followed by a viewing-mode image with the same smaller laptop and surrounding arrangement. Linh explicitly confirmed that the second screenshot was taken after selecting Save board and refreshing the page.
+
+This is student-reported live save/reload evidence, not an independently operated browser check. The pair supports retention of the smaller sticker and the visible arrangement after reload. It does not clearly demonstrate a changed rotation, a separate student's account, or blocked access. The screenshots are visible in the conversation but are not attached to this repository document because their source image files were not available in the attachment directory.
+
 ## Remaining live evidence
 
-1. Open your profile → My Board → Edit board. Select a sticker or note, change Size, press Rotate, and move it. Capture the edited arrangement with its controls.
-2. Select Save board, reload the page, and capture the same arrangement. Keep the same item visible so its size, angle, position and contents can be compared.
+1. Resize/save/reload: Linh has supplied the screenshot pair and confirmed the refresh. Attach the original image files to #1038 when available.
+2. Rotation: select an item, press Rotate so its angle visibly changes, save, reload and capture the result. The current pair does not clearly establish a changed angle.
 3. Have a classmate open your profile → My Board from their own signed-in account. Capture the saved arrangement without Edit board or Save board controls. The same-account viewing screen is insufficient for this check.
 4. In a controlled test with a willing classmate/test account, verify that a blocked account cannot open the profile/board. Record the result and restore the relationship if appropriate.
 
