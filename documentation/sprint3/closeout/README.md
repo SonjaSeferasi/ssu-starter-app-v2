@@ -6,6 +6,8 @@ This package follows the professor's two-level SRS/task structure and separates 
 
 ## Submission files
 
+- [Professional submission PDF](Linh_Nguyen_Sprint_3_Professional.pdf): preferred redesigned version, cropped evidence, black text and color screenshots. Save My Board is labeled completed based on Linh's latest confirmation; GitHub task statuses remain unsynchronized.
+
 - [Updated submission PDF](Linh_Nguyen_Sprint_3_Updated.pdf): current three-page version including My Board progress; black text, color screenshots.
 - [My Board acceptance record](My_Board_Acceptance.md): confirmed student evidence, tests and remaining checks.
 - [Ready-to-paste #1038 issue update](Issue_1038_Update.txt): prepared body; not applied because GitHub denied editing.

@@ -54,3 +54,7 @@ Updating #1038 returned HTTP 403, “Resource not accessible by integration.” 
 Linh supplied a screenshot titled “Linh’s board” showing both laptop sticker sizes, the other stickers, a note and the Spotify card without visible editing controls. When explicitly asked which account was signed in, Linh confirmed it was a classmate’s account. This supports authorized classmate viewing based on student-supplied evidence; it was not an independently operated browser session. The screenshot remains in the conversation and has not been uploaded as an image asset here.
 
 The separate-student viewing step above is now supported by Linh's confirmation. A visibly changed rotation retained after save/reload and the blocked-access check remain unverified. No parent or task completion is claimed by this update.
+
+## Latest completion declaration — November 4, 2026
+
+Linh explicitly states that Save My Board is completed and asks that the redesigned submission reflect this. The professional PDF labels the feature completed based on this student confirmation, alongside merged PR #1043 and the existing automated and supplied evidence. This does not claim a new independently operated rotation/blocking browser check or a change to the still-open GitHub task statuses. Earlier checkpoints above are retained as history.

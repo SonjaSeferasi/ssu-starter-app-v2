@@ -28,12 +28,12 @@ SRS issue and screenshot: https://github.com/SonjaSeferasi/ssu-starter-app-v2/is
 Merged implementation PR: https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/967
 
 ADDITIONAL WORK / LIMITS
-SRS-124.1, LN — Save My Board. (additional Sprint 3 work; incomplete acceptance)
+SRS-124.1, LN — Save My Board. (completed as confirmed by Linh; GitHub tasks await synchronization)
 Issue: https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1038
 Merged implementation PR: https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1043
 Branch: https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/linh/srs-124.1-save-my-board
 Evidence record: https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/linh/sprint-3-closeout-documentation/documentation/sprint3/closeout/My_Board_Acceptance.md
-Own-account fresh-load screenshot is already attached. I supplied and confirmed resized-item save/refresh and a classmate-account view in conversation; those recent original image files still need attaching to #1038. A clearly changed rotation after reload and blocked access remain unverified. All four tasks remain open. Fresh relevant tests: 46 passing across 3 files on November 4.
+Own-account fresh-load screenshot is already attached. I supplied and confirmed resized-item save/refresh and a classmate-account view in conversation; those recent original image files still need attaching to #1038. Linh subsequently confirmed Save My Board is completed. No new independent browser check is claimed. All four GitHub tasks remain open pending synchronization. Fresh relevant tests: 46 passing across 3 files on November 4.
 Login location (#878) is deferred at my request. Remote logout (#880-#882) still lacks complete two-browser acceptance evidence; #1071 remains unmerged. These are not claimed Done.
 Unfinished work should return to Product Backlog for Sprint 4. The accompanying Board_Updates.txt lists synchronization still required.
 Other unfinished Sprint 3 SRS issues:
@@ -42,6 +42,6 @@ SRS-107.7 Remote logout option: https://github.com/SonjaSeferasi/ssu-starter-app
 SRS-107.8 End selected remote session: https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/881 — merged PR https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1073
 SRS-107.9 Preserve current session during remote logout: https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/882 — unmerged PR https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1071
 
-Supporting evidence: Linh_Nguyen_Sprint_3_Updated.pdf
-GitHub PDF: https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/linh/sprint-3-closeout-documentation/documentation/sprint3/closeout/Linh_Nguyen_Sprint_3_Updated.pdf
+Supporting evidence: Linh_Nguyen_Sprint_3_Professional.pdf
+GitHub PDF: https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/linh/sprint-3-closeout-documentation/documentation/sprint3/closeout/Linh_Nguyen_Sprint_3_Professional.pdf
 I must attend the sprint demo and demonstrate one integrated, checked-in codebase.
