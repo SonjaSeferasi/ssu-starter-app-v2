@@ -9,6 +9,7 @@ function req(method: string, body?: unknown, token = 'header.' + Buffer.from(JSO
 beforeEach(() => {
   vi.resetAllMocks();
   vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'test-server-key');
+  vi.stubEnv('VERCEL', '');
   getClient.mockReturnValue({ auth: { getUser, signInWithPassword: signIn, signUp }, rpc });
   getUser.mockResolvedValue({ data: { user }, error: null });
   rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : fn === 'socialu_auth_guard' ? { data: {}, error: null } : { data: profile, error: null });
@@ -24,6 +25,38 @@ describe('SocialU login and registration', () => {
     expect(rpc).toHaveBeenCalledWith('socialu_account', { p_action: 'read', p_auth_id: user.id });
     expect((await res.json()).needsProfile).toBe(false);
     expect(rpc).not.toHaveBeenCalledWith('socialu_account', expect.objectContaining({ p_action: 'onboard' }));
+  });
+  it('stores hosting-provided location for a successful authenticated session', async () => {
+    vi.stubEnv('VERCEL', '1');
+    const sessionId = '11111111-1111-4111-8111-111111111111';
+    const accessToken = 'header.' + Buffer.from(JSON.stringify({ session_id: sessionId })).toString('base64url') + '.signature';
+    signIn.mockResolvedValue({ data: { user, session: { access_token: accessToken } }, error: null });
+    const request = new Request('https://socialu.example/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'user-agent': 'Mozilla/5.0 (Macintosh) Chrome/130.0 Safari/537',
+        'x-vercel-ip-country': 'US', 'x-vercel-ip-country-region': 'MA', 'x-vercel-ip-city': 'Salem' },
+      body: JSON.stringify({ email: user.email, password: 'Secret123!' }),
+    });
+    expect((await login(request)).status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_record_login_context', {
+      p_auth_id: user.id, p_session: sessionId, p_device: 'Chrome on macOS', p_location: 'Salem, MA, US',
+    });
+    const capture = rpc.mock.calls.findIndex(([fn]) => fn === 'socialu_record_login_context');
+    const eligibility = rpc.mock.calls.findIndex(([fn, args]) => fn === 'socialu_account' && args.p_action === 'read');
+    expect(capture).toBeGreaterThan(eligibility);
+  });
+  it('does not block a valid login when optional location storage is unavailable', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    try {
+      const accessToken = 'header.' + Buffer.from(JSON.stringify({ session_id: '11111111-1111-4111-8111-111111111111' })).toString('base64url') + '.signature';
+      signIn.mockResolvedValue({ data: { user, session: { access_token: accessToken } }, error: null });
+      rpc.mockImplementation(async (fn: string) => fn === 'socialu_record_login_context'
+        ? { data: null, error: { code: 'PGRST202' } }
+        : fn === 'socialu_auth_guard' ? { data: {}, error: null } : { data: profile, error: null });
+      expect((await login(req('POST', { email: user.email, password: 'Secret123!' }))).status).toBe(200);
+      expect(rpc).toHaveBeenCalledWith('socialu_record_login_context', expect.any(Object));
+      expect(warn).toHaveBeenCalledWith('Login context could not be recorded.');
+    } finally { warn.mockRestore(); }
   });
   it('saves a missing profile from verified signup metadata on email login', async () => {
     rpc.mockImplementation(async (fn, args) => ({ data: fn === 'socialu_account' ? args.p_action === 'read' ? null : profile : {}, error: null }));
