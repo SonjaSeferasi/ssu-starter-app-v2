@@ -6,7 +6,8 @@ This package follows the professor's two-level SRS/task structure and separates 
 
 ## Submission files
 
-- [Submission PDF](Linh_Nguyen_Sprint_3_Submission.pdf): four pages, actual evidence and links.
+- [Basic submission PDF](Linh_Nguyen_Sprint_3_Basic.pdf): preferred two-page submission, black text and color screenshots with mouse pointers removed.
+- [Detailed submission PDF](Linh_Nguyen_Sprint_3_Submission.pdf): earlier four-page version, retained for reference.
 - [Canvas text](Canvas_Submission.txt): copy-ready project, SRS and merged PR links.
 - [Board updates](Board_Updates.txt): exact remaining changes; NOT applied by this package.
 - [Status manifest](status.json): verified issue/PR checkpoint.
@@ -49,3 +50,19 @@ The issue-update connector returned HTTP 403. Browser inventory worked, but clai
 ## Demo and Canvas
 
 Use one laptop and one integrated checked-in codebase. Show the five completed Login Activity behaviors, tasks and merged PRs. Disclose unfinished work. Submit the links from Canvas_Submission.txt and attend the sprint demo.
+
+## Screenshot presentation copies
+
+These presentation copies remove only mouse pointers and their highlight for readability. They were cosmetically edited with an image tool. Original captures remain available below; this cleanup is not a new acceptance test.
+
+### Login Activity and session status
+
+![Login Activity presentation copy without mouse pointer](assets/login-activity-no-pointer.png)
+
+[Original unedited capture](https://raw.githubusercontent.com/SonjaSeferasi/ssu-starter-app-v2/15532cf/documentation/sprint3/implementation/login-activity-ended-nov3.png)
+
+### Older login-history records
+
+![Older login history presentation copy without mouse pointer](assets/login-history-no-pointer.png)
+
+[Original unedited capture](https://raw.githubusercontent.com/SonjaSeferasi/ssu-starter-app-v2/15532cf/documentation/sprint3/implementation/login-activity-older-nov3.png)
