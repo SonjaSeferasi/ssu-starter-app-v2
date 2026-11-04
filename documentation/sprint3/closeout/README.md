@@ -6,6 +6,10 @@ This package follows the professor's two-level SRS/task structure and separates 
 
 ## Submission files
 
+- [Updated submission PDF](Linh_Nguyen_Sprint_3_Updated.pdf): current three-page version including My Board progress; black text, color screenshots.
+- [My Board acceptance record](My_Board_Acceptance.md): confirmed student evidence, tests and remaining checks.
+- [Ready-to-paste #1038 issue update](Issue_1038_Update.txt): prepared body; not applied because GitHub denied editing.
+
 - [Basic submission PDF](Linh_Nguyen_Sprint_3_Basic.pdf): preferred two-page submission, black text and color screenshots with mouse pointers removed.
 - [Detailed submission PDF](Linh_Nguyen_Sprint_3_Submission.pdf): earlier four-page version, retained for reference.
 - [Canvas text](Canvas_Submission.txt): copy-ready project, SRS and merged PR links.
@@ -27,7 +31,7 @@ All five parents and 20 child tasks were verified closed and assigned to Dieulin
 
 ## Additional implemented work
 
-[My Board #1038](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1038) has merged [PR #1043](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1043) and genuine save/reload evidence. The issue remains open: size/rotation reload and separate-student permission acceptance remain incomplete. Linh reported team acceptance of the SRS addition. Prototype coding before SRS registration is retained as a process finding.
+[My Board #1038](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1038) has merged [PR #1043](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1043) and genuine save/reload evidence. Linh subsequently supplied and confirmed resized-item save/refresh and a classmate-account view. Their recent image files still need attaching to #1038. Changed-rotation reload and blocked access remain unverified; the issue remains open. Linh reported team acceptance of the SRS addition. Prototype coding before SRS registration is retained as a process finding.
 
 [Saved-board evidence](my-board-save-reload-evidence.png) is the original existing capture from Linh's own account. It is not separate-student evidence or a new verification run.
 

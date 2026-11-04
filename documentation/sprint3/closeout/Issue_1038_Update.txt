@@ -1,0 +1,56 @@
+The system shall persist the signed-in student's personal profile board when the student selects Save board.
+
+Acceptance criterion: Given the student has valid board edits, when Save board succeeds and the profile is reloaded, then the saved card contents, positions, sizes, and rotations are displayed on that student's My Board.
+
+Traces to: UR-124
+
+Owner: Linh Nguyen (LN), GitHub: Dieulinhh23.
+Sprint: 3. Status: In progress; saved-board rendering after a fresh profile load is verified. Remaining acceptance checks, team review and integration are pending.
+Scope recorded October 30, 2026; GitHub publication November 3, 2026.
+
+## Source and implementation
+SRS and URD addendum (new scope, pending team review): https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/linh/sprint-3-my-board-traceability/documentation/sprint3/my-board/srs-addendum.md#srs-1241
+Actual implementation branch: https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/linh/srs-124.1-save-my-board
+Actual board code commit: https://github.com/SonjaSeferasi/ssu-starter-app-v2/commit/ccd4b3f
+Implementation record: https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/linh/srs-124.1-save-my-board/documentation/sprint3/my-board/implementation.md
+Draft implementation PR: https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1043
+The PR targets main and remains in draft. No merge is claimed.
+
+## Vertical slice
+Reuse owner-authorized profile-space JSON and private pinned memories. Support photos, notes, catalog stickers, project and Spotify cards; moving, resizing, rotation, removal and Save board. The authenticated PATCH merges with the latest look and confirms persistence. Keep Posts, Tagged and private Saved. No new board migration is required. Four real task sub-issues cover data, API, UI and verification:
+- #1039 — Task 124.1-1 Data contract and ownership
+- #1040 — Task 124.1-2 Authenticated save and confirmation
+- #1041 — Task 124.1-3 Connect the board editor and profile tab
+- #1042 — Task 124.1-4 Verify the vertical slice and attach evidence
+
+All are assigned to Dieulinhh23, labeled sprint-3-ln, in the SocialU project and In progress. They remain open; the parent shows 0/4 completed.
+
+## Evidence
+Actual local prototype checks: 1,077 tests in 124 files and the production build passed. Database tests cover saved fractional positions/rotation, owner isolation and authorized visitor reads; API tests reject unconfirmed storage. These are isolated tests, not live hosted acceptance.
+### Running-application evidence — November 3, 2026
+
+supplied the populated editor, a successful save confirmation and a viewing-mode screenshot. A fresh profile tab independently returned the same five stickers, the “hello” note and the music card. The board was read without changing its contents.
+
+![SRS-124.1 — saved board after a fresh profile load](https://raw.githubusercontent.com/SonjaSeferasi/ssu-starter-app-v2/340be33/documentation/sprint3/my-board/saved-board-after-fresh-load.png)
+
+[Observed steps and evidence limits](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1038#issuecomment-6605524926). This capture shows the saved arrangement returning after a fresh profile load; it does not establish a separate student-account session or every resize/rotation case.
+
+### Remaining acceptance and integration
+
+- Verify saving a changed item size and rotation, then confirm those values after reload.
+- Complete the visitor/owner/block checks required by verification task #1042.
+- Obtain team review of the SRS/URD addendum and implementation PR #1043.
+- Integrate through the reviewed PR, verify the integrated app, then close only tasks whose acceptance is met.
+
+Keep this issue In progress until its actual Definition of Done is met.
+
+## Process finding
+The local prototype was written on the photo-polish branch before this SRS was registered. The real board implementation is now committed on its SRS-named branch; that does not claim the branch existed before prototype coding. Further work belongs on that SRS branch. Earlier sprint records are unchanged.
+
+## Current Sprint 3 checkpoint — November 4, 2026
+
+PR #1043 is merged into main at ea33d782296cd66da05f965807ed308dbcd02c75; earlier draft statements above describe a historical checkpoint. Linh confirms team acceptance of UR-124 / SRS-124.1.
+
+Fresh relevant checks: 46 tests in three files passed on local checkout badfbde50e83525c80c10a259f9d0e593a68bcca. Linh supplied an editor/viewing screenshot pair and confirmed Save board followed by refresh; the smaller laptop sticker and arrangement remained. Linh also supplied a screenshot titled “Linh’s board” without edit controls and confirmed it was from a classmate’s signed-in account. These are student-supplied confirmations, not independently operated browser checks. Their original image files still need attaching to this issue.
+
+Remaining acceptance: a clearly changed rotation retained after reload and blocked access. No parent closure is claimed. [Current evidence and test record](https://github.com/SonjaSeferasi/ssu-starter-app-v2/blob/linh/sprint-3-closeout-documentation/documentation/sprint3/closeout/My_Board_Acceptance.md).
