@@ -48,3 +48,9 @@ Close each task only when its acceptance is satisfied. Close the parent and move
 ## GitHub update limitation
 
 Updating #1038 returned HTTP 403, “Resource not accessible by integration.” Browser inventory succeeded, but connecting to the project tab failed. This checkpoint is published as repository documentation; it does not claim that the issue bodies or board status were changed.
+
+## Classmate-view confirmation — November 4, 2026
+
+Linh supplied a screenshot titled “Linh’s board” showing both laptop sticker sizes, the other stickers, a note and the Spotify card without visible editing controls. When explicitly asked which account was signed in, Linh confirmed it was a classmate’s account. This supports authorized classmate viewing based on student-supplied evidence; it was not an independently operated browser session. The screenshot remains in the conversation and has not been uploaded as an image asset here.
+
+The separate-student viewing step above is now supported by Linh's confirmation. A visibly changed rotation retained after save/reload and the blocked-access check remain unverified. No parent or task completion is claimed by this update.
