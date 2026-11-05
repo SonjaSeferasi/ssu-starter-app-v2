@@ -4528,6 +4528,14 @@ Added 4 November 2026. Acceptance: two same-school viewers see identical room nu
 
 Traces to: UR-507.
 
+##### SRS-507.24, DP — Bounded directory data.
+
+When the directory is requested, the system shall return only one floor of doors with the room number, door state and visible username, and shall not return email addresses or other profile data.
+
+Added 4 November 2026.
+
+Traces to: UR-507.
+
 <a id="ur-508"></a>
 
 #### UR-508, DP - Explore Friends' Dorms and Leave Notes
