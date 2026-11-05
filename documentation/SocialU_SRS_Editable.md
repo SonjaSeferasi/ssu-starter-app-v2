@@ -4236,6 +4236,14 @@ When a visitor attempts to modify another student's dorm arrangement or appearan
 
 Traces to: UR-500.
 
+##### SRS-500.16, DP — Placement preview and keyboard placement.
+
+When the owner chooses where to place or move an item in the 3D dorm, the system shall show the item at the candidate grid position, mark it valid or invalid by the placement rules before it is committed, and offer the same placement by grid coordinates using the keyboard.
+
+Added 4 November 2026. Acceptance: pointing and typed coordinates select the same cell; an invalid candidate cannot be placed and names the rule; Enter or Place commits a valid candidate.
+
+Traces to: UR-500.
+
 <a id="ur-503"></a>
 
 #### UR-503, DP - Begin Decorating My Virtual Dorm
