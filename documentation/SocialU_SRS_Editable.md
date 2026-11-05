@@ -4508,9 +4508,9 @@ When a displayed floor has door positions without an assigned room, the system s
 
 Traces to: UR-507.
 
-##### SRS-507.8, DP — Vacant door interaction.
+##### SRS-507.8, DP — Vacant and locked door interaction.
 
-When a student interacts with a Vacant door, the system shall leave the student in the DormHall without opening a dorm.
+When a student interacts with a Vacant door, a locked door or a withheld door, the system shall leave the student in the DormHall without opening a dorm and say why.
 
 Traces to: UR-507.
 
