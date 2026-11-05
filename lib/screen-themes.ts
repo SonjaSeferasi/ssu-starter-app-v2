@@ -3,110 +3,133 @@
 // (owned by SS). Single source of truth for every background/header
 // choice, shared by the picker UI, the live preview, and the
 // background/header rendering wired into FeedPage/FeedBanner/
-// WhisperWallBanner.
+// WhisperWallBanner/the shell chrome (social-navigation.tsx).
+//
+// Third-generation redesign: each theme is the student-supplied
+// illustrated artwork itself (public/theme-assets/backgrounds/{id}.webp),
+// used as-is with background-size:cover -- not a CSS/SVG recreation (that
+// approach, tried in the second generation, was explicitly rejected:
+// "these are not the pictures I just sent you"). `background` is kept as
+// a plain-color fallback shown while the image loads or if it fails, not
+// the primary visual. The same single image is reused for both the
+// full-page background AND the header banner (cropped differently via
+// cover at whatever aspect ratio each context needs) -- one asset per
+// theme, matching the original (pre-CSS/SVG) architecture.
 //
 // Backgrounds stay illustrated-only (9 themes + Default). Headers accept
 // three independent KINDS of choice -- illustrated art (the same 9
 // themes), a flat solid color, or a CSS gradient -- each with its own id
 // namespace so a single TEXT column can store any of the 23 possible
-// values unambiguously (illustrated ids are bare, e.g. "emerald_campus";
-// solid/gradient ids are prefixed, e.g. "solid_emerald"/"gradient_midnight").
+// values unambiguously.
 
 export type ScreenThemeId =
-  | 'emerald_campus'
-  | 'cherry_blossom'
+  | 'emerald_gradient'
   | 'campus_illustration'
-  | 'dreamy_sky'
-  | 'enchanted_garden'
-  | 'golden_sunset'
-  | 'ocean_breeze'
-  | 'midnight_stars'
-  | 'coquette';
+  | 'minimal_wave'
+  | 'sky_clouds'
+  | 'leaves'
+  | 'sunset_gradient'
+  | 'abstract_bubbles'
+  | 'night_mode'
+  | 'watercolor';
 
 export const SCREEN_THEME_IDS: ScreenThemeId[] = [
-  'emerald_campus',
-  'cherry_blossom',
+  'emerald_gradient',
   'campus_illustration',
-  'dreamy_sky',
-  'enchanted_garden',
-  'golden_sunset',
-  'ocean_breeze',
-  'midnight_stars',
-  'coquette',
+  'minimal_wave',
+  'sky_clouds',
+  'leaves',
+  'sunset_gradient',
+  'abstract_bubbles',
+  'night_mode',
+  'watercolor',
 ];
 
 export type ScreenTheme = {
   id: ScreenThemeId;
   label: string;
   description: string;
-  backgroundImage: string;
-  headerImage: string;
-  /** Text color class for content laid over this theme's header art, matched per-theme to the art's brightness. */
+  /** The theme's artwork -- the same file used for both the full-page background and the header banner. */
+  image: string;
+  /** Plain-color fallback shown while the image loads or if it fails -- not the primary visual. */
+  background: string;
+  /** True for themes dark enough that the shell chrome (sidebar/top nav) and content cards should switch to a coordinated dark surface + light text, not stay white-on-dark. */
+  isDark: boolean;
+  /** Text color class for content laid directly over this theme's art (header titles, etc). */
   headerTextClass: 'text-white' | 'text-stone-900';
 };
 
 export const SCREEN_THEMES: ScreenTheme[] = [
   {
-    id: 'emerald_campus', label: 'Emerald Campus',
-    description: 'Rich green campus vibes with trees and architecture',
-    backgroundImage: '/theme-assets/backgrounds/emerald_campus.webp',
-    headerImage: '/theme-assets/headers/emerald_campus.webp',
+    id: 'emerald_gradient', label: 'Emerald Gradient',
+    description: 'Rich dark emerald green with soft waves',
+    image: '/theme-assets/backgrounds/emerald_gradient.webp',
+    background: '#0b4a30',
+    isDark: true,
     headerTextClass: 'text-white',
-  },
-  {
-    id: 'cherry_blossom', label: 'Cherry Blossom',
-    description: 'Soft pink blossoms and spring atmosphere',
-    backgroundImage: '/theme-assets/backgrounds/cherry_blossom.webp',
-    headerImage: '/theme-assets/headers/cherry_blossom.webp',
-    headerTextClass: 'text-stone-900',
   },
   {
     id: 'campus_illustration', label: 'Campus Illustration',
-    description: 'Clean university illustration with soft colors',
-    backgroundImage: '/theme-assets/backgrounds/campus_illustration.webp',
-    headerImage: '/theme-assets/headers/campus_illustration.webp',
+    description: 'Soft illustrated university building and trees',
+    image: '/theme-assets/backgrounds/campus_illustration.webp',
+    background: '#d7f0e6',
+    isDark: false,
     headerTextClass: 'text-stone-900',
   },
   {
-    id: 'dreamy_sky', label: 'Dreamy Sky',
-    description: 'Bright and airy with clouds',
-    backgroundImage: '/theme-assets/backgrounds/dreamy_sky.webp',
-    headerImage: '/theme-assets/headers/dreamy_sky.webp',
+    id: 'minimal_wave', label: 'Minimal Wave',
+    description: 'Pale mint and cream with gentle waves (Default style)',
+    image: '/theme-assets/backgrounds/minimal_wave.webp',
+    background: '#eef6ef',
+    isDark: false,
     headerTextClass: 'text-stone-900',
   },
   {
-    id: 'enchanted_garden', label: 'Enchanted Garden',
-    description: 'Lush flowers and greenery',
-    backgroundImage: '/theme-assets/backgrounds/enchanted_garden.webp',
-    headerImage: '/theme-assets/headers/enchanted_garden.webp',
+    id: 'sky_clouds', label: 'Sky & Clouds',
+    description: 'Soft blue sky with illustrated clouds',
+    image: '/theme-assets/backgrounds/sky_clouds.webp',
+    background: '#9fd0f0',
+    isDark: false,
     headerTextClass: 'text-stone-900',
   },
   {
-    id: 'golden_sunset', label: 'Golden Sunset',
-    description: 'Warm sunset tones and mountain view',
-    backgroundImage: '/theme-assets/backgrounds/golden_sunset.webp',
-    headerImage: '/theme-assets/headers/golden_sunset.webp',
+    id: 'leaves', label: 'Leaves',
+    description: 'Fresh green botanical leaves around the edges',
+    image: '/theme-assets/backgrounds/leaves.webp',
+    background: '#eaf6ec',
+    isDark: false,
     headerTextClass: 'text-stone-900',
   },
   {
-    id: 'ocean_breeze', label: 'Ocean Breeze',
-    description: 'Beach aesthetic with ocean and palm trees',
-    backgroundImage: '/theme-assets/backgrounds/ocean_breeze.webp',
-    headerImage: '/theme-assets/headers/ocean_breeze.webp',
+    id: 'sunset_gradient', label: 'Sunset Gradient',
+    description: 'Peach, pink, and lavender sunset with mountains',
+    image: '/theme-assets/backgrounds/sunset_gradient.webp',
+    background: '#f3c6d9',
+    isDark: false,
+    headerTextClass: 'text-stone-900',
+  },
+  {
+    id: 'abstract_bubbles', label: 'Abstract Bubbles',
+    description: 'Light aqua and mint with translucent circles',
+    image: '/theme-assets/backgrounds/abstract_bubbles.webp',
+    background: '#e2f6f1',
+    isDark: false,
+    headerTextClass: 'text-stone-900',
+  },
+  {
+    id: 'night_mode', label: 'Night Mode',
+    description: 'Deep navy with moon, stars, and a moonlit campus',
+    image: '/theme-assets/backgrounds/night_mode.webp',
+    background: '#141b3d',
+    isDark: true,
     headerTextClass: 'text-white',
   },
   {
-    id: 'midnight_stars', label: 'Midnight Stars',
-    description: 'Night sky with stars and a moonlit campus',
-    backgroundImage: '/theme-assets/backgrounds/midnight_stars.webp',
-    headerImage: '/theme-assets/headers/midnight_stars.webp',
-    headerTextClass: 'text-white',
-  },
-  {
-    id: 'coquette', label: 'Coquette',
-    description: 'Pink aesthetic with bows and butterflies',
-    backgroundImage: '/theme-assets/backgrounds/coquette.webp',
-    headerImage: '/theme-assets/headers/coquette.webp',
+    id: 'watercolor', label: 'Watercolor',
+    description: 'Soft sage-green watercolor-style washes',
+    image: '/theme-assets/backgrounds/watercolor.webp',
+    background: '#dcefe0',
+    isDark: false,
     headerTextClass: 'text-stone-900',
   },
 ];
@@ -116,7 +139,8 @@ export function getScreenTheme(id: ScreenThemeId | null | undefined): ScreenThem
   return SCREEN_THEMES.find((t) => t.id === id) ?? null;
 }
 
-// ---- Header-only extras: solid colors and gradients ----
+// ---- Header-only extras: solid colors and gradients (unchanged by this
+// redesign -- only the 9 illustrated themes above were redone). ----
 
 export type SolidColorId =
   | 'solid_emerald'
@@ -169,7 +193,17 @@ export const HEADER_THEME_IDS: HeaderThemeId[] = [...SCREEN_THEME_IDS, ...SOLID_
 
 export type ResolvedHeader = {
   kind: 'illustrated' | 'solid' | 'gradient';
-  style: { backgroundImage: string } | { backgroundColor: string } | { backgroundImage: string };
+  /**
+   * Every variant explicitly sets `backgroundImage` (even solid: `'none'`).
+   * Consumers like FeedBanner/WhisperWallBanner have a default Tailwind
+   * `bg-gradient-to-br ...` class for the untheme'd look, which sets CSS
+   * `background-image` -- a background-image always paints ON TOP of
+   * background-color, so a style object that set only `backgroundColor`
+   * would be silently hidden behind that still-active default gradient.
+   * Explicitly overriding backgroundImage on every branch (not just the
+   * ones that have real image/gradient art) is what actually clears it.
+   */
+  style: { backgroundImage: string; backgroundColor: string; backgroundSize: string; backgroundPosition: string } | { backgroundImage: string; backgroundColor: string } | { backgroundImage: string };
   textClass: 'text-white' | 'text-stone-900';
 };
 
@@ -178,11 +212,15 @@ export function resolveHeaderTheme(id: HeaderThemeId | null | undefined): Resolv
   if (!id) return null;
   const illustrated = SCREEN_THEMES.find((t) => t.id === id);
   if (illustrated) {
-    return { kind: 'illustrated', style: { backgroundImage: `url(${illustrated.headerImage})` }, textClass: illustrated.headerTextClass };
+    return {
+      kind: 'illustrated',
+      style: { backgroundImage: `url(${illustrated.image})`, backgroundColor: illustrated.background, backgroundSize: 'cover', backgroundPosition: 'center' },
+      textClass: illustrated.headerTextClass,
+    };
   }
   const solid = SOLID_COLORS.find((c) => c.id === id);
   if (solid) {
-    return { kind: 'solid', style: { backgroundColor: solid.hex }, textClass: solid.textClass };
+    return { kind: 'solid', style: { backgroundImage: 'none', backgroundColor: solid.hex }, textClass: solid.textClass };
   }
   const gradient = GRADIENTS.find((g) => g.id === id);
   if (gradient) {

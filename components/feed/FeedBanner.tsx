@@ -21,10 +21,10 @@ export function FeedBanner({ tab, headerTheme }: { tab: 'for-you' | 'friends'; h
 
   return (
     <div
-      className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-700 via-emerald-600 to-teal-700 bg-cover bg-center px-6 py-8 shadow-sm sm:px-10"
+      className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-700 via-emerald-600 to-teal-700 px-6 py-8 shadow-sm sm:px-10"
       style={resolved ? resolved.style : undefined}
     >
-      {resolved?.kind === 'illustrated' ? <div className="absolute inset-0 bg-black/25" aria-hidden="true" /> : null}
+      {resolved?.kind === 'illustrated' ? <div className="absolute inset-0 bg-black/20" aria-hidden="true" /> : null}
 
       {!resolved ? (
         <>

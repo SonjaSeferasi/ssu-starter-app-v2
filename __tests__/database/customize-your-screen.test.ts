@@ -19,7 +19,7 @@ await db.exec(`CREATE ROLE anon;CREATE ROLE authenticated;CREATE ROLE service_ro
 CREATE SCHEMA auth;CREATE TABLE auth.users(id uuid PRIMARY KEY,email text,email_confirmed_at timestamptz);CREATE TABLE auth.sessions(id uuid PRIMARY KEY,user_id uuid,created_at timestamptz);`);
 await db.exec(readFileSync(root+'/supabase/schema.sql','utf8'));
 try {
-for (const file of ['20261008000100_link_supabase_accounts.sql','20261008000200_feed_functions.sql','20261008000300_fix_deferred_post_trigger.sql','20261008000400_seed_post_photo_upload_policy.sql','20261012230000_srs_100_105_auth.sql','20261013200000_srs_109_113_profile.sql','20261015000100_edit_post.sql','20261015120100_delete_post.sql','20261015180000_profile_social.sql','20261015190000_profile_full_name.sql','20261016000100_like_post.sql','20261016001000_optional_profile_bio.sql','20261016010000_friendships.sql','20261016020000_feed_profile_links.sql','20261016030000_edit_profile_username.sql','20261016040000_friend_accept_mutual_follow.sql','20261017000100_unlike_post.sql','20261018000100_post_comments.sql','20261018010000_integrate_profile_feed.sql','20261021000100_comment_replies.sql','20261022000000_friend_requests_notifications.sql','20261022010000_notification_read_state.sql','20261022000100_comment_notifications.sql','20261023000100_report_post.sql','20261024000100_unify_notifications.sql','20261024000200_fix_feed_functions.sql','20261024000300_optional_post_text.sql','20261025000100_profile_highlights_study_log.sql','20261025000200_profile_people_lists.sql','20261025000300_highlight_photo_limit.sql','20261026000100_school_communities.sql','20261026000200_campus_members.sql','20261026000300_srs_315_fixes.sql','20261026000400_mentions.sql','20261026000500_share_post.sql','20261027000100_reposts.sql','20261027000300_restore_school_isolation.sql','20261029000200_customize_your_screen.sql','20261029000300_customize_your_screen_header_options.sql']) {
+for (const file of ['20261008000100_link_supabase_accounts.sql','20261008000200_feed_functions.sql','20261008000300_fix_deferred_post_trigger.sql','20261008000400_seed_post_photo_upload_policy.sql','20261012230000_srs_100_105_auth.sql','20261013200000_srs_109_113_profile.sql','20261015000100_edit_post.sql','20261015120100_delete_post.sql','20261015180000_profile_social.sql','20261015190000_profile_full_name.sql','20261016000100_like_post.sql','20261016001000_optional_profile_bio.sql','20261016010000_friendships.sql','20261016020000_feed_profile_links.sql','20261016030000_edit_profile_username.sql','20261016040000_friend_accept_mutual_follow.sql','20261017000100_unlike_post.sql','20261018000100_post_comments.sql','20261018010000_integrate_profile_feed.sql','20261021000100_comment_replies.sql','20261022000000_friend_requests_notifications.sql','20261022010000_notification_read_state.sql','20261022000100_comment_notifications.sql','20261023000100_report_post.sql','20261024000100_unify_notifications.sql','20261024000200_fix_feed_functions.sql','20261024000300_optional_post_text.sql','20261025000100_profile_highlights_study_log.sql','20261025000200_profile_people_lists.sql','20261025000300_highlight_photo_limit.sql','20261026000100_school_communities.sql','20261026000200_campus_members.sql','20261026000300_srs_315_fixes.sql','20261026000400_mentions.sql','20261026000500_share_post.sql','20261027000100_reposts.sql','20261027000300_restore_school_isolation.sql','20261029000200_customize_your_screen.sql','20261029000300_customize_your_screen_header_options.sql','20261104000100_screen_themes_redesign.sql']) {
   await db.exec(readFileSync(root+'/supabase/migrations/'+file,'utf8'));
 }
 
@@ -44,18 +44,18 @@ assert.deepEqual(initial,{background_theme:null,header_theme:null});
 
 // --- Independent selection: background and header are set/changed
 // completely independently of each other. ---
-let saved=await set(1,'emerald_campus',null);
-assert.deepEqual(saved,{background_theme:'emerald_campus',header_theme:null});
-saved=await set(1,'emerald_campus','cherry_blossom');
-assert.deepEqual(saved,{background_theme:'emerald_campus',header_theme:'cherry_blossom'});
-saved=await set(1,'midnight_stars','cherry_blossom'); // change background only, header untouched in VALUE but still re-sent explicitly (Save Changes always sets both)
-assert.deepEqual(saved,{background_theme:'midnight_stars',header_theme:'cherry_blossom'});
+let saved=await set(1,'emerald_gradient',null);
+assert.deepEqual(saved,{background_theme:'emerald_gradient',header_theme:null});
+saved=await set(1,'emerald_gradient','sunset_gradient');
+assert.deepEqual(saved,{background_theme:'emerald_gradient',header_theme:'sunset_gradient'});
+saved=await set(1,'night_mode','sunset_gradient'); // change background only, header untouched in VALUE but still re-sent explicitly (Save Changes always sets both)
+assert.deepEqual(saved,{background_theme:'night_mode',header_theme:'sunset_gradient'});
 
 // --- Persistence: a fresh read reflects exactly what was last saved
 // (same path a page-refresh, logout/login, or a different device would
 // use -- there is nothing session-local about this, it is the saved row). ---
 const reloaded=await get(1);
-assert.deepEqual(reloaded,{background_theme:'midnight_stars',header_theme:'cherry_blossom'});
+assert.deepEqual(reloaded,{background_theme:'night_mode',header_theme:'sunset_gradient'});
 
 // --- Reset to Default: explicitly setting both back to NULL. ---
 const reset=await set(1,null,null);
@@ -87,7 +87,7 @@ await set(1,null,null);
 // UUID with no linked student row can neither read nor write. ---
 const randomAuthId='99999999-9999-9999-9999-999999999999';
 await assert.rejects(db.query('SELECT public.socialu_get_screen_theme($1)',[randomAuthId]));
-await assert.rejects(db.query('SELECT public.socialu_set_screen_theme($1,$2,$3)',[randomAuthId,'emerald_campus',null]));
+await assert.rejects(db.query('SELECT public.socialu_set_screen_theme($1,$2,$3)',[randomAuthId,'emerald_gradient',null]));
 
 // --- Cross-school isolation: structurally guaranteed, not just tested --
 // socialu_get_screen_theme only ever reads WHERE student_id = me (the
@@ -96,8 +96,8 @@ await assert.rejects(db.query('SELECT public.socialu_set_screen_theme($1,$2,$3)'
 // socialu_whisper_delete. Confirmed here anyway: a different-school
 // student (uid 3) setting/reading their own theme never sees or
 // disturbs student 1's saved preference set above. ---
-await set(3,'ocean_breeze','coquette');
-assert.deepEqual(await get(3),{background_theme:'ocean_breeze',header_theme:'coquette'});
+await set(3,'abstract_bubbles','watercolor');
+assert.deepEqual(await get(3),{background_theme:'abstract_bubbles',header_theme:'watercolor'});
 assert.deepEqual(await get(1),{background_theme:null,header_theme:null}); // untouched by student 3's own save
 
 // --- Existing feed functionality unaffected: socialu_campus_feed (and

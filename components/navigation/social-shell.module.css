@@ -48,6 +48,71 @@
 .skipLink { position: fixed; left: 16px; top: -100px; z-index: 30; padding: 12px 20px; border-radius: 8px; background: white; color: var(--ink); }
 .skipLink:focus { top: 12px; }
 .page { padding: 24px clamp(24px, 4vw, 56px) clamp(24px, 4vw, 56px); max-width: 1280px; margin: 0 auto; }
+
+/* "Customize Your Screen" (additional functionality, not in the official
+   SRS): a full-screen theme, not just a feed-column background. The
+   gradient + decorative artwork itself is painted by a fixed,
+   full-viewport layer inside NavigationFrame (see social-navigation.tsx)
+   sitting behind the whole shell -- .shell itself goes transparent so
+   that layer shows through everywhere. Every piece of chrome that used
+   to be an opaque solid color (header, sidebar nav, cards, the
+   preferences panel) becomes a translucent, backdrop-blurred "glass"
+   surface instead, so the scene stays visible underneath while text and
+   controls stay readable. [data-theme-active='true'] is the light/glass
+   base, applied for ANY selected theme; [data-theme-dark='true']
+   layers a darker glass tint + light text on top of it, for the themes
+   dark enough to need it (Emerald Gradient, Night Mode). Both are set
+   only by SocialShell, only while on the Campus Feed route with a theme
+   selected -- every other page, and a student who's never customized,
+   renders exactly as before. */
+.shell[data-theme-active='true'] { background: transparent; }
+.shell[data-theme-active='true'] .header { background: rgba(255,255,255,.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom-color: rgba(255,255,255,.4); }
+.shell[data-theme-active='true'] .searchBox { background: rgba(255,255,255,.6); border-color: rgba(255,255,255,.5); }
+.shell[data-theme-active='true'] .pointsBadge { background: rgba(255,255,255,.6); border-color: rgba(255,255,255,.5); }
+.shell[data-theme-active='true'] .profileLink { background: rgba(255,255,255,.6); border-color: rgba(255,255,255,.5); }
+.shell[data-theme-active='true'] .navigation { background: rgba(255,255,255,.45); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-right-color: rgba(255,255,255,.35); }
+.shell[data-theme-active='true'] .destination:hover { background: rgba(255,255,255,.35); }
+.shell[data-theme-active='true'] .destination[aria-current='page'] { background: rgba(255,255,255,.55); }
+.shell[data-theme-active='true'] .sidebarCard { background: rgba(255,255,255,.55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-color: rgba(255,255,255,.4); }
+.shell[data-theme-active='true'] .preferenceToggle:hover { background: rgba(255,255,255,.35); }
+.shell[data-theme-active='true'] .preferencePanel { background: rgba(255,255,255,.75); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-color: rgba(255,255,255,.5); }
+.shell[data-theme-active='true'] .customizeScreenLink { background: rgba(255,255,255,.35); border-color: rgba(255,255,255,.45); }
+.shell[data-theme-active='true'] .customizeScreenLink:hover { background: rgba(255,255,255,.55); }
+
+.shell[data-theme-dark='true'] .header,
+.shell[data-theme-dark='true'] .navigation,
+.shell[data-theme-dark='true'] .sidebarCard,
+.shell[data-theme-dark='true'] .preferencePanel { background: rgba(10,16,32,.55); border-color: rgba(255,255,255,.1); }
+.shell[data-theme-dark='true'] .brand { color: #e8edf3; }
+.shell[data-theme-dark='true'] .tagline { color: #9aa7c2; border-left-color: rgba(255,255,255,.15); }
+.shell[data-theme-dark='true'] .searchBox { background: rgba(10,16,32,.5); border-color: rgba(255,255,255,.1); color: #9aa7c2; }
+.shell[data-theme-dark='true'] .searchBox input { color: #e8edf3; }
+.shell[data-theme-dark='true'] .searchBox input::placeholder { color: #7482a3; }
+.shell[data-theme-dark='true'] .pointsBadge { background: rgba(10,16,32,.5); border-color: rgba(255,255,255,.1); color: #9aa7c2; }
+.shell[data-theme-dark='true'] .profileLink { background: rgba(10,16,32,.5); border-color: rgba(255,255,255,.1); color: #e8edf3; }
+.shell[data-theme-dark='true'] .profileLink:hover { background: rgba(36,49,101,.6); }
+.shell[data-theme-dark='true'] .profileLink[aria-current='page'] { background: rgba(36,49,101,.75); }
+.shell[data-theme-dark='true'] .destination { color: #e8edf3; }
+.shell[data-theme-dark='true'] .destination svg, .shell[data-theme-dark='true'] .preferenceToggle svg { color: #9db8ff; }
+.shell[data-theme-dark='true'] .destination:hover { background: rgba(36,49,101,.6); }
+.shell[data-theme-dark='true'] .destination[aria-current='page'] { background: rgba(36,49,101,.75); color: #cfe0ff; }
+.shell[data-theme-dark='true'] .destination[aria-current='page'] svg { color: #cfe0ff; }
+.shell[data-theme-dark='true'] .sidebarCardTitle { color: #e8edf3; }
+.shell[data-theme-dark='true'] .sidebarCardBody { color: #9aa7c2; }
+.shell[data-theme-dark='true'] .sidebarNote { color: #9aa7c2; border-top-color: rgba(255,255,255,.1); }
+.shell[data-theme-dark='true'] .preferenceToggle { color: #e8edf3; }
+.shell[data-theme-dark='true'] .preferenceToggle:hover { background: rgba(36,49,101,.6); }
+.shell[data-theme-dark='true'] .preferencePanel { color: #e8edf3; }
+.shell[data-theme-dark='true'] .placementChoices button, .shell[data-theme-dark='true'] .closePreferences { border-color: rgba(255,255,255,.15); color: #e8edf3; }
+.shell[data-theme-dark='true'] .placementChoices button[aria-pressed='true'] { background: rgba(36,49,101,.75); }
+.shell[data-theme-dark='true'] .customizeScreenLink { background: rgba(10,16,32,.4); border-color: rgba(255,255,255,.15); color: #e8edf3; }
+.shell[data-theme-dark='true'] .customizeScreenLink:hover { background: rgba(36,49,101,.6); }
+.shell[data-theme-dark='true'] .customizeScreenLink svg { color: #9db8ff; }
+.shell[data-theme-dark='true'] .customizeScreenLink small { color: #9aa7c2; }
+
+/* The fixed, full-viewport background layer itself (gradient +
+   decorative SVG), painted behind the whole shell. */
+.themeBackdrop { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
 .eyebrow { color: #39775e; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
 .title { margin: 10px 0 12px; color: #102c30; font-size: clamp(28px, 4vw, 44px); font-weight: 700; line-height: 1.15; letter-spacing: -1.3px; }
 .description { max-width: 600px; color: #536963; font-size: 17px; line-height: 1.65; }
