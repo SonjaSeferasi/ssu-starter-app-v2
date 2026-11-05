@@ -4490,9 +4490,9 @@ When eligible students are given rooms, the system shall assign each student one
 
 Traces to: UR-507.
 
-##### SRS-507.5, DP — First floor allocation.
+##### SRS-507.5, DP — Floor allocation.
 
-When the first floor is displayed, the system shall assign the first nine friends in that ordering to the nine doors after My Dorm.
+When a floor f is displayed, the system shall show the twelve rooms numbered for that floor, room index 12 × (f − 1) through 12 × f − 1, in the same positions for every viewer in the school.
 
 Traces to: UR-507.
 
