@@ -4330,6 +4330,14 @@ When the student types in a guestbook text field, the system shall suspend avata
 
 Traces to: UR-504.
 
+##### SRS-504.13, DP — Live co-presence and nearby chat.
+
+When students are in the same hall floor or authorized room, the system shall show each other's saved avatars moving live, show their nearby chat messages in a log and above the sender, keep an unsent draft after a failed send, and apply existing block rules.
+
+Added 4 November 2026 (records the existing multiplayer behavior; see documentation/dormspace-multiplayer.md).
+
+Traces to: UR-504.
+
 <a id="ur-505"></a>
 
 #### UR-505, DP - Maintain One Current Virtual Dorm
