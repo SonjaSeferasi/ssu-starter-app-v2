@@ -121,7 +121,7 @@ function Editor({ profile }: { profile: StudentProfile }) {
         <Avatar url={preview ?? (photo ? null : profile.photo_url)} name={profile.name} username={photo?undefined:profile.username} />
         <div>
           <button type="button" className={styles.button} onClick={() => fileInput.current?.click()} disabled={preparingPhoto || saving}><Camera />{preparingPhoto ? 'Preparing photo…' : profile.photo_url || photo ? 'Change photo' : 'Upload photo'}</button>
-          <p className={styles.hint}>{photo ? `Ready: ${photo.name} (${Math.max(1,Math.ceil(photo.size/1000))} KB)` : 'JPG, JPEG, PNG, or HEIC. Photos are prepared up to 1 MB and 1200 pixels when your browser can open them.'}</p>
+          <p className={styles.hint}>{photo ? `Ready: ${photo.name} (${Math.max(1,Math.ceil(photo.size/1000))} KB)` : 'JPG, JPEG, PNG, or HEIC. Large photos are resized automatically before uploading when your browser can open them.'}</p>
           <input ref={fileInput} type="file" accept=".jpg,.jpeg,.png,.heic,image/jpeg,image/png,image/heic" hidden
             onChange={event => { choosePhoto(event.target.files?.[0]); event.target.value = ''; }} />
         </div>
