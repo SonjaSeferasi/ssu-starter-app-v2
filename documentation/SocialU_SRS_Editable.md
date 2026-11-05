@@ -4552,7 +4552,7 @@ Traces to: UR-507.
 
 ##### SRS-507.15, DP — Return through exit.
 
-When a student interacts with a dorm's exit, the system shall return them to their own DormHall floor containing that dorm's current door, or floor one if the door no longer exists.
+When a student interacts with a dorm's exit, the system shall return them to the DormHall floor and door of that dorm's permanent room, or to their own room's floor when that door's identity is not visible to them.
 
 Traces to: UR-507.
 
