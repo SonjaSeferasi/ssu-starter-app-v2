@@ -4568,9 +4568,9 @@ When a visitor's friendship with the dorm owner ends during a visit, the system 
 
 Traces to: UR-507.
 
-##### SRS-507.18, DP — Removed floor recovery.
+##### SRS-507.18, DP — Floor stability.
 
-When friend-list changes remove the floor the student is viewing, the system shall return the student to the first DormHall floor.
+When the student is viewing a floor, the system shall keep that floor available, because rooms are never removed from the directory.
 
 Traces to: UR-507.
 
