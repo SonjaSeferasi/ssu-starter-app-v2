@@ -4180,9 +4180,11 @@ When an owner attempts to place an item they do not own, the system shall reject
 
 Traces to: UR-500.
 
-##### SRS-500.7, DP — Fixed item orientation.
+##### SRS-500.7, DP — Item orientation.
 
-When a student decorates their dorm, the system shall retain each item's predefined orientation without offering rotation.
+When the owner turns a placed or selected floor item, the system shall rotate it in quarter turns of 0, 90, 180 and 270 degrees, re-validate its turned footprint, and keep wall decorations upright.
+
+Revised 4 November 2026: replaces "retain each item's predefined orientation without offering rotation", which no longer matched the released quarter-turn rotation. Acceptance: each of the four orientations saves and restores; a turn that would break a placement rule is rejected with the rule named.
 
 Traces to: UR-500.
 
