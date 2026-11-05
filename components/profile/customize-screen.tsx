@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useScreenTheme } from './use-screen-theme';
+import { useScreenThemeContext } from './use-screen-theme';
 import { SCREEN_THEMES, SOLID_COLORS, GRADIENTS, resolveHeaderTheme } from '../../lib/screen-themes';
 import type { ScreenThemeId, HeaderThemeId } from '../../lib/screen-themes';
 import { SessionNotice } from '../navigation/section-page';
@@ -18,16 +18,15 @@ type Tab = 'background' | 'header';
 // today's existing plain look -- nothing changes for a student who never
 // opens this page.
 //
-// Header thumbnails use aspect-[4/1], matching the header art's actual
-// 1600x400 dimensions -- NOT aspect-video (16:9). A 4:1 image forced into
-// a 16:9 box gets "cover"-cropped to just its center strip, which is
-// exactly where this batch's baked-in mirror-seam blur is concentrated,
-// making it look far worse than the full image actually is. Showing the
-// full width avoids exaggerating a defect that's already in the source
-// files (not fixable here -- see the component's own explanation text).
+// Each illustrated theme is the student-supplied artwork itself
+// (ScreenTheme.image), shown with background-size:cover -- see
+// lib/screen-themes.ts. Header thumbnails use aspect-[4/1] (matching the
+// actual banner shape); background thumbnails use aspect-video. The SAME
+// image works at either aspect ratio (and at the tiny thumbnail size
+// here) because cover crops to fill, same as the real banner/background.
 export function CustomizeScreen() {
   const gate = useProfileGate();
-  const { backgroundTheme, headerTheme, loading, error, save } = useScreenTheme();
+  const { backgroundTheme, headerTheme, loading, error, save } = useScreenThemeContext();
   const [tab, setTab] = useState<Tab>('background');
   const [pendingBackground, setPendingBackground] = useState<ScreenThemeId | null>(null);
   const [pendingHeader, setPendingHeader] = useState<HeaderThemeId | null>(null);
@@ -121,15 +120,15 @@ export function CustomizeScreen() {
               <p className="mt-1 text-xs text-stone-500">See how your background and header look together.</p>
               <div
                 className="relative mt-3 aspect-[4/3] overflow-hidden rounded-2xl border border-stone-200 bg-stone-100 bg-cover bg-center"
-                style={previewBackground ? { backgroundImage: `url(${previewBackground.backgroundImage})` } : undefined}
+                style={previewBackground ? { backgroundImage: `url(${previewBackground.image})`, backgroundColor: previewBackground.background } : undefined}
               >
                 <div
-                  className={`absolute inset-x-2 top-2 flex h-10 items-center rounded-xl bg-cover bg-center px-3 text-xs font-bold ${
+                  className={`absolute inset-x-2 top-2 flex h-10 items-center overflow-hidden rounded-xl bg-cover bg-center px-3 text-xs font-bold ${
                     previewHeader ? previewHeader.textClass : 'bg-emerald-700 text-white'
                   }`}
                   style={previewHeader ? previewHeader.style : undefined}
                 >
-                  Campus Feed
+                  <span className="relative">Campus Feed</span>
                 </div>
               </div>
             </div>
@@ -175,7 +174,7 @@ function BackgroundPicker({ value, onChange }: { value: ScreenThemeId | null; on
             description={theme.description}
             selected={value === theme.id}
             onClick={() => onChange(theme.id)}
-            style={{ backgroundImage: `url(${theme.backgroundImage})` }}
+            style={{ backgroundImage: `url(${theme.image})`, backgroundColor: theme.background }}
             aspect="aspect-video"
           />
         ))}
@@ -200,7 +199,7 @@ function HeaderPicker({ value, onChange }: { value: HeaderThemeId | null; onChan
               description={theme.description}
               selected={value === theme.id}
               onClick={() => onChange(theme.id)}
-              style={{ backgroundImage: `url(${theme.headerImage})` }}
+              style={{ backgroundImage: `url(${theme.image})`, backgroundColor: theme.background }}
               aspect="aspect-[4/1]"
             />
           ))}
@@ -283,7 +282,7 @@ function ThumbnailTile({
       onClick={onClick}
       className={`overflow-hidden rounded-2xl border-2 text-left transition ${selected ? 'border-emerald-600' : 'border-stone-200 hover:border-emerald-300'}`}
     >
-      <div className={`relative ${aspect} bg-stone-100 bg-cover bg-center`} style={style}>
+      <div className={`relative ${aspect} overflow-hidden bg-cover bg-center bg-stone-100`} style={style}>
         {selected ? (
           <span className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-600 text-xs text-white" aria-hidden="true">
             ✓

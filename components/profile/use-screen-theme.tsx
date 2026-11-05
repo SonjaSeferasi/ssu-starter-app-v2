@@ -1,16 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { accessToken } from '../../lib/account/session';
 import type { ScreenThemeId, HeaderThemeId } from '../../lib/screen-themes';
 
+export type ScreenThemeState = ReturnType<typeof useScreenTheme>;
+
 // "Customize Your Screen" -- additional functionality, not in the
-// official SRS. Shared by FeedPage (reads backgroundTheme/headerTheme to
-// render them) and the Customize Your Screen picker page (reads AND
-// writes). Each page fetches its own instance on mount -- there's no
-// cross-tab/cross-page cache to keep in sync, since Customize Your Screen
-// is a separate route; by the time a student navigates back to Campus
-// Feed, FeedPage freshly mounts and loads whatever was just saved.
+// official SRS. The underlying fetch/save hook -- kept usable standalone,
+// but in practice called exactly once, by ScreenThemeProvider below.
 export function useScreenTheme() {
   const [backgroundTheme, setBackgroundTheme] = useState<ScreenThemeId | null>(null);
   const [headerTheme, setHeaderTheme] = useState<HeaderThemeId | null>(null);
@@ -66,4 +64,28 @@ export function useScreenTheme() {
   }
 
   return { backgroundTheme, headerTheme, loading, error, save };
+}
+
+// A single shared instance, provided once by SocialShell (which calls
+// useScreenTheme() itself and provides the SAME state object both to this
+// context, for FeedPage/CustomizeScreen, and directly for computing the
+// shell chrome's own dark-theme coordination -- see social-shell.tsx) --
+// so navigating between those doesn't trigger three separate fetches of
+// the same preference. Exported directly (not wrapped in its own
+// Provider component) because SocialShell needs the resolved state value
+// itself, not just a child able to read it from context.
+export const ScreenThemeContext = createContext<ScreenThemeState | null>(null);
+
+// A safe, inert default for the (in practice, never-hit-in-the-real-app)
+// case of no Provider in the tree -- every real route that uses this is
+// always wrapped by SocialShell's ScreenThemeProvider. Deliberately NOT a
+// second useScreenTheme() instance here: that would re-introduce the
+// duplicate-fetch problem this Provider exists to solve.
+const NO_PROVIDER_FALLBACK: ScreenThemeState = {
+  backgroundTheme: null, headerTheme: null, loading: true, error: '',
+  save: async () => false,
+};
+
+export function useScreenThemeContext(): ScreenThemeState {
+  return useContext(ScreenThemeContext) ?? NO_PROVIDER_FALLBACK;
 }

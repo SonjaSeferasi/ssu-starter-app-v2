@@ -11,10 +11,13 @@ export function PostComposer({
   accessToken,
   authorInitial,
   onPublished,
+  translucent,
 }: {
   accessToken: string;
   authorInitial: string;
   onPublished: () => void;
+  /** "Customize Your Screen": a translucent glass surface instead of solid white, so a selected background theme keeps showing through. Defaults to false (today's unchanged look) everywhere this isn't explicitly passed. */
+  translucent?: boolean;
 }) {
   const [text, setText] = useState('');
   // SRS-315.3: no visibility is pre-selected -- the student must explicitly
@@ -106,7 +109,7 @@ export function PostComposer({
   }
 
   return (
-    <div className="rounded-3xl border border-stone-200 bg-white p-4 shadow-sm">
+    <div className={`rounded-3xl border p-4 shadow-sm ${translucent ? 'border-white/40 bg-white/70 backdrop-blur-md' : 'border-stone-200 bg-white'}`}>
       <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-sm font-semibold text-emerald-800">
           {authorInitial}

@@ -8,6 +8,7 @@ import styles from './social-shell.module.css';
 import type { NavigationPosition } from '../../lib/game-room';
 import { accessToken } from '../../lib/account/session';
 import { MessageCountIcon, useMessageNotifications } from '../chat/message-notifications';
+import type { ScreenTheme } from '../../lib/screen-themes';
 
 type IconName = (typeof navigationDestinations)[number]['icon'] | 'profile' | 'search' | 'bell' | 'settings';
 
@@ -121,10 +122,25 @@ function NotificationBell({ pathname }: { pathname: string }) {
   </Link>;
 }
 
+// "Customize Your Screen" (additional functionality, not in the official
+// SRS): backgroundTheme, when set (only while on Campus Feed, computed by
+// SocialShell), paints a full-viewport fixed backdrop behind the ENTIRE
+// shell -- header, sidebar nav, and content alike -- not just the feed's
+// own content column. The shell's chrome itself becomes a translucent
+// "glass" surface (social-shell.module.css's [data-theme-active] rules)
+// so the scene shows through continuously everywhere.
+//
 // Also used by the development-only preview; no session or private data lives here.
-export function NavigationFrame({ pathname, children, community, position = 'side', ...preferences }: { pathname: string; children: React.ReactNode; community?: string | null } & PlacementProps) {
+export function NavigationFrame({ pathname, children, community, position = 'side', backgroundTheme, ...preferences }: { pathname: string; children: React.ReactNode; community?: string | null; backgroundTheme?: ScreenTheme | null } & PlacementProps) {
   return (
-    <div className={styles.shell} data-navigation={position} data-profile={pathname === '/friends' || pathname === '/profile' || pathname.startsWith('/profile/') || pathname.startsWith('/students/') ? 'true' : undefined}>
+    <div className={styles.shell} data-navigation={position} data-theme-active={backgroundTheme ? 'true' : undefined} data-theme-dark={backgroundTheme?.isDark ? 'true' : undefined} data-profile={pathname === '/friends' || pathname === '/profile' || pathname.startsWith('/profile/') || pathname.startsWith('/students/') ? 'true' : undefined}>
+      {backgroundTheme ? (
+        <div
+          className={styles.themeBackdrop}
+          style={{ backgroundImage: `url(${backgroundTheme.image})`, backgroundColor: backgroundTheme.background, backgroundSize: 'cover', backgroundPosition: 'center' }}
+          aria-hidden="true"
+        />
+      ) : null}
       <a className={styles.skipLink} href="#socialu-content">Skip to content</a>
       <header className={styles.header}>
         <Link href="/" className={styles.brand} aria-label="SocialU home">Social<span>U</span></Link>

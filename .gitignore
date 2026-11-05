@@ -10,6 +10,12 @@ __pycache__/
 /tmp/tools/
 /tmp/render-tools/
 /tmp/visual-review/
+# Scratch output written by the world-explorer test suite itself as a
+# side effect of running it (e.g. tmp/north-america/validation.json) --
+# not deliverable files, just regenerated every test run. A handful of
+# files already tracked under tmp/ from before this ignore are unaffected
+# (gitignore only applies to untracked paths).
+/tmp/*/
 *.blend1
 *.blend2
 
