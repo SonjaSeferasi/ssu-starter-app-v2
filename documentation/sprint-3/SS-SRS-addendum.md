@@ -59,3 +59,14 @@ Source inspection: World Explorer contains a Japan prototype and country scenery
 Reconciliation needed: SRS-608.3/608.5 request automatic avatar saving while the current editor uses explicit Save avatar. Those requirements are not selected or silently rewritten.
 
 Each selected parent has real task sub-issues covering persistence/API where applicable, user interaction, and tests/live evidence. Assign all to SonjaSeferasi. Create an SRS-named branch before new implementation; link the eventual PR and close completed tasks through it. Add actual running-app screenshots before Done. This planning update does not claim new feature implementation, new passing tests, live persistence, merged feature PRs, or demo evidence.
+## Revision — SRS-628.4 (5 November 2026)
+
+Finding during Sprint 3 review: all 193 member-state countries now have authored playable levels, so no country destination remains a preview. The only remaining preview destination, Antarctica ("Polar Research Trail"), is labelled "Environment preview" and starts a playable attempt. The original SRS-628.4 statement ("prevent starting a playable attempt") therefore no longer matches the product.
+
+Proposed revised statement for Sprint 4 (title unchanged):
+
+When a destination is an environment preview rather than an authored country adventure, the system shall label it "Environment preview" in its level header.
+
+Acceptance criterion: Given Antarctica is an environment preview, when it is opened, then "Environment preview" is visible in the level header.
+
+Traces to: UR-628. Status: SRS-628.4 returned to Product Backlog for Sprint 4 pending approval of this revision (issue #935).
