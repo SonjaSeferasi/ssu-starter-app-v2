@@ -4352,6 +4352,14 @@ Added 4 November 2026. Acceptance: W moves away from the camera in every camera 
 
 Traces to: UR-504.
 
+##### SRS-504.11, DP — Running.
+
+When the student holds Shift or turns on the on-screen Run control while moving, the system shall move the avatar at 1.5 times walking speed with a running animation.
+
+Added 4 November 2026 (records the existing sprint behavior).
+
+Traces to: UR-504.
+
 <a id="ur-505"></a>
 
 #### UR-505, DP - Maintain One Current Virtual Dorm
