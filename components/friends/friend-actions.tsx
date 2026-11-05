@@ -37,7 +37,7 @@ export function FriendActions({ username, initial, onChanged, inProfile=false, s
     } catch(reason){setError(reason instanceof Error?reason.message:'Unable to update your connection.');}
     finally{setBusy(false);}
   }
-  return <div className={styles.connectionActions}>
+  return <div className={`${styles.connectionActions} ${inProfile?styles.profileConnection:''}`}>
     <div className={styles.actions}>
       {!relation && <button disabled className={styles.secondary}>Loading connection…</button>}
       {relation?.state==='none' && <button disabled={busy} onClick={()=>void act('send')}><UserPlus/>Add friend</button>}

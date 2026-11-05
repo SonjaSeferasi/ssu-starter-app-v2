@@ -24,6 +24,11 @@
 .actions .secondary,.page .secondary { color:#25352b; background:#f0f8f2; border-color:#ceded1; }
 .actions .quiet,.quiet { color:#6b786f; background:transparent; border-color:transparent; font-size:12px; text-decoration:underline; cursor:pointer; }
 .note { color:#6b786f; font-size:12px; line-height:1.6; margin:8px 0 0; }
+/* Let profile buttons share one row; connection feedback gets a separate row. */
+.profileConnection, .profileConnection > .actions { display:contents; }
+.profileConnection > .actions > button { min-height:40px; padding:9px 16px; border-radius:8px; font-size:13px; line-height:20px; }
+.profileConnection > .note, .profileConnection > .error { order:1; flex-basis:100%; margin:0; max-width:100%; }
+.profileConnection > .note { line-height:1.5; }
 .error { margin:12px 0; color:#9d4031; font-size:13px; line-height:1.6; }
 .empty { text-align:center; padding:50px 20px; color:#6b786f; }
 .empty > svg { margin:auto; color:#2c704b; width:36px; height:36px; }
@@ -44,3 +49,4 @@
 .page button:focus-visible,.actions button:focus-visible,.back:focus-visible,.identity a:focus-visible,.danger:focus-visible,.field input:focus-visible { outline:2px solid #2c704b; outline-offset:3px; }
 .srOnly { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
 @media(max-width:700px){.student { align-items:flex-start; flex-direction:column; gap:14px; }.connectionActions{max-width:100%;}.heading h1{font-size:28px;}}
+@media(max-width:600px){.profileConnection > .actions > button{min-height:36px;padding:7px 10px;font-size:12px;}}
