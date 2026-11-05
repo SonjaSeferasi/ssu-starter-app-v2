@@ -4360,6 +4360,14 @@ Added 4 November 2026 (records the existing sprint behavior).
 
 Traces to: UR-504.
 
+##### SRS-504.12, DP — Sitting and sleeping.
+
+When a student uses a placed chair, sofa, armchair or bed, the system shall seat or lay the avatar on that item in any of its four orientations, allow only one occupant per item, return the student to clear floor when they stand up, and show nighttime in the room's window to everyone present while anyone sleeps there.
+
+Added 4 November 2026 (records the existing rest behavior). Acceptance: a second student cannot take an occupied item; moving or pressing E stands up.
+
+Traces to: UR-504.
+
 <a id="ur-505"></a>
 
 #### UR-505, DP - Maintain One Current Virtual Dorm
