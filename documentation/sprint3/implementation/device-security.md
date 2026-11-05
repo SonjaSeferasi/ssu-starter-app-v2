@@ -17,9 +17,7 @@ All trace to UR-107. Preserve the exact existing SRS shall statements and accept
 
 The history API returns device and location fields using its existing verified-owner check. Login Activity renders available location as approximate, and missing/older/localhost context as Location unavailable. Reopening history does not invent or replace the original location.
 
-Real task sub-issues of #878: #1048 data contract; #1049 authenticated capture/API; #1050 UI; #1051 verification/evidence. Tests cover trusted-host gating, malformed headers, immutable context, wrong-owner rejection, absent context, and denied direct authenticated-role RPC execution. Initial targeted run: 56 tests passed; type-check/build/live hosted-location acceptance remain separately recorded checks until completed.
-
-## Deployment and evidence status
+Real task sub-issues of #878: #1048 data contract; #1049 authenticated capture/API; #1050 UI; #1051 verification/evidence. Tests cover trusted-host gating, malformed headers, immutable context, wrong-owner rejection, absent context, and denied direct authenticated-role RPC execution. Initial targeted run: 56 tests passed. The final integrated run passed 1,449 tests in 167 files and the production build. Live hosted-location acceptance remains pending.
 
 ## SRS-107.7 logout-option contract
 
@@ -31,11 +29,19 @@ Real task sub-issues of #880: #1053 data eligibility; #1054 authenticated API; #
 
 `20261103111000_selected_session_logout.sql` adds durable selected-session revocation and the service-only owner-authorized operation. The authenticated POST derives account/current provider session from verified identity and accepts only a bounded history ID plus explicit confirmation. The server guard rejects the selected provider session on subsequent protected requests, including refreshed JWTs. History is retained; another sign-in creates a new session. This terminates SocialU access rather than deleting the provider session or its audit history.
 
-Real task sub-issues of #881: #1059 database; #1060 API; #1062 UI; #1063 two-browser verification/evidence. The focused API/data/eligibility run passed 20 tests, including wrong-account/current-session targets, missing confirmation, database failures, retry, expiry/revocation and denied direct authenticated-role execution. Deployment and live two-browser acceptance remain pending.
+Real task sub-issues of #881: #1059 database; #1060 API; #1062 UI; #1063 two-browser verification/evidence. The focused API/data/eligibility run passed 20 tests, including wrong-account/current-session targets, missing confirmation, database failures, retry, expiry/revocation and denied direct authenticated-role execution. Shared database deployment passed; live two-browser acceptance remains pending.
 
-The new migration has not yet been applied to the shared project. It is additive and installation does not end sessions. A localhost screenshot with unavailable location does not prove the available-location acceptance criterion: capture a genuine hosted sign-in with platform-supplied location. Never populate a fabricated location to make an evidence screenshot.
+## SRS-107.9 current-session preservation contract
 
-The other three SRS items are selected for this sprint, but their implementation, deployment, browser acceptance and PRs must be recorded when actually completed. Do not close tasks or mark Done based only on branch creation or this plan.
+`20261103112000_preserve_current_session.sql` wraps the selected-session operation in an atomic preservation check. It reports success only after the caller still passes the server session guard. A failed check raises an error and rolls back the selected update. The API requires both explicit result booleans; the UI likewise refuses an unconfirmed success. Existing global/password-change revocation behavior is preserved.
+
+Real task sub-issues of #882: #1065 database preservation; #1066 API confirmation; #1067 feedback; #1069 live continuity/evidence. The combined focused suite passed 29 tests. A database trigger regression deliberately revokes the caller while changing the target and verifies both updates roll back. API tests reject null, boolean-only and incomplete preservation responses. Type-check passed. The final integrated run, including latest main ea33d78, passed 1,449 tests in 167 files and the production build. Shared deployment passed; live two-browser evidence remains pending.
+
+## Deployment and evidence status
+
+All three additive migrations were applied atomically to the shared project on November 3, 2026. The SQL editor returned true for both location_installed and safe_remote_logout_installed. Installation did not end any session. A localhost screenshot with unavailable location does not prove the available-location acceptance criterion: capture a genuine hosted sign-in with platform-supplied location. Never populate a fabricated location to make an evidence screenshot.
+
+Draft PRs: #1068 (107.5), #1072 (107.7), #1073 (107.8), #1071 (107.9/integrated preview). The preview requires Vercel sign-in. The production URL supplied by Linh is https://socialu-social-u.vercel.app. Keep live evidence tasks and SRS parents open until acceptance is genuinely observed. Implementation task completion does not imply screenshot acceptance.
 
 ## Primary references
 
