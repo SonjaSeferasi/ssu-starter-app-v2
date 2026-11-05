@@ -4330,9 +4330,11 @@ When movement would carry the avatar outside the traversable hall or room bounda
 
 Traces to: UR-504.
 
-##### SRS-504.8, DP — Furniture traversal.
+##### SRS-504.8, DP — Furniture collision.
 
-When an avatar moves across placed furniture or decorations, the system shall permit traversal without furniture collision blocking.
+When an avatar moves into raised placed furniture, the system shall stop that movement, while permitting the avatar to walk over rugs; when furniture is moved onto the avatar's position, the system shall move the avatar to the nearest clear floor position.
+
+Revised 4 November 2026: replaces "permit traversal without furniture collision blocking", which no longer matched the released collision behavior.
 
 Traces to: UR-504.
 
