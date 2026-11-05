@@ -4520,6 +4520,14 @@ When a non-owner without a current friendship requests a dorm directly, the syst
 
 Traces to: UR-507.
 
+##### SRS-507.20, DP — Shared school directory.
+
+When any eligible student at a school views a DormHall floor, the system shall show the same room assignment (room number and door position for each resident) as for every other viewer at that school, including students who are not their friends, shall show each resident's username except where SRS-507.22 withholds that resident's identity from the particular viewer, and shall exclude students of other schools.
+
+Added 4 November 2026. Acceptance: two same-school viewers see identical room numbers and door positions per resident, and identical usernames wherever neither viewer has identity withheld under SRS-507.22; a withheld door keeps its room number and position; a student at another school is absent.
+
+Traces to: UR-507.
+
 <a id="ur-508"></a>
 
 #### UR-508, DP - Explore Friends' Dorms and Leave Notes
