@@ -4504,7 +4504,7 @@ Traces to: UR-507.
 
 ##### SRS-507.7, DP — Vacant doors.
 
-When a displayed floor has fewer assigned friends than available friend doors, the system shall label its remaining friend doors Vacant.
+When a displayed floor has door positions without an assigned room, the system shall label those doors Vacant.
 
 Traces to: UR-507.
 
