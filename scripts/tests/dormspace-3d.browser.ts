@@ -7,6 +7,7 @@ import type { PGlite } from '@electric-sql/pglite';
 import { befriend, createDormDatabase, friendship, testUid } from '../../__tests__/helpers/dormspace-db';
 import { prepareLiveDatabase } from '../../__tests__/helpers/dormspace-live-db';
 import { credit, DIRECTORY_MIGRATION, SHOP_MIGRATION } from '../../__tests__/helpers/dormspace-3d-db';
+import { roomSolidCells } from '../../lib/dormspace-rules';
 
 // The real Next UI and APIs over the real schema/functions in a disposable PGlite database. Only the
 // provider Auth/PostgREST HTTP transport is replaced (loopback only). Four synthetic accounts; no real
@@ -47,7 +48,19 @@ function watch(page: any) {
   page.on('console', (message: any) => { if (message.type() === 'error' || message.type() === 'warning') push(`console.${message.type()}: ${message.text()}`); });
   page.on('pageerror', (error: Error) => push(`pageerror: ${error.message}`));
   page.on('requestfailed', (request: any) => push(`requestfailed: ${request.method()} ${pathOf(request.url())} ${request.failure()?.errorText ?? ''}`));
-  page.on('response', (response: any) => { if (response.status() >= 500) push(`http ${response.status()}: ${pathOf(response.url())}`); });
+  // The first API 400 per page: its path, the request's `action` name only (no other request field)
+  // and the response's code/error text (server messages; never tokens, keys or positions).
+  let first400 = false;
+  page.on('response', (response: any) => {
+    const status = response.status(), path = pathOf(response.url());
+    if (status >= 500) { push(`http ${status}: ${path}`); return; }
+    if (status !== 400 || first400 || !path.startsWith('/api/')) return;
+    first400 = true;
+    let action = '(none)';
+    try { const value = JSON.parse(response.request().postData() || '{}').action; if (value !== undefined) action = /^[a-z]{1,20}$/.test(String(value)) ? String(value) : '(other)'; } catch { /* not JSON */ }
+    void response.json().then((body: any) => push(`http 400: ${path} action=${action} code=${String(body?.code ?? '').slice(0, 40)} error=${String(body?.error ?? '').slice(0, 160)}`))
+      .catch(() => push(`http 400: ${path} action=${action} (body unreadable)`));
+  });
 }
 async function describePage(page: any) {
   if (!page || page.isClosed()) return '(page closed)';
@@ -57,21 +70,31 @@ async function describePage(page: any) {
     `alerts=${JSON.stringify(alerts.slice(0, 5).map(redact))}`, ...(logs.get(page) ?? [])].join('\n');
 }
 
+// Signs a synthetic account in through the real POST /api/auth/login on the loopback Next server and
+// returns the browser storage the login page itself writes for "remember me" (saveSession(..., true):
+// localStorage access_token + socialu_session). Tokens never leave this function except via storageState.
+async function loginStorage(student: number) {
+  const origin = new URL(base).origin;
+  if (!/^http:\/\/127\.0\.0\.1:\d+$/.test(origin)) throw new Error('loginStorage is restricted to the loopback test server');
+  const response = await fetch(`${origin}/api/auth/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ identifier: `dorm${student}@salemstate.edu`, password: 'DormTest123!' }) });
+  const data = await response.json().catch(() => ({}));
+  const session = data?.session?.session;
+  if (!response.ok || typeof session?.access_token !== 'string') throw new Error(`POST /api/auth/login returned ${response.status} without a session (${redact(String(data?.code ?? data?.error ?? ''))})`);
+  const stored = { access_token: session.access_token, ...(session.refresh_token ? { refresh_token: session.refresh_token } : {}), ...(session.expires_at ? { expires_at: session.expires_at } : {}) };
+  return { cookies: [], origins: [{ origin, localStorage: [{ name: 'access_token', value: stored.access_token }, { name: 'socialu_session', value: JSON.stringify(stored) }] }] };
+}
+
 async function signIn(student: number, viewport = DESKTOP) {
   const mobile = viewport.width < 600;
-  const context = await browser.newContext({ viewport, deviceScaleFactor: 1, hasTouch: mobile, isMobile: mobile });
+  // A fresh context per account, pre-populated (loopback origin only) with the real login response.
+  const storageState = await loginStorage(student);
+  const context = await browser.newContext({ viewport, deviceScaleFactor: 1, hasTouch: mobile, isMobile: mobile, storageState });
   const page = await context.newPage();
   watch(page);
   try {
-    // The login page navigates itself after saving the session (it honours ?redirect=). Waiting for that
-    // navigation, instead of calling goto() while it is pending, avoids racing the app's redirect.
-    await page.goto(`${base}/login?redirect=${encodeURIComponent('/game-room/dormspace')}`, { waitUntil: 'networkidle' });
-    await page.waitForFunction(() => { const form = document.querySelector('form'); return form && Object.keys(form).some(key => key.startsWith('__reactProps$')); });
-    await page.getByRole('textbox', { name: 'University email or username' }).fill(`dorm${student}@salemstate.edu`);
-    await page.getByLabel('Password', { exact: true }).fill('DormTest123!');
-    await page.getByRole('button', { name: 'Sign in', exact: true }).click();
-    await page.waitForURL((url: URL) => url.pathname !== '/login', { timeout: 30000 });
-    if (pathOf(page.url()) !== '/game-room/dormspace') await page.goto(base + '/game-room/dormspace');
+    // Direct navigation to the real game route: no client-side redirect to race.
+    await page.goto(base + '/game-room/dormspace', { waitUntil: 'domcontentloaded' });
+    await page.bringToFront();
     // Fail fast (with the real state) if the engine settles on anything other than ready.
     const settled = page.locator('div[data-engine]:not([data-engine="loading"])');
     await settled.waitFor({ timeout: 60000 });
@@ -89,7 +112,23 @@ async function signIn(student: number, viewport = DESKTOP) {
 const closePage = async (page: any) => { if (page && !page.isClosed()) await within(page.context().close(), 5000, undefined); };
 const shot = (page: any, name: string) => page.screenshot({ path: `${artifacts}/${name}.png`, timeout: 15000 });
 const blur = (page: any) => page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
-async function hold(page: any, key: string, ms: number) { await blur(page); await page.keyboard.down(key); await delay(ms); await page.keyboard.up(key); }
+async function hold(page: any, key: string, ms: number) { await blur(page); await page.keyboard.down(key); try { await delay(ms); } finally { await page.keyboard.up(key); } }
+// Walks until the interaction prompt appears (frame rate varies widely under software GL), at most `ms`.
+async function holdUntil(page: any, key: string, prompt: any, ms = 8000) {
+  await blur(page); await page.keyboard.down(key);
+  try { await prompt.waitFor({ timeout: ms }); } finally { await page.keyboard.up(key); }
+}
+type LiveRow = { space: string; state: { x: number; y: number; moving: boolean; restItemId: string | null } };
+// The server's own live row for a student, polled until `ready` holds (bounded); fails with what it saw.
+async function liveRow(student: number, ready: (row: LiveRow) => boolean, ms = 15000) {
+  const until = Date.now() + ms; let row: LiveRow | null = null;
+  while (Date.now() < until) {
+    row = (await db.query<LiveRow>('SELECT space, state FROM dormspace_live.players WHERE student_id=$1', [student])).rows[0] ?? null;
+    if (row && ready(row)) return row;
+    await delay(200);
+  }
+  throw new Error(`dorm${student}'s live row never reached the expected state (last: ${JSON.stringify(row)})`);
+}
 async function openOwnRoom(page: any) {
   await page.getByRole('button', { name: 'My room' }).first().click();
   await page.locator('[data-scene="room"]').waitFor();
@@ -244,9 +283,18 @@ it('decorates with keyboard coordinates, turns, stores and keeps the saved layou
 
 it('sits on a chair, sleeps in a bed with a shared night window, and opens the guestbook', async () => {
   await openOwnRoom(owner);
-  // Walking up from the entrance stops against the chair (collision), within reach.
-  await hold(owner, 'w', 1100);
-  await owner.getByText('Sit in chair').first().waitFor();
+  // The room's live connection really joined (a rejected join would leave no room:1 row).
+  await liveRow(1, row => row.space === 'room:1');
+  // Walking up from the entrance reaches the chair, then keeps pressing against it: collision holds
+  // the player outside every solid cell, and the server's stopped position agrees.
+  const sit = owner.getByText('Sit in chair').first();
+  await holdUntil(owner, 'w', sit);
+  await hold(owner, 'w', 800);
+  await sit.waitFor();
+  const room = (await api(owner, '/api/dorm')).data, floor = room.surfaces.find((s: any) => s.code === 'floor');
+  const solid = roomSolidCells(room.catalog, room.placements, floor.height, floor.width);
+  const stopped = await liveRow(1, row => row.space === 'room:1' && !row.state.moving);
+  expect(solid.has(`${Math.round(stopped.state.x)},${Math.round(stopped.state.y)}`)).toBe(false);
   await blur(owner); await owner.keyboard.press('e');
   await owner.locator('[data-pose="sitting"]').waitFor();
   await shot(owner, 'room-sitting');
@@ -258,8 +306,7 @@ it('sits on a chair, sleeps in a bed with a shared night window, and opens the g
   await owner.getByText('✓ All changes saved').waitFor();
   await placeFromInventory(owner, 'Bed', 4, 2);
   await owner.getByRole('button', { name: 'Done decorating' }).click();
-  await hold(owner, 's', 300); await hold(owner, 'w', 1100);
-  await owner.getByText('Sleep in bed').first().waitFor();
+  await hold(owner, 's', 300); await holdUntil(owner, 'w', owner.getByText('Sleep in bed').first());
   await blur(owner); await owner.keyboard.press('e');
   await owner.locator('[data-pose="sleeping"][data-time="night"]').waitFor();
   await shot(owner, 'room-sleeping-night');
