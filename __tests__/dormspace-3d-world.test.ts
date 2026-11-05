@@ -139,9 +139,24 @@ describe('shared hall layout', () => {
       // The camera looks the same way as the student (camera sits behind, at −heading along X).
       const behind = orbitOffset(view.cameraYaw, 0.3, 1);
       expect(Math.sign(behind.x)).toBe(-view.heading); expect(Math.abs(behind.z)).toBeLessThan(1e-9);
-      // The clamp still keeps the camera inside the hall, but there is room for most of the default distance.
+      // The clamp always keeps the camera strictly inside the hall with a positive distance.
       const target = { x: start.x, y: 1.25, z: start.z };
-      expect(clampOrbitDistance(target, behind, 3.8, box)).toBeGreaterThan(3);
+      const distance = clampOrbitDistance(target, behind, 3.8, box);
+      const camera = { x: target.x + behind.x * distance, y: target.y + behind.y * distance, z: target.z + behind.z * distance };
+      expect(distance).toBeGreaterThan(0); expect(distance).toBeLessThanOrEqual(3.8);
+      expect(camera.x).toBeGreaterThan(box.minX); expect(camera.x).toBeLessThan(box.maxX);
+      expect(camera.y).toBeGreaterThan(box.minY); expect(camera.y).toBeLessThan(box.maxY);
+      expect(camera.z).toBeGreaterThan(box.minZ); expect(camera.z).toBeLessThan(box.maxZ);
+      // Corridor behind the student along X (the camera's side); the orbit can only reach rear / |behind.x|.
+      const rear = view.heading > 0 ? start.x - box.minX : box.maxX - start.x;
+      if (slot === null) {
+        // The elevator sits ~1.4 m from the end wall, so the safe clamp is short (~1.28 m), never past the wall.
+        expect(distance).toBeLessThan(rear / Math.abs(behind.x));
+      } else {
+        // Every door spawn has room behind for most of the default distance, and gets it.
+        expect(rear / Math.abs(behind.x)).toBeGreaterThan(3);
+        expect(distance).toBeGreaterThan(3);
+      }
     }
     expect(hallArrivalView(null).heading).toBe(1);
   });
