@@ -58,6 +58,10 @@ export function readShopCatalog(value: unknown): ShopCatalog | null {
 }
 const BUYER_SCOPE = /^[A-Za-z0-9_-]{16,64}$/;
 export const isBuyerScope = (value: unknown): value is string => typeof value === 'string' && BUYER_SCOPE.test(value);
+/** Request header carrying the attempt's buyer scope on every purchase and status request; the route
+ * answers 409 BUYER_MISMATCH (bridge never called) when the verified session is another account. */
+export const BUYER_HEADER = 'X-DormSpace-Buyer';
+export const BUYER_MISMATCH = 'BUYER_MISMATCH';
 const rejectionMessages: Record<Rejection, string> = {
   price_changed: 'The price changed. Review the new price before buying.',
   insufficient: 'You do not have enough points for this item.',

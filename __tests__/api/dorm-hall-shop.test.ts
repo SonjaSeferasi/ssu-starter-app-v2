@@ -3,6 +3,7 @@ const { getClient, getUser, rpc } = vi.hoisted(() => ({ getClient: vi.fn(), getU
 vi.mock('../../lib/supabase', () => ({ getSupabaseClient: getClient }));
 import { GET as hallGET } from '../../app/api/dorm/hall/route';
 import { GET as shopGET, POST as shopPOST } from '../../app/api/dorm/shop/route';
+import { shopBuyerScope } from '../../lib/dormspace-3d-server';
 
 // Request validation and response handling for the 3D DormSpace APIs. The database behaviour itself is
 // covered by __tests__/database/dormspace-3d-directory.test.ts and dormspace-shop.test.ts.
@@ -10,7 +11,9 @@ const token = 'header.' + Buffer.from(JSON.stringify({ iat: 1791849600, session_
 const KEY = '22222222-2222-4222-8222-222222222222';
 const auth = { authorization: `Bearer ${token}`, 'content-type': 'application/json' };
 const get = (path: string, headers: Record<string, string> = auth) => new Request(`http://localhost${path}`, { headers });
-const post = (body: unknown) => new Request('http://localhost/api/dorm/shop', { method: 'POST', headers: auth, body: JSON.stringify(body) });
+// Purchases and status checks carry the attempt's buyer scope (here: the verified student's own).
+const buyer = (scope = shopBuyerScope('verified-student')) => ({ ...auth, 'x-dormspace-buyer': scope });
+const post = (body: unknown, headers: Record<string, string> = buyer()) => new Request('http://localhost/api/dorm/shop', { method: 'POST', headers, body: JSON.stringify(body) });
 let bridge: (name: string, args: any) => { data: unknown; error: unknown };
 const calls = () => rpc.mock.calls.filter(([name]) => name !== 'socialu_session_guard');
 const directory = { floor: 1, floorCount: 1, roomsPerFloor: 12, me: { username: 'dorm1', floor: 1, slot: 0 },
@@ -105,9 +108,30 @@ describe('/api/dorm/shop', () => {
   });
   it('checks a purchase status by key and validates the key', async () => {
     bridge = () => ({ data: { status: 'not_found', balance: 10 }, error: null });
-    expect(await (await shopGET(get(`/api/dorm/shop?purchase=${KEY}`))).json()).toEqual({ status: 'not_found', balance: 10 });
+    expect(await (await shopGET(get(`/api/dorm/shop?purchase=${KEY}`, buyer()))).json()).toEqual({ status: 'not_found', balance: 10 });
     expect(calls()[0][1]).toEqual({ p_auth_id: 'verified-student', p_action: 'status', p_payload: { actionKey: KEY } });
-    expect((await shopGET(get('/api/dorm/shop?purchase=abc'))).status).toBe(400);
+    expect((await shopGET(get('/api/dorm/shop?purchase=abc', buyer()))).status).toBe(400);
+  });
+  it('never reaches the bridge when the session is not the attempt\'s buyer (same-tab account change)', async () => {
+    bridge = () => ({ data: { status: 'completed', replayed: false, itemId: '7', charged: 150, balance: 50, owned: ['7'] }, error: null });
+    const startedAs = shopBuyerScope('verified-student');
+    // The tab switched account after its last catalog read: the verified caller is now another student.
+    getUser.mockResolvedValue({ data: { user: { id: 'other-student', email: 'dorm2@salemstate.edu', email_confirmed_at: '2026-10-08' } }, error: null });
+    const purchase = await shopPOST(post({ itemId: '7', expectedPrice: 150, actionKey: KEY }, buyer(startedAs)));
+    expect(purchase.status).toBe(409);
+    expect(purchase.headers.get('Cache-Control')).toBe('no-store');
+    expect(await purchase.json()).toEqual({ error: expect.stringContaining('Nothing was sent or charged'), code: 'BUYER_MISMATCH' });
+    const status = await shopGET(get(`/api/dorm/shop?purchase=${KEY}`, buyer(startedAs)));
+    expect(status.status).toBe(409);
+    expect((await status.json()).code).toBe('BUYER_MISMATCH');
+    expect(calls()).toHaveLength(0);
+  });
+  it('requires a well-formed buyer scope on purchases and status checks before the bridge', async () => {
+    for (const headers of [auth, buyer('dorm1@salemstate.edu'), buyer('short')]) {
+      expect((await shopPOST(post({ itemId: '7', expectedPrice: 150, actionKey: KEY }, headers))).status).toBe(400);
+      expect((await shopGET(get(`/api/dorm/shop?purchase=${KEY}`, headers))).status).toBe(400);
+    }
+    expect(calls()).toHaveLength(0);
   });
   it('reports a missing shop migration as unavailable', async () => {
     bridge = () => ({ data: null, error: { code: 'PGRST202', message: 'Could not find the function' } });
