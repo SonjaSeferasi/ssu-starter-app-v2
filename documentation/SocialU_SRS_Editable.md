@@ -4484,9 +4484,9 @@ When a door belongs to a schoolmate whose identity the viewer may see, the syste
 
 Traces to: UR-507.
 
-##### SRS-507.4, DP — Friend ordering.
+##### SRS-507.4, DP — Stable door ordering.
 
-When assigning friends to doors, the system shall order current friendships by their mutual acceptance time from oldest to newest, using a stable account identifier to break timestamp ties.
+When eligible students are given rooms, the system shall assign each student one permanent room number in their school in a stable account order, independent of any viewer's friend list.
 
 Traces to: UR-507.
 
