@@ -1,12 +1,23 @@
 import { AccountError, accountResponse, jsonBody, verifiedUser } from '../../../../lib/socialu-account';
 import { dormShop, shopBuyerScope, unexpectedShop } from '../../../../lib/dormspace-3d-server';
-import { isActionKey, readPurchaseRequest, readPurchaseResult, readShopCatalog, rejectionResponse } from '../../../../lib/dormspace-shop-contract';
+import { BUYER_HEADER, BUYER_MISMATCH, isActionKey, isBuyerScope, readPurchaseRequest, readPurchaseResult, readShopCatalog, rejectionResponse } from '../../../../lib/dormspace-shop-contract';
 
 export const dynamic = 'force-dynamic';
 const noStore = { 'Cache-Control': 'no-store' };
 
+/** A purchase or status check is bound to the buyer scope its attempt started under (the catalog's
+ * `buyer`). If this request's verified session is a different account (a same-tab sign-in change after
+ * the client's last catalog read), it stops here: the shop bridge is never called, nothing is charged
+ * or revealed. The header is not authorization; the charge is always the session's own account. */
+function requireBuyer(request: Request, authId: string) {
+  const sent = request.headers.get(BUYER_HEADER);
+  if (!isBuyerScope(sent)) throw new AccountError('Reload the furniture shop and try again. Nothing was bought.', 400, 'BUYER_REQUIRED');
+  if (sent !== shopBuyerScope(authId))
+    throw new AccountError('You are signed in as a different account from the one that started this purchase. Nothing was sent or charged.', 409, BUYER_MISMATCH);
+}
+
 // GET -> the caller's shared balance, every DormSpace offer with its state, and an opaque buyer scope.
-// GET ?purchase=<actionKey> -> the stored outcome of an earlier attempt (for unknown results).
+// GET ?purchase=<actionKey> (+ X-DormSpace-Buyer) -> the stored outcome of an earlier attempt (for unknown results).
 export async function GET(request: Request) {
   try {
     const user = await verifiedUser(request);
@@ -14,6 +25,7 @@ export async function GET(request: Request) {
     if (params.has('purchase')) {
       const actionKey = params.get('purchase');
       if (!isActionKey(actionKey)) throw new AccountError('Choose a purchase to check.', 400);
+      requireBuyer(request, user.id);
       const result = readPurchaseResult(await dormShop(user.id, 'status', { actionKey: actionKey.toLowerCase() }));
       if (!result) throw unexpectedShop();
       return Response.json(result, { headers: noStore });
@@ -25,12 +37,13 @@ export async function GET(request: Request) {
   } catch (error) { return accountResponse(error); }
 }
 
-// POST {itemId, expectedPrice, actionKey} buys one item with the caller's own shared points.
+// POST {itemId, expectedPrice, actionKey} (+ X-DormSpace-Buyer) buys one item with the caller's own shared points.
 export async function POST(request: Request) {
   try {
     const user = await verifiedUser(request);
     const purchase = readPurchaseRequest(await jsonBody(request));
     if (typeof purchase === 'string') throw new AccountError(purchase, 400);
+    requireBuyer(request, user.id);
     const result = readPurchaseResult(await dormShop(user.id, 'purchase', purchase));
     if (!result || result.status === 'not_found') throw unexpectedShop();
     if (result.status === 'rejected') {
