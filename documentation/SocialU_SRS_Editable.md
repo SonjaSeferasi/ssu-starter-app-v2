@@ -4528,6 +4528,14 @@ Added 4 November 2026. Acceptance: two same-school viewers see identical room nu
 
 Traces to: UR-507.
 
+##### SRS-507.22, DP — Withheld identity.
+
+When a resident is blocked by or has blocked the viewer, or the resident's account is inactive or unverified, the system shall show that door as a locked placeholder without the resident's username.
+
+Added 4 November 2026.
+
+Traces to: UR-507.
+
 <a id="ur-508"></a>
 
 #### UR-508, DP - Explore Friends' Dorms and Leave Notes
