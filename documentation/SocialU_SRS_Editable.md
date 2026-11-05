@@ -4520,6 +4520,14 @@ When a non-owner without a current friendship requests a dorm directly, the syst
 
 Traces to: UR-507.
 
+##### SRS-507.23, DP — Own-room shortcut.
+
+When the student uses the My room control anywhere in DormSpace, the system shall open their own dorm directly.
+
+Added 4 November 2026.
+
+Traces to: UR-507.
+
 <a id="ur-508"></a>
 
 #### UR-508, DP - Explore Friends' Dorms and Leave Notes
