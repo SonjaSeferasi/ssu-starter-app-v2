@@ -52,7 +52,7 @@ export function CampusMembersPanel() {
     return () => requestRef.current?.abort();
   }, [search, retry]);
 
-  return <section className="rounded-3xl border border-stone-200 bg-white/80 p-5" aria-labelledby="campus-members-title">
+  return <section className="rounded-3xl border border-white/50 bg-white/80 p-5 backdrop-blur-md" aria-labelledby="campus-members-title">
     <div className="flex items-center justify-between gap-2">
       <h2 id="campus-members-title" className="flex items-center gap-2 text-sm font-semibold text-stone-800"><Users size={18} className="shrink-0 text-emerald-700" />People on your campus</h2>
       <button type="button" className="shrink-0 text-xs font-semibold text-emerald-700 lg:hidden" aria-expanded={expanded} aria-controls="campus-members-list" onClick={() => setExpanded(value => !value)}>{expanded ? 'Hide' : 'Show'}</button>

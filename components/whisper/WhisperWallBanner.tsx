@@ -21,7 +21,7 @@ export function WhisperWallBanner({ headerTheme }: { headerTheme?: HeaderThemeId
 
   return (
     <div
-      className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-950 via-emerald-900 to-stone-900 bg-cover bg-center px-6 py-8 shadow-sm sm:px-10"
+      className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-950 via-emerald-900 to-stone-900 px-6 py-8 shadow-sm sm:px-10"
       style={resolved ? resolved.style : undefined}
     >
       {resolved?.kind === 'illustrated' ? <div className="absolute inset-0 bg-black/45" aria-hidden="true" /> : null}

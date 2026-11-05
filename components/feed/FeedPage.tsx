@@ -12,7 +12,7 @@ import { LoadingFeedState, EmptyFeedState, ErrorFeedState } from './FeedStates';
 import { CampusMembersPanel } from './CampusMembersPanel';
 import { ComingSoonPanels } from './ComingSoonPanels';
 import { WhisperTab } from '../whisper/WhisperTab';
-import { useScreenTheme } from '../profile/use-screen-theme';
+import { useScreenThemeContext } from '../profile/use-screen-theme';
 import { getScreenTheme } from '../../lib/screen-themes';
 import type { FeedPost } from './types';
 import shellStyles from '../navigation/social-shell.module.css';
@@ -57,21 +57,31 @@ export function FeedPage() {
   const [highlightedPostId, setHighlightedPostId] = useState<number | null>(null);
 
   // "Customize Your Screen" (additional functionality, not in the
-  // official SRS): backgroundTheme paints behind the whole Campus Feed
-  // experience (For you/Friends/Whisper Wall alike); headerTheme is
-  // passed down into FeedBanner/WhisperTab, which each apply it to their
-  // own banner while keeping their existing title/icon/messaging intact.
-  // Both are null for a student who's never opened Customize Your Screen,
-  // which renders identically to before this feature existed.
-  const screenTheme = useScreenTheme();
+  // official SRS): backgroundTheme paints behind the ENTIRE SocialU
+  // interface (sidebar, header, right rail, and feed alike) -- that
+  // full-viewport backdrop is painted by NavigationFrame, one level up
+  // (see social-shell.tsx/social-navigation.tsx), not here. This page
+  // only needs to know whether a theme is active, to make its own
+  // translucent "glass" surfaces (composer, post cards) so the scene
+  // underneath keeps showing through. headerTheme is passed down into
+  // FeedBanner/WhisperTab, which each apply it to their own banner while
+  // keeping their existing title/icon/messaging intact. Both are null
+  // for a student who's never opened Customize Your Screen, which
+  // renders identically to before this feature existed.
+  //
+  // The "Campus Feed" page title stays plain text over a theme (no
+  // highlighted box/chip, per explicit instruction) -- just swaps to
+  // white for dark themes so it stays readable.
+  const screenTheme = useScreenThemeContext();
   const backgroundTheme = getScreenTheme(screenTheme.backgroundTheme);
-  const pageBackgroundStyle = backgroundTheme
-    ? { backgroundImage: `url(${backgroundTheme.backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' as const }
-    : undefined;
-  const pageClassName = backgroundTheme ? `${shellStyles.page} rounded-3xl` : shellStyles.page;
-  const titleClassName = backgroundTheme
-    ? `${shellStyles.title} inline-block rounded-2xl bg-white/85 px-4 py-2 backdrop-blur-sm`
-    : shellStyles.title;
+  const themed = Boolean(backgroundTheme);
+  const pageClassName = shellStyles.page;
+  const titleClassName = shellStyles.title;
+  // Inline style, not a Tailwind class: it must win over .title's own
+  // `color` declaration regardless of CSS Module vs. Tailwind source
+  // order, which an equal-specificity class-vs-class override can't
+  // guarantee.
+  const titleStyle = backgroundTheme?.isDark ? { color: '#ffffff' } : undefined;
 
   useEffect(() => {
     const stored = storedAccessToken() || '';
@@ -136,8 +146,8 @@ export function FeedPage() {
 
   if (tab === 'whispers') {
     return (
-      <main className={pageClassName} style={pageBackgroundStyle}>
-        <h1 className={titleClassName}>Campus Feed</h1>
+      <main className={pageClassName}>
+        <h1 className={titleClassName} style={titleStyle}>Campus Feed</h1>
         <div className="mt-6">
           <FeedSwitcher active={tab} onChange={setTab} />
         </div>
@@ -149,8 +159,8 @@ export function FeedPage() {
   }
 
   return (
-    <main className={pageClassName} style={pageBackgroundStyle}>
-      <h1 className={titleClassName}>Campus Feed</h1>
+    <main className={pageClassName}>
+      <h1 className={titleClassName} style={titleStyle}>Campus Feed</h1>
       <div className="mt-6">
         <FeedSwitcher active={tab} onChange={setTab} />
       </div>
@@ -159,7 +169,7 @@ export function FeedPage() {
         <div className="w-full min-w-0 flex-1 space-y-4 lg:max-w-2xl">
           <FeedBanner tab={tab} headerTheme={screenTheme.headerTheme} />
 
-          <PostComposer accessToken={token} authorInitial={authorInitial} onPublished={() => token && loadFeed(token)} />
+          <PostComposer accessToken={token} authorInitial={authorInitial} onPublished={() => token && loadFeed(token)} translucent={themed} />
 
           {deletedNotice ? (
             <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">Post deleted successfully.</div>
@@ -185,6 +195,7 @@ export function FeedPage() {
                   targetCommentId={post.postId === targetPostId ? targetCommentId : undefined}
                   onUpdated={handlePostUpdated}
                   onDeleted={handlePostDeleted}
+                  translucent={themed}
                 />
               ))}
             </div>

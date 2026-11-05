@@ -24,6 +24,7 @@ export function PostCard({
   targetCommentId,
   onUpdated,
   onDeleted,
+  translucent,
 }: {
   post: FeedPost;
   accessToken: string;
@@ -35,6 +36,8 @@ export function PostCard({
   targetCommentId?: number;
   onUpdated: (updated: FeedPost) => void;
   onDeleted: (postId: number) => void;
+  /** "Customize Your Screen": a translucent glass surface instead of solid white, so a selected background theme keeps showing through. Defaults to false (today's unchanged look) everywhere this isn't explicitly passed. */
+  translucent?: boolean;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -69,9 +72,9 @@ export function PostCard({
   return (
     <article
       id={`post-${post.postId}`}
-      className={`relative rounded-3xl border border-stone-200 bg-white p-5 shadow-sm transition ${
-        highlighted ? 'ring-2 ring-emerald-400' : ''
-      }`}
+      className={`relative rounded-3xl border p-5 shadow-sm transition ${
+        translucent ? 'border-white/40 bg-white/70 backdrop-blur-md' : 'border-stone-200 bg-white'
+      } ${highlighted ? 'ring-2 ring-emerald-400' : ''}`}
     >
       <div className="flex items-start justify-between">
         <PostAuthor

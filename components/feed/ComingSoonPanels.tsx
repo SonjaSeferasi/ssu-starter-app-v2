@@ -14,7 +14,7 @@ export function ComingSoonPanels() {
   return (
     <div className="hidden space-y-4 lg:block">
       {PANELS.map((panel) => (
-        <div key={panel.title} className="rounded-3xl border border-stone-200 bg-white/70 p-5" aria-disabled="true">
+        <div key={panel.title} className="rounded-3xl border border-white/50 bg-white/70 p-5 backdrop-blur-md" aria-disabled="true">
           <p className="text-sm font-semibold text-stone-800">
             {panel.icon} {panel.title}
           </p>

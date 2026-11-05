@@ -6,6 +6,8 @@ import { isGamePage, isStandalonePage } from '../../lib/navigation';
 import { NavigationFrame } from './social-navigation';
 import { accessToken, storedAccessToken } from '../../lib/account/session';
 import type { NavigationPosition } from '../../lib/game-room';
+import { useScreenTheme, ScreenThemeContext } from '../profile/use-screen-theme';
+import { getScreenTheme } from '../../lib/screen-themes';
 
 type SessionState = 'loading' | 'signed-in' | 'signed-out' | 'unavailable';
 const SessionContext = createContext<SessionState>('loading');
@@ -94,8 +96,31 @@ export function SocialShell({ children }: { children: React.ReactNode }) {
   return (
     <SessionContext.Provider value={session}>
       {!standalone && pathname !== '/profile/decorate' && session === 'signed-in'
-        ? <NavigationFrame community={community} pathname={pathname} position={position} onPositionChange={selected => void savePosition(selected)} saving={saving} preferenceError={preferenceError} onRetry={() => preferenceLoadFailed ? setPreferenceReload(value => value+1) : void savePosition(pendingPosition)}>{children}</NavigationFrame>
+        ? <ThemedNavigationFrame community={community} pathname={pathname} position={position} onPositionChange={selected => void savePosition(selected)} saving={saving} preferenceError={preferenceError} onRetry={() => preferenceLoadFailed ? setPreferenceReload(value => value+1) : void savePosition(pendingPosition)}>{children}</ThemedNavigationFrame>
         : children}
     </SessionContext.Provider>
+  );
+}
+
+// "Customize Your Screen" (additional functionality, not in the official
+// SRS): a single useScreenTheme() instance, fetched once here and shared
+// via context with FeedPage/CustomizeScreen (see use-screen-theme.tsx) so
+// neither fetches it again on its own. A selected background theme is
+// handed to NavigationFrame on EVERY page (not just Campus Feed, per
+// explicit instruction), which paints it as a full-viewport backdrop
+// behind the whole shell -- sidebar, header, and whatever page content is
+// currently showing -- and coordinates the chrome's surfaces to match
+// (see social-navigation.tsx / social-shell.module.css). A student who's
+// never customized (backgroundTheme stays null) sees every page exactly
+// as before this feature existed.
+function ThemedNavigationFrame({ pathname, children, ...frameProps }: { pathname: string; children: React.ReactNode } & Omit<Parameters<typeof NavigationFrame>[0], 'pathname' | 'children' | 'backgroundTheme'>) {
+  const themeState = useScreenTheme();
+  const backgroundTheme = getScreenTheme(themeState.backgroundTheme);
+  return (
+    <ScreenThemeContext.Provider value={themeState}>
+      <NavigationFrame pathname={pathname} backgroundTheme={backgroundTheme} {...frameProps}>
+        {children}
+      </NavigationFrame>
+    </ScreenThemeContext.Provider>
   );
 }
