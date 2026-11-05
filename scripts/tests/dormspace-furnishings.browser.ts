@@ -38,7 +38,7 @@ async function signIn(student: number, viewport = { width: 1280, height: 1000 },
   const login = await loginResponse;
   if (!login.ok()) throw new Error(`Test account sign-in failed: ${login.status()} ${await login.text()}`);
   await page.waitForFunction(() => Boolean(localStorage.getItem('access_token') || sessionStorage.getItem('access_token')));
-  await page.goto(base + '/game-room/dormspace');
+  await page.goto(base + '/game-room/dormspace/campus');
   await page.getByRole('heading', { name: /DormHall/ }).waitFor();
   return page;
 }
