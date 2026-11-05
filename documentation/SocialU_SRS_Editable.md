@@ -4516,7 +4516,7 @@ Traces to: UR-507.
 
 ##### SRS-507.9, DP — Floor count.
 
-When the friend list changes, the system shall provide one first floor plus the minimum additional ten-door floors needed for friends beyond the first nine.
+When the directory is displayed, the system shall provide the minimum number of twelve-door floors needed for every assigned room in the school.
 
 Traces to: UR-507.
 
