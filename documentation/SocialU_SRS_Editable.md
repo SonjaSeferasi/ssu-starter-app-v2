@@ -5374,6 +5374,14 @@ When a purchase attempts to debit an account other than the authenticated buyer'
 
 Traces to: UR-522.
 
+##### SRS-522.11, DP — Preserved free furnishings.
+
+When DormSpace furniture becomes purchasable, the system shall keep the bed, desk, chair and window starters free and keep every item a student already owns, including furniture granted free before pricing, without any charge.
+
+Added 4 November 2026. Acceptance: existing owners keep all eight earlier included furnishings and their layouts; new owners still receive the four starters free.
+
+Traces to: UR-522, UR-503.
+
 <a id="ur-523"></a>
 
 #### UR-523, DP - Trust Reward and Purchase Results
