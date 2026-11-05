@@ -5,18 +5,21 @@
 // response can be checked or retried without a second charge, and never by another account.
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  offerLabel, pendingStorageKey, readPendingPurchase, readPurchaseResult, readShopCatalog, resolvesPending,
+  BUYER_HEADER, BUYER_MISMATCH, offerLabel, pendingStorageKey, readPendingPurchase, readPurchaseResult, readShopCatalog, resolvesPending,
   type PendingPurchase, type PurchaseAttempt, type PurchaseRequest, type PurchaseStatus, type ShopCatalog,
 } from '../../../lib/dormspace-shop-contract';
 import { dormRequest, type ApiResult } from '../api';
 import styles from '../dormspace-3d.module.css';
 
-export type ShopOutcome = { kind: 'result'; result: PurchaseStatus } | { kind: 'unknown'; message: string };
+/** `other_account`: the server found this tab's session is not the attempt's buyer and sent nothing on. */
+export type ShopOutcome = { kind: 'result'; result: PurchaseStatus } | { kind: 'unknown'; message: string } | { kind: 'other_account' };
 export type ShopSource = {
   catalog(): Promise<{ ok: true; catalog: ShopCatalog } | { ok: false; message: string; unavailable: boolean }>;
-  purchase(request: PurchaseRequest): Promise<ShopOutcome>;
-  status(actionKey: string): Promise<ShopOutcome>;
+  /** `buyer` is the attempt's own buyer scope (never re-read from a later catalog). */
+  purchase(request: PurchaseRequest, buyer: string): Promise<ShopOutcome>;
+  status(actionKey: string, buyer: string): Promise<ShopOutcome>;
 };
+const otherAccount = (result: ApiResult<unknown>) => !result.ok && result.status === 409 && result.code === BUYER_MISMATCH;
 const points = (value: number) => `${value.toLocaleString()} ${value === 1 ? 'point' : 'points'}`;
 const NOT_CONFIRMED = 'We could not confirm whether the purchase went through.';
 const unknownMessage = (result: ApiResult<unknown>) =>
@@ -31,15 +34,17 @@ export const apiShopSource: ShopSource = {
     const catalog = readShopCatalog(result.data);
     return catalog?.buyer ? { ok: true, catalog } : { ok: false, message: 'The shop returned an unexpected catalog.', unavailable: true };
   },
-  async purchase(request) {
-    const result = await dormRequest<unknown>('/api/dorm/shop', { method: 'POST', body: JSON.stringify(request) });
+  async purchase(request, buyer) {
+    const result = await dormRequest<unknown>('/api/dorm/shop', { method: 'POST', headers: { [BUYER_HEADER]: buyer }, body: JSON.stringify(request) });
+    if (otherAccount(result)) return { kind: 'other_account' };
     const parsed = readPurchaseResult(result.ok ? result.data : result.body.result);
     if (parsed && (result.ok ? parsed.status === 'completed' : parsed.status === 'rejected' && result.status >= 400 && result.status < 500))
       return { kind: 'result', result: parsed };
     return { kind: 'unknown', message: unknownMessage(result) };
   },
-  async status(actionKey) {
-    const result = await dormRequest<unknown>(`/api/dorm/shop?purchase=${encodeURIComponent(actionKey)}`);
+  async status(actionKey, buyer) {
+    const result = await dormRequest<unknown>(`/api/dorm/shop?purchase=${encodeURIComponent(actionKey)}`, { headers: { [BUYER_HEADER]: buyer } });
+    if (otherAccount(result)) return { kind: 'other_account' };
     const parsed = result.ok ? readPurchaseResult(result.data) : null;
     return parsed ? { kind: 'result', result: parsed } : { kind: 'unknown', message: result.ok ? 'The purchase status could not be read.' : result.error };
   },
@@ -77,6 +82,9 @@ export function ShopPanel({ source, thumbnails, onPurchased, onBalance, onModal,
   }, [source]);
 
   const settle = useCallback(async (pending: PendingPurchase, outcome: ShopOutcome) => {
+    // Another account is signed in now: the server sent nothing on. The attempt stays stored under its
+    // own buyer scope, so that account can still check or retry it with the same key later.
+    if (outcome.kind === 'other_account') { setAttempt({ phase: 'notice', message: OTHER_ACCOUNT }); void load(); return; }
     const result = outcome.kind === 'result' ? outcome.result : null;
     if (result) parent.current.onBalance?.(result.balance);
     if (!resolvesPending(pending, result)) {
@@ -104,7 +112,7 @@ export function ShopPanel({ source, thumbnails, onPurchased, onBalance, onModal,
       const pending = storedPending(current.buyer);
       if (!pending) return;
       setAttempt({ phase: 'sending', pending, checking: true });
-      const outcome = await source.status(pending.key);
+      const outcome = await source.status(pending.key, pending.buyer);
       if (active) await settle(pending, outcome);
     })();
     return () => { active = false; };
@@ -128,15 +136,22 @@ export function ShopPanel({ source, thumbnails, onPurchased, onBalance, onModal,
       return;
     }
     storePending(pending);
-    // Always the confirmed price: if the catalog price changed meanwhile, the server rejects it for reconfirmation.
-    await settle(pending, await source.purchase({ itemId: pending.itemId, expectedPrice: pending.expectedPrice, actionKey: pending.key }));
+    // Always the confirmed price and key, bound to the attempt's buyer scope: the server refuses it
+    // without charging if the session changed account after the check above.
+    const outcome = await source.purchase({ itemId: pending.itemId, expectedPrice: pending.expectedPrice, actionKey: pending.key }, pending.buyer);
+    if (outcome.kind === 'other_account' && !retry) {
+      // A first send's fresh key never reached the shop bridge, so there is nothing left to check.
+      clearPending(pending);
+      setAttempt({ phase: 'notice', message: 'You are now signed in as a different account. Nothing was bought.' }); void load(); return;
+    }
+    await settle(pending, outcome);
   }
   async function check(pending: PendingPurchase) {
     setAttempt({ phase: 'sending', pending, checking: true });
     const who = await sameBuyer(pending);
     if (who === 'other') { setAttempt({ phase: 'notice', message: OTHER_ACCOUNT }); return; }
     if (who === 'unreachable') { setAttempt({ phase: 'unknown', pending, message: 'The shop could not be reached. Try checking again in a moment.' }); return; }
-    await settle(pending, await source.status(pending.key));
+    await settle(pending, await source.status(pending.key, pending.buyer));
   }
 
   return (
