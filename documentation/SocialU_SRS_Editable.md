@@ -4468,7 +4468,7 @@ User requirement: As a student, I want to move my 2D avatar through a DormHall w
 
 ##### SRS-507.1, DP — Game Room entry.
 
-When a student selects DormSpace in the Game Room, the system shall open the first floor of that student's DormHall.
+When a student selects DormSpace in the Game Room, the system shall open the DormHall floor that holds that student's own room, beside their door.
 
 Traces to: UR-507.
 
