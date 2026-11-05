@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { PHOTO_DELETE_CONFIRM, PHOTO_DELETED, canDeletePhoto, markPhotoDeleted } from '../lib/chat-photo-links';
 
-const mine = { id: '1', kind: 'photo', sender_id: '7' };
+type Candidate = { id?: string; kind?: string; sender_id?: string; deleted?: boolean };
+const mine: Candidate = { id: '1', kind: 'photo', sender_id: '7' };
 
 describe('#1106 who may delete a photo', () => {
   it('lets the student who sent it delete it', () => {
@@ -15,8 +16,8 @@ describe('#1106 who may delete a photo', () => {
   });
 
   it('refuses a message that is not a photo', () => {
-    expect(canDeletePhoto({ id: '2', sender_id: '7' }, '7')).toBe(false);
-    expect(canDeletePhoto({ id: '3', kind: 'emoji', sender_id: '7' }, '7')).toBe(false);
+    expect(canDeletePhoto({ id: '2', sender_id: '7' } as Candidate, '7')).toBe(false);
+    expect(canDeletePhoto({ id: '3', kind: 'emoji', sender_id: '7' } as Candidate, '7')).toBe(false);
   });
 
   it('refuses a photo that is already deleted, so the control does not come back', () => {
@@ -32,7 +33,8 @@ describe('#1106 who may delete a photo', () => {
 });
 
 describe('#1106 what happens on screen when a photo is deleted', () => {
-  const messages = [
+  type Shown = { id: string; kind?: string; text?: string; photo_url?: string | null; deleted?: boolean };
+  const messages: Shown[] = [
     { id: '1', kind: 'photo', photo_url: 'https://signed/one' },
     { id: '2', text: 'still here' },
     { id: '3', kind: 'photo', photo_url: 'https://signed/three' },

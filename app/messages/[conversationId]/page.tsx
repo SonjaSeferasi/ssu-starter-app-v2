@@ -640,9 +640,22 @@ function Conversation() {
                              reply that answered it still points somewhere, but the photograph is gone. */
                           ? <span className={`${styles.photoPending} ${styles.photoDeleted}`}>{PHOTO_DELETED}</span>
                           : message.photo_url && !brokenPhotos[message.id]
-                            ? <img className={styles.photoMessage} src={message.photo_url}
-                                alt={mine ? 'Photo you sent' : `Photo from ${sender}`} loading="lazy"
-                                onError={() => photoFailed(message.id)} />
+                            ? <>
+                                <img className={styles.photoMessage} src={message.photo_url}
+                                  alt={mine ? 'Photo you sent' : `Photo from ${sender}`} loading="lazy"
+                                  onError={() => photoFailed(message.id)} />
+                                {/* #1106: on the photo itself rather than beside it, and always visible. A
+                                    control that only appears on hover is fine for reacting or replying, which
+                                    people go looking for; it is wrong for deleting, which nobody finds unless
+                                    it is shown. It renders only on this student's own photos, which the
+                                    database enforces again. */}
+                                {canDeletePhoto(message, myStudentId) && (
+                                  <button type="button" className={styles.photoDelete} onClick={() => void deletePhoto(message.id)}
+                                    aria-label="Delete your photo" title="Delete photo">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 6h18" /><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2" /><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" /></svg>
+                                  </button>
+                                )}
+                              </>
                             : <span className={styles.photoPending}>{message.photo_url ? PHOTO_UNAVAILABLE : 'Photo'}</span>
                         : message.text}
                     </p>
@@ -655,15 +668,6 @@ function Conversation() {
                       aria-label={mine ? 'React to your message' : `React to ${sender}’s message`} title="React">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 11v1a10 10 0 1 1-9-10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><path d="M9 9h.01" /><path d="M15 9h.01" /><path d="M16 5h6" /><path d="M19 2v6" /></svg>
                     </button>
-                    )}
-                    {/* #1106: only on this student's own photos, and only while it still has one. The database
-                        refuses anyone else, so this hides a control that would always fail rather than
-                        offering it. */}
-                    {canDeletePhoto(message, myStudentId) && (
-                      <button type="button" className={styles.deleteButton} onClick={() => void deletePhoto(message.id)}
-                        aria-label="Delete your photo" title="Delete photo">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 6h18" /><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2" /><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" /></svg>
-                      </button>
                     )}
                     {canReply && (
                       <button ref={(button) => { replyButtons.current[message.id] = button; }} type="button" className={styles.replyButton}
