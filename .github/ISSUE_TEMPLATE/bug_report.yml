@@ -3,26 +3,53 @@ description: Report a defect found during cross-team testing
 title: "[Bug]: "
 labels: ["bug"]
 body:
+  - type: textarea
+    attributes:
+      label: Bug description
+      description: Briefly describe the defect and where it occurred.
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Tester name
+      placeholder: "e.g. Jane Smith"
+    validations:
+      required: true
+
   - type: input
     attributes: { label: SRS requirement, placeholder: "e.g. SRS-1.7" }
     validations: { required: true }
+
   - type: input
     attributes: { label: Test case ID, placeholder: "e.g. JS-T-1.7a" }
     validations: { required: true }
+
   - type: textarea
-    attributes: { label: Steps to reproduce, value: "1. \n2. \n3. " }
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1.
+        2.
+        3.
     validations: { required: true }
+
   - type: textarea
     attributes: { label: Expected result, description: What the SRS says }
     validations: { required: true }
+
   - type: textarea
     attributes: { label: Actual result, description: What really happened }
     validations: { required: true }
+
   - type: dropdown
     attributes: { label: Severity, options: [Critical, Major, Minor, Cosmetic] }
     validations: { required: true }
-  - type: input
-    attributes: { label: Browser / device, placeholder: "e.g. Chrome 130, Windows 11" }
-    validations: { required: true }
+
   - type: textarea
     attributes: { label: Screenshots, description: Optional. Drag images here. }
+
+  - type: textarea
+    attributes:
+      label: Notes
+      description: Optional. Include any extra context, such as how often the defect occurs or a known workaround.
