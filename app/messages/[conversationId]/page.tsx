@@ -7,7 +7,7 @@ import { type FormEvent, useEffect, useLayoutEffect, useRef, useState } from 're
 import { useParams } from 'next/navigation';
 import { SessionNotice } from '../../../components/navigation/section-page';
 import { useNavigationSession } from '../../../components/navigation/social-shell';
-import { subscribeToChat, type ChatConversationEvent, type ChatLiveStatus, type ChatMessageEvent, type ChatReactionEvent } from '../../../lib/realtime-client';
+import { subscribeToChat, type ChatConversationEvent, type ChatDeletedEvent, type ChatLiveStatus, type ChatMessageEvent, type ChatReactionEvent } from '../../../lib/realtime-client';
 import { sortReactions, type ChatReaction } from '../../../lib/chat-reactions';
 import { CHAT_ACTIVITY_EVENT, ConversationListPanel } from '../conversation-list';
 import { EmojiPicker } from '../emoji-picker';
@@ -18,7 +18,7 @@ import { ReactionChips, ReactionPicker } from '../message-reactions';
 import { SnipePanel } from '../../../components/snipe/snipe-panel';
 import { canSelectForReply, findReplyTarget, keepReplyTarget, replyIndication, replyPreview, replyQuote, toggleReplyTarget, type ReplyTargets } from '../../../lib/chat-reply';
 import { PHOTO_ACCEPT, PHOTO_SEND_FAILED, choosePhoto, describeChosenPhoto, photoError, type ChosenPhoto } from '../../../lib/chat-photo';
-import { PHOTO_UNAVAILABLE, mergePhotoUrl, photoLinkRefreshDelay, photoLinksExpired } from '../../../lib/chat-photo-links';
+import { PHOTO_DELETED, PHOTO_DELETE_CONFIRM, PHOTO_UNAVAILABLE, canDeletePhoto, markPhotoDeleted, mergePhotoUrl, photoLinkRefreshDelay, photoLinksExpired } from '../../../lib/chat-photo-links';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -202,6 +202,36 @@ function Conversation() {
     return () => document.removeEventListener('visibilitychange', onVisible);
   }, [photoLinksExpireAt, hasPhotos]);
 
+  // #1106: a photo deleted by its sender leaves everyone's screen at once. The link it was shown with keeps
+  // working for up to an hour, so waiting for the next reload would leave the photograph on display after it
+  // was deleted; dropping it here is what makes the deletion immediate.
+  function photoDeleted(event: ChatDeletedEvent) {
+    if (event.conversation_id !== conversationId) return;
+    setMessages((current) => markPhotoDeleted(current, event.id));
+  }
+
+  // #1106: delete a photo this student sent. The confirmation is asked because there is no undo -- the
+  // stored objects are removed, not hidden. The message is marked here as well as by the broadcast, so the
+  // sender sees it go even if their own live connection is down.
+  const deletingRef = useRef(false);
+  async function deletePhoto(messageId: string) {
+    if (deletingRef.current || !window.confirm(PHOTO_DELETE_CONFIRM)) return;
+    deletingRef.current = true;
+    setError('');
+    try {
+      const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/photos/${encodeURIComponent(messageId)}`, {
+        method: 'DELETE', headers: { Authorization: `Bearer ${storedAccessToken() ?? ''}` },
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || 'That photo could not be deleted. Please try again.');
+      setMessages((current) => markPhotoDeleted(current, messageId));
+    } catch (err) {
+      setError(err instanceof Error && !(err instanceof TypeError) ? err.message : 'That photo could not be deleted. Please try again.');
+    } finally {
+      deletingRef.current = false;
+    }
+  }
+
   // #319: keep only this conversation's messages; merging by ID stops the send reply and live event both showing.
   function addMessage(message: ChatMessageEvent) {
     // Any sent or received message (in any conversation) refreshes the list's order and previews (#457).
@@ -238,7 +268,8 @@ function Conversation() {
     setReactions((current) => ({ ...current, [update.message_id]: update.reactions }));
   }
 
-  useEffect(() => subscribeToChat(addMessage, liveStatus, renamed, invited, reacted), [conversationId]);
+  useEffect(() => subscribeToChat(addMessage, liveStatus, renamed, invited, reacted, photoDeleted), [conversationId]);
+
 
   // Show the latest message: on open, after the student's own message, and for new messages while they
   // are already at the bottom. If they scrolled up to read, keep their place and offer a button instead.
@@ -604,11 +635,15 @@ function Conversation() {
                           send returned. Everyone else sees that a photo is there until the history gives them
                           a link of their own, which is SRS-201.7 along with refreshing a link that has expired. */}
                       {message.kind === 'photo'
-                        ? message.photo_url && !brokenPhotos[message.id]
-                          ? <img className={styles.photoMessage} src={message.photo_url}
-                              alt={mine ? 'Photo you sent' : `Photo from ${sender}`} loading="lazy"
-                              onError={() => photoFailed(message.id)} />
-                          : <span className={styles.photoPending}>{message.photo_url ? PHOTO_UNAVAILABLE : 'Photo'}</span>
+                        ? message.deleted
+                          /* #1106: the message keeps its place so the conversation still reads in order and a
+                             reply that answered it still points somewhere, but the photograph is gone. */
+                          ? <span className={`${styles.photoPending} ${styles.photoDeleted}`}>{PHOTO_DELETED}</span>
+                          : message.photo_url && !brokenPhotos[message.id]
+                            ? <img className={styles.photoMessage} src={message.photo_url}
+                                alt={mine ? 'Photo you sent' : `Photo from ${sender}`} loading="lazy"
+                                onError={() => photoFailed(message.id)} />
+                            : <span className={styles.photoPending}>{message.photo_url ? PHOTO_UNAVAILABLE : 'Photo'}</span>
                         : message.text}
                     </p>
                     {/* SRS-201.7: photos are now in the conversation, and socialu_react_to_message accepts
@@ -620,6 +655,15 @@ function Conversation() {
                       aria-label={mine ? 'React to your message' : `React to ${sender}’s message`} title="React">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 11v1a10 10 0 1 1-9-10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><path d="M9 9h.01" /><path d="M15 9h.01" /><path d="M16 5h6" /><path d="M19 2v6" /></svg>
                     </button>
+                    )}
+                    {/* #1106: only on this student's own photos, and only while it still has one. The database
+                        refuses anyone else, so this hides a control that would always fail rather than
+                        offering it. */}
+                    {canDeletePhoto(message, myStudentId) && (
+                      <button type="button" className={styles.deleteButton} onClick={() => void deletePhoto(message.id)}
+                        aria-label="Delete your photo" title="Delete photo">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 6h18" /><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2" /><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" /></svg>
+                      </button>
                     )}
                     {canReply && (
                       <button ref={(button) => { replyButtons.current[message.id] = button; }} type="button" className={styles.replyButton}

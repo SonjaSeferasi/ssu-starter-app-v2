@@ -67,6 +67,10 @@ export async function chatOperation(fn: string, args: Record<string, string>) {
     // in the page, because a request can reach the database without going through it.
     if (error.code === 'SCF01') throw new AccountError('That photo cannot be sent in a conversation.', 400);
     if (error.code === 'SCF02') throw new AccountError('Your photo could not be stored. Please try again.', 503);
+    // #1106: deleting a photo you sent. SCD01 names the rule rather than hiding behind "not available",
+    // because the student can see the message perfectly well -- it just is not theirs.
+    if (error.code === 'SCD01') throw new AccountError('You can only delete photos you sent.', 403);
+    if (error.code === 'SCD02') throw new AccountError('That photo is no longer available.', 404);
     // SRS-204.1 / SRS-204.2: assign an administrator.
     if (error.code === 'SCA01') throw new AccountError('Only the group owner can assign an administrator.', 403);
     if (error.code === 'SCA02') throw new AccountError('This group already has an administrator.', 409);

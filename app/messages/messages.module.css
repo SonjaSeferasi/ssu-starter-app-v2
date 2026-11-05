@@ -170,6 +170,16 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 /* A photo message whose link this page does not have yet: the message is there and in the right place, which
    is better than an empty bubble. SRS-201.7 replaces this with the photo itself. */
 .photoPending { display: inline-block; padding: 12px 16px; font-size: .9rem; font-style: italic; line-height: 1.5; }
+/* #1106: a photo its sender deleted. Dimmer than 'Photo unavailable', because nothing is wrong and
+   nothing will arrive later -- the photograph was removed on purpose. */
+.photoDeleted { color: #76867f; }
+/* #1106: the delete control, beside React and Reply and behaving the same way: hidden until the message
+   is hovered or focused, always visible on touch screens. */
+.deleteButton { display: grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #536963; cursor: pointer; opacity: 0; }
+.message:hover .deleteButton, .message:focus-within .deleteButton { opacity: 1; }
+.deleteButton:hover { background: #f6e3e3; color: #a33a3a; }
+.deleteButton:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; opacity: 1; }
+@media (hover: none) { .deleteButton { opacity: .7; } }
 
 /* SRS-209.2 (#988): the bar above the message box naming the message the reply answers. */
 .replyBar { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; padding: 8px 10px; border-left: 3px solid #28634e; border-radius: 8px; background: #eef4f0; }

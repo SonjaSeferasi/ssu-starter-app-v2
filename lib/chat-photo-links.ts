@@ -73,3 +73,34 @@ export function mergePhotoUrl<T extends { photo_url?: string | null }>(previous:
   if (incoming.photo_url || !previous?.photo_url) return incoming;
   return { ...incoming, photo_url: previous.photo_url };
 }
+
+// #1106: removing a photo you sent.
+//
+// Only the sender, and only a photo. The rule lives here so the page and the tests agree on it without the
+// page being the only place it is written down; the database enforces the same thing again, because a request
+// can always be made without the page.
+export function canDeletePhoto(
+  message: { kind?: string; sender_id?: string; deleted?: boolean } | null | undefined,
+  myStudentId: string | null,
+): boolean {
+  if (!message || !myStudentId) return false;
+  if (message.kind !== 'photo' || message.deleted) return false;
+  return message.sender_id === myStudentId;
+}
+
+// What stands in the conversation where the photo used to be. The message keeps its place -- the conversation
+// still reads in order, and a reply that answered it still has something to point at -- but the photograph is
+// gone and the page does not pretend it is still loading.
+export const PHOTO_DELETED = 'Photo deleted';
+
+// Asked before a deletion, because there is no undo: the stored objects are removed, not hidden.
+export const PHOTO_DELETE_CONFIRM = 'Delete this photo for everyone? This cannot be undone.';
+
+// Drop a photo's link the moment it is deleted, so it leaves the screen rather than lingering on a signed URL
+// that keeps working for up to an hour.
+export function markPhotoDeleted<T extends { id: string; deleted?: boolean; photo_url?: string | null }>(
+  messages: readonly T[],
+  messageId: string,
+): T[] {
+  return messages.map((m) => (m.id === messageId ? { ...m, deleted: true, photo_url: null } : m));
+}
