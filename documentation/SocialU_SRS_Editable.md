@@ -4436,9 +4436,9 @@ When the first floor is displayed, the system shall assign the first nine friend
 
 Traces to: UR-507.
 
-##### SRS-507.6, DP — Additional floor allocation.
+##### SRS-507.6, DP — Additional floors.
 
-When floor f greater than one is displayed, the system shall assign friends in positions (10 × f) − 10 through (10 × f) − 1 to that floor's ten doors, counting the oldest friend as friend 1.
+When a school has more assigned rooms than fit on its existing floors, the system shall add the next floor of twelve rooms.
 
 Traces to: UR-507.
 
