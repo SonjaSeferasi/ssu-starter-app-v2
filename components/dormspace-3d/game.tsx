@@ -3,7 +3,7 @@
 // shop operation goes through the authenticated APIs; nothing here is synthetic. Three.js and the
 // engine load lazily; WebGL failure or context loss offers a retry and the campus version.
 import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import type { Dorm } from '../../lib/dormspace-rules';
 import type { GameRoomData } from '../../lib/game-room';
 import { readHallDirectory, readHallLocation, type HallDirectory, type HallDoor } from '../../lib/dormspace-hall-contract';
@@ -26,6 +26,8 @@ type View = { kind: 'hall'; arrivalSlot: number | null } | { kind: 'room'; dorm:
 type EngineState = 'loading' | 'ready' | 'unsupported' | 'error' | 'lost';
 const REVOCATION_CHECK_MS = 2000;
 const DIRECTORY_REFRESH_MS = 15000;
+// Layout effects run before every passive effect of the same commit (the layers' setScene included).
+const useBindEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 /** Starts the lazily loaded engine in `host` and recreates it on retry or context restore. */
 export function useDormEngine(host: React.RefObject<HTMLDivElement>, callbacks: React.MutableRefObject<EngineCallbacks>) {
@@ -171,7 +173,10 @@ export function DormSpace3DGame() {
   const live = useDormLive(avatarLoaded ? view.kind === 'hall' ? directory ? { kind: 'hall', floor: directory.floor } : null : { kind: 'room', owner: view.dorm.owner } : null,
     room => setView(current => current.kind === 'room' && room.version > current.dorm.version ? { kind: 'room', dorm: { ...current.dorm, ...room } } : current),
     message => { setNotice(message); if (visiting) void returnToHall(null, message); });
-  useEffect(() => { engine?.setLive(live); }, [engine, live]);
+  // Bind the new place's live connection before RoomLayer/HallLayer call setScene, so the spawn the
+  // engine publishes on entering a place lands in that place's connection (read by its join), never
+  // in the previous one. The join itself starts in a later passive effect and awaits the prior leave.
+  useBindEffect(() => { engine?.setLive(live); }, [engine, live]);
 
   // SRS-507.17: a visit ends promptly when the friendship ends.
   useEffect(() => {
