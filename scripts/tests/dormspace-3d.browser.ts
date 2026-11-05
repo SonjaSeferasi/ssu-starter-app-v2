@@ -84,13 +84,14 @@ async function loginStorage(student: number) {
   return { cookies: [], origins: [{ origin, localStorage: [{ name: 'access_token', value: stored.access_token }, { name: 'socialu_session', value: JSON.stringify(stored) }] }] };
 }
 
-async function signIn(student: number, viewport = DESKTOP) {
-  const mobile = viewport.width < 600;
-  // A fresh context per account, pre-populated (loopback origin only) with the real login response.
-  const storageState = await loginStorage(student);
-  const context = await browser.newContext({ viewport, deviceScaleFactor: 1, hasTouch: mobile, isMobile: mobile, storageState });
-  const page = await context.newPage();
-  watch(page);
+// Visible body text (bounded, scrubbed) for failures where no screenshot could be captured.
+async function bodyText(page: any) {
+  if (!page || page.isClosed()) return '(page closed)';
+  const text = await within<string>(page.locator('body').innerText({ timeout: 2000 }), 3000, '(body text unavailable)');
+  return scrub(text.replace(/\s+/g, ' ')).slice(0, 600);
+}
+// Loads the real 3D route in an existing page (same context and storage) and waits for a ready hall.
+async function enter3D(page: any, label: string) {
   try {
     // Direct navigation to the real game route: no client-side redirect to race.
     await page.goto(base + '/game-room/dormspace', { waitUntil: 'domcontentloaded' });
@@ -103,10 +104,31 @@ async function signIn(student: number, viewport = DESKTOP) {
     await page.locator('[data-scene="hall"]').waitFor({ timeout: 30000 });
     return page;
   } catch (error) {
-    await within(page.screenshot({ path: `${artifacts}/signin-failure-dorm${student}.png`, timeout: 5000 }), 7000, undefined);
+    const captured = await within<unknown>(page.screenshot({ path: `${artifacts}/enter3d-failure-${label}.png`, timeout: 5000 }), 7000, null);
     const details = await within(describePage(page), 10000, '(diagnostics timed out)');
+    const text = captured ? '' : `\nbody=${await bodyText(page)}`;
+    throw new Error(`enter3D(${label}) failed: ${(error as Error).message}\n${details}${text}`);
+  }
+}
+// Unloads a page's 3D canvas (and live connection) by navigating to a blank page; context/storage stay.
+async function park(page: any) {
+  if (!page || page.isClosed()) return;
+  await page.goto('about:blank');
+  expect(await page.locator('[data-dormspace-canvas]').count()).toBe(0);
+}
+
+async function signIn(student: number, viewport = DESKTOP) {
+  const mobile = viewport.width < 600;
+  // A fresh context per account, pre-populated (loopback origin only) with the real login response.
+  const storageState = await loginStorage(student);
+  const context = await browser.newContext({ viewport, deviceScaleFactor: 1, hasTouch: mobile, isMobile: mobile, storageState });
+  const page = await context.newPage();
+  watch(page);
+  try {
+    return await enter3D(page, `dorm${student}`);
+  } catch (error) {
     await within(context.close(), 5000, undefined);
-    throw new Error(`signIn(dorm${student}) failed: ${(error as Error).message}\n${details}`);
+    throw new Error(`signIn(dorm${student}) failed: ${(error as Error).message}`);
   }
 }
 const closePage = async (page: any) => { if (page && !page.isClosed()) await within(page.context().close(), 5000, undefined); };
@@ -129,6 +151,51 @@ async function liveRow(student: number, ready: (row: LiveRow) => boolean, ms = 1
   }
   throw new Error(`dorm${student}'s live row never reached the expected state (last: ${JSON.stringify(row)})`);
 }
+const readLiveRow = async (student: number) =>
+  (await db.query<LiveRow>('SELECT space, state FROM dormspace_live.players WHERE student_id=$1', [student])).rows[0] ?? null;
+
+// Case 3 precondition (standalone under -t): the 1x1 chair case 2 saves, at x4,y3 rotation 90. Saved
+// through the real owner PUT /api/dorm when missing. Returns true when it changed the saved layout.
+const CHAIR_SPOT = { x: 4, y: 3, rotation: 90 } as const;
+async function ensureChair(page: any) {
+  const opened = await api(page, '/api/dorm');
+  if (opened.status !== 200) throw new Error(`GET /api/dorm returned ${opened.status}`);
+  const dorm = opened.data;
+  const chair = dorm.catalog.find((item: any) => item.name === 'Chair' && item.surface === 'floor');
+  if (!chair) throw new Error('the catalog has no floor item named Chair');
+  if (dorm.placements.some((p: any) => p.itemId === chair.id && p.x === CHAIR_SPOT.x && p.y === CHAIR_SPOT.y && (p.rotation ?? 0) === CHAIR_SPOT.rotation)) return false;
+  if (!dorm.owned.includes(chair.id)) throw new Error('dorm1 does not own a Chair');
+  // Drop any other chair placement and anything covering the target cell, keep the rest as saved.
+  const covers = (p: any) => {
+    const item = dorm.catalog.find((entry: any) => entry.id === p.itemId);
+    const w = item?.surface === 'floor' && (p.rotation === 90 || p.rotation === 270) ? (item?.height ?? 1) : (item?.width ?? 1);
+    const h = item?.surface === 'floor' && (p.rotation === 90 || p.rotation === 270) ? (item?.width ?? 1) : (item?.height ?? 1);
+    return item?.surface === 'floor' && CHAIR_SPOT.x >= p.x && CHAIR_SPOT.x < p.x + w && CHAIR_SPOT.y >= p.y && CHAIR_SPOT.y < p.y + h;
+  };
+  const placements = [...dorm.placements.filter((p: any) => p.itemId !== chair.id && !covers(p)), { itemId: chair.id, ...CHAIR_SPOT }];
+  const saved = await api(page, '/api/dorm', 'PUT', { version: dorm.version, placements, wallItemId: dorm.wallItemId, floorItemId: dorm.floorItemId });
+  if (saved.status !== 200) throw new Error(`PUT /api/dorm (chair setup) returned ${saved.status}: ${redact(String(saved.data?.code ?? ''))} ${redact(String(saved.data?.error ?? ''))}`);
+  return true;
+}
+
+// Failure-only context for the chair walk: live row before/after, prompt text, page visibility and
+// the saved chair placement. Positions are synthetic test data.
+async function walkDiagnostics(page: any, before: LiveRow | null) {
+  const after = await within(readLiveRow(1), 3000, null);
+  const prompt = await within<string[]>(page.locator('[data-scene="room"] [role="status"]:has(kbd)').allInnerTexts(), 2500, []);
+  const control = await within<string[]>(page.getByRole('button', { name: /^(Interact: |Nothing nearby)/ }).allInnerTexts(), 2500, []);
+  const visibility = await within<unknown>(page.evaluate(() => ({ visibilityState: document.visibilityState, hidden: document.hidden, focused: document.hasFocus(), active: document.activeElement?.tagName ?? null })), 2500, '(unavailable)');
+  const promptVisible = await within<boolean | string>(page.getByText('Sit in chair').first().isVisible(), 2500, '(unavailable)');
+  const dorm = await within<any>(api(page, '/api/dorm'), 5000, null);
+  const chairId = dorm?.data?.catalog?.find((item: any) => item.name === 'Chair')?.id;
+  const chairs = dorm?.data?.placements?.filter((p: any) => p.itemId === chairId) ?? '(unavailable)';
+  const captured = await within<unknown>(page.screenshot({ path: `${artifacts}/walk-to-chair-failure.png`, timeout: 5000 }), 7000, null);
+  return [`liveRow before W=${JSON.stringify(before)}`, `liveRow after W=${JSON.stringify(after)}`,
+    `room prompt=${JSON.stringify(prompt.map(redact))} interact control=${JSON.stringify(control.map(redact))} "Sit in chair" visible=${promptVisible}`,
+    `page=${JSON.stringify(visibility)}`, `saved chair placements=${JSON.stringify(chairs)} (dorm version ${dorm?.data?.version ?? '?'})`,
+    `screenshot=${captured ? `${artifacts}/walk-to-chair-failure.png` : '(not captured)'}`].join('\n');
+}
+
 async function openOwnRoom(page: any) {
   await page.getByRole('button', { name: 'My room' }).first().click();
   await page.locator('[data-scene="room"]').waitFor();
@@ -204,8 +271,8 @@ afterEach(async context => {
   if (context.task.result?.state === 'fail') {
     for (const [name, page] of [['owner', owner], ['friend', friend], ['stranger', stranger]] as const) {
       if (!page || page.isClosed()) continue;
-      await within(page.screenshot({ path: `${artifacts}/failure-${name}.png`, timeout: 5000 }), 7000, undefined);
-      console.error(`[${name}] ${await within(describePage(page), 10000, '(diagnostics timed out)')}`);
+      const captured = await within<unknown>(page.screenshot({ path: `${artifacts}/failure-${name}.png`, timeout: 5000 }), 7000, null);
+      console.error(`[${name}] ${await within(describePage(page), 10000, '(diagnostics timed out)')}${captured ? '' : `\nbody=${await bodyText(page)}`}`);
     }
     console.error(scrub(nextLog.slice(-2500)));
   }
@@ -240,17 +307,22 @@ it('shows every same-school student the same doors and keeps non-friend rooms lo
   await owner.getByRole('button', { name: 'Enter room 102, dorm2' }).waitFor();
   await owner.getByRole('button', { name: 'Room 103 is locked · friends only' }).waitFor();
   await shot(owner, 'hall-owner-elevator');
+  const fromOwner = (await api(owner, '/api/dorm/hall?floor=1')).data;
+  // One active software-GL canvas at a time: unload the owner's hall before the stranger's loads.
+  await park(owner);
   stranger = await signIn(3);
   await stranger.getByText('Your room 103').waitFor();
   await stranger.getByRole('button', { name: 'Elevator & doors' }).click();
   await stranger.getByRole('button', { name: 'Room 101 is locked · friends only' }).waitFor();
+  await shot(stranger, 'hall-stranger-elevator');
   expect((await api(stranger, '/api/dorm?owner=dorm1')).status).toBe(403);
-  const fromStranger = (await api(stranger, '/api/dorm/hall?floor=1')).data, fromOwner = (await api(owner, '/api/dorm/hall?floor=1')).data;
+  const fromStranger = (await api(stranger, '/api/dorm/hall?floor=1')).data;
   expect(fromStranger.doors.map((d: any) => d.roomNumber + d.username)).toEqual(fromOwner.doors.map((d: any) => d.roomNumber + d.username));
   // The stranger is not needed again: release its context (and WebGL canvas) now.
   await closePage(stranger); stranger = null;
   // A block withholds identity but keeps the door number.
   await friendship(db, 4, 'block', 1);
+  await enter3D(owner, 'owner-return');
   await owner.reload(); await owner.locator('[data-scene="hall"]').waitFor();
   await owner.getByRole('button', { name: 'Elevator & doors' }).click();
   await owner.getByRole('button', { name: 'Room 104 is locked' }).waitFor();
@@ -282,13 +354,31 @@ it('decorates with keyboard coordinates, turns, stores and keeps the saved layou
 }, 240000);
 
 it('sits on a chair, sleeps in a bed with a shared night window, and opens the guestbook', async () => {
+  // Standalone preconditions: signed-in owner in the hall, chair saved at x4,y3 rotation 90.
+  if (!owner || owner.isClosed()) owner = await signIn(1);
+  const changed = await ensureChair(owner);
+  if (changed || await owner.locator('[data-scene="hall"]').count() === 0) await enter3D(owner, 'owner-chair-setup');
   await openOwnRoom(owner);
   // The room's live connection really joined (a rejected join would leave no room:1 row).
-  await liveRow(1, row => row.space === 'room:1');
+  const before = await liveRow(1, row => row.space === 'room:1');
   // Walking up from the entrance reaches the chair, then keeps pressing against it: collision holds
-  // the player outside every solid cell, and the server's stopped position agrees.
+  // the player outside every solid cell, and the server's stopped position agrees. Movement and the
+  // proximity prompt are asserted separately; software GL can be slow, so the walk is bounded at 22s.
   const sit = owner.getByText('Sit in chair').first();
-  await holdUntil(owner, 'w', sit);
+  const WALK_MS = 22000, started = Date.now();
+  await blur(owner); await owner.keyboard.down('w');
+  try {
+    try {
+      await liveRow(1, row => row.space === 'room:1' && (Math.abs(row.state.x - before.state.x) > 0.05 || Math.abs(row.state.y - before.state.y) > 0.05), WALK_MS);
+    } catch (error) {
+      throw new Error(`movement: holding W did not move dorm1's live position within ${WALK_MS}ms: ${(error as Error).message}\n${await walkDiagnostics(owner, before)}`);
+    }
+    try {
+      await sit.waitFor({ timeout: Math.max(1000, WALK_MS - (Date.now() - started)) });
+    } catch (error) {
+      throw new Error(`proximity: dorm1 moved but "Sit in chair" did not appear within ${WALK_MS}ms of holding W: ${(error as Error).message}\n${await walkDiagnostics(owner, before)}`);
+    }
+  } finally { await owner.keyboard.up('w'); }
   await hold(owner, 'w', 800);
   await sit.waitFor();
   const room = (await api(owner, '/api/dorm')).data, floor = room.surfaces.find((s: any) => s.code === 'floor');
@@ -319,23 +409,41 @@ it('sits on a chair, sleeps in a bed with a shared night window, and opens the g
 }, 240000);
 
 it('shows a friend visitor live, denies their edits and evicts them when the friendship ends', async () => {
+  // Standalone: sign the owner in through the real app if an earlier case did not.
+  if (!owner || owner.isClosed()) owner = await signIn(1);
+  // Unload the owner's canvas while the friend's hall loads and they walk in.
+  await park(owner);
   friend = await signIn(2);
   await friend.getByRole('button', { name: 'Elevator & doors' }).click();
   await friend.getByRole('button', { name: 'Enter room 101, dorm1' }).click();
-  await friend.getByText("dorm1's room").waitFor();
+  await friend.getByText("dorm1's room", { exact: true }).waitFor();
   expect(await friend.getByRole('button', { name: 'Decorate' }).count()).toBe(0);
+  await liveRow(2, row => row.space === 'room:1');
+  await shot(friend, 'room-visitor');
+  // With the friend joined, the owner returns to their room (two lighter room canvases at once).
+  await enter3D(owner, 'owner-room-return');
+  await openOwnRoom(owner);
   // The save API never addresses another student's room: a visitor's PUT can only target their own.
   const before = (await api(owner, '/api/dorm')).data;
+  await friend.bringToFront();
   await api(friend, '/api/dorm', 'PUT', { version: before.version, placements: [] });
+  await owner.bringToFront();
   expect((await api(owner, '/api/dorm')).data.placements).toEqual(before.placements);
   await owner.getByRole('list', { name: 'Players here' }).getByText('dorm2').waitFor({ timeout: 15000 });
-  await shot(friend, 'room-visitor');
+  await shot(owner, 'room-owner-sees-visitor');
+  await friend.bringToFront();
   await friendship(db, 1, 'remove', 2, friendRequest);
-  await friend.getByText("You're no longer friends with dorm1, so your visit ended.").waitFor({ timeout: 10000 });
-  await friend.locator('[data-scene="hall"]').waitFor();
+  // Either revocation path may win: the server's live denial (42501 from socialu_dormspace_live) or
+  // the client's access poll. Both return the visitor to the hall with their own precise message.
+  await friend.locator('[data-scene="hall"]').waitFor({ timeout: 15000 });
+  await friend.getByText("You're no longer friends with dorm1, so your visit ended.", { exact: true })
+    .or(friend.getByText('Your visit has ended. Return to the hall to continue.', { exact: true })).first().waitFor({ timeout: 10000 });
 }, 240000);
 
 it('buys with shared points after a final confirmation and recovers a lost response without a second charge', async () => {
+  // Standalone: sign the friend in if needed, and keep only one software-GL canvas while shopping.
+  await park(owner);
+  if (!friend || friend.isClosed()) friend = await signIn(2);
   // The DormSpace HUD shows the server balance before the shop is opened.
   await friend.getByText('Shared points: 400', { exact: true }).waitFor();
   await friend.getByRole('button', { name: 'Furniture shop' }).click();
