@@ -4418,9 +4418,9 @@ When the first DormHall floor is displayed, the system shall reserve its first d
 
 Traces to: UR-507.
 
-##### SRS-507.3, DP — Friend door identity.
+##### SRS-507.3, DP — Resident door identity.
 
-When a door represents a current friend, the system shall display that friend's username and current profile picture, using the account default picture when none is set.
+When a door belongs to a schoolmate whose identity the viewer may see, the system shall display that resident's username and room number, and whether the door is the viewer's own, a current friend's or locked.
 
 Traces to: UR-507.
 
