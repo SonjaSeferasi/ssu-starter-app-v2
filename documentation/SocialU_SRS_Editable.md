@@ -4494,9 +4494,9 @@ When a student interacts with a dorm's exit, the system shall return them to the
 
 Traces to: UR-507.
 
-##### SRS-507.16, DP — Friend removal compaction.
+##### SRS-507.16, DP — No door reassignment.
 
-When a friendship ends, the system shall reassign the remaining friends consecutively to fill the vacated door position.
+When a friendship ends or an account is blocked, deactivated or otherwise withheld, the system shall keep every room number unchanged and only change how the affected door is shown.
 
 Traces to: UR-507.
 
