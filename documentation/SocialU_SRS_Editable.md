@@ -4332,6 +4332,14 @@ When the student types in a guestbook text field, the system shall suspend avata
 
 Traces to: UR-504.
 
+##### SRS-504.15, DP — 3D recovery.
+
+When the 3D view cannot start or loses its graphics context, the system shall explain that saved data is unaffected and offer to retry the 3D view or open the campus version, rather than show a blank view.
+
+Added 4 November 2026.
+
+Traces to: UR-504.
+
 <a id="ur-505"></a>
 
 #### UR-505, DP - Maintain One Current Virtual Dorm
