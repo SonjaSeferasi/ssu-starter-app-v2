@@ -105,7 +105,7 @@ A proposed target is measurable draft text awaiting agreement. A conditional fea
 | Game Room | Avatar preview, face/outfit editing, shared participation status and descriptions/opening controls for included activities. |
 | Game 1 | Three platform levels, movement, optional coins, hazards, finish flags, pause, retries and protected exit. A fourth level is optional. |
 | Daily word game | Optional five-letter daily puzzle with six accepted guesses, instructions and today's result; no history statistics. |
-| DormSpace | An illustrated 2D dorm, owned decorations, friends' dorm visits, DormHall, guestbooks and purchase entry points. |
+| DormSpace | A walkable 3D dorm, owned decorations, a shared school DormHall with stable room doors, current-friend dorm visits, guestbooks and the points furniture shop; the earlier 2D campus and classic versions remain available. |
 | Profile | Own or permitted student profile, Posts and Tagged content, counts and friendship/messaging actions. Snipes are excluded. |
 | Events and Trending | One combined page for campus events and accessible Campus Feed posts ranked by recent likes. |
 | Create (+) | Entry choices for a text post, photo post or event. MS/KB own the forms; SS owns navigation to them. Drafts are deferred. |
@@ -4126,7 +4126,7 @@ Feature owner: Darrin Phimphisane (DP).
 
 ### Definitions and boundaries
 
-A dorm is one persistent 2D room; friends visit the saved room asynchronously. No live synchronization of visiting avatars is required. The first DormHall floor contains the owner's door and nine friend/vacant doors; later floors contain ten friend/vacant doors ordered by current friendship acceptance time.
+A dorm is one persistent room, shown in 3D by default and in the preserved 2D campus and classic versions; friends may visit the saved room asynchronously, and students in the same space also see one another live. Revised 4 November 2026: the DormHall is one shared directory per school in which every eligible student has a permanent room number on a floor of twelve doors; it is no longer ordered by each viewer's friend list. Only the owner and current friends may enter a room.
 
 An originally tagged participant remains part of the sharing/removal decision even after answering No to identity verification. A verified target is an originally tagged friend who answers Yes to identity and qualifies for an approved publication. A multi-person Snipe is accepted or rejected as a whole. A rejected submission attempt consumes no cooldown; an accepted request consumes each selected pair's cooldown even if it later fails.
 
@@ -4137,6 +4137,8 @@ SS owns the shared participation calculation. DP credits the first qualifying ac
 <a id="area-500"></a>
 
 ### DormSpace
+
+Scope revision (4 November 2026, approved by DP for implementation): DormSpace becomes a walkable third-person 3D game with a shared school DormHall and a shared-points furniture shop. This revision rewords SRS-500.7, SRS-504.8, SRS-507.1 to SRS-507.9 and SRS-507.15, SRS-507.16 and SRS-507.18, and adds SRS-500.16, SRS-504.10 to SRS-504.15, SRS-507.20 to SRS-507.24 and SRS-522.11 to SRS-522.12. Identifiers, titles of unchanged requirements and the retired UR-506 are kept. Each revised or new item stays open until it is verified in the integrated application. See documentation/dormspace-3d.md.
 
 <a id="ur-500"></a>
 
@@ -4464,7 +4466,9 @@ Disposition: Retired. Achievement displays and trophies are outside this release
 
 #### UR-507, DP - Visit Friends Through the DormHall
 
-User requirement: As a student, I want to move my 2D avatar through a DormHall with my own marked door followed by doors for current friends in friendship order, so that I can enter my dorm or recognize and visit my friends across elevator-accessible floors.
+User requirement: As a student, I want to walk my 3D avatar through a shared DormHall where every student at my school has a permanent, clearly marked room door, so that I can find my own room, recognize classmates' rooms, and enter the rooms of current friends across elevator-accessible floors.
+
+Revised 4 November 2026: the personalized friend-ordered hall is replaced by a stable shared directory for the 3D version (SRS-507.1 to SRS-507.9, SRS-507.15, SRS-507.16 and SRS-507.18 reworded; SRS-507.20 to SRS-507.24 added). The 2D campus and classic versions keep the earlier personalized hall unchanged. SRS-507.10 to SRS-507.14, SRS-507.17 and SRS-507.19 keep their wording, including the current-friend entry rules SRS-507.12, SRS-507.13 and SRS-507.19 and active visit revocation SRS-507.17; in the 3D version, the visitor's "own DormHall" in SRS-507.17 is the shared directory floor that holds the visitor's own room.
 
 ##### SRS-507.1, DP — Game Room entry.
 
@@ -7943,8 +7947,8 @@ TBD means a team decision is still required. These are explicit dependencies, no
 | B-01 | DP | Snipe points per positively identified target; no extra daily photographer cap. Approved by DP on 29 October 2026 for the Snipe implementation: 25 shared points per verified friend (an originally tagged friend whose identity answer is Yes at publication), credited once to the photographer only; no photographer-wide daily cap (see documentation/snipe-rewards.md). This records DP's approval only; team review is not recorded, and every other reward amount and catalog price stays open. | SRS-525.2; SRS-525.6; UR-528 |
 | B-02 | DP + SS | Daily participation amount and separate 7/14/30-day milestone amounts. | SRS-526.5; SRS-526.17; SRS-528.5 |
 | B-03 | DP + SS | Normal Game 1 rewards, coin conversion, completion proof, and reduced replay reward rules; Wordle reward rules only if included. | SRS-520.3 to SRS-520.5; SRS-528.6 |
-| B-04 | DP | Catalog entries, point prices, eligibility, and initial/purchasable wall and floor appearances. | UR-500; UR-522; UR-529 |
-| B-05 | DP | Room dimensions, protected cells, item footprints, allowed surfaces, overlap compatibility and fixed orientations. | SRS-500.2; SRS-500.8 to SRS-500.10; SRS-529.7 |
+| B-04 | DP | Catalog entries, point prices, eligibility, and initial/purchasable wall and floor appearances. 4 November 2026: the DormSpace furniture prices listed in SRS-522.12 are provisional, adjustable implementation defaults, not a decision; wall and floor appearances stay free; the price decision and other catalog decisions remain open. | UR-500; UR-522; UR-529 |
+| B-05 | DP | Room dimensions, protected cells, item footprints, allowed surfaces and overlap compatibility. 4 November 2026: the earlier "fixed orientations" item is obsolete; floor items turn in quarter turns per revised SRS-500.7. | SRS-500.2; SRS-500.8 to SRS-500.10; SRS-529.7 |
 | B-06 | DP + LP | Snipe-specific image formats, byte limit and pixel limits. SS avatar and feed limits do not automatically define the Snipe policy. Approved by DP on 25 October 2026 for the Snipe implementation: JPEG and PNG only; at most 10,000,000 bytes; at most 4096 pixels wide and 4096 pixels high (see documentation/snipe-basic.md). This records DP's approval only; LP and team review are not recorded. | SRS-510.2; SRS-510.3 |
 | B-07 | DP | DormSpace movement speed, interaction range, touch-editing behavior and exact release devices/browser versions. | UR-504; SRS-NFR-52 to SRS-NFR-57 |
 | B-08 | SS + DP | Maximum trusted participation-event delivery delay and correction of earlier days after late delivery. | SRS-613.12; SRS-613.13; SRS-526.3 |
@@ -8083,12 +8087,12 @@ Unconfirmed operation outcomes do not prove failure. Retry and exit behavior pre
 
 | Parent UR | SRS coverage / disposition | Section |
 | --- | --- | --- |
-| UR-500 | SRS-500.1 through SRS-500.15 | [See section](#ur-500) |
+| UR-500 | SRS-500.1 through SRS-500.16 | [See section](#ur-500) |
 | UR-503 | SRS-503.1 through SRS-503.5 | [See section](#ur-503) |
-| UR-504 | SRS-504.1 through SRS-504.9; SRS-NFR-56, SRS-NFR-57 | [See section](#ur-504) |
+| UR-504 | SRS-504.1 through SRS-504.15; SRS-NFR-56, SRS-NFR-57 | [See section](#ur-504) |
 | UR-505 | SRS-505.1 through SRS-505.9; SRS-NFR-51, SRS-NFR-53 | [See section](#ur-505) |
 | UR-506 | Retired. Achievement displays and trophies are outside this release. This identifier will not be reused. | [See section](#ur-506) |
-| UR-507 | SRS-507.1 through SRS-507.19; SRS-NFR-52, SRS-NFR-55 | [See section](#ur-507) |
+| UR-507 | SRS-507.1 through SRS-507.24; SRS-NFR-52, SRS-NFR-55 | [See section](#ur-507) |
 | UR-508 | SRS-508.1 through SRS-508.21; SRS-NFR-56, SRS-NFR-57 | [See section](#ur-508) |
 | UR-509 | SRS-509.1 through SRS-509.9 | [See section](#ur-509) |
 | UR-510 | SRS-510.1 through SRS-510.12 | [See section](#ur-510) |
@@ -8098,7 +8102,7 @@ Unconfirmed operation outcomes do not prove failure. Retry and exit behavior pre
 | UR-514 | SRS-514.1 through SRS-514.15; SRS-NFR-48 | [See section](#ur-514) |
 | UR-520 | SRS-520.1 through SRS-520.8 | [See section](#ur-520) |
 | UR-521 | SRS-521.1 through SRS-521.5; SRS-NFR-54 | [See section](#ur-521) |
-| UR-522 | SRS-522.1 through SRS-522.10; SRS-NFR-56 | [See section](#ur-522) |
+| UR-522 | SRS-522.1 through SRS-522.12; SRS-NFR-56 | [See section](#ur-522) |
 | UR-523 | SRS-523.1 through SRS-523.11; SRS-NFR-49, SRS-NFR-50 | [See section](#ur-523) |
 | UR-524 | SRS-524.1 through SRS-524.5 | [See section](#ur-524) |
 | UR-525 | SRS-525.1 through SRS-525.6 | [See section](#ur-525) |
