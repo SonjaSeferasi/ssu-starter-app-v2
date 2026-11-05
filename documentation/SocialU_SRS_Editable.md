@@ -4474,7 +4474,7 @@ Traces to: UR-507.
 
 ##### SRS-507.2, DP — Own dorm door.
 
-When the first DormHall floor is displayed, the system shall reserve its first door for the student's own dorm with a My Dorm label.
+When the floor holding the student's room is displayed, the system shall mark that student's permanent door as their own room.
 
 Traces to: UR-507.
 
