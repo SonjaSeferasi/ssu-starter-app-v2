@@ -5382,6 +5382,14 @@ Added 4 November 2026. Acceptance: existing owners keep all eight earlier includ
 
 Traces to: UR-522, UR-503.
 
+##### SRS-522.12, DP — Shop prices from the catalog.
+
+When the DormSpace shop shows or sells an item, the system shall use the price currently stored in the catalog, which administrators can change without a code release.
+
+Added 4 November 2026. The shop migration seeds provisional, adjustable implementation defaults in shared points (not money): Plant 150, Armchair 300, Sofa 1500, Rug 200, Coffee table 250, Bookshelf 450, Wardrobe 600 and Nightstand 150. These are not a recorded pricing decision; the prices stay open under Appendix B-04 and can be changed in the catalog without a code release.
+
+Traces to: UR-522, UR-529.
+
 <a id="ur-523"></a>
 
 #### UR-523, DP - Trust Reward and Purchase Results
