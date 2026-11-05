@@ -170,9 +170,13 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 /* A photo message whose link this page does not have yet: the message is there and in the right place, which
    is better than an empty bubble. SRS-201.7 replaces this with the photo itself. */
 .photoPending { display: inline-block; padding: 12px 16px; font-size: .9rem; font-style: italic; line-height: 1.5; }
-/* #1106: a photo its sender deleted. Dimmer than 'Photo unavailable', because nothing is wrong and
-   nothing will arrive later -- the photograph was removed on purpose. */
-.photoDeleted { color: #76867f; }
+/* #1106: a photo its sender deleted. Dimmer than the surrounding text, because nothing is wrong and
+   nothing will arrive later -- the photograph was removed on purpose.
+   Two colours, because the bubble has two backgrounds. The grey below is for the pale bubble; on the
+   student's own green bubble it measured 1.38:1 against #39775e, which is not readable at all. The two
+   values here measure 4.87:1 and 4.62:1, both above the 4.5:1 that normal text needs. */
+.photoDeleted { color: #536963; }
+.bubbleOwn .photoDeleted { color: #e9f2ec; }
 /* #1106: the delete control sits on the photo it deletes, and is always visible.
    It deliberately does NOT follow the hover-to-reveal pattern of React and Reply. Those are optional
    actions people go looking for; deleting is one nobody finds unless it is shown, and a destructive
