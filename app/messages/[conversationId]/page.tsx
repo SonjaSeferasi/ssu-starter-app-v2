@@ -7,7 +7,7 @@ import { type FormEvent, useEffect, useLayoutEffect, useRef, useState } from 're
 import { useParams } from 'next/navigation';
 import { SessionNotice } from '../../../components/navigation/section-page';
 import { useNavigationSession } from '../../../components/navigation/social-shell';
-import { subscribeToChat, type ChatConversationEvent, type ChatLiveStatus, type ChatMessageEvent, type ChatReactionEvent } from '../../../lib/realtime-client';
+import { subscribeToChat, type ChatConversationEvent, type ChatDeletedEvent, type ChatLiveStatus, type ChatMessageEvent, type ChatReactionEvent } from '../../../lib/realtime-client';
 import { sortReactions, type ChatReaction } from '../../../lib/chat-reactions';
 import { CHAT_ACTIVITY_EVENT, ConversationListPanel } from '../conversation-list';
 import { EmojiPicker } from '../emoji-picker';
@@ -18,7 +18,7 @@ import { ReactionChips, ReactionPicker } from '../message-reactions';
 import { SnipePanel } from '../../../components/snipe/snipe-panel';
 import { canSelectForReply, findReplyTarget, keepReplyTarget, replyIndication, replyPreview, replyQuote, toggleReplyTarget, type ReplyTargets } from '../../../lib/chat-reply';
 import { PHOTO_ACCEPT, PHOTO_SEND_FAILED, choosePhoto, describeChosenPhoto, photoError, type ChosenPhoto } from '../../../lib/chat-photo';
-import { PHOTO_UNAVAILABLE, mergePhotoUrl, photoLinkRefreshDelay, photoLinksExpired } from '../../../lib/chat-photo-links';
+import { PHOTO_DELETED, PHOTO_DELETE_CONFIRM, PHOTO_UNAVAILABLE, canDeletePhoto, markPhotoDeleted, mergePhotoUrl, photoLinkRefreshDelay, photoLinksExpired } from '../../../lib/chat-photo-links';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -202,6 +202,52 @@ function Conversation() {
     return () => document.removeEventListener('visibilitychange', onVisible);
   }, [photoLinksExpireAt, hasPhotos]);
 
+  // #1106: a photo deleted by its sender leaves everyone's screen at once. The link it was shown with keeps
+  // working for up to an hour, so waiting for the next reload would leave the photograph on display after it
+  // was deleted; dropping it here is what makes the deletion immediate.
+  function photoDeleted(event: ChatDeletedEvent) {
+    if (event.conversation_id !== conversationId) return;
+    setMessages((current) => markPhotoDeleted(current, event.id));
+  }
+
+  // #1106: delete a photo this student sent. The warning is shown on the photo itself, not with
+  // window.confirm. A browser that has had dialogs suppressed -- Chrome does this for the rest of a page's
+  // life once someone ticks "prevent additional dialogs" -- returns false from confirm() without showing
+  // anything, which this code read as "no" and silently did nothing. The deletion then looked broken when it
+  // was never asked for. An in-page warning cannot be suppressed, and it is visible proof the click landed.
+  const [confirmingDelete, setConfirmingDelete] = useState<string | null>(null);
+  // Escape backs out, as it does for the reply target and the reaction picker.
+  useEffect(() => {
+    if (!confirmingDelete) return;
+    function onKeyDown(event: KeyboardEvent) { if (event.key === 'Escape') setConfirmingDelete(null); }
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [confirmingDelete]);
+  // A photo that has gone (deleted here or by the broadcast) must not leave its warning on screen.
+  useEffect(() => {
+    setConfirmingDelete((current) => (current && messages.some((m) => m.id === current && !m.deleted) ? current : null));
+  }, [messages]);
+
+  const deletingRef = useRef(false);
+  async function deletePhoto(messageId: string) {
+    if (deletingRef.current) return;
+    setConfirmingDelete(null);
+    deletingRef.current = true;
+    setError('');
+    try {
+      const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/photos/${encodeURIComponent(messageId)}`, {
+        method: 'DELETE', headers: { Authorization: `Bearer ${storedAccessToken() ?? ''}` },
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || 'That photo could not be deleted. Please try again.');
+      setMessages((current) => markPhotoDeleted(current, messageId));
+    } catch (err) {
+      setError(err instanceof Error && !(err instanceof TypeError) ? err.message : 'That photo could not be deleted. Please try again.');
+    } finally {
+      deletingRef.current = false;
+    }
+  }
+
   // #319: keep only this conversation's messages; merging by ID stops the send reply and live event both showing.
   function addMessage(message: ChatMessageEvent) {
     // Any sent or received message (in any conversation) refreshes the list's order and previews (#457).
@@ -238,7 +284,8 @@ function Conversation() {
     setReactions((current) => ({ ...current, [update.message_id]: update.reactions }));
   }
 
-  useEffect(() => subscribeToChat(addMessage, liveStatus, renamed, invited, reacted), [conversationId]);
+  useEffect(() => subscribeToChat(addMessage, liveStatus, renamed, invited, reacted, photoDeleted), [conversationId]);
+
 
   // Show the latest message: on open, after the student's own message, and for new messages while they
   // are already at the bottom. If they scrolled up to read, keep their place and offer a button instead.
@@ -604,11 +651,40 @@ function Conversation() {
                           send returned. Everyone else sees that a photo is there until the history gives them
                           a link of their own, which is SRS-201.7 along with refreshing a link that has expired. */}
                       {message.kind === 'photo'
-                        ? message.photo_url && !brokenPhotos[message.id]
-                          ? <img className={styles.photoMessage} src={message.photo_url}
-                              alt={mine ? 'Photo you sent' : `Photo from ${sender}`} loading="lazy"
-                              onError={() => photoFailed(message.id)} />
-                          : <span className={styles.photoPending}>{message.photo_url ? PHOTO_UNAVAILABLE : 'Photo'}</span>
+                        ? message.deleted
+                          /* #1106: the message keeps its place so the conversation still reads in order and a
+                             reply that answered it still points somewhere, but the photograph is gone. */
+                          ? <span className={`${styles.photoPending} ${styles.photoDeleted}`}>{PHOTO_DELETED}</span>
+                          : message.photo_url && !brokenPhotos[message.id]
+                            ? <>
+                                <img className={styles.photoMessage} src={message.photo_url}
+                                  alt={mine ? 'Photo you sent' : `Photo from ${sender}`} loading="lazy"
+                                  onError={() => photoFailed(message.id)} />
+                                {/* #1106: on the photo itself rather than beside it, and always visible. A
+                                    control that only appears on hover is fine for reacting or replying, which
+                                    people go looking for; it is wrong for deleting, which nobody finds unless
+                                    it is shown. It renders only on this student's own photos, which the
+                                    database enforces again. */}
+                                {canDeletePhoto(message, myStudentId) && (
+                                  <button type="button" className={styles.photoDelete} onClick={() => setConfirmingDelete(message.id)}
+                                    aria-label="Delete your photo" title="Delete photo">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 6h18" /><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2" /><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" /></svg>
+                                  </button>
+                                )}
+                                {/* #1106: the warning, on the photo, before anything is removed. */}
+                                {confirmingDelete === message.id && (
+                                  <div className={styles.photoConfirm} role="alertdialog" aria-label="Confirm deleting this photo">
+                                    <p className={styles.photoConfirmText}>{PHOTO_DELETE_CONFIRM}</p>
+                                    <div className={styles.photoConfirmActions}>
+                                      <button type="button" className={styles.photoConfirmCancel}
+                                        onClick={() => setConfirmingDelete(null)}>Cancel</button>
+                                      <button type="button" className={styles.photoConfirmDelete} autoFocus
+                                        onClick={() => void deletePhoto(message.id)}>Delete</button>
+                                    </div>
+                                  </div>
+                                )}
+                              </>
+                            : <span className={styles.photoPending}>{message.photo_url ? PHOTO_UNAVAILABLE : 'Photo'}</span>
                         : message.text}
                     </p>
                     {/* SRS-201.7: photos are now in the conversation, and socialu_react_to_message accepts

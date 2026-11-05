@@ -9,8 +9,11 @@ import type { ChatReaction } from './chat-reactions';
 // SRS-201.6 (#1024): a photo message carries no text -- the schema forbids it -- so it arrives with kind
 // 'photo' and the id of its stored asset. photo_url is only ever set locally, by the send that just happened
 // or by the history (SRS-201.7); a signed link cannot be broadcast, because only the server can make one.
-export type ChatMessageEvent = { id: string; conversation_id: string; sender_id: string; text: string; sent_at: string; kind?: 'emoji' | 'photo'; reply_to_id?: string | null; asset_id?: string; photo_url?: string | null };
+export type ChatMessageEvent = { id: string; conversation_id: string; sender_id: string; text: string; sent_at: string; kind?: 'emoji' | 'photo'; reply_to_id?: string | null; asset_id?: string; photo_url?: string | null; deleted?: boolean };
 // SRS-202.6 (#844): sent to each current member when a group is named or renamed.
+// #1106: sent to each current participant when the sender deletes their photo, so it leaves their screen
+// instead of lingering on a signed link that keeps working for up to an hour.
+export type ChatDeletedEvent = { id: string; conversation_id: string };
 export type ChatConversationEvent = { conversation_id: string; name: string | null };
 // SRS-212.9 (#823): sent to a student when they are invited to a group.
 export type ChatInvitationEvent = { invitation_id: string; conversation_id: string };
@@ -44,6 +47,7 @@ type ChatListener = {
   onConversation?: (update: ChatConversationEvent) => void;
   onInvitation?: (invitation: ChatInvitationEvent) => void;
   onReaction?: (update: ChatReactionEvent) => void;
+  onDeleted?: (event: ChatDeletedEvent) => void;
 };
 
 // SRS-212.9: one shared channel per browser tab. The header bell, the Messages link and the chat pages all listen
@@ -63,7 +67,8 @@ function openChannel(supabase: SupabaseClient, token: string, userId: string) {
     .on('broadcast', { event: 'message_created' }, ({ payload }) => each((l) => l.onMessage(payload as ChatMessageEvent)))
     .on('broadcast', { event: 'conversation_updated' }, ({ payload }) => each((l) => l.onConversation?.(payload as ChatConversationEvent)))
     .on('broadcast', { event: 'group_invitation_created' }, ({ payload }) => each((l) => l.onInvitation?.(payload as ChatInvitationEvent)))
-    .on('broadcast', { event: 'reaction_updated' }, ({ payload }) => each((l) => l.onReaction?.(payload as ChatReactionEvent)));
+    .on('broadcast', { event: 'reaction_updated' }, ({ payload }) => each((l) => l.onReaction?.(payload as ChatReactionEvent)))
+    .on('broadcast', { event: 'message_deleted' }, ({ payload }) => each((l) => l.onDeleted?.(payload as ChatDeletedEvent)));
   state.close = () => { void supabase.removeChannel(channel); };
 
   void supabase.realtime.setAuth(token).then(() => {
@@ -79,7 +84,7 @@ function openChannel(supabase: SupabaseClient, token: string, userId: string) {
 
 export function subscribeToChat(onMessage: (message: ChatMessageEvent) => void, onStatus: (status: ChatLiveStatus) => void,
   onConversation?: (update: ChatConversationEvent) => void, onInvitation?: (invitation: ChatInvitationEvent) => void,
-  onReaction?: (update: ChatReactionEvent) => void) {
+  onReaction?: (update: ChatReactionEvent) => void, onDeleted?: (event: ChatDeletedEvent) => void) {
   const supabase = browserClient();
   if (!supabase) { onStatus('unavailable'); return () => {}; }
   const token = storedAccessToken();
@@ -89,7 +94,7 @@ export function subscribeToChat(onMessage: (message: ChatMessageEvent) => void, 
   clearTimeout(closeTimer);
   // A different student signed in on this tab: their own channel replaces the old one.
   if (shared && shared.userId !== userId) { shared.close(); shared = null; }
-  const listener: ChatListener = { onMessage, onStatus, onConversation, onInvitation, onReaction };
+  const listener: ChatListener = { onMessage, onStatus, onConversation, onInvitation, onReaction, onDeleted };
   listeners.add(listener);
   if (shared) onStatus(shared.status);
   else { onStatus('connecting'); openChannel(supabase, token, userId); }
