@@ -118,7 +118,7 @@ function Editor({ profile }: { profile: StudentProfile }) {
       {error && <p className={`${styles.notice} ${styles.error}`} role="alert" style={{ margin: 0 }}>{error}</p>}
 
       <div className={styles.photoRow}>
-        <Avatar url={preview ?? (photo ? null : profile.photo_url)} name={profile.name} />
+        <Avatar url={preview ?? (photo ? null : profile.photo_url)} name={profile.name} username={photo?undefined:profile.username} />
         <div>
           <button type="button" className={styles.button} onClick={() => fileInput.current?.click()} disabled={preparingPhoto || saving}><Camera />{preparingPhoto ? 'Preparing photo…' : profile.photo_url || photo ? 'Change photo' : 'Upload photo'}</button>
           <p className={styles.hint}>{photo ? `Selected: ${photo.name}` : 'JPG, JPEG, PNG, or HEIC. Large photos are resized automatically when supported by your browser.'}</p>
