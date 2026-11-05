@@ -430,7 +430,14 @@ it('shows a friend visitor live, denies their edits and evicts them when the fri
   await owner.bringToFront();
   expect((await api(owner, '/api/dorm')).data.placements).toEqual(before.placements);
   await owner.getByRole('list', { name: 'Players here' }).getByText('dorm2').waitFor({ timeout: 15000 });
-  await shot(owner, 'room-owner-sees-visitor');
+  // Optional evidence only (the roster assertion above is the real check): best-effort, short timeout.
+  try {
+    await owner.screenshot({ path: `${artifacts}/room-owner-sees-visitor.png`, timeout: 5000 });
+  } catch (error) {
+    console.warn(`[dormspace-3d] optional screenshot room-owner-sees-visitor skipped: ${(error as Error).message.split('\n')[0]}`);
+  }
+  // Leave one software-GL canvas: unload the owner's room before the friend's revocation check.
+  await park(owner);
   await friend.bringToFront();
   await friendship(db, 1, 'remove', 2, friendRequest);
   // Either revocation path may win: the server's live denial (42501 from socialu_dormspace_live) or
