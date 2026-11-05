@@ -4528,6 +4528,14 @@ When a non-owner without a current friendship requests a dorm directly, the syst
 
 Traces to: UR-507.
 
+##### SRS-507.21, DP — Friends-only room locks.
+
+When a door belongs to a schoolmate who is not the viewer's current friend, the system shall show it as locked and deny entry, while the owner and current friends may enter.
+
+Added 4 November 2026.
+
+Traces to: UR-507.
+
 <a id="ur-508"></a>
 
 #### UR-508, DP - Explore Friends' Dorms and Leave Notes
