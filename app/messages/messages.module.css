@@ -1,5 +1,13 @@
 /* SRS-201.1: Messages layout from documentation/UI design (Messages screen), shared by /messages and /messages/[conversationId]. */
-.page { display: grid; grid-template-columns: minmax(240px, 300px) minmax(0, 1fr); gap: 16px; max-width: 1280px; min-height: calc(100dvh - 76px); margin: 0 auto; padding: clamp(16px, 2.5vw, 28px); }
+/* #1032: the conversation column is the one with a floor, not the list.
+   It used to be minmax(240px, 300px) minmax(0, 1fr): the list could never go below 240px while the
+   conversation could shrink to nothing, so every pixel of lost width came out of the conversation. Measured in
+   the running application, that left the conversation 449px at a 1100px viewport and the header wrapped onto
+   two lines (134px tall instead of 92px).
+   500px is measured, not guessed: at 500px the header sits on one line, at 480px it wraps. The list yields
+   first now, and below 1080px the layout drops to one column (see the media query) rather than squeezing the
+   list down to nothing -- at 910px it was reaching 69px wide. */
+.page { display: grid; grid-template-columns: minmax(0, 300px) minmax(500px, 1fr); gap: 16px; max-width: 1280px; min-height: calc(100dvh - 76px); margin: 0 auto; padding: clamp(16px, 2.5vw, 28px); }
 .listPanel, .conversation { border: 1px solid #d3e2da; border-radius: 16px; background: #f8fbf8; }
 .listPanel { padding: 24px 12px; }
 /* The Messages list stays pinned beside the conversation and scrolls on its own: the heading, tabs and New group
@@ -101,7 +109,12 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 .findPeople { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; margin: 10px 4px 0; color: #28634e; font-size: 14px; font-weight: 700; text-decoration: none; }
 .findPeople:hover { text-decoration: underline; }
 .findPeople:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; border-radius: 4px; }
-.conversation { display: flex; flex-direction: column; min-height: 520px; overflow: clip; }
+/* --below-header is where anything that wants to sit under the sticky conversation header should stick.
+   The header below is sticky at --header-height and is 92px tall at every width where it stays on one line
+   (measured at 1024, 1100, 1200, 1280 and 1440). Publishing it as a variable means the Snipe panel can sit
+   under it without snipe.module.css repeating a number that belongs to this file. Phones override it to
+   'static' there, because the header wraps to two rows below 900px and its height stops being predictable. */
+.conversation { display: flex; flex-direction: column; min-height: 520px; overflow: clip; --below-header: calc(var(--header-height, 76px) + 92px); }
 /* The conversation header stays visible under the app's top bar while the conversation scrolls.
    (overflow: clip on .conversation keeps the rounded corners without blocking sticky.) */
 .header { position: sticky; top: var(--header-height, 76px); z-index: 1; display: flex; align-items: center; gap: 14px; padding: 18px 24px; border-bottom: 1px solid #d3e2da; border-radius: 16px 16px 0 0; background: #f8fbf8; }
@@ -165,11 +178,39 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 /* SRS-201.6 (#1024): a sent photo fills its bubble, so the bubble keeps only the rounded corner and the
    background that shows while the image is still loading. max-height stops a tall photo taking the whole
    conversation; the browser keeps the aspect ratio from the file itself. */
-.bubble.photoBubble { overflow: hidden; padding: 0; line-height: 0; }
+.bubble.photoBubble { position: relative; overflow: hidden; padding: 0; line-height: 0; }
 .photoMessage { display: block; width: 100%; max-width: 320px; max-height: 420px; object-fit: contain; border-radius: 14px; }
 /* A photo message whose link this page does not have yet: the message is there and in the right place, which
    is better than an empty bubble. SRS-201.7 replaces this with the photo itself. */
 .photoPending { display: inline-block; padding: 12px 16px; font-size: .9rem; font-style: italic; line-height: 1.5; }
+/* #1106: a photo its sender deleted. Dimmer than the surrounding text, because nothing is wrong and
+   nothing will arrive later -- the photograph was removed on purpose.
+   Two colours, because the bubble has two backgrounds. The grey below is for the pale bubble; on the
+   student's own green bubble it measured 1.38:1 against #39775e, which is not readable at all. The two
+   values here measure 4.87:1 and 4.62:1, both above the 4.5:1 that normal text needs. */
+.photoDeleted { color: #536963; }
+.bubbleOwn .photoDeleted { color: #e9f2ec; }
+/* #1106: the delete control sits on the photo it deletes, and is always visible.
+   It deliberately does NOT follow the hover-to-reveal pattern of React and Reply. Those are optional
+   actions people go looking for; deleting is one nobody finds unless it is shown, and a destructive
+   action hidden behind hover reads as 'not working'. The dark disc keeps it legible over any photo,
+   light or dark, and it turns red on hover so it is clear what it does before it is pressed. */
+.photoDelete { position: absolute; top: 8px; right: 8px; z-index: 1; display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border: 0; border-radius: 50%; background: rgba(16, 44, 48, .58); color: #ffffff; line-height: 0; cursor: pointer; }
+.photoDelete:hover { background: rgba(163, 58, 58, .92); }
+.photoDelete:focus-visible { outline: 3px solid #ffffff; outline-offset: -1px; }
+/* #1106: the warning, shown over the photo before anything is removed. It replaces window.confirm,
+   which a browser can suppress silently -- when that happens confirm() returns false and the delete
+   never even asks, which is indistinguishable from being broken. This cannot be suppressed, and it
+   is visible proof the click landed. line-height is restored because .photoBubble sets it to 0. */
+.photoConfirm { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 16px; background: rgba(16, 44, 48, .82); line-height: 1.45; }
+.photoConfirmText { margin: 0; color: #ffffff; font-size: .9rem; font-weight: 600; text-align: center; text-wrap: balance; }
+.photoConfirmActions { display: flex; gap: 10px; }
+.photoConfirmCancel, .photoConfirmDelete { min-height: 36px; padding: 8px 16px; border: 0; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+.photoConfirmCancel { background: #e6efe9; color: #102c30; }
+.photoConfirmCancel:hover { background: #d7e6dd; }
+.photoConfirmDelete { background: #a33a3a; color: #ffffff; }
+.photoConfirmDelete:hover { background: #8d3030; }
+.photoConfirmCancel:focus-visible, .photoConfirmDelete:focus-visible { outline: 3px solid #ffffff; outline-offset: 2px; }
 
 /* SRS-209.2 (#988): the bar above the message box naming the message the reply answers. */
 .replyBar { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; padding: 8px 10px; border-left: 3px solid #28634e; border-radius: 8px; background: #eef4f0; }
@@ -234,6 +275,16 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 .backLink { display: inline-flex; align-items: center; min-height: 44px; margin-top: 8px; padding: 10px 20px; border-radius: 10px; background: #c0ddcb; color: #102c30; font-weight: 700; text-decoration: none; }
 .backLink:hover { background: #b0d3be; }
 .backLink:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+/* #1032: narrow laptops drop to one column before the list is squeezed into uselessness. Kept separate from
+   the 900px block below, which carries the phone-only header and back-button rules (SRS-510.1, measured at
+   390 x 844) -- those should not start applying to a 1024px laptop window.
+   At 1081px the list is 230px and the conversation 500px, which is the last width where both are usable;
+   under that the conversation takes the page and the list is one click away, as it already is on phones. */
+@media (max-width: 1080px) {
+  .page { grid-template-columns: minmax(0, 1fr); }
+  .withConversation .listPanel, .emptyConversation { display: none; }
+}
+
 /* Phones: the list page shows the list; a conversation page shows the conversation. */
 @media (max-width: 900px) {
   .page { grid-template-columns: minmax(0, 1fr); padding: 16px; }

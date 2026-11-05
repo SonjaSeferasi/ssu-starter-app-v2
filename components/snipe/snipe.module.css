@@ -1,5 +1,10 @@
 /* UR-510 to UR-514 basic Snipe panel. Same palette and controls as app/messages/messages.module.css. */
-.panel { border-bottom: 1px solid #d3e2da; background: #f8fbf8; }
+.panel { position: sticky; top: var(--below-header, 168px); z-index: 1; border-bottom: 1px solid #d3e2da; background: #f8fbf8; }
+/* Sticky so the Snipe bar stays reachable while scrolling a long conversation. --below-header comes from
+   app/messages/messages.module.css, which owns the conversation header this sits under; the fallback is
+   that header's height plus the site header. Below 900px the conversation header wraps to two rows and its
+   height is no longer predictable, so the bar scrolls away with the content instead of covering messages. */
+@media (max-width: 900px) { .panel { position: static; } }
 .toggle { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 48px; padding: 10px 24px; border: 0; background: transparent; color: #102c30; font: inherit; font-size: 15px; font-weight: 700; text-align: left; cursor: pointer; }
 .toggle:hover { background: #e6efe9; }
 .toggle:focus-visible { outline: 3px solid #28634e; outline-offset: -3px; }
