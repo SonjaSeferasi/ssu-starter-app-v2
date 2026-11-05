@@ -4344,6 +4344,14 @@ When the student types in a guestbook text field, the system shall suspend avata
 
 Traces to: UR-504.
 
+##### SRS-504.10, DP — Third-person camera.
+
+When the student explores DormSpace in 3D, the system shall follow the avatar with a third-person camera that the student can turn and zoom by dragging, scrolling or on-screen controls, move the avatar relative to that camera's view, and keep walls from hiding the avatar.
+
+Added 4 November 2026. Acceptance: W moves away from the camera in every camera direction; dragging turns the view; a wall between camera and avatar is cut away in rooms and the camera stays inside the hall.
+
+Traces to: UR-504.
+
 <a id="ur-505"></a>
 
 #### UR-505, DP - Maintain One Current Virtual Dorm
