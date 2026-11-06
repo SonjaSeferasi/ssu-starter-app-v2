@@ -1,5 +1,5 @@
 import { pixelLookKey } from './dormspace-avatar';
-import { LIVE_LEASE_MS, SPEECH_MS, readLivePlayer, validLiveMessage, type LiveEvent, type LiveMessage, type LivePlayer, type LiveReply } from './dormspace-multiplayer';
+import { LIVE_LEASE_MS, SPEECH_MS, liveAvatarKey, readLivePlayer, validLiveMessage, type LiveEvent, type LiveMessage, type LivePlayer, type LiveReply } from './dormspace-multiplayer';
 
 type Listener = () => void;
 export type LiveStatus = 'connecting' | 'online' | 'offline' | 'replaced' | 'unavailable';
@@ -58,7 +58,7 @@ export class DormLiveStore {
     this.players.set(player.id,player); this.refreshVisual(player.id);
     this.playerListeners.get(player.id)?.forEach(fn=>fn());
     if (!previous || previous.connectionId!==player.connectionId || previous.state.restItemId!==player.state.restItemId
-      || pixelLookKey(previous.look)!==pixelLookKey(player.look)) this.changedRoster();
+      || pixelLookKey(previous.look)!==pixelLookKey(player.look) || liveAvatarKey(previous.avatar)!==liveAvatarKey(player.avatar)) this.changedRoster();
   }
   private remove(id: string) {
     if (!this.players.delete(id)) return;
