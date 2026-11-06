@@ -1,14 +1,14 @@
-import { RoomEvent, Track, type RemoteAudioTrack, type Room } from 'livekit-client';
+import { RoomEvent, Track, type RemoteTrack, type Room } from 'livekit-client';
 
 export type VoicePeer = { id: string; name: string; speaking: boolean; muted: boolean };
 
 export function voiceRoster(room: Room, container: HTMLElement, changed: () => void) {
-  const audio = new Map<RemoteAudioTrack, { id: string; element: HTMLMediaElement }>();
+  const audio = new Map<RemoteTrack, { id: string; element: HTMLMediaElement }>();
   const muted = new Set<string>();
   const events = [RoomEvent.ParticipantConnected, RoomEvent.ParticipantDisconnected, RoomEvent.ActiveSpeakersChanged,
     RoomEvent.TrackMuted, RoomEvent.TrackUnmuted, RoomEvent.AudioPlaybackStatusChanged] as const;
   for (const event of events) room.on(event, changed);
-  function detach(track: RemoteAudioTrack) {
+  function detach(track: RemoteTrack) {
     const item = audio.get(track);
     if (!item) return;
     item.element.pause();

@@ -100,7 +100,7 @@ async function enter3D(page: any, label: string) {
     await page.bringToFront();
     // Fail fast (with the real state) if the engine settles on anything other than ready.
     const settled = page.locator('div[data-engine]:not([data-engine="loading"])');
-    await settled.waitFor({ timeout: 60000 });
+    await settled.waitFor({ timeout: voiceTest ? 120000 : 60000 });
     const state = await settled.getAttribute('data-engine');
     if (state !== 'ready') throw new Error(`the 3D engine settled as "${state}", not "ready"`);
     await page.locator('[data-scene="hall"]').waitFor({ timeout: 30000 });
@@ -125,6 +125,7 @@ async function signIn(student: number, viewport = DESKTOP) {
   const storageState = await loginStorage(student);
   const context = await browser.newContext({ viewport, deviceScaleFactor: 1, hasTouch: mobile, isMobile: mobile, storageState });
   const page = await context.newPage();
+  if (voiceTest) page.setDefaultTimeout(45000);
   watch(page);
   try {
     return await enter3D(page, `dorm${student}`);
@@ -267,6 +268,10 @@ beforeAll(async () => {
     if (!ready) await delay(300);
   }
   if (!ready) throw new Error('Local Next test app did not start: ' + nextLog.slice(-3000));
+  if (voiceTest) {
+    const status = await fetch(base + '/api/dorm/voice', { method: 'POST', signal: AbortSignal.timeout(90000) });
+    if (status.status !== 401) throw new Error('Voice API did not start: ' + nextLog.slice(-2000));
+  }
   const playwright = await import(/* @vite-ignore */ process.env.SOCIALU_PLAYWRIGHT_MODULE || 'playwright');
   browser = await playwright.chromium.launch({ headless: true, args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', ...(voiceTest ?
     ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'] : [])], ...(process.env.DORMSPACE_BROWSER_EXECUTABLE ? { executablePath: process.env.DORMSPACE_BROWSER_EXECUTABLE } : {}) });
@@ -507,8 +512,9 @@ it('works on a phone layout and keeps the legacy versions available', async () =
 }, 240000);
 
 it.skipIf(!voiceTest)('streams voice only after opt-in and isolates rooms, mic consent, mute and revocation', async () => {
-  owner = await signIn(1);
-  friend = await signIn(2);
+  const viewport = { width: 720, height: 540 };
+  owner = await signIn(1, viewport);
+  friend = await signIn(2, viewport);
   const voice = (page: any) => page.getByRole('region', { name: /^Voice chat/ });
   // Use Chromium's synthetic microphone only. Count actual capture calls and inspect release.
   for (const page of [owner, friend]) {
@@ -548,7 +554,7 @@ it.skipIf(!voiceTest)('streams voice only after opt-in and isolates rooms, mic c
   await friend.bringToFront();
   const play = voice(friend).getByRole('button', { name: 'Play voice audio' });
   if (await play.isVisible()) await play.click();
-  await friend.waitForFunction(() => [...document.querySelectorAll('audio')].some(audio => audio.currentTime > 0 && !audio.paused), { timeout: 20000 });
+  await friend.waitForFunction(() => [...document.querySelectorAll('audio')].some(audio => audio.currentTime > 0 && !audio.paused), undefined, { timeout: 20000 });
   await voice(friend).getByRole('button', { name: 'Mute dorm1', exact: true }).click();
   expect(await friend.locator('audio').first().evaluate((audio: HTMLAudioElement) => audio.muted)).toBe(true);
   await voice(friend).getByRole('button', { name: 'Unmute dorm1', exact: true }).click();
