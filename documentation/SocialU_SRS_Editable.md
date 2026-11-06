@@ -5832,6 +5832,22 @@ When a student inspects a decoration before purchasing, the system shall display
 
 Traces to: UR-529.
 
+<a id="ur-531"></a>
+
+#### UR-531, DP - Join Voice Chat in DormSpace Rooms and the DormHall
+
+User requirement: As a student, I want to choose to join live voice in an authorized 3D dorm room or in my shared DormHall so I can talk to students in the same place.
+
+<a id="srs-531.3"></a>
+
+##### SRS-531.3, DP — Explicit microphone consent and mute.
+
+The system shall request microphone access only after a joined student explicitly enables their microphone, show their actual microphone state, and stop transmitting when they mute. Denied or unavailable microphones shall leave listen-only voice and text chat available.
+
+Acceptance criterion: Joining never prompts for the microphone. Enabling prompts when needed. Denial keeps listening available. Muting an active microphone stops outgoing audio while preserving incoming audio.
+
+Traces to: UR-531.
+
 <a id="section-SS"></a>
 
 ## 9. Navigation, Game Room, and Games
@@ -8110,6 +8126,7 @@ Unconfirmed operation outcomes do not prove failure. Retry and exit behavior pre
 | UR-527 | SRS-527.1 through SRS-527.8 | [See section](#ur-527) |
 | UR-528 | SRS-528.1 through SRS-528.6 | [See section](#ur-528) |
 | UR-529 | SRS-529.1 through SRS-529.7 | [See section](#ur-529) |
+| UR-531 | SRS-531.3 | [See section](#ur-531) |
 
 <a id="sonja-seferasi-ss"></a>
 
@@ -8236,6 +8253,7 @@ The aligned user_requirements.md contains these amendments. This register record
 | UR-506 | Retired identifier; no achievement display. |
 | UR-507 to UR-514 | Integrated DormHall and independent Snipe identity/sharing consent with lifecycle boundaries. |
 | UR-526; UR-613 | One shared participation streak and daily/milestone reward policy. |
+| UR-531 | Join Voice Chat in DormSpace Rooms and the DormHall. Planned audio scope for 3D DormSpace. |
 | UR-605; UR-606 | Audience-selection delegation and explicit draft deferral. |
 | UR-623 to UR-626 | Conditional daily Wordle with today's puzzle/result only. |
 | UR-627 | Preserved existing display-preference requirement. |
