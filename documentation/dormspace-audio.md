@@ -6,23 +6,23 @@ The 3D DormSpace follow-up covers shared MP3 playback for opted-in listeners in 
 
 - [SocialU Product Backlog](https://github.com/users/SonjaSeferasi/projects/2)
 - [DormSpace 3D integration](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1144)
-- [UR-530 and its MP3 requirements](SocialU_SRS_Editable.md#ur-530)
-- [UR-531 and its voice requirements](SocialU_SRS_Editable.md#ur-531)
+- [UR-530 and its MP3 requirements](SocialU_SRS_Editable.md#ur-530) · [Parent card #1152](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1152)
+- [UR-531 and its voice requirements](SocialU_SRS_Editable.md#ur-531) · [Parent card #1153](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1153)
 
 Each SRS item has an independent requirements branch based on `feature/dormspace-3d-integration`. The audio SRS branch brings the requirements and user stories together. Implementation branches can build on these scopes after review.
 
-| SRS | Requirement branch |
-| --- | --- |
-| [SRS-530.1](SocialU_SRS_Editable.md#srs-530.1) | `srs-530.1-room-music-host-controls` |
-| [SRS-530.2](SocialU_SRS_Editable.md#srs-530.2) | `srs-530.2-room-music-opt-in` |
-| [SRS-530.3](SocialU_SRS_Editable.md#srs-530.3) | `srs-530.3-room-music-sync` |
-| [SRS-530.4](SocialU_SRS_Editable.md#srs-530.4) | `srs-530.4-room-music-boundary` |
-| [SRS-531.1](SocialU_SRS_Editable.md#srs-531.1) | `srs-531.1-voice-location-opt-in` |
-| [SRS-531.2](SocialU_SRS_Editable.md#srs-531.2) | `srs-531.2-voice-authorization` |
-| [SRS-531.3](SocialU_SRS_Editable.md#srs-531.3) | `srs-531.3-voice-microphone` |
-| [SRS-531.4](SocialU_SRS_Editable.md#srs-531.4) | `srs-531.4-voice-participants` |
-| [SRS-531.5](SocialU_SRS_Editable.md#srs-531.5) | `srs-531.5-voice-session-lifecycle` |
-| [SRS-531.6](SocialU_SRS_Editable.md#srs-531.6) | `srs-531.6-voice-media-privacy` |
+| SRS | Requirement branch | Product Backlog card |
+| --- | --- | --- |
+| [SRS-530.1](SocialU_SRS_Editable.md#srs-530.1) | [`srs-530.1-room-music-host-controls`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-530.1-room-music-host-controls) | [#1154](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1154) |
+| [SRS-530.2](SocialU_SRS_Editable.md#srs-530.2) | [`srs-530.2-room-music-opt-in`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-530.2-room-music-opt-in) | [#1155](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1155) |
+| [SRS-530.3](SocialU_SRS_Editable.md#srs-530.3) | [`srs-530.3-room-music-sync`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-530.3-room-music-sync) | [#1157](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1157) |
+| [SRS-530.4](SocialU_SRS_Editable.md#srs-530.4) | [`srs-530.4-room-music-boundary`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-530.4-room-music-boundary) | [#1159](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1159) |
+| [SRS-531.1](SocialU_SRS_Editable.md#srs-531.1) | [`srs-531.1-voice-location-opt-in`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-531.1-voice-location-opt-in) | [#1156](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1156) |
+| [SRS-531.2](SocialU_SRS_Editable.md#srs-531.2) | [`srs-531.2-voice-authorization`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-531.2-voice-authorization) | [#1158](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1158) |
+| [SRS-531.3](SocialU_SRS_Editable.md#srs-531.3) | [`srs-531.3-voice-microphone`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-531.3-voice-microphone) | [#1160](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1160) |
+| [SRS-531.4](SocialU_SRS_Editable.md#srs-531.4) | [`srs-531.4-voice-participants`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-531.4-voice-participants) | [#1161](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1161) |
+| [SRS-531.5](SocialU_SRS_Editable.md#srs-531.5) | [`srs-531.5-voice-session-lifecycle`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-531.5-voice-session-lifecycle) | [#1162](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1162) |
+| [SRS-531.6](SocialU_SRS_Editable.md#srs-531.6) | [`srs-531.6-voice-media-privacy`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-531.6-voice-media-privacy) | [#1163](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1163) |
 
 ## Open decisions
 
