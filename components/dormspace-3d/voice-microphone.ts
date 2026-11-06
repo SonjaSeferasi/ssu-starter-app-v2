@@ -36,7 +36,7 @@ export function voiceMicrophone(room: Room, changed: () => void) {
       } catch (error) {
         if (track === candidate) stop();
         else candidate.stop();
-        if (current() || !closed) throw error;
+        if (!closed) throw error;
       }
     },
     stop,

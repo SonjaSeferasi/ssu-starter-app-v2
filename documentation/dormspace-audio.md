@@ -1,6 +1,6 @@
 # DormSpace audio
 
-The 3D DormSpace follow-up covers shared MP3 playback for opted-in listeners in the same dorm room and opt-in voice chat in rooms and the shared DormHall. The 3D integration is the prerequisite. Implementation and acceptance are pending.
+The 3D DormSpace follow-up covers shared MP3 playback for opted-in listeners in the same dorm room and opt-in voice chat in rooms and the shared DormHall. The 3D integration is the prerequisite. The voice implementation is on `feature/dormspace-voice`. Shared MP3 playback remains planned.
 
 ## Review and task board
 
@@ -27,7 +27,7 @@ Each SRS item has an independent requirements branch based on `feature/dormspace
 ## Open decisions
 
 - Confirm whether the room owner controls the soundtrack, and approve the proposed MP3 catalog and redistribution terms before enabling music.
-- Choose the voice provider and deployment settings. Confirm hall capacity, supported browsers, access revocation timing, and the block/report policy before acceptance. Same-university hall voice is the scope. Whether busy halls need multiple voice groups is open.
+- Voice uses LiveKit, with a provisional capacity of 24 students per channel. Same-university hall voice covers all floors. Existing account blocks prevent sharing a channel. Release browser support, capacity and report handling remain open.
 
 ## Integrated acceptance
 
@@ -43,3 +43,17 @@ Each SRS item has an independent requirements branch based on `feature/dormspace
 | Provider privacy | Verify encrypted media and inspect settings and data stores for recordings, transcripts and retained audio. |
 
 Record results from separate signed-in browser sessions, including a supported mobile browser and a denied-access account. Capture running UI evidence with synthetic accounts. Keep implementation cards in Product Backlog until selected, and use the team's Definition of Done before closing them.
+
+
+## Voice deployment
+
+1. Apply the DormSpace 3D directory and `20261106075900_dormspace_voice.sql` migrations to the environment's database.
+2. Set `DORMSPACE_VOICE_URL`, `DORMSPACE_VOICE_API_KEY`, `DORMSPACE_VOICE_API_SECRET` and a separate random `DORMSPACE_VOICE_SWEEP_SECRET` of at least 32 characters on the app server. Production uses a dedicated LiveKit Cloud project at its `wss://…livekit.cloud` endpoint so participant removal also revokes media tokens. Loopback LiveKit development servers are supported in development.
+3. Keep recording, egress and agent integrations off in the provider project. The app requests microphone-only publish permission and uses encrypted WebRTC transport. Neither the app nor the configured project records or transcribes voice.
+4. Run `node scripts/dormspace-voice-sweep.mjs` as a supervised worker. Set its `DORMSPACE_VOICE_SWEEP_ENDPOINT` to the app's `/api/dorm/voice/sweep` URL and give it the same sweep secret. It scans provider rooms about every five seconds. Monitor failures and keep the worker running whenever voice is enabled. Keep the API secret and sweep secret out of browser-exposed settings.
+
+Joining reserves one voice seat against the current authenticated DormSpace presence. The browser checks access about every five seconds while joined. Each successful check renews a 15-second lease. The worker removes expired, unauthorized and blocked sessions from the provider, including when a browser disappears without sending Leave. Media admission tokens expire after 20 seconds. There is no background microphone capture on entry, reconnect or location change. Sign-out, leave, denied access and a disconnected transport release capture and playback.
+
+The implementation includes separate SRS review branches under `impl/srs-531.*`. These are stacked on the 3D block-style branch and audio SRS. Existing Product Backlog links above remain the source of task tracking.
+
+For local integration tests, use a loopback LiveKit server in development mode, set the same four development variables, and run the existing DormSpace browser harness with `DORMSPACE_VOICE_TEST=1` and the test name `streams voice`. The test uses a disposable database, synthetic students and Chromium's synthetic microphone.

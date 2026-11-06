@@ -68,15 +68,18 @@ export function useDormVoice(connectionId: string, eligible: boolean, audioHost:
       const run = active.current;
       if (run && sessionOf(storedAccessToken()) !== run.session) finish(run, 'Your sign-in changed. Join voice again after signing in.');
     };
+    const networkLost = () => {
+      if (active.current) finish(active.current, 'Voice connection interrupted. Join again to listen.');
+    };
     window.addEventListener('storage', sessionChanged);
     window.addEventListener('socialu-session-changed', sessionChanged);
     window.addEventListener('pagehide', leave);
-    window.addEventListener('offline', leave);
+    window.addEventListener('offline', networkLost);
     return () => {
       window.removeEventListener('storage', sessionChanged);
       window.removeEventListener('socialu-session-changed', sessionChanged);
       window.removeEventListener('pagehide', leave);
-      window.removeEventListener('offline', leave);
+      window.removeEventListener('offline', networkLost);
     };
   }, [eligible, finish, leave]);
 
