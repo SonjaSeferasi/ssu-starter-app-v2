@@ -39,6 +39,8 @@ reset or migrated. The legacy routes keep the personalized `GET /api/dorm?view=h
 
 SRS-504.16 adds a block style to the 3D route. DormSpace builds its own rigid avatar from the same Game Room appearance resolver and pose anchors. The hall, rooms and shop share small bevels, clean color fills and geometric fixtures.
 
+On 6 November 2026, the block-style branch passed 194 DormSpace tests and all six Chromium scenarios against a disposable database. The Chromium run used a longer initial navigation timeout for local compilation. The full type check still reports the seven existing errors in `__tests__/world-explorer-asia-puzzles.test.ts`.
+
 Everything in the canvas is built in code with Three.js meshes; there are no sprites, billboards or generated
 images of geometry. One cell is 0.62 m. Walking uses 4 cells/s and sprinting uses 1.5× that speed.
 
