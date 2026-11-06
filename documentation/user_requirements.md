@@ -382,6 +382,10 @@ As a student, I want to explore a current friend's dorm and leave a guestbook no
 
 As a student, I want a persistent visit counter for my virtual dorm, so that I can see how often friends have visited my space.
 
+##### UR-530, DP - Listen to Shared MP3 Music in DormSpace Rooms
+
+As a student in an authorized 3D dorm room, I want to opt in to the same MP3 music as other listeners so we can share the room soundtrack.
+
 #### DormSpace Constraints and Assumptions
 
 - DormSpace is entered from SocialU's Game Room and opens into the student's DormHall.

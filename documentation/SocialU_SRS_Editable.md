@@ -5832,6 +5832,22 @@ When a student inspects a decoration before purchasing, the system shall display
 
 Traces to: UR-529.
 
+<a id="ur-530"></a>
+
+#### UR-530, DP - Listen to Shared MP3 Music in DormSpace Rooms
+
+User requirement: As a student in an authorized 3D dorm room, I want to opt in to the same MP3 music as other listeners so we can share the room soundtrack.
+
+<a id="srs-530.3"></a>
+
+##### SRS-530.3, DP — Shared playback position and recovery.
+
+The system shall align opted-in listeners in the same room to the current track and playback position when they join, resume or reconnect, and offer retry when loading fails.
+
+Acceptance criterion: A late listener joins the active track at its current position. A recovering listener uses the latest owner-selected track and play/pause state. A failed track load leaves movement, text chat and voice controls available.
+
+Traces to: UR-530.
+
 <a id="section-SS"></a>
 
 ## 9. Navigation, Game Room, and Games
@@ -8110,6 +8126,7 @@ Unconfirmed operation outcomes do not prove failure. Retry and exit behavior pre
 | UR-527 | SRS-527.1 through SRS-527.8 | [See section](#ur-527) |
 | UR-528 | SRS-528.1 through SRS-528.6 | [See section](#ur-528) |
 | UR-529 | SRS-529.1 through SRS-529.7 | [See section](#ur-529) |
+| UR-530 | SRS-530.3 | [See section](#ur-530) |
 
 <a id="sonja-seferasi-ss"></a>
 
@@ -8236,6 +8253,7 @@ The aligned user_requirements.md contains these amendments. This register record
 | UR-506 | Retired identifier; no achievement display. |
 | UR-507 to UR-514 | Integrated DormHall and independent Snipe identity/sharing consent with lifecycle boundaries. |
 | UR-526; UR-613 | One shared participation streak and daily/milestone reward policy. |
+| UR-530 | Listen to Shared MP3 Music in DormSpace Rooms. Planned audio scope for 3D DormSpace. |
 | UR-605; UR-606 | Audience-selection delegation and explicit draft deferral. |
 | UR-623 to UR-626 | Conditional daily Wordle with today's puzzle/result only. |
 | UR-627 | Preserved existing display-preference requirement. |
