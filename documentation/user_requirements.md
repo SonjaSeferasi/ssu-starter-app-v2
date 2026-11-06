@@ -346,7 +346,7 @@ As a student, I want to see campus posts ranked by the likes received during the
 
 #### DormSpace
 
-DormSpace is a 2D social and customization game within SocialU's Game Room. Students enter DormSpace through a DormHall containing doors for their current friends. Each door identifies the friend using their username and profile picture. Students can enter friends' dorm rooms, explore their spaces, leave notes, and return to the DormHall. Students can also customize their own dorm using free starter items and decorations purchased with points earned throughout SocialU.
+DormSpace is a 3D social and customization game within SocialU's Game Room. Students enter a shared DormHall for their university, where residents have stable room numbers. The campus and classic 2D versions remain accessible. Students can enter friends' dorm rooms, explore their spaces, leave notes, and return to the DormHall. Students can also customize their own dorm using free starter items and decorations purchased with points earned throughout SocialU.
 
 ##### UR-500, DP - Personalize My Virtual Dorm
 
@@ -358,7 +358,7 @@ As a student, I want access to a useful set of free starter furniture and decora
 
 ##### UR-504, DP - Represent Myself in DormSpace
 
-As a student, I want my 2D avatar to represent me while I explore DormSpace, so that I can have a recognizable character when visiting my dorm and the dorms of my friends.
+As a student, I want my current Game Room avatar to represent me in 3D while I explore DormSpace, so that I can have a recognizable character when visiting my dorm and the dorms of my friends.
 
 ##### UR-505, DP - Maintain One Current Virtual Dorm
 
@@ -372,7 +372,7 @@ As a student, I want to display trophies or other achievements earned through su
 
 ##### UR-507, DP - Visit Friends Through the DormHall
 
-As a student, I want to move my 2D avatar through a DormHall with my own marked door followed by doors for current friends in friendship order, so that I can enter my dorm or recognize and visit my friends across elevator-accessible floors.
+As a student, I want to move my 3D avatar through the shared DormHall and use stable, numbered doors across elevator-accessible floors so I can find my own dorm and visit current friends.
 
 ##### UR-508, DP - Explore Friends' Dorms and Leave Notes
 
@@ -382,12 +382,21 @@ As a student, I want to explore a current friend's dorm and leave a guestbook no
 
 As a student, I want a persistent visit counter for my virtual dorm, so that I can see how often friends have visited my space.
 
+##### UR-530, DP - Listen to Shared MP3 Music in DormSpace Rooms
+
+As a student in an authorized 3D dorm room, I want to opt in to the same MP3 music as other listeners so we can share the room soundtrack.
+
+##### UR-531, DP - Join Voice Chat in DormSpace Rooms and the DormHall
+
+As a student, I want to choose to join live voice in an authorized 3D dorm room or in my shared DormHall so I can talk to students in the same place.
+
 #### DormSpace Constraints and Assumptions
 
+- Planned audio applies to 3D DormSpace. Music and voice require separate opt-ins. Entering a room or hall never starts either audio feature.
 - DormSpace is entered from SocialU's Game Room and opens into the student's DormHall.
 - Each student has one current virtual dorm. Alternate saved layouts and layout history are outside the initial scope.
-- DormSpace uses a 2D presentation. Students can move their avatar through the DormHall and through dorm rooms that they are allowed to visit.
-- The first DormHall floor starts with the owner's marked door and nine friend/vacant doors; later floors have ten friend/vacant doors, ordered by current friendship acceptance time.
+- The default DormSpace uses a 3D presentation. Students can move through the shared DormHall and rooms they are allowed to visit.
+- Each DormHall floor has twelve numbered doors. A room is accessible to its owner and current friends.
 - A student enters a friend's dorm by interacting with that friend's door and returns to the DormHall by interacting with the room exit.
 - Only the owner can decorate or otherwise modify their own dorm. Visitors can explore but cannot rearrange another student's room.
 - Only current friends can visit a dorm or leave a guestbook note. Removing a friendship revokes future visit and note-posting access.

@@ -5844,6 +5844,120 @@ When a student inspects a decoration before purchasing, the system shall display
 
 Traces to: UR-529.
 
+DormSpace audio is planned for the 3D route and depends on the shared hall and existing room authorization. Music is opt-in and limited to the current room. Voice is opt-in in both rooms and the shared hall. See [the audio review and verification plan](dormspace-audio.md).
+
+<a id="ur-530"></a>
+
+#### UR-530, DP - Listen to Shared MP3 Music in DormSpace Rooms
+
+User requirement: As a student in an authorized 3D dorm room, I want to opt in to the same MP3 music as other listeners so we can share the room soundtrack.
+
+<a id="srs-530.1"></a>
+
+##### SRS-530.1, DP — Room owner music controls.
+
+The system shall let the current dorm owner in their room select a track from the approved MP3 catalog and start, pause, resume or stop the shared room soundtrack.
+
+Acceptance criterion: With the owner and a friend in the room, the owner's changes update the displayed track and playback state. The visitor cannot change the shared state, including through a direct request.
+
+Traces to: UR-530.
+
+<a id="srs-530.2"></a>
+
+##### SRS-530.2, DP — Opt-in listening and personal controls.
+
+The system shall keep room music silent for each student until they choose Listen, and shall let each listener adjust music volume or stop listening independently of other participants and of voice chat.
+
+Acceptance criterion: When a track starts, an opted-out visitor hears silence. When two visitors opt in, one can lower the music or stop listening without changing the other's audio or either student's voice volume.
+
+Traces to: UR-530.
+
+<a id="srs-530.3"></a>
+
+##### SRS-530.3, DP — Shared playback position and recovery.
+
+The system shall align opted-in listeners in the same room to the current track and playback position when they join, resume or reconnect, and offer retry when loading fails.
+
+Acceptance criterion: A late listener joins the active track at its current position. A recovering listener uses the latest owner-selected track and play/pause state. A failed track load leaves movement, text chat and voice controls available.
+
+Traces to: UR-530.
+
+<a id="srs-530.4"></a>
+
+##### SRS-530.4, DP — Room music access and exit.
+
+The system shall authorize room music state and delivery against current room access and presence, and stop a student's listening when they leave, sign out or lose access.
+
+Acceptance criterion: An unauthorized account cannot retrieve a room's playback state or protected track access. A visitor who exits or loses access stops hearing the room and does not opt in automatically on returning. The DormHall has no room music.
+
+Traces to: UR-530.
+
+<a id="ur-531"></a>
+
+#### UR-531, DP - Join Voice Chat in DormSpace Rooms and the DormHall
+
+User requirement: As a student, I want to choose to join live voice in an authorized 3D dorm room or in my shared DormHall so I can talk to students in the same place.
+
+<a id="srs-531.1"></a>
+
+##### SRS-531.1, DP — Opt-in room and DormHall voice.
+
+The system shall offer an explicit Join voice action for students in an authorized 3D room or in the shared DormHall. Joining starts in listen-only mode with a visible channel label and Leave voice action.
+
+Acceptance criterion: Entering a room or hall never opens a voice connection or prompts for the microphone. A student who joins can hear consenting participants in that location and see whether they are in the hall or a named room.
+
+Traces to: UR-531.
+
+<a id="srs-531.2"></a>
+
+##### SRS-531.2, DP — Voice channel authorization and isolation.
+
+The system shall authorize voice admission and delivery using the signed-in student's current game location and applicable DormSpace access rules. Voice in a room shall be isolated from the hall and every other room. DormHall voice shall be isolated by university.
+
+Acceptance criterion: Two eligible non-friends can join hall voice at their university. An unauthorized room join, guessed channel, request from a different university, or stale room authorization grants no access. Audio never crosses a room or university boundary.
+
+Traces to: UR-531.
+
+<a id="srs-531.3"></a>
+
+##### SRS-531.3, DP — Explicit microphone consent and mute.
+
+The system shall request microphone access only after a joined student explicitly enables their microphone, show their actual microphone state, and stop transmitting when they mute. Denied or unavailable microphones shall leave listen-only voice and text chat available.
+
+Acceptance criterion: Joining never prompts for the microphone. Enabling prompts when needed. Denial keeps listening available. Muting an active microphone stops outgoing audio while preserving incoming audio.
+
+Traces to: UR-531.
+
+<a id="srs-531.4"></a>
+
+##### SRS-531.4, DP — Participant list and local mute.
+
+The system shall show current voice participants, visually identify speaking participants, and let a student mute or unmute another participant locally without affecting other listeners.
+
+Acceptance criterion: With three students joined, one can mute a speaker while another still hears them. The roster removes a participant who leaves, and speaking state is available without relying on sound or color alone.
+
+Traces to: UR-531.
+
+<a id="srs-531.5"></a>
+
+##### SRS-531.5, DP — Voice teardown and reconnect.
+
+The system shall stop capture and disconnect the current voice session on Leave voice, location change, logout or loss of eligibility. On connection loss the system shall stop sending audio and expose an explicit retry in the current eligible location with the microphone muted.
+
+Acceptance criterion: Moving from the hall into a room or losing friend access stops the old audio and releases the microphone. A network interruption does not resume transmission automatically. Returning to voice requires a fresh action.
+
+Traces to: UR-531.
+
+<a id="srs-531.6"></a>
+
+##### SRS-531.6, DP — Voice transport and retention.
+
+The system shall transport live voice using encrypted media and shall provide no app or service-side recording, replay, transcription or retention of voice content.
+
+Acceptance criterion: Verify encrypted transport and inspect application and provider settings and data stores after a call. No recoverable audio, transcript or replay is created, including when diagnosing errors.
+
+Traces to: UR-531.
+
 <a id="section-SS"></a>
 
 ## 9. Navigation, Game Room, and Games
@@ -7972,6 +8086,8 @@ TBD means a team decision is still required. These are explicit dependencies, no
 | B-14 | LN | Supply the launch university name and approved email domains. | SRS-100.5; SRS-101.3 |
 | B-15 | LP + MS | Supply the approved Chat reaction emoji set and accepted feed photograph formats. | SRS-210.2; SRS-304.1; SRS-NFR-41 |
 | B-16 | DP + SS | Supply release faces/outfits, starter dorm items and authored level assets; approve the dictionary and daily puzzle schedule if Wordle is included. | SRS-503.1; UR-608 to UR-610; SRS-618.1; SRS-624.1; SRS-624.6 |
+| B-17 | DP + team | Confirm the room soundtrack controller and release MP3 source, permitted redistribution and track list. The working proposal uses room-owner controls and a team-approved catalog. | UR-530 |
+| B-18 | DP + team | Select voice infrastructure, hall capacity, browser support, revocation bounds, and block/report handling. Confirm these before acceptance testing. | UR-531 |
 
 Out of scope: achievement trophies, alternate dorm layouts, furniture rotation, live multiplayer dorm synchronization, Snipe feed/profile publication, Snipe friend-group leaderboards or voting, real-money points, refunds, duplicate ownership of the same catalog item, university transfers and post/event drafts.
 
@@ -8122,6 +8238,8 @@ Unconfirmed operation outcomes do not prove failure. Retry and exit behavior pre
 | UR-527 | SRS-527.1 through SRS-527.8 | [See section](#ur-527) |
 | UR-528 | SRS-528.1 through SRS-528.6 | [See section](#ur-528) |
 | UR-529 | SRS-529.1 through SRS-529.7 | [See section](#ur-529) |
+| UR-530 | SRS-530.1 through SRS-530.4 | [See section](#ur-530) |
+| UR-531 | SRS-531.1 through SRS-531.6 | [See section](#ur-531) |
 
 <a id="sonja-seferasi-ss"></a>
 
@@ -8248,6 +8366,8 @@ The aligned user_requirements.md contains these amendments. This register record
 | UR-506 | Retired identifier; no achievement display. |
 | UR-507 to UR-514 | Integrated DormHall and independent Snipe identity/sharing consent with lifecycle boundaries. |
 | UR-526; UR-613 | One shared participation streak and daily/milestone reward policy. |
+| UR-530 | Listen to Shared MP3 Music in DormSpace Rooms. Planned audio scope for 3D DormSpace. |
+| UR-531 | Join Voice Chat in DormSpace Rooms and the DormHall. Planned audio scope for 3D DormSpace. |
 | UR-605; UR-606 | Audience-selection delegation and explicit draft deferral. |
 | UR-623 to UR-626 | Conditional daily Wordle with today's puzzle/result only. |
 | UR-627 | Preserved existing display-preference requirement. |

@@ -16,6 +16,8 @@ let db: PGlite, service: Server, next: ChildProcess, browser: any, owner: any, f
 let base = '', nextLog = '', friendRequest = '';
 const sessions = new Map<string, any>();
 const artifacts = process.env.DORMSPACE_EVIDENCE_DIR || 'tmp/dormspace-3d';
+const voiceTest = process.env.DORMSPACE_VOICE_TEST === '1';
+const voiceMigration = 'supabase/migrations/20261106075900_dormspace_voice.sql';
 const user = (student: number) => ({ id: testUid(student), email: `dorm${student}@salemstate.edu`, email_confirmed_at: '2026-11-04T12:00:00Z', aud: 'authenticated', role: 'authenticated', user_metadata: { full_name: `Dorm Student ${student}`, username: `dorm${student}` } });
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 async function listen(server: Server) {
@@ -94,11 +96,11 @@ async function bodyText(page: any) {
 async function enter3D(page: any, label: string) {
   try {
     // Direct navigation to the real game route: no client-side redirect to race.
-    await page.goto(base + '/game-room/dormspace', { waitUntil: 'domcontentloaded' });
+    await page.goto(base + '/game-room/dormspace', { waitUntil: 'domcontentloaded', timeout: voiceTest ? 150000 : 30000 });
     await page.bringToFront();
     // Fail fast (with the real state) if the engine settles on anything other than ready.
     const settled = page.locator('div[data-engine]:not([data-engine="loading"])');
-    await settled.waitFor({ timeout: 60000 });
+    await settled.waitFor({ timeout: voiceTest ? 120000 : 60000 });
     const state = await settled.getAttribute('data-engine');
     if (state !== 'ready') throw new Error(`the 3D engine settled as "${state}", not "ready"`);
     await page.locator('[data-scene="hall"]').waitFor({ timeout: 30000 });
@@ -123,6 +125,7 @@ async function signIn(student: number, viewport = DESKTOP) {
   const storageState = await loginStorage(student);
   const context = await browser.newContext({ viewport, deviceScaleFactor: 1, hasTouch: mobile, isMobile: mobile, storageState });
   const page = await context.newPage();
+  if (voiceTest) page.setDefaultTimeout(45000);
   watch(page);
   try {
     return await enter3D(page, `dorm${student}`);
@@ -219,6 +222,7 @@ beforeAll(async () => {
   await db.exec(readFileSync('supabase/migrations/20261026000100_school_communities.sql', 'utf8'));
   await db.exec(readFileSync(DIRECTORY_MIGRATION, 'utf8'));
   await db.exec(readFileSync(SHOP_MIGRATION, 'utf8'));
+  if (voiceTest) await db.exec(readFileSync(voiceMigration, 'utf8'));
   friendRequest = await befriend(db, 1, 2);
   await credit(db, 2, 400);
   service = createServer(async (request, response) => {
@@ -242,7 +246,7 @@ beforeAll(async () => {
       if (!fn || !Object.keys(body).every(key => /^p_[a-z_]+$/.test(key))) { reply(404, { code: 'PGRST202', message: 'Unknown local test endpoint' }); return; }
       const entries = Object.entries(body);
       const result = await db.query<{ result: unknown }>(`SELECT public.${fn}(${entries.map(([key], index) => `${key} => $${index + 1}`).join(',')}) AS result`,
-        entries.map(([, value]) => value && typeof value === 'object' ? JSON.stringify(value) : value));
+        entries.map(([key, value]) => key !== 'p_connections' && value && typeof value === 'object' ? JSON.stringify(value) : value));
       reply(200, result.rows[0].result);
     } catch (error: any) { reply(400, { code: error.code || 'TEST', message: error.message }); }
   });
@@ -264,8 +268,13 @@ beforeAll(async () => {
     if (!ready) await delay(300);
   }
   if (!ready) throw new Error('Local Next test app did not start: ' + nextLog.slice(-3000));
+  if (voiceTest) {
+    const status = await fetch(base + '/api/dorm/voice', { method: 'POST', signal: AbortSignal.timeout(90000) });
+    if (status.status !== 401) throw new Error('Voice API did not start: ' + nextLog.slice(-2000));
+  }
   const playwright = await import(/* @vite-ignore */ process.env.SOCIALU_PLAYWRIGHT_MODULE || 'playwright');
-  browser = await playwright.chromium.launch({ headless: true, args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'], ...(process.env.DORMSPACE_BROWSER_EXECUTABLE ? { executablePath: process.env.DORMSPACE_BROWSER_EXECUTABLE } : {}) });
+  browser = await playwright.chromium.launch({ headless: true, args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', ...(voiceTest ?
+    ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'] : [])], ...(process.env.DORMSPACE_BROWSER_EXECUTABLE ? { executablePath: process.env.DORMSPACE_BROWSER_EXECUTABLE } : {}) });
 }, 120000);
 afterEach(async context => {
   if (context.task.result?.state === 'fail') {
@@ -501,3 +510,93 @@ it('works on a phone layout and keeps the legacy versions available', async () =
   await phone.getByText('Saved original version').waitFor();
   await phone.context().close();
 }, 240000);
+
+it.skipIf(!voiceTest)('streams voice only after opt-in and isolates rooms, mic consent, mute and revocation', async () => {
+  const viewport = { width: 720, height: 540 };
+  owner = await signIn(1, viewport);
+  friend = await signIn(2, viewport);
+  const voice = (page: any) => page.getByRole('region', { name: /^Voice chat/ });
+  // Use Chromium's synthetic microphone only. Count actual capture calls and inspect release.
+  for (const page of [owner, friend]) {
+    await page.evaluate(() => {
+      const devices = navigator.mediaDevices;
+      const observed = { calls: 0, deny: false, tracks: [] as MediaStreamTrack[] };
+      Object.assign(window, { observedVoice: observed });
+      devices.getUserMedia = async () => {
+        observed.calls++;
+        if (observed.deny) throw new DOMException('Test denial', 'NotAllowedError');
+        const context = new AudioContext();
+        await context.resume();
+        const oscillator = context.createOscillator();
+        const gain = context.createGain();
+        const output = context.createMediaStreamDestination();
+        gain.gain.value = 0.18;
+        oscillator.connect(gain).connect(output);
+        oscillator.start();
+        const [track] = output.stream.getAudioTracks();
+        const stop = track.stop.bind(track);
+        track.stop = () => {
+          if (track.readyState !== 'live') return;
+          stop();
+          oscillator.stop();
+          void context.close();
+        };
+        observed.tracks.push(track);
+        return output.stream;
+      };
+    });
+  }
+  const observed = (page: any) => page.evaluate(() => {
+    const capture = (window as any).observedVoice;
+    return { calls: capture.calls, states: capture.tracks.map((track: MediaStreamTrack) => track.readyState) };
+  });
+  const join = async (page: any) => {
+    await page.bringToFront();
+    await voice(page).getByRole('button', { name: 'Join voice', exact: true }).click({ timeout: 20000 });
+    await voice(page).getByText('Listening only. Your microphone is off.', { exact: true }).waitFor({ timeout: 30000 });
+  };
+  await join(owner);
+  expect(await observed(owner)).toEqual({ calls: 0, states: [] });
+  expect(await voice(owner).getByRole('button', { name: 'Mute dorm2', exact: true }).count()).toBe(0);
+  await join(friend);
+  await voice(owner).getByRole('button', { name: 'Mute dorm2', exact: true }).waitFor();
+  expect(await observed(friend)).toEqual({ calls: 0, states: [] });
+  await owner.bringToFront();
+  await voice(owner).getByRole('button', { name: 'Enable microphone', exact: true }).click();
+  await voice(owner).getByText('Microphone on.', { exact: true }).waitFor();
+  expect(await observed(owner)).toEqual({ calls: 1, states: ['live'] });
+  await friend.bringToFront();
+  const play = voice(friend).getByRole('button', { name: 'Play voice audio' });
+  if (await play.isVisible()) await play.click();
+  await friend.waitForFunction(() => [...document.querySelectorAll('audio')].some(audio => audio.currentTime > 0 && !audio.paused), undefined, { timeout: 20000 });
+  await voice(friend).getByRole('button', { name: 'Mute dorm1', exact: true }).click();
+  expect(await friend.locator('audio').first().evaluate((audio: HTMLAudioElement) => audio.muted)).toBe(true);
+  await voice(friend).getByRole('button', { name: 'Unmute dorm1', exact: true }).click();
+  expect(await friend.locator('audio').first().evaluate((audio: HTMLAudioElement) => audio.muted)).toBe(false);
+  await friend.evaluate(() => { (window as any).observedVoice.deny = true; });
+  await voice(friend).getByRole('button', { name: 'Enable microphone', exact: true }).click();
+  await voice(friend).getByText(/Microphone unavailable or denied/).waitFor();
+  expect(await friend.getByRole('textbox', { name: 'Message players here' }).isEnabled()).toBe(true);
+
+  await owner.bringToFront();
+  await voice(owner).getByRole('button', { name: 'Mute microphone', exact: true }).click();
+  expect(await observed(owner)).toEqual({ calls: 1, states: ['ended'] });
+  await shot(owner, 'voice-hall-listen-only');
+  await openOwnRoom(owner);
+  await voice(owner).getByRole('button', { name: 'Join voice', exact: true }).waitFor();
+  await voice(friend).getByRole('button', { name: 'Mute dorm1', exact: true }).waitFor({ state: 'hidden' });
+  await join(owner);
+
+  await friend.bringToFront();
+  await friend.getByRole('button', { name: 'Elevator & doors' }).click();
+  await friend.getByRole('button', { name: 'Enter room 101, dorm1' }).click();
+  await friend.locator('[data-scene="room"]').waitFor();
+  await join(friend);
+  await voice(owner).getByRole('button', { name: 'Mute dorm2', exact: true }).waitFor();
+  await friendship(db, 1, 'remove', 2, friendRequest);
+  await friend.locator('[data-scene="hall"]').waitFor({ timeout: 20000 });
+  await voice(owner).getByRole('button', { name: 'Mute dorm2', exact: true }).waitFor({ state: 'hidden', timeout: 20000 });
+  await voice(friend).getByRole('button', { name: 'Join voice', exact: true }).waitFor();
+  await closePage(friend); friend = null;
+  await closePage(owner); owner = null;
+}, 420000);
