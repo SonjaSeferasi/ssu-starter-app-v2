@@ -1,10 +1,8 @@
-// SRS-504.1: the DormSpace 3D student. Builds on the articulated Game 1 rig (characterRig) with
-// the DormSpace look resolver, then adds square glasses, freckles, closed eyes, curly-bob curls
-// and trouser cuts, and merges static parts per material to keep draw calls low.
+// SRS-504.16: DormSpace's block avatar uses the saved Game Room look and existing pose anchors.
 import * as T from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
-import { characterRig } from '../jumpyland/character-rig';
-import { dormAvatarStyleKey, isGameRoomData, resolveDormAvatarStyle, rigStyle, type DormAvatarInput, type DormAvatarStyle } from './avatar-style';
+import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
+import { dormAvatarStyleKey, resolveDormAvatarStyle, type DormAvatarInput, type DormAvatarStyle } from './avatar-style';
 import {
   DEFAULT_BED_HEIGHT, poseAngles, prefersReducedMotion, restSole,
   type DormAvatarPose, type DormPoseOptions, type JointAngles, type LegMetrics,
@@ -12,7 +10,7 @@ import {
 
 export type DormAvatarOptions = { /** Campus backpack (off indoors by default). */ backpack?: boolean };
 type Joints = {
-  pivot: T.Group; body: T.Object3D; head: T.Object3D; closedEyes: T.Object3D;
+  pivot: T.Group; body: T.Object3D; head: T.Object3D; openEyes: T.Object3D; closedEyes: T.Object3D;
   arms: T.Object3D[]; elbows: T.Object3D[]; legs: T.Object3D[]; knees: T.Object3D[];
 };
 export type DormAvatarModel = {
@@ -30,88 +28,210 @@ export type DormAvatarModel = {
   disposed: boolean;
 };
 
-// ---- Resources shared by every avatar (never disposed with one model) ----
-let sharedWeave: T.Texture | null | undefined;
-const shared = { sphere: null as T.SphereGeometry | null, box: null as T.BoxGeometry | null };
-function markShared<R extends { userData: Record<string, unknown> }>(resource: R) { resource.userData.shared = true; return resource; }
-function weave() {
-  if (sharedWeave !== undefined) return sharedWeave;
-  if (typeof document === 'undefined') return null; // SSR / Node: no cloth normal map
-  const canvas = document.createElement('canvas'); canvas.width = canvas.height = 64;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return (sharedWeave = null);
-  ctx.fillStyle = '#8080ff'; ctx.fillRect(0, 0, 64, 64);
-  for (let y = 0; y < 64; y += 2) for (let x = 0; x < 64; x += 2) { ctx.fillStyle = (x + y) % 4 ? '#7784fc' : '#897bfc'; ctx.fillRect(x, y, 1, 2); }
-  const texture = new T.CanvasTexture(canvas); texture.wrapS = texture.wrapT = T.RepeatWrapping; texture.repeat.set(12, 12);
-  return (sharedWeave = markShared(texture));
+function sharedGeometry<G extends T.BufferGeometry>(geometry: G) {
+  geometry.userData.shared = true;
+  return geometry;
 }
-const sphere = () => (shared.sphere ??= markShared(new T.SphereGeometry(1, 14, 10)));
-const box = () => (shared.box ??= markShared(new T.BoxGeometry(1, 1, 1)));
+const cube = sharedGeometry(new T.BoxGeometry(1, 1, 1));
+const headBlock = sharedGeometry(new RoundedBoxGeometry(1, 1, 1, 1, 0.055));
+const glassesRing = sharedGeometry(new T.TorusGeometry(0.031, 0.0035, 6, 18));
 
-function add(parent: T.Object3D, geometry: T.BufferGeometry, material: T.Material, position: [number, number, number], scale: [number, number, number], name: string) {
-  const mesh = new T.Mesh(geometry, material); mesh.name = name;
-  mesh.position.set(...position); mesh.scale.set(...scale); mesh.castShadow = mesh.receiveShadow = true;
-  parent.add(mesh); return mesh;
+const matte = (color: T.ColorRepresentation) => new T.MeshStandardMaterial({ color, roughness: 0.78 });
+type Vector = [number, number, number];
+function add(parent: T.Object3D, geometry: T.BufferGeometry, material: T.Material, position: Vector, size: Vector, name: string) {
+  const mesh = new T.Mesh(geometry, material);
+  mesh.name = name;
+  mesh.position.set(...position);
+  mesh.scale.set(...size);
+  mesh.castShadow = mesh.receiveShadow = true;
+  parent.add(mesh);
+  return mesh;
 }
-const named = (root: T.Object3D, name: string) => { const found: T.Object3D[] = []; root.traverse(o => { if (o.name === name) found.push(o); }); return found; };
-const firstMaterial = (root: T.Object3D, name: string) => (named(root, name).find(o => o instanceof T.Mesh) as T.Mesh | undefined)?.material as T.MeshStandardMaterial | undefined;
+const block = (parent: T.Object3D, material: T.Material, position: Vector, size: Vector, name: string) =>
+  add(parent, cube, material, position, size, name);
+function group(parent: T.Object3D, name: string, position: Vector = [0, 0, 0]) {
+  const joint = new T.Group();
+  joint.name = name;
+  joint.position.set(...position);
+  parent.add(joint);
+  return joint;
+}
+
+function buildHair(head: T.Group, style: DormAvatarStyle) {
+  const hair = group(head, `hairstyle-${style.hair}`);
+  const material = matte(style.hijabColor ?? style.hairColor);
+  const shape = (position: Vector, size: Vector, name = 'hair-block') => block(hair, material, position, size, name);
+  if (style.hair === 'hijab') {
+    shape([0, 0.155, -0.012], [0.392, 0.1, 0.337]);
+    shape([0, -0.048, -0.149], [0.378, 0.343, 0.075]);
+    for (const side of [-1, 1]) shape([side * 0.174, -0.062, 0.009], [0.078, 0.328, 0.309]);
+    shape([0, -0.201, 0.035], [0.32, 0.1, 0.29], 'scarf-drape');
+    return;
+  }
+  shape([0, 0.149, -0.014], [0.373, 0.094, 0.335], 'hair-cap');
+  switch (style.hair) {
+    case 'fade':
+      shape([0, 0.192, -0.026], [0.318, 0.047, 0.266]);
+      break;
+    case 'waves':
+    case 'long-waves':
+      shape([-0.061, 0.15, 0.124], [0.237, 0.092, 0.114]).rotation.z = 0.16;
+      shape([0.091, 0.191, -0.014], [0.154, 0.071, 0.264]).rotation.z = -0.14;
+      if (style.hair === 'long-waves') {
+        shape([0, -0.147, -0.165], [0.393, 0.49, 0.11]);
+        for (const side of [-1, 1]) shape([side * 0.178, -0.073, -0.031], [0.097, 0.44, 0.235]).rotation.z = side * 0.09;
+      }
+      break;
+    case 'ponytail':
+      shape([0, 0.062, -0.203], [0.15, 0.163, 0.124]);
+      shape([0, -0.08, -0.242], [0.15, 0.227, 0.113]).rotation.x = -0.27;
+      break;
+    case 'bob':
+      shape([0, -0.048, -0.158], [0.39, 0.352, 0.097]);
+      for (const side of [-1, 1]) shape([side * 0.176, -0.046, -0.014], [0.084, 0.307, 0.265]);
+      if (style.curlyBob) {
+        for (let i = 0; i < 5; i++) shape([(i - 2) * 0.072, 0.17 + (i % 2) * 0.024, 0.118], [0.082, 0.11, 0.098]).rotation.z = (i - 2) * 0.13;
+      } else {
+        shape([0, 0.118, 0.142], [0.338, 0.081, 0.076]);
+      }
+      break;
+    case 'locs':
+    case 'braids':
+      for (let i = 0; i < 5; i++) {
+        const x = (i - 2) * 0.077;
+        const length = style.hair === 'braids' ? 0.41 : 0.29;
+        shape([x, 0.121 - length / 2, -0.139], [0.067, length, 0.11]).rotation.z = x * 0.58;
+      }
+      for (const side of [-1, 1]) {
+        shape([side * 0.177, -0.046, 0.085], [0.065, style.hair === 'braids' ? 0.39 : 0.26, 0.071]).rotation.z = side * 0.15;
+      }
+      break;
+    case 'curls':
+    case 'coils': {
+      const count = style.hair === 'curls' ? 4 : 5;
+      for (let row = 0; row < 3; row++) for (let col = 0; col < count; col++) {
+        const width = 0.35 / count;
+        const tuft = shape([(col - (count - 1) / 2) * width, 0.188 + ((col + row) % 3) * 0.015, (row - 1) * 0.105], [width + 0.008, 0.086, 0.11]);
+        tuft.rotation.set(row * 0.08, 0, (col % 2 ? 1 : -1) * 0.12);
+      }
+      break;
+    }
+  }
+}
+
+function buildFace(head: T.Group, style: DormAvatarStyle, skin: T.Material, ink: T.Material) {
+  const openEyes = group(head, 'open-eyes');
+  const closedEyes = group(head, 'closed-eyes');
+  closedEyes.visible = false;
+  for (const side of [-1, 1]) {
+    const x = side * 0.064;
+    block(openEyes, ink, [x, 0.024, 0.154], [0.024, 0.042, 0.008], 'eye');
+    block(closedEyes, skin, [x, 0.024, 0.154], [0.037, 0.026, 0.008], 'closed-eyelid').userData.keep = true;
+    block(closedEyes, ink, [x, 0.021, 0.16], [0.03, 0.006, 0.004], 'closed-lash');
+    block(head, ink, [side * 0.032, -0.056, 0.154], [0.027, 0.008, 0.007], 'smile-corner').rotation.z = side * 0.52;
+  }
+  block(head, ink, [0, -0.064, 0.154], [0.047, 0.008, 0.007], 'smile');
+  if (style.glasses !== 'none') {
+    const glasses = group(head, `${style.glasses}-glasses`);
+    for (const side of [-1, 1]) {
+      const x = side * 0.064;
+      if (style.glasses === 'round') {
+        add(glasses, glassesRing, ink, [x, 0.024, 0.164], [1.35, 1.12, 1], 'round-rim');
+      } else {
+        for (const edge of [-1, 1]) {
+          block(glasses, ink, [x, 0.024 + edge * 0.033, 0.164], [0.087, 0.007, 0.009], 'square-rim');
+          block(glasses, ink, [x + edge * 0.041, 0.024, 0.164], [0.007, 0.066, 0.009], 'square-rim');
+        }
+      }
+    }
+    block(glasses, ink, [0, 0.027, 0.164], [0.042, 0.007, 0.008], 'glasses-bridge');
+  }
+  if (style.freckles) {
+    const freckles = matte(new T.Color(style.skin).multiplyScalar(0.66));
+    for (const side of [-1, 1]) for (let i = 0; i < 3; i++) {
+      block(head, freckles, [side * (0.05 + i * 0.018), -0.022 - (i % 2) * 0.013, 0.154], [0.007, 0.007, 0.004], 'freckle');
+    }
+  }
+  return { openEyes, closedEyes };
+}
+
+function buildTop(body: T.Group, style: DormAvatarStyle, shirt: T.Material) {
+  block(body, shirt, [0, 1.064, 0], [0.404, 0.527, 0.27], 'tailored-top');
+  if (style.top === 'crewneck') {
+    const trim = matte(new T.Color(style.topColor).multiplyScalar(0.73));
+    block(body, trim, [0, 1.313, 0.139], [0.129, 0.037, 0.012], 'crewneck-collar');
+  } else if (style.top === 'hoodie') {
+    block(body, shirt, [0, 1.284, -0.098], [0.257, 0.167, 0.159], 'hood');
+    const trim = matte(new T.Color(style.topColor).multiplyScalar(0.75));
+    block(body, trim, [0, 0.957, 0.139], [0.194, 0.105, 0.016], 'kangaroo-pocket');
+    for (const side of [-1, 1]) block(body, trim, [side * 0.033, 1.237, 0.139], [0.013, 0.113, 0.014], 'hoodie-cord');
+  } else {
+    const lining = matte('#e7ded2');
+    const trim = matte(new T.Color(style.topColor).multiplyScalar(0.65));
+    block(body, lining, [0, 1.092, 0.139], [0.11, 0.457, 0.014], 'inner-tee');
+    if (style.top === 'jacket') {
+      block(body, trim, [0, 1.008, 0.15], [0.011, 0.287, 0.009], 'zipper');
+    } else {
+      for (let i = 0; i < 4; i++) block(body, trim, [0.055, 0.887 + i * 0.064, 0.153], [0.018, 0.018, 0.012], 'cardigan-button');
+    }
+  }
+}
 
 /** Builds one student model from GameRoomData or a saved appearance. */
 export function createDormAvatar(input: DormAvatarInput, options: DormAvatarOptions = {}): DormAvatarModel {
   const { style, notices } = resolveDormAvatarStyle(input);
-  const appearance = isGameRoomData(input) ? input.appearance : input ?? null;
-  // A blank source texture: the DormSpace look is fully resolved, so no colours are sampled from art.
-  const rig = characterRig(new T.Texture(), null, appearance, { style: rigStyle(style), normalMap: weave() });
-  const body = rig.root.children[0], head = named(rig.root, 'modeled-head')[0];
-  const retired = new Set<T.Mesh>();
-  const retire = (object: T.Object3D) => { object.traverse(o => { if (o instanceof T.Mesh) retired.add(o); }); object.removeFromParent(); };
-
-  if (!options.backpack) [...named(body, 'campus-backpack'), ...named(body, 'backpack-strap')].forEach(retire);
-  if (style.bottom === 'chinos') named(body, 'denim-seam').forEach(retire);
-  if (style.bottom === 'wide') for (const leg of named(body, 'continuous-trouser-leg')) {
-    // Wider trousers; shoes keep their size.
-    leg.scale.x *= 1.14; leg.scale.z *= 1.14;
-    leg.traverse(o => { if (o instanceof T.Mesh && o !== leg) { o.scale.x /= 1.14; o.scale.z /= 1.14; o.position.z /= 1.14; } });
+  const skin = matte(style.skin), ink = matte('#282333'), shirt = matte(style.topColor), pants = matte(style.bottomColor);
+  const shoe = matte('#363a50'), rubber = matte('#efe9dc');
+  const root = new T.Group();
+  root.name = 'dorm-avatar';
+  const pivot = group(root, 'pose-pivot');
+  const body = group(pivot, 'block-avatar-body');
+  const head = group(body, 'modeled-head', [0, 1.515, 0]);
+  head.scale.set(1 / style.bodyWidth, 1, 1 / style.bodyWidth);
+  add(head, headBlock, skin, [0, 0, 0], [0.352, 0.336, 0.302], 'block-head');
+  block(body, skin, [0, 1.354, 0], [0.151, 0.094, 0.139], 'neck');
+  buildHair(head, style);
+  const eyes = buildFace(head, style, skin, ink);
+  buildTop(body, style, shirt);
+  if (options.backpack) {
+    const backpack = group(body, 'campus-backpack');
+    block(backpack, shoe, [0, 1.072, -0.187], [0.276, 0.341, 0.136], 'pack-body');
+    block(backpack, ink, [0, 1.006, -0.261], [0.207, 0.148, 0.034], 'pack-pocket');
+    for (const side of [-1, 1]) block(body, shoe, [side * 0.145, 1.085, 0.144], [0.036, 0.414, 0.018], 'backpack-strap');
   }
-
-  const skin = firstMaterial(head, 'sculpted-head')!;
-  const dark = new T.MeshStandardMaterial({ color: '#272c33', roughness: 0.6 });
-  if (style.glasses === 'square') squareGlasses(head, dark);
-  if (style.freckles) freckles(head, new T.MeshStandardMaterial({ color: new T.Color(style.skin).multiplyScalar(0.66), roughness: 0.7 }));
-  if (style.curlyBob) curls(named(head, 'hairstyle-bob')[0], firstMaterial(head, 'hair-cap')!);
-  const closedEyes = new T.Group(); closedEyes.name = 'closed-eyes'; closedEyes.visible = false; closedEyes.userData.keep = true; head.add(closedEyes);
+  const arms: T.Group[] = [], elbows: T.Group[] = [], legs: T.Group[] = [], knees: T.Group[] = [];
+  const metrics: LegMetrics = { hip: 0.788, knee: 0.335, soleY: -0.365, soleZ: 0.034, soleRY: 0.025, soleRZ: 0.114, legDepth: 1, soleShape: 'box' };
+  const legWidth = style.bottom === 'wide' ? 0.183 : 0.158;
+  const cuff = style.bottom === 'wide' ? 0.179 : style.bottom === 'chinos' ? 0.134 : 0.148;
   for (const side of [-1, 1]) {
-    add(closedEyes, sphere(), skin, [side * 0.031, 0.026, 0.077], [0.02, 0.0085, 0.007], 'closed-eyelid');
-    add(closedEyes, box(), dark, [side * 0.031, 0.019, 0.083], [0.03, 0.0016, 0.002], 'closed-lash');
+    const shoulder = group(body, 'shoulder-joint', [side * 0.279, 1.272, 0]);
+    const elbow = group(shoulder, 'elbow-joint', [0, -0.228, 0]);
+    arms.push(shoulder);
+    elbows.push(elbow);
+    block(shoulder, shirt, [0, -0.095, 0], [0.151, 0.266, 0.187], 'upper-sleeve');
+    block(elbow, shirt, [0, -0.083, 0], [0.143, 0.191, 0.17], 'forearm-sleeve');
+    block(elbow, skin, [0, -0.201, 0.005], [0.137, 0.112, 0.157], 'block-hand');
+    const hip = group(body, 'hip-joint', [side * 0.1, metrics.hip, 0]);
+    const knee = group(hip, 'knee-joint', [0, -metrics.knee, 0]);
+    legs.push(hip);
+    knees.push(knee);
+    block(hip, pants, [0, -0.147, 0], [legWidth, 0.374, 0.169], 'upper-trouser');
+    block(knee, pants, [0, -0.143, 0], [cuff, 0.306, 0.157], 'lower-trouser');
+    block(knee, shoe, [0, -0.315, metrics.soleZ], [0.165, 0.08, 0.209], 'sneaker');
+    block(knee, rubber, [0, metrics.soleY, metrics.soleZ], [0.17, metrics.soleRY * 2, metrics.soleRZ * 2], 'sneaker-sole');
   }
 
-  const arms = named(body, 'shoulder-joint'), elbows = named(body, 'elbow-joint'), legs = named(body, 'hip-joint'), knees = named(body, 'knee-joint');
-  const sole = named(body, 'sneaker-sole') as T.Mesh[];
-  sole.forEach(mesh => { mesh.userData.keep = true; });
-  const trouser = knees[0].parent!.parent!; // knee bone -> upper bone -> trouser mesh
-  const metrics: LegMetrics = {
-    hip: legs[0].position.y, knee: -knees[0].position.y,
-    soleY: sole[0].position.y, soleZ: sole[0].position.z, soleRY: sole[0].scale.y, soleRZ: sole[0].scale.z, legDepth: trouser.scale.z,
-  };
-
-  const root = new T.Group(); root.name = 'dorm-avatar';
-  const pivot = new T.Group(); pivot.name = 'pose-pivot'; root.add(pivot); pivot.add(rig.root);
+  body.scale.set(style.bodyWidth, 1, style.bodyWidth);
   pivot.position.y = -restSole(metrics);
   root.updateMatrixWorld(true);
-  const height = new T.Box3().setFromObject(rig.root).max.y;
-  const back = new T.Box3();
-  for (const name of ['tailored-top', 'hood', 'scarf-drape']) for (const mesh of named(body, name)) back.expandByObject(mesh, true);
-  root.userData.backDepth = back.isEmpty() ? 0.13 : Math.max(0.08, -back.min.z);
+  const bounds = new T.Box3().setFromObject(root, true);
+  const height = bounds.max.y;
+  root.userData.backDepth = -bounds.min.z;
   root.userData.height = height;
-
-  mergeStaticParts(rig.root, retired);
-  disposeUnused(rig.root, retired);
-  // Skinned sleeves/trousers cache bounds from the rest pose; sitting or lying would cull them wrongly.
-  rig.root.traverse(object => { if (object instanceof T.SkinnedMesh) object.frustumCulled = false; });
-
+  mergeStaticParts(root);
   const model: DormAvatarModel = {
     root, style, key: dormAvatarStyleKey(style), notices, height, metrics,
-    joints: { pivot, body, head, closedEyes, arms, elbows, legs, knees }, pose: null, disposed: false,
+    joints: { pivot, body, head, ...eyes, arms, elbows, legs, knees }, pose: null, disposed: false,
   };
   root.userData.dormAvatar = model.key;
   updateDormAvatarPose(model, 'idle', 0, { reducedMotion: true });
@@ -123,7 +243,7 @@ export function updateDormAvatarPose(model: DormAvatarModel, pose: DormAvatarPos
   const reducedMotion = options.reducedMotion ?? prefersReducedMotion();
   const width = model.style.bodyWidth;
   const angles = poseAngles(pose, timeMs, model.metrics, { ...options, reducedMotion }, width);
-  const { pivot, body, head, closedEyes, arms, elbows, legs, knees } = model.joints;
+  const { pivot, body, head, openEyes, closedEyes, arms, elbows, legs, knees } = model.joints;
   const rest = restSole(model.metrics);
   if (angles.lying) {
     // Lie on the back, face up, head toward local -Z, centred on the root, back on the mattress.
@@ -136,15 +256,16 @@ export function updateDormAvatarPose(model: DormAvatarModel, pose: DormAvatarPos
   }
   body.position.set(0, angles.bodyY, 0);
   body.rotation.set(angles.lean, 0, 0);
-  body.scale.set(width, 1, width * (1 + angles.breath * 0.008));
+  body.scale.set(width, 1, width);
   head.rotation.set(angles.headPitch, 0, 0);
   for (let i = 0; i < 2; i++) {
     const side = i ? 1 : -1;
-    legs[i].rotation.set(angles.hips[i], 0, side * 0.017);
+    legs[i].rotation.set(angles.hips[i], 0, 0);
     knees[i].rotation.set(angles.knees[i], 0, 0);
     arms[i].rotation.set(angles.shoulders[i], 0, side * angles.shoulderSpread);
     elbows[i].rotation.set(angles.elbows[i], 0, 0);
   }
+  openEyes.visible = !angles.eyesClosed;
   closedEyes.visible = angles.eyesClosed;
   model.pose = pose;
   return angles;
@@ -156,7 +277,6 @@ export function disposeDormAvatar(model: DormAvatarModel) {
   model.root.removeFromParent();
   const geometries = new Set<T.BufferGeometry>(), materials = new Set<T.Material>();
   model.root.traverse(object => {
-    if (object instanceof T.SkinnedMesh) object.skeleton.dispose();
     if (object instanceof T.Mesh) {
       geometries.add(object.geometry);
       (Array.isArray(object.material) ? object.material : [object.material]).forEach(material => materials.add(material));
@@ -173,45 +293,14 @@ function disposeMaterial(material: T.Material) {
   material.dispose();
 }
 
-function squareGlasses(head: T.Object3D, frame: T.Material) {
-  const glasses = new T.Group(); glasses.name = 'square-glasses'; head.add(glasses);
-  const bar = 0.0042, w = 0.048, h = 0.034, z = 0.095;
-  for (const side of [-1, 1]) {
-    const x = side * 0.032;
-    add(glasses, box(), frame, [x, 0.026 + h / 2, z], [w + bar, bar, bar], 'square-rim');
-    add(glasses, box(), frame, [x, 0.026 - h / 2, z], [w + bar, bar, bar], 'square-rim');
-    add(glasses, box(), frame, [x - w / 2, 0.026, z], [bar, h, bar], 'square-rim');
-    add(glasses, box(), frame, [x + w / 2, 0.026, z], [bar, h, bar], 'square-rim');
-    add(glasses, box(), frame, [side * 0.071, 0.028, 0.046], [0.003, 0.003, 0.1], 'square-temple').rotation.y = -side * 0.33;
-  }
-  add(glasses, box(), frame, [0, 0.031, z + 0.002], [0.016, 0.003, 0.003], 'square-bridge');
-}
-
-function freckles(head: T.Object3D, material: T.Material) {
-  // On the sculpted head ellipsoid (x .088, y .122, z .082), just proud of the cheeks and nose.
-  const spots: [number, number][] = [[0.036, -0.004], [0.047, 0.003], [0.052, -0.012], [0.041, -0.017], [0.058, -0.002], [0.03, -0.013]];
-  const surface = (x: number, y: number) => 0.082 * Math.sqrt(Math.max(0, 1 - (x / 0.088) ** 2 - (y / 0.122) ** 2)) + 0.0012;
-  for (const side of [-1, 1]) for (const [x, y] of spots) add(head, sphere(), material, [side * x, y, surface(x, y)], [0.0042, 0.0042, 0.0015], 'freckle');
-  for (const x of [-0.008, 0, 0.008]) add(head, sphere(), material, [x, 0.004, 0.091], [0.0034, 0.0034, 0.0013], 'freckle');
-}
-
-function curls(hair: T.Object3D | undefined, material: T.Material) {
-  if (!hair) return;
-  for (let i = 0; i < 16; i++) {
-    const angle = Math.PI * 0.85 + (i / 15) * Math.PI * 1.3;
-    add(hair, sphere(), material, [Math.cos(angle) * 0.098, -0.075 + Math.sin(i * 1.7) * 0.008, Math.sin(angle) * 0.084 - 0.012], [0.022, 0.024, 0.022], 'bob-curl');
-  }
-}
-
-/** Joins sibling static meshes that share a material into one mesh (fewer draw calls). Joints,
- * skinned meshes, the soles and the closed-eye group are left as they are. */
-function mergeStaticParts(root: T.Object3D, retired: Set<T.Mesh>) {
+/** Joins sibling static meshes that share a material into one mesh (fewer draw calls). Groups stay separate so the joints and expressions can move independently. */
+function mergeStaticParts(root: T.Object3D) {
   const parents: T.Object3D[] = [];
   root.traverse(object => { if (!object.userData.keep) parents.push(object); });
   for (const parent of parents) {
     const buckets = new Map<string, T.Mesh[]>();
     for (const child of parent.children) {
-      if (!(child instanceof T.Mesh) || child instanceof T.SkinnedMesh || child.children.length || child.userData.keep
+      if (!(child instanceof T.Mesh) || child.children.length || child.userData.keep
         || Array.isArray(child.material) || !child.visible) continue;
       const g = child.geometry, signature = `${child.material.uuid}|${!!g.index}|${Object.keys(g.attributes).sort().join()}`;
       buckets.set(signature, [...(buckets.get(signature) ?? []), child]);
@@ -224,22 +313,8 @@ function mergeStaticParts(root: T.Object3D, retired: Set<T.Mesh>) {
       if (!merged) continue;
       const mesh = new T.Mesh(merged, meshes[0].material);
       mesh.name = `merged-${parent.name || 'parts'}`; mesh.castShadow = mesh.receiveShadow = true;
-      meshes.forEach(part => { part.removeFromParent(); retired.add(part); });
+      meshes.forEach(part => part.removeFromParent());
       parent.add(mesh);
     }
-  }
-}
-
-/** Disposes geometries/materials only used by removed meshes (shared rig primitives stay while in use). */
-function disposeUnused(root: T.Object3D, retired: Set<T.Mesh>) {
-  const liveGeometries = new Set<T.BufferGeometry>(), liveMaterials = new Set<T.Material>();
-  root.traverse(object => {
-    if (!(object instanceof T.Mesh)) return;
-    liveGeometries.add(object.geometry);
-    (Array.isArray(object.material) ? object.material : [object.material]).forEach(material => liveMaterials.add(material));
-  });
-  for (const mesh of retired) {
-    if (!liveGeometries.has(mesh.geometry) && !mesh.geometry.userData.shared) mesh.geometry.dispose();
-    for (const material of Array.isArray(mesh.material) ? mesh.material : [mesh.material]) if (!liveMaterials.has(material)) disposeMaterial(material);
   }
 }

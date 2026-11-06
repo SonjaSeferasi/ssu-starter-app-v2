@@ -1,6 +1,4 @@
-// Shared, disposable resources for one DormSpace 3D scene: procedural canvas textures (wood grain,
-// plaster, tile, carpet, fabric, rug, window sky), cached materials and cached geometries. Models
-// only borrow from a kit; disposing the kit frees every GPU resource it created.
+// Shared geometries, materials and graphic textures for one DormSpace 3D scene.
 import * as T from 'three';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 
@@ -47,9 +45,9 @@ export class Kit {
   release(resource: { dispose(): void }) { if (this.loose.delete(resource)) resource.dispose(); }
 
   // ---- Geometry ----
-  rounded(w: number, h: number, d: number, radius = 0.02, segments = 3) {
-    const r = Math.min(radius, w / 2.01, h / 2.01, d / 2.01);
-    return this.geometry(`rb|${w.toFixed(3)}|${h.toFixed(3)}|${d.toFixed(3)}|${r.toFixed(3)}|${segments}`, () => new RoundedBoxGeometry(w, h, d, segments, r));
+  beveled(w: number, h: number, d: number, radius = 0.02) {
+    const r = Math.min(radius, 0.016, w / 2.01, h / 2.01, d / 2.01);
+    return this.geometry(`bevel|${w.toFixed(3)}|${h.toFixed(3)}|${d.toFixed(3)}|${r.toFixed(3)}`, () => new RoundedBoxGeometry(w, h, d, 1, r));
   }
   box(w: number, h: number, d: number) { return this.geometry(`b|${w.toFixed(3)}|${h.toFixed(3)}|${d.toFixed(3)}`, () => new T.BoxGeometry(w, h, d)); }
   cylinder(top: number, bottom: number, h: number, segments = 16) { return this.geometry(`c|${top}|${bottom}|${h}|${segments}`, () => new T.CylinderGeometry(top, bottom, h, segments)); }
@@ -58,12 +56,10 @@ export class Kit {
   lathe(key: string, points: [number, number][], segments = 24) { return this.geometry(`l|${key}`, () => new T.LatheGeometry(points.map(([x, y]) => new T.Vector2(x, y)), segments)); }
 
   // ---- Surfaces ----
-  oak(tone = PALETTE.oak, key = 'oak') {
-    return this.material(`oak|${key}|${tone}`, () => new T.MeshStandardMaterial({ color: tone, roughness: 0.62, map: this.grain(), metalness: 0 }));
-  }
+  oak(tone = PALETTE.oak) { return this.paint(tone, 0.72); }
   paint(color: string, roughness = 0.7) { return this.material(`paint|${color}|${roughness}`, () => new T.MeshStandardMaterial({ color, roughness })); }
   fabric(color: string) {
-    return this.material(`fabric|${color}`, () => new T.MeshStandardMaterial({ color, roughness: 0.94, normalMap: this.weave(), normalScale: new T.Vector2(0.35, 0.35) }));
+    return this.paint(color, 0.94);
   }
   metal(color = PALETTE.brass, roughness = 0.38) { return this.material(`metal|${color}|${roughness}`, () => new T.MeshStandardMaterial({ color, roughness, metalness: 0.7 })); }
   glow(color: string, intensity = 1.4) { return this.material(`glow|${color}|${intensity}`, () => new T.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: intensity, roughness: 0.5 })); }
@@ -77,73 +73,32 @@ export class Kit {
     }));
   }
 
-  grain() {
-    return this.texture('grain', 256, (ctx, s) => {
-      const r = rand(7);
-      ctx.fillStyle = '#d8c3a5'; ctx.fillRect(0, 0, s, s);
-      for (let i = 0; i < 90; i++) {
-        const y = r() * s, amplitude = 2 + r() * 5, shade = 150 + r() * 60;
-        ctx.strokeStyle = `rgba(${shade * 0.72 | 0},${shade * 0.55 | 0},${shade * 0.38 | 0},${0.12 + r() * 0.2})`;
-        ctx.lineWidth = 0.6 + r() * 1.8; ctx.beginPath();
-        for (let x = 0; x <= s; x += 8) ctx.lineTo(x, y + Math.sin(x / (18 + r() * 30) + i) * amplitude);
-        ctx.stroke();
-      }
-    });
-  }
-  weave() {
-    return this.texture('weave', 64, (ctx, s) => {
-      ctx.fillStyle = '#8080ff'; ctx.fillRect(0, 0, s, s);
-      for (let y = 0; y < s; y += 2) for (let x = 0; x < s; x += 2) { ctx.fillStyle = (x + y) % 4 ? '#7784fc' : '#897bfc'; ctx.fillRect(x, y, 1, 2); }
-    }, { color: false, repeat: [6, 6] });
-  }
-  plaster(color: string) {
-    return this.material(`plaster|${color}`, () => new T.MeshStandardMaterial({
-      color, roughness: 0.92, map: this.texture('plaster', 128, (ctx, s) => {
-        const r = rand(11); ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, s, s);
-        for (let i = 0; i < 1800; i++) { ctx.fillStyle = `rgba(120,110,95,${r() * 0.05})`; ctx.fillRect(r() * s, r() * s, 1 + r() * 2, 1 + r() * 2); }
-      }, { repeat: [3, 2] }),
-    }));
-  }
+  plaster(color: string) { return this.paint(color, 0.92); }
   floor(key: string, width: number, depth: number) {
-    if (key === 'floor-tile') return this.material(`floor|tile|${width}|${depth}`, () => new T.MeshStandardMaterial({
-      roughness: 0.48, map: this.texture('tile', 256, (ctx, s) => {
-        ctx.fillStyle = '#cfc6b6'; ctx.fillRect(0, 0, s, s);
-        const r = rand(5);
-        for (let y = 0; y < 4; y++) for (let x = 0; x < 4; x++) {
-          const tone = 232 - r() * 14; ctx.fillStyle = `rgb(${tone},${tone - 6},${tone - 16})`;
-          ctx.fillRect(x * s / 4 + 2, y * s / 4 + 2, s / 4 - 4, s / 4 - 4);
-        }
-      }, { repeat: [width / 1.2, depth / 1.2] }),
-    }));
-    if (key === 'floor-carpet') return this.material(`floor|carpet|${width}|${depth}`, () => new T.MeshStandardMaterial({
-      roughness: 1, map: this.texture('carpet', 128, (ctx, s) => {
-        const r = rand(3); ctx.fillStyle = '#93a39a'; ctx.fillRect(0, 0, s, s);
-        for (let i = 0; i < 5000; i++) { const v = r(); ctx.fillStyle = v > 0.5 ? 'rgba(255,255,245,0.08)' : 'rgba(40,60,50,0.08)'; ctx.fillRect(r() * s, r() * s, 1, 1); }
-      }, { repeat: [width / 0.8, depth / 0.8] }),
-      normalMap: this.weave(), normalScale: new T.Vector2(0.4, 0.4),
-    }));
-    return this.material(`floor|oak|${width}|${depth}`, () => new T.MeshStandardMaterial({
-      roughness: 0.55, map: this.texture('planks', 512, (ctx, s) => {
-        const r = rand(17), rows = 8;
-        for (let row = 0; row < rows; row++) {
-          let x = -r() * s * 0.5;
-          while (x < s) {
-            const length = s * (0.35 + r() * 0.4), tone = 0.86 + r() * 0.14;
-            ctx.fillStyle = `rgb(${196 * tone | 0},${152 * tone | 0},${104 * tone | 0})`;
-            ctx.fillRect(x, row * s / rows, length, s / rows);
-            ctx.globalAlpha = 0.18;
-            for (let g = 0; g < 6; g++) { ctx.fillStyle = r() > 0.5 ? '#8a5f37' : '#e1bd8c'; ctx.fillRect(x, row * s / rows + r() * s / rows, length, 1 + r()); }
-            ctx.globalAlpha = 1; ctx.fillStyle = 'rgba(70,45,25,0.45)'; ctx.fillRect(x, row * s / rows, 2, s / rows);
-            x += length;
+    if (key === 'floor-carpet') return this.paint('#809a9d', 1);
+    const tile = key === 'floor-tile';
+    return this.material(`floor|${tile}|${width}|${depth}`, () => new T.MeshStandardMaterial({
+      roughness: tile ? 0.53 : 0.77,
+      map: this.texture(`floor-graphic|${tile}`, 256, (ctx, size) => {
+        const columns = tile ? 4 : 2;
+        const rows = tile ? 4 : 6;
+        const tones = tile ? ['#e7dbca', '#f5e8d6'] : ['#c38b60', '#d59e6d', '#cb9367', '#dda677'];
+        const w = size / columns, h = size / rows;
+        ctx.fillStyle = tile ? '#c6baab' : '#ad7954';
+        ctx.fillRect(0, 0, size, size);
+        for (let y = 0; y < rows; y++) {
+          const offset = !tile && y % 2 ? -w / 2 : 0;
+          for (let x = 0; x <= columns; x++) {
+            ctx.fillStyle = tones[(y + x + (tile ? 0 : Math.floor(y / 2))) % tones.length];
+            ctx.fillRect(x * w + offset + 1, y * h + 1, w - 2, h - 2);
           }
-          ctx.fillStyle = 'rgba(70,45,25,0.4)'; ctx.fillRect(0, row * s / rows, s, 2);
         }
-      }, { repeat: [width / 2.4, depth / 2.4] }),
+      }, { repeat: [width / (tile ? 2 : 2.4), depth / (tile ? 2 : 2.4)] }),
     }));
   }
   rug() {
     return this.material('rug', () => new T.MeshStandardMaterial({
-      roughness: 1, normalMap: this.weave(), normalScale: new T.Vector2(0.5, 0.5),
+      roughness: 1,
       map: this.texture('rug-pattern', 256, (ctx, s) => {
         ctx.fillStyle = PALETTE.cream; ctx.fillRect(0, 0, s, s);
         ctx.strokeStyle = PALETTE.navy; ctx.lineWidth = 14; ctx.strokeRect(14, 14, s - 28, s - 28);
@@ -166,11 +121,15 @@ export class Kit {
           ctx.fillStyle = '#f5ecd0'; ctx.beginPath(); ctx.arc(s * 0.72, s * 0.24, 16, 0, Math.PI * 2); ctx.fill();
           ctx.fillStyle = '#1a2846'; ctx.beginPath(); ctx.arc(s * 0.75, s * 0.22, 14, 0, Math.PI * 2); ctx.fill();
         } else {
-          for (let i = 0; i < 4; i++) { ctx.fillStyle = 'rgba(255,255,255,0.75)'; const x = r() * s, y = 30 + r() * 60; for (let k = 0; k < 4; k++) { ctx.beginPath(); ctx.arc(x + k * 12, y + Math.sin(k) * 4, 12, 0, Math.PI * 2); ctx.fill(); } }
+          for (let i = 0; i < 4; i++) {
+            const x = r() * s, y = 30 + r() * 60;
+            ctx.fillStyle = 'rgba(255,255,255,0.82)';
+            ctx.fillRect(x, y, 42, 10); ctx.fillRect(x + 8, y - 7, 22, 8);
+          }
         }
         // Campus treeline and a distant building, in silhouette.
         ctx.fillStyle = night ? '#16233b' : '#7d9a75';
-        for (let x = -20; x < s + 20; x += 22) { ctx.beginPath(); ctx.arc(x, s * 0.82 + Math.sin(x) * 6, 22 + (x % 3) * 4, 0, Math.PI * 2); ctx.fill(); }
+        for (let x = -8; x < s; x += 18) ctx.fillRect(x, s * 0.76 + Math.sin(x) * 8, 20, s * 0.16);
         ctx.fillStyle = night ? '#223150' : '#c9b79a'; ctx.fillRect(s * 0.18, s * 0.66, s * 0.22, s * 0.2);
         ctx.fillStyle = night ? '#e8c87a' : '#e9e1cf';
         for (let y = 0; y < 3; y++) for (let x = 0; x < 4; x++) ctx.fillRect(s * 0.2 + x * s * 0.05, s * 0.69 + y * s * 0.05, s * 0.025, s * 0.03);

@@ -37,6 +37,8 @@ reset or migrated. The legacy routes keep the personalized `GET /api/dorm?view=h
 
 ## Model pipeline
 
+SRS-504.16 adds a block style to the 3D route. DormSpace builds its own rigid avatar from the same Game Room appearance resolver and pose anchors. The hall, rooms and shop share small bevels, clean color fills and geometric fixtures.
+
 Everything in the canvas is built in code with Three.js meshes; there are no sprites, billboards or generated
 images of geometry. One cell is 0.62 m (one avatar width, so the existing 4 cells/s walk and 1.5× sprint are
 unchanged); the student model is about 1.6 m tall.

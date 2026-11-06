@@ -40,6 +40,20 @@ describe('SRS-504.1 3D avatar model', () => {
     }
   });
 
+  it('uses a square head and rigid rectangular limbs on the articulated rig', () => {
+    const model = build({ ...base, avatarId: 'campus-v4-male-1-1-natural' });
+    const [head] = named(model.root, 'block-head') as T.Mesh[];
+    expect(head.scale.x).toBeGreaterThan(0.3);
+    expect(head.scale.x / head.scale.y).toBeCloseTo(1, 1);
+    for (const name of ['upper-sleeve', 'block-hand', 'upper-trouser', 'sneaker-sole']) {
+      const parts = named(model.root, name) as T.Mesh[];
+      expect(parts).toHaveLength(2);
+      expect(parts.every(part => part.geometry instanceof T.BoxGeometry)).toBe(true);
+    }
+    expect(meshes(model.root).some(mesh => mesh instanceof T.SkinnedMesh)).toBe(false);
+    disposeDormAvatar(model);
+  });
+
   it('draws fewer meshes than the unmerged Game 1 rig', () => {
     const model = build({ ...base, avatarId: 'campus-v4-male-2-2-glasses' });
     const raw = characterRig(new T.Texture(), null, null, { style: rigStyle(model.style), normalMap: null });
