@@ -191,6 +191,6 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
 // Presentation for the activity cards; routes and availability stay in lib/game-room.
 const activityCards: Partial<Record<string, { name: string; tagline: string; meta?: string; image?: string; primary?: boolean }>> = {
   game1: { name: 'Jumpyland', tagline: 'Three themed worlds. One little adventure.', meta: '3 levels', image: '/jumpyland/world-map-v1.png', primary: true },
-  dormspace: { name: 'DormSpace', tagline: 'A little space to make your own.' },
+  dormspace: { name: 'DormSpace', tagline: 'Explore the 3D DormHall and make your room your own.' },
   wordle: { name: 'Wordle', tagline: 'Guess today’s five-letter word.', meta: 'Daily puzzle' },
 };
