@@ -1,6 +1,6 @@
 # DormSpace audio
 
-The 3D DormSpace follow-up covers shared MP3 playback for opted-in listeners in the same dorm room and opt-in voice chat in rooms and the shared DormHall. The 3D integration is the prerequisite. The voice implementation is on `feature/dormspace-voice`. Shared MP3 playback remains planned.
+The 3D DormSpace follow-up covers shared MP3 playback for opted-in listeners in the same dorm room and opt-in voice chat in rooms and the shared DormHall. The 3D integration is the prerequisite. The voice implementation is in [draft PR #1167](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1167). Shared MP3 playback remains planned.
 
 ## Review and task board
 
@@ -56,4 +56,11 @@ Joining reserves one voice seat against the current authenticated DormSpace pres
 
 The implementation includes separate SRS review branches under `impl/srs-531.*`. These are stacked on the 3D block-style branch and audio SRS. Existing Product Backlog links above remain the source of task tracking.
 
-For local integration tests, use a loopback LiveKit server in development mode, set the same four development variables, and run the existing DormSpace browser harness with `DORMSPACE_VOICE_TEST=1` and the test name `streams voice`. The test uses a disposable database, synthetic students and Chromium's synthetic microphone.
+For local integration tests, use a loopback LiveKit server in development mode, set the same four development variables, and run the existing DormSpace browser harness with `DORMSPACE_VOICE_TEST=1` and the test name `streams voice`. The test uses a disposable database, synthetic students and a browser-generated test tone.
+
+## Voice verification
+
+- The disposable database test verified same-school hall sharing, different-school isolation, server-derived room scope, current friendship, blocked users, mismatched connection IDs and expiry.
+- API tests verified room-scoped microphone-only grants, session-bound control tickets, and provider eviction during checks and sweeps.
+- Two Chromium clients using the production media adapter and a local LiveKit server verified real audio playback after explicit enable, local mute, microphone track release and roster departure.
+- The full signed-in 3D browser scenario timed out during local route and scene startup before reaching voice. Hosted configuration and acceptance are pending.

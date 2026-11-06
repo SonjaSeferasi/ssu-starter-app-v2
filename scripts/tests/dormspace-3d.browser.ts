@@ -520,15 +520,29 @@ it.skipIf(!voiceTest)('streams voice only after opt-in and isolates rooms, mic c
   for (const page of [owner, friend]) {
     await page.evaluate(() => {
       const devices = navigator.mediaDevices;
-      const capture = devices.getUserMedia.bind(devices);
       const observed = { calls: 0, deny: false, tracks: [] as MediaStreamTrack[] };
       Object.assign(window, { observedVoice: observed });
-      devices.getUserMedia = async constraints => {
+      devices.getUserMedia = async () => {
         observed.calls++;
         if (observed.deny) throw new DOMException('Test denial', 'NotAllowedError');
-        const stream = await capture(constraints);
-        observed.tracks.push(...stream.getAudioTracks());
-        return stream;
+        const context = new AudioContext();
+        await context.resume();
+        const oscillator = context.createOscillator();
+        const gain = context.createGain();
+        const output = context.createMediaStreamDestination();
+        gain.gain.value = 0.18;
+        oscillator.connect(gain).connect(output);
+        oscillator.start();
+        const [track] = output.stream.getAudioTracks();
+        const stop = track.stop.bind(track);
+        track.stop = () => {
+          if (track.readyState !== 'live') return;
+          stop();
+          oscillator.stop();
+          void context.close();
+        };
+        observed.tracks.push(track);
+        return output.stream;
       };
     });
   }
