@@ -4330,6 +4330,14 @@ When the student types in a guestbook text field, the system shall suspend avata
 
 Traces to: UR-504.
 
+##### SRS-504.14, DP — Legacy versions.
+
+When a student prefers or needs the earlier DormSpace, the system shall keep the 2D campus and classic versions available from DormSpace, using the same saved rooms, friends, guestbooks and accounts.
+
+Added 4 November 2026.
+
+Traces to: UR-504.
+
 <a id="ur-505"></a>
 
 #### UR-505, DP - Maintain One Current Virtual Dorm
