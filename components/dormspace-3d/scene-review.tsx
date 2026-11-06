@@ -10,6 +10,7 @@ import { useDormEngine } from './game';
 import { HallLayer } from './hall-layer';
 import { RoomLayer } from './room-layer';
 import { noHandlers, type LayerHandlers } from './layer-types';
+import { DormSpaceSettings } from './panels/dormspace-settings';
 import { ShopPanel, type ShopSource } from './panels/shop-panel';
 import { ControlBar, Joystick } from './panels/touch-controls';
 import { reviewDirectory, reviewDorm, reviewShop } from './review-fixtures';
@@ -74,12 +75,13 @@ export function DormSceneReview() {
     <main className={styles.game} style={{ padding: 20, background: '#f3eee4', minHeight: '100vh' }}>
       <h1 style={{ margin: 0, color: '#2d3e5c' }}>DormSpace 3D scene review</h1>
       <p className={styles.notice}>Development only. Synthetic room, hall, shop states and students; changes stay on this page and nothing is sent to any server.</p>
-      <div className={styles.controls}>
+      <div className={styles.toolbar}>
         {(['room', 'hall', 'shop'] as const).map(name => <button key={name} type="button" className={`${styles.button} ${scene === name ? styles.primary : ''}`} aria-pressed={scene === name} onClick={() => setScene(name)}>{name}</button>)}
         <label className={styles.field}>Student look
           <select value={look} onChange={event => setLook(Number(event.target.value))}>{reviewLooks.map((entry, index) => <option key={entry.id} value={index}>{entry.label}</option>)}</select>
         </label>
         <button type="button" className={styles.button} onClick={() => setDorm(reviewDorm)}>Reset room</button>
+        <DormSpaceSettings />
       </div>
       {message ? <p className={styles.notice} role="status">{message}</p> : null}
       <div ref={stage} className={styles.stage} data-engine={state}>

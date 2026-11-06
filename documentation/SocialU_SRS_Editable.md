@@ -4378,11 +4378,13 @@ Added 4 November 2026 (records the existing multiplayer behavior; see documentat
 
 Traces to: UR-504.
 
+<a id="srs-504.14"></a>
+
 ##### SRS-504.14, DP — Legacy versions.
 
-When a student prefers or needs the earlier DormSpace, the system shall keep the 2D campus and classic versions available from DormSpace, using the same saved rooms, friends, guestbooks and accounts.
+When a student opens DormSpace from the Game Room, the system shall launch 3D DormSpace by default. DormSpace Settings shall offer the 2D campus and classic versions using the same saved rooms, friends, guestbooks and accounts. Both alternatives shall provide a way back to the default 3D version.
 
-Added 4 November 2026.
+Revised 6 November 2026.
 
 Traces to: UR-504.
 
