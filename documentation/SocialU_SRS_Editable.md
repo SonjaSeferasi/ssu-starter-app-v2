@@ -4394,6 +4394,18 @@ Added 4 November 2026.
 
 Traces to: UR-504.
 
+<a id="srs-504.16"></a>
+
+##### SRS-504.16, DP — Block-style 3D presentation.
+
+The system shall present the 3D DormHall, rooms and furniture previews in a consistent block style, with oversized square avatar heads, rectangular articulated limbs, geometric furniture and simple surface colors. The presentation shall preserve the student's saved appearance choices and existing interactions.
+
+Acceptance criterion: Given a student and visitor with different saved appearances, when each views the DormHall or room, then their headwear, outfit, skin tone, body shape and saved face details remain identifiable on the block models. When the student moves, sits, sleeps or previews furniture, the models remain aligned to the existing interaction surfaces.
+
+Added 6 November 2026.
+
+Traces to: UR-504.
+
 <a id="ur-505"></a>
 
 #### UR-505, DP - Maintain One Current Virtual Dorm
@@ -8089,7 +8101,7 @@ Unconfirmed operation outcomes do not prove failure. Retry and exit behavior pre
 | --- | --- | --- |
 | UR-500 | SRS-500.1 through SRS-500.16 | [See section](#ur-500) |
 | UR-503 | SRS-503.1 through SRS-503.5 | [See section](#ur-503) |
-| UR-504 | SRS-504.1 through SRS-504.15; SRS-NFR-56, SRS-NFR-57 | [See section](#ur-504) |
+| UR-504 | SRS-504.1 through SRS-504.16; SRS-NFR-56, SRS-NFR-57 | [See section](#ur-504) |
 | UR-505 | SRS-505.1 through SRS-505.9; SRS-NFR-51, SRS-NFR-53 | [See section](#ur-505) |
 | UR-506 | Retired. Achievement displays and trophies are outside this release. This identifier will not be reused. | [See section](#ur-506) |
 | UR-507 | SRS-507.1 through SRS-507.24; SRS-NFR-52, SRS-NFR-55 | [See section](#ur-507) |

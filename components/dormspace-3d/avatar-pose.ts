@@ -1,4 +1,4 @@
-// Pure pose maths for the DormSpace 3D avatar (no Three.js). Rotations follow the Game 1 rig:
+// Pure pose maths for the DormSpace 3D avatar (no Three.js). Rotations follow the avatar's local axes:
 // the model faces +Z; a negative hip/shoulder angle swings the limb forward, a positive knee
 // angle folds the shin back and a negative elbow angle folds the forearm forward.
 
@@ -22,7 +22,8 @@ export type LegMetrics = {
   hip: number;      // hip joint height in rig coordinates
   knee: number;     // hip -> knee joint distance
   soleY: number; soleZ: number;   // sole centre relative to the knee joint
-  soleRY: number; soleRZ: number; // sole ellipsoid radii
+  soleRY: number; soleRZ: number; // sole half extents
+  soleShape?: 'box';
   legDepth: number; // trouser mesh z scale between the hip and knee joints
 };
 
@@ -42,13 +43,14 @@ const add = (a: V, b: V): V => [a[0] + b[0], a[1] + b[1]];
 
 /**
  * Lowest point of one sole in rig coordinates for the given joint angles. Exact for the rig's
- * chain body R(lean)·S(width) → hip → leg R(hip)·S(legDepth) → knee R(knee) → sole ellipsoid.
+ * chain body R(lean)·S(width) → hip → leg R(hip)·S(legDepth) → knee R(knee) → sole.
  */
 export function soleBottom(m: LegMetrics, hip: number, knee: number, lean = 0, width = 1) {
   const chain = (v: V) => rot(lean, scaleZ(width, rot(hip, scaleZ(m.legDepth, v))));
   const centre = rot(lean, scaleZ(width, add([m.hip, 0], rot(hip, scaleZ(m.legDepth, add([-m.knee, 0], rot(knee, [m.soleY, m.soleZ])))))));
   const a = chain(rot(knee, [m.soleRY, 0])), b = chain(rot(knee, [0, m.soleRZ]));
-  return centre[0] - Math.hypot(a[0], b[0]);
+  const support = m.soleShape === 'box' ? Math.abs(a[0]) + Math.abs(b[0]) : Math.hypot(a[0], b[0]);
+  return centre[0] - support;
 }
 export const restSole = (m: LegMetrics) => soleBottom(m, 0, 0);
 

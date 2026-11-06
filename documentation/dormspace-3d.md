@@ -28,7 +28,7 @@ reset or migrated. The legacy routes keep the personalized `GET /api/dorm?view=h
 | Server bridges | `lib/dormspace-3d-server.ts` |
 | APIs | `app/api/dorm/hall/route.ts`, `app/api/dorm/shop/route.ts` |
 | Database | `supabase/migrations/20261104050601_dormspace_3d_directory.sql`, `supabase/migrations/20261104050639_dormspace_points_shop.sql` |
-| Avatar (SRS-504.1, earlier commit) | `components/dormspace-3d/avatar-style.ts`, `avatar-pose.ts`, `avatar-model.ts` |
+| Avatar (SRS-504.1 and SRS-504.16) | `components/dormspace-3d/avatar-style.ts`, `avatar-pose.ts`, `avatar-model.ts` |
 | Models | `components/dormspace-3d/scene/kit.ts` (procedural textures, cached geometry/materials), `furniture.ts`, `room.ts`, `hall.ts`, `thumbnails.ts`, `palette.ts` |
 | Engine | `components/dormspace-3d/scene/engine.ts` |
 | React controller and panels | `components/dormspace-3d/game.tsx`, `hall-layer.tsx`, `room-layer.tsx`, `use-room-editor.ts`, `layer-types.ts`, `api.ts`, `panels/*`, `dormspace-3d.module.css` |
@@ -37,11 +37,14 @@ reset or migrated. The legacy routes keep the personalized `GET /api/dorm?view=h
 
 ## Model pipeline
 
-Everything in the canvas is built in code with Three.js meshes; there are no sprites, billboards or generated
-images of geometry. One cell is 0.62 m (one avatar width, so the existing 4 cells/s walk and 1.5× sprint are
-unchanged); the student model is about 1.6 m tall.
+SRS-504.16 adds a block style to the 3D route. DormSpace builds its own rigid avatar from the same Game Room appearance resolver and pose anchors. The hall, rooms and shop share small bevels, clean color fills and geometric fixtures.
 
-- Students: the SRS-504.1 model (Game 1 articulated rig plus DormSpace style resolver): saved complete avatar,
+On 6 November 2026, the block-style branch passed 194 DormSpace tests and all six Chromium scenarios against a disposable database. The Chromium run used a longer initial navigation timeout for local compilation. The full type check still reports the seven existing errors in `__tests__/world-explorer-asia-puzzles.test.ts`.
+
+Everything in the canvas is built in code with Three.js meshes; there are no sprites, billboards or generated
+images of geometry. One cell is 0.62 m. Walking uses 4 cells/s and sprinting uses 1.5× that speed.
+
+- Students: a rigid block rig with animated joints, driven by the DormSpace style resolver. It represents the saved complete avatar,
   layered pieces, body shape, skin colour, hair or hijab, round/square glasses, freckles, outfit and separate top
   and bottom colours. Poses idle, walk, run, sit and sleep are computed so soles meet the floor and hips meet the
   seat or mattress. Photo faces and unknown pieces show the default 3D piece with an explicit notice and a retry
@@ -49,8 +52,7 @@ unchanged); the student model is about 1.6 m tall.
 - Furniture (`furniture.ts`): bed (frame, slats, mattress, duvet with drape and fold, pillows, throw), chair,
   desk with drawer pedestal, open laptop, lamp, books and mug, sofa with seat/back cushions and throw pillows,
   armchair, bookshelf filled with books and a plant, wardrobe with panelled doors, coffee table, nightstand with a
-  lamp, potted plant, rug, window with mullions, sill, rod, curtains and a day/night sky. Rounded boxes, lathes
-  and cylinders with procedural oak grain, fabric weave, plaster, tile, carpet and rug textures. Each model is
+  lamp, potted plant, rug, window with mullions, sill, rod, curtains and a day/night sky. Beveled blocks with solid colors, graphic floor and rug patterns, and a few cylindrical details. Each model is
   built in its unrotated footprint, front facing +z, and placed by the saved grid position and rotation.
 - Room (`room.ts`): saved floor and wall appearance, wainscot, rails, baseboards, a fixture strip with the exit
   door and the physical guestbook lectern. Walls between the camera and the player are cut away.
@@ -231,6 +233,7 @@ Each draft shows its own changes. A specification draft uses the related impleme
 | SRS-504.13 | [`srs-504.13-live-co-presence`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-504.13-live-co-presence) | [#1112](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1112) |
 | SRS-504.14 | [`srs-504.14-legacy-versions`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-504.14-legacy-versions) | [#1111](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1111) |
 | SRS-504.15 | [`srs-504.15-3d-recovery`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-504.15-3d-recovery) | [#1123](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1123) |
+| SRS-504.16 | [`srs-504.16-dormspace-block-style`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-504.16-dormspace-block-style) | [#1166](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1166) · [card #1165](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1165) |
 | SRS-507.1 | [`srs-507.1-3d-game-room-entry`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-507.1-3d-game-room-entry) | [#1122](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1122) |
 | SRS-507.2 | [`srs-507.2-3d-own-dorm-door`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-507.2-3d-own-dorm-door) | [#1128](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1128) |
 | SRS-507.3 | [`srs-507.3-3d-friend-door-identity`](https://github.com/SonjaSeferasi/ssu-starter-app-v2/tree/srs-507.3-3d-friend-door-identity) | [#1129](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1129) |

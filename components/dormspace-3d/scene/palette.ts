@@ -1,8 +1,8 @@
 // Colour constants shared by the 3D models and the DOM panels. Kept free of Three.js so panels can
 // import them without pulling the renderer into the page bundle (Three loads lazily).
 export const PALETTE = {
-  sage: '#9fb293', sageDeep: '#6f8a6a', cream: '#f1e8d6', creamDeep: '#e3d5bb', oak: '#b88a58', oakDark: '#8a6440',
-  navy: '#2d3e5c', navyDeep: '#1f2c44', brass: '#c9a35e', ink: '#2a2f33', white: '#f6f3ec', leaf: '#4f7d4c', terracotta: '#b9714f',
+  sage: '#76ad91', sageDeep: '#4b8075', cream: '#f7ead6', creamDeep: '#e6d5b8', oak: '#bb8351', oakDark: '#8d593d',
+  navy: '#334b6a', navyDeep: '#223249', brass: '#e4b859', ink: '#242d3a', white: '#fff6e7', leaf: '#478d65', terracotta: '#c67354',
 };
-export const WALL_COLORS: Record<string, string> = { 'wall-sage': '#b6c4a8', 'wall-sky': '#bcd1dc', 'wall-cream': '#ece2cb' };
-export const FLOOR_SWATCHES: Record<string, string> = { 'floor-oak': '#c39462', 'floor-tile': '#ddd5c6', 'floor-carpet': '#93a39a' };
+export const WALL_COLORS: Record<string, string> = { 'wall-sage': '#a4c3ab', 'wall-sky': '#a7cfe3', 'wall-cream': '#f5e2be' };
+export const FLOOR_SWATCHES: Record<string, string> = { 'floor-oak': '#cb9367', 'floor-tile': '#eee2d0', 'floor-carpet': '#809a9d' };
