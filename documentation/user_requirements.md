@@ -382,6 +382,10 @@ As a student, I want to explore a current friend's dorm and leave a guestbook no
 
 As a student, I want a persistent visit counter for my virtual dorm, so that I can see how often friends have visited my space.
 
+##### UR-531, DP - Join Voice Chat in DormSpace Rooms and the DormHall
+
+As a student, I want to choose to join live voice in an authorized 3D dorm room or in my shared DormHall so I can talk to students in the same place.
+
 #### DormSpace Constraints and Assumptions
 
 - DormSpace is entered from SocialU's Game Room and opens into the student's DormHall.
