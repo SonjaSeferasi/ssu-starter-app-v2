@@ -7,7 +7,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, use
 import type { Dorm } from '../../lib/dormspace-rules';
 import type { GameRoomData } from '../../lib/game-room';
 import { readHallDirectory, readHallLocation, type HallDirectory, type HallDoor } from '../../lib/dormspace-hall-contract';
-import { emptyLiveRoster } from '../../lib/dormspace-live-store';
+import { emptyLiveRoster, SERVER_LIVE_UI } from '../../lib/dormspace-live-store';
 import { useDormLive } from '../dormspace/use-dorm-live';
 import { DormLiveChat } from '../dormspace/live-chat';
 import { Guestbook } from '../dormspace/guestbook';
@@ -19,6 +19,7 @@ import { dormRequest } from './api';
 import { HallLayer } from './hall-layer';
 import { RoomLayer } from './room-layer';
 import { ShopPanel, apiShopSource } from './panels/shop-panel';
+import { VoicePanel } from './panels/voice-panel';
 import { ControlBar, Joystick } from './panels/touch-controls';
 import styles from './dormspace-3d.module.css';
 
@@ -232,6 +233,8 @@ export function DormSpace3DGame() {
   const self = useMemo(() => ({ username, avatar }), [username, avatar]);
   const players = useSyncExternalStore(live.store.subscribeRoster, live.store.getRoster, emptyLiveRoster);
   const names = players.map(id => live.store.players.get(id)?.username).filter((name): name is string => !!name);
+  const { status: liveStatus } = useSyncExternalStore(live.store.subscribeUI, live.store.getUI, () => SERVER_LIVE_UI);
+  const voiceLocation = view.kind === 'hall' ? `hall:${directory?.floor ?? 0}` : `room:${view.dorm.owner}`;
   const layerProps = { engine, live, self, register, onInteractLabel: setInteractLabel, notify };
   const denied = useCallback((message: string) => { void returnToHall(null, message); }, [returnToHall]);
 
@@ -298,6 +301,9 @@ export function DormSpace3DGame() {
 
       <ControlBar sink={engine} interactLabel={interactLabel} onInteract={() => layer.current.onInteract()} />
       {names.length ? <ul className={styles.people} aria-label="Players here">{names.map(name => <li key={name}>{name}</li>)}</ul> : null}
+      <VoicePanel key={`${voiceLocation}:${live.connectionId}`}
+        channel={view.kind === 'hall' ? 'DormHall' : `${view.dorm.owner}'s room`}
+        connectionId={live.connectionId} eligible={engineState === 'ready' && liveStatus === 'online'} />
       <div className={campusStyles.game}>
         <DormLiveChat key={view.kind === 'hall' ? `hall:${directory?.floor ?? 0}` : `room:${view.dorm.owner}`} live={live}
           location={view.kind === 'hall' ? `DormHall · Floor ${directory?.floor ?? '…'}` : `${view.dorm.owner}'s room`} />

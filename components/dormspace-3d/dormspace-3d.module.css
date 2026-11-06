@@ -111,3 +111,9 @@
   .hud { top: 8px; left: 8px; right: 8px; }
   .prompt { bottom: 140px; }
 }
+
+.voicePanel { display: grid; gap: 8px; padding: 12px; border: 1px solid #d8dfd5; border-radius: 12px; background: #f7faf5; }
+.voicePanel h3 { margin: 0; font-size: 15px; color: var(--navy); }
+.voicePeople { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: 14px; }
+.voicePeople li { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.voicePeople li span { overflow-wrap: anywhere; }
