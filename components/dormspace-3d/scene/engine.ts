@@ -5,7 +5,7 @@
 import * as T from 'three';
 import {
   CAMERA, CELL, HALL_HEIGHT, HALL_LENGTH, HALL_WIDTH, MAX_FRAME_SECONDS, WALL_HEIGHT,
-  cameraRelative, clampDistance, clampOrbitDistance, clampPitch, cursorStep, cutawayWalls, facingFromVector, hallArrival, hallArrivalView,
+  cameraRelative, clampDistance, clampOrbitDistance, clampOrbitTarget, clampPitch, cursorStep, cutawayWalls, facingFromVector, hallArrival, hallArrivalView,
   hallToWorld, moveInHall, orbitOffset, placementTransform, positionToWorld, restAnchor, roomDims, turnToward, walkSpeed,
   worldToFloorCell, worldToWallCell, yawFromFacing, yawFromVector, nearbyHallTarget,
   type HallTarget, type RoomDims, type Vec2,
@@ -712,7 +712,9 @@ export class DormEngine {
     const offset = orbitOffset(this.cam.yaw, this.cam.pitch, 1), target = this.cam.target;
     let distance = this.cam.distance;
     if (spec.kind === 'hall') {
-      distance = clampOrbitDistance(target, offset, distance, { minX: -HALL_LENGTH / 2, maxX: HALL_LENGTH / 2, minY: 0.2, maxY: HALL_HEIGHT, minZ: -HALL_WIDTH / 2, maxZ: HALL_WIDTH / 2 });
+      const bounds = { minX: -HALL_LENGTH / 2, maxX: HALL_LENGTH / 2, minY: 0.2, maxY: HALL_HEIGHT, minZ: -HALL_WIDTH / 2, maxZ: HALL_WIDTH / 2 };
+      target.copy(clampOrbitTarget(target, bounds));
+      distance = clampOrbitDistance(target, offset, distance, bounds);
     } else if (this.room) {
       // The room's open top lets the camera rise above the walls; walls between are cut away.
       distance = clampOrbitDistance(target, offset, distance, { minX: -this.room.dims.width / 2 - 4, maxX: this.room.dims.width / 2 + 4, minY: 0.25, maxY: 9, minZ: -4, maxZ: this.room.dims.depth + 4 });

@@ -5,10 +5,11 @@ import {traceLight} from '../lib/world-explorer/light-puzzle';
 import {playSoutheastAsiaRoute} from '../lib/world-explorer/southeast-asia-playtest';
 import {criticalPlatforms,optionalPath} from '../lib/world-explorer/route-graph';
 import {analyzeDifficulty} from '../lib/world-explorer/difficulty';
+import type {SimulationInput} from '../lib/world-explorer/game-types';
 
 const idle={left:false,right:false,jump:false};
 function atMirror(){const l=levelDefinitionFor('SAU');l.spawn={platformId:'sa-light-court',offset:8};return new LevelSimulation(l);}
-function tick(sim:LevelSimulation,n:number,input=idle){sim.setInput(input);for(let i=0;i<n;i++)sim.advance(FIXED_STEP);}
+function tick(sim:LevelSimulation,n:number,input:SimulationInput=idle){sim.setInput(input);for(let i=0;i<n;i++)sim.advance(FIXED_STEP);}
 describe('Specified Oman water transition and Saudi light receiver',()=>{
  it('requires a reflected ray to reach the receiver, with finite range and occlusion',()=>{
   const l=levelDefinitionFor('SAU'),p=l.lightPuzzles![0],sim=new LevelSimulation(l),point=sim.position(p);

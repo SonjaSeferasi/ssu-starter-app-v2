@@ -307,6 +307,11 @@ afterAll(async () => {
 
 it('shows every same-school student the same doors and keeps non-friend rooms locked', async () => {
   owner = await signIn(1);
+  // The normal Game Room entry must open 3D; older renderers are opt-in via Settings.
+  await owner.goto(base + '/game-room', { waitUntil: 'domcontentloaded' });
+  await owner.getByRole('link', { name: /^Open DormSpace/ }).click();
+  await owner.locator('[data-dormspace-version="3d"]').waitFor();
+  await owner.locator('div[data-engine="ready"]').waitFor({ timeout: 60000 });
   await owner.getByText('Your room 101').waitFor();
   expect(await owner.locator('[data-dormspace-canvas]').count()).toBe(1);
   // Unobstructed first hall frame (spawned beside door 101, looking down the corridor), before any overlay.
