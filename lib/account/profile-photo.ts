@@ -1,6 +1,6 @@
-// Vercel rejects function requests over 4.5 MB before they reach the app, so the
-// browser must send less than that even though storage accepts up to 10 MB.
-export const PROFILE_UPLOAD_MAX_BYTES = 4_000_000;
+// Leave ample room below Vercel's request limit, including multipart form fields.
+export const PROFILE_UPLOAD_MAX_BYTES = 1_000_000;
+export const PROFILE_PHOTO_MAX_EDGE = 1200;
 
 // Keep uploads within the existing server/storage policy while accepting large camera photos.
 export async function prepareProfilePhoto(file: File): Promise<File> {
@@ -46,18 +46,27 @@ export async function prepareProfilePhoto(file: File): Promise<File> {
     throw new Error('This browser could not open that photo. Export it as JPG or PNG and try again.');
   }
   try {
-    if (extension !== 'heic' && file.size <= PROFILE_UPLOAD_MAX_BYTES && Math.max(width, height) <= 1600) return file;
-    const scale = Math.min(1, 1600 / Math.max(width, height));
+    if (extension !== 'heic' && file.size <= PROFILE_UPLOAD_MAX_BYTES && Math.max(width, height) <= PROFILE_PHOTO_MAX_EDGE) return file;
     const canvas = document.createElement('canvas');
-    canvas.width = Math.max(1, Math.round(width * scale));
-    canvas.height = Math.max(1, Math.round(height * scale));
     const context = canvas.getContext('2d');
     if (!context) throw new Error('Unable to prepare your photo. Try another browser.');
-    context.fillStyle = '#ffffff';
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-    const blob = await new Promise<Blob>((resolve, reject) => canvas.toBlob(result => result ? resolve(result) : reject(new Error('Unable to resize this photo.')), 'image/jpeg', 0.88));
-    if (blob.size > PROFILE_UPLOAD_MAX_BYTES) throw new Error('Unable to make this photo small enough. Try a different photo.');
-    return new File([blob], file.name.replace(/\.[^.]+$/, '') + '.jpg', { type: 'image/jpeg' });
+    // Some detailed PNGs remain large after one conversion. Reduce quality first,
+    // then dimensions, always drawing from the original to avoid repeated JPEG loss.
+    for (const edge of [PROFILE_PHOTO_MAX_EDGE, 900, 675, 500, 350]) {
+      const scale = Math.min(1, edge / Math.max(width, height));
+      canvas.width = Math.max(1, Math.round(width * scale));
+      canvas.height = Math.max(1, Math.round(height * scale));
+      context.fillStyle = '#ffffff';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+      for (const quality of [0.85, 0.7, 0.55]) {
+        const blob = await new Promise<Blob>((resolve, reject) => canvas.toBlob(result => result ? resolve(result) : reject(new Error('Unable to resize this photo.')), 'image/jpeg', quality));
+        if (blob.type !== 'image/jpeg') throw new Error('This browser could not prepare a JPG. Export your photo as JPG and try again.');
+        if (blob.size && blob.size <= PROFILE_UPLOAD_MAX_BYTES) {
+          return new File([blob], file.name.replace(/\.[^.]+$/, '') + '.jpg', { type: 'image/jpeg' });
+        }
+      }
+    }
+    throw new Error('Unable to make this photo small enough. Export it as a smaller JPG and try again.');
   } finally { release(); }
 }

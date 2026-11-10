@@ -320,7 +320,7 @@ function ProfileContent({ username }: { username?: string }) {
         <section className={campus.hero} aria-label={`${profile.name}'s profile`}>
           <div className={campus.portraitWrap}>
             <ProfilePortrait className={campus.portrait} frame={space.look.frame}>
-              <Avatar url={profile.photo_url} name={profile.name}
+              <Avatar url={profile.photo_url} name={profile.name} username={profile.username}
                 onPhotoError={()=>{setPhotoUnavailable(true);if(!photoRetried.current){photoRetried.current=true;setSocialRetry(value=>value+1);}}}
                 onPhotoLoad={()=>{photoRetried.current=false;setPhotoUnavailable(false);}}/>
             </ProfilePortrait>
