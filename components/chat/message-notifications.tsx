@@ -7,6 +7,7 @@ import { ChevronRight, MessageCircle, UserCheck, Users, X } from 'lucide-react';
 import { accessToken } from '../../lib/account/session';
 import { subscribeToChat } from '../../lib/realtime-client';
 import { CHAT_ACTIVITY_EVENT } from '../../lib/chat-events';
+import { notificationPreview, type PreviewKind } from '../../lib/chat-preview';
 import type { PendingInvitation } from '../../app/messages/group-invitations';
 import { timeAgo } from '../feed/time';
 import { Avatar } from '../profile/profile-avatar';
@@ -18,8 +19,9 @@ export type MessageNotification = {
   kind: 'private' | 'group';
   name: string | null;
   sender: { username: string; name: string; photo_url: string | null };
-  text: string;
-  message_kind: 'text' | 'emoji';
+  // #1217 (SRS-212.9): a photo notification carries no text; message_kind says which it is.
+  text: string | null;
+  message_kind: PreviewKind;
   unread_count: number;
   sent_at: string;
 };
@@ -152,8 +154,7 @@ export function MessageCountIcon({ children }: { children: ReactNode }) {
 export type MessageNotificationsState = ReturnType<typeof useMessageNotifications>;
 
 function preview(item: MessageNotification) {
-  const text = item.text.length > 80 ? `${item.text.slice(0, 80)}…` : item.text;
-  return item.message_kind === 'emoji' ? text : `“${text}”`;
+  return notificationPreview(item.message_kind, item.text);
 }
 
 // The whole notification opens the conversation it is about, where the new messages are marked read.
