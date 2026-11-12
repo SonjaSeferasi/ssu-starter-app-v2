@@ -28,7 +28,7 @@
 .study { color: #646b64; font-size: 14px; margin: 0 0 7px; overflow-wrap: anywhere; }
 .university { display: flex; align-items: center; gap: 10px; color: var(--accent); font-size: 15px; margin: 0; overflow-wrap: anywhere; }
 .university svg { flex-shrink: 0; }
-.page .actions { justify-content: flex-start; margin: 20px 0 0; gap: 10px; }
+.page .actions { justify-content: flex-start; align-items:center; margin: 20px 0 0; gap: 10px; }
 .page .actions > * { min-width: 0; max-width: 100%; }
 .page .actions button, .page .actions a { white-space: normal; }
 .page .actions > a, .page .actions > button, .page .actions > div > button { min-height: 40px; border-radius: 8px; padding: 9px 16px; font-size: 13px; font-weight: 500; }

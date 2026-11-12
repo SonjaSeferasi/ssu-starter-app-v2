@@ -21,6 +21,7 @@ export default function SharedPostPage() {
 
   const [token, setToken] = useState('');
   const [authorInitial, setAuthorInitial] = useState('');
+  const [authorPhotoUrl, setAuthorPhotoUrl] = useState<string | null>(null);
   const [currentStudentId, setCurrentStudentId] = useState<number | null>(null);
   const [post, setPost] = useState<FeedPost | null>(null);
   const [loading, setLoading] = useState(true);
@@ -36,6 +37,11 @@ export default function SharedPostPage() {
       setLoading(false);
       return;
     }
+
+    fetch('/api/profiles', { headers: { Authorization: `Bearer ${stored}` } })
+      .then((res) => res.json())
+      .then((body) => setAuthorPhotoUrl(body.profile?.photo_url ?? null))
+      .catch(() => {});
 
     fetch('/api/profile', { headers: { Authorization: `Bearer ${stored}` } })
       .then((res) => res.json())
@@ -73,7 +79,7 @@ export default function SharedPostPage() {
             post={post}
             accessToken={token}
             isOwnPost={currentStudentId !== null && currentStudentId === post.authorId}
-            authorInitial={authorInitial}
+            authorInitial={authorInitial} authorPhotoUrl={authorPhotoUrl}
             currentStudentId={currentStudentId}
             onUpdated={setPost}
             onDeleted={() => setDeleted(true)}

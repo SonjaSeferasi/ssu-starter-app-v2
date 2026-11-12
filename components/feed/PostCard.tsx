@@ -19,6 +19,7 @@ export function PostCard({
   accessToken,
   isOwnPost,
   authorInitial,
+  authorPhotoUrl,
   currentStudentId,
   highlighted,
   targetCommentId,
@@ -30,6 +31,8 @@ export function PostCard({
   accessToken: string;
   isOwnPost: boolean;
   authorInitial: string;
+  /** The signed-in viewer's profile photo; falls back to authorInitial when missing. */
+  authorPhotoUrl?: string | null;
   currentStudentId: number | null;
   highlighted?: boolean;
   /** SRS-313/312.10: a clicked comment/reply notification's ?comment=<id>, only passed for the matching post. */
@@ -81,6 +84,7 @@ export function PostCard({
           name={post.authorName}
           profileHref={isOwnPost ? '/profile' : post.authorUsername ? `/students/${encodeURIComponent(post.authorUsername)}` : undefined}
           photoUrl={post.authorPhotoUrl}
+          username={post.authorUsername}
           publishedAt={post.publishedAt}
           editedAt={post.editedAt}
           visibility={post.visibility}
@@ -169,6 +173,7 @@ export function PostCard({
               <PostAuthor
                 name={post.repostOf.authorName}
                 photoUrl={post.repostOf.authorPhotoUrl}
+                username={post.repostOf.authorUsername}
                 publishedAt={post.repostOf.publishedAt}
                 editedAt={null}
                 visibility={post.visibility}
@@ -217,6 +222,7 @@ export function PostCard({
           postId={post.postId}
           accessToken={accessToken}
           authorInitial={authorInitial}
+          authorPhotoUrl={authorPhotoUrl}
           currentStudentId={currentStudentId}
           targetCommentId={targetCommentId}
           onCountChange={(count) => onUpdated({ ...post, commentCount: count })}

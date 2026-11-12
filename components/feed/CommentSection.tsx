@@ -9,6 +9,7 @@ export function CommentSection({
   postId,
   accessToken,
   authorInitial,
+  authorPhotoUrl,
   currentStudentId,
   targetCommentId,
   onCountChange,
@@ -16,6 +17,8 @@ export function CommentSection({
   postId: number;
   accessToken: string;
   authorInitial: string;
+  /** The signed-in viewer's profile photo; falls back to authorInitial when missing. */
+  authorPhotoUrl?: string | null;
   currentStudentId: number | null;
   /** SRS-313/312.10: a clicked comment/reply notification's ?comment=<id>. */
   targetCommentId?: number;
@@ -119,6 +122,7 @@ export function CommentSection({
             postId={postId}
             accessToken={accessToken}
             authorInitial={authorInitial}
+            authorPhotoUrl={authorPhotoUrl}
             isOwnComment={currentStudentId !== null && currentStudentId === comment.authorId}
             replies={repliesByParent.get(comment.commentId) ?? []}
             isReplyOwn={(reply) => currentStudentId !== null && currentStudentId === reply.authorId}
@@ -130,7 +134,7 @@ export function CommentSection({
         ))
       )}
 
-      <CommentComposer postId={postId} accessToken={accessToken} authorInitial={authorInitial} onPosted={handlePosted} />
+      <CommentComposer postId={postId} accessToken={accessToken} authorInitial={authorInitial} authorPhotoUrl={authorPhotoUrl} onPosted={handlePosted} />
     </div>
   );
 }
