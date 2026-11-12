@@ -5,11 +5,13 @@ import type { KeyboardEvent } from 'react';
 import type { Comment } from './types';
 import { MentionDropdown } from './MentionDropdown';
 import { useMentionAutocomplete } from './use-mention-autocomplete';
+import { FeedAvatar } from './FeedAvatar';
 
 export function CommentComposer({
   postId,
   accessToken,
   authorInitial,
+  authorPhotoUrl,
   parentCommentId,
   initialText,
   placeholder,
@@ -20,6 +22,8 @@ export function CommentComposer({
   postId: number;
   accessToken: string;
   authorInitial: string;
+  /** The signed-in viewer's profile photo; falls back to authorInitial when missing. */
+  authorPhotoUrl?: string | null;
   /** Replying to Comments (separate feature, not SRS-310): set to reply instead of posting a top-level comment. */
   parentCommentId?: number;
   initialText?: string;
@@ -91,9 +95,7 @@ export function CommentComposer({
 
   return (
     <div className="flex items-start gap-2">
-      <div className={`flex ${avatarSize} shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-semibold text-emerald-800`}>
-        {authorInitial}
-      </div>
+      <FeedAvatar photoUrl={authorPhotoUrl} name={authorInitial} className={`${avatarSize} text-xs`} />
       <div className="relative min-w-0 flex-1">
         <textarea
           ref={textareaRef}

@@ -60,7 +60,7 @@ export function ProfileCampusSidebar({ profile, onViewFriends, space }: { profil
         : friends === null ? <p className={styles.sideNote} role="status">Loading connections…</p>
         : !friends.length ? <div className={styles.sideNote}><p>No friends yet.</p>{profile.is_own && <Link href="/friends?view=discover" className={styles.sideLink}>Find classmates<ArrowRight size={14} /></Link>}</div>
         : <ul className={styles.sideList}>{friends.map(friend => <li key={friend.username}><Link href={friend.is_me ? '/profile' : `/students/${encodeURIComponent(friend.username)}`} className={styles.connectionRow}>
-          <Avatar url={friend.photo_url} name={friend.name} /><span><strong>{friend.name}</strong><small>@{friend.username}</small></span><Users size={19} aria-hidden="true" />
+          <Avatar url={friend.photo_url} name={friend.name} username={friend.username} /><span><strong>{friend.name}</strong><small>@{friend.username}</small></span><Users size={19} aria-hidden="true" />
         </Link></li>)}</ul>}
     </section>
   </aside>;

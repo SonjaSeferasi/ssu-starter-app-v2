@@ -22,6 +22,7 @@ export function CommentItem({
   postId,
   accessToken,
   authorInitial,
+  authorPhotoUrl,
   isOwnComment,
   isReply,
   replies,
@@ -36,6 +37,8 @@ export function CommentItem({
   postId: number;
   accessToken: string;
   authorInitial: string;
+  /** The signed-in viewer's profile photo; falls back to authorInitial when missing. */
+  authorPhotoUrl?: string | null;
   isOwnComment: boolean;
   isReply?: boolean;
   /** Only meaningful when !isReply -- this comment's replies, already filtered/ordered by the parent. */
@@ -388,6 +391,7 @@ export function CommentItem({
                     postId={postId}
                     accessToken={accessToken}
                     authorInitial={authorInitial}
+                    authorPhotoUrl={authorPhotoUrl}
                     isOwnComment={isReplyOwn ? isReplyOwn(reply) : false}
                     isReply
                     onReplyClick={(target) => setReplyTarget((prev) => (prev?.commentId === target.commentId ? null : target))}
@@ -405,6 +409,7 @@ export function CommentItem({
                   postId={postId}
                   accessToken={accessToken}
                   authorInitial={authorInitial}
+                  authorPhotoUrl={authorPhotoUrl}
                   parentCommentId={replyTarget.commentId}
                   initialText={replyTarget.commentId === comment.commentId ? '' : `@${replyTarget.authorName} `}
                   placeholder="Write a reply…"

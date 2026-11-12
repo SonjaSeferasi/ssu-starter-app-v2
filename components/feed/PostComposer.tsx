@@ -6,15 +6,21 @@ import { ImagePreview, type PendingImage } from './ImagePreview';
 import { VisibilitySelector, type Visibility } from './VisibilitySelector';
 import { MentionDropdown } from './MentionDropdown';
 import { useMentionAutocomplete } from './use-mention-autocomplete';
+import { FeedAvatar } from './FeedAvatar';
 
 export function PostComposer({
   accessToken,
   authorInitial,
+  authorPhotoUrl,
+  authorUsername,
   onPublished,
   translucent,
 }: {
   accessToken: string;
   authorInitial: string;
+  /** The signed-in viewer's profile photo; falls back to authorInitial when missing. */
+  authorPhotoUrl?: string | null;
+  authorUsername?: string | null;
   onPublished: () => void;
   /** "Customize Your Screen": a translucent glass surface instead of solid white, so a selected background theme keeps showing through. Defaults to false (today's unchanged look) everywhere this isn't explicitly passed. */
   translucent?: boolean;
@@ -111,9 +117,7 @@ export function PostComposer({
   return (
     <div className={`rounded-3xl border p-4 shadow-sm ${translucent ? 'border-white/40 bg-white/70 backdrop-blur-md' : 'border-stone-200 bg-white'}`}>
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-sm font-semibold text-emerald-800">
-          {authorInitial}
-        </div>
+        <FeedAvatar photoUrl={authorPhotoUrl} name={authorInitial} username={authorUsername} />
         <div className="relative min-w-0 flex-1">
           <input
             ref={inputRef}

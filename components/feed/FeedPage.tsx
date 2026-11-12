@@ -49,6 +49,8 @@ export function FeedPage() {
 
   const [token, setToken] = useState('');
   const [authorInitial, setAuthorInitial] = useState('');
+  const [authorPhotoUrl, setAuthorPhotoUrl] = useState<string | null>(null);
+  const [authorUsername, setAuthorUsername] = useState<string | null>(null);
   const [currentStudentId, setCurrentStudentId] = useState<number | null>(null);
   const [tab, setTab] = useState<FeedTab>(initialTab);
   const [posts, setPosts] = useState<FeedPost[]>([]);
@@ -87,6 +89,11 @@ export function FeedPage() {
     const stored = storedAccessToken() || '';
     setToken(stored);
     if (!stored) return;
+    fetch('/api/profiles', { headers: { Authorization: `Bearer ${stored}` } })
+      .then((res) => res.json())
+      .then((body) => { setAuthorPhotoUrl(body.profile?.photo_url ?? null); setAuthorUsername(body.profile?.username ?? null); })
+      .catch(() => {});
+
     fetch('/api/profile', { headers: { Authorization: `Bearer ${stored}` } })
       .then((res) => res.json())
       .then((body) => {
@@ -169,7 +176,7 @@ export function FeedPage() {
         <div className="w-full min-w-0 flex-1 space-y-4 lg:max-w-2xl">
           <FeedBanner tab={tab} headerTheme={screenTheme.headerTheme} />
 
-          <PostComposer accessToken={token} authorInitial={authorInitial} onPublished={() => token && loadFeed(token)} translucent={themed} />
+          <PostComposer accessToken={token} authorInitial={authorInitial} authorPhotoUrl={authorPhotoUrl} authorUsername={authorUsername} onPublished={() => token && loadFeed(token)} translucent={themed} />
 
           {deletedNotice ? (
             <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">Post deleted successfully.</div>
@@ -189,7 +196,7 @@ export function FeedPage() {
                   post={post}
                   accessToken={token}
                   isOwnPost={currentStudentId !== null && currentStudentId === post.authorId}
-                  authorInitial={authorInitial}
+                  authorInitial={authorInitial} authorPhotoUrl={authorPhotoUrl}
                   currentStudentId={currentStudentId}
                   highlighted={post.postId === highlightedPostId}
                   targetCommentId={post.postId === targetPostId ? targetCommentId : undefined}

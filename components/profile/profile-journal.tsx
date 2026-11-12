@@ -15,6 +15,7 @@ export function ProfileJournal({ profile, onPostCountChange }: { profile: Studen
   const [token, setToken] = useState('');
   const [viewerId, setViewerId] = useState<number | null>(null);
   const [viewerInitial, setViewerInitial] = useState('');
+  const [viewerPhotoUrl, setViewerPhotoUrl] = useState<string | null>(null);
   const [composer, setComposer] = useState(false);
   const [revision, setRevision] = useState(0);
   const [error, setError] = useState('');
@@ -26,6 +27,7 @@ export function ProfileJournal({ profile, onPostCountChange }: { profile: Studen
       if (!value) throw new Error('Please sign in again.');
       if (active) setToken(value);
     }).catch(reason => { if (active) setError(reason instanceof Error ? reason.message : 'Unable to check your session.'); });
+    profileFetch('/api/profiles').then(({ response, data }) => { if (active && response.ok) setViewerPhotoUrl(data.profile?.photo_url ?? null); }).catch(() => {});
     profileFetch('/api/profile').then(({ response, data }) => {
       if (active && response.ok) {
         const id = Number(data.profile?.id);
@@ -49,7 +51,7 @@ export function ProfileJournal({ profile, onPostCountChange }: { profile: Studen
         {composer ? <X size={17} /> : <Pencil size={17} />}{composer ? 'Close composer' : 'Create post'}
       </button>}
     </div>
-    {composer && <div id="profile-composer" className={styles.composer}><PostComposer accessToken={token} authorInitial={profile.name[0]?.toUpperCase() ?? ''} onPublished={() => { setComposer(false); setRevision(value => value + 1); onPostCountChange(1); }} /></div>}
+    {composer && <div id="profile-composer" className={styles.composer}><PostComposer accessToken={token} authorInitial={profile.name[0]?.toUpperCase() ?? ''} authorPhotoUrl={profile.photo_url} authorUsername={profile.username} onPublished={() => { setComposer(false); setRevision(value => value + 1); onPostCountChange(1); }} /></div>}
     {error ? <div className={styles.empty} role="alert"><p>{error}</p><button type="button" onClick={() => setRevision(value => value + 1)}>Try again</button></div>
       : posts === null || !token ? <div className={styles.journalLoading} role="status">
         <span className={styles.srOnly}>Loading posts…</span>
@@ -59,7 +61,7 @@ export function ProfileJournal({ profile, onPostCountChange }: { profile: Studen
         </div>)}
       </div>
       : !posts.length ? <div className={styles.empty}><BookOpen size={32} /><h3>No posts yet</h3><p>{profile.is_own ? 'Posts you share will appear here.' : 'Posts they share with you will appear here.'}</p></div>
-      : <div className={styles.journalPosts}>{posts.map(post => <PostCard key={post.postId} post={post} accessToken={token} isOwnPost={viewerId === post.authorId} authorInitial={viewerInitial} currentStudentId={viewerId}
+      : <div className={styles.journalPosts}>{posts.map(post => <PostCard key={post.postId} post={post} accessToken={token} isOwnPost={viewerId === post.authorId} authorInitial={viewerInitial} authorPhotoUrl={viewerPhotoUrl} currentStudentId={viewerId}
         onUpdated={updated => setPosts(current => current?.map(item => item.postId === updated.postId ? updated : item) ?? null)}
         onDeleted={id => { setPosts(current => current?.filter(item => item.postId !== id) ?? null); if (profile.is_own) onPostCountChange(-1); }} />)}</div>}
   </section>;

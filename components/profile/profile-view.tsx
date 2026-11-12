@@ -76,7 +76,7 @@ type ProfileFriend = { username: string; name: string; photo_url: string | null;
 function FriendListRow({ friend, onClose }: { friend: ProfileFriend; onClose: () => void }) {
   return <li className={styles.friendItem}>
     <Link href={friend.is_me ? '/profile' : `/students/${encodeURIComponent(friend.username)}`} className={styles.friendRow} onClick={onClose}>
-      <Avatar url={friend.photo_url} name={friend.name} />
+      <Avatar url={friend.photo_url} name={friend.name} username={friend.username} />
       <span className={styles.friendName}>{friend.name}<small>@{friend.username}</small></span>
     </Link>
     {friend.is_me ? <span className={styles.friendTag}>You</span> : <div className={styles.friendControls}><FriendActions username={friend.username} showBlock={false} /></div>}
@@ -192,7 +192,7 @@ export function PostViewer({ post, onClose, onSavedChange }: { post: FeedPost; o
       {hasPhotos && <div className={styles.viewerMedia}>{post.photos.map((photo, index) => <img key={photo.assetId} src={photo.url} alt={`Photo ${index + 1} of ${post.photos.length}`} />)}</div>}
       <div className={styles.viewerBody}>
         <div className={styles.viewerAuthor}>
-          <Avatar url={post.authorPhotoUrl} name={post.authorName} />
+          <Avatar url={post.authorPhotoUrl} name={post.authorName} username={post.authorUsername ?? undefined} />
           <span>{post.authorName}</span>
           <button type="button" className={styles.close} onClick={onClose} aria-label="Close post" autoFocus><X size={18} /></button>
         </div>
