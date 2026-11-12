@@ -8,8 +8,9 @@ type RawMessageNotification = {
   kind: 'private' | 'group';
   name: string | null;
   sender: { username: string; name: string; photo_key: string | null };
-  text: string;
-  message_kind: 'text' | 'emoji';
+  // #1217 (SRS-212.9): a photo message has no text_content; message_kind tells the page what to show.
+  text: string | null;
+  message_kind: 'text' | 'emoji' | 'photo';
   unread_count: number;
   sent_at: string;
 };

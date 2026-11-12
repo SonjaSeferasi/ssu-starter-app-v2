@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { accessToken } from '../../lib/account/session';
 import { CHAT_ACTIVITY_EVENT } from '../../lib/chat-events';
+import { conversationPreview, type PreviewKind } from '../../lib/chat-preview';
 import { forgetInvitation } from '../../components/chat/message-notifications';
 import { FriendPicker } from './friend-picker';
 import { GroupInvitationList, type PendingInvitation } from './group-invitations';
@@ -18,7 +19,8 @@ export type ConversationSummary = {
   member_count: number | null;
   // SRS-212.4 (#328): true when another participant's message is still unread for this student.
   unread?: boolean;
-  last_message: { text: string; sender_id: string; sent_at: string } | null;
+  // #1217 (SRS-212.9): a photo has no text, so the kind says what to show. Absent until 20261112120000 is applied.
+  last_message: { text: string | null; sender_id: string; sent_at: string; kind?: PreviewKind } | null;
 };
 
 // The conversation page announces sent and received messages so the list can refresh its order and previews.
@@ -194,7 +196,7 @@ export function ConversationListPanel() {
             const last = conversation.last_message;
             const unread = Boolean(conversation.unread) && conversation.id !== openId;
             const preview = last
-              ? `${last.sender_id === list.me ? 'You: ' : ''}${last.text}`
+              ? conversationPreview(last, list.me)
               : conversation.kind === 'group'
                 ? `${conversation.member_count ?? 1} member${conversation.member_count === 1 ? '' : 's'}`
                 : 'No messages yet';
