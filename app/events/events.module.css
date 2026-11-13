@@ -215,3 +215,10 @@ textarea.input { resize: none; }
 .rsvpButtons { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
 .rsvpButtons .keepButton { margin-top: 0; min-height: 48px; }
 .rsvpButtons svg { width: 18px; height: 18px; }
+
+/* SRS-405.5: Trending entries are Campus Feed posts: author, a text or photo preview, recent likes. */
+.trendingPhoto { width: 52px; height: 52px; flex-shrink: 0; border-radius: 10px; object-fit: cover; background: #dcebe1; }
+.trendingAuthor { display: grid; place-items: center; width: 52px; height: 52px; flex-shrink: 0; overflow: hidden; border-radius: 50%; background: #c0ddcb; color: #102c30; font-size: 16px; font-weight: 800; }
+.trendingAuthor img { width: 100%; height: 100%; object-fit: cover; }
+.trendingHandle { color: #536963; font-weight: 500; }
+.trendingPreview { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-height: 1.4; }
