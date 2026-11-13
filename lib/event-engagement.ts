@@ -4,11 +4,13 @@ const STARTED: Record<string, string> = {
   socialu_event_invite: 'This event has already started, so invitations are closed.',
   socialu_event_cancel: 'This event has already started, so it can no longer be cancelled.',
   socialu_event_rsvp: 'This event has already started, so your RSVP can no longer change.',
+  socialu_event_update: 'This event has already started, so it can no longer be edited.',
 };
 
 const NOT_CREATOR: Record<string, string> = {
   socialu_event_cancel: 'Only the event’s creator can cancel it.',
   socialu_event_rsvp: 'Only invited students can answer this invitation.',
+  socialu_event_update: 'Only the event’s creator can edit it.',
 };
 
 // Server-only: events live in the socialu schema, which is outside the Data API,
