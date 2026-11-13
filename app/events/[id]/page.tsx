@@ -14,6 +14,8 @@ import { EventActions } from '../../../components/events/EventActions';
 import { InviteStudents } from '../../../components/events/InviteStudents';
 import { CoverPhotoButton } from '../../../components/events/CoverPhotoButton';
 import { CancelEvent, CancellationNotice } from '../../../components/events/CancelEvent';
+import { RsvpInvitation } from '../../../components/events/RsvpInvitation';
+import { useMyInvitations } from '../../../components/events/MyInvitations';
 import { formatWhen, type EventDetail } from '../../../lib/events';
 
 const commentTime = new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
@@ -30,6 +32,10 @@ export default function EventDetailPage() {
   const [comment, setComment] = useState('');
   const [posting, setPosting] = useState(false);
   const [commentError, setCommentError] = useState('');
+  // UR-403: the signed-in student's invitation to this event, if they have one.
+  const invitations = useMyInvitations();
+  const [rsvp, setRsvp] = useState<string | null>(null);
+  const invitation = invitations?.find((item) => item.event_id === id) ?? null;
 
   async function load(signal?: AbortSignal) {
     const token = storedAccessToken();
@@ -123,6 +129,10 @@ export default function EventDetailPage() {
                 )}
               </div>
             </article>
+
+            {invitation && upcoming && !cancelled ? (
+              <RsvpInvitation eventId={event.event_id} host={event.creator_username} rsvp={rsvp ?? invitation.rsvp} onChange={setRsvp} />
+            ) : null}
 
             {isCreator && upcoming && !cancelled ? (
               <>

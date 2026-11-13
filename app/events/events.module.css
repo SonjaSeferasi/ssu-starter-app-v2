@@ -210,3 +210,8 @@ textarea.input { resize: none; }
 .cancelledNotice svg { width: 18px; height: 18px; flex-shrink: 0; }
 .cancelledNotice p { margin: 6px 0 0; }
 .cancelledTag { display: inline-block; margin-right: 6px; padding: 1px 8px; border-radius: 999px; background: #fdf1f1; color: #9b2c2c; font-size: 12px; font-weight: 700; }
+
+/* UR-403: an invited student accepts or declines. */
+.rsvpButtons { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+.rsvpButtons .keepButton { margin-top: 0; min-height: 48px; }
+.rsvpButtons svg { width: 18px; height: 18px; }

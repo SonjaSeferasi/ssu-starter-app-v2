@@ -5,6 +5,9 @@ import Link from 'next/link';
 import { storedAccessToken } from '../../lib/account/session';
 import { formatWhen } from '../../lib/events';
 
+// UR-403: each invitation shows the student's answer.
+const RSVP_LABEL: Record<string, string> = { pending: 'Awaiting your reply', attending: 'Accepted', not_attending: 'Declined' };
+
 export type MyInvitation = {
   event_id: string; title: string; location: string; starts_at: string; creator_username: string; rsvp: string;
   // UR-404: cancelled events stay listed with their notice.
@@ -42,6 +45,7 @@ export function InvitationList({ invitations, classNames }: {
               {invitation.title}
             </span>
             <span className={classNames.meta}>{formatWhen(invitation.starts_at)} · from @{invitation.creator_username}</span>
+            {invitation.status === 'cancelled' ? null : <span className={classNames.meta}>{RSVP_LABEL[invitation.rsvp] ?? RSVP_LABEL.pending}</span>}
             {invitation.status === 'cancelled' ? (
               <span className={classNames.meta}>{invitation.cancellation_note ? `Cancelled by the host: “${invitation.cancellation_note}”` : 'The host cancelled this event.'}</span>
             ) : null}

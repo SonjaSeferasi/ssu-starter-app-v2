@@ -3,6 +3,12 @@ import { AccountError, accountClient } from './socialu-account';
 const STARTED: Record<string, string> = {
   socialu_event_invite: 'This event has already started, so invitations are closed.',
   socialu_event_cancel: 'This event has already started, so it can no longer be cancelled.',
+  socialu_event_rsvp: 'This event has already started, so your RSVP can no longer change.',
+};
+
+const NOT_CREATOR: Record<string, string> = {
+  socialu_event_cancel: 'Only the event’s creator can cancel it.',
+  socialu_event_rsvp: 'Only invited students can answer this invitation.',
 };
 
 // Server-only: events live in the socialu schema, which is outside the Data API,
@@ -13,7 +19,7 @@ export async function eventOperation(fn: string, args: Record<string, unknown>, 
     if (!error.code && /fetch failed/i.test(error.message)) throw new AccountError('The server cannot reach Supabase. Check the server network connection and try again.', 503);
     if (error.code === '42501') throw new AccountError('A verified, active university account is required. Finish setting up your profile, then try again.', 403);
     if (error.code === 'SE404') throw new AccountError('This event is not available.', 404);
-    if (error.code === 'SE403') throw new AccountError(fn === 'socialu_event_cancel' ? 'Only the event’s creator can cancel it.' : 'Only the event’s creator can invite students.', 403);
+    if (error.code === 'SE403') throw new AccountError(NOT_CREATOR[fn] ?? 'Only the event’s creator can invite students.', 403);
     if (error.code === 'SE409') throw new AccountError(STARTED[fn] ?? 'This event has already started, so attendance can no longer change.', 409);
     if (error.code === 'SE422') throw new AccountError('One or more selected students cannot be invited. Search again and reselect.', 422);
     if (error.code === '22023') throw new AccountError(invalidMessage, 400);
