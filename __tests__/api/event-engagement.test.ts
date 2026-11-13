@@ -80,7 +80,13 @@ describe('Event comments API', () => {
     expect(callTo('socialu_event_comment')?.[1]).toEqual({ p_auth_id: user.id, p_event_id: '42', p_text: 'See you there' });
   });
 
-  it.each([[''], ['   '], ['x'.repeat(501)], [undefined]])('rejects empty or oversized comments %#', async (text) => {
+  it('counts emoji as one character each, like the database (#1188)', async () => {
+    dbResult({ comment_id: '9', author_username: 'student2', text: '😀'.repeat(300), created_at: '2026-10-27T15:00:00Z' });
+    expect((await comment(request('POST', { text: '😀'.repeat(300) }), ctx())).status).toBe(201);
+    expect((await comment(request('POST', { text: '😀'.repeat(500) }), ctx())).status).toBe(201);
+  });
+
+  it.each([[''], ['   '], ['x'.repeat(501)], ['😀'.repeat(501)], [undefined]])('rejects empty or oversized comments %#', async (text) => {
     const response = await comment(request('POST', { text }), ctx());
     expect(response.status).toBe(400);
     expect((await response.json()).error).toBe('Comments must contain 1 to 500 characters.');

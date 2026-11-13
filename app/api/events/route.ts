@@ -1,16 +1,17 @@
 import { AccountError, accountResponse, jsonBody, verifiedUser } from '../../../lib/socialu-account';
 import { eventOperation } from '../../../lib/event-engagement';
-import { trendingEvents, type CampusEvent } from '../../../lib/events';
+import type { CampusEvent } from '../../../lib/events';
 import { withCoverUrls } from '../../../lib/event-covers';
 import { validateEvent } from '../../../lib/event-input';
 export const dynamic = 'force-dynamic';
 
-// SRS-401.1-.6: list upcoming campus events for the signed-in student, plus trending events (UR-405).
+// SRS-401.1-.6: list upcoming campus events for the signed-in student. Trending is Campus Feed posts
+// (SRS-405, GET /api/posts/trending), so events are no longer ranked here (#1189, #1190).
 export async function GET(request: Request) {
   try {
     const user = await verifiedUser(request);
     const events = await withCoverUrls(((await eventOperation('socialu_list_events', { p_auth_id: user.id })) ?? []) as CampusEvent[]);
-    return Response.json({ events, trending: trendingEvents(events) }, { headers: { 'Cache-Control': 'no-store' } });
+    return Response.json({ events }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) { return accountResponse(error); }
 }
 

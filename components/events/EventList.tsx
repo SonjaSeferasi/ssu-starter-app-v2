@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { CalendarDays, Heart, MapPin, Shirt, UserRound } from 'lucide-react';
+import { CalendarDays, MapPin, Shirt, UserRound } from 'lucide-react';
 import styles from '../../app/events/events.module.css';
 import { EventArt } from './EventArt';
 import { EventActions, GoingSummary } from './EventActions';
@@ -125,35 +125,6 @@ export function WeekStrip({ events, today = new Date() }: { events: CampusEvent[
           </li>
         ))}
       </ol>
-    </section>
-  );
-}
-
-// UR-405: liked events ranked by likes; the more likes, the higher.
-export function TrendingEvents({ events }: { events: CampusEvent[] }) {
-  return (
-    <section className={styles.sideCard} aria-labelledby="trending-title">
-      <h2 id="trending-title" className={styles.sideTitle}>Trending on campus</h2>
-      <p className={styles.sideBody}>Ranked by likes · the more likes, the higher</p>
-      {events.length === 0 ? (
-        <p className={styles.sideEmpty}>No trending events yet. Like an event to get it trending.</p>
-      ) : (
-        <ol className={styles.trending}>
-          {events.map((event, index) => (
-            <li key={event.event_id}>
-              <Link href={`/events/${event.event_id}`} className={styles.trendingItem}>
-                <span className={styles.rank}>{index + 1}</span>
-                <EventArt id={event.event_id} title={event.title} className={styles.trendingArt} coverUrl={event.cover_url} />
-                <span className={styles.trendingText}>
-                  <strong>{event.title}</strong>
-                  <span>{formatWhen(event.starts_at)}</span>
-                </span>
-                <span className={styles.trendingLikes}><Heart aria-hidden="true" fill="currentColor" />{event.like_count}<span className={styles.srOnly}> likes</span></span>
-              </Link>
-            </li>
-          ))}
-        </ol>
-      )}
     </section>
   );
 }

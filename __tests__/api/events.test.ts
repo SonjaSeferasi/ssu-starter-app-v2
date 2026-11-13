@@ -12,14 +12,14 @@ const saved = {
   title: 'Campus Cleanup',
   description: 'Clean up the campus.',
   location: 'North Hall',
-  starts_at: '2026-10-09T10:00:00+00:00',
+  starts_at: '2030-10-09T10:00:00+00:00',
   status: 'active',
 };
 const validBody = {
   title: 'Campus Cleanup',
   description: 'Clean up the campus.',
   location: 'North Hall',
-  date: '2026-10-09',
+  date: '2030-10-09',
   time: '10:00',
 };
 
@@ -57,7 +57,7 @@ describe('Event creation API', () => {
       p_title: 'Campus Cleanup',
       p_description: 'Clean up the campus.',
       p_location: 'North Hall',
-      p_starts_at: new Date('2026-10-09T10:00:00').toISOString(),
+      p_starts_at: new Date('2030-10-09T10:00:00').toISOString(),
     });
   });
 
@@ -105,7 +105,43 @@ describe('Event creation API', () => {
     // 10:00 in New York during daylight time (UTC-4) is 14:00 UTC.
     await POST(createRequest({ ...validBody, timezoneOffset: 240 }));
     const args = rpc.mock.calls.find(([fn]) => fn === 'socialu_create_event')![1];
-    expect(args.p_starts_at).toBe('2026-10-09T14:00:00.000Z');
+    expect(args.p_starts_at).toBe('2030-10-09T14:00:00.000Z');
+  });
+
+  it('refuses impossible dates and times instead of rolling them over (#1185)', async () => {
+    for (const bad of [{ date: '2030-02-30' }, { date: '2030-13-01' }, { date: '2031-02-29' }, { time: '24:00' }, { time: '10:60' }, { date: '10/09/2030' }, { time: '9am' }]) {
+      const response = await POST(createRequest({ ...validBody, ...bad, timezoneOffset: 0 }));
+      expect(response.status).toBe(400);
+      expect(await response.json()).toEqual({ error: 'date and time must be valid.' });
+    }
+    expect(rpc.mock.calls.find(([fn]) => fn === 'socialu_create_event')).toBeUndefined();
+    // A real leap day is still accepted.
+    expect((await POST(createRequest({ ...validBody, date: '2032-02-29', timezoneOffset: 0 }))).status).toBe(201);
+  });
+
+  it('refuses a start time that has already passed (#1186)', async () => {
+    for (const date of ['2020-01-01', new Date(Date.now() - 86400000).toISOString().slice(0, 10)]) {
+      const response = await POST(createRequest({ ...validBody, date, timezoneOffset: 0 }));
+      expect(response.status).toBe(400);
+      expect(await response.json()).toEqual({ error: 'Choose a date and time in the future.' });
+    }
+    expect(rpc.mock.calls.find(([fn]) => fn === 'socialu_create_event')).toBeUndefined();
+  });
+
+  it('enforces the form\'s length limits on the server, counting characters (#1187)', async () => {
+    const tooLong = [
+      [{ title: 'x'.repeat(256) }, 'title must be 255 characters or fewer.'],
+      [{ description: 'x'.repeat(2001) }, 'description must be 2000 characters or fewer.'],
+      [{ location: 'x'.repeat(256) }, 'location must be 255 characters or fewer.'],
+    ] as const;
+    for (const [bad, error] of tooLong) {
+      const response = await POST(createRequest({ ...validBody, ...bad }));
+      expect(response.status).toBe(400);
+      expect(await response.json()).toEqual({ error });
+    }
+    expect(rpc.mock.calls.find(([fn]) => fn === 'socialu_create_event')).toBeUndefined();
+    // Exactly at the limits is fine, and an emoji counts once.
+    expect((await POST(createRequest({ ...validBody, title: '🎃'.repeat(255), description: 'x'.repeat(2000), location: 'x'.repeat(255) }))).status).toBe(201);
   });
 });
 
@@ -130,7 +166,7 @@ describe('Event discovery API', () => {
     const response = await GET(listRequest());
 
     expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ events: listed.map((e) => ({ ...e, cover_url: null })), trending: [] });
+    expect(await response.json()).toEqual({ events: listed.map((e) => ({ ...e, cover_url: null })) });
     expect(rpc).toHaveBeenCalledWith('socialu_list_events', { p_auth_id: user.id });
   });
 
@@ -144,21 +180,17 @@ describe('Event discovery API', () => {
     expect((await (await GET(listRequest())).json()).events[0].location).toBe('South Lawn');
   });
 
-  it('ranks liked events as trending, most liked first, leaving out events with no likes', async () => {
-    const popular = [
-      { ...saved, event_id: '1', like_count: 5 },
-      { ...saved, event_id: '2', like_count: 0 },
-      { ...saved, event_id: '3', like_count: 12 },
-      { ...saved, event_id: '4', like_count: 1 },
-    ];
-    rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : { data: popular, error: null });
-    const { trending } = await (await GET(listRequest())).json();
-    expect(trending.map((event: { event_id: string }) => event.event_id)).toEqual(['3', '1', '4']);
+  it('no longer ranks events as Trending: Trending is Campus Feed posts (#1189, #1190, SRS-405)', async () => {
+    const liked = [{ ...saved, event_id: '1', like_count: 12, starts_at: '2020-01-01T10:00:00Z' }, { ...saved, event_id: '2', like_count: 5 }];
+    rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : { data: liked, error: null });
+    const body = await (await GET(listRequest())).json();
+    expect(body).not.toHaveProperty('trending');
+    expect(body.events.map((event: { event_id: string }) => event.event_id)).toEqual(['1', '2']);
   });
 
   it('returns an empty list when there are no events', async () => {
     rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : { data: [], error: null });
-    expect(await (await GET(listRequest())).json()).toEqual({ events: [], trending: [] });
+    expect(await (await GET(listRequest())).json()).toEqual({ events: [] });
   });
 
   it('requires sign-in', async () => {
