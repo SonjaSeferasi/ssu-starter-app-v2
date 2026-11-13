@@ -13,12 +13,14 @@ import { EventArt } from '../../../components/events/EventArt';
 import { EventActions } from '../../../components/events/EventActions';
 import { InviteStudents } from '../../../components/events/InviteStudents';
 import { CoverPhotoButton } from '../../../components/events/CoverPhotoButton';
+import { CancelEvent, CancellationNotice } from '../../../components/events/CancelEvent';
 import { formatWhen, type EventDetail } from '../../../lib/events';
 
 const commentTime = new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
 const initials = (username: string) => username.slice(0, 2).toUpperCase();
 
-// One event: its details, likes, everyone who is going, and comments.
+// One event: its details, likes, everyone who is going, and comments. Once cancelled (UR-404) it shows the
+// cancellation notice instead, and likes, comments and invitations close.
 export default function EventDetailPage() {
   const session = useNavigationSession();
   const { id } = useParams<{ id: string }>();
@@ -81,6 +83,9 @@ export default function EventDetailPage() {
   }
 
   if (session !== 'signed-in') return <SessionNotice state={session} />;
+  const cancelled = event?.status === 'cancelled';
+  const isCreator = Boolean(event && studentId && studentId === event.creator_id);
+  const upcoming = Boolean(event && Date.parse(event.starts_at) > Date.now());
 
   return (
     <main className={shellStyles.page}>
@@ -97,12 +102,13 @@ export default function EventDetailPage() {
           <div className={styles.mainColumn}>
             <article className={styles.featured} aria-labelledby="event-title">
               <EventArt id={event.event_id} title={event.title} className={styles.featuredArt} coverUrl={event.cover_url}>
-                {studentId && studentId === event.creator_id ? (
+                {isCreator && !cancelled ? (
                   <CoverPhotoButton eventId={event.event_id} hasCover={Boolean(event.cover_url)}
                     onChange={(url) => setEvent((current) => current && { ...current, cover_url: url })} />
                 ) : null}
               </EventArt>
               <div className={styles.featuredBody}>
+                <CancellationNotice event={event} />
                 <h1 id="event-title" className={styles.featuredTitle}>{event.title}</h1>
                 <dl className={styles.meta}>
                   <div className={styles.metaRow}><dt><CalendarDays aria-label="Date and time" /></dt><dd>{formatWhen(event.starts_at)}</dd></div>
@@ -111,13 +117,19 @@ export default function EventDetailPage() {
                   <div className={styles.metaRow}><dt><UserRound aria-label="Host" /></dt><dd>Hosted by @{event.creator_username}</dd></div>
                 </dl>
                 <p className={styles.description}>{event.description}</p>
-                <EventActions event={event} commentHref="#comments"
-                  onChange={(engagement) => { setEvent((current) => current && { ...current, ...engagement }); load(); }} />
+                {cancelled ? null : (
+                  <EventActions event={event} commentHref="#comments"
+                    onChange={(engagement) => { setEvent((current) => current && { ...current, ...engagement }); load(); }} />
+                )}
               </div>
             </article>
 
-            {studentId && studentId === event.creator_id && Date.parse(event.starts_at) > Date.now()
-              ? <InviteStudents eventId={event.event_id} /> : null}
+            {isCreator && upcoming && !cancelled ? (
+              <>
+                <InviteStudents eventId={event.event_id} />
+                <CancelEvent eventId={event.event_id} onCancelled={(update) => setEvent((current) => current && { ...current, ...update })} />
+              </>
+            ) : null}
 
             <section id="comments" className={styles.sectionBlock} aria-labelledby="comments-title">
               <h2 id="comments-title" className={styles.sectionTitle}>Comments ({event.comment_count})</h2>
@@ -136,7 +148,7 @@ export default function EventDetailPage() {
                   ))}
                 </ul>
               )}
-              <form onSubmit={addComment} className={styles.commentForm}>
+              {cancelled ? null : <form onSubmit={addComment} className={styles.commentForm}>
                 <label htmlFor="event-comment" className={styles.srOnly}>Add a comment</label>
                 <textarea id="event-comment" value={comment} onChange={(change) => setComment(change.target.value)}
                   required maxLength={500} rows={2} placeholder="Add a comment…" className={styles.input} />
@@ -147,7 +159,7 @@ export default function EventDetailPage() {
                   </button>
                 </div>
                 {commentError ? <p role="alert" className={styles.actionError}>{commentError}</p> : null}
-              </form>
+              </form>}
             </section>
           </div>
 
@@ -155,7 +167,7 @@ export default function EventDetailPage() {
             <section id="going" className={styles.sideCard} aria-labelledby="going-title">
               <h2 id="going-title" className={styles.sideTitle}>Who’s going ({event.going_count})</h2>
               {event.attendees.length === 0 ? (
-                <p className={styles.sideEmpty}>Nobody yet. Tap “I’m going” to be the first.</p>
+                <p className={styles.sideEmpty}>{cancelled ? 'Nobody was going.' : 'Nobody yet. Tap “I’m going” to be the first.'}</p>
               ) : (
                 <ul className={styles.attendees}>
                   {event.attendees.map((attendee) => (

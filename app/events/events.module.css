@@ -194,3 +194,19 @@ textarea.input { resize: none; }
 .goingLink { color: #102c30; text-decoration: none; }
 .goingLink:hover span:last-child { text-decoration: underline; }
 .goingLink:focus-visible { outline: 3px solid #28634e; outline-offset: 3px; border-radius: 8px; }
+
+/* UR-404: cancelling an event, and the notice everyone sees once it is cancelled. */
+.dangerButton, .keepButton { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; margin-top: 12px; padding: 10px 22px; border: 0; border-radius: 12px; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; }
+.formFooter .dangerButton, .formFooter .keepButton { margin-top: 0; }
+.dangerButton { background: #b42318; color: #ffffff; }
+.dangerButton:hover { background: #912018; }
+.keepButton { background: #e6efe9; color: #102c30; }
+.keepButton:hover { background: #d7e6dd; }
+.dangerButton:disabled, .keepButton:disabled { cursor: not-allowed; opacity: .6; }
+.dangerButton svg { width: 18px; height: 18px; }
+.dangerButton:focus-visible, .keepButton:focus-visible { outline: 3px solid #28634e; outline-offset: 3px; }
+.cancelledNotice { margin: 0 0 16px; padding: 14px 16px; border: 1px solid #f1c4c4; border-radius: 12px; background: #fdf1f1; color: #9b2c2c; font-size: 14px; line-height: 1.5; }
+.cancelledNotice strong { display: flex; align-items: center; gap: 8px; font-size: 16px; }
+.cancelledNotice svg { width: 18px; height: 18px; flex-shrink: 0; }
+.cancelledNotice p { margin: 6px 0 0; }
+.cancelledTag { display: inline-block; margin-right: 6px; padding: 1px 8px; border-radius: 999px; background: #fdf1f1; color: #9b2c2c; font-size: 12px; font-weight: 700; }
