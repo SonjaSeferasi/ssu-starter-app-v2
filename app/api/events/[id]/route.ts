@@ -22,7 +22,6 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     const eventId = eventIdParam((await context.params).id);
     const validation = validateEvent(await jsonBody(request));
     if ('error' in validation) throw new AccountError(validation.error!, 400);
-    if (Date.parse(validation.event.starts_at) <= Date.now()) throw new AccountError('Choose a date and time in the future.', 400);
 
     const { title, description, location, starts_at, dress_code } = validation.event;
     const event = await eventOperation('socialu_event_update', {
