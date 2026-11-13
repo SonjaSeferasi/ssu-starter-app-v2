@@ -15,6 +15,7 @@ import { InviteStudents } from '../../../components/events/InviteStudents';
 import { CoverPhotoButton } from '../../../components/events/CoverPhotoButton';
 import { CancelEvent, CancellationNotice } from '../../../components/events/CancelEvent';
 import { RsvpInvitation } from '../../../components/events/RsvpInvitation';
+import { EditEvent } from '../../../components/events/EditEvent';
 import { useMyInvitations } from '../../../components/events/MyInvitations';
 import { formatWhen, type EventDetail } from '../../../lib/events';
 
@@ -136,6 +137,7 @@ export default function EventDetailPage() {
 
             {isCreator && upcoming && !cancelled ? (
               <>
+                <EditEvent event={event} onSaved={(update) => setEvent((current) => current && { ...current, ...update })} />
                 <InviteStudents eventId={event.event_id} />
                 <CancelEvent eventId={event.event_id} onCancelled={(update) => setEvent((current) => current && { ...current, ...update })} />
               </>
