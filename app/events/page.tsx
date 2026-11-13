@@ -159,7 +159,7 @@ export default function EventsPage() {
             <h2 id="invited-title" className={styles.sideTitle}>You’re invited</h2>
             <InvitationList invitations={invitations} classNames={{
               list: styles.invitationList, item: styles.invitationItem, title: styles.invitationTitle,
-              meta: styles.invitationMeta, empty: styles.sideEmpty,
+              meta: styles.invitationMeta, empty: styles.sideEmpty, cancelled: styles.cancelledTag,
             }} />
           </section>
           <TrendingEvents events={trendingEvents(events)} />

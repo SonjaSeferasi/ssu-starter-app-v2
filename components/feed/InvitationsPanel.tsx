@@ -15,6 +15,7 @@ export function InvitationsPanel() {
         title: 'block truncate text-xs font-semibold text-stone-700',
         meta: 'block text-xs text-stone-500',
         empty: 'mt-1.5 text-xs leading-relaxed text-stone-500',
+        cancelled: 'mr-1.5 rounded-full bg-red-50 px-1.5 py-px text-[11px] font-bold text-red-700',
       }} />
     </section>
   );

@@ -19,6 +19,10 @@ export type CampusEvent = {
   attendee_preview?: string[];
   // Signed URL of the host's cover photo, or null to show generated art.
   cover_url?: string | null;
+  // Cancellation (20261113120000_event_cancellation.sql).
+  status?: 'active' | 'cancelled';
+  cancelled_at?: string | null;
+  cancellation_note?: string | null;
 };
 
 export type EventEngagement = Required<Pick<CampusEvent, 'like_count' | 'liked_by_me' | 'comment_count' | 'going_count' | 'going_by_me' | 'attendee_preview'>>;
