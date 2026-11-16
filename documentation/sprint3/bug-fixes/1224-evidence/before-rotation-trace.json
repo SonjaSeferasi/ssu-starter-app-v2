@@ -1,0 +1,18 @@
+{
+  "environment": "local Next production build with disposable PGlite; fixture Supabase Auth/PostgREST transport",
+  "starterStarAngles": [
+    8,
+    11,
+    14,
+    17
+  ],
+  "otherStartingAngles": [],
+  "result": "failed",
+  "error": "AssertionError: expected [ 8, 11, 14, 17 ] to deeply equal [ 8, 11, 14, 15 ]",
+  "visibleError": [
+    "Keep board items within the canvas.",
+    ""
+  ],
+  "source": "Clean pre-fix production build of 2c5271c; app/components/lib unchanged versus main 3462225",
+  "purpose": "Expected failing regression before the fix"
+}
