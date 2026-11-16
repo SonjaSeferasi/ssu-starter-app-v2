@@ -1,0 +1,106 @@
+{
+  "environment": "local Next production build with disposable PGlite database and fixture Auth/PostgREST transport",
+  "events": [
+    {
+      "step": "migration applied to disposable database",
+      "at": "2026-11-16T21:14:06.185Z"
+    },
+    {
+      "step": "board request paused before database write",
+      "at": "2026-11-16T21:14:09.111Z"
+    },
+    {
+      "step": "new hometown committed by second tab",
+      "at": "2026-11-16T21:14:09.174Z",
+      "detail": {
+        "hometown": "New Salem"
+      }
+    },
+    {
+      "step": "new theme and decorations committed by second tab",
+      "at": "2026-11-16T21:14:09.185Z",
+      "detail": {
+        "theme": "midnight",
+        "stickers": [
+          {
+            "id": "new-star",
+            "kind": "star",
+            "x": 50,
+            "y": 50,
+            "rotation": 0
+          }
+        ]
+      }
+    },
+    {
+      "step": "board database write resumed",
+      "at": "2026-11-16T21:14:09.185Z"
+    },
+    {
+      "step": "board API confirmed both changes",
+      "at": "2026-11-16T21:14:09.195Z",
+      "detail": {
+        "hometown": "New Salem",
+        "theme": "midnight",
+        "stickers": [
+          {
+            "x": 50,
+            "y": 50,
+            "id": "new-star",
+            "kind": "star",
+            "rotation": 0
+          }
+        ],
+        "board": {
+          "items": [
+            {
+              "x": 32,
+              "y": 25,
+              "id": "25cc937b-2171-4d35-8c36-e62264c3e4d4",
+              "kind": "note",
+              "text": "Bug 1223: my board and newer profile changes both survive.",
+              "color": "pink",
+              "width": 28,
+              "rotation": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "step": "fresh page read retained both changes",
+      "at": "2026-11-16T21:14:09.431Z",
+      "detail": {
+        "board": {
+          "items": [
+            {
+              "x": 32,
+              "y": 25,
+              "id": "25cc937b-2171-4d35-8c36-e62264c3e4d4",
+              "kind": "note",
+              "text": "Bug 1223: my board and newer profile changes both survive.",
+              "color": "pink",
+              "width": 28,
+              "rotation": 0
+            }
+          ]
+        },
+        "cover": "meadow",
+        "frame": "rounded",
+        "theme": "midnight",
+        "layout": "about-first",
+        "palette": "sage",
+        "hometown": "New Salem",
+        "stickers": [
+          {
+            "x": 50,
+            "y": 50,
+            "id": "new-star",
+            "kind": "star",
+            "rotation": 0
+          }
+        ]
+      }
+    }
+  ]
+}

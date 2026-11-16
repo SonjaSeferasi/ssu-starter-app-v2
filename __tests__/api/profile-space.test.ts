@@ -102,7 +102,7 @@ describe('Board publishing',()=>{
  });
  it.each([
   {hometown:'New'},
-  {theme:'dark'},
+  {theme:'midnight'},
   {stickers:[{id:'new-star',kind:'star',x:50,y:50,rotation:0}]},
  ])('keeps a profile change committed before the board write: %j',async change=>{
   let latest:any={...DEFAULT_LOOK,hometown:'Original'};

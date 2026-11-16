@@ -21,7 +21,7 @@ After the fix, New and the new board both remain.
 
 - API keeps the existing board validation, authenticated user check, and fresh
   read confirming the saved board. It sends only the board to the new RPC.
-- `20261116000100_atomic_profile_board_save.sql` adds a service-role-only RPC.
+- `20261116210000_atomic_profile_board_save.sql` adds a service-role-only RPC.
   It resolves the student from the verified auth identity, creates a default
   profile-space row if absent, locks that row, and merges the board into its
   latest JSON. It reuses existing profile-look validation and save behavior.
@@ -43,7 +43,48 @@ The failures were in World Explorer: design-tier distribution, FJI and VUT
 patrol assertions, the Oceania audit baseline, and Saudi gate/plate ordering.
 Those are outside this patch's files; no unchanged-baseline rerun is claimed.
 
-Draft PR: https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1257
+PR: https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1257
+
+## Running-application evidence
+
+The fix branch was updated with main (`6c9afe0`) without conflicts. Its
+production build and TypeScript check passed. An additional browser regression
+runs that Next production app and its actual API routes against disposable
+PGlite, with the actual profile migrations and new board-save migration.
+Only the Supabase Auth/PostgREST transport is replaced with a local fixture.
+Final browser run: **1 test passed**. The 39 focused API/database tests also
+passed again after the migration was renamed to sort after current main's
+existing migrations.
+
+The browser edits the board and clicks Save board. The transport holds its
+board RPC before execution while a second browser tab commits New Salem,
+the supported Midnight theme, and a cover star through the actual API. It then
+releases the RPC and checks its successful response and a fresh page load.
+
+| Value | Before | After competing save and board save | After reload |
+| --- | --- | --- | --- |
+| Hometown | Original | New Salem | New Salem |
+| Theme | Default | midnight | midnight |
+| Cover stickers | None | new-star | new-star |
+| Board note | None | New note | Same new note |
+
+- [Draft in the actual editor](1223-evidence/01-board-draft.png)
+- [Successful save](1223-evidence/02-save-confirmed.png)
+- [Board after a fresh reload](1223-evidence/03-after-reload.png)
+- [Hometown after the fresh reload](1223-evidence/04-hometown-after-reload.png)
+- [Executed request order and confirmed values](1223-evidence/request-order.json)
+- Reproducible test: `scripts/tests/profile-board-atomic.browser.ts`
+
+Run `npx vitest run --config vitest.board-evidence.config.ts` with
+`SOCIALU_PLAYWRIGHT_MODULE` pointing to an installed Playwright module and
+`BOARD_BROWSER_EXECUTABLE` pointing to Chrome. Set `BOARD_EVIDENCE_DIR` to
+choose the screenshot directory. Run `npm run build` first. The test runs
+only on loopback and never uses the hosted credentials from `.env.local`.
+
+These screenshots show the running application, not a mockup. They use a
+disposable fixture student and are **local integration evidence**, not proof
+of hosted deployment. The request-order log proves the controlled race's
+ordering; a screenshot by itself cannot establish it.
 
 The API tests cover a competing profile change before the atomic write,
 JSONB key-order differences, dropped writes, invalid input, and a missing RPC.
@@ -57,18 +98,17 @@ not proof of a live two-connection lock wait or a hosted deployment test.
 ## Remaining acceptance / evidence
 
 - Review the PR and apply the migration in the intended database environment.
-- With a disposable signed-in account, pause a board-save request before its
-  database call; commit a hometown change from a second tab; resume the save.
-  Reload and confirm both values remain. Repeat for theme/decorations.
-- Capture the actual running profile after reload and the relevant API results.
-  A screenshot alone does not prove the race; retain the request order too.
-- Link the final PR and screenshot to #1223 and parent #1038. Keep them open
+- Verify the installed RPC in the configured hosted database after applying
+  the migration. The controlled two-tab app check above covers the regression.
+- Link the final PR and screenshots to #1223 and parent #1038. Keep them open
   while their acceptance remains incomplete. Do not close the whole SRS or
   existing tasks merely because this individual bug is addressed.
 
-Browser evidence could not be captured in this session: browser-act's command
-daemon returned an empty response, and the fallback UI runtime failed to start.
-No screenshot or production acceptance is claimed.
+Browser-act's command daemon and the desktop UI runtime could not start.
+The repository's Playwright browser-test approach supplied the local app
+evidence above. The Supabase dashboard was signed out; the user chose to sign
+in personally before the hosted migration. No hosted migration or merge is
+claimed in this record until its deployment section is updated.
 
 Scope: this fixes the board request overwriting a profile change committed
 before its database write. Full-profile PUT remains a full-profile replacement;
