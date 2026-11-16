@@ -243,6 +243,7 @@ export function DormSpace3DGame() {
   const purchased = useCallback((_owned: string[], balance: number) => {
     pointsReadSequence.current++;
     setPoints(balance);
+    window.dispatchEvent(new Event('socialu-points-changed'));
     // SRS-522.8 / SRS-529.6: refresh owned inventory without a reset so the item can be placed now.
     const current = viewRef.current;
     if (current.kind === 'room' && current.dorm.isOwner) void reloadOwnRoom();

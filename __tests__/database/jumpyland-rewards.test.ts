@@ -19,7 +19,7 @@ describe('Jumpyland completion rewards use the real shared ledger', () => {
   }
   beforeAll(async () => {
     db = await createDorm3dDatabase(4, SHOP_ONLY);
-    for (const migration of ['20261015000100_jumpyland.sql', '20261116053032_jumpyland_completion_rewards.sql']) {
+    for (const migration of ['20261015000100_jumpyland.sql', '20261116053032_jumpyland_completion_rewards.sql', '20261116060114_shared_points_balance_read.sql']) {
       await db.exec(readFileSync(`supabase/migrations/${migration}`, 'utf8'));
     }
   }, 60_000);
@@ -34,6 +34,7 @@ describe('Jumpyland completion rewards use the real shared ledger', () => {
       expect(result.completed).toContain(level);
     }
     expect(await balance(db, 1)).toBe(75);
+    expect((await db.query<{ result: any }>('SELECT public.socialu_points_balance($1) AS result', [testUid(1)])).rows[0].result.balance).toBe(75);
   });
 
   it('rejects an implausibly immediate completion without credit', async () => {
