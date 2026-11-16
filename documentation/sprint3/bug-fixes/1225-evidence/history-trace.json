@@ -1,0 +1,74 @@
+{
+  "environment": "local Next production UI/API and real SQL on disposable PGlite; fixture Auth/PostgREST",
+  "steps": [
+    {
+      "step": "back warning",
+      "detail": {
+        "url": "http://127.0.0.1:65020/profile"
+      }
+    },
+    {
+      "step": "back Stay retained draft"
+    },
+    {
+      "step": "forward warning",
+      "detail": {
+        "url": "http://127.0.0.1:65020/profile"
+      }
+    },
+    {
+      "step": "forward Stay retained draft"
+    },
+    {
+      "step": "back warning",
+      "detail": {
+        "url": "http://127.0.0.1:65020/profile"
+      }
+    },
+    {
+      "step": "back Stay retained draft"
+    },
+    {
+      "step": "history length unchanged after repeated Stay",
+      "detail": {
+        "historyLength": 5
+      }
+    },
+    {
+      "step": "tab cancellation retained draft"
+    },
+    {
+      "step": "link cancellation retained draft"
+    },
+    {
+      "step": "confirmed departure reached Campus Feed without saving"
+    },
+    {
+      "step": "Forward returned normally after confirmed discard"
+    },
+    {
+      "step": "draft saved after Stay",
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "step": "clean Back completed without warning"
+    },
+    {
+      "step": "saved board restored after clean Back and Forward"
+    }
+  ],
+  "historyLengthBefore": 5,
+  "result": "passed",
+  "base_commit": "f41662287f8aaa1c077aa4d24cea5ede5b1cd7eb",
+  "source_cleanliness": "git archive of base commit plus only listed source changes; clean production build; unrelated workspace edits excluded",
+  "source_sha256": {
+    "app/layout.tsx": "ef37fd2f2a42659a95c5c5c4a320ed1c1948c3f280434efd5a0aebcffb003feb",
+    "components/friends/confirm-dialog.tsx": "38a08a9cbc9926915ef88defbe4d30d495b8e72b0ecb9518816b8259dfc142cb",
+    "components/profile/profile-board.tsx": "522c29e2c2f7776b959c650ffffc7a969df4edb7ea591ce3cc6f7a8d332da333",
+    "lib/board-history-guard.ts": "799ba0dd398bc7570a9e511e32826595772a514092b3e7db0dd57090162096e2",
+    "__tests__/board-history-guard.test.ts": "82551334151b868f667d4fb838ffdd7fd182a9221c83a69766900b0683dc4e89",
+    "scripts/tests/profile-board-atomic.browser.ts": "ee64c0e13556bf3b69ed72264bff54242f02eac261decd9890307607ee53e5f1"
+  }
+}

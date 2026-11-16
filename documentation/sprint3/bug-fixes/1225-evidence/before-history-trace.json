@@ -1,0 +1,10 @@
+{
+  "environment": "local Next production UI/API and real SQL on disposable PGlite; fixture Auth/PostgREST",
+  "steps": [],
+  "result": "failed",
+  "error": "TimeoutError: locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog', { name: 'Leave without saving your board?', exact: true }) to be visible\u001b[22m\n",
+  "urlAtFailure": "http://127.0.0.1:64620/",
+  "draftVisibleAfterReturn": 0,
+  "purpose": "Expected failing browser regression before the fix",
+  "source": "Clean production build with #1224 fix; no #1225 production changes"
+}

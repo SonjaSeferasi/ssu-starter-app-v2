@@ -13,6 +13,8 @@ import {MemoryEditor} from './profile-memories';
 import {SpotifyPlayer} from './profile-about-details';
 import {handwriting} from './handwriting';
 import styles from './profile-board.module.css';
+import { registerBoardHistoryGuard, type BoardHistoryDecision } from '../../lib/board-history-guard';
+import { ConfirmDialog } from '../friends/confirm-dialog';
 const EMPTY:Board={items:[]};
 function safeBoard(value:unknown){try{return value?boardInput(value):EMPTY;}catch{return EMPTY;}}
 
@@ -21,9 +23,11 @@ export function ProfileBoard({profile,look,status,onSaved,onDirtyChange}:{profil
  const [board,setBoard]=useState<Board>(saved),[editing,setEditing]=useState(false),[selected,setSelected]=useState<string|null>(null);
  const [memories,setMemories]=useState<ProfileMemory[]>([]),[photosReady,setPhotosReady]=useState(false),[uploading,setUploading]=useState(false);
  const [saving,setSaving]=useState(false),[error,setError]=useState(''),[message,setMessage]=useState(''),[search,setSearch]=useState('');
+ const [historyDecision,setHistoryDecision]=useState<BoardHistoryDecision|null>(null);
  const canvas=useRef<HTMLDivElement>(null),dirtyRef=useRef(false);
  const drag=useRef<{id:string;startX:number;startY:number;x:number;y:number}|null>(null);
  const dirty=JSON.stringify(board)!==JSON.stringify(saved);dirtyRef.current=editing&&dirty&&!saving;
+ useEffect(()=>registerBoardHistoryGuard(()=>dirtyRef.current,setHistoryDecision),[]);
  useEffect(()=>{onDirtyChange?.(editing&&dirty);},[editing,dirty,onDirtyChange]);
  useEffect(()=>()=>onDirtyChange?.(false),[onDirtyChange]);
  useEffect(()=>{if(!editing)setBoard(safeBoard(look.board));},[look.board,editing]);
@@ -75,6 +79,7 @@ export function ProfileBoard({profile,look,status,onSaved,onDirtyChange}:{profil
    </div></div>
   </div>
   <p className={styles.hint}><Move size={14}/> {editing?'Changes stay in this editor until you save.':'On a small screen, swipe across the board to explore.'}</p>
+  {historyDecision&&<ConfirmDialog title="Leave without saving your board?" busy={false} error="" cancelLabel="Stay" confirmLabel="Leave without saving" onClose={()=>{historyDecision.stay();setHistoryDecision(null);}} onConfirm={()=>{historyDecision.leave();setHistoryDecision(null);}}>Your unsaved board changes will be lost. Choose Stay to keep editing.</ConfirmDialog>}
   {uploading&&<MemoryEditor onClose={()=>setUploading(false)} onSaved={photos=>{const added=photos.find(photo=>!memories.some(old=>old.id===photo.id));setMemories(photos);setUploading(false);if(added)add('photo',{memoryId:added.id});}}/>}
  </section>;
 }
