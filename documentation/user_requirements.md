@@ -18,7 +18,7 @@ The requirements cover student accounts and friendships, campus posts, private a
 
 SocialU is a browser-based social platform for students at one university. It brings verified accounts, profiles and friendships, Campus and Friends feeds, private and group messages, conversation-only Snipes, Events and Trending, avatar customization, games, and a customizable virtual dorm into one website.
 
-The semester release includes Game 1 with three levels and DormSpace. Wordle and a fourth platform level are optional if time allows; automatic photograph-background removal is conditional on feasibility. University transfers and post/event drafts are deferred. Native mobile applications, voice/video calling, exam tips, and professor ratings are outside the semester scope.
+The semester release includes Game 1 with three levels and DormSpace. Wordle and a fourth platform level are optional if time allows; automatic photograph-background removal is conditional on feasibility. University transfers and post/event drafts are deferred. Native mobile applications, general voice/video calling, exam tips, and professor ratings are outside the semester scope. Opt-in DormSpace voice is included under UR-531.
 
 Students share one participation streak across Game 1 attempt starts, accepted Wordle guesses when available, and successful DormSpace openings. Shared points use that participation record for daily and milestone rewards. Reward amounts and catalog prices remain open team decisions; signing in alone does not qualify.
 

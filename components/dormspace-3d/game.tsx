@@ -207,16 +207,31 @@ export function DormSpace3DGame() {
   // SRS-522 shared points HUD: only ever a balance the server returned for this account (shop catalog
   // or a purchase outcome). Nothing is shown until the first response; there is no default value.
   const [points, setPoints] = useState<number | null>(null);
+  const pointsReadSequence = useRef(0);
   useEffect(() => {
     let active = true;
-    void apiShopSource.catalog().then(result => { if (active && result.ok) setPoints(result.catalog.balance); });
-    return () => { active = false; };
+    const refresh = () => {
+      if (document.visibilityState === 'hidden') return;
+      const seq = ++pointsReadSequence.current;
+      void apiShopSource.catalog().then(result => { if (active && seq === pointsReadSequence.current && result.ok) setPoints(result.catalog.balance); });
+    };
+    refresh();
+    window.addEventListener('focus', refresh);
+    window.addEventListener('socialu-points-changed', refresh);
+    document.addEventListener('visibilitychange', refresh);
+    return () => {
+      active = false;
+      window.removeEventListener('focus', refresh);
+      window.removeEventListener('socialu-points-changed', refresh);
+      document.removeEventListener('visibilitychange', refresh);
+    };
   }, []);
   const shopSource = useMemo(() => ({
     ...apiShopSource,
     async catalog() {
+      const seq = ++pointsReadSequence.current;
       const result = await apiShopSource.catalog();
-      if (result.ok) {
+      if (result.ok && seq === pointsReadSequence.current) {
         setPoints(result.catalog.balance);
         requestThumbnails(result.catalog.offers.filter(o => o.surface && o.width && o.height).map(o => ({ key: o.previewKey, width: o.width!, height: o.height!, surface: o.surface! })));
       }
@@ -226,6 +241,7 @@ export function DormSpace3DGame() {
   // Stable callback (reads the latest view through a ref), so saving the room never reloads the shop.
   const viewRef = useRef(view); viewRef.current = view;
   const purchased = useCallback((_owned: string[], balance: number) => {
+    pointsReadSequence.current++;
     setPoints(balance);
     // SRS-522.8 / SRS-529.6: refresh owned inventory without a reset so the item can be placed now.
     const current = viewRef.current;
@@ -245,6 +261,7 @@ export function DormSpace3DGame() {
       <div className={styles.toolbar}>
         <h2>DormSpace</h2>
         {points !== null ? <span className={styles.chip} data-dormspace-points={points}>Shared points: {points.toLocaleString()}</span> : null}
+        <Link className={styles.button} href="/game-1">Earn points in Jumpyland</Link>
         <Link className={styles.button} href="/game-room">Edit Game Room avatar</Link>
         <button type="button" className={styles.button} aria-pressed={shopOpen} onClick={() => setShopOpen(open => !open)}>Furniture shop</button>
         <button type="button" className={styles.button} disabled={busy} onClick={() => void openRoom(null)}>My room</button>

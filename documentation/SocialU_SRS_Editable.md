@@ -8138,9 +8138,9 @@ TBD means a team decision is still required. These are explicit dependencies, no
 
 | Decision | Owner | Required decision | Traces |
 | --- | --- | --- | --- |
-| B-01 | DP | Snipe points per positively identified target; no extra daily photographer cap. Approved by DP on 29 October 2026 for the Snipe implementation: 25 shared points per verified friend (an originally tagged friend whose identity answer is Yes at publication), credited once to the photographer only; no photographer-wide daily cap (see documentation/snipe-rewards.md). This records DP's approval only; team review is not recorded, and every other reward amount and catalog price stays open. | SRS-525.2; SRS-525.6; UR-528 |
+| B-01 | DP | Snipe points per positively identified target; no extra daily photographer cap. Approved by DP on 29 October 2026 for the Snipe implementation: 25 shared points per verified friend (an originally tagged friend whose identity answer is Yes at publication), credited once to the photographer only; no photographer-wide daily cap (see documentation/snipe-rewards.md). This records DP's approval only; team review is not recorded, and other reward amounts and catalog prices stay open except the 25-point Jumpyland completion rule approved by DP on 16 November 2026 (UR-533). | SRS-525.2; SRS-525.6; UR-528 |
 | B-02 | DP + SS | Daily participation amount and separate 7/14/30-day milestone amounts. | SRS-526.5; SRS-526.17; SRS-528.5 |
-| B-03 | DP + SS | Normal Game 1 rewards, coin conversion, completion proof, and reduced replay reward rules; Wordle reward rules only if included. | SRS-520.3 to SRS-520.5; SRS-528.6 |
+| B-03 | DP + SS | DP approved 25 shared points per completed Jumpyland attempt on 16 November 2026, including completed replays; no coin conversion or reduced replay reward applies. A started authenticated attempt and valid completion record are required. More advanced server-authoritative gameplay proof and any optional Wordle reward remain separate decisions. | SRS-520.3 to SRS-520.5; UR-533 |
 | B-04 | DP | Catalog entries, point prices, eligibility, and initial/purchasable wall and floor appearances. 4 November 2026: the DormSpace furniture prices listed in SRS-522.12 are provisional, adjustable implementation defaults, not a decision; wall and floor appearances stay free; the price decision and other catalog decisions remain open. | UR-500; UR-522; UR-529 |
 | B-05 | DP | Room dimensions, protected cells, item footprints, allowed surfaces and overlap compatibility. 4 November 2026: the earlier "fixed orientations" item is obsolete; floor items turn in quarter turns per revised SRS-500.7. | SRS-500.2; SRS-500.8 to SRS-500.10; SRS-529.7 |
 | B-06 | DP + LP | Snipe-specific image formats, byte limit and pixel limits. SS avatar and feed limits do not automatically define the Snipe policy. Approved by DP on 25 October 2026 for the Snipe implementation: JPEG and PNG only; at most 10,000,000 bytes; at most 4096 pixels wide and 4096 pixels high (see documentation/snipe-basic.md). This records DP's approval only; LP and team review are not recorded. | SRS-510.2; SRS-510.3 |
@@ -8308,6 +8308,8 @@ Unconfirmed operation outcomes do not prove failure. Retry and exit behavior pre
 | UR-529 | SRS-529.1 through SRS-529.7 | [See section](#ur-529) |
 | UR-530 | SRS-530.1 through SRS-530.6 | [See section](#ur-530) |
 | UR-531 | SRS-531.1 through SRS-531.7 | [See section](#ur-531) |
+| UR-532 | SRS-532.1 through SRS-532.2 | [See section](#ur-532) |
+| UR-533 | SRS-533.1 through SRS-533.2 | [See section](#ur-533) |
 
 <a id="sonja-seferasi-ss"></a>
 
@@ -8434,8 +8436,8 @@ The aligned user_requirements.md contains these amendments. This register record
 | UR-506 | Retired identifier; no achievement display. |
 | UR-507 to UR-514 | Integrated DormHall and independent Snipe identity/sharing consent with lifecycle boundaries. |
 | UR-526; UR-613 | One shared participation streak and daily/milestone reward policy. |
-| UR-530 | Listen to Shared MP3 Music in DormSpace Rooms. Planned audio scope for 3D DormSpace. |
-| UR-531 | Join Voice Chat in DormSpace Rooms and the DormHall. Planned audio scope for 3D DormSpace. |
+| UR-530 | Owner-uploaded MP3 soundtracks and opt-in local listener controls in 3D rooms. |
+| UR-531 | Opt-in voice in 3D rooms and the DormHall; hosted provider setup and acceptance remain release dependencies. |
 | UR-605; UR-606 | Audience-selection delegation and explicit draft deferral. |
 | UR-623 to UR-626 | Conditional daily Wordle with today's puzzle/result only. |
 | UR-627 | Preserved existing display-preference requirement. |
