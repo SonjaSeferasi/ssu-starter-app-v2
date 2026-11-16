@@ -1,0 +1,22 @@
+{
+  "verified_at_utc": "2026-11-16T21:27:04Z",
+  "project_ref": "sfrpokisjlwgknxlzllu",
+  "environment": "SocialU main production database, repository verified in dashboard",
+  "migration": "20261116210000_atomic_profile_board_save.sql",
+  "application_method": "Exact reviewed SQL executed in signed-in Supabase SQL Editor, followed by NOTIFY pgrst, 'reload schema'",
+  "sql_editor_result": "Success. No rows returned",
+  "read_only_metadata_checks": {
+    "service_role_can_execute": true,
+    "anon_can_execute": false,
+    "authenticated_can_execute": false,
+    "security_definer": true,
+    "locks_latest_row": true,
+    "merges_latest_board": true
+  },
+  "independent_api_probe": {
+    "identity": "nonexistent fixture UUID; no account data changed",
+    "before": { "http": 404, "code": "PGRST202", "meaning": "Function missing from schema cache" },
+    "after": { "http": 403, "code": "42501", "message": "A verified, active university account is required." }
+  },
+  "limits": "Hosted installation and execution permissions verified. Actual UI/API race and reload verified in local Next production app with disposable PGlite; no production account race or multi-connection lock-wait test claimed."
+}

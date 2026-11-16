@@ -95,20 +95,36 @@ restricted execution permissions, and migration reapplication.
 These checks are controlled fixtures. PGlite executes one connection; this is
 not proof of a live two-connection lock wait or a hosted deployment test.
 
-## Remaining acceptance / evidence
+## Hosted migration verification — November 16, 2026
 
-- Review the PR and apply the migration in the intended database environment.
-- Verify the installed RPC in the configured hosted database after applying
-  the migration. The controlled two-tab app check above covers the regression.
-- Link the final PR and screenshots to #1223 and parent #1038. Keep them open
-  while their acceptance remains incomplete. Do not close the whole SRS or
-  existing tasks merely because this individual bug is addressed.
+After the user signed into Supabase, the dashboard confirmed the SocialU
+production project `sfrpokisjlwgknxlzllu`, linked to this repository. The exact
+reviewed migration was applied through SQL Editor before API deployment, with
+a PostgREST schema-cache refresh. SQL Editor returned **Success. No rows returned**.
+This installs the function; it does not update students' saved board rows.
 
-Browser-act's command daemon and the desktop UI runtime could not start.
-The repository's Playwright browser-test approach supplied the local app
-evidence above. The Supabase dashboard was signed out; the user chose to sign
-in personally before the hosted migration. No hosted migration or merge is
-claimed in this record until its deployment section is updated.
+Read-only PostgreSQL metadata checks returned:
+
+| Check | Result |
+| --- | --- |
+| service_role_can_execute | true |
+| anon_can_execute | false |
+| authenticated_can_execute | false |
+| security_definer | true |
+| locks_latest_row | true |
+| merges_latest_board | true |
+
+The independent hosted API probe changed from HTTP 404 / `PGRST202` (function
+missing) to HTTP 403 / `42501` (verified, active university account required).
+The probe used a nonexistent identity, so no account data was changed.
+[Hosted verification record](1223-evidence/hosted-migration-verification.json).
+
+The screenshot and request-order evidence is attached to bug #1223 and parent
+#1038. Final merge/deployment status is tracked in [PR #1257](https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1257)
+and its linked issue comments. Closing this bug does not complete the entire
+SRS or existing tasks #1040/#1042. The browser race was verified locally; the
+hosted checks establish migration installation and permissions, not a live
+two-account production race.
 
 Scope: this fixes the board request overwriting a profile change committed
 before its database write. Full-profile PUT remains a full-profile replacement;
