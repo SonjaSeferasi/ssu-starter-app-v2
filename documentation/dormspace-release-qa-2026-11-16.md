@@ -25,3 +25,11 @@ The broad run was stopped after 250 files reported results: 244 passed and six f
 5. Mark the combined PR ready, merge to main, redeploy that exact main commit, and verify the resulting production deployment.
 
 Local checks do not establish hosted voice acceptance. The earlier voice draft #1167 should be superseded only after the combined release actually merges.
+
+## Production setup update
+
+LiveKit project `p_4ldogw6em63` (SocialU) was created in the United States with agent observability/recording disabled. The three provider settings and the matching cleanup secret are saved as production Secrets in SocialU's Vercel project. The cleanup secret is also stored in Supabase Vault. The managed-cleanup migration was applied and its active `5 seconds` job was verified; it queues no HTTP requests when there are no leases.
+
+The release now includes main through `bad516e` (the chat photo preview fix). The combined production build passed again. The follow-up run reported 91 passing tests, including all 74 release-focused tests, and four failures in the two existing chat database suites. Those remaining failures concern former-member access and a nonparticipant photo-delete error. The earlier broad-run results above remain historical, not a current full-suite pass.
+
+Merge and deployment can proceed with these known test limits. Hosted provider connectivity, cleanup acknowledgment, and any signed-in browser voice checks must be recorded separately after deployment; a two-person cloud call has not yet been verified.
