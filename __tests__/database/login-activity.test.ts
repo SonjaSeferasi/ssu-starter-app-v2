@@ -25,6 +25,8 @@ it('retains real provider sessions, limits owner access and survives session del
   await db.exec(contextMigration);await db.exec(contextMigration);
   const remote=readFileSync('supabase/migrations/20261103111000_selected_session_logout.sql','utf8');
   await db.exec(remote);await db.exec(remote);
+  const preserve=readFileSync('supabase/migrations/20261103112000_preserve_current_session.sql','utf8');
+  await db.exec(preserve);await db.exec(preserve);
   const history=async(id:string)=>(await db.query<any>('SELECT public.socialu_login_history($1) AS result',[id])).rows[0].result;
   expect((await history(u)).entries).toHaveLength(1);expect(new Date((await history(u)).entries[0].signed_in_at).toISOString()).toBe('2026-10-28T12:00:00.000Z');expect((await history(other)).entries).toEqual([]);
   expect((await history(u)).entries[0].active).toBe(true);
@@ -68,6 +70,27 @@ it('retains real provider sessions, limits owner access and survives session del
   expect(await guard(newest,'2030-01-01T00:00:00Z')).toBe(true);
   await expect(db.query('SELECT public.socialu_end_login_session($1,$2,$3)',[u,targetSession,beforeEnd.entries[0].id])).rejects.toMatchObject({code:'42501'});
 
+  const freshTarget=afterEnd.entries[2].id;
+  const preserved=(await db.query<any>('SELECT public.socialu_end_other_session($1,$2,$3) AS result',[u,newest,freshTarget])).rows[0].result;
+  expect(preserved).toEqual({ended:true,current_session_active:true});
+  expect(await guard(newest,'2030-01-01T00:00:00Z')).toBe(true);
+  await expect(db.query('SELECT public.socialu_end_other_session($1,$2,$3)',[u,newest,beforeEnd.entries[0].id])).rejects.toMatchObject({code:'22023'});
+  // Simulate a future bug revoking the caller while updating the selected row.
+  // The wrapper must roll back both changes instead of returning false success.
+  const rollbackTarget=afterEnd.entries[3].id;
+  await db.query("SELECT set_config('test.target',$1,false),set_config('test.current',$2,false)",[rollbackTarget,newest]);
+  await db.exec(`CREATE FUNCTION socialu.test_preservation_failure() RETURNS trigger LANGUAGE plpgsql AS $$
+   BEGIN
+    IF NEW.history_id::text=current_setting('test.target') AND OLD.revoked_at IS NULL AND NEW.revoked_at IS NOT NULL THEN
+     UPDATE socialu.login_history SET revoked_at=clock_timestamp() WHERE session_id=current_setting('test.current')::uuid;
+    END IF;
+    RETURN NEW;
+   END;$$;
+   CREATE TRIGGER test_preservation_failure AFTER UPDATE ON socialu.login_history FOR EACH ROW EXECUTE FUNCTION socialu.test_preservation_failure();`);
+  await expect(db.query('SELECT public.socialu_end_other_session($1,$2,$3)',[u,newest,rollbackTarget])).rejects.toMatchObject({code:'42501'});
+  expect(await guard(newest,'2030-01-01T00:00:00Z')).toBe(true);
+  expect((await db.query<any>('SELECT revoked_at FROM socialu.login_history WHERE history_id=$1',[rollbackTarget])).rows[0].revoked_at).toBeNull();
+  await db.exec('DROP TRIGGER test_preservation_failure ON socialu.login_history;DROP FUNCTION socialu.test_preservation_failure();');
   await db.query("INSERT INTO socialu.session_revocations VALUES($1,'2026-11-01T00:00:00Z',$2)",[u,newest]);
   const active=await history(u);expect(active.entries[0].active).toBe(true);expect(active.entries[1].active).toBe(false);
   const current=(await db.query<any>('SELECT public.socialu_login_history($1,NULL,NULL,$2) AS result',[u,newest])).rows[0].result;
@@ -75,6 +98,7 @@ it('retains real provider sessions, limits owner access and survives session del
   await db.query('UPDATE socialu.session_revocations SET preserved_session=NULL WHERE auth_user_id=$1',[u]);
   expect((await history(u)).entries.every((e:any)=>!e.active)).toBe(true);
   await db.exec("SET ROLE authenticated");
+  await expect(db.query('SELECT public.socialu_end_other_session($1,$2,$3)',[u,newest,target])).rejects.toMatchObject({code:'42501'});
   await expect(db.query('SELECT public.socialu_end_login_session($1,$2,$3)',[u,newest,target])).rejects.toMatchObject({code:'42501'});
   await expect(db.query('SELECT public.socialu_record_login_context($1,$2,$3,$4)',[u,newest,'Browser','City'])).rejects.toMatchObject({code:'42501'});
   await expect(db.query('SELECT public.socialu_login_history($1)',[u])).rejects.toMatchObject({code:'42501'});

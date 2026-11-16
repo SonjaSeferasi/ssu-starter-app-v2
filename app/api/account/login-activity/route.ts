@@ -16,11 +16,11 @@ export async function POST(request:Request){
     const body=await jsonBody(request);
     if(body.confirm!==true||typeof body.id!=='string'||! /^[1-9]\d{0,18}$/.test(body.id)||BigInt(body.id)>9223372036854775807n)
       throw new AccountError('Confirm which sign-in you want to end.',400);
-    const {data,error}=await accountClient().rpc('socialu_end_login_session',{p_auth_id:user.id,p_current_session:current,p_history_id:body.id});
+    const {data,error}=await accountClient().rpc('socialu_end_other_session',{p_auth_id:user.id,p_current_session:current,p_history_id:body.id});
     if(error?.code==='42501')throw new AccountError('Your session has expired. Please sign in again.',401);
     if(error?.code==='P0002')throw new AccountError('That sign-in was not found.',404);
     if(error?.code==='22023')throw new AccountError('Use Log Out to end your current session.',400);
-    if(error||data!==true)throw new AccountError('Could not log out this device. Please try again later.',503);
-    return Response.json({ended:true},{headers:{'Cache-Control':'no-store'}});
+    if(error||data?.ended!==true||data?.current_session_active!==true)throw new AccountError('Could not confirm device logout. Refresh your activity and try again.',503);
+    return Response.json({ended:true,currentSessionActive:true},{headers:{'Cache-Control':'no-store'}});
   }catch(error){return accountResponse(error);}
 }

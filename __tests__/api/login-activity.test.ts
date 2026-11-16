@@ -33,10 +33,10 @@ function endRequest(body:unknown={id:'42',confirm:true}){
 }
 describe('Selected-device logout',()=>{
  it('takes owner and current session from verified authentication',async()=>{
-  rpc.mockResolvedValue({data:true,error:null});
+  rpc.mockResolvedValue({data:{ended:true,current_session_active:true},error:null});
   const response=await POST(endRequest({id:'42',confirm:true,auth_user_id:'someone-else',session_id:'forged'}));
   expect(response.status).toBe(200);expect(response.headers.get('Cache-Control')).toBe('no-store');
-  expect(rpc).toHaveBeenCalledWith('socialu_end_login_session',{p_auth_id:'owner',p_current_session:sessionId,p_history_id:'42'});
+  expect(rpc).toHaveBeenCalledWith('socialu_end_other_session',{p_auth_id:'owner',p_current_session:sessionId,p_history_id:'42'});
  });
  it.each([{id:'42'},{id:'0',confirm:true},{id:'9223372036854775808',confirm:true},{id:42,confirm:true}])('requires explicit confirmation and a valid record: %j',async body=>{
   expect((await POST(endRequest(body))).status).toBe(400);expect(rpc).not.toHaveBeenCalled();
@@ -45,4 +45,9 @@ describe('Selected-device logout',()=>{
  it.each([['42501',401],['P0002',404],['22023',400],['PGRST202',503]])('handles database failure %s without reporting success',async(code,status)=>{
   rpc.mockResolvedValue({error:{code}});const response=await POST(endRequest());expect(response.status).toBe(status);expect(await response.text()).not.toContain('ended');
  });
+});
+
+it.each([true,null,{ended:true},{ended:true,current_session_active:false}])('does not report success without confirmed current-session preservation: %j',async data=>{
+ rpc.mockResolvedValue({data,error:null});
+ const response=await POST(endRequest());expect(response.status).toBe(503);expect(await response.text()).not.toContain('currentSessionActive');
 });
