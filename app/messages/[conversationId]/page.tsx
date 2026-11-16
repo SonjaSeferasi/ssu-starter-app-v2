@@ -19,6 +19,7 @@ import { SnipePanel } from '../../../components/snipe/snipe-panel';
 import { canSelectForReply, findReplyTarget, keepReplyTarget, replyIndication, replyPreview, replyQuote, toggleReplyTarget, type ReplyTargets } from '../../../lib/chat-reply';
 import { PHOTO_ACCEPT, PHOTO_SEND_FAILED, choosePhoto, describeChosenPhoto, photoError, type ChosenPhoto } from '../../../lib/chat-photo';
 import { PHOTO_DELETED, PHOTO_DELETE_CONFIRM, PHOTO_UNAVAILABLE, canDeletePhoto, markPhotoDeleted, mergePhotoUrl, photoLinkRefreshDelay, photoLinksExpired } from '../../../lib/chat-photo-links';
+import { FORMER_MEMBER_NOTICE, isReadOnly } from '../../../lib/chat-former-member';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -69,10 +70,16 @@ function Conversation() {
   const [reload, setReload] = useState(0);
   // #460: the conversation kind, the student's group role, and the member count come with the history.
   // SRS-202.6 (#840): a named group's name comes with the history too.
-  const [info, setInfo] = useState<{ kind: 'private' | 'group'; name: string | null; role: string | null; memberCount: number | null } | null>(null);
+  // #1222 (SRS-213.5): `former` is true for a group this student has left, was removed from, or handed
+  // over. They keep their own history, so the conversation opens -- but read-only, because every write
+  // still refuses them in the database. Offering controls that can only fail would be the worse answer.
+  const [info, setInfo] = useState<{ kind: 'private' | 'group'; name: string | null; role: string | null; memberCount: number | null; former: boolean } | null>(null);
   // SRS-205.1 (#483): the invite panel, offered only to the group's owner or administrator.
   const [inviting, setInviting] = useState(false);
-  const canInvite = info?.kind === 'group' && (info.role === 'owner' || info.role === 'administrator');
+  // #1222: a former member holds no role, so this is already false for them; it is spelled out so the
+  // rule does not depend on that happening to stay true.
+  const readOnly = isReadOnly(info);
+  const canInvite = info?.kind === 'group' && !readOnly && (info.role === 'owner' || info.role === 'administrator');
   // SRS-202.5 (#836): the same owner or administrator can name the group from its header.
   const [naming, setNaming] = useState(false);
   // SRS-204.1 (#883): the group's members, where the owner selects one for administrator assignment, and
@@ -133,7 +140,7 @@ function Conversation() {
         if (!response.ok) throw new Error(data.error || 'Messages could not be loaded.');
         setMyStudentId(String(data.student_id));
         meRef.current = String(data.student_id);
-        if (data.kind) setInfo({ kind: data.kind, name: data.name ?? null, role: data.role ?? null, memberCount: data.member_count ?? null });
+        if (data.kind) setInfo({ kind: data.kind, name: data.name ?? null, role: data.role ?? null, memberCount: data.member_count ?? null, former: data.former === true });
         if (data.senders) { sendersRef.current = data.senders; setSenders(data.senders); }
         const loaded: ChatMessageEvent[] = data.messages ?? [];
         // Reactions removed while the page was offline are cleared too: every loaded message gets its saved list.
@@ -580,7 +587,9 @@ function Conversation() {
           )}
           {canInvite && inviting && <InvitePicker conversationId={conversationId} onClose={() => setInviting(false)} />}
           {/* SRS-204.1: any member can see who is in the group; only the owner gets the Make admin buttons. */}
-          {info?.kind === 'group' && (
+          {/* #1222: who is in the group now is current information about a group this student has left.
+              The database withholds it from them too, so there is nothing for this to show. */}
+          {info?.kind === 'group' && !readOnly && (
             <button type="button" className={styles.inviteButton} onClick={() => setShowingMembers((open) => !open)} aria-expanded={showingMembers}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
               Members
@@ -615,7 +624,7 @@ function Conversation() {
               const chips = sortReactions(reactions[message.id] ?? []);
               const picking = reactingTo === message.id;
               // SRS-209.1 (#986): a group message can be chosen as the target of a reply.
-              const canReply = canSelectForReply(info?.kind, message);
+              const canReply = !readOnly && canSelectForReply(info?.kind, message);
               const replying = replyingTo === message.id;
               // SRS-209.5 (#998): what this message replies to, if anything still visible to this student.
               const quoted = replyQuote(message, replyTargets, messages, senders, myStudentId);
@@ -665,7 +674,7 @@ function Conversation() {
                                     people go looking for; it is wrong for deleting, which nobody finds unless
                                     it is shown. It renders only on this student's own photos, which the
                                     database enforces again. */}
-                                {canDeletePhoto(message, myStudentId) && (
+                                {!readOnly && canDeletePhoto(message, myStudentId) && (
                                   <button type="button" className={styles.photoDelete} onClick={() => setConfirmingDelete(message.id)}
                                     aria-label="Delete your photo" title="Delete photo">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 6h18" /><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2" /><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" /></svg>
@@ -690,7 +699,7 @@ function Conversation() {
                     {/* SRS-201.7: photos are now in the conversation, and socialu_react_to_message accepts
                         only text and emoji (SRS-210), so a React button on a photo would always fail. It is
                         hidden rather than left to refuse what it offers. */}
-                    {message.kind !== 'photo' && (
+                    {message.kind !== 'photo' && !readOnly && (
                     <button ref={(button) => { reactButtons.current[message.id] = button; }} type="button" className={styles.reactButton}
                       onClick={() => setReactingTo(picking ? null : message.id)} aria-expanded={picking}
                       aria-label={mine ? 'React to your message' : `React to ${sender}’s message`} title="React">
@@ -759,6 +768,12 @@ function Conversation() {
               </button>
             </div>
           )}
+          {/* #1222 (SRS-205.13, 207.5, 208.7, 213.5): the student kept the conversation, not their place in
+              it. Every write still refuses them in the database, so the composer is replaced rather than
+              disabled -- a greyed-out box invites them to try and then explains nothing. */}
+          {readOnly ? (
+            <p className={styles.readOnlyNotice}>{FORMER_MEMBER_NOTICE}</p>
+          ) : (
           <form className={styles.composer} onSubmit={send}>
             <button ref={emojiButton} type="button" className={styles.emojiToggle} onClick={() => setPicking((open) => !open)}
               aria-expanded={picking} aria-label="Choose an emoji">
@@ -790,6 +805,7 @@ function Conversation() {
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 2 11 13" /><path d="M22 2 15 22l-4-9-9-4 20-7Z" /></svg>
             </button>
           </form>
+          )}
           {error && <p className={styles.error} role="alert">{error}</p>}
         </div>
       </section>

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { accessToken } from '../../lib/account/session';
 import { CHAT_ACTIVITY_EVENT } from '../../lib/chat-events';
 import { conversationPreview, type PreviewKind } from '../../lib/chat-preview';
+import { FORMER_MEMBER_BADGE } from '../../lib/chat-former-member';
 import { forgetInvitation } from '../../components/chat/message-notifications';
 import { FriendPicker } from './friend-picker';
 import { GroupInvitationList, type PendingInvitation } from './group-invitations';
@@ -17,6 +18,9 @@ export type ConversationSummary = {
   name: string | null;
   username: string | null;
   member_count: number | null;
+  // #1222 (SRS-213.5): true for a group this student has left, was removed from, or handed over. It stays
+  // in the list so their own history is reachable, marked, and opens read-only.
+  former?: boolean | null;
   // SRS-212.4 (#328): true when another participant's message is still unread for this student.
   unread?: boolean;
   // #1217 (SRS-212.9): a photo has no text, so the kind says what to show. Absent until 20261112120000 is applied.
@@ -210,7 +214,10 @@ export function ConversationListPanel() {
                     )}
                   </span>
                   <span className={styles.itemText}>
-                    <span className={styles.itemName}>{name}</span>
+                    <span className={styles.itemName}>
+                      <span className={styles.itemNameText}>{name}</span>
+                      {conversation.former && <span className={styles.formerBadge}>{FORMER_MEMBER_BADGE}</span>}
+                    </span>
                     <span className={styles.itemLine}>
                       <span className={styles.itemPreview}>{preview}</span>
                       {last && <time className={styles.itemTime} dateTime={last.sent_at}>{shortTime(last.sent_at)}</time>}
