@@ -6,6 +6,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import type { PGlite } from '@electric-sql/pglite';
 import { createDormDatabase, testUid } from '../../__tests__/helpers/dormspace-db';
 import { DEFAULT_LOOK } from '../../lib/profile-space';
+import { boardInput } from '../../lib/profile-board';
 
 // Real Next UI/API + actual SQL/migration in disposable PGlite. Only Supabase's
 // Auth/PostgREST transport is replaced. Never connects to the hosted database.
@@ -127,6 +128,94 @@ it('retains a newer hometown, theme and decorations when a real board save resum
   } catch(error) {
     await boardPage.screenshot({path:`${artifacts}/failure.png`,fullPage:true}).catch(() => {});
     console.error(await boardPage.locator('body').innerText().catch(() => ''),nextLog.slice(-2000));
+    throw error;
+  } finally { await context.close(); }
+});
+
+
+it('keeps rotated starter cards savable and restores their saved angles after reload',async () => {
+  const output = process.env.BOARD_ROTATION_EVIDENCE_DIR || 'tmp/board-1224';
+  mkdirSync(output,{recursive:true});
+  const context = await browser.newContext({viewport:{width:1440,height:1000}});
+  await context.addInitScript((value: string) => localStorage.setItem('access_token',value),token);
+  const page = await context.newPage();
+  const trace: any = {environment:'local Next production build with disposable PGlite; fixture Supabase Auth/PostgREST transport',starterStarAngles:[],otherStartingAngles:[]};
+  const canvas = page.locator('[aria-label="Scrapbook board"]');
+  const angle = (item: any) => item.evaluate((element: HTMLElement) => Number(/rotate\(([-\d.]+)deg\)/.exec(element.style.transform)![1]));
+  const shot = async (name: string) => { await page.evaluate(() => window.scrollTo(0,0)); await page.screenshot({path:`${output}/${name}.png`,fullPage:true}); };
+  const save = async () => {
+    const result = page.waitForResponse((r:any) => r.url().includes('/api/profiles/space') && r.request().method()==='PATCH');
+    result.catch(() => {});
+    await page.getByRole('button',{name:'Save board',exact:true}).click();
+    const response = await result;
+    expect(response.status()).toBe(200);
+    await page.getByText('Your board is saved. Classmates can see it on your profile.',{exact:true}).waitFor();
+    return response.json();
+  };
+  const reloadBoard = async () => {
+    await page.reload({waitUntil:'domcontentloaded'});
+    await page.getByRole('tab',{name:'My Board',exact:true}).click();
+    await expect.poll(() => page.getByRole('button',{name:'Edit board',exact:true}).isEnabled()).toBe(true);
+  };
+  try {
+    await page.goto(base+'/profile',{waitUntil:'domcontentloaded'});
+    expect((await api(page,'PUT',{look:{...DEFAULT_LOOK,hometown:'Original',board:{items:[]}}})).status).toBe(200);
+    await reloadBoard();
+    await page.getByRole('button',{name:'Edit board',exact:true}).click();
+    await page.getByRole('button',{name:'Start with a layout',exact:true}).click();
+    const star = canvas.locator(':scope > div[role="button"]').nth(1);
+    await star.click();
+    trace.starterStarAngles.push(await angle(star));
+    expect(trace.starterStarAngles[0]).toBe(8);
+    for(let click=0;click<3;click++) {
+      await page.getByRole('button',{name:'Rotate',exact:true}).click();
+      trace.starterStarAngles.push(await angle(star));
+    }
+    expect(trace.starterStarAngles).toEqual([8,11,14,15]);
+    await shot('01-valid-rotation');
+    const saved = await save();
+    trace.savedStar = saved.look.board.items.find((item:any) => item.sticker==='star');
+    expect(trace.savedStar.rotation).toBe(15);
+    trace.saveStatus = 200;
+    await shot('02-save-confirmed');
+    await reloadBoard();
+    expect(await angle(canvas.locator(':scope > div').nth(1))).toBe(15);
+    trace.reloadedStar = (await api(page,'GET')).data.look.board.items.find((item:any) => item.sticker==='star');
+    expect(trace.reloadedStar).toEqual(trace.savedStar);
+    await shot('03-rotation-after-reload');
+    // Every starter-layout angle, both bounds, and a fractional near-bound value.
+    for(const initial of [-3,8,-4,-8,-5,4,-2,-15,15,14.5]) {
+      const item = {id:'rotation-check',kind:'sticker',sticker:'star',x:40,y:25,width:14,rotation:initial};
+      expect((await api(page,'PATCH',{field:'board',value:{items:[item]}})).status).toBe(200);
+      await reloadBoard();
+      await page.getByRole('button',{name:'Edit board',exact:true}).click();
+      const selected = canvas.locator(':scope > div[role="button"]').first();
+      await selected.click();
+      const observed:number[] = [];
+      for(let click=0;click<12;click++) {
+        await page.getByRole('button',{name:'Rotate',exact:true}).click();
+        const rotation = await angle(selected);
+        observed.push(rotation);
+        expect(() => boardInput({items:[{...item,rotation}]})).not.toThrow();
+      }
+      const stored = await save();
+      expect(stored.look.board.items[0].rotation).toBe(observed.at(-1));
+      await reloadBoard();
+      expect(await angle(canvas.locator(':scope > div').first())).toBe(observed.at(-1));
+      trace.otherStartingAngles.push({initial,observed,saved:stored.look.board.items[0].rotation,reloadConfirmed:true});
+    }
+    trace.result = 'passed';
+    writeFileSync(`${output}/rotation-trace.json`,JSON.stringify(trace,null,2)+'\n');
+  } catch(error) {
+    const button = page.getByRole('button',{name:'Save board',exact:true});
+    if(await button.count() && await button.isEnabled()) {
+      await button.click().catch(() => {});
+      await page.getByRole('alert').waitFor({timeout:2000}).catch(() => {});
+    }
+    trace.result = 'failed'; trace.error = String(error);
+    trace.visibleError = await page.getByRole('alert').allTextContents();
+    await shot('failure').catch(() => {});
+    writeFileSync(`${output}/rotation-trace.json`,JSON.stringify(trace,null,2)+'\n');
     throw error;
   } finally { await context.close(); }
 });
