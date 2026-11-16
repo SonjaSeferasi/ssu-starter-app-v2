@@ -10,7 +10,10 @@ export const SPEECH_MS = 6000;
 export const CHAT_LIMIT = 200;
 export type LiveLocation = { kind: 'hall'; floor: number } | { kind: 'room'; owner: string };
 export type LiveState = { x: number; y: number; facing: Direction; moving: boolean; sprinting: boolean; restItemId: string | null };
-export type LivePlayer = { id: string; connectionId: string; username: string; space: string; state: LiveState; look: PixelAvatarLook; updatedAt: string };
+/** `avatar` is the server's saved-account appearance payload, kept for the 3D model; `look` is its pixel version. */
+export type LivePlayer = { id: string; connectionId: string; username: string; space: string; state: LiveState; look: PixelAvatarLook; avatar?: GameRoomData; updatedAt: string };
+/** Changes whenever any saved appearance field changes, so 3D models rebuild only then. */
+export const liveAvatarKey = (avatar: GameRoomData | undefined) => avatar ? JSON.stringify([avatar.appearance, avatar.faces, avatar.outfits]) : '';
 export type LiveMessage = { id: string; playerId: string; username: string; space: string; text: string; sentAt: string };
 export type LiveRoom = { version: number; placements: Placement[]; wallItemId: string | null; floorItemId: string | null };
 export type LiveReply = { space: string; serverTime: string; self?: unknown; players?: unknown[]; messages?: LiveMessage[]; message?: LiveMessage; room?: LiveRoom | null };
@@ -38,7 +41,8 @@ export function readLivePlayer(value: unknown): LivePlayer | null {
   const avatar = p.avatar as GameRoomData | undefined;
   if (!avatar || !Array.isArray(avatar.faces) || !Array.isArray(avatar.outfits)) return null;
   return { id: p.id, connectionId: p.connectionId, username: p.username, space: p.space, state: p.state,
-    updatedAt: p.updatedAt, look: resolveDormAvatar(avatar).look };
+    updatedAt: p.updatedAt, look: resolveDormAvatar(avatar).look,
+    avatar: { appearance: avatar.appearance && typeof avatar.appearance === 'object' ? avatar.appearance : null, faces: avatar.faces, outfits: avatar.outfits, activities: [] } };
 }
 export function validLiveMessage(value: unknown): value is LiveMessage {
   if (!value || typeof value !== 'object') return false;

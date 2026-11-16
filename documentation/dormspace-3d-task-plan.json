@@ -1,0 +1,582 @@
+{
+  "version": 1,
+  "prepared": "2026-11-05",
+  "parent": "#558",
+  "owner": "TheRealRinRin",
+  "integrationBranch": "feature/dormspace-3d-integration",
+  "note": "Card titles and URLs were verified on GitHub. The work is open while implementation and acceptance checks continue. The team Definition of Done requires a merged SRS pull request and evidence from the running application. Historical cards #773–#776 remain linked.",
+  "tasks": [
+    {
+      "card": "#1081",
+      "title": "Task 504.1-5 — Preserve campus and classic pages with saved data",
+      "srs": [
+        "SRS-504.14",
+        "SRS-504.15"
+      ],
+      "files": [
+        "app/game-room/dormspace/page.tsx",
+        "app/game-room/dormspace/layout.tsx",
+        "app/game-room/dormspace/pixel-font.ts",
+        "app/game-room/dormspace/campus/page.tsx",
+        "app/game-room/dormspace/campus/layout.tsx",
+        "app/game-room/dormspace/classic/layout.tsx",
+        "app/game-room/dormspace/art-credits/layout.tsx",
+        "scripts/tests/dormspace-*.browser.ts"
+      ],
+      "acceptance": [
+        "/game-room/dormspace is 3D without the pixel font",
+        "/campus and /classic work unchanged with the same data",
+        "Existing 2D browser suites pass on /campus"
+      ],
+      "dependsOn": [],
+      "status": "In progress",
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1081",
+      "reviews": {
+        "SRS-504.14": {
+          "branch": "srs-504.14-legacy-versions",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1111"
+        },
+        "SRS-504.15": {
+          "branch": "srs-504.15-3d-recovery",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1123"
+        }
+      }
+    },
+    {
+      "card": "#1082",
+      "title": "Task 504.1-6 — Map saved Game Room selections to 3D avatars",
+      "srs": [
+        "SRS-504.1",
+        "SRS-504.2"
+      ],
+      "files": [
+        "components/dormspace-3d/avatar-style.ts",
+        "components/dormspace-3d/avatar-model.ts"
+      ],
+      "acceptance": [
+        "Saved complete/layered look, body shape, skin colour, hair or hijab, glasses, freckles and colours appear in 3D",
+        "Unsupported or photo faces show an explicit notice"
+      ],
+      "dependsOn": [],
+      "status": "In progress",
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1082",
+      "reviews": {
+        "SRS-504.1": {
+          "branch": "srs-504.1-3d-avatar-representation",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1093"
+        }
+      }
+    },
+    {
+      "card": "#1083",
+      "title": "Task 504.1-7 — Build 3D avatar motion and rest poses",
+      "srs": [
+        "SRS-504.12"
+      ],
+      "files": [
+        "components/dormspace-3d/avatar-pose.ts",
+        "lib/dormspace-3d-world.ts"
+      ],
+      "acceptance": [
+        "Idle, walk, run, sit and sleep keep soles on the floor and hips on the seat or mattress",
+        "Anchors are inside the item and face its front in 0/90/180/270"
+      ],
+      "dependsOn": [
+        "#1082"
+      ],
+      "status": "In progress",
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1083",
+      "reviews": {
+        "SRS-504.12": {
+          "branch": "srs-504.12-sitting-sleeping",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1113"
+        }
+      }
+    },
+    {
+      "card": "#1084",
+      "title": "Task 504.1-8 — Build 3D room camera and accessible controls",
+      "srs": [
+        "SRS-504.3",
+        "SRS-504.4",
+        "SRS-504.5",
+        "SRS-504.6",
+        "SRS-504.7",
+        "SRS-504.8",
+        "SRS-504.9",
+        "SRS-504.10",
+        "SRS-504.11"
+      ],
+      "files": [
+        "components/dormspace-3d/scene/engine.ts",
+        "components/dormspace-3d/panels/touch-controls.tsx"
+      ],
+      "acceptance": [
+        "WASD/arrows move relative to the camera; Shift or Run sprints at 1.5x; E interacts",
+        "Drag/pinch/buttons orbit and zoom; walls do not hide the player",
+        "Raised furniture blocks; rugs are walkable; typing or modals pause movement",
+        "Phone layout offers joystick, Run and Interact"
+      ],
+      "dependsOn": [
+        "#1088"
+      ],
+      "status": "In progress",
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1084",
+      "reviews": {
+        "SRS-504.8": {
+          "branch": "srs-504.8-3d-furniture-traversal",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1126"
+        },
+        "SRS-504.10": {
+          "branch": "srs-504.10-third-person-camera",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1118"
+        },
+        "SRS-504.11": {
+          "branch": "srs-504.11-running",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1127"
+        }
+      }
+    },
+    {
+      "card": "#1085",
+      "title": "Task 504.1-10 — Implement 3D decorating and conflict recovery",
+      "srs": [
+        "SRS-500.1",
+        "SRS-500.3",
+        "SRS-500.4",
+        "SRS-500.5",
+        "SRS-500.6",
+        "SRS-500.7",
+        "SRS-500.8",
+        "SRS-500.9",
+        "SRS-500.10",
+        "SRS-500.11",
+        "SRS-500.12",
+        "SRS-500.13",
+        "SRS-500.14",
+        "SRS-500.15",
+        "SRS-500.16",
+        "SRS-505.2",
+        "SRS-505.3",
+        "SRS-505.4",
+        "SRS-505.8",
+        "SRS-505.9"
+      ],
+      "files": [
+        "components/dormspace-3d/use-room-editor.ts",
+        "components/dormspace-3d/panels/decorate-panel.tsx",
+        "components/dormspace-3d/room-layer.tsx"
+      ],
+      "acceptance": [
+        "Green/red ghost and typed coordinates agree with server rules",
+        "Move, quarter turn and store save through versioned PUT /api/dorm with saved/error/conflict states",
+        "Visitors get no decorating controls and cannot change the room"
+      ],
+      "dependsOn": [
+        "#1084",
+        "#1088"
+      ],
+      "status": "In progress",
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1085",
+      "reviews": {
+        "SRS-500.7": {
+          "branch": "srs-500.7-3d-fixed-item-orientation",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1125"
+        },
+        "SRS-500.16": {
+          "branch": "srs-500.16-placement-preview",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1120"
+        }
+      }
+    },
+    {
+      "card": "#1086",
+      "title": "Task 504.1-11 — Implement coherent shared hall and room locks",
+      "srs": [
+        "SRS-507.1",
+        "SRS-507.2",
+        "SRS-507.3",
+        "SRS-507.4",
+        "SRS-507.5",
+        "SRS-507.6",
+        "SRS-507.7",
+        "SRS-507.8",
+        "SRS-507.9",
+        "SRS-507.10",
+        "SRS-507.11",
+        "SRS-507.15",
+        "SRS-507.16",
+        "SRS-507.18",
+        "SRS-507.20",
+        "SRS-507.21",
+        "SRS-507.22",
+        "SRS-507.23",
+        "SRS-507.24"
+      ],
+      "files": [
+        "supabase/migrations/20261104050601_dormspace_3d_directory.sql",
+        "lib/dormspace-hall-contract.ts",
+        "lib/dormspace-3d-server.ts",
+        "app/api/dorm/hall/route.ts",
+        "components/dormspace-3d/scene/hall.ts",
+        "components/dormspace-3d/hall-layer.tsx",
+        "components/dormspace-3d/panels/hall-panel.tsx"
+      ],
+      "acceptance": [
+        "Two same-school viewers see identical doors; other schools are absent",
+        "Non-friend doors are locked; blocked/inactive identities are withheld; no door is ever reassigned",
+        "Elevator lists every floor; exit returns to the room's floor; one floor per response, no emails"
+      ],
+      "dependsOn": [
+        "#1081"
+      ],
+      "status": "In progress",
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1086",
+      "reviews": {
+        "SRS-507.1": {
+          "branch": "srs-507.1-3d-game-room-entry",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1122"
+        },
+        "SRS-507.2": {
+          "branch": "srs-507.2-3d-own-dorm-door",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1128"
+        },
+        "SRS-507.3": {
+          "branch": "srs-507.3-3d-friend-door-identity",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1129"
+        },
+        "SRS-507.4": {
+          "branch": "srs-507.4-3d-friend-ordering",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1109"
+        },
+        "SRS-507.5": {
+          "branch": "srs-507.5-3d-first-floor-allocation",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1130"
+        },
+        "SRS-507.6": {
+          "branch": "srs-507.6-3d-additional-floor-allocation",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1131"
+        },
+        "SRS-507.7": {
+          "branch": "srs-507.7-3d-vacant-doors",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1132"
+        },
+        "SRS-507.8": {
+          "branch": "srs-507.8-3d-vacant-door-interaction",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1119"
+        },
+        "SRS-507.9": {
+          "branch": "srs-507.9-3d-floor-count",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1133"
+        },
+        "SRS-507.15": {
+          "branch": "srs-507.15-3d-return-through-exit",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1134"
+        },
+        "SRS-507.16": {
+          "branch": "srs-507.16-3d-friend-removal-compaction",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1135"
+        },
+        "SRS-507.18": {
+          "branch": "srs-507.18-3d-removed-floor-recovery",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1136"
+        },
+        "SRS-507.20": {
+          "branch": "srs-507.20-shared-school-directory",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1116"
+        },
+        "SRS-507.21": {
+          "branch": "srs-507.21-friends-only-room-locks",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1124"
+        },
+        "SRS-507.22": {
+          "branch": "srs-507.22-withheld-identity",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1137"
+        },
+        "SRS-507.23": {
+          "branch": "srs-507.23-own-room-shortcut",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1138"
+        },
+        "SRS-507.24": {
+          "branch": "srs-507.24-bounded-directory-data",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1139"
+        }
+      }
+    },
+    {
+      "card": "#1087",
+      "title": "Task 504.1-12 — Integrate live players and nearby chat in 3D",
+      "srs": [
+        "SRS-504.12",
+        "SRS-504.13",
+        "SRS-507.14",
+        "SRS-507.17",
+        "SRS-507.19"
+      ],
+      "files": [
+        "lib/dormspace-multiplayer.ts",
+        "lib/dormspace-live-store.ts",
+        "components/dormspace-3d/scene/engine.ts",
+        "components/dormspace-3d/room-layer.tsx",
+        "components/dormspace-3d/game.tsx"
+      ],
+      "acceptance": [
+        "Remote players appear with saved appearance, interpolate and show bubbles",
+        "One occupant per seat/bed and shared night window",
+        "Friendship removal ends a visit promptly; tab replacement and reconnect still work"
+      ],
+      "dependsOn": [
+        "#1083",
+        "#1084"
+      ],
+      "status": "In progress",
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1087",
+      "reviews": {
+        "SRS-504.13": {
+          "branch": "srs-504.13-live-co-presence",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1112"
+        },
+        "SRS-504.12": {
+          "branch": "srs-504.12-sitting-sleeping",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1113"
+        }
+      }
+    },
+    {
+      "card": "#1088",
+      "title": "Task 504.1-9 — Model furniture and preserve physical interactions",
+      "srs": [
+        "SRS-500.2",
+        "SRS-500.7",
+        "SRS-504.8",
+        "SRS-504.12"
+      ],
+      "files": [
+        "lib/dormspace-3d-world.ts",
+        "components/dormspace-3d/scene/kit.ts",
+        "components/dormspace-3d/scene/palette.ts",
+        "components/dormspace-3d/scene/furniture.ts",
+        "components/dormspace-3d/scene/room.ts",
+        "components/dormspace-3d/scene/engine.ts",
+        "components/dormspace-3d/scene/thumbnails.ts"
+      ],
+      "acceptance": [
+        "Every catalog item renders as a dimensional model at human scale in all four rotations",
+        "Renderer, textures, geometry, listeners, observer and frame loop are released on unmount",
+        "WebGL failure and context loss offer Retry 3D and the campus version"
+      ],
+      "dependsOn": [
+        "#1082",
+        "#1083"
+      ],
+      "status": "In progress",
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1088",
+      "reviews": {
+        "SRS-500.7": {
+          "branch": "srs-500.7-3d-fixed-item-orientation",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1125"
+        },
+        "SRS-504.8": {
+          "branch": "srs-504.8-3d-furniture-traversal",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1126"
+        },
+        "SRS-504.12": {
+          "branch": "srs-504.12-sitting-sleeping",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1113"
+        }
+      }
+    },
+    {
+      "card": "#1089",
+      "title": "Task 504.1-13 — Preserve guestbooks and visit counting in 3D",
+      "srs": [
+        "SRS-508.1",
+        "SRS-508.2",
+        "SRS-508.13",
+        "SRS-509.6",
+        "SRS-507.12",
+        "SRS-507.13"
+      ],
+      "files": [
+        "components/dormspace-3d/scene/room.ts",
+        "components/dormspace-3d/room-layer.tsx",
+        "components/dormspace-3d/game.tsx"
+      ],
+      "acceptance": [
+        "The physical guestbook and the Guestbook button open the existing Guestbook",
+        "Visits are counted only by GET /api/dorm open",
+        "Exit returns to the shared hall"
+      ],
+      "dependsOn": [
+        "#1086",
+        "#1088"
+      ],
+      "status": "In progress",
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1089",
+      "reviews": {
+        "SRS-508.1": {
+          "branch": "srs-508.1-3d-open-guestbook",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1114"
+        }
+      }
+    },
+    {
+      "card": "#1090",
+      "title": "Task 504.1-14 — Implement atomic shared-points furniture purchases",
+      "srs": [
+        "SRS-522.2",
+        "SRS-522.4",
+        "SRS-522.5",
+        "SRS-522.6",
+        "SRS-522.7",
+        "SRS-522.8",
+        "SRS-522.10",
+        "SRS-522.11",
+        "SRS-522.12",
+        "SRS-523.1",
+        "SRS-523.2",
+        "SRS-523.4",
+        "SRS-523.5",
+        "SRS-523.6",
+        "SRS-523.9",
+        "SRS-523.10",
+        "SRS-523.11",
+        "SRS-503.1",
+        "SRS-503.2",
+        "SRS-503.4"
+      ],
+      "files": [
+        "supabase/migrations/20261104050639_dormspace_points_shop.sql",
+        "lib/dormspace-shop-contract.ts",
+        "lib/dormspace-3d-server.ts",
+        "app/api/dorm/shop/route.ts"
+      ],
+      "acceptance": [
+        "One ledger row and ownership per key; replay returns the original result",
+        "Changed price, insufficient points, owned and unavailable items charge nothing",
+        "Starters stay free; existing grants and layouts are kept"
+      ],
+      "dependsOn": [],
+      "status": "In progress",
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1090",
+      "reviews": {
+        "SRS-523.1": {
+          "branch": "srs-523.1-3d-atomic-purchase-outcome",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1110"
+        },
+        "SRS-523.4": {
+          "branch": "srs-523.4-3d-purchase-retry-uniqueness",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1117"
+        },
+        "SRS-522.11": {
+          "branch": "srs-522.11-preserved-free-furnishings",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1140"
+        },
+        "SRS-522.12": {
+          "branch": "srs-522.12-shop-prices-from-the-catalog",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1141"
+        }
+      }
+    },
+    {
+      "card": "#1091",
+      "title": "Task 504.1-15 — Build shop offers and inventory refresh",
+      "srs": [
+        "SRS-522.1",
+        "SRS-522.3",
+        "SRS-522.9",
+        "SRS-529.1",
+        "SRS-529.2",
+        "SRS-529.3",
+        "SRS-529.4",
+        "SRS-529.5",
+        "SRS-529.6",
+        "SRS-529.7",
+        "SRS-521.1"
+      ],
+      "files": [
+        "components/dormspace-3d/panels/shop-panel.tsx",
+        "components/dormspace-3d/scene/thumbnails.ts",
+        "components/dormspace-3d/game.tsx"
+      ],
+      "acceptance": [
+        "3D previews, footprint, price and state for every item",
+        "Final confirmation names the item and cost and says purchases are final",
+        "Unknown outcomes keep the key for Check purchase / Try again; success allows placement without reload"
+      ],
+      "dependsOn": [
+        "#1088",
+        "#1090"
+      ],
+      "status": "In progress",
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1091",
+      "reviews": {
+        "SRS-529.1": {
+          "branch": "srs-529.1-3d-catalog-offer-details",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1121"
+        }
+      }
+    },
+    {
+      "card": "#1092",
+      "title": "Task 504.1-16 — Verify integrated 3D flow and publish evidence",
+      "srs": [
+        "SRS-500.16",
+        "SRS-504.10",
+        "SRS-507.20",
+        "SRS-522.11",
+        "SRS-523.4"
+      ],
+      "files": [
+        "__tests__/dormspace-3d-world.test.ts",
+        "__tests__/dormspace-3d-contracts.test.ts",
+        "__tests__/api/dorm-hall-shop.test.ts",
+        "__tests__/database/dormspace-3d-directory.test.ts",
+        "__tests__/database/dormspace-shop.test.ts",
+        "__tests__/helpers/dormspace-3d-db.ts",
+        "scripts/tests/dormspace-3d.browser.ts",
+        "vitest.dormspace-3d.config.ts",
+        "documentation/dormspace-3d.md",
+        "documentation/SocialU_SRS_Editable.md"
+      ],
+      "acceptance": [
+        "All listed suites pass when run by Codex; results recorded with screenshots of the running app",
+        "Remaining gaps listed honestly in documentation/dormspace-3d.md"
+      ],
+      "dependsOn": [
+        "#1081",
+        "#1085",
+        "#1086",
+        "#1087",
+        "#1088",
+        "#1089",
+        "#1090",
+        "#1091"
+      ],
+      "status": "In progress",
+      "url": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1092",
+      "reviews": {
+        "SRS-523.4": {
+          "branch": "srs-523.4-3d-purchase-retry-uniqueness",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1117"
+        },
+        "SRS-500.16": {
+          "branch": "srs-500.16-placement-preview",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1120"
+        },
+        "SRS-504.10": {
+          "branch": "srs-504.10-third-person-camera",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1118"
+        },
+        "SRS-507.20": {
+          "branch": "srs-507.20-shared-school-directory",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1116"
+        },
+        "SRS-522.11": {
+          "branch": "srs-522.11-preserved-free-furnishings",
+          "pr": "https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1140"
+        }
+      }
+    }
+  ]
+}

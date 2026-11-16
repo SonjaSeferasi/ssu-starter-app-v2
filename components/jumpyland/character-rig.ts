@@ -4,8 +4,15 @@ import { completeAvatar, avatarParts, type AvatarGroup } from '../../lib/avatar-
 import { bodyShapes, skinColors as figureSkins } from '../../lib/avatar-figure';
 import { costumes } from './wardrobe';
 
-type Hair = 'waves' | 'curls' | 'coils' | 'fade' | 'locs' | 'long-waves' | 'ponytail' | 'bob' | 'braids' | 'hijab';
-type Garment = 'hoodie' | 'crewneck' | 'jacket' | 'cardigan';
+export type Hair = 'waves' | 'curls' | 'coils' | 'fade' | 'locs' | 'long-waves' | 'ponytail' | 'bob' | 'braids' | 'hijab';
+export type Garment = 'hoodie' | 'crewneck' | 'jacket' | 'cardigan';
+export type CharacterStyle = ReturnType<typeof characterStyle>;
+/**
+ * Optional for other scenes (DormSpace 3D). Jumpyland omits it and keeps its behavior:
+ * `style` replaces characterStyle(appearance); `normalMap` replaces the per-rig weave
+ * texture so many rigs can share one (null = no cloth normal map).
+ */
+export type CharacterRigOptions = { style?: CharacterStyle; normalMap?: T.Texture | null };
 const outfitColors = [
   ['#263b65', '#6e87a0'], ['#ded1b6', '#42464b'], ['#3d664e', '#354b5d'],
   ['#873b50', '#a28c69'], ['#383c43', '#70785a'], ['#897197', '#35475c'],
@@ -70,11 +77,11 @@ export function characterStyle(appearance?: AvatarAppearance | null) {
  * its painted colors. Head, facial features, hair, glasses, clothes and limbs
  * have volume; no legacy full-figure or head cutout is rendered on this rig.
  */
-export function characterRig(source: T.Texture, costume: string | null, appearance?: AvatarAppearance | null) {
-  const style = characterStyle(appearance), root = new T.Group(), body = new T.Group();
+export function characterRig(source: T.Texture, costume: string | null, appearance?: AvatarAppearance | null, options: CharacterRigOptions = {}) {
+  const style = options.style ?? characterStyle(appearance), root = new T.Group(), body = new T.Group();
   root.name = 'campus-avatar-3d'; root.userData.avatarId = appearance?.avatarId ?? null;
   root.userData.style = style; root.add(body);
-  const normal = weave();
+  const normal = options.normalMap !== undefined ? options.normalMap : weave();
   const cloth = (color: string) => new T.MeshStandardMaterial({ color, roughness: .91, normalMap: normal, normalScale: new T.Vector2(.05, .05) });
   const shirt = cloth(style.shirt), pants = cloth(style.pants), inner = cloth('#e4e1d6'), scarf = cloth(style.scarf);
   const skin = new T.MeshStandardMaterial({ color: style.skin, roughness: .64 });

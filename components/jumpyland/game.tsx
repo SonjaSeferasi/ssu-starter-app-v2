@@ -26,6 +26,8 @@ export default function Game() {
   const router=useRouter();
   const [room,setRoom]=useState<GameRoomData|null>(null);
   const [completed,setCompleted]=useState<number[]>([]);
+  const [balance,setBalance]=useState<number|null>(null);
+  const [reward,setReward]=useState<number|null>(null);
   const [loaded,setLoaded]=useState(false);
   const [error,setError]=useState('');
   const [reload,setReload]=useState(0);
@@ -96,7 +98,7 @@ export default function Game() {
       if(!token)throw new Error('Please sign in again.');
       const [progress,response]=await Promise.all([api(),fetch('/api/game-room',{headers:{Authorization:`Bearer ${token}`},cache:'no-store',signal:AbortSignal.timeout(10000)})]);
       const data=await response.json();if(!response.ok)throw new Error(data.error||'Your saved avatar could not be loaded.');
-      if(!cancelled){setRoom(data);setCompleted(progress.completed);setLoaded(true);}
+      if(!cancelled){setRoom(data);setCompleted(progress.completed);setBalance(Number.isSafeInteger(progress.balance)?progress.balance:null);setLoaded(true);}
     })().catch(e=>{if(!cancelled)setError(e.name==='TimeoutError'?'The connection took too long. Please retry.':e.message);});
     return()=>{cancelled=true;};
   },[reload]);
@@ -110,13 +112,13 @@ export default function Game() {
   },[]);
   async function save(result:Attempt){
     if(busy.current)return;busy.current=true;change('saving');setError('');
-    try {const data=await api('POST',{action:'complete',attemptId:result.id,coins:result.coins});if(mounted.current){setCompleted(data.completed);change('saved');}}
+    try {const data=await api('POST',{action:'complete',attemptId:result.id,coins:result.coins});if(mounted.current){setCompleted(data.completed);setBalance(Number.isSafeInteger(data.balance)?data.balance:null);setReward(data.reward?.points??null);window.dispatchEvent(new Event('socialu-points-changed'));change('saved');}}
     catch(e){if(mounted.current){setError(e instanceof Error&&e.name!=='TimeoutError'?e.message:'Saving took too long. Retry saving this result.');change('unsaved');}}
     finally{busy.current=false;}
   }
   async function start(number:number,selection:RunLoadout=emptyLoadout){
     if(busy.current||!levelAvailable(number,completed))return;
-    readyAudio();dispose();busy.current=true;setLoadout(selection);setPreparing(null);change('starting');setError('');setCoins(0);setProgress(0);setLevel(number);setWorld({...emptyWorld,region:courses[number-1].regions[0].name});
+    setReward(null);readyAudio();dispose();busy.current=true;setLoadout(selection);setPreparing(null);change('starting');setError('');setCoins(0);setProgress(0);setLevel(number);setWorld({...emptyWorld,region:courses[number-1].regions[0].name});
     const id=crypto.randomUUID();
     try{
       // Build avatar before recording participation: a render failure is not a played attempt.
@@ -152,7 +154,7 @@ export default function Game() {
   return <main ref={root} className={[styles.game,active?styles.immersive:'',loaded&&['menu','starting'].includes(status)?styles.landing:''].join(' ')}>
     <header className={styles.header}>
       <button onClick={back} disabled={status==='starting'}>← Back to Game Room</button>
-      <div className={styles.gameTitle}><h1>Jumpyland</h1><span className={styles.eyebrow}>THREE WORLDS. YOUR OWN ADVENTURE.</span></div>
+      <div className={styles.gameTitle}><h1>Jumpyland</h1>{balance!==null&&<span>Shared points: {balance.toLocaleString()}</span>}<span className={styles.eyebrow}>THREE WORLDS. YOUR OWN ADVENTURE.</span></div>
       <div className={styles.headerActions}><details className={styles.audioControls}><summary aria-label="Sound settings">{sound?'♫':'♪'}</summary><div><button aria-pressed={sound} onClick={toggleSound}>Sound {sound?'on':'off'}</button><label>Volume <input aria-label="Sound volume" type="range" min="0" max="100" value={volume} onChange={e=>changeVolume(Number(e.target.value))}/></label>{audioError&&<p role="status">{audioError}</p>}</div></details><button onClick={()=>void toggleFullscreen()}>{fullscreen?'Exit full screen':'Full screen ⛶'}</button><button onClick={()=>{pause();setInstructions(true);}} disabled={status==='starting'}>How to play</button></div>
     </header>
     {fullscreenError&&<p className={styles.fullscreenNotice} role="status">{fullscreenError}</p>}
@@ -169,10 +171,10 @@ export default function Game() {
           <div className={styles.stage} ref={stage}/>{status==='starting'&&<div className={styles.starting} role="status"><strong>Preparing your adventure…</strong><span>Your adventure is almost ready.</span></div>}
           {modal&&<div className={styles.overlay}><section role="dialog" aria-modal="true" aria-labelledby="game-dialog-title" className={[styles.dialog,status==='failed'&&!exit&&!instructions?styles.failedDialog:''].join(' ')}>
             {exit?<><h2 id="game-dialog-title">Leave Jumpyland?</h2><p>{['saving','unsaved'].includes(status)?'This result is not confirmed saved. Leaving without saving may lose it. Confirmed level progress stays saved.':'Your unfinished attempt and its collectibles will be discarded. Confirmed level progress stays saved.'}</p><button autoFocus onClick={()=>setExit(false)}>Stay</button>{status==='unsaved'&&attempt&&<button onClick={()=>{setExit(false);void save(attempt);}}>Retry saving</button>}<button disabled={status==='saving'||status==='starting'} onClick={()=>router.push('/game-room')}>{status==='unsaved'?'Leave without saving':'Leave Game'}</button></>
-            :instructions?<><h2 id="game-dialog-title">How to play</h2><p>Hold ← / A or → / D to move. Press ↑, W or Space while standing on a platform to jump. Hold ↓ or S to crouch under shots. On touch screens, hold the movement buttons and tap Jump.</p><p>Jump past enemies or press X to use your world’s power. Your attack recharges in 3.5 seconds. Climb the upper ledges for a one-hit shield, 20 seconds of double jump (tap Space again in the air), or rapid fire. Enemies track you on their platforms and show an amber aim line before firing faster, aimed shots. Tap C or Shift, or the Defend button, to block shots for 0.65 seconds; guard recharges in 2.6 seconds. Release and press again for the next guard. Guard does not stop contact damage or falls. Keep moving and jumping together to dodge. Each attempt has three hearts. An unprotected hit or fall costs one heart; losing all three ends the attempt. Lanterns save your respawn location, not extra hearts. Avoid gaps and reach the finish gate. Collectibles are optional and reset on every attempt.</p><p>Complete a level to unlock the next. Retry as often as you like. Pause preserves your place; closing or refreshing loses the current attempt and its checkpoints.</p><button autoFocus onClick={()=>setInstructions(false)}>Close instructions</button></>
+            :instructions?<><h2 id="game-dialog-title">How to play</h2><p>Hold ← / A or → / D to move. Press ↑, W or Space while standing on a platform to jump. Hold ↓ or S to crouch under shots. On touch screens, hold the movement buttons and tap Jump.</p><p>Jump past enemies or press X to use your world’s power. Your attack recharges in 3.5 seconds. Climb the upper ledges for a one-hit shield, 20 seconds of double jump (tap Space again in the air), or rapid fire. Enemies track you on their platforms and show an amber aim line before firing faster, aimed shots. Tap C or Shift, or the Defend button, to block shots for 0.65 seconds; guard recharges in 2.6 seconds. Release and press again for the next guard. Guard does not stop contact damage or falls. Keep moving and jumping together to dodge. Each attempt has three hearts. An unprotected hit or fall costs one heart; losing all three ends the attempt. Lanterns save your respawn location, not extra hearts. Avoid gaps and reach the finish gate. Collectibles are optional and reset on every attempt.</p><p>Complete a level to unlock the next and earn 25 shared points to spend in the DormSpace furniture shop. Each new completed attempt earns 25 points; saving the same result again never awards twice. Retry as often as you like. Pause preserves your place; closing or refreshing loses the current attempt and its checkpoints.</p><button autoFocus onClick={()=>setInstructions(false)}>Close instructions</button></>
             :status==='paused'?<><h2 id="game-dialog-title">Take your time.</h2><p>Your character and collectibles are right where you left them.</p><button autoFocus onClick={()=>{change('running');controller.current?.resume();void audio.current?.resume();}}>Resume</button></>
             :status==='failed'?<FailurePanel room={room!} level={level} region={world.region} cause={failure} count={coins} total={course.coins.length} onRetry={()=>void start(level,loadout)} onMap={showMap} onPrepare={()=>setPreparing(level)} costume={runCostume(loadout,level)}/>
-            :<><h2 id="game-dialog-title">{status==='saved'?(level===3?'You made it through Jumpyland!':'Level complete!'):'You reached the flag!'}</h2><p>{missions[level-1].ending}</p><p>You collected {coins} of {course.coins.length} {themeFor(level).collectible}.</p><p role="status">{status==='saving'?'Saving your result…':status==='saved'?'Your result is saved to your account.':'Your result has not been saved.'}</p>{status==='unsaved'&&<><p role="alert">{error}</p><button autoFocus onClick={()=>attempt&&void save(attempt)}>Retry saving</button></>}{status==='saved'&&<><button autoFocus onClick={()=>void start(level,loadout)}>Replay level</button>{level<3&&<button onClick={()=>void start(level+1)}>Next level →</button>}<button onClick={showMap}>Level selection</button></>}</>}
+            :<><h2 id="game-dialog-title">{status==='saved'?(level===3?'You made it through Jumpyland!':'Level complete!'):'You reached the flag!'}</h2><p>{missions[level-1].ending}</p><p>You collected {coins} of {course.coins.length} {themeFor(level).collectible}.</p><p role="status">{status==='saving'?'Saving your result…':status==='saved'?'Your result is saved to your account.':'Your result has not been saved.'}</p>{status==='saved'&&reward!==null&&<p role="status">{reward>0?`+${reward} points added to your account.`:'This earlier result has no completion reward.'} Shared balance: {balance?.toLocaleString()??'—'}.</p>}{status==='saved'&&<a href="/game-room/dormspace">Spend points in the DormSpace shop</a>}{status==='unsaved'&&<><p role="alert">{error}</p><button autoFocus onClick={()=>attempt&&void save(attempt)}>Retry saving</button></>}{status==='saved'&&<><button autoFocus onClick={()=>void start(level,loadout)}>Replay level</button>{level<3&&<button onClick={()=>void start(level+1)}>Next level →</button>}<button onClick={showMap}>Level selection</button></>}</>}
           </section></div>}
         </div>
         <progress aria-label="Distance to flag" max={100} value={progress} className={styles.distance}/>
