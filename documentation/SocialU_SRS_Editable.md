@@ -105,7 +105,7 @@ A proposed target is measurable draft text awaiting agreement. A conditional fea
 | Game Room | Avatar preview, face/outfit editing, shared participation status and descriptions/opening controls for included activities. |
 | Game 1 | Three platform levels, movement, optional coins, hazards, finish flags, pause, retries and protected exit. A fourth level is optional. |
 | Daily word game | Optional five-letter daily puzzle with six accepted guesses, instructions and today's result; no history statistics. |
-| DormSpace | An illustrated 2D dorm, owned decorations, friends' dorm visits, DormHall, guestbooks and purchase entry points. |
+| DormSpace | A walkable 3D dorm, owned decorations, a shared school DormHall with stable room doors, current-friend dorm visits, guestbooks and the points furniture shop; the earlier 2D campus and classic versions remain available. |
 | Profile | Own or permitted student profile, Posts and Tagged content, counts and friendship/messaging actions. Snipes are excluded. |
 | Events and Trending | One combined page for campus events and accessible Campus Feed posts ranked by recent likes. |
 | Create (+) | Entry choices for a text post, photo post or event. MS/KB own the forms; SS owns navigation to them. Drafts are deferred. |
@@ -4126,7 +4126,7 @@ Feature owner: Darrin Phimphisane (DP).
 
 ### Definitions and boundaries
 
-A dorm is one persistent 2D room; friends visit the saved room asynchronously. No live synchronization of visiting avatars is required. The first DormHall floor contains the owner's door and nine friend/vacant doors; later floors contain ten friend/vacant doors ordered by current friendship acceptance time.
+A dorm is one persistent room, shown in 3D by default and in the preserved 2D campus and classic versions; friends may visit the saved room asynchronously, and students in the same space also see one another live. Revised 4 November 2026: the DormHall is one shared directory per school in which every eligible student has a permanent room number on a floor of twelve doors; it is no longer ordered by each viewer's friend list. Only the owner and current friends may enter a room.
 
 An originally tagged participant remains part of the sharing/removal decision even after answering No to identity verification. A verified target is an originally tagged friend who answers Yes to identity and qualifies for an approved publication. A multi-person Snipe is accepted or rejected as a whole. A rejected submission attempt consumes no cooldown; an accepted request consumes each selected pair's cooldown even if it later fails.
 
@@ -4137,6 +4137,8 @@ SS owns the shared participation calculation. DP credits the first qualifying ac
 <a id="area-500"></a>
 
 ### DormSpace
+
+Scope revision (4 November 2026, approved by DP for implementation): DormSpace becomes a walkable third-person 3D game with a shared school DormHall and a shared-points furniture shop. This revision rewords SRS-500.7, SRS-504.8, SRS-507.1 to SRS-507.9 and SRS-507.15, SRS-507.16 and SRS-507.18, and adds SRS-500.16, SRS-504.10 to SRS-504.15, SRS-507.20 to SRS-507.24 and SRS-522.11 to SRS-522.12. Identifiers, titles of unchanged requirements and the retired UR-506 are kept. Each revised or new item stays open until it is verified in the integrated application. See documentation/dormspace-3d.md.
 
 <a id="ur-500"></a>
 
@@ -4180,9 +4182,11 @@ When an owner attempts to place an item they do not own, the system shall reject
 
 Traces to: UR-500.
 
-##### SRS-500.7, DP — Fixed item orientation.
+##### SRS-500.7, DP — Item orientation.
 
-When a student decorates their dorm, the system shall retain each item's predefined orientation without offering rotation.
+When the owner turns a placed or selected floor item, the system shall rotate it in quarter turns of 0, 90, 180 and 270 degrees, re-validate its turned footprint, and keep wall decorations upright.
+
+Revised 4 November 2026: replaces "retain each item's predefined orientation without offering rotation", which no longer matched the released quarter-turn rotation. Acceptance: each of the four orientations saves and restores; a turn that would break a placement rule is rejected with the rule named.
 
 Traces to: UR-500.
 
@@ -4234,6 +4238,14 @@ When a visitor attempts to modify another student's dorm arrangement or appearan
 
 Traces to: UR-500.
 
+##### SRS-500.16, DP — Placement preview and keyboard placement.
+
+When the owner chooses where to place or move an item in the 3D dorm, the system shall show the item at the candidate grid position, mark it valid or invalid by the placement rules before it is committed, and offer the same placement by grid coordinates using the keyboard.
+
+Added 4 November 2026. Acceptance: pointing and typed coordinates select the same cell; an invalid candidate cannot be placed and names the rule; Enter or Place commits a valid candidate.
+
+Traces to: UR-500.
+
 <a id="ur-503"></a>
 
 #### UR-503, DP - Begin Decorating My Virtual Dorm
@@ -4274,11 +4286,13 @@ Traces to: UR-503.
 
 #### UR-504, DP - Represent Myself in DormSpace
 
-User requirement: As a student, I want my 2D avatar to represent me while I explore DormSpace, so that I can have a recognizable character when visiting my dorm and the dorms of my friends.
+User requirement: As a student, I want my saved Game Room avatar to represent me as a 3D character while I explore DormSpace, so that I can have a recognizable character when visiting my dorm and the dorms of my friends.
 
 ##### SRS-504.1, DP — Avatar representation.
 
-When a student enters the DormHall or an accessible dorm, the system shall display that student's current Game Room avatar in two dimensions.
+When a student enters the DormHall or an accessible dorm, the system shall display that student's current saved Game Room look, including its complete avatar or layered pieces, body shape, skin colour, hair or hijab, glasses and face details, outfit and colours, as an articulated three-dimensional character, and shall state when a saved piece has no three-dimensional version.
+
+Amended 3 November 2026 (approved): replaces the two-dimensional representation wording. The preserved classic and current campus DormSpace versions remain available.
 
 Traces to: UR-504.
 
@@ -4318,15 +4332,77 @@ When movement would carry the avatar outside the traversable hall or room bounda
 
 Traces to: UR-504.
 
-##### SRS-504.8, DP — Furniture traversal.
+##### SRS-504.8, DP — Furniture collision.
 
-When an avatar moves across placed furniture or decorations, the system shall permit traversal without furniture collision blocking.
+When an avatar moves into raised placed furniture, the system shall stop that movement, while permitting the avatar to walk over rugs; when furniture is moved onto the avatar's position, the system shall move the avatar to the nearest clear floor position.
+
+Revised 4 November 2026: replaces "permit traversal without furniture collision blocking", which no longer matched the released collision behavior.
 
 Traces to: UR-504.
 
 ##### SRS-504.9, DP — Text entry focus.
 
 When the student types in a guestbook text field, the system shall suspend avatar movement commands from those keystrokes.
+
+Traces to: UR-504.
+
+##### SRS-504.10, DP — Third-person camera.
+
+When the student explores DormSpace in 3D, the system shall follow the avatar with a third-person camera that the student can turn and zoom by dragging, scrolling or on-screen controls, move the avatar relative to that camera's view, and keep walls from hiding the avatar.
+
+Added 4 November 2026. Acceptance: W moves away from the camera in every camera direction; dragging turns the view; a wall between camera and avatar is cut away in rooms and the camera stays inside the hall.
+
+Traces to: UR-504.
+
+##### SRS-504.11, DP — Running.
+
+When the student holds Shift or turns on the on-screen Run control while moving, the system shall move the avatar at 1.5 times walking speed with a running animation.
+
+Added 4 November 2026 (records the existing sprint behavior).
+
+Traces to: UR-504.
+
+##### SRS-504.12, DP — Sitting and sleeping.
+
+When a student uses a placed chair, sofa, armchair or bed, the system shall seat or lay the avatar on that item in any of its four orientations, allow only one occupant per item, return the student to clear floor when they stand up, and show nighttime in the room's window to everyone present while anyone sleeps there.
+
+Added 4 November 2026 (records the existing rest behavior). Acceptance: a second student cannot take an occupied item; moving or pressing E stands up.
+
+Traces to: UR-504.
+
+##### SRS-504.13, DP — Live co-presence and nearby chat.
+
+When students are in the same hall floor or authorized room, the system shall show each other's saved avatars moving live, show their nearby chat messages in a log and above the sender, keep an unsent draft after a failed send, and apply existing block rules.
+
+Added 4 November 2026 (records the existing multiplayer behavior; see documentation/dormspace-multiplayer.md).
+
+Traces to: UR-504.
+
+##### SRS-504.14, DP — Legacy versions.
+
+When a student prefers or needs the earlier DormSpace, the system shall keep the 2D campus and classic versions available from DormSpace, using the same saved rooms, friends, guestbooks and accounts.
+
+Added 4 November 2026.
+
+Traces to: UR-504.
+
+##### SRS-504.15, DP — 3D recovery.
+
+When the 3D view cannot start or loses its graphics context, the system shall explain that saved data is unaffected and offer to retry the 3D view or open the campus version, rather than show a blank view.
+
+Added 4 November 2026.
+
+Traces to: UR-504.
+
+<a id="srs-504.16"></a>
+
+##### SRS-504.16, DP — Block-style 3D presentation.
+
+The system shall present the 3D DormHall, rooms and furniture previews in a consistent block style, with oversized square avatar heads, rectangular articulated limbs, geometric furniture and simple surface colors. The presentation shall preserve the student's saved appearance choices and existing interactions.
+
+Acceptance criterion: Given a student and visitor with different saved appearances, when each views the DormHall or room, then their headwear, outfit, skin tone, body shape and saved face details remain identifiable on the block models. When the student moves, sits, sleeps or previews furniture, the models remain aligned to the existing interaction surfaces.
+
+Added 6 November 2026.
 
 Traces to: UR-504.
 
@@ -4402,59 +4478,61 @@ Disposition: Retired. Achievement displays and trophies are outside this release
 
 #### UR-507, DP - Visit Friends Through the DormHall
 
-User requirement: As a student, I want to move my 2D avatar through a DormHall with my own marked door followed by doors for current friends in friendship order, so that I can enter my dorm or recognize and visit my friends across elevator-accessible floors.
+User requirement: As a student, I want to walk my 3D avatar through a shared DormHall where every student at my school has a permanent, clearly marked room door, so that I can find my own room, recognize classmates' rooms, and enter the rooms of current friends across elevator-accessible floors.
+
+Revised 4 November 2026: the personalized friend-ordered hall is replaced by a stable shared directory for the 3D version (SRS-507.1 to SRS-507.9, SRS-507.15, SRS-507.16 and SRS-507.18 reworded; SRS-507.20 to SRS-507.24 added). The 2D campus and classic versions keep the earlier personalized hall unchanged. SRS-507.10 to SRS-507.14, SRS-507.17 and SRS-507.19 keep their wording, including the current-friend entry rules SRS-507.12, SRS-507.13 and SRS-507.19 and active visit revocation SRS-507.17; in the 3D version, the visitor's "own DormHall" in SRS-507.17 is the shared directory floor that holds the visitor's own room.
 
 ##### SRS-507.1, DP — Game Room entry.
 
-When a student selects DormSpace in the Game Room, the system shall open the first floor of that student's DormHall.
+When a student selects DormSpace in the Game Room, the system shall open the DormHall floor that holds that student's own room, beside their door.
 
 Traces to: UR-507.
 
 ##### SRS-507.2, DP — Own dorm door.
 
-When the first DormHall floor is displayed, the system shall reserve its first door for the student's own dorm with a My Dorm label.
+When the floor holding the student's room is displayed, the system shall mark that student's permanent door as their own room.
 
 Traces to: UR-507.
 
-##### SRS-507.3, DP — Friend door identity.
+##### SRS-507.3, DP — Resident door identity.
 
-When a door represents a current friend, the system shall display that friend's username and current profile picture, using the account default picture when none is set.
-
-Traces to: UR-507.
-
-##### SRS-507.4, DP — Friend ordering.
-
-When assigning friends to doors, the system shall order current friendships by their mutual acceptance time from oldest to newest, using a stable account identifier to break timestamp ties.
+When a door belongs to a schoolmate whose identity the viewer may see, the system shall display that resident's username and room number, and whether the door is the viewer's own, a current friend's or locked.
 
 Traces to: UR-507.
 
-##### SRS-507.5, DP — First floor allocation.
+##### SRS-507.4, DP — Stable door ordering.
 
-When the first floor is displayed, the system shall assign the first nine friends in that ordering to the nine doors after My Dorm.
+When eligible students are given rooms, the system shall assign each student one permanent room number in their school in a stable account order, independent of any viewer's friend list.
 
 Traces to: UR-507.
 
-##### SRS-507.6, DP — Additional floor allocation.
+##### SRS-507.5, DP — Floor allocation.
 
-When floor f greater than one is displayed, the system shall assign friends in positions (10 × f) − 10 through (10 × f) − 1 to that floor's ten doors, counting the oldest friend as friend 1.
+When a floor f is displayed, the system shall show the twelve rooms numbered for that floor, room index 12 × (f − 1) through 12 × f − 1, in the same positions for every viewer in the school.
+
+Traces to: UR-507.
+
+##### SRS-507.6, DP — Additional floors.
+
+When a school has more assigned rooms than fit on its existing floors, the system shall add the next floor of twelve rooms.
 
 Traces to: UR-507.
 
 ##### SRS-507.7, DP — Vacant doors.
 
-When a displayed floor has fewer assigned friends than available friend doors, the system shall label its remaining friend doors Vacant.
+When a displayed floor has door positions without an assigned room, the system shall label those doors Vacant.
 
 Traces to: UR-507.
 
-##### SRS-507.8, DP — Vacant door interaction.
+##### SRS-507.8, DP — Vacant and locked door interaction.
 
-When a student interacts with a Vacant door, the system shall leave the student in the DormHall without opening a dorm.
+When a student interacts with a Vacant door, a locked door or a withheld door, the system shall leave the student in the DormHall without opening a dorm and say why.
 
 Traces to: UR-507.
 
 ##### SRS-507.9, DP — Floor count.
 
-When the friend list changes, the system shall provide one first floor plus the minimum additional ten-door floors needed for friends beyond the first nine.
+When the directory is displayed, the system shall provide the minimum number of twelve-door floors needed for every assigned room in the school.
 
 Traces to: UR-507.
 
@@ -4490,13 +4568,13 @@ Traces to: UR-507.
 
 ##### SRS-507.15, DP — Return through exit.
 
-When a student interacts with a dorm's exit, the system shall return them to their own DormHall floor containing that dorm's current door, or floor one if the door no longer exists.
+When a student interacts with a dorm's exit, the system shall return them to the DormHall floor and door of that dorm's permanent room, or to their own room's floor when that door's identity is not visible to them.
 
 Traces to: UR-507.
 
-##### SRS-507.16, DP — Friend removal compaction.
+##### SRS-507.16, DP — No door reassignment.
 
-When a friendship ends, the system shall reassign the remaining friends consecutively to fill the vacated door position.
+When a friendship ends or an account is blocked, deactivated or otherwise withheld, the system shall keep every room number unchanged and only change how the affected door is shown.
 
 Traces to: UR-507.
 
@@ -4506,15 +4584,55 @@ When a visitor's friendship with the dorm owner ends during a visit, the system 
 
 Traces to: UR-507.
 
-##### SRS-507.18, DP — Removed floor recovery.
+##### SRS-507.18, DP — Floor stability.
 
-When friend-list changes remove the floor the student is viewing, the system shall return the student to the first DormHall floor.
+When the student is viewing a floor, the system shall keep that floor available, because rooms are never removed from the directory.
 
 Traces to: UR-507.
 
 ##### SRS-507.19, DP — Unauthorized direct entry.
 
 When a non-owner without a current friendship requests a dorm directly, the system shall deny entry.
+
+Traces to: UR-507.
+
+##### SRS-507.20, DP — Shared school directory.
+
+When any eligible student at a school views a DormHall floor, the system shall show the same room assignment (room number and door position for each resident) as for every other viewer at that school, including students who are not their friends, shall show each resident's username except where SRS-507.22 withholds that resident's identity from the particular viewer, and shall exclude students of other schools.
+
+Added 4 November 2026. Acceptance: two same-school viewers see identical room numbers and door positions per resident, and identical usernames wherever neither viewer has identity withheld under SRS-507.22; a withheld door keeps its room number and position; a student at another school is absent.
+
+Traces to: UR-507.
+
+##### SRS-507.21, DP — Friends-only room locks.
+
+When a door belongs to a schoolmate who is not the viewer's current friend, the system shall show it as locked and deny entry, while the owner and current friends may enter.
+
+Added 4 November 2026.
+
+Traces to: UR-507.
+
+##### SRS-507.22, DP — Withheld identity.
+
+When a resident is blocked by or has blocked the viewer, or the resident's account is inactive or unverified, the system shall show that door as a locked placeholder without the resident's username.
+
+Added 4 November 2026.
+
+Traces to: UR-507.
+
+##### SRS-507.23, DP — Own-room shortcut.
+
+When the student uses the My room control anywhere in DormSpace, the system shall open their own dorm directly.
+
+Added 4 November 2026.
+
+Traces to: UR-507.
+
+##### SRS-507.24, DP — Bounded directory data.
+
+When the directory is requested, the system shall return only one floor of doors with the room number, door state and visible username, and shall not return email addresses or other profile data.
+
+Added 4 November 2026.
 
 Traces to: UR-507.
 
@@ -5272,6 +5390,22 @@ When a purchase attempts to debit an account other than the authenticated buyer'
 
 Traces to: UR-522.
 
+##### SRS-522.11, DP — Preserved free furnishings.
+
+When DormSpace furniture becomes purchasable, the system shall keep the bed, desk, chair and window starters free and keep every item a student already owns, including furniture granted free before pricing, without any charge.
+
+Added 4 November 2026. Acceptance: existing owners keep all eight earlier included furnishings and their layouts; new owners still receive the four starters free.
+
+Traces to: UR-522, UR-503.
+
+##### SRS-522.12, DP — Shop prices from the catalog.
+
+When the DormSpace shop shows or sells an item, the system shall use the price currently stored in the catalog, which administrators can change without a code release.
+
+Added 4 November 2026. The shop migration seeds provisional, adjustable implementation defaults in shared points (not money): Plant 150, Armchair 300, Sofa 1500, Rug 200, Coffee table 250, Bookshelf 450, Wardrobe 600 and Nightstand 150. These are not a recorded pricing decision; the prices stay open under Appendix B-04 and can be changed in the catalog without a code release.
+
+Traces to: UR-522, UR-529.
+
 <a id="ur-523"></a>
 
 #### UR-523, DP - Trust Reward and Purchase Results
@@ -5709,6 +5843,120 @@ Traces to: UR-529.
 When a student inspects a decoration before purchasing, the system shall display its grid footprint, permitted placement area, and overlap category.
 
 Traces to: UR-529.
+
+DormSpace audio is planned for the 3D route and depends on the shared hall and existing room authorization. Music is opt-in and limited to the current room. Voice is opt-in in both rooms and the shared hall. See [the audio review and verification plan](dormspace-audio.md).
+
+<a id="ur-530"></a>
+
+#### UR-530, DP - Listen to Shared MP3 Music in DormSpace Rooms
+
+User requirement: As a student in an authorized 3D dorm room, I want to opt in to the same MP3 music as other listeners so we can share the room soundtrack.
+
+<a id="srs-530.1"></a>
+
+##### SRS-530.1, DP — Room owner music controls.
+
+The system shall let the current dorm owner in their room select a track from the approved MP3 catalog and start, pause, resume or stop the shared room soundtrack.
+
+Acceptance criterion: With the owner and a friend in the room, the owner's changes update the displayed track and playback state. The visitor cannot change the shared state, including through a direct request.
+
+Traces to: UR-530.
+
+<a id="srs-530.2"></a>
+
+##### SRS-530.2, DP — Opt-in listening and personal controls.
+
+The system shall keep room music silent for each student until they choose Listen, and shall let each listener adjust music volume or stop listening independently of other participants and of voice chat.
+
+Acceptance criterion: When a track starts, an opted-out visitor hears silence. When two visitors opt in, one can lower the music or stop listening without changing the other's audio or either student's voice volume.
+
+Traces to: UR-530.
+
+<a id="srs-530.3"></a>
+
+##### SRS-530.3, DP — Shared playback position and recovery.
+
+The system shall align opted-in listeners in the same room to the current track and playback position when they join, resume or reconnect, and offer retry when loading fails.
+
+Acceptance criterion: A late listener joins the active track at its current position. A recovering listener uses the latest owner-selected track and play/pause state. A failed track load leaves movement, text chat and voice controls available.
+
+Traces to: UR-530.
+
+<a id="srs-530.4"></a>
+
+##### SRS-530.4, DP — Room music access and exit.
+
+The system shall authorize room music state and delivery against current room access and presence, and stop a student's listening when they leave, sign out or lose access.
+
+Acceptance criterion: An unauthorized account cannot retrieve a room's playback state or protected track access. A visitor who exits or loses access stops hearing the room and does not opt in automatically on returning. The DormHall has no room music.
+
+Traces to: UR-530.
+
+<a id="ur-531"></a>
+
+#### UR-531, DP - Join Voice Chat in DormSpace Rooms and the DormHall
+
+User requirement: As a student, I want to choose to join live voice in an authorized 3D dorm room or in my shared DormHall so I can talk to students in the same place.
+
+<a id="srs-531.1"></a>
+
+##### SRS-531.1, DP — Opt-in room and DormHall voice.
+
+The system shall offer an explicit Join voice action for students in an authorized 3D room or in the shared DormHall. Joining starts in listen-only mode with a visible channel label and Leave voice action.
+
+Acceptance criterion: Entering a room or hall never opens a voice connection or prompts for the microphone. A student who joins can hear consenting participants in that location and see whether they are in the hall or a named room.
+
+Traces to: UR-531.
+
+<a id="srs-531.2"></a>
+
+##### SRS-531.2, DP — Voice channel authorization and isolation.
+
+The system shall authorize voice admission and delivery using the signed-in student's current game location and applicable DormSpace access rules. Voice in a room shall be isolated from the hall and every other room. DormHall voice shall be isolated by university.
+
+Acceptance criterion: Two eligible non-friends can join hall voice at their university. An unauthorized room join, guessed channel, request from a different university, or stale room authorization grants no access. Audio never crosses a room or university boundary.
+
+Traces to: UR-531.
+
+<a id="srs-531.3"></a>
+
+##### SRS-531.3, DP — Explicit microphone consent and mute.
+
+The system shall request microphone access only after a joined student explicitly enables their microphone, show their actual microphone state, and stop transmitting when they mute. Denied or unavailable microphones shall leave listen-only voice and text chat available.
+
+Acceptance criterion: Joining never prompts for the microphone. Enabling prompts when needed. Denial keeps listening available. Muting an active microphone stops outgoing audio while preserving incoming audio.
+
+Traces to: UR-531.
+
+<a id="srs-531.4"></a>
+
+##### SRS-531.4, DP — Participant list and local mute.
+
+The system shall show current voice participants, visually identify speaking participants, and let a student mute or unmute another participant locally without affecting other listeners.
+
+Acceptance criterion: With three students joined, one can mute a speaker while another still hears them. The roster removes a participant who leaves, and speaking state is available without relying on sound or color alone.
+
+Traces to: UR-531.
+
+<a id="srs-531.5"></a>
+
+##### SRS-531.5, DP — Voice teardown and reconnect.
+
+The system shall stop capture and disconnect the current voice session on Leave voice, location change, logout or loss of eligibility. On connection loss the system shall stop sending audio and expose an explicit retry in the current eligible location with the microphone muted.
+
+Acceptance criterion: Moving from the hall into a room or losing friend access stops the old audio and releases the microphone. A network interruption does not resume transmission automatically. Returning to voice requires a fresh action.
+
+Traces to: UR-531.
+
+<a id="srs-531.6"></a>
+
+##### SRS-531.6, DP — Voice transport and retention.
+
+The system shall transport live voice using encrypted media and shall provide no app or service-side recording, replay, transcription or retention of voice content.
+
+Acceptance criterion: Verify encrypted transport and inspect application and provider settings and data stores after a call. No recoverable audio, transcript or replay is created, including when diagnosing errors.
+
+Traces to: UR-531.
 
 <a id="section-SS"></a>
 
@@ -7825,8 +8073,8 @@ TBD means a team decision is still required. These are explicit dependencies, no
 | B-01 | DP | Snipe points per positively identified target; no extra daily photographer cap. Approved by DP on 29 October 2026 for the Snipe implementation: 25 shared points per verified friend (an originally tagged friend whose identity answer is Yes at publication), credited once to the photographer only; no photographer-wide daily cap (see documentation/snipe-rewards.md). This records DP's approval only; team review is not recorded, and every other reward amount and catalog price stays open. | SRS-525.2; SRS-525.6; UR-528 |
 | B-02 | DP + SS | Daily participation amount and separate 7/14/30-day milestone amounts. | SRS-526.5; SRS-526.17; SRS-528.5 |
 | B-03 | DP + SS | Normal Game 1 rewards, coin conversion, completion proof, and reduced replay reward rules; Wordle reward rules only if included. | SRS-520.3 to SRS-520.5; SRS-528.6 |
-| B-04 | DP | Catalog entries, point prices, eligibility, and initial/purchasable wall and floor appearances. | UR-500; UR-522; UR-529 |
-| B-05 | DP | Room dimensions, protected cells, item footprints, allowed surfaces, overlap compatibility and fixed orientations. | SRS-500.2; SRS-500.8 to SRS-500.10; SRS-529.7 |
+| B-04 | DP | Catalog entries, point prices, eligibility, and initial/purchasable wall and floor appearances. 4 November 2026: the DormSpace furniture prices listed in SRS-522.12 are provisional, adjustable implementation defaults, not a decision; wall and floor appearances stay free; the price decision and other catalog decisions remain open. | UR-500; UR-522; UR-529 |
+| B-05 | DP | Room dimensions, protected cells, item footprints, allowed surfaces and overlap compatibility. 4 November 2026: the earlier "fixed orientations" item is obsolete; floor items turn in quarter turns per revised SRS-500.7. | SRS-500.2; SRS-500.8 to SRS-500.10; SRS-529.7 |
 | B-06 | DP + LP | Snipe-specific image formats, byte limit and pixel limits. SS avatar and feed limits do not automatically define the Snipe policy. Approved by DP on 25 October 2026 for the Snipe implementation: JPEG and PNG only; at most 10,000,000 bytes; at most 4096 pixels wide and 4096 pixels high (see documentation/snipe-basic.md). This records DP's approval only; LP and team review are not recorded. | SRS-510.2; SRS-510.3 |
 | B-07 | DP | DormSpace movement speed, interaction range, touch-editing behavior and exact release devices/browser versions. | UR-504; SRS-NFR-52 to SRS-NFR-57 |
 | B-08 | SS + DP | Maximum trusted participation-event delivery delay and correction of earlier days after late delivery. | SRS-613.12; SRS-613.13; SRS-526.3 |
@@ -7838,6 +8086,8 @@ TBD means a team decision is still required. These are explicit dependencies, no
 | B-14 | LN | Supply the launch university name and approved email domains. | SRS-100.5; SRS-101.3 |
 | B-15 | LP + MS | Supply the approved Chat reaction emoji set and accepted feed photograph formats. | SRS-210.2; SRS-304.1; SRS-NFR-41 |
 | B-16 | DP + SS | Supply release faces/outfits, starter dorm items and authored level assets; approve the dictionary and daily puzzle schedule if Wordle is included. | SRS-503.1; UR-608 to UR-610; SRS-618.1; SRS-624.1; SRS-624.6 |
+| B-17 | DP + team | Confirm the room soundtrack controller and release MP3 source, permitted redistribution and track list. The working proposal uses room-owner controls and a team-approved catalog. | UR-530 |
+| B-18 | DP + team | Select voice infrastructure, hall capacity, browser support, revocation bounds, and block/report handling. Confirm these before acceptance testing. | UR-531 |
 
 Out of scope: achievement trophies, alternate dorm layouts, furniture rotation, live multiplayer dorm synchronization, Snipe feed/profile publication, Snipe friend-group leaderboards or voting, real-money points, refunds, duplicate ownership of the same catalog item, university transfers and post/event drafts.
 
@@ -7965,12 +8215,12 @@ Unconfirmed operation outcomes do not prove failure. Retry and exit behavior pre
 
 | Parent UR | SRS coverage / disposition | Section |
 | --- | --- | --- |
-| UR-500 | SRS-500.1 through SRS-500.15 | [See section](#ur-500) |
+| UR-500 | SRS-500.1 through SRS-500.16 | [See section](#ur-500) |
 | UR-503 | SRS-503.1 through SRS-503.5 | [See section](#ur-503) |
-| UR-504 | SRS-504.1 through SRS-504.9; SRS-NFR-56, SRS-NFR-57 | [See section](#ur-504) |
+| UR-504 | SRS-504.1 through SRS-504.16; SRS-NFR-56, SRS-NFR-57 | [See section](#ur-504) |
 | UR-505 | SRS-505.1 through SRS-505.9; SRS-NFR-51, SRS-NFR-53 | [See section](#ur-505) |
 | UR-506 | Retired. Achievement displays and trophies are outside this release. This identifier will not be reused. | [See section](#ur-506) |
-| UR-507 | SRS-507.1 through SRS-507.19; SRS-NFR-52, SRS-NFR-55 | [See section](#ur-507) |
+| UR-507 | SRS-507.1 through SRS-507.24; SRS-NFR-52, SRS-NFR-55 | [See section](#ur-507) |
 | UR-508 | SRS-508.1 through SRS-508.21; SRS-NFR-56, SRS-NFR-57 | [See section](#ur-508) |
 | UR-509 | SRS-509.1 through SRS-509.9 | [See section](#ur-509) |
 | UR-510 | SRS-510.1 through SRS-510.12 | [See section](#ur-510) |
@@ -7980,7 +8230,7 @@ Unconfirmed operation outcomes do not prove failure. Retry and exit behavior pre
 | UR-514 | SRS-514.1 through SRS-514.15; SRS-NFR-48 | [See section](#ur-514) |
 | UR-520 | SRS-520.1 through SRS-520.8 | [See section](#ur-520) |
 | UR-521 | SRS-521.1 through SRS-521.5; SRS-NFR-54 | [See section](#ur-521) |
-| UR-522 | SRS-522.1 through SRS-522.10; SRS-NFR-56 | [See section](#ur-522) |
+| UR-522 | SRS-522.1 through SRS-522.12; SRS-NFR-56 | [See section](#ur-522) |
 | UR-523 | SRS-523.1 through SRS-523.11; SRS-NFR-49, SRS-NFR-50 | [See section](#ur-523) |
 | UR-524 | SRS-524.1 through SRS-524.5 | [See section](#ur-524) |
 | UR-525 | SRS-525.1 through SRS-525.6 | [See section](#ur-525) |
@@ -7988,6 +8238,8 @@ Unconfirmed operation outcomes do not prove failure. Retry and exit behavior pre
 | UR-527 | SRS-527.1 through SRS-527.8 | [See section](#ur-527) |
 | UR-528 | SRS-528.1 through SRS-528.6 | [See section](#ur-528) |
 | UR-529 | SRS-529.1 through SRS-529.7 | [See section](#ur-529) |
+| UR-530 | SRS-530.1 through SRS-530.4 | [See section](#ur-530) |
+| UR-531 | SRS-531.1 through SRS-531.6 | [See section](#ur-531) |
 
 <a id="sonja-seferasi-ss"></a>
 
@@ -8114,6 +8366,8 @@ The aligned user_requirements.md contains these amendments. This register record
 | UR-506 | Retired identifier; no achievement display. |
 | UR-507 to UR-514 | Integrated DormHall and independent Snipe identity/sharing consent with lifecycle boundaries. |
 | UR-526; UR-613 | One shared participation streak and daily/milestone reward policy. |
+| UR-530 | Listen to Shared MP3 Music in DormSpace Rooms. Planned audio scope for 3D DormSpace. |
+| UR-531 | Join Voice Chat in DormSpace Rooms and the DormHall. Planned audio scope for 3D DormSpace. |
 | UR-605; UR-606 | Audience-selection delegation and explicit draft deferral. |
 | UR-623 to UR-626 | Conditional daily Wordle with today's puzzle/result only. |
 | UR-627 | Preserved existing display-preference requirement. |
