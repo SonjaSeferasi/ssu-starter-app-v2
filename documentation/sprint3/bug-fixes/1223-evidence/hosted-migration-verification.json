@@ -5,6 +5,8 @@
   "migration": "20261116210000_atomic_profile_board_save.sql",
   "application_method": "Exact reviewed SQL executed in signed-in Supabase SQL Editor, followed by NOTIFY pgrst, 'reload schema'",
   "sql_editor_result": "Success. No rows returned",
+  "exact_function_body_matches": true,
+  "installed_body_md5": "8c44a20f763635c69cf10ef30babc346",
   "read_only_metadata_checks": {
     "service_role_can_execute": true,
     "anon_can_execute": false,

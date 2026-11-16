@@ -52,6 +52,9 @@ production build and TypeScript check passed. An additional browser regression
 runs that Next production app and its actual API routes against disposable
 PGlite, with the actual profile migrations and new board-save migration.
 Only the Supabase Auth/PostgREST transport is replaced with a local fixture.
+Final screenshots were regenerated from a clean `git archive` of commit
+`2c5271c25640b400a7ce87a42bf7aaa9577cc96f` and its successful production
+build, excluding all uncommitted workspace edits. That browser run passed.
 Final browser run: **1 test passed**. The 39 focused API/database tests also
 passed again after the migration was renamed to sort after current main's
 existing migrations.
@@ -113,6 +116,9 @@ Read-only PostgreSQL metadata checks returned:
 | security_definer | true |
 | locks_latest_row | true |
 | merges_latest_board | true |
+
+An additional read-only checksum comparison confirmed the installed function
+body exactly matches the migration (`MD5 8c44a20f763635c69cf10ef30babc346`).
 
 The independent hosted API probe changed from HTTP 404 / `PGRST202` (function
 missing) to HTTP 403 / `42501` (verified, active university account required).

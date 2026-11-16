@@ -3,22 +3,22 @@
   "events": [
     {
       "step": "migration applied to disposable database",
-      "at": "2026-11-16T21:14:06.185Z"
+      "at": "2026-11-16T21:30:38.248Z"
     },
     {
       "step": "board request paused before database write",
-      "at": "2026-11-16T21:14:09.111Z"
+      "at": "2026-11-16T21:30:41.199Z"
     },
     {
       "step": "new hometown committed by second tab",
-      "at": "2026-11-16T21:14:09.174Z",
+      "at": "2026-11-16T21:30:41.262Z",
       "detail": {
         "hometown": "New Salem"
       }
     },
     {
       "step": "new theme and decorations committed by second tab",
-      "at": "2026-11-16T21:14:09.185Z",
+      "at": "2026-11-16T21:30:41.274Z",
       "detail": {
         "theme": "midnight",
         "stickers": [
@@ -34,11 +34,11 @@
     },
     {
       "step": "board database write resumed",
-      "at": "2026-11-16T21:14:09.185Z"
+      "at": "2026-11-16T21:30:41.274Z"
     },
     {
       "step": "board API confirmed both changes",
-      "at": "2026-11-16T21:14:09.195Z",
+      "at": "2026-11-16T21:30:41.283Z",
       "detail": {
         "hometown": "New Salem",
         "theme": "midnight",
@@ -56,7 +56,7 @@
             {
               "x": 32,
               "y": 25,
-              "id": "25cc937b-2171-4d35-8c36-e62264c3e4d4",
+              "id": "0c1f8a5c-32d8-4117-a43b-c11f53ccae5b",
               "kind": "note",
               "text": "Bug 1223: my board and newer profile changes both survive.",
               "color": "pink",
@@ -69,14 +69,14 @@
     },
     {
       "step": "fresh page read retained both changes",
-      "at": "2026-11-16T21:14:09.431Z",
+      "at": "2026-11-16T21:30:41.514Z",
       "detail": {
         "board": {
           "items": [
             {
               "x": 32,
               "y": 25,
-              "id": "25cc937b-2171-4d35-8c36-e62264c3e4d4",
+              "id": "0c1f8a5c-32d8-4117-a43b-c11f53ccae5b",
               "kind": "note",
               "text": "Bug 1223: my board and newer profile changes both survive.",
               "color": "pink",
@@ -102,5 +102,7 @@
         ]
       }
     }
-  ]
+  ],
+  "source_commit": "2c5271c25640b400a7ce87a42bf7aaa9577cc96f",
+  "source_cleanliness": "git archive HEAD into temporary source directory; no uncommitted workspace edits; clean production build"
 }
