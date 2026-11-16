@@ -1,42 +1,50 @@
 'use client';
 import Link from 'next/link';
-import {useEffect,useRef,useState} from 'react';
+import {useEffect,useRef,useState,useSyncExternalStore} from 'react';
 import {ArrowLeft,History,MapPin,Monitor,RefreshCw} from 'lucide-react';
-import {profileFetch} from '../profile/profile-view';
+import {currentLoginActivityIdentity,subscribeLoginActivityIdentity,loginActivityRequest} from '../../lib/account/login-activity-session';
 import {loginDate,loginTime} from '../../lib/login-activity-format';
 import type {LoginEntry,LoginHistory} from '../../lib/login-activity';
 import {canEndLoginSession} from '../../lib/login-session-options';
 import styles from './login-activity.module.css';
+const serverIdentity=()=>null;
 export function LoginActivity(){
+  const identity=useSyncExternalStore(subscribeLoginActivityIdentity,currentLoginActivityIdentity,serverIdentity);
+  return <AccountLoginActivity key={identity??'signed-out'} identity={identity}/>;
+}
+function AccountLoginActivity({identity}:{identity:string|null}){
   const [timeZone,setTimeZone]=useState('UTC');
   useEffect(()=>{setTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone);},[]);
   const [entries,setEntries]=useState<LoginEntry[]>([]),[loading,setLoading]=useState(true),[error,setError]=useState(''),[revision,setRevision]=useState(0);
   const [selected,setSelected]=useState<LoginEntry|null>(null),[ending,setEnding]=useState(false),[actionError,setActionError]=useState(''),[message,setMessage]=useState('');
   const confirmation=useRef<HTMLDialogElement>(null);
+  const action=useRef<AbortController|null>(null);
+  useEffect(()=>()=>{action.current?.abort();},[]);
   useEffect(()=>{if(selected)confirmation.current?.showModal();else confirmation.current?.close();},[selected]);
   const [cursor,setCursor]=useState<string|null>(null),[nextCursor,setNextCursor]=useState<string|null>(null);
   useEffect(()=>{
-    let ignore=false;
+    let ignore=false;const controller=new AbortController();
     setLoading(true);setError('');
     (async()=>{
       try{
-        const {response,data}=await profileFetch('/api/account/login-activity'+(cursor?'?cursor='+encodeURIComponent(cursor):''));
+        const {response,data}=await loginActivityRequest(identity,'/api/account/login-activity'+(cursor?'?cursor='+encodeURIComponent(cursor):''),{signal:controller.signal});
         if(!response.ok)throw new Error(data.error||'Could not load your login activity.');
         if(!ignore){const history=data as LoginHistory;setEntries(previous=>cursor?[...previous,...history.entries.filter(entry=>!previous.some(old=>old.id===entry.id))]:history.entries);setNextCursor(history.nextCursor);}
       }catch(reason){if(!ignore)setError(reason instanceof Error?reason.message:'Please try again.');}
       finally{if(!ignore)setLoading(false);}
-    })();return()=>{ignore=true;};
-  },[revision,cursor]);
+    })();return()=>{ignore=true;controller.abort();};
+  },[identity,revision,cursor]);
   function refresh(){setCursor(null);setEntries([]);setNextCursor(null);setRevision(x=>x+1);}
   async function endSession(){
     if(!selected||ending)return;
+    const controller=new AbortController();action.current=controller;
     setEnding(true);setActionError('');setMessage('');
     try{
-      const {response,data}=await profileFetch('/api/account/login-activity',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:selected.id,confirm:true})});
+      const {response,data}=await loginActivityRequest(identity,'/api/account/login-activity',{signal:controller.signal,method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:selected.id,confirm:true})});
       if(!response.ok)throw new Error(data.error||'Could not log out this device.');
       setSelected(null);refresh();setMessage('That session has been logged out. Your current session is still active.');
-    }catch(reason){setActionError(reason instanceof Error?reason.message:'Please try again.');}
-    finally{setEnding(false);}
+    }catch(reason){if(!controller.signal.aborted)setActionError(reason instanceof Error?reason.message:'Please try again.');}
+    finally{if(!controller.signal.aborted)setEnding(false);}
   }
   return <main className={styles.page}>
     <Link href="/profile/settings" className={styles.back}><ArrowLeft size={18}/>Account settings</Link>

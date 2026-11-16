@@ -1,0 +1,59 @@
+{
+  "environment": "local Next production app, actual login/history API and SQL on disposable PGlite; provider Auth/PostgREST fixtures",
+  "steps": [
+    "Account B replaced A in the same document, starting from a null cursor",
+    "Pagination returned all 30 B rows in order, with no A rows",
+    "A logout selection closed on switching to B",
+    "Same-session token refresh kept B pagination",
+    "Sign-out removed the previous rows"
+  ],
+  "result": "passed",
+  "requests": [
+    {
+      "owner": "A",
+      "before": null
+    },
+    {
+      "owner": "A",
+      "before": null
+    },
+    {
+      "owner": "B",
+      "before": null
+    },
+    {
+      "owner": "B",
+      "before": "55"
+    },
+    {
+      "owner": "A",
+      "before": null
+    },
+    {
+      "owner": "B",
+      "before": null
+    },
+    {
+      "owner": "B",
+      "before": "55"
+    }
+  ],
+  "baseCommit": "a3e2301b78a061ba95867be9ce648f61c8b33660",
+  "testedSourceSha256": {
+    "components/account/login-activity.tsx": "4b0d3c59ae323a1e53ace946f91402b8c960fa4bd5dda481e21bf1edfded873d",
+    "lib/account/login-activity-session.ts": "f8f19053d2eff564da76ca4ac109e4326d6040ad6356a946731a009d26e30a40",
+    "__tests__/login-activity-session.test.ts": "1230d308fe627c33ee9e9b4507a8faf07c091a6911a0ec02829b8bcf212641b1",
+    "scripts/tests/login-activity-identity.browser.ts": "4c3adfa6eb61162ec2748af04c8ab75ca380c8ae39788ec96173f0a6336304cc",
+    "vitest.login-activity-evidence.config.ts": "7bf06e8509a382fcb1ada00404f1ee623bcf144827e5b3f7b336a29d45bbc1c1"
+  },
+  "additionalBrowserChecks": {
+    "delayedOldAccountResponse": "passed; 30 B rows only after releasing held A older-page response",
+    "perTabSessionPrecedence": "passed; non-remembered A stays A and paginates to all 30 records despite remembered B in other tab"
+  },
+  "validation": {
+    "focusedTests": 89,
+    "browserTests": 3,
+    "productionBuild": "passed (includes TypeScript validation)"
+  },
+  "limits": "Disposable accounts and real SQL migrations with local Auth/PostgREST transport fixtures; no production account history read or sessions ended."
+}
