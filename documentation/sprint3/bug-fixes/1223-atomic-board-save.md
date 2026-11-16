@@ -37,6 +37,14 @@ On November 16, 2026:
 
 Result: **39 tests passed in 2 files**.
 
+`npm run build` also passed. The complete `npm test` run finished with
+2,916 passed and 5 failed tests in 227 files (223 passed / 4 failed files).
+The failures were in World Explorer: design-tier distribution, FJI and VUT
+patrol assertions, the Oceania audit baseline, and Saudi gate/plate ordering.
+Those are outside this patch's files; no unchanged-baseline rerun is claimed.
+
+Draft PR: https://github.com/SonjaSeferasi/ssu-starter-app-v2/pull/1257
+
 The API tests cover a competing profile change before the atomic write,
 JSONB key-order differences, dropped writes, invalid input, and a missing RPC.
 The PostgreSQL-compatible PGlite test executes the actual migration and RPC,
