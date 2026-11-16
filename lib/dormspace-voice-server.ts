@@ -159,10 +159,13 @@ export async function leaveVoice(config: Config, owner: Owner, raw: unknown) {
 
 export async function sweepVoice(config: Config, bearer: string | null) {
   if (!bearer || !equal(bearer, `Bearer ${config.sweepSecret}`)) throw new AccountError('Unauthorized.', 401);
+  const startedAt = new Date().toISOString();
   const service = roomService(config);
   const rooms = (await service.listRooms()).filter(room => CHANNEL.test(room.name));
   // Bound the number of simultaneous provider and database calls during scheduled cleanup.
   for (let index = 0; index < rooms.length; index += 6) {
     await Promise.all(rooms.slice(index, index + 6).map(room => reconcile(service, room.name)));
   }
+  const { error } = await accountClient().rpc('socialu_dorm_voice_sweep_ack', { p_started_at: startedAt });
+  if (error) throw unavailable();
 }

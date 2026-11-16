@@ -94,4 +94,15 @@ it('requires the sweep secret and removes stale or newly blocked provider sessio
   expect((await runSweep(secret)).status).toBe(204);
   expect(mock.list).toHaveBeenCalledTimes(1);
   expect(mock.remove.mock.calls.map(([, id]) => id).sort()).toEqual([blocked, expired].sort());
+  expect(mock.rpc).toHaveBeenLastCalledWith('socialu_dorm_voice_sweep_ack', { p_started_at: expect.any(String) });
+});
+
+it('does not acknowledge a failed provider sweep or expose the worker secret', async () => {
+  mock.rooms.mockRejectedValue(new Error('provider unavailable'));
+  const result = await sweep(new Request('http://localhost/api/dorm/voice/sweep', {
+    method: 'POST', headers: { Authorization: `Bearer ${secret}` },
+  }));
+  expect(result.status).toBe(503);
+  expect(mock.rpc).not.toHaveBeenCalled();
+  expect(JSON.stringify(await result.json())).not.toContain(secret);
 });
