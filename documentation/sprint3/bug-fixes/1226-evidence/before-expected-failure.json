@@ -1,0 +1,51 @@
+{
+  "environment": "local Next production app, actual login/history API and SQL on disposable PGlite; provider Auth/PostgREST fixtures",
+  "steps": [],
+  "result": "failed",
+  "error": "Error: Matcher did not succeed in 5000ms",
+  "visibleRows": [
+    "Account A Chrome 01",
+    "Account A Chrome 02",
+    "Account A Chrome 03",
+    "Account A Chrome 04",
+    "Account A Chrome 05",
+    "Account A Chrome 06",
+    "Account A Chrome 07",
+    "Account A Chrome 08",
+    "Account A Chrome 09",
+    "Account A Chrome 10",
+    "Account A Chrome 11",
+    "Account A Chrome 12",
+    "Account A Chrome 13",
+    "Account A Chrome 14",
+    "Account A Chrome 15",
+    "Account A Chrome 16",
+    "Account A Chrome 17",
+    "Account A Chrome 18",
+    "Account A Chrome 19",
+    "Account A Chrome 20",
+    "Account A Chrome 21",
+    "Account A Chrome 22",
+    "Account A Chrome 23",
+    "Account A Chrome 24",
+    "Account A Chrome 25",
+    "Account B Chrome 27",
+    "Account B Chrome 28",
+    "Account B Chrome 29",
+    "Account B Chrome 30"
+  ],
+  "requests": [
+    {
+      "owner": "A",
+      "before": null
+    },
+    {
+      "owner": "A",
+      "before": null
+    },
+    {
+      "owner": "B",
+      "before": "25"
+    }
+  ]
+}
