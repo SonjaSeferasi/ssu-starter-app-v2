@@ -1072,3 +1072,11 @@ Answer: The invited student should be able to view the event information and res
 #### 8. Should invited students be able to accept or decline an event invitation?
 
 Answer: Yes. Invited students should be able to indicate whether they plan to attend or do not plan to attend.
+
+## DormSpace release update — 16 November 2026 (DP)
+- UR-530: Each student uploads one MP3 for their own dorm; visitors choose whether to listen and control their own volume. A synchronized shared playhead is deferred.
+- UR-531: Opt-in, microphone-off-by-default voice is included in authorized dorm rooms and the same-university DormHall.
+- UR-532: The integrated 3D DormSpace is the default; the pixel campus and original classic rooms remain under Settings at separate legacy routes without resetting saves.
+- UR-533: Each newly completed Jumpyland attempt earns 25 shared points, spendable in the existing dorm furniture shop; retries never award duplicate points.
+
+Detailed requirements and acceptance: `SocialU_SRS_Editable.md`, SRS-530.5/.6, SRS-531.7, SRS-532.1/.2, and SRS-533.1/.2.

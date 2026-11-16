@@ -8,7 +8,12 @@ describe('Jumpyland completion rewards use the real shared ledger', () => {
   let db: PGlite;
   const attempt = () => crypto.randomUUID();
   async function call(student: number, action: string, id: string | null = null, level = 1, coins = 0) {
-    if (action === 'complete') await db.query("UPDATE socialu.participation_events SET occurred_at=clock_timestamp()-interval '20 seconds' WHERE event_id=$1", [id]);
+    if (action === 'complete') {
+      // Advance only the disposable fixture's start time; production history remains immutable.
+      await db.exec('SET session_replication_role=replica');
+      try { await db.query("UPDATE socialu.participation_events SET occurred_at=clock_timestamp()-interval '20 seconds' WHERE event_id=$1", [id]); }
+      finally { await db.exec('SET session_replication_role=origin'); }
+    }
     return (await db.query<{ result: any }>('SELECT public.socialu_jumpyland($1,$2,$3,$4,$5,$6) AS result',
       [action, testUid(student), id, level, coins, 'America/New_York'])).rows[0].result;
   }

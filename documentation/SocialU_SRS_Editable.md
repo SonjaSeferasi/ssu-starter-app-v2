@@ -83,7 +83,7 @@ SocialU helps university students connect with classmates, follow campus activit
 
 ### 1.2 Release scope
 
-SocialU is a browser-based social platform for students at one university. It brings verified accounts, profiles and friendships, Campus and Friends feeds, private and group messages, conversation-only Snipes, Events and Trending, avatar customization, games, and a customizable virtual dorm into one website. The semester release includes Game 1 with three levels and DormSpace. Wordle and a fourth platform level are optional if time allows; automatic photograph-background removal is conditional on feasibility. University transfers and post/event drafts are deferred. Native mobile applications, voice/video calling, exam tips, and professor ratings are outside the semester scope. Students share one participation streak across Game 1 attempt starts, accepted Wordle guesses when available, and successful DormSpace openings. Shared points use that participation record for daily and milestone rewards. Reward amounts and catalog prices remain open team decisions; signing in alone does not qualify. Approved Snipes appear only in their original conversation. A non-friend conversation requires an accepted message request; ending a friendship requires renewed request acceptance before new messages can be sent. Events can invite any registered student at the same university. The SRS provides detailed behavior and the open-decision register. Functional areas appear in the same order in both documents.
+SocialU is a browser-based social platform for students at one university. It brings verified accounts, profiles and friendships, Campus and Friends feeds, private and group messages, conversation-only Snipes, Events and Trending, avatar customization, games, and a customizable virtual dorm into one website. The semester release includes Game 1 with three levels and DormSpace. Wordle and a fourth platform level are optional if time allows; automatic photograph-background removal is conditional on feasibility. University transfers and post/event drafts are deferred. Native mobile applications, general voice/video calling, exam tips, and professor ratings are outside the semester scope. Opt-in voice inside authorized DormSpace rooms and the DormHall is included under UR-531. Students share one participation streak across Game 1 attempt starts, accepted Wordle guesses when available, and successful DormSpace openings. Shared points use that participation record for daily and milestone rewards. Jumpyland completions award 25 shared points per completed attempt (DP approval, 16 November 2026). Other unapproved reward amounts and catalog prices remain open team decisions; signing in alone does not qualify. Approved Snipes appear only in their original conversation. A non-friend conversation requires an accepted message request; ending a friendship requires renewed request acceptance before new messages can be sent. Events can invite any registered student at the same university. The SRS provides detailed behavior and the open-decision register. Functional areas appear in the same order in both documents.
 
 <a id="1-3-specification-conventions"></a>
 
@@ -5858,9 +5858,9 @@ User requirement: As a student in an authorized 3D dorm room, I want to opt in t
 
 ##### SRS-530.1, DP — Room owner music controls.
 
-The system shall let the current dorm owner in their room select a track from the approved MP3 catalog and start, pause, resume or stop the shared room soundtrack.
+The system shall let each dorm owner upload, replace, or remove one personal MP3 soundtrack for their own room. Each listener independently starts or pauses listening; there is no global owner-controlled playhead in this release.
 
-Acceptance criterion: With the owner and a friend in the room, the owner's changes update the displayed track and playback state. The visitor cannot change the shared state, including through a direct request.
+Acceptance criterion: With the owner and a friend in the room, replacing the soundtrack updates the displayed track and stops the old track. A visitor cannot upload, replace, or remove the soundtrack, including through a direct request.
 
 Traces to: UR-530.
 
@@ -5876,11 +5876,11 @@ Traces to: UR-530.
 
 <a id="srs-530.3"></a>
 
-##### SRS-530.3, DP — Shared playback position and recovery.
+##### SRS-530.3, DP — Selected soundtrack and recovery.
 
-The system shall align opted-in listeners in the same room to the current track and playback position when they join, resume or reconnect, and offer retry when loading fails.
+The system shall load the current room owner’s uploaded track, loop playback after explicit listener opt-in, and offer retry when loading fails. Listeners control their own playback position; synchronized playback is deferred by DP’s 16 November 2026 scope decision.
 
-Acceptance criterion: A late listener joins the active track at its current position. A recovering listener uses the latest owner-selected track and play/pause state. A failed track load leaves movement, text chat and voice controls available.
+Acceptance criterion: A late listener sees the current track and starts at its beginning after selecting Listen. A recovering listener uses the latest uploaded track and remains opted out until choosing Listen. A failed track load leaves movement, text chat and voice controls available.
 
 Traces to: UR-530.
 
@@ -5893,6 +5893,23 @@ The system shall authorize room music state and delivery against current room ac
 Acceptance criterion: An unauthorized account cannot retrieve a room's playback state or protected track access. A visitor who exits or loses access stops hearing the room and does not opt in automatically on returning. The DormHall has no room music.
 
 Traces to: UR-530.
+
+
+<a id="srs-530.5"></a>
+##### SRS-530.5, DP — Upload a personal dorm MP3 soundtrack.
+The system shall let a dorm owner upload, replace, and remove one MP3 soundtrack up to 20 MiB for their own room, validate the actual MP3 content, and store it privately.
+
+Acceptance criterion: An owner can replace and remove a valid MP3 and see the saved selection after reload. Invalid/oversized files and visitor edits are rejected without replacing the saved soundtrack. Only current authorized room participants receive temporary playback access. Uploaders are responsible for permission to share their selected music.
+
+Traces to: UR-530. GitHub: [#1252](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1252).
+
+<a id="srs-530.6"></a>
+##### SRS-530.6, DP — Play dorm background music with listener controls.
+The system shall offer explicit Listen/Pause, looped playback, and individual volume for the current room soundtrack, and shall stop and release playback on room exit, session change, changed soundtrack, or failed access revalidation.
+
+Acceptance criterion: Room music is silent on entry; a listener opts in and changes their volume without affecting anyone else or voice. Room access is rechecked every five seconds while mounted, and failed checks stop music. Audio is released on leaving. The DormHall has no background soundtrack.
+
+Traces to: UR-530. GitHub: [#1253](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1253).
 
 <a id="ur-531"></a>
 
@@ -5959,6 +5976,55 @@ The system shall transport live voice using encrypted media and shall provide no
 Acceptance criterion: Verify encrypted transport and inspect application and provider settings and data stores after a call. No recoverable audio, transcript or replay is created, including when diagnosing errors.
 
 Traces to: UR-531.
+
+
+<a id="srs-531.7"></a>
+##### SRS-531.7, DP — Finish and release room and DormHall voice chat.
+The system shall integrate room-scoped LiveKit voice into the default 3D DormSpace, use renewable admission leases and server-side removal of stale or unauthorized participants, and keep microphone capture off until explicitly enabled.
+
+Acceptance criterion: Two authorized sessions exchange real audio, mute and leave release microphone/playback, wrong rooms and schools are denied, and production provider settings and stale-session cleanup are verified. The channel capacity is 24. Provider configuration is a release dependency; code presence alone is not completed hosted acceptance.
+
+Traces to: UR-531. GitHub: [#1249](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1249).
+
+<a id="ur-532"></a>
+#### UR-532, DP — Use the integrated 3D DormSpace while preserving the pixel versions.
+User requirement: As a student, I want 3D DormSpace to be the main experience and retain access to the earlier pixel versions without losing my saved room.
+
+<a id="srs-532.1"></a>
+##### SRS-532.1, DP — Make 3D DormSpace the default.
+The system shall open the integrated 3D DormHall and rooms from Game Room and `/game-room/dormspace`, preserving existing account appearance, room ownership, layouts, presence, guestbook, and shop behavior.
+
+Acceptance criterion: The Game Room and direct route enter 3D; an owner can save and reload their room, and a visitor cannot edit it.
+
+Traces to: UR-532. GitHub: [#1247](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1247).
+
+<a id="srs-532.2"></a>
+##### SRS-532.2, DP — Preserve the pixel DormSpace on legacy routes.
+The system shall retain the pixel campus at `/game-room/dormspace/campus` and original classic version at `/game-room/dormspace/classic`, linked from 3D Settings with return links, and preserve existing saves.
+
+Acceptance criterion: Both legacy routes remain usable and clearly labeled; choosing a version never resets or migrates away an existing room.
+
+Traces to: UR-532. GitHub: [#1248](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1248).
+
+<a id="ur-533"></a>
+#### UR-533, DP — Earn Jumpyland points and spend them in the dorm shop.
+User requirement: As a student, I want each completed Jumpyland level to add 25 points to my account so I can buy dorm furniture.
+
+<a id="srs-533.1"></a>
+##### SRS-533.1, DP — Award 25 points for each completed Jumpyland level.
+When a signed-in student saves a completed started attempt of Jumpyland level 1, 2, or 3, the system shall atomically record its completion and credit exactly 25 shared points once for that attempt. A newly completed replay is eligible; duplicate save requests are not new completions. Invalid/foreign/unstarted attempts and implausibly immediate completions within ten seconds of starting are rejected. No old completions are backfilled.
+
+Acceptance criterion: Each level credits 25; lost-response retries and concurrent duplicate saves leave one ledger row. Failed completion transactions leave no reward. Saved historical amounts remain unchanged.
+
+Traces to: UR-533; UR-523. GitHub: [#1250](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1250).
+
+<a id="srs-533.2"></a>
+##### SRS-533.2, DP — Spend Jumpyland rewards in the DormSpace shop.
+The system shall show completion credits and the resulting account balance and let students spend those points through the existing shared ledger and furniture shop, using the current server-owned price and atomic ownership grant.
+
+Acceptance criterion: Complete a new level, observe +25 and the account balance, buy an affordable item, and reload to confirm one debit and persistent ownership. An insufficient balance or duplicate purchase cannot charge the student twice.
+
+Traces to: UR-533; UR-523; UR-529. GitHub: [#1251](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1251).
 
 <a id="section-SS"></a>
 
@@ -8088,7 +8154,7 @@ TBD means a team decision is still required. These are explicit dependencies, no
 | B-14 | LN | Supply the launch university name and approved email domains. | SRS-100.5; SRS-101.3 |
 | B-15 | LP + MS | Supply the approved Chat reaction emoji set and accepted feed photograph formats. | SRS-210.2; SRS-304.1; SRS-NFR-41 |
 | B-16 | DP + SS | Supply release faces/outfits, starter dorm items and authored level assets; approve the dictionary and daily puzzle schedule if Wordle is included. | SRS-503.1; UR-608 to UR-610; SRS-618.1; SRS-624.1; SRS-624.6 |
-| B-17 | DP + team | Confirm the room soundtrack controller and release MP3 source, permitted redistribution and track list. The working proposal uses room-owner controls and a team-approved catalog. | UR-530 |
+| B-17 | DP | Decided 16 November 2026: each dorm owner uploads one personal MP3, up to 20 MiB, and listeners control their own playback. A built-in catalog and synchronized playhead are deferred. | UR-530 |
 | B-18 | DP + team | Select voice infrastructure, hall capacity, browser support, revocation bounds, and block/report handling. Confirm these before acceptance testing. | UR-531 |
 
 Out of scope: achievement trophies, alternate dorm layouts, furniture rotation, live multiplayer dorm synchronization, Snipe feed/profile publication, Snipe friend-group leaderboards or voting, real-money points, refunds, duplicate ownership of the same catalog item, university transfers and post/event drafts.
@@ -8240,8 +8306,8 @@ Unconfirmed operation outcomes do not prove failure. Retry and exit behavior pre
 | UR-527 | SRS-527.1 through SRS-527.8 | [See section](#ur-527) |
 | UR-528 | SRS-528.1 through SRS-528.6 | [See section](#ur-528) |
 | UR-529 | SRS-529.1 through SRS-529.7 | [See section](#ur-529) |
-| UR-530 | SRS-530.1 through SRS-530.4 | [See section](#ur-530) |
-| UR-531 | SRS-531.1 through SRS-531.6 | [See section](#ur-531) |
+| UR-530 | SRS-530.1 through SRS-530.6 | [See section](#ur-530) |
+| UR-531 | SRS-531.1 through SRS-531.7 | [See section](#ur-531) |
 
 <a id="sonja-seferasi-ss"></a>
 
@@ -8374,3 +8440,6 @@ The aligned user_requirements.md contains these amendments. This register record
 | UR-623 to UR-626 | Conditional daily Wordle with today's puzzle/result only. |
 | UR-627 | Preserved existing display-preference requirement. |
 | Constraints and historical notes | Aligned stale reward, Snipe, remote logout and reporting assumptions with the SRS; preserved historical interview evidence. |
+
+## 16 November 2026 release decisions
+DP approved 25 points per new completed Jumpyland attempt and owner-uploaded dorm MP3s. Implementation/release tracking: #1247–#1253. This update describes required behavior and does not claim deployment or live acceptance before verification.
