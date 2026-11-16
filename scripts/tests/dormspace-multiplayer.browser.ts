@@ -85,7 +85,7 @@ async function signIn(student: number, viewport = { width: 1280, height: 1000 },
     if (!login.ok())
         throw new Error(`Test account sign-in failed: ${login.status()} ${await login.text()}`);
     await page.waitForFunction(() => Boolean(localStorage.getItem('access_token') || sessionStorage.getItem('access_token')));
-    await page.goto(base + '/game-room/dormspace');
+    await page.goto(base + '/game-room/dormspace/campus');
     await page.getByRole('heading', { name: /DormHall/ }).waitFor();
     return page;
 }
@@ -346,7 +346,7 @@ it('keeps mobile bubbles in view, synchronizes furniture changes and cleans up t
   for(let attempt=0;attempt<60;attempt++){if((await db.query<any>('SELECT student_id FROM dormspace_live.players WHERE student_id=3')).rows.length)break;await delay(100);}
   expect((await db.query<any>('SELECT student_id FROM dormspace_live.players WHERE student_id=3')).rows).toHaveLength(1);
   await online(visitor);await owner.locator('[data-remote-player="3"]').waitFor();
-  const tab=await visitor.context().newPage();await tab.goto(base+'/game-room/dormspace');await online(tab);
+  const tab=await visitor.context().newPage();await tab.goto(base+'/game-room/dormspace/campus');await online(tab);
   await visitor.locator('[data-live-status="replaced"]').waitFor();
   await owner.getByRole('button',{name:'Exit to DormHall',exact:true}).click();await online(owner);await owner.locator('[data-remote-player="3"]').waitFor();
   await tab.evaluate(()=>{localStorage.removeItem('access_token');sessionStorage.removeItem('access_token');window.dispatchEvent(new Event('socialu-session-changed'));});

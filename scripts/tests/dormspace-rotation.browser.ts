@@ -39,7 +39,7 @@ async function signIn(student: number, viewport = { width: 1280, height: 1000 },
   const login = await loginResponse;
   if (!login.ok()) throw new Error(`Test account sign-in failed: ${login.status()} ${await login.text()}`);
   await page.waitForFunction(() => Boolean(localStorage.getItem('access_token') || sessionStorage.getItem('access_token')));
-  await page.goto(base + '/game-room/dormspace');
+  await page.goto(base + '/game-room/dormspace/campus');
   await page.getByRole('heading', { name: /DormHall/ }).waitFor();
   return page;
 }
@@ -247,7 +247,7 @@ it('sleeps and sits in every orientation with correct action sprites, nighttime 
       { itemId: id('dorm-sofa'), x: 1, y: 4, rotation }, { itemId: id('dorm-armchair'), x: 7, y: 4, rotation },
       { itemId: id('window'), x: 5, y: 0, rotation: 0 }];
     expect((await api(owner, '/api/dorm', 'PUT', { ...room, placements })).status).toBe(200);
-    await owner.goto(base + '/game-room/dormspace'); await owner.getByRole('heading', { name: /DormHall/ }).waitFor(); await openOwn(owner);
+    await owner.goto(base + '/game-room/dormspace/campus'); await owner.getByRole('heading', { name: /DormHall/ }).waitFor(); await openOwn(owner);
     const section = owner.getByRole('region', { name: 'My Dorm', exact: true });
     const savedBefore = (await api(owner, '/api/dorm')).data;
     for (const [action, kind, key, label] of [

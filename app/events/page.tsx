@@ -8,9 +8,10 @@ import shellStyles from '../../components/navigation/social-shell.module.css';
 import styles from './events.module.css';
 import { useNavigationSession } from '../../components/navigation/social-shell';
 import { SessionNotice } from '../../components/navigation/section-page';
-import { EventList, FeaturedEvent, TrendingEvents, WeekStrip, type CampusEvent } from '../../components/events/EventList';
+import { EventList, FeaturedEvent, WeekStrip, type CampusEvent } from '../../components/events/EventList';
+import { TrendingPosts } from '../../components/events/TrendingPosts';
 import { InvitationList, useMyInvitations } from '../../components/events/MyInvitations';
-import { goingTo, hostedBy, splitByTime, trendingEvents, type EventEngagement } from '../../lib/events';
+import { goingTo, hostedBy, splitByTime, type EventEngagement } from '../../lib/events';
 
 type Tab = 'discover' | 'rsvps' | 'hosting';
 const TABS: { id: Tab; label: string }[] = [
@@ -159,10 +160,10 @@ export default function EventsPage() {
             <h2 id="invited-title" className={styles.sideTitle}>You’re invited</h2>
             <InvitationList invitations={invitations} classNames={{
               list: styles.invitationList, item: styles.invitationItem, title: styles.invitationTitle,
-              meta: styles.invitationMeta, empty: styles.sideEmpty,
+              meta: styles.invitationMeta, empty: styles.sideEmpty, cancelled: styles.cancelledTag,
             }} />
           </section>
-          <TrendingEvents events={trendingEvents(events)} />
+          <TrendingPosts />
         </aside>
       </div>
     </main>

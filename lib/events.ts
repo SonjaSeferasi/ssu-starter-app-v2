@@ -19,6 +19,10 @@ export type CampusEvent = {
   attendee_preview?: string[];
   // Signed URL of the host's cover photo, or null to show generated art.
   cover_url?: string | null;
+  // Cancellation (20261113120000_event_cancellation.sql).
+  status?: 'active' | 'cancelled';
+  cancelled_at?: string | null;
+  cancellation_note?: string | null;
 };
 
 export type EventEngagement = Required<Pick<CampusEvent, 'like_count' | 'liked_by_me' | 'comment_count' | 'going_count' | 'going_by_me' | 'attendee_preview'>>;
@@ -26,17 +30,6 @@ export type EventEngagement = Required<Pick<CampusEvent, 'like_count' | 'liked_b
 export type EventComment = { comment_id: string; author_username: string; text: string; created_at: string };
 export type EventAttendee = { student_id: string; username: string; full_name: string };
 export type EventDetail = CampusEvent & EventEngagement & { attendees: EventAttendee[]; comments: EventComment[] };
-
-// UR-405: any liked event can trend; the more likes, the higher it ranks.
-export const TRENDING_MIN_LIKES = 1;
-
-// Liked events ranked by likes, most liked first (soonest first on a tie), top 5.
-export function trendingEvents<T extends Pick<CampusEvent, 'like_count' | 'starts_at'>>(events: T[], limit = 5): T[] {
-  return events
-    .filter((event) => (event.like_count ?? 0) >= TRENDING_MIN_LIKES)
-    .sort((a, b) => (b.like_count ?? 0) - (a.like_count ?? 0) || Date.parse(a.starts_at) - Date.parse(b.starts_at))
-    .slice(0, limit);
-}
 
 export function goingTo(events: CampusEvent[]) {
   return events.filter((event) => event.going_by_me);

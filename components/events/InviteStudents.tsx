@@ -5,11 +5,18 @@ import { Check, Search, Send } from 'lucide-react';
 import { storedAccessToken } from '../../lib/account/session';
 import styles from '../../app/events/events.module.css';
 
-type Candidate = { student_id: string; username: string; full_name: string; invited: boolean };
+export type Candidate = { student_id: string; username: string; full_name: string; invited: boolean };
 type Invited = { student_id: string; username: string; full_name: string; rsvp?: string };
 
 const RSVP_LABEL: Record<string, string> = { pending: 'Invited', attending: 'Attending', not_attending: 'Not attending' };
 const initials = (username: string) => username.slice(0, 2).toUpperCase();
+
+// SRS-402.3: selecting or clearing one student leaves every other selected student in the list.
+export function toggleSelection(current: Map<string, Candidate>, student: Candidate) {
+  const next = new Map(current);
+  if (next.has(student.student_id)) next.delete(student.student_id); else next.set(student.student_id, student);
+  return next;
+}
 
 export function inviteSummary(invited: number, already: number) {
   const sent = invited === 1 ? 'Invitation sent to 1 student.' : `Invitations sent to ${invited} students.`;
@@ -56,11 +63,7 @@ export function InviteStudents({ eventId }: { eventId: string }) {
   }, [eventId, query]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function toggle(student: Candidate) {
-    setSelected((current) => {
-      const next = new Map(current);
-      if (next.has(student.student_id)) next.delete(student.student_id); else next.set(student.student_id, student);
-      return next;
-    });
+    setSelected((current) => toggleSelection(current, student));
   }
 
   async function send() {

@@ -9,6 +9,7 @@ import type { NavigationPosition } from '../../lib/game-room';
 import { accessToken } from '../../lib/account/session';
 import { MessageCountIcon, useMessageNotifications } from '../chat/message-notifications';
 import type { ScreenTheme } from '../../lib/screen-themes';
+import { PointsBadge } from './points-badge';
 
 type IconName = (typeof navigationDestinations)[number]['icon'] | 'profile' | 'search' | 'bell' | 'settings';
 
@@ -150,7 +151,7 @@ export function NavigationFrame({ pathname, children, community, position = 'sid
           <input type="search" placeholder="Search students, groups, events…" disabled />
         </div>
         <div className={styles.headerActions}>
-          <span className={styles.pointsBadge} title="The points system isn't built yet">★ — pts</span>
+          <PointsBadge pathname={pathname} />
           <NotificationBell pathname={pathname} />
           <Link href="/profile" className={styles.profileLink} aria-current={isCurrentDestination(pathname, '/profile') ? 'page' : undefined} aria-label="Your profile">
             <NavigationIcon name="profile" />

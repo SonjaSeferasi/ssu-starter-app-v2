@@ -48,7 +48,7 @@ async function signIn(student: number, viewport = { width: 1280, height: 1000 },
     if (!login.ok())
         throw new Error(`Test account sign-in failed: ${login.status()} ${await login.text()}`);
     await page.waitForFunction(() => Boolean(localStorage.getItem('access_token') || sessionStorage.getItem('access_token')));
-    await page.goto(base + '/game-room/dormspace');
+    await page.goto(base + '/game-room/dormspace/campus');
     await page.getByRole('heading', { name: /DormHall/ }).waitFor();
     return page;
 }
@@ -221,7 +221,7 @@ it('visually checks the rebuilt furniture, all avatar choices, and the original 
         await artReady(owner);
         await screenshot(owner, 'campus-' + tab);
     }
-    await owner.goto(base + '/game-room/dormspace');
+    await owner.goto(base + '/game-room/dormspace/campus');
     await owner.getByRole('heading', { name: /DormHall/ }).waitFor();
     await artReady(owner);
     await screenshot(owner, 'campus-hall');
@@ -283,7 +283,7 @@ it('preserves the saved look, every rotated rest action, decorating, guestbook a
         const room = (await api(owner, '/api/dorm')).data, id = (key: string) => room.catalog.find((x: any) => x.previewKey === key).id;
         const placements = [['bed', 1, 1], ['chair', 7, 1], ['dorm-sofa', 1, 4], ['dorm-armchair', 7, 4], ['window', 5, 0]].map(([k, x, y]) => ({ itemId: id(k as string), x, y, rotation: k === 'window' ? 0 : rotation }));
         expect((await api(owner, '/api/dorm', 'PUT', { ...room, placements })).status).toBe(200);
-        await owner.goto(base + '/game-room/dormspace');
+        await owner.goto(base + '/game-room/dormspace/campus');
         await owner.getByRole('heading', { name: /DormHall/ }).waitFor();
         await openOwn(owner);
         await artReady(owner);

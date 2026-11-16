@@ -21,7 +21,10 @@ export function useDormLive(location: LiveLocation | null,onRoom: (room: LiveRoo
   const joins=useRef<Promise<unknown>>(Promise.resolve());
   const live=useMemo(()=>{
     const store=new DormLiveStore(), rejected=new Set<(message:string)=>void>(),corrections=new Set<(position:Position)=>void>();
-    const result: DormLive & { rejectRest:(message:string)=>void;correct:(position:Position)=>void }={store,local:{x:20,y:20,facing:'down',moving:false,sprinting:false,restItemId:null},connectionId:'',
+    // A room join must carry an on-floor position (the server bounds-checks it, then moves the player to
+    // the reserved entrance). Cell 0,0 is on every floor; clients normally publish their real spawn first.
+    const start=key.startsWith('room:')?{x:0,y:0}:{x:20,y:20};
+    const result: DormLive & { rejectRest:(message:string)=>void;correct:(position:Position)=>void }={store,local:{...start,facing:'down',moving:false,sprinting:false,restItemId:null},connectionId:'',
       move(position){Object.assign(result.local,position);},setLocal(patch){Object.assign(result.local,patch);},
       say:async()=>({ok:false,error:'Connect to DormSpace before sending a message.'}),reconnect:()=>retry(n=>n+1),
       onRestRejected(callback){rejected.add(callback);return()=>{rejected.delete(callback);};},rejectRest(message){rejected.forEach(fn=>fn(message));},
