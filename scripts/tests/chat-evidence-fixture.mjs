@@ -33,8 +33,13 @@ const base = ['20261008000100_link_supabase_accounts.sql', '20261008000200_feed_
 const withoutFixes = new Set(['20261112120000_chat_photo_in_list_and_notifications.sql', '20261116130000_chat_former_member_history.sql']);
 const migrations = [...base, ...chat, ...sprint3, ...photo].filter((f) => !(BEFORE && withoutFixes.has(f)));
 
+// The three accounts LP tests with. They are seeded here as local rows with the same names, so the
+// screenshots read like the accounts the team already knows; the hosted accounts themselves are not used
+// and not reachable from this fixture.
 const uid = (n) => `00000000-0000-0000-0000-00000000000${n}`;
-const names = { 1: 'Loens Paul', 2: 'Ana Rivera', 3: 'Devon Clarke', 4: 'Priya Shah' };
+const names = { 1: 'Loens', 2: 'Test1', 3: 'Test 2' };
+const usernames = { 1: 'loens', 2: 'test1', 3: 'test2' };
+const everyone = [1, 2, 3];
 
 const db = new PGlite();
 const call = async (fn, n, ...args) =>
@@ -50,11 +55,11 @@ CREATE FUNCTION realtime.send(payload jsonb,event text,topic text,private boolea
   await db.exec(readFileSync(root + '/supabase/schema.sql', 'utf8'));
   for (const file of migrations) await db.exec(readFileSync(root + '/supabase/migrations/' + file, 'utf8'));
 
-  for (const n of [1, 2, 3, 4]) {
-    await db.query('INSERT INTO auth.users VALUES($1,$2,now())', [uid(n), `s${n}@salemstate.edu`]);
+  for (const n of everyone) {
+    await db.query('INSERT INTO auth.users VALUES($1,$2,now())', [uid(n), `${usernames[n]}@salemstate.edu`]);
     await db.query(
       'INSERT INTO socialu.students(full_name,username,university_email,auth_user_id,email_verified_at) VALUES($1,$2,$3,$4,now())',
-      [names[n], `student${n}`, `s${n}@salemstate.edu`, uid(n)],
+      [names[n], usernames[n], `${usernames[n]}@salemstate.edu`, uid(n)],
     );
     // The pages read the signed-in student through socialu_account('read'), which answers from
     // student_profiles, not from students. Registration creates both rows; the chat tests only ever needed
@@ -68,40 +73,42 @@ CREATE FUNCTION realtime.send(payload jsonb,event text,topic text,private boolea
   const friends = async (n, action, target, id = null) =>
     (await db.query('SELECT public.socialu_friendships($1,$2,$3,$4) AS r', [uid(n), action, target, id])).rows[0].r;
   const befriend = async (a, b) => {
-    await friends(b, 'accept', `student${a}`, (await friends(a, 'send', `student${b}`)).request_id);
+    await friends(b, 'accept', usernames[a], (await friends(a, 'send', usernames[b])).request_id);
   };
   // A group invitation only reaches a current friend (SCI02), so the owner below must be friends with
-  // everyone they invite, not just with student 1.
-  for (const n of [2, 3, 4]) await befriend(1, n);
-  await befriend(3, 4);
+  // everyone they invite, not just with Loens.
+  await befriend(1, 2);
+  await befriend(1, 3);
+  await befriend(2, 3);
 
   // ---- #1217: student 1's newest conversation ends in a photo -----------------------------------------
   // An older text conversation exists too, so the ordering the fix restores is visible: before the fix a
   // photo did not count as activity, so this quieter conversation sat above the one with the photo.
-  // The order matters. Ana's text is the OLDEST, Devon's text is in the middle, and Ana's photo is the
-  // newest thing in either conversation. Before the fix a photo was not activity, so the list ranked Devon
-  // above Ana and showed Ana's old text as her preview; after it, Ana's conversation is on top and reads
-  // "Photo". Sending the photo last is what makes both halves of the defect visible in one screenshot.
-  const withPhoto = (await friends(1, 'message', 'student2')).conversation_id;
+  // The order matters. Test1's text is the OLDEST, Test 2's text is in the middle, and Test1's photo is the
+  // newest thing in either conversation. Before the fix a photo was not activity, so the list ranked Test 2
+  // above Test1 and showed Test1's old text as the preview; after it, Test1's conversation is on top and
+  // reads "Photo". Sending the photo last is what makes both halves of the defect visible in one screenshot.
+  const withPhoto = (await friends(1, 'message', usernames[2])).conversation_id;
   await call('socialu_send_message', 2, withPhoto, 'Found the poster for the showcase:', null);
 
-  const quiet = (await friends(1, 'message', 'student3')).conversation_id;
+  const quiet = (await friends(1, 'message', usernames[3])).conversation_id;
   await call('socialu_send_message', 3, quiet, 'Are we still meeting at the library at 4?', null);
 
   await call('socialu_send_photo', 2, withPhoto, 'chat_photo/2/1/showcase.jpg', 'image/jpeg', 820000, null, null, null);
 
-  // ---- #1222: student 1 is removed from a group they were in ------------------------------------------
+  // ---- #1222: Loens is removed from a group they were in ----------------------------------------------
   // Removed rather than left, because the notice has to be true for someone who did not choose to go.
+  // Test 2 owns the group, so that the removal is done to Loens by somebody else.
   const group = (await call('socialu_create_group', 3)).id;
-  for (const n of [1, 4]) {
-    await call('socialu_accept_group_invitation', n, (await call('socialu_send_group_invitation', 3, group, `student${n}`)).invitation.id);
+  for (const n of [1, 2]) {
+    await call('socialu_accept_group_invitation', n, (await call('socialu_send_group_invitation', 3, group, usernames[n])).invitation.id);
   }
   await call('socialu_rename_group', 3, group, 'CSC 281 Project');
   await call('socialu_send_message', 3, group, 'Posting the sprint plan here so it is in one place.', null);
   await call('socialu_send_message', 1, group, 'I will take the messaging items this sprint.', null);
-  await call('socialu_send_message', 4, group, 'Sounds good — I will pick up the profile ones.', null);
-  await call('socialu_remove_group_member', 3, group, 'student1');
-  // Said after the removal: it must never reach student 1, in the history or in the list preview.
+  await call('socialu_send_message', 2, group, 'Sounds good — I will pick up the profile ones.', null);
+  await call('socialu_remove_group_member', 3, group, usernames[1]);
+  // Said after the removal: it must never reach Loens, in the history or in the list preview.
   await call('socialu_send_message', 3, group, 'Reminder: demo is Friday, members only.', null);
 
   return { quiet, withPhoto, group };
@@ -113,7 +120,7 @@ function token(n) {
   return 'e30.' + Buffer.from(JSON.stringify(claims)).toString('base64url') + '.local-fixture';
 }
 
-const tokens = Object.fromEntries([1, 2, 3, 4].map((n) => [n, token(n)]));
+const tokens = Object.fromEntries(everyone.map((n) => [n, token(n)]));
 
 async function listen(server) {
   await new Promise((resolve, reject) => {
@@ -138,7 +145,7 @@ const service = createServer(async (request, response) => {
       const bearer = (request.headers.authorization || '').replace('Bearer ', '');
       const n = Object.keys(tokens).find((k) => tokens[k] === bearer);
       return reply(n ? 200 : 401, n
-        ? { id: uid(n), email: `s${n}@salemstate.edu`, email_confirmed_at: new Date().toISOString(), aud: 'authenticated', role: 'authenticated' }
+        ? { id: uid(n), email: `${usernames[n]}@salemstate.edu`, email_confirmed_at: new Date().toISOString(), aud: 'authenticated', role: 'authenticated' }
         : { message: 'Invalid local session' });
     }
     let raw = '';
@@ -189,7 +196,7 @@ console.log('migrations loaded:', migrations.length);
 console.log('app              :', appBase);
 console.log('conversation ids :', JSON.stringify(ids));
 console.log('students         :', JSON.stringify(names));
-for (const n of [1, 2, 3, 4]) console.log(`token student${n}    : ${tokens[n]}`);
+for (const n of everyone) console.log(`token ${names[n].padEnd(8)}  : ${tokens[n]}`);
 console.log('=============================================================\n');
 
 const shutdown = async () => {

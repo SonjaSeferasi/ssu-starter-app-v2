@@ -67,13 +67,16 @@ Supabase's Auth and PostgREST transport is replaced. **The hosted database is ne
 every network request the page made went to `127.0.0.1`, and the browser bundle contains no hosted
 project URL.
 
-The same fixture runs in two modes against **identical seed data**. `--before` omits
-`20261116130000`, so the older function bodies stay in place; everything else, the page code included,
-is the same build. The difference between each pair is the migration and nothing else.
+The same fixture runs in two modes against **identical seed data**. `--before` omits both chat fixes,
+`20261116130000` and `20261112120000`, so the older function bodies stay in place; everything else,
+the page code included, is the same build. Only the first of those two affects anything shown below.
 
-Seeded: Devon Clarke owns **CSC 281 Project** with Loens Paul and Priya Shah. Three messages are sent.
-Devon then **removes** Loens — removed rather than left, because the wording has to hold for someone
-who did not choose to go — and sends one more message afterwards.
+Three students are seeded, under the names of the accounts this project is tested with: **Loens**,
+**Test1** and **Test 2**. They are local rows in the fixture's own database, not the hosted accounts.
+
+Seeded: **Test 2** owns **CSC 281 Project** with Loens and Test1. Three messages are sent. Test 2 then
+**removes** Loens — removed rather than left, because the wording has to hold for someone who did not
+choose to go — and sends one more message afterwards.
 
 ### 1. The group in the Messages list
 
@@ -84,10 +87,10 @@ who did not choose to go — and sends one more message afterwards.
 **Before**: `No group chats yet. Choose New group to create one.` The conversation is simply gone, and
 nothing on the screen suggests it ever existed.
 
-**After**: it is back, with the **`Past group`** badge. Its preview is
-`Sounds good — I will pick up the profile ones.` — Priya's message, the last one sent while Loens was
-still a member. The message Devon sent *after* the removal is **not** the preview, which is the point:
-the list must not leak what has been said since.
+**After**: it is back, with the **`Past group`** badge. Its preview reads
+`Sounds good — I will pick up the profile on…` (clipped by the list's own width) — Test1's message,
+the last one sent while Loens was still a member. The message Test 2 sent *after* the removal is
+**not** the preview, which is the point: the list must not leak what has been said since.
 
 ### 2. Opening the conversation
 
@@ -103,14 +106,17 @@ behind a door marked *may not exist*.
 
 - The three messages from the membership period are all there.
 - `Reminder: demo is Friday, members only.` — sent after the removal — **is still not shown**.
-- The composer is replaced by the notice. There is no member count, no Members button, no invite
-  control and no reaction control.
+- The composer is replaced by the notice, and the member count and Members button are gone — compare
+  the current member's header in the next shot, which has both. The invite and reaction controls are
+  gated off by the same `readOnly` flag in `app/messages/[conversationId]/page.tsx`; they only appear
+  on selection or hover, so the screenshot shows their absence from the header rather than proving it
+  for every control.
 
 ### 3. A current member is unaffected
 
 ![The same group seen by a current member](1222-evidence/05-current-member-unaffected.jpg)
 
-Priya Shah, still a member, opens the same conversation on the fixed build: `2 members`, the Members
+Test1, still a member, opens the same conversation on the fixed build: `2 members`, the Members
 button, the message sent after the removal, and a working composer. Nothing about the change reaches
 people who are still in the group.
 

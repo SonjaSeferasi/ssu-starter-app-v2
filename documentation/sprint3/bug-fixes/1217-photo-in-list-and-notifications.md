@@ -37,13 +37,16 @@ Only Supabase's Auth and PostgREST transport is replaced. **The hosted database 
 every network request the page made went to `127.0.0.1`, and the browser bundle contains no hosted
 project URL.
 
-The same fixture runs in two modes against **identical seed data**. `--before` omits
-`20261112120000`, so the older function bodies stay in place; everything else, the page code included,
-is the same build. The difference between each pair is the migration and nothing else.
+The same fixture runs in two modes against **identical seed data**. `--before` omits both chat fixes,
+`20261112120000` and `20261116130000`, so the older function bodies stay in place; everything else,
+the page code included, is the same build.
 
-Seeded, in this order: Ana Rivera sends a line of text, then Devon Clarke sends a line of text, then
-Ana sends a photo. So the photo is the newest thing in either conversation, and Ana's text is the
-oldest — which is what makes both halves of the defect visible in one screenshot.
+Three students are seeded, under the names of the accounts this project is tested with: **Loens**,
+**Test1** and **Test 2**. They are local rows in the fixture's own database, not the hosted accounts.
+
+Seeded, in this order: Test1 sends a line of text, then Test 2 sends a line of text, then Test1 sends
+a photo. So the photo is the newest thing in either conversation, and Test1's text is the oldest —
+which is what makes both halves of the defect visible in one screenshot.
 
 ### 1. The Messages list
 
@@ -53,11 +56,11 @@ oldest — which is what makes both halves of the defect visible in one screensh
 
 **Before**, the photo may as well not exist:
 
-- Devon Clarke sits on top, although Ana's photo is newer than his message. A photo was not activity.
-- Ana's preview is `Found the poster for the showcase:` — the text she sent *before* the photo. The
+- Test 2 sits on top, although Test1's photo is newer than their message. A photo was not activity.
+- Test1's preview is `Found the poster for the showcase:` — the text sent *before* the photo. The
   list is showing a stale message as though it were the latest.
 
-**After**, Ana's conversation has moved to the top and reads **`Photo`**.
+**After**, Test1's conversation has moved to the top and reads **`Photo`**.
 
 In both shots the Messages badge counts **2** unread. The unread flag never had the kind filter, so
 that half was always right — which is exactly what made the old behaviour so confusing: the badge
@@ -66,16 +69,20 @@ said there was something new to read and the list showed you something old.
 (Where a conversation's *only* message is a photo, the before state reads `No messages yet`; that is
 the case Merieme reported, and it is covered by `chat-photo-bugs.test.ts`.)
 
+One difference in this pair is **not** this fix: the Groups tab has an unread dot in the after shot
+and none in the before shot. That is #1222's migration, which `--before` also omits — the group Loens
+was removed from comes back into the list, and brings its unread mark with it.
+
 ### 2. Notifications → Messages
 
 | before | after |
 | --- | --- |
 | ![Notifications before the fix](1217-evidence/03-before-notifications-no-photo.jpg) | ![Notifications after the fix](1217-evidence/04-after-notifications-photo.jpg) |
 
-**Before**, there are two notifications and neither is the photo. Ana's reads `sent you a message.`
-and quotes her old text.
+**Before**, there are two notifications and neither is the photo. Test1's reads
+`Test1 sent you a message.` and quotes the older text.
 
-**After**, hers reads `sent you a message (2 new).` with the body **`Photo`**.
+**After**, it reads `Test1 sent you a message (2 new).` with the body **`Photo`**.
 
 Compare the two lines in the after shot: a text message is shown in quotation marks
 (`"Are we still meeting at the library at 4?"`) and the photo is not. That is `notificationPreview` —
