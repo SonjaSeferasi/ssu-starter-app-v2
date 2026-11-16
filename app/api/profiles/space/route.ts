@@ -8,8 +8,8 @@ import { DEFAULT_LOOK, hometownInput, helloStyle, helloText, profileLookInput } 
 
 export const dynamic = 'force-dynamic';
 const headers = { 'Cache-Control': 'no-store' };
-async function call(args: Record<string, unknown>) {
-  const { data, error } = await accountClient().rpc('socialu_profile_space', args);
+async function call(args: Record<string, unknown>, operation = 'socialu_profile_space') {
+  const { data, error } = await accountClient().rpc(operation, args);
   if (error) {
     if (['PGRST202','42883'].includes(error.code)) return null;
     if (error.code === 'P0002') throw new AccountError('This profile or note is not available.',404);
@@ -92,10 +92,8 @@ export async function PATCH(request:Request) {
     const body=await jsonBody(request),isHometown=body.field==='hometown';
     if(body.field==='board'){
       let board;try{board=boardInput(body.value);}catch(error){throw new AccountError((error as Error).message,400);}
-      const current=await call({p_auth_id:user.id,p_action:'read'});
-      if(current===null)return ready(null);
-      const look=profileLookInput({...current.look,board});
-      if(await call({p_auth_id:user.id,p_action:'save_look',p_look:look})===null)return ready(null);
+      // Merge under the database row lock, never from a stale API snapshot.
+      if(await call({p_auth_id:user.id,p_board:board},'socialu_save_profile_board')===null)return ready(null);
       const confirmed=await call({p_auth_id:user.id,p_action:'read'});
       if(JSON.stringify(confirmed?.look?.board?boardInput(confirmed.look.board):null)!==JSON.stringify(board))throw new AccountError('Your board could not be confirmed. Please try again.',503);
       return ready(confirmed);
