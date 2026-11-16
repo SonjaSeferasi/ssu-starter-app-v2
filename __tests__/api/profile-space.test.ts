@@ -92,13 +92,37 @@ describe('Board publishing',()=>{
   let latest:any={...DEFAULT_LOOK,hometown:'Salem'};
   rpc.mockImplementation(async(fn,args)=>{
    if(fn==='socialu_session_guard')return {data:true,error:null};
-   if(args.p_action==='save_look')latest=args.p_look;
+   if(fn==='socialu_save_profile_board')latest={...latest,board:args.p_board};
    // Simulate JSONB key ordering in the database response.
    return {data:{look:{...latest,...(latest.board?{board:{items:latest.board.items.map((item:any)=>Object.fromEntries(Object.entries(item).reverse()))}}:{})},notes:[]},error:null};
   });
   const response=await PATCH(request('PATCH',{field:'board',value:board,username:'not-the-owner'}));
   expect(response.status).toBe(200);expect(latest.hometown).toBe('Salem');expect(latest.board).toEqual(board);
-  expect(rpc).toHaveBeenCalledWith('socialu_profile_space',{p_auth_id:user.id,p_action:'save_look',p_look:latest});
+  expect(rpc).toHaveBeenCalledWith('socialu_save_profile_board',{p_auth_id:user.id,p_board:board});
+ });
+ it.each([
+  {hometown:'New'},
+  {theme:'midnight'},
+  {stickers:[{id:'new-star',kind:'star',x:50,y:50,rotation:0}]},
+ ])('keeps a profile change committed before the board write: %j',async change=>{
+  let latest:any={...DEFAULT_LOOK,hometown:'Original'};
+  rpc.mockImplementation(async(fn,args)=>{
+   if(fn==='socialu_session_guard')return {data:true,error:null};
+   if(fn==='socialu_save_profile_board'){
+    // Another request commits after this request starts, before its DB write.
+    latest={...latest,...change};
+    latest={...latest,board:args.p_board};
+   }else if(args.p_action==='save_look')latest=args.p_look;
+   return {data:{look:latest,notes:[]},error:null};
+  });
+  expect((await PATCH(request('PATCH',{field:'board',value:board}))).status).toBe(200);
+  expect(latest).toMatchObject({...change,board});
+  expect(rpc.mock.calls.some(([fn,args])=>fn==='socialu_profile_space'&&args.p_action==='save_look')).toBe(false);
+ });
+ it('fails safely when the atomic-save migration is missing',async()=>{
+  rpc.mockImplementation(async(fn)=>fn==='socialu_session_guard'?{data:true,error:null}:fn==='socialu_save_profile_board'?{data:null,error:{code:'PGRST202'}}:result);
+  const response=await PATCH(request('PATCH',{field:'board',value:board}));
+  expect(response.status).toBe(503);expect((await response.json()).code).toBe('SPACE_PREVIEW');
  });
  it('does not claim success if storage drops the board',async()=>{
   const response=await PATCH(request('PATCH',{field:'board',value:board}));expect(response.status).toBe(503);

@@ -1,0 +1,227 @@
+{
+  "environment": "local Next production build with disposable PGlite; fixture Supabase Auth/PostgREST transport",
+  "starterStarAngles": [
+    8,
+    11,
+    14,
+    15
+  ],
+  "otherStartingAngles": [
+    {
+      "initial": -3,
+      "observed": [
+        0,
+        3,
+        6,
+        9,
+        12,
+        15,
+        -15,
+        -12,
+        -9,
+        -6,
+        -3,
+        0
+      ],
+      "saved": 0,
+      "reloadConfirmed": true
+    },
+    {
+      "initial": 8,
+      "observed": [
+        11,
+        14,
+        15,
+        -15,
+        -12,
+        -9,
+        -6,
+        -3,
+        0,
+        3,
+        6,
+        9
+      ],
+      "saved": 9,
+      "reloadConfirmed": true
+    },
+    {
+      "initial": -4,
+      "observed": [
+        -1,
+        2,
+        5,
+        8,
+        11,
+        14,
+        15,
+        -15,
+        -12,
+        -9,
+        -6,
+        -3
+      ],
+      "saved": -3,
+      "reloadConfirmed": true
+    },
+    {
+      "initial": -8,
+      "observed": [
+        -5,
+        -2,
+        1,
+        4,
+        7,
+        10,
+        13,
+        15,
+        -15,
+        -12,
+        -9,
+        -6
+      ],
+      "saved": -6,
+      "reloadConfirmed": true
+    },
+    {
+      "initial": -5,
+      "observed": [
+        -2,
+        1,
+        4,
+        7,
+        10,
+        13,
+        15,
+        -15,
+        -12,
+        -9,
+        -6,
+        -3
+      ],
+      "saved": -3,
+      "reloadConfirmed": true
+    },
+    {
+      "initial": 4,
+      "observed": [
+        7,
+        10,
+        13,
+        15,
+        -15,
+        -12,
+        -9,
+        -6,
+        -3,
+        0,
+        3,
+        6
+      ],
+      "saved": 6,
+      "reloadConfirmed": true
+    },
+    {
+      "initial": -2,
+      "observed": [
+        1,
+        4,
+        7,
+        10,
+        13,
+        15,
+        -15,
+        -12,
+        -9,
+        -6,
+        -3,
+        0
+      ],
+      "saved": 0,
+      "reloadConfirmed": true
+    },
+    {
+      "initial": -15,
+      "observed": [
+        -12,
+        -9,
+        -6,
+        -3,
+        0,
+        3,
+        6,
+        9,
+        12,
+        15,
+        -15,
+        -12
+      ],
+      "saved": -12,
+      "reloadConfirmed": true
+    },
+    {
+      "initial": 15,
+      "observed": [
+        -15,
+        -12,
+        -9,
+        -6,
+        -3,
+        0,
+        3,
+        6,
+        9,
+        12,
+        15,
+        -15
+      ],
+      "saved": -15,
+      "reloadConfirmed": true
+    },
+    {
+      "initial": 14.5,
+      "observed": [
+        15,
+        -15,
+        -12,
+        -9,
+        -6,
+        -3,
+        0,
+        3,
+        6,
+        9,
+        12,
+        15
+      ],
+      "saved": 15,
+      "reloadConfirmed": true
+    }
+  ],
+  "savedStar": {
+    "x": 66,
+    "y": 6,
+    "id": "227b3e77-0e2e-4542-96d3-5aa2c108ebe4",
+    "kind": "sticker",
+    "width": 12,
+    "sticker": "star",
+    "rotation": 15
+  },
+  "saveStatus": 200,
+  "reloadedStar": {
+    "x": 66,
+    "y": 6,
+    "id": "227b3e77-0e2e-4542-96d3-5aa2c108ebe4",
+    "kind": "sticker",
+    "width": 12,
+    "sticker": "star",
+    "rotation": 15
+  },
+  "result": "passed",
+  "base_commit": "3462225c257532ccd25ee511f5cd67d5c00cdf9e",
+  "source_cleanliness": "git archive of base commit plus only the two listed source changes; clean production build, excluding all unrelated workspace edits",
+  "source_sha256": {
+    "components/profile/profile-board.tsx": "4f296bdd3b50a7d0a9ec1391dbc7db60f063c53d8badeba3caec9839511a100c",
+    "scripts/tests/profile-board-atomic.browser.ts": "617c73b23ac766a52097a88f79b4518c3ec43d9985790e955cc2f78767889d5b"
+  }
+}

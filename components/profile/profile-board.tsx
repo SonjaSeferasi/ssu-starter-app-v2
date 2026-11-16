@@ -13,6 +13,8 @@ import {MemoryEditor} from './profile-memories';
 import {SpotifyPlayer} from './profile-about-details';
 import {handwriting} from './handwriting';
 import styles from './profile-board.module.css';
+import { registerBoardHistoryGuard, type BoardHistoryDecision } from '../../lib/board-history-guard';
+import { ConfirmDialog } from '../friends/confirm-dialog';
 const EMPTY:Board={items:[]};
 function safeBoard(value:unknown){try{return value?boardInput(value):EMPTY;}catch{return EMPTY;}}
 
@@ -21,9 +23,11 @@ export function ProfileBoard({profile,look,status,onSaved,onDirtyChange}:{profil
  const [board,setBoard]=useState<Board>(saved),[editing,setEditing]=useState(false),[selected,setSelected]=useState<string|null>(null);
  const [memories,setMemories]=useState<ProfileMemory[]>([]),[photosReady,setPhotosReady]=useState(false),[uploading,setUploading]=useState(false);
  const [saving,setSaving]=useState(false),[error,setError]=useState(''),[message,setMessage]=useState(''),[search,setSearch]=useState('');
+ const [historyDecision,setHistoryDecision]=useState<BoardHistoryDecision|null>(null);
  const canvas=useRef<HTMLDivElement>(null),dirtyRef=useRef(false);
  const drag=useRef<{id:string;startX:number;startY:number;x:number;y:number}|null>(null);
  const dirty=JSON.stringify(board)!==JSON.stringify(saved);dirtyRef.current=editing&&dirty&&!saving;
+ useEffect(()=>registerBoardHistoryGuard(()=>dirtyRef.current,setHistoryDecision),[]);
  useEffect(()=>{onDirtyChange?.(editing&&dirty);},[editing,dirty,onDirtyChange]);
  useEffect(()=>()=>onDirtyChange?.(false),[onDirtyChange]);
  useEffect(()=>{if(!editing)setBoard(safeBoard(look.board));},[look.board,editing]);
@@ -64,7 +68,7 @@ export function ProfileBoard({profile,look,status,onSaved,onDirtyChange}:{profil
     {!board.items.length&&<button disabled={saving} onClick={starter}>Start with a layout</button>}
     {!!memories.length&&<><h3>Your photos</h3><div className={styles.photoShelf}>{memories.map(photo=><button key={photo.id} disabled={saving} aria-label={`Add ${photo.caption||'saved photo'}`} onClick={()=>add('photo',{memoryId:photo.id})}>{photo.url?<img src={photo.url} alt={photo.caption||'Saved photo'}/>:<ImagePlus size={20}/>}</button>)}</div></>}
     <h3>Stickers</h3><input aria-label="Find board stickers" placeholder="Search stickers" value={search} onChange={event=>setSearch(event.target.value)}/><div className={styles.stickerShelf}>{findStickers('all',search).map(sticker=><button key={sticker.kind} disabled={saving} title={sticker.label} aria-label={`Add ${sticker.label} sticker`} onClick={()=>add('sticker',{sticker:sticker.kind})}><StickerArt kind={sticker.kind}/></button>)}</div>
-    {item&&<fieldset disabled={saving} className={styles.fields}><legend>Selected {item.kind}</legend>{item.kind==='project'&&<label>Project title<input value={item.title??''} maxLength={60} onChange={event=>patch({title:event.target.value})}/></label>}{(item.kind==='note'||item.kind==='project')&&<label>{item.kind==='note'?'Your note':'Description'}<textarea value={item.text??''} maxLength={item.kind==='note'?160:180} onChange={event=>patch({text:event.target.value})}/></label>}{(item.kind==='music'||item.kind==='project')&&<label>{item.kind==='music'?'Spotify link':'Project link (optional)'}<input type="url" value={item.url??''} placeholder="https://…" onChange={event=>patch({url:event.target.value})}/></label>}{item.kind==='note'&&<label>Paper color<select value={item.color??'cream'} onChange={event=>patch({color:event.target.value as BoardItem['color']})}><option value="cream">Cream</option><option value="pink">Pink</option><option value="sage">Sage</option></select></label>}<label>Size<input type="range" min={10} max={44} value={item.width} onChange={event=>patch({width:Number(event.target.value),x:Math.min(item.x,100-Number(event.target.value))})}/></label><div className={styles.actions}><button type="button" onClick={()=>patch({rotation:item.rotation>=15?-15:item.rotation+3})}><RotateCw size={15}/>Rotate</button><button type="button" onClick={()=>{setBoard(current=>({items:current.items.filter(value=>value.id!==selected)}));setSelected(null);}}><Trash2 size={15}/>Remove</button></div></fieldset>}
+    {item&&<fieldset disabled={saving} className={styles.fields}><legend>Selected {item.kind}</legend>{item.kind==='project'&&<label>Project title<input value={item.title??''} maxLength={60} onChange={event=>patch({title:event.target.value})}/></label>}{(item.kind==='note'||item.kind==='project')&&<label>{item.kind==='note'?'Your note':'Description'}<textarea value={item.text??''} maxLength={item.kind==='note'?160:180} onChange={event=>patch({text:event.target.value})}/></label>}{(item.kind==='music'||item.kind==='project')&&<label>{item.kind==='music'?'Spotify link':'Project link (optional)'}<input type="url" value={item.url??''} placeholder="https://…" onChange={event=>patch({url:event.target.value})}/></label>}{item.kind==='note'&&<label>Paper color<select value={item.color??'cream'} onChange={event=>patch({color:event.target.value as BoardItem['color']})}><option value="cream">Cream</option><option value="pink">Pink</option><option value="sage">Sage</option></select></label>}<label>Size<input type="range" min={10} max={44} value={item.width} onChange={event=>patch({width:Number(event.target.value),x:Math.min(item.x,100-Number(event.target.value))})}/></label><div className={styles.actions}><button type="button" onClick={()=>patch({rotation:item.rotation>=15?-15:Math.min(15,item.rotation+3)})}><RotateCw size={15}/>Rotate</button><button type="button" onClick={()=>{setBoard(current=>({items:current.items.filter(value=>value.id!==selected)}));setSelected(null);}}><Trash2 size={15}/>Remove</button></div></fieldset>}
     <p className={styles.hint}>Drag items to move them. Select an item and use arrow keys for small adjustments. Uploaded photos stay in your pinned memories; Save board publishes their positions.</p>
    </aside>}
    <div className={styles.viewport}><div ref={canvas} className={styles.canvas} aria-label="Scrapbook board">
@@ -75,6 +79,7 @@ export function ProfileBoard({profile,look,status,onSaved,onDirtyChange}:{profil
    </div></div>
   </div>
   <p className={styles.hint}><Move size={14}/> {editing?'Changes stay in this editor until you save.':'On a small screen, swipe across the board to explore.'}</p>
+  {historyDecision&&<ConfirmDialog title="Leave without saving your board?" busy={false} error="" cancelLabel="Stay" confirmLabel="Leave without saving" onClose={()=>{historyDecision.stay();setHistoryDecision(null);}} onConfirm={()=>{historyDecision.leave();setHistoryDecision(null);}}>Your unsaved board changes will be lost. Choose Stay to keep editing.</ConfirmDialog>}
   {uploading&&<MemoryEditor onClose={()=>setUploading(false)} onSaved={photos=>{const added=photos.find(photo=>!memories.some(old=>old.id===photo.id));setMemories(photos);setUploading(false);if(added)add('photo',{memoryId:added.id});}}/>}
  </section>;
 }
