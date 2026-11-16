@@ -5,10 +5,24 @@
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 .game :where(button, input, select, label, p, h2, h3, span) { font-family: inherit; }
-.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.toolbar { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
 .toolbar h2 { margin: 0 auto 0 0; font-size: 22px; font-weight: 700; color: var(--navy); }
-.legacy { display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; color: var(--muted); }
-.legacy a { color: var(--sage-deep); font-weight: 600; }
+.settings { margin-inline-start: auto; }
+.settings > summary { list-style: none; }
+.settings > summary::-webkit-details-marker { display: none; }
+.settings:not([open]) > .settingsPanel { display: none; }
+.settingsPanel {
+  position: absolute; inset-inline-end: 0; top: calc(100% + 6px); z-index: 6; width: min(300px, 100%);
+  display: grid; gap: 4px; padding: 10px; border: 1px solid #d8dfd5; border-radius: 12px;
+  background: #fffdf8; color: var(--navy); box-shadow: 0 10px 24px #2d3e5c24;
+}
+.settingsPanel h3, .settingsPanel p { margin: 0; padding: 6px 8px; font-size: 14px; }
+.settingsPanel p { background: #eef4ea; border-radius: 6px; font-weight: 600; }
+.settingsPanel p span { margin-inline-start: 4px; }
+.settingsPanel span { color: var(--muted); font-size: 12px; font-weight: 400; }
+.settingsPanel a { display: grid; align-content: center; min-height: 44px; padding: 6px 8px; border-radius: 6px; font-size: 14px; font-weight: 600; }
+.settingsPanel a:hover { background: #eef4ea; }
+.settingsPanel a:focus-visible { outline: 3px solid #4c86c6; outline-offset: -2px; }
 
 .button {
   min-height: 40px; padding: 8px 14px; border-radius: 10px; border: 1px solid #c9d3c6; background: #fff; color: var(--navy);

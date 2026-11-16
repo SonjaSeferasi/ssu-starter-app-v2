@@ -137,6 +137,16 @@ export function orbitOffset(yaw: number, pitch: number, distance: number) {
   return { x: Math.sin(yaw) * Math.cos(pitch) * distance, y: Math.sin(pitch) * distance, z: Math.cos(yaw) * Math.cos(pitch) * distance };
 }
 export type Box = { minX: number; maxX: number; minY: number; maxY: number; minZ: number; maxZ: number };
+/** Keep the follow target inside the walls even when the shoulder offset points outside.
+ * Leave a little more room than the orbit margin so camera and target never coincide. */
+export function clampOrbitTarget(target: { x: number; y: number; z: number }, box: Box) {
+  const inset = 0.2;
+  return {
+    x: Math.min(box.maxX - inset, Math.max(box.minX + inset, target.x)),
+    y: Math.min(box.maxY - inset, Math.max(box.minY + inset, target.y)),
+    z: Math.min(box.maxZ - inset, Math.max(box.minZ + inset, target.z)),
+  };
+}
 /** Longest camera distance along `direction` (unit) from `target` that stays inside `box` (no wall clipping). */
 export function clampOrbitDistance(target: { x: number; y: number; z: number }, direction: { x: number; y: number; z: number }, desired: number, box: Box, margin = 0.18) {
   let limit = desired;
@@ -149,7 +159,8 @@ export function clampOrbitDistance(target: { x: number; y: number; z: number }, 
     if (d > 1e-6) limit = Math.min(limit, (high - origin) / d);
     else if (d < -1e-6) limit = Math.min(limit, (low - origin) / d);
   }
-  return Math.max(0.6, limit);
+  // Wall clearance takes precedence over the preferred minimum zoom distance.
+  return Math.max(0, limit);
 }
 /** Room walls to cut away so the camera never looks through solid geometry at the player. */
 export function cutawayWalls(camera: Vec2, dims: RoomDims) {

@@ -307,6 +307,11 @@ afterAll(async () => {
 
 it('shows every same-school student the same doors and keeps non-friend rooms locked', async () => {
   owner = await signIn(1);
+  // The normal Game Room entry must open 3D; older renderers are opt-in via Settings.
+  await owner.goto(base + '/game-room', { waitUntil: 'domcontentloaded' });
+  await owner.getByRole('link', { name: /^Open DormSpace 3D/ }).click();
+  await owner.locator('[data-dormspace-version="3d"]').waitFor();
+  await owner.locator('div[data-engine="ready"]').waitFor({ timeout: 60000 });
   await owner.getByText('Your room 101').waitFor();
   expect(await owner.locator('[data-dormspace-canvas]').count()).toBe(1);
   // Unobstructed first hall frame (spawned beside door 101, looking down the corridor), before any overlay.
@@ -504,10 +509,26 @@ it('works on a phone layout and keeps the legacy versions available', async () =
   expect(await phone.locator('[aria-label="Turn camera left"]').isVisible()).toBe(true);
   expect(await phone.locator('[role="presentation"]').first().isVisible()).toBe(true); // joystick on touch
   await shot(phone, 'mobile-hall');
-  await phone.goto(base + '/game-room/dormspace/campus');
+  const settings = phone.locator('summary[aria-label="DormSpace settings"]');
+  const versions = phone.getByRole('navigation', { name: 'DormSpace versions' });
+  expect(await versions.isVisible()).toBe(false);
+  await settings.focus();
+  await settings.press('Enter');
+  await versions.getByText('3D DormSpace').waitFor();
+  await versions.getByRole('link', { name: /^Campus version/ }).focus();
+  await phone.keyboard.press('Escape');
+  expect(await versions.isVisible()).toBe(false);
+  expect(await settings.evaluate((summary: HTMLElement) => document.activeElement === summary)).toBe(true);
+  await settings.click();
+  await versions.getByRole('link', { name: /^Campus version/ }).click();
   await phone.getByRole('heading', { name: /DormHall/ }).waitFor();
-  await phone.goto(base + '/game-room/dormspace/classic');
+  await phone.getByRole('link', { name: 'DormSpace 3D' }).click();
+  await phone.locator('[data-scene="hall"]').waitFor();
+  await settings.click();
+  await versions.getByRole('link', { name: /^Classic version/ }).click();
   await phone.getByText('Saved original version').waitFor();
+  await phone.getByRole('link', { name: /Updated DormSpace/ }).click();
+  await phone.locator('[data-dormspace-version="3d"]').waitFor();
   await phone.context().close();
 }, 240000);
 

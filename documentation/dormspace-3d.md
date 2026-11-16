@@ -15,6 +15,8 @@ task cards #1081–#1092 (see `dormspace-3d-task-plan.json`). The production rol
 | `/dev/dormspace-3d` | Development only: avatar model review (SRS-504.1). |
 | `/dev/dormspace-3d/scene` | Development only: hall, furnished room and shop states with synthetic fixtures; no API calls. |
 
+The main Game Room link opens the 3D game. Use **Settings → Game versions** to open the campus or classic alternatives. The 3D recovery screen also links directly to the campus version.
+
 All versions share the same accounts, saved rooms, ownership, guestbooks and live spaces. No layout or account is
 reset or migrated. The legacy routes keep the personalized `GET /api/dorm?view=hall`.
 

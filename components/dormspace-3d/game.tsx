@@ -19,6 +19,7 @@ import { dormRequest } from './api';
 import { HallLayer } from './hall-layer';
 import { RoomLayer } from './room-layer';
 import { ShopPanel, apiShopSource } from './panels/shop-panel';
+import { DormSpaceSettings } from './panels/dormspace-settings';
 import { VoicePanel } from './panels/voice-panel';
 import { ControlBar, Joystick } from './panels/touch-controls';
 import styles from './dormspace-3d.module.css';
@@ -246,13 +247,8 @@ export function DormSpace3DGame() {
         <Link className={styles.button} href="/game-room">Edit Game Room avatar</Link>
         <button type="button" className={styles.button} aria-pressed={shopOpen} onClick={() => setShopOpen(open => !open)}>Furniture shop</button>
         <button type="button" className={styles.button} disabled={busy} onClick={() => void openRoom(null)}>My room</button>
+        <DormSpaceSettings />
       </div>
-      <nav className={styles.legacy} aria-label="Other DormSpace versions">
-        <span>Prefer 2D?</span>
-        <Link href="/game-room/dormspace/campus">Campus version</Link>
-        <Link href="/game-room/dormspace/classic">Classic version</Link>
-        <Link href="/game-room/dormspace/art-credits">Art credits</Link>
-      </nav>
       {avatarNotices.length ? <p className={styles.notice} role="status">{avatarNotices.join(' ')}</p> : null}
       {avatarError ? <div className={styles.notice} role="status">{avatarError} <button type="button" className={styles.button} onClick={() => setAvatarAttempt(n => n + 1)}>Retry avatar</button></div> : null}
       {notice ? <p className={styles.notice} role="status">{notice}</p> : null}
