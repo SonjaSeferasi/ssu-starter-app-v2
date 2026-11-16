@@ -131,3 +131,8 @@
 .voicePeople { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: 14px; }
 .voicePeople li { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 .voicePeople li span { overflow-wrap: anywhere; }
+.musicPanel { position: relative; }
+.musicControls { position: absolute; right: 0; top: calc(100% + 6px); width: min(340px, calc(100vw - 40px)); padding: 16px; background: white; border: 1px solid #d7e0e5; border-radius: 14px; box-shadow: 0 8px 24px #13243a22; z-index: 15; display: grid; gap: 12px; color: #13243a; }
+.musicControls h3, .musicControls p { margin: 0; }
+.musicControls label { display: grid; gap: 6px; font-size: 14px; }
+.musicControls input { max-width: 100%; }

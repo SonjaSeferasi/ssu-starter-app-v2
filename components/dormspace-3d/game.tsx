@@ -21,6 +21,7 @@ import { RoomLayer } from './room-layer';
 import { ShopPanel, apiShopSource } from './panels/shop-panel';
 import { DormSpaceSettings } from './panels/dormspace-settings';
 import { VoicePanel } from './panels/voice-panel';
+import { MusicPanel } from './panels/music-panel';
 import { ControlBar, Joystick } from './panels/touch-controls';
 import styles from './dormspace-3d.module.css';
 
@@ -248,6 +249,7 @@ export function DormSpace3DGame() {
         <button type="button" className={styles.button} aria-pressed={shopOpen} onClick={() => setShopOpen(open => !open)}>Furniture shop</button>
         <button type="button" className={styles.button} disabled={busy} onClick={() => void openRoom(null)}>My room</button>
         <DormSpaceSettings />
+        {view.kind === 'room' ? <MusicPanel key={`${view.dorm.owner}:${live.connectionId}`} owner={view.dorm.owner} connectionId={live.connectionId} /> : null}
       </div>
       {avatarNotices.length ? <p className={styles.notice} role="status">{avatarNotices.join(' ')}</p> : null}
       {avatarError ? <div className={styles.notice} role="status">{avatarError} <button type="button" className={styles.button} onClick={() => setAvatarAttempt(n => n + 1)}>Retry avatar</button></div> : null}
