@@ -219,3 +219,104 @@ it('keeps rotated starter cards savable and restores their saved angles after re
     throw error;
   } finally { await context.close(); }
 });
+
+it('protects dirty boards on Back and Forward while preserving normal navigation',async () => {
+  const output=process.env.BOARD_HISTORY_EVIDENCE_DIR || 'tmp/board-1225';
+  mkdirSync(output,{recursive:true});
+  const context=await browser.newContext({viewport:{width:1440,height:1000}});
+  await context.addInitScript((value:string)=>localStorage.setItem('access_token',value),token);
+  const page=await context.newPage();
+  const trace:any={environment:'local Next production UI/API and real SQL on disposable PGlite; fixture Auth/PostgREST',steps:[]};
+  const record=(step:string,detail?:unknown)=>trace.steps.push({step,detail});
+  const warning=page.getByRole('dialog',{name:'Leave without saving your board?',exact:true});
+  const draft='Keep this unsaved board draft after Stay.';
+  const shot=async(name:string)=>{await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:`${output}/${name}.png`,fullPage:true});};
+  const openBoard=async()=>{
+    await page.getByRole('tab',{name:'My Board',exact:true}).click();
+    await expect.poll(()=>page.getByRole('button',{name:'Edit board',exact:true}).isEnabled()).toBe(true);
+  };
+  const edit=async(text:string)=>{
+    await page.getByRole('button',{name:'Edit board',exact:true}).click();
+    await page.getByRole('button',{name:'Note',exact:true}).click();
+    await page.locator('fieldset textarea').fill(text);
+  };
+  const stays=async(direction:'back'|'forward')=>{
+    if(direction==='back')await page.goBack({waitUntil:'commit'});else await page.goForward({waitUntil:'commit'});
+    await warning.waitFor({timeout:5000});
+    expect(new URL(page.url()).pathname).toBe('/profile');
+    record(`${direction} warning`,{url:page.url()});
+    await shot(direction==='back'?'01-back-warning':'02-forward-warning');
+    await warning.getByRole('button',{name:'Stay',exact:true}).click();
+    expect(await page.locator('fieldset textarea').inputValue()).toBe(draft);
+    record(`${direction} Stay retained draft`);
+  };
+  try{
+    await page.goto(base+'/profile',{waitUntil:'domcontentloaded'});
+    expect((await api(page,'PUT',{look:{...DEFAULT_LOOK,board:{items:[]}}})).status).toBe(200);
+    await page.getByRole('link',{name:'Campus Feed',exact:true}).click();
+    await page.waitForURL(base+'/');
+    await page.getByRole('link',{name:'Your profile',exact:true}).click();
+    await page.waitForURL(base+'/profile');
+    await page.locator('a[href="/events"]').first().click();
+    await page.waitForURL(base+'/events');
+    await page.goBack({waitUntil:'commit'});
+    await page.waitForURL(base+'/profile');
+    await openBoard();await edit(draft);
+    const historyLength=await page.evaluate(()=>history.length);
+    trace.historyLengthBefore=historyLength;
+    await stays('back');
+    await stays('forward');
+    await stays('back');
+    expect(await page.evaluate(()=>history.length)).toBe(historyLength);
+    record('history length unchanged after repeated Stay',{historyLength});
+    await shot('03-stay-retains-draft');
+    // Existing native confirmations must still protect links and profile tabs.
+    for(const kind of ['tab','link']){
+      const dialog=page.waitForEvent('dialog');
+      const click=kind==='tab'?page.getByRole('tab',{name:'Posts',exact:true}).click():page.getByRole('link',{name:'Campus Feed',exact:true}).click();
+      const prompt=await dialog;expect(prompt.message()).toBe('Leave without saving your board?');
+      await prompt.dismiss();await click;
+      expect(await page.locator('fieldset textarea').inputValue()).toBe(draft);
+      record(`${kind} cancellation retained draft`);
+    }
+    await page.goBack({waitUntil:'commit'});await warning.waitFor();
+    await warning.getByRole('button',{name:'Leave without saving',exact:true}).click();
+    await page.waitForURL(base+'/');
+    expect((await api(page,'GET')).data.look.board.items).toEqual([]);
+    record('confirmed departure reached Campus Feed without saving');
+    await page.goForward({waitUntil:'commit'});await page.waitForURL(base+'/profile');
+    await openBoard();
+    expect(await page.getByText(draft,{exact:true}).count()).toBe(0);
+    record('Forward returned normally after confirmed discard');
+    await shot('04-confirmed-discard');
+    await edit('Saved after choosing Stay.');
+    await page.goBack({waitUntil:'commit'});await warning.waitFor();
+    await warning.getByRole('button',{name:'Stay',exact:true}).click();
+    const response=page.waitForResponse((r:any)=>r.url().includes('/api/profiles/space')&&r.request().method()==='PATCH');
+    response.catch(()=>{});
+    await page.getByRole('button',{name:'Save board',exact:true}).click();
+    expect((await response).status()).toBe(200);
+    await page.getByText('Your board is saved. Classmates can see it on your profile.',{exact:true}).waitFor();
+    record('draft saved after Stay',{status:200});
+    await page.goBack({waitUntil:'commit'});await page.waitForURL(base+'/');
+    expect(await warning.count()).toBe(0);
+    record('clean Back completed without warning');
+    await page.goForward({waitUntil:'commit'});await page.waitForURL(base+'/profile');
+    await openBoard();await page.getByText('Saved after choosing Stay.',{exact:true}).waitFor();
+    record('saved board restored after clean Back and Forward');
+    await shot('05-saved-draft-restored');
+    trace.result='passed';
+  }catch(error){
+    trace.result='failed';trace.error=String(error);trace.urlAtFailure=page.url();
+    // Preserve faithful evidence of the original silent departure and lost draft.
+    if(new URL(page.url()).pathname==='/'){
+      await page.goForward({waitUntil:'commit'}).catch(()=>{});
+      await page.getByRole('tab',{name:'My Board',exact:true}).click().catch(()=>{});
+      trace.draftVisibleAfterReturn=await page.getByText(draft,{exact:true}).count();
+    }
+    await shot('failure').catch(()=>{});throw error;
+  }finally{
+    writeFileSync(`${output}/history-trace.json`,JSON.stringify(trace,null,2)+'\n');
+    await context.close();
+  }
+},90000);
