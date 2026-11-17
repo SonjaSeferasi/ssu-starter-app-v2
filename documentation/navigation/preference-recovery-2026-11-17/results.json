@@ -1,0 +1,115 @@
+{
+  "evidence": "Production shell, navigation and session/preference clients with unrelated widgets adapted and simulated APIs. Not a real hosted-account or cross-device acceptance test.",
+  "browser": "157.0.4341.60",
+  "checks": [
+    "601.4: valid Bottom restores from fixture account",
+    "601.4: malformed load is reported with Retry",
+    "601.4: load Retry reads saved Top without writing fallback Side",
+    "601.5: mismatched save response retains selected Bottom and reports unconfirmed saving",
+    "601.6/601.7: Retry resends Bottom automatically without replacing page content",
+    "601.4: confirmed saved placement restores after fixture reload",
+    "601.5/601.6: HTTP failure retains Top and Retry confirms Top",
+    "601.7: saves use a refreshed token, not the expired stored token",
+    "601.5: stalled save exposes Retry and unlocks controls in 9060ms",
+    "601.6: retry confirms retained Bottom and late expired response does not alter UI",
+    "601.4: stalled load exposes Retry and can recover",
+    "601.5/601.6: stalled refresh never sends expired save; later Retry saves retained Top",
+    "390px: unconfirmed preference and Retry remain visible"
+  ],
+  "errors": [],
+  "requests": [
+    {
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer qa-token"
+    },
+    {
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer qa-token"
+    },
+    {
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer qa-token"
+    },
+    {
+      "method": "PUT",
+      "body": {
+        "position": "bottom"
+      },
+      "authorization": "Bearer qa-token"
+    },
+    {
+      "method": "PUT",
+      "body": {
+        "position": "bottom"
+      },
+      "authorization": "Bearer qa-token"
+    },
+    {
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer qa-token"
+    },
+    {
+      "method": "PUT",
+      "body": {
+        "position": "top"
+      },
+      "authorization": "Bearer qa-token"
+    },
+    {
+      "method": "PUT",
+      "body": {
+        "position": "top"
+      },
+      "authorization": "Bearer qa-token"
+    },
+    {
+      "method": "PUT",
+      "body": {
+        "position": "side"
+      },
+      "authorization": "Bearer qa-refreshed"
+    },
+    {
+      "method": "PUT",
+      "body": {
+        "position": "bottom"
+      },
+      "authorization": "Bearer qa-refreshed"
+    },
+    {
+      "method": "PUT",
+      "body": {
+        "position": "bottom"
+      },
+      "authorization": "Bearer qa-refreshed"
+    },
+    {
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer qa-token"
+    },
+    {
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer qa-token"
+    },
+    {
+      "method": "PUT",
+      "body": {
+        "position": "top"
+      },
+      "authorization": "Bearer qa-refreshed"
+    },
+    {
+      "method": "PUT",
+      "body": {
+        "position": "bottom"
+      },
+      "authorization": "Bearer qa-refreshed"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "evidence": "Baseline shell from commit 5503931e with current CSS and simulated APIs.",
+  "browser": "157.0.4341.60",
+  "checks": [
+    "BEFORE: invalid stored placement silently leaves Side, with no error or Retry",
+    "BEFORE: response confirms Side after selecting Bottom, yet no unconfirmed-save warning appears"
+  ],
+  "errors": [],
+  "requests": [
+    {
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer qa-token"
+    },
+    {
+      "method": "GET",
+      "body": null,
+      "authorization": "Bearer qa-token"
+    },
+    {
+      "method": "PUT",
+      "body": {
+        "position": "bottom"
+      },
+      "authorization": "Bearer qa-token"
+    }
+  ]
+}

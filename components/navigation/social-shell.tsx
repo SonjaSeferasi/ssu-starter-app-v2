@@ -1,10 +1,11 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { isGamePage, isStandalonePage } from '../../lib/navigation';
 import { NavigationFrame } from './social-navigation';
-import { accessToken, storedAccessToken } from '../../lib/account/session';
+import { accessToken } from '../../lib/account/session';
+import { navigationPreferenceRequest } from '../../lib/navigation-preferences-client';
 import type { NavigationPosition } from '../../lib/game-room';
 import { useScreenTheme, ScreenThemeContext } from '../profile/use-screen-theme';
 import { getScreenTheme } from '../../lib/screen-themes';
@@ -26,27 +27,30 @@ export function SocialShell({ children }: { children: React.ReactNode }) {
   const [pendingPosition, setPendingPosition] = useState<NavigationPosition>('side');
   const [preferenceLoadFailed, setPreferenceLoadFailed] = useState(false);
   const [preferenceReload, setPreferenceReload] = useState(0);
+  const placementRequest = useRef<AbortController | null>(null);
 
   async function savePosition(selected: NavigationPosition) {
+    if (saving || session !== 'signed-in' || standalone) return;
+    placementRequest.current?.abort();
+    const controller = new AbortController();
+    placementRequest.current = controller;
     setPosition(selected); setPendingPosition(selected); setSaving(true); setPreferenceError(''); setPreferenceLoadFailed(false);
     try {
-      const token = storedAccessToken();
-      const response = await fetch('/api/preferences', { method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token || ''}` }, body: JSON.stringify({ position: selected }) });
-      if (!response.ok) throw new Error();
-    } catch { setPreferenceError('Your placement is not confirmed saved.'); }
-    finally { setSaving(false); }
+      await navigationPreferenceRequest(selected, controller.signal);
+    } catch { if (!controller.signal.aborted) setPreferenceError('Your placement is not confirmed saved.'); }
+    finally { if (!controller.signal.aborted) setSaving(false); }
   }
 
   useEffect(() => {
     if (session !== 'signed-in' || standalone) return;
     const controller = new AbortController();
+    placementRequest.current = controller;
     setPosition('side'); setSaving(true); setPreferenceError(''); setPreferenceLoadFailed(false);
-    void fetch('/api/preferences', { headers: { Authorization: `Bearer ${storedAccessToken() || ''}` }, cache: 'no-store', signal: controller.signal })
-      .then(async response => { if (!response.ok) throw new Error(); return response.json(); })
-      .then(data => { if (!controller.signal.aborted && (data.position === 'side' || data.position === 'bottom' || data.position === 'top')) { setPosition(data.position); setPreferenceError(''); } })
+    void navigationPreferenceRequest(undefined, controller.signal)
+      .then(saved => { if (!controller.signal.aborted) { setPosition(saved); setPreferenceError(''); } })
       .catch(() => { if (!controller.signal.aborted) { setPreferenceError('Your saved placement could not be loaded.'); setPreferenceLoadFailed(true); } })
       .finally(() => { if (!controller.signal.aborted) setSaving(false); });
-    return () => controller.abort();
+    return () => { controller.abort(); placementRequest.current?.abort(); };
   }, [session, standalone, preferenceReload]);
 
   useEffect(() => {
