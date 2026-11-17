@@ -122,6 +122,8 @@ const loaders:Record<string,()=>Promise<{environment:CountryEnvironment}>>={
  'africa-sz':()=>import('./africa/eswatini'),
  // Europe: one shared chunk; each country's look comes from its place data.
  ...Object.fromEntries(europeCodes.map(code=>['europe-'+europePlaces[code].iso2.toLowerCase(),()=>import('./europe').then(m=>({environment:m.europeEnvironment(code)}))])),
+ // European countries with their own detailed scenery replace the shared builder.
+ 'europe-gb':()=>import('./united-kingdom'),
  // Oceania: one shared chunk, like Europe.
  ...Object.fromEntries(oceaniaCodes.map(code=>['oceania-'+oceaniaPlaces[code].iso2.toLowerCase(),()=>import('./oceania').then(m=>({environment:m.oceaniaEnvironment(code)}))])),
  // South America (phase 1 continental release).

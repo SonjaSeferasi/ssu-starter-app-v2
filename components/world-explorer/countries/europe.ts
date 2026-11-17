@@ -19,7 +19,9 @@ import type {CountryEnvironment} from './types';
 const groveKind:Record<string,TreeKind>={conifer:'conifer',deciduous:'plane',olive:'olive',cypress:'cypress',birch:'birch',reed:'reed',vineyard:'shrub',pasture:'tuft',garden:'flowering-shrub'};
 const skyFor={temperate:{zenith:'#6f9fca',horizon:'#e2e9ee'},alpine:{zenith:'#5f97cc',horizon:'#e4ecf2'},coastal:{zenith:'#4f97d2',horizon:'#e6eef2'},forest:{zenith:'#6e9cc2',horizon:'#e0e8ea'},grassland:{zenith:'#6aa2d2',horizon:'#eaeee6'}};
 
-export function europeEnvironment(code:EuropeCode):CountryEnvironment{
+/** `landmark:false` leaves out the generic landmark composition, for a country
+ * whose own module builds a detailed one in its place. */
+export function europeEnvironment(code:EuropeCode,options:{landmark?:boolean}={}):CountryEnvironment{
  const place:EuropePlace=europePlaces[code],p=place.palette,s=place.scene,id='europe-'+place.iso2.toLowerCase();
  const cave=s.terrain==='karst',rift=s.terrain==='rift';
  const land:LandmassPalette={top:p.ground,topAlt:new T.Color(p.ground).multiplyScalar(.9).getStyle(),edge:p.ground,face:p.rock,faceDark:new T.Color(p.rock).multiplyScalar(.72).getStyle(),band:new T.Color(p.rock).multiplyScalar(.82).getStyle(),rough:.2,strata:.55,
@@ -49,8 +51,8 @@ export function europeEnvironment(code:EuropeCode):CountryEnvironment{
    // Town, landmark and vegetation.
    const b=new Builder(),ctx={x:finish*.62,y:groundY,z:-10,finish,r,low,palette:p};
    if(s.town)townRow(b,ctx,-24,finish*.36,-30,s.town);
-   europeLandmarks[s.landmark]?.(b,ctx);
-   b.mesh(staticRoot,vertexMaterial(.88),s.landmark+'-landmark');
+   if(options.landmark!==false)europeLandmarks[s.landmark]?.(b,ctx);
+   if(b.parts.length)b.mesh(staticRoot,vertexMaterial(.88),s.landmark+'-landmark');
    if(!cave){const spots:Placement[]=[];for(let i=0;i<(low?20:40);i++){const x=-20+r()*(finish+40),z=-14-r()*44,hit=new T.Raycaster(v3(x,60,z),v3(0,-1,0)).intersectObject(ground)[0];if(hit&&hit.point.y>groundY-1)spots.push({x,y:hit.point.y-.03,z,scale:.7+r()*.6,rotation:r()*6});}
     const grove=plantGrove(staticRoot,groveKind[s.vegetation]??'plane',spots,{low,name:s.landmark+'-vegetation'});grove.userData.groundSurface=ground.name;}
    if(s.water==='delta'||s.water==='lake'||s.water==='sea'||s.water==='bay'){const birds=createFlock(features,{name:'europe-water-birds',count:low?4:8,centre:[finish*.5,14,-40],radius:[24,3,8],speed:.18,size:1,color:'#f2f2ee',wing:'#d8d8d2',seed:code.charCodeAt(0),glide:true});shell.animate({update:t=>birds.update(t),motion:true});}
