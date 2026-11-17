@@ -1,0 +1,35 @@
+{
+  "baseline": false,
+  "browser": "157.0.4341.60",
+  "evidence": "Production Game UI with avatar/engine/map/audio adapters and simulated APIs. No real level playthrough, hosted saving or reward assertion.",
+  "checks": [
+    "607.3: stalled avatar preparation recovers in 9044ms with Retry/Return and no start POST",
+    "618.5: Retry starts the same level; late expired avatar resolution cannot send another start or mount",
+    "607.3: stalled renderer readiness recovers and disposes the incomplete engine",
+    "618.5: renderer retry creates a fresh same-level attempt; obsolete readiness cannot replace its controller",
+    "621.1/621.5 regression: successful startup retains Pause/Resume",
+    "Leaving during preparation prevents a late start POST or engine mount",
+    "607.3: phone recovery fits, keyboard reaches Return, and Return opens the Game Room path"
+  ],
+  "errors": [],
+  "writes": [
+    {
+      "action": "start",
+      "level": 1,
+      "attemptId": "7bfd909a-d1ce-4962-9033-f929d4cb3f5b",
+      "timeZone": "America/New_York"
+    },
+    {
+      "action": "start",
+      "level": 1,
+      "attemptId": "c6fc2ffa-fd94-4daf-bbb0-e1e6ee32e463",
+      "timeZone": "America/New_York"
+    },
+    {
+      "action": "start",
+      "level": 1,
+      "attemptId": "120a3f36-640b-425b-baec-ff727cb91103",
+      "timeZone": "America/New_York"
+    }
+  ]
+}

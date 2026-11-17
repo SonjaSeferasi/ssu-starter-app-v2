@@ -1,0 +1,18 @@
+{
+  "baseline": true,
+  "browser": "157.0.4341.60",
+  "evidence": "Production Game UI with avatar/engine/map/audio adapters and simulated APIs. No real level playthrough, hosted saving or reward assertion.",
+  "checks": [
+    "BEFORE: stalled texture still disables Back after 10 seconds with no recovery",
+    "BEFORE: stalled renderer still disables Back after 10 seconds with no recovery"
+  ],
+  "errors": [],
+  "writes": [
+    {
+      "action": "start",
+      "level": 1,
+      "attemptId": "16d6d1f7-88ad-49a4-a1c9-e0f9d200d80b",
+      "timeZone": "America/New_York"
+    }
+  ]
+}

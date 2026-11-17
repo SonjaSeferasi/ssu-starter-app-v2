@@ -33,6 +33,7 @@ export default function Game() {
   const [reward,setReward]=useState<number|null>(null);
   const [loaded,setLoaded]=useState(false);
   const [error,setError]=useState('');
+  const [startFailed,setStartFailed]=useState(false);
   const [reload,setReload]=useState(0);
   const [status,setStatus]=useState<Status>('menu');
   const statusRef=useRef<Status>('menu');
@@ -80,18 +81,19 @@ export default function Game() {
   const avatar=useRef<HTMLDivElement>(null),stage=useRef<HTMLDivElement>(null);
   const controller=useRef<GameController|null>(null);
   const gameCleanup=useRef<(()=>void)|null>(null);
-  function dispose(){if(gameCleanup.current){gameCleanup.current();gameCleanup.current=null;}else controller.current?.destroy();controller.current=null;stage.current?.replaceChildren();}
+  const opening=useRef(0);
+  function dispose(){opening.current++;if(gameCleanup.current){gameCleanup.current();gameCleanup.current=null;}else controller.current?.destroy();controller.current=null;stage.current?.replaceChildren();}
   function showMap(){dispose();change('menu');}
   const held=useRef<InputState>({left:false,right:false,jump:false,power:false,down:false,defend:false});
   const pointerInputs=useRef(new PointerInputs(held.current));
   const busy=useRef(false),mounted=useRef(true);
   function change(next:Status){if(next!=='running')pointerInputs.current.clear();statusRef.current=next;setStatus(next);}
-  async function api(method='GET',body?:object){
+  async function api(method='GET',body?:object,openingSignal?:AbortSignal){
     return boundedJumpylandRequest(async signal=>{
       const token=await accessToken();
-      if(signal.aborted)throw new Error('This request is no longer active.');
+      if(signal.aborted||openingSignal?.aborted||!mounted.current)throw new Error('This request is no longer active.');
       if(!token)throw new Error('Please sign in again to play.');
-      const response=await fetch('/api/jumpyland',{method,headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},cache:'no-store',signal,...(body?{body:JSON.stringify(body)}:{})});
+      const response=await fetch('/api/jumpyland',{method,headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},cache:'no-store',signal:openingSignal??signal,...(body?{body:JSON.stringify(body)}:{})});
       const data=await response.json();if(!response.ok)throw new Error(data.error||'The request could not be confirmed.');return data;
     });
   }
@@ -121,26 +123,33 @@ export default function Game() {
   }
   async function start(number:number,selection:RunLoadout=emptyLoadout){
     if(busy.current||!levelAvailable(number,completed))return;
-    setReward(null);readyAudio();dispose();busy.current=true;setLoadout(selection);setPreparing(null);change('starting');setError('');setCoins(0);setProgress(0);setLevel(number);setWorld({...emptyWorld,region:courses[number-1].regions[0].name});
+    setReward(null);readyAudio();dispose();busy.current=true;setStartFailed(false);setLoadout(selection);setPreparing(null);change('starting');setError('');setCoins(0);setProgress(0);setLevel(number);setWorld({...emptyWorld,region:courses[number-1].regions[0].name});
     const id=crypto.randomUUID();
+    const generation=opening.current;
     try{
+      await boundedJumpylandRequest(async signal=>{
+      const current=()=>mounted.current&&generation===opening.current&&!signal.aborted;
       // Build avatar before recording participation: a render failure is not a played attempt.
       await new Promise<void>(resolve=>requestAnimationFrame(()=>resolve()));
+      if(!current())return;
       const [sheet,engine]=await Promise.all([texture(),import('./engine')]);
-      await api('POST',{action:'start',level:number,attemptId:id,timeZone:Intl.DateTimeFormat().resolvedOptions().timeZone});
-      if(!mounted.current)return;
-      dispose();
+      if(!current())return;
+      await api('POST',{action:'start',level:number,attemptId:id,timeZone:Intl.DateTimeFormat().resolvedOptions().timeZone},signal);
+      if(!current())return;
       const result={id,level:number,coins:0};setAttempt(result);
       const {mountGame}=engine;
-      if(!mounted.current)return;
       const host=stage.current;if(!host)throw new Error('The play area is unavailable.');
-      gameCleanup.current=mountGame(host,courses[number-1],sheet,held.current,setCoins,(cause,count)=>{
+      await new Promise<void>(resolve=>{
+      gameCleanup.current=mountGame(host,courses[number-1],sheet,held.current,count=>{if(current())setCoins(count);},(cause,count)=>{
+        if(!current())return;
         audio.current?.end(cause==='complete'?'complete':cause==='enemy'?'hit':'fall');
         const ended={...result,coins:count};setAttempt(ended);
         if(cause==='complete')void save(ended);
         else {setFailure(cause==='fall'?'You fell below the course.':cause==='enemy'?'A '+themeFor(number).villain+' caught you.':'You touched a hazard.');change('failed');}
-      },pause,handle=>{if(!mounted.current){handle.destroy();return;}controller.current=handle;change('running');audio.current?.play(number);if(document.hidden||!document.hasFocus()){handle.pause();audio.current?.pause();change('paused');}},setProgress,setWorld,selection,effect=>audio.current?.effect(effect),90,room?avatarEditorPreview(room,room.appearance):null);
-    }catch(e){if(mounted.current){setError(e instanceof Error?e.message:'Unable to start. Please retry.');change('menu');}}
+      },pause,handle=>{if(!current()){handle.destroy();return;}controller.current=handle;change('running');audio.current?.play(number);if(document.hidden||!document.hasFocus()){handle.pause();audio.current?.pause();change('paused');}resolve();},value=>{if(current())setProgress(value);},value=>{if(current())setWorld(value);},selection,effect=>{if(current())audio.current?.effect(effect);},90,room?avatarEditorPreview(room,room.appearance):null);
+      });
+      });
+    }catch(e){if(mounted.current&&generation===opening.current){dispose();prepared.current=null;audio.current?.pause();setError(e instanceof Error&&e.name!=='TimeoutError'?e.message:'This level took too long to open. Retry or return to the Game Room.');setStartFailed(true);change('menu');}}
     finally{busy.current=false;}
   }
   useEffect(()=>()=>{dispose();},[]);
@@ -154,6 +163,7 @@ export default function Game() {
   const active=status!=='menu';
   const modal=preparing===null&&(exit||instructions||['paused','failed','saving','saved','unsaved'].includes(status));
   const course=courses[level-1];
+  if(startFailed&&status==='menu')return <main ref={root} className={entryStyles.page}><section className={entryStyles.card} role="alert"><h1>We couldn’t open Level {level}</h1><p>{error}</p><p className={entryStyles.note}>Your previously confirmed level progress is unchanged.</p><div className={entryStyles.actions}><button autoFocus onClick={()=>void start(level,loadout)}>Retry level</button><a href="/game-room">Return to Game Room</a></div></section></main>;
   return <main ref={root} className={[styles.game,active?styles.immersive:'',loaded&&['menu','starting'].includes(status)?styles.landing:''].join(' ')}>
     <header className={styles.header}>
       <button onClick={back} disabled={status==='starting'}>← Back to Game Room</button>

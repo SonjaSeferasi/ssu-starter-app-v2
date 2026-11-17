@@ -1,0 +1,112 @@
+{
+  "evidence": "Production Jumpyland React component with test-only engine/map/avatar/audio adapters and intercepted API responses, headless Edge. No actual level completion, hosted save or reward grant.",
+  "checks": [
+    "619.7/619.8: ambiguous failure retains result, avoids certain-loss wording, blocks Replay/Next",
+    "619.9/622.6/622.7: Stay and Retry resends the same attempt and coins without leaving or replaying",
+    "622.9: confirmed result returns directly without attempt-loss warning",
+    "622.8: Leave Without Saving returns without claiming success",
+    "619.7/619.8: malformed successful HTTP response cannot unlock another attempt",
+    "622.9: pending Back automatically returns once completion is confirmed",
+    "622.7/622.9: Stay cancels pending return while letting saving finish",
+    "622.10/NFR-65: repeated Back does not restart deadline; recovery in 9010ms after first Back",
+    "619.9: retry confirms same completion; late abandoned response cannot replace it",
+    "622.10/NFR-65: stalled token refresh is bounded and cannot later send the expired completion request",
+    "622.6: recovery choices remain available at 390px"
+  ],
+  "errors": [],
+  "writes": [
+    {
+      "action": "start",
+      "level": 1,
+      "attemptId": "acbb1f5c-82db-4fd8-8550-0c17741ea3dd",
+      "timeZone": "America/New_York"
+    },
+    {
+      "action": "complete",
+      "attemptId": "acbb1f5c-82db-4fd8-8550-0c17741ea3dd",
+      "coins": 3
+    },
+    {
+      "action": "complete",
+      "attemptId": "acbb1f5c-82db-4fd8-8550-0c17741ea3dd",
+      "coins": 3
+    },
+    {
+      "action": "start",
+      "level": 1,
+      "attemptId": "a050348e-9476-4f96-aead-28fbe5091129",
+      "timeZone": "America/New_York"
+    },
+    {
+      "action": "complete",
+      "attemptId": "a050348e-9476-4f96-aead-28fbe5091129",
+      "coins": 3
+    },
+    {
+      "action": "start",
+      "level": 1,
+      "attemptId": "b2500bfc-9a49-4452-aea6-4f1ebf1a01b6",
+      "timeZone": "America/New_York"
+    },
+    {
+      "action": "complete",
+      "attemptId": "b2500bfc-9a49-4452-aea6-4f1ebf1a01b6",
+      "coins": 3
+    },
+    {
+      "action": "start",
+      "level": 1,
+      "attemptId": "213ad2b4-730f-4de3-8af4-a03f2416759c",
+      "timeZone": "America/New_York"
+    },
+    {
+      "action": "complete",
+      "attemptId": "213ad2b4-730f-4de3-8af4-a03f2416759c",
+      "coins": 3
+    },
+    {
+      "action": "start",
+      "level": 1,
+      "attemptId": "83897b33-4a3d-4334-bff9-8609925506f1",
+      "timeZone": "America/New_York"
+    },
+    {
+      "action": "complete",
+      "attemptId": "83897b33-4a3d-4334-bff9-8609925506f1",
+      "coins": 3
+    },
+    {
+      "action": "start",
+      "level": 1,
+      "attemptId": "d466a4b8-5cce-4267-bc91-58625919d3d4",
+      "timeZone": "America/New_York"
+    },
+    {
+      "action": "complete",
+      "attemptId": "d466a4b8-5cce-4267-bc91-58625919d3d4",
+      "coins": 3
+    },
+    {
+      "action": "complete",
+      "attemptId": "d466a4b8-5cce-4267-bc91-58625919d3d4",
+      "coins": 3
+    },
+    {
+      "action": "start",
+      "level": 1,
+      "attemptId": "a62bde36-a2ec-46cc-95cc-7628b9fb63bf",
+      "timeZone": "America/New_York"
+    },
+    {
+      "action": "start",
+      "level": 1,
+      "attemptId": "96a7809f-e583-4ed1-b969-fd2d6296bb29",
+      "timeZone": "America/New_York"
+    },
+    {
+      "action": "complete",
+      "attemptId": "96a7809f-e583-4ed1-b969-fd2d6296bb29",
+      "coins": 3
+    }
+  ]
+}
