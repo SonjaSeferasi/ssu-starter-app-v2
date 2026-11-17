@@ -10,6 +10,7 @@ import {discoveryFor} from '../../lib/world-explorer-discoveries';
 import {countryProfile} from '../../lib/world-explorer/profiles';
 import {CountryFlag} from './country-flag';
 import {LandmarkPhoto} from './landmark-photo';
+import {LevelPreview} from './level-preview';
 import {CountryRun,type RunOutcome} from './country-run';
 import {PreferencesControls} from './preferences-panel';
 import {defaultExplorerPreferences,loadExplorerPreferences,saveExplorerPreferences,type ExplorerPreferences} from '../../lib/world-explorer/preferences';
@@ -187,7 +188,7 @@ export default function WorldExplorer(){
     {activeLevelCard?<p className={styles.landmarkNote}><MapPin size={12}/> {activeLevelCard.featuredLandmark.name} · {activeLevelCard.locationName}</p>:countryProfile(active.code)&&<p className={styles.landmarkNote}><MapPin size={12}/> {countryProfile(active.code)?.landmarkName}</p>}
     <p>{activeLevelCard?activeLevelCard.setting:countryProfile(active.code)?.features.join(' · ')}</p>
     <details className={styles.sourceDetail}><summary>Country sources{liveStatus==='available'?' · World Bank refreshed':''}</summary><a href={countryProfile(active.code)?.sourceUrl||active.sources[0]} target="_blank" rel="noreferrer">View source for this destination</a>{liveFacts&&<p>World Bank lists {liveFacts.capital||'no capital in its record'}. Retrieved {new Date(liveFacts.retrievedAt).toLocaleDateString('en-US',{timeZone:'UTC'})}. This is the provider’s administrative listing; the country snapshot retains multi-capital notes. <a href={liveFacts.sourceUrl} target="_blank" rel="noreferrer">API record</a></p>}{countryApi&&<p>countries.dev lists {countryApi.capital||'no capital in its record'}. Retrieved {new Date(countryApi.retrievedAt).toLocaleDateString('en-US',{timeZone:'UTC'})}. <a href={countryApi.sourceUrl} target="_blank" rel="noreferrer">Country API record</a></p>}</details>
-    {activeLevelCard?<figure className={styles.landmarkPhoto}><img key={active.code} src={activeLevelCard.previewImage} alt={`In-game view of ${activeLevelCard.title}`} loading="lazy" onError={event=>{event.currentTarget.parentElement!.hidden=true;}}/><figcaption>In-game capture · {activeLevelCard.title}</figcaption></figure>:<LandmarkPhoto key={active.code} code={active.code}/>}
+    {activeLevelCard?<LevelPreview key={active.code} title={activeLevelCard.title} src={activeLevelCard.previewImage}/>:<LandmarkPhoto key={active.code} code={active.code}/>}
     <label className={styles.challenge}><input type="checkbox" checked={challenge} onChange={e=>setChallenge(e.target.checked)}/><span><strong>Expert challenge</strong><small>A tougher route with tighter jumps</small></span><Trophy size={18}/></label>
     <button className={styles.playButton} onClick={()=>launch(active)}><Play size={17} fill="currentColor"/> {activeLevel?.stage==='prototype'?(progress.countries[active.code]?.completed?'Replay level':'Play level'):'Explore environment preview'} <ArrowRight size={19}/></button>
     <small className={styles.factStatus}>{continent==='antarctica'?'Antarctic Treaty reference':liveStatus==='loading'?'Checking optional country metadata…':liveStatus==='available'?'World Bank metadata available · sourced country snapshot':'Bundled country facts · external services are optional'}</small>
