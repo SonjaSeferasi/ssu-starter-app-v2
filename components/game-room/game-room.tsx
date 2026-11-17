@@ -14,6 +14,8 @@ import { completeAvatar, avatarGroups, avatarParts, avatarVariant, collectionHai
 import { bodyShapes, skinColors } from '../../lib/avatar-figure';
 import { CompleteAvatar } from './complete-avatar';
 import { GameCardView } from './game-card';
+import { WelcomeBanner } from './welcome-banner';
+import { Check, Droplet, PersonStanding, Scissors, Shirt, Smile, Sparkles, Gamepad2 } from 'lucide-react';
 import { ParticipationStreak } from './participation-streak';
 import styles from './game-room.module.css';
 
@@ -103,15 +105,15 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
     setAppearance(next); setRetrySelection(null); setSaveMessage('Unsaved changes');
   }
   const chooseFigure = (change: Pick<AvatarAppearance, 'bodyShape' | 'skinColor'>) => selectedAvatar && chooseCompleteAvatar(selectedAvatar.id, change);
-  return <main className={styles.page}>
-    <header className={styles.pageHeader}><h1>Game Room</h1><p>Play, explore, and make your character feel like you.</p></header>
+  return <main className={styles.page}><div className={styles.layout}>
+    <WelcomeBanner />
     {temporaryPreview && !error && <aside className={styles.previewNotice} role="status">
       <p><strong>Game Room preview.</strong> Complete avatars are available to try. Changes are temporary and are not saved to your account.</p>
       {!preview && <button className={styles.secondaryButton} onClick={() => setAttempt(value => value + 1)} disabled={loading}>Retry account connection</button>}
     </aside>}
     {loading ? <section className={styles.notice} role="status">Opening your Game Room…</section> : error ? <section className={styles.notice} role="alert"><h2>We couldn’t open your Game Room</h2><p>{error}</p><button className={styles.primaryButton} onClick={() => setAttempt(attempt+1)}>Retry</button></section> : <div className={styles.roomGrid}>
       <section className={styles.avatarPanel} aria-labelledby="avatar-title">
-        <div className={styles.panelHeading}><span className={styles.smallIcon} aria-hidden="true">✦</span><div><h2 id="avatar-title">Customize your avatar</h2><p>Your look, across your games.</p></div></div>
+        <div className={styles.panelHeading}><span className={styles.smallIcon} aria-hidden="true"><Sparkles size={22} /></span><div><h2 id="avatar-title">Customize your avatar</h2><p>Your look, across your games.</p></div></div>
         <div className={styles.avatarLayout}>
           <div className={styles.avatarStage}>
             {selectedAvatar && <CompleteAvatar avatar={selectedAvatar} look={look} />}
@@ -124,7 +126,7 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
               {avatarGroups.map(group => <button key={group} aria-pressed={visibleGroup === group} disabled={saving} onClick={() => setCollectionGroup(group)}>{group === 'male' ? 'Male' : group === 'female' ? 'Female' : 'Hijab'}</button>)}
             </div>
             <div className={styles.tabs} role="group" aria-label="Customize">
-              {(['hair', 'face', 'skin', 'body', 'outfit'] as const).map(tab => <button key={tab} aria-pressed={editor === tab} disabled={saving} onClick={() => setEditor(tab)}>{tab[0].toUpperCase() + tab.slice(1)}</button>)}
+              {(['hair', 'face', 'skin', 'body', 'outfit'] as const).map(tab => { const Icon = editorIcons[tab]; return <button key={tab} aria-pressed={editor === tab} disabled={saving} onClick={() => setEditor(tab)}><Icon size={18} aria-hidden="true" />{tab[0].toUpperCase() + tab.slice(1)}</button>; })}
             </div>
             <section aria-label={editor === 'hair' ? (visibleGroup === 'hijab' ? 'Choose a hijab' : 'Choose a hairstyle') : editor === 'face' ? 'Choose face details' : editor === 'skin' ? 'Choose a skin color' : editor === 'body' ? 'Choose a body shape' : 'Choose an outfit'}
               className={editor === 'skin' ? styles.skinOptions : editor === 'body' ? `${styles.completeOptions} ${styles.bodyOptions}` : styles.completeOptions}>
@@ -153,19 +155,21 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
             <p className={styles.footnote}>{selectedAvatar?.description}{look.bodyShape && look.bodyShape !== 'average' ? `, ${bodyName.toLowerCase()} body` : ''}{skinName ? `, ${skinName.toLowerCase()} skin` : ''}.</p>
             <p className={styles.previewHint}>Changes preview instantly.</p>
             <p className={styles.saveStatus} data-tone={statusTone} role={retrySelection ? 'alert' : 'status'} aria-live="polite">{statusText}</p>
-            <button className={styles.primaryButton} onClick={() => void saveAvatar()} disabled={saving || !appearance || !appearance.outfitId || !dirty || temporaryPreview}>{saving ? 'Saving…' : 'Save avatar'}</button>
+            <button className={styles.primaryButton} onClick={() => void saveAvatar()} disabled={saving || !appearance || !appearance.outfitId || !dirty || temporaryPreview}>{saving ? 'Saving…' : <>Save Look <Check size={18} aria-hidden="true" /></>}</button>
             <button className={styles.secondaryButton} disabled={saving || !dirty} onClick={() => { setAppearance(room?.appearance || null); setCollectionGroup(null); setRetrySelection(null); setSaveMessage('Changes discarded.'); }}>Discard changes</button>
             <p className={styles.footnote}>Customization is optional. Your avatar is ready to play.</p>
           </div>
         </div>
       </section>
-      <div className={styles.activityColumn}>
-        <section className={styles.activities} aria-labelledby="activity-title">
-          <h2 id="activity-title">Pick your next break</h2>
-          <div className={styles.gameGrid}>{games.map(card => <GameCardView key={card.key} card={card} />)}</div>
-        </section>
+      <section className={styles.games} aria-labelledby="games-title">
+        <div className={styles.panelHeading}><span className={styles.smallIcon} aria-hidden="true"><Gamepad2 size={22} /></span><div><h2 id="games-title">Play games</h2><p>Pick your next little adventure.</p></div></div>
+        <div className={styles.gameGrid}>{games.map(card => <GameCardView key={card.key} card={card} />)}</div>
+      </section>
+      <aside className={styles.sideColumn} aria-label="Streak and rankings">
         <ParticipationStreak preview={temporaryPreview} />
-      </div>
+      </aside>
     </div>}
-  </main>;
+  </div></main>;
 }
+
+const editorIcons = { hair: Scissors, face: Smile, skin: Droplet, body: PersonStanding, outfit: Shirt } as const;
