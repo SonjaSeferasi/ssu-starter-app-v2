@@ -35,7 +35,9 @@ device cache is read from the session token already stored on the device, so a
 signed-in student's result is cached for that account even when the account
 request fails (issue #1231). An anonymous passport is claimed by the first
 account that signs in and the anonymous key is then cleared, so a second account
-on the same browser never imports it. Signing out must reset
+on the same browser never imports it. Every device save merges with the passport
+already stored under the same owner's key, and an open tab listens for storage
+changes, so results saved from two tabs are both kept (issue #1237). Signing out must reset
 the UI from the anonymous key before another account hydration. The client does
 not upload cached data known to belong to another account. The account UUID is
 never accepted in a merge/result request; the authenticated response includes it

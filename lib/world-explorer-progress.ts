@@ -37,9 +37,20 @@ export function loadExplorerProgress(storage:ReadStorage|undefined=localStore())
  if(!storage)return emptyExplorerProgress();
  try{const saved=storage.getItem(STORAGE_KEY);return saved?sanitizeExplorerProgress(JSON.parse(saved)):emptyExplorerProgress();}catch{return emptyExplorerProgress();}
 }
-export function saveExplorerProgress(progress:ExplorerProgress,storage:WriteStorage|undefined=localStore()):boolean{
+/** Another tab may have saved since this snapshot was read, so merge with the
+ * passport stored under the same owner's key before writing; a save never
+ * replaces newer stored results with a stale in-memory copy. */
+function storedFor(key:string,storage:Partial<ReadStorage>):ExplorerProgress{
+ try{const raw=storage.getItem?.(key);return raw?sanitizeExplorerProgress(JSON.parse(raw)):emptyExplorerProgress();}catch{return emptyExplorerProgress();}
+}
+export function saveExplorerProgress(progress:ExplorerProgress,storage:(WriteStorage&Partial<ReadStorage>)|undefined=localStore()):boolean{
  if(!storage)return false;
- try{const safe=sanitizeExplorerProgress(progress);storage.setItem(keyFor(safe),JSON.stringify(safe));return true;}catch{return false;}
+ try{
+  const safe=sanitizeExplorerProgress(progress),key=keyFor(safe),stored=storedFor(key,storage);
+  // Only a snapshot with the same owner as the key is merged in.
+  const merged=stored.accountId===safe.accountId?mergeExplorerProgress(stored,safe):safe;
+  storage.setItem(key,JSON.stringify(merged));return true;
+ }catch{return false;}
 }
 /** Remove the anonymous passport once one account has claimed it, so a later
  * account on this browser cannot import the same unowned snapshot. */
