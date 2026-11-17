@@ -1,6 +1,7 @@
 'use client';
 import {remainingNorthAmericaPlaces,type RemainingNorthAmericaCode} from '../../lib/world-explorer/north-america-remaining';
 import {useEffect,useMemo,useRef,useState} from 'react';
+import {useRouter} from 'next/navigation';
 import {ArrowLeft,ArrowRight,ArrowUp,BookOpen,Check,Compass,Flag,Heart,Pause,Play,RotateCcw,Settings,Star,Trophy,Volume2} from 'lucide-react';
 import type {Country} from '../../lib/world-explorer/catalog';
 import {discoveryFor} from '../../lib/world-explorer-discoveries';
@@ -25,6 +26,7 @@ function formatTime(seconds:number){const whole=Math.max(0,Math.floor(seconds));
 function runId(){return globalThis.crypto?.randomUUID?.()||'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,char=>{const value=Math.floor(Math.random()*16);return(char==='x'?value:(value&3)|8).toString(16);});}
 
 export function CountryRun({country,difficulty,preferences,saveStatus,onPreferences,onExit,onResult,onRetry,onNext}:{country:Country;difficulty:Difficulty;preferences:ExplorerPreferences;saveStatus:string;onPreferences:(value:ExplorerPreferences)=>void;onExit:()=>void;onResult:(completed:boolean,coins:number,result:RunOutcome,runId:string)=>void;onRetry:()=>void;onNext:()=>void}){
+ const router=useRouter(),toGameRoom=()=>router.push('/game-room');
  const stage=useRef<HTMLDivElement>(null),controller=useRef<Controller|null>(null),finished=useRef(false),statsRef=useRef(initialStats),dialog=useRef<HTMLDivElement>(null),attempt=useRef('');
  const [status,setStatus]=useState<RunStatus>('starting'),[error,setError]=useState(''),[distance,setDistance]=useState(0),[stats,setStats]=useState(initialStats),[showSettings,setShowSettings]=useState(false);
  const [review,setReview]=useState(false),[overview,setOverview]=useState(false),[performance,setPerformance]=useState<{fps:number;drawCalls:number;triangles:number}|null>(null);
@@ -99,16 +101,16 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
    {status==='starting'?<><Compass className={styles.loadingCompass}/><h2 id="run-dialog-title">Preparing {country.name}</h2><p>Loading the landscape and checking your route.</p></>:status==='paused'?<>
     <Pause size={30}/><h2 id="run-dialog-title">Adventure paused</h2><button className={styles.playButton} onClick={resume}><Play size={17}/>Continue adventure</button>
     <div className={styles.dialogActions}><button onClick={()=>setShowSettings(value=>!value)}><Settings size={16}/>Settings</button><button onClick={onRetry}><RotateCcw size={16}/>Restart level</button></div>
-    {showSettings&&<PreferencesControls value={preferences} onChange={onPreferences} inGame/>}<button className={styles.quietButton} onClick={onExit}>Return to world map</button>
+    {showSettings&&<PreferencesControls value={preferences} onChange={onPreferences} inGame/>}<button className={styles.quietButton} onClick={onExit}>Return to world map</button><button className={styles.quietButton} onClick={toGameRoom}>Back to Game Room</button>
    </>:status==='discovery'?<>
     <BookOpen size={30}/><p className={styles.eyebrow}>{stats.discoveryFound?'DISCOVERY UNLOCKED':'COUNTRY FIELD GUIDE'}</p><h2 id="run-dialog-title">Discover {country.name}</h2><Discovery country={country}/>
     <button className={styles.playButton} onClick={resume}>Continue adventure<ArrowRight size={17}/></button>
    </>:status==='complete'?<>
     <Trophy size={38}/><p className={styles.eyebrow}>PASSPORT STAMP EARNED</p><h2 id="run-dialog-title">{country.name} explored!</h2><div className={styles.resultStars} aria-label={`${stats.stars} of 3 stars earned`}>{[0,1,2].map(index=><Star key={index} size={34} fill={index<stats.stars?'#f2d174':'none'} color={index<stats.stars?'#f2d174':'#819b91'}/>)}</div>
     <div className={styles.resultDetails}><span><i className={styles.coin}/>{stats.coins} / {stats.totalCoins} coins</span><span>{formatTime(stats.timeSeconds)}</span><span><BookOpen size={14}/>{stats.discoveryFound?'Discovery learned':'Discovery still to find'}</span></div><p role="status" className={styles.muted}>{saveStatus}</p>
-    {stats.discoveryFound&&<Discovery country={country} compact/>}<button className={styles.playButton} onClick={onRetry}><RotateCcw size={17}/>Replay level</button><button className={styles.quietButton} onClick={onNext}>Choose another destination <ArrowRight size={13}/></button><button className={styles.quietButton} onClick={onExit}>World map and passport</button>
+    {stats.discoveryFound&&<Discovery country={country} compact/>}<button className={styles.playButton} onClick={onRetry}><RotateCcw size={17}/>Replay level</button><button className={styles.quietButton} onClick={onNext}>Choose another destination <ArrowRight size={13}/></button><button className={styles.quietButton} onClick={onExit}>World map and passport</button><button className={styles.quietButton} onClick={toGameRoom}>Back to Game Room</button>
    </>:<>
-    <Heart size={32}/><h2 id="run-dialog-title">{error?'The world could not open':'Another adventure awaits'}</h2><p>{error||'Try again with three fresh hearts. Your best result stays in your passport.'}</p><button className={styles.playButton} onClick={onRetry}><RotateCcw size={17}/>Try again</button><button className={styles.quietButton} onClick={onExit}>Return to world map</button>
+    <Heart size={32}/><h2 id="run-dialog-title">{error?'The world could not open':'Another adventure awaits'}</h2><p>{error||'Try again with three fresh hearts. Your best result stays in your passport.'}</p><button className={styles.playButton} onClick={onRetry}><RotateCcw size={17}/>Try again</button><button className={styles.quietButton} onClick={onExit}>Return to world map</button><button className={styles.quietButton} onClick={toGameRoom}>Back to Game Room</button>
    </>}
   </div></div>}
  </section>;
