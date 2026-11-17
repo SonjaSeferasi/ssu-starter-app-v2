@@ -34,6 +34,7 @@ export type RawRepostOf = {
   author_name: string;
   author_username: string;
   author_photo_key: string | null;
+  visibility: 'public' | 'friends_only';
   published_at: string;
   text_content: string | null;
   photos: { asset_id: number; storage_key: string }[];
@@ -45,6 +46,7 @@ export type RepostOf = {
   authorName: string;
   authorUsername: string;
   authorPhotoUrl: string | null;
+  visibility: 'public' | 'friends_only';
   publishedAt: string;
   textContent: string | null;
   photos: FeedPhoto[];
@@ -112,6 +114,7 @@ async function shapeRepostOf(supabase: SupabaseClient<any, any, any>, row: RawRe
     authorName: row.author_name,
     authorUsername: row.author_username,
     authorPhotoUrl: await resolveMediaUrl(supabase, row.author_photo_key),
+    visibility: row.visibility,
     publishedAt: row.published_at,
     textContent: row.text_content,
     photos: photosWithNulls.filter((p): p is FeedPhoto => p !== null),

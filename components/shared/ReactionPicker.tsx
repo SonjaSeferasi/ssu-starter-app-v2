@@ -32,6 +32,7 @@ export function ReactionPicker({
 }) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
   const wrapperRef = useRef<HTMLDivElement>(null);
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const suppressClick = useRef(false);
@@ -56,15 +57,28 @@ export function ReactionPicker({
     if (busy) return;
     setOpen(false);
     setBusy(true);
-    const res = await fetch(reactUrl, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', Authorization: `Bearer ${accessToken}` },
-      body: JSON.stringify({ reaction }),
-    });
-    setBusy(false);
-    if (!res.ok) return;
-    const body = await res.json();
-    onChanged(body.reactionCounts, body.myReaction);
+    setError('');
+    try {
+      const res = await fetch(reactUrl, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', Authorization: `Bearer ${accessToken}` },
+        body: JSON.stringify({ reaction }),
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(body.error || 'Failed to react. Try again.');
+        return;
+      }
+      onChanged(body.reactionCounts, body.myReaction);
+    } catch {
+      // A rejected fetch (offline, dropped connection) must still release
+      // `busy` via `finally` below -- without this try/catch, the rejection
+      // propagated out of apply() uncaught and the button stayed disabled
+      // forever, even after the network came back (confirmed bug #1182).
+      setError('Failed to react. Check your connection and try again.');
+    } finally {
+      setBusy(false);
+    }
   }
 
   function choose(reaction: Reaction) {
@@ -100,7 +114,11 @@ export function ReactionPicker({
   const total = nonZero.reduce((sum, r) => sum + reactionCounts[r.id], 0);
 
   return (
-    <div ref={wrapperRef} className="group relative inline-flex items-center gap-2">
+    <div
+      ref={wrapperRef}
+      className="group relative inline-flex items-center gap-2"
+      onMouseLeave={() => setOpen(false)}
+    >
       <button
         type="button"
         disabled={disabled || busy}
@@ -134,6 +152,8 @@ export function ReactionPicker({
         </span>
       ) : null}
 
+      {error ? <span className="text-xs text-red-600">{error}</span> : null}
+
       {/* The picker itself: a white pill-shaped floating bar with a soft
           shadow, positioned above the button so it's never clipped by the
           card's own bottom edge. Shown on hover (desktop, via CSS
@@ -142,7 +162,6 @@ export function ReactionPicker({
           rather than just appearing, and each emoji pops on its own hover. */}
       <div
         role="menu"
-        onMouseLeave={() => setOpen(false)}
         className={`absolute bottom-full left-0 z-20 mb-2 flex origin-bottom-left items-center gap-0.5 rounded-full border border-stone-100 bg-white p-1.5 shadow-lg transition-all duration-150 ${
           open ? 'visible scale-100 opacity-100' : 'invisible scale-90 opacity-0'
         } group-hover:visible group-hover:scale-100 group-hover:opacity-100`}

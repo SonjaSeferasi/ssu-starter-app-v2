@@ -87,32 +87,16 @@ export function EditPostModal({
     setError('');
     setSaving(true);
 
+    // Order matters: the text PATCH runs FIRST, before anything is
+    // destroyed. This is three separate, non-transactional requests, so a
+    // failure partway through can still leave the edit incomplete -- but
+    // putting the cheap, fully reversible change first means a failure in
+    // either photo step no longer costs the student their text edit too,
+    // and (the actual reported case) a removed photo is only ever deleted
+    // after the text change already safely landed. True atomicity would
+    // need all three folded into one server-side transaction/RPC, which is
+    // a bigger change than this fix -- left as a follow-up recommendation.
     try {
-      for (const assetId of removedAssetIds) {
-        const res = await fetch(`/api/posts/${post.postId}/photos/${assetId}`, {
-          method: 'DELETE',
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
-        if (!res.ok) {
-          const body = await res.json();
-          throw new Error(body.error || 'Failed to remove a photo.');
-        }
-      }
-
-      if (newImages.length > 0) {
-        const form = new FormData();
-        for (const img of newImages) form.append('images', img.file);
-        const res = await fetch(`/api/posts/${post.postId}/photos`, {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${accessToken}` },
-          body: form,
-        });
-        if (!res.ok) {
-          const body = await res.json();
-          throw new Error(body.error || 'Failed to attach new photos.');
-        }
-      }
-
       const patchRes = await fetch(`/api/posts/${post.postId}`, {
         method: 'PATCH',
         headers: { 'content-type': 'application/json', Authorization: `Bearer ${accessToken}` },
@@ -121,6 +105,60 @@ export function EditPostModal({
       const patchBody = await patchRes.json();
       if (!patchRes.ok) throw new Error(patchBody.error || 'Failed to save changes.');
 
+      // Each photo step gets its own try/catch, same reasoning as #1181/
+      // #1182: a rejected fetch (true network failure, not just a non-ok
+      // response) must still produce the informative "your text was
+      // saved" message -- without this, the rejection propagated past
+      // the !res.ok check entirely and surfaced the browser's own generic
+      // "Failed to fetch" instead, confirmed by browser testing.
+      for (const assetId of removedAssetIds) {
+        try {
+          const res = await fetch(`/api/posts/${post.postId}/photos/${assetId}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${accessToken}` },
+          });
+          if (!res.ok) {
+            const body = await res.json().catch(() => ({}));
+            throw new Error(body.error || 'unknown error');
+          }
+        } catch (removeErr) {
+          const reason = removeErr instanceof Error ? removeErr.message : 'unknown error';
+          throw new Error(`Your text was saved, but removing a photo failed (${reason}).`);
+        }
+      }
+
+      if (newImages.length > 0) {
+        try {
+          const form = new FormData();
+          for (const img of newImages) form.append('images', img.file);
+          const res = await fetch(`/api/posts/${post.postId}/photos`, {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${accessToken}` },
+            body: form,
+          });
+          if (!res.ok) {
+            const body = await res.json().catch(() => ({}));
+            throw new Error(body.error || 'unknown error');
+          }
+        } catch (uploadErr) {
+          const reason = uploadErr instanceof Error ? uploadErr.message : 'unknown error';
+          throw new Error(`Your text was saved, but attaching new photos failed (${reason}).`);
+        }
+      }
+
+      // patchBody.post reflects the post as of the FIRST request, before
+      // any photo removal/attachment -- now that the text save runs
+      // first, that response is stale for the photos array whenever this
+      // edit also touched photos. Re-fetch once so the caller (and the
+      // feed it updates) shows the true final state.
+      if (removedAssetIds.length > 0 || newImages.length > 0) {
+        const freshRes = await fetch(`/api/posts/${post.postId}`, { headers: { Authorization: `Bearer ${accessToken}` } });
+        const freshBody = await freshRes.json();
+        if (freshRes.ok) {
+          onSaved(freshBody.post);
+          return;
+        }
+      }
       onSaved(patchBody.post);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to save changes.');

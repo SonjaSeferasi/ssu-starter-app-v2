@@ -176,7 +176,7 @@ export function PostCard({
                 username={post.repostOf.authorUsername}
                 publishedAt={post.repostOf.publishedAt}
                 editedAt={null}
-                visibility={post.visibility}
+                visibility={post.repostOf.visibility}
               />
               {post.repostOf.textContent ? (
                 <p className="mt-2 whitespace-pre-wrap text-sm text-stone-800">{post.repostOf.textContent}</p>

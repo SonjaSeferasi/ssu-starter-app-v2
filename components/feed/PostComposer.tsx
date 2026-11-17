@@ -95,41 +95,69 @@ export function PostComposer({
     setError('');
     setPublishing(true);
 
-    const createRes = await fetch('/api/posts', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', Authorization: `Bearer ${accessToken}` },
-      body: JSON.stringify({ textContent: text, visibility }),
-    });
-    const createBody = await createRes.json();
-
-    if (!createRes.ok) {
-      setError(createBody.error || 'Failed to publish post.');
-      setPublishing(false);
-      return;
-    }
-
-    if (images.length > 0) {
-      const form = new FormData();
-      for (const img of images) form.append('images', img.file);
-      const photoRes = await fetch(`/api/posts/${createBody.post.postId}/photos`, {
+    // The whole flow is wrapped in try/catch/finally: without it, a
+    // rejected fetch (offline, dropped connection -- not just a non-ok
+    // response, an actual network failure) threw out of this function
+    // uncaught, `setPublishing(false)` was never reached, and the Create
+    // post button stayed disabled forever, even after the network came
+    // back (confirmed bug #1182).
+    try {
+      const createRes = await fetch('/api/posts', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${accessToken}` },
-        body: form,
+        headers: { 'content-type': 'application/json', Authorization: `Bearer ${accessToken}` },
+        body: JSON.stringify({ textContent: text, visibility }),
       });
-      if (!photoRes.ok) {
-        const photoBody = await photoRes.json();
-        setError(`Post published, but attaching photos failed: ${photoBody.error || 'unknown error'}`);
-        setPublishing(false);
-        onPublished();
+      const createBody = await createRes.json();
+
+      if (!createRes.ok) {
+        setError(createBody.error || 'Failed to publish post.');
         return;
       }
-    }
 
-    setText('');
-    setVisibility(null);
-    setImages([]);
-    setPublishing(false);
-    onPublished();
+      if (images.length > 0) {
+        // Own try/catch, deliberately separate from the outer one: the
+        // rollback below must run whether the photo request comes back
+        // with a non-ok response OR the fetch itself rejects (a genuine
+        // dropped connection, not just an error status -- confirmed by
+        // browser testing that the non-ok-only check below missed this
+        // exact case and left a blank post live, #1181).
+        try {
+          const form = new FormData();
+          for (const img of images) form.append('images', img.file);
+          const photoRes = await fetch(`/api/posts/${createBody.post.postId}/photos`, {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${accessToken}` },
+            body: form,
+          });
+          if (!photoRes.ok) {
+            const photoBody = await photoRes.json().catch(() => ({}));
+            throw new Error(photoBody.error || 'unknown error');
+          }
+        } catch (photoErr) {
+          // The post already exists with no photos attached. Rather than
+          // leave it live (a blank card if there was no text either, or a
+          // post missing the photo the student meant to attach), roll it
+          // back entirely so "Create post" is a clean, safe retry -- never
+          // a second, duplicate publish on top of a stuck failed one.
+          await fetch(`/api/posts/${createBody.post.postId}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }).catch(() => {});
+          const reason = photoErr instanceof Error ? photoErr.message : 'unknown error';
+          setError(`Couldn't attach your photos (${reason}) -- nothing was posted. Try again.`);
+          return;
+        }
+      }
+
+      setText('');
+      setVisibility(null);
+      setImages([]);
+      onPublished();
+    } catch {
+      setError('Failed to publish post. Check your connection and try again.');
+    } finally {
+      setPublishing(false);
+    }
   }
 
   return (
