@@ -7904,6 +7904,14 @@ Acceptance criterion: Given the student plays the North Macedonia level, when th
 
 Traces to: UR-632.
 
+##### SRS-632.28, SS — Present Mostar in the Bosnia and Herzegovina level.
+
+When the student plays the Bosnia and Herzegovina level, the system shall show the far bank as a limestone gorge; the single humped arch of the Old Bridge spanning the place where the river turns away between its cliffs, parallel to the route and not reaching it; the square Halebija tower and the round Tara tower at its ends, with the flag of Bosnia and Herzegovina on the Tara tower; a diver standing on the parapet at the crown who dives from time to time, and stands still when reduced motion is on; the bazaar of small stone shops under stone-slab roofs with awnings and copper wares; the domed mosque with its porch and thin minaret; cypresses and bare hills behind; and, on the route, stone parapets, lanterns, kilims hung on rails, copper coffee sets, benches and potted fig trees, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Bosnia and Herzegovina level, when the explorer starts the route, then the bazaar shops and the mosque's dome and minaret are visible; when the explorer reaches the middle of the route, then the whole arch of the Old Bridge, both towers and the flag are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
