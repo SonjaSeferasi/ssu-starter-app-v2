@@ -189,7 +189,7 @@ textarea.input { resize: none; }
 .card .titleLink::after, .featured .titleLink::after { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
 .card:hover, .featured:hover { border-color: #a8ceb8; box-shadow: 0 10px 28px #325e3d14; }
 .card:focus-within, .featured:focus-within { border-color: #39775e; }
-.actionsWrap, .goingLink, .secondaryButton, .coverControl { position: relative; z-index: 2; }
+.actionsWrap, .goingLink, .secondaryButton, .coverControl, .cardCancel, .cardCancelConfirm { position: relative; z-index: 2; }
 .coverControl { position: absolute; }
 .goingLink { color: #102c30; text-decoration: none; }
 .goingLink:hover span:last-child { text-decoration: underline; }
@@ -279,8 +279,13 @@ textarea.input { resize: none; }
 .inviteAccept:disabled, .inviteDecline:disabled { cursor: not-allowed; opacity: .6; }
 .inviteAccept:focus-visible, .inviteDecline:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
 .invitationPage { display: grid; gap: 12px; margin: 20px 0 0; padding: 0; list-style: none; }
-.invitationPage > li { padding: 16px 18px; border: 1px solid #d7e5da; border-radius: 16px; background: #ffffff; }
+.invitationPage > li { position: relative; padding: 16px 18px; border: 1px solid #d7e5da; border-radius: 16px; background: #ffffff; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+.invitationPage > li:hover { border-color: #a8ceb8; box-shadow: 0 10px 28px #325e3d14; }
+.invitationPage > li:focus-within { border-color: #39775e; }
 .invitationPageItem { display: grid; gap: 4px; color: #102c30; text-decoration: none; }
+/* The whole invitation card opens its event; Accept and Decline stay on top and keep working. */
+.invitationPageItem::after { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
+.invitationPage .inviteActions { position: relative; z-index: 2; margin-top: 10px; }
 .invitationPageItem:hover strong, .invitationPageItem:hover > span:first-child { text-decoration: underline; }
 .invitationPageItem:focus-visible { outline: 3px solid #28634e; outline-offset: 3px; border-radius: 8px; }
 .invitationPageTitle { font-size: 17px; font-weight: 800; }
