@@ -7952,6 +7952,14 @@ Acceptance criterion: Given the student plays the San Marino level, when the exp
 
 Traces to: UR-632.
 
+##### SRS-632.34, SS — Present the Madriu valley in the Andorra level.
+
+When the student plays the Andorra level, the system shall show, beyond the mountain stream and its boulders, summer pastures divided by dry-stone walls and stepped in stone terraces; shepherds' stone huts under slate roofs and round turf-roofed shelters; a small Romanesque church with a tall square bell tower, an apse, a porch on wooden posts and the flag of Andorra; grey rock walls closing both ends of the valley, with a waterfall dropping down the eastern one just past the finish; pine forest, wooded slopes and snowy peaks behind; grazing horses and cows and an isard on the rocks; vultures circling; and, on the route, wooden fences, trail signposts, milk churns, dry-stone walls, cairns, rope handrails and benches, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Andorra level, when the explorer starts the route, then the western rock wall and the church bell tower are visible; when the explorer reaches the middle of the route, then the church, its flag and the stone huts are visible; when the explorer reaches the finish, then the waterfall on the eastern rock wall is visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
