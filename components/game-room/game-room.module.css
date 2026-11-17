@@ -193,3 +193,13 @@
 :global(html[data-appearance='dark']) .participation p { color:#d8cee4; }
 :global(html[data-appearance='dark']) .participation p strong { color:#ffb66e; }
 :global(html[data-appearance='dark']) .streakHeading button { color:#d8b4fe; }
+
+/* Account dark appearance: pair readable text with its surface. */
+:global(html[data-appearance='dark']) :is(.page) { background:linear-gradient(180deg,#201b30,#151e30); }
+:global(html[data-appearance='dark']) :is(.page[data-room-background='adventure-sky']) { background:linear-gradient(#14233de8,#201b30ed),url('/theme-assets/backgrounds/sky_clouds.webp') center/cover fixed; }
+:global(html[data-appearance='dark']) :is(.banner) { background:linear-gradient(105deg,#322245,#253953); border-color:#625078; }
+:global(html[data-appearance='dark']) :is(.bannerTitle h1) { color:#f4edff; }
+:global(html[data-appearance='dark']) :is(.bannerText) { color:#ded5eb; }
+:global(html[data-appearance='dark']) :is(.smallIcon) { background:#413055; color:#d8b4fe; }
+:global(html[data-appearance='dark']) :is(.tabs button:hover:not(:disabled)) { background:#4a3763; }
+:global(html[data-appearance='dark']) :is(.primaryButton) { color:#fff; }

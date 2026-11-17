@@ -50,3 +50,12 @@
 .srOnly { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
 @media(max-width:700px){.student { align-items:flex-start; flex-direction:column; gap:14px; }.connectionActions{max-width:100%;}.heading h1{font-size:28px;}}
 @media(max-width:600px){.profileConnection > .actions > button{min-height:36px;padding:7px 10px;font-size:12px;}}
+
+/* Account dark appearance: pair readable text with its surface. */
+:global(html[data-appearance='dark']) :is(.page,.dialog) { --ink:#edf2f7; --muted:#bcc9d8; background:#141b2a; color:#edf2f7; color-scheme:dark; }
+:global(html[data-appearance='dark']) :is(.search,.field input,.dialog) { background:#202b3b; color:#edf2f7; border-color:#53657b; }
+:global(html[data-appearance='dark']) :is(.search input,.identity a,.identity strong,.empty h2) { color:#edf2f7; }
+:global(html[data-appearance='dark']) :is(.back,.heading p,.tabs button,.identity p,.actions .quiet,.quiet,.note,.empty,.dialogBody,.deactivation p) { color:#bcc9d8; }
+:global(html[data-appearance='dark']) :is(.actions .secondary,.page .secondary,.tabs button[aria-pressed="true"]) { background:#294739; color:#c6f6dc; border-color:#62977d; }
+:global(html[data-appearance='dark']) :is(.error,.deactivation h2) { color:#fda4af; }
+:global(html[data-appearance='dark']) :is(.eyebrow,.empty > svg) { color:#9ee2bd; }

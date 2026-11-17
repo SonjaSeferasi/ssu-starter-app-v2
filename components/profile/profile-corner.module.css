@@ -125,3 +125,13 @@
 .artworkSlots button > span { width:68px;height:68px; }
 .artworkSlots strong { font-size:13px;overflow-wrap:anywhere; }
 .artworkSlots small { font-size:10px;color:#85927b; }
+
+/* Account dark appearance: pair readable text with its surface. */
+:global(html[data-appearance='dark']) :is(.corner,.question,.planBody h4) { color:#edf2f7; }
+:global(html[data-appearance='dark']) :is(.card,.dialog,.editorFooter) { background:#202b3b; color:#edf2f7; border-color:#53657b; }
+:global(html[data-appearance='dark']) :is(.heading p,.hint,.empty,.empty strong,.goals label,.progress,.subtitle,.result,.location,.planFooter,.planFooter small,.guests,.editorHeader p,.editorTabs button,.fields > label,.fieldRow label,.help,.vibeChoices button > span:last-child,.vibeCategories button,.artworkSlots small) { color:#bcc9d8; }
+:global(html[data-appearance='dark']) :is(.iconButton,.outline,.textButton,.guests a) { color:#9ee2bd; }
+:global(html[data-appearance='dark']) :is(.options > button,.options > button:nth-child(n),.plan,.planBadge,.fields input:not([type=checkbox]),.artworkSlots button,.fields > .confirm,.editorTabs button[aria-pressed=true],.vibeCategories button[aria-pressed=true]) { background:#2d3b50; color:#edf2f7; border-color:#53657b; }
+:global(html[data-appearance='dark']) :is(.iconButton:hover,.outline:hover:enabled) { background:#354961; color:#fff; }
+:global(html[data-appearance='dark']) :is(.error) { color:#fda4af; }
+:global(html[data-appearance='dark']) :is(.fields input::placeholder) { color:#bcc9d8; }

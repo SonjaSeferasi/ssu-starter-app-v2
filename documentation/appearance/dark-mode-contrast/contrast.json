@@ -1,0 +1,47 @@
+[
+  {
+    "path": "/",
+    "pageErrors": [],
+    "contrast": []
+  },
+  {
+    "path": "/events",
+    "pageErrors": [],
+    "contrast": []
+  },
+  {
+    "path": "/messages",
+    "pageErrors": [],
+    "contrast": []
+  },
+  {
+    "path": "/profile",
+    "pageErrors": [],
+    "contrast": []
+  },
+  {
+    "path": "/friends",
+    "pageErrors": [],
+    "contrast": []
+  },
+  {
+    "path": "/game-room",
+    "pageErrors": [],
+    "contrast": []
+  },
+  {
+    "path": "/profile/settings/customize",
+    "pageErrors": [],
+    "contrast": []
+  },
+  {
+    "path": "/profile/edit",
+    "pageErrors": [],
+    "contrast": []
+  },
+  {
+    "path": "/events/new",
+    "pageErrors": [],
+    "contrast": []
+  }
+]

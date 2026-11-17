@@ -240,3 +240,6 @@
 .shell[data-theme-dark='true'] :is(.sidebarCardBody,.sidebarNote,.customizeScreenLink small) { color:#cbd5e1; }
 .shell[data-theme-dark='true'] :is(.destination[aria-current='page'],.preferenceToggle:hover) { background:#35435d; color:#fff; }
 .shell[data-theme-dark='true'] :is(.title,.eyebrow,.description) { color:#edf2fb; }
+
+.shell[data-theme-dark='true'] .searchBox input::placeholder { color:#bbc4d2; }
+.shell[data-theme-dark='true'] .skipLink { background:#202b3b; color:#edf2f7; }

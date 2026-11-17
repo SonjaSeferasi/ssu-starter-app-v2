@@ -8,3 +8,13 @@
 .success{margin:0;padding:16px 32px;color:#355e3e;background:#edf5e9;font-size:14px}
 .confirmation{width:min(440px,calc(100% - 32px));padding:28px;border:1px solid #dce5dc;border-radius:16px;color:#203c32;box-shadow:0 16px 64px #10251e26}
 .confirmation::backdrop{background:#122d2466}.confirmation h2{font-size:22px;margin:0 0 16px}.confirmation p{font-size:14px;line-height:1.6;color:#63736a}.confirmActions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px}.page .logout{background:#28533c;color:white;border-color:#28533c}.confirmation .actionError{color:#a02f2f}
+
+/* Account dark appearance: pair readable text with its surface. */
+:global(html[data-appearance='dark']) :is(.page,.notice h2,.confirmation) { color:#edf2f7; }
+:global(html[data-appearance='dark']) :is(.panel,.confirmation,.page button) { background:#202b3b; color:#edf2f7; border-color:#53657b; }
+:global(html[data-appearance='dark']) :is(.back,.eyebrow,.header p:not(.eyebrow),.notice,.entry>svg,.timestamp,.location,.confirmation p) { color:#bcc9d8; }
+:global(html[data-appearance='dark']) :is(.header .zone) { color:#bcc9d8!important; }
+:global(html[data-appearance='dark']) :is(.footnote,.ended) { background:#2d3b50; color:#bcc9d8; }
+:global(html[data-appearance='dark']) :is(.active,.success) { background:#294739; color:#c6f6dc; }
+:global(html[data-appearance='dark']) :is(.current) { color:#9ee2bd; }
+:global(html[data-appearance='dark']) :is(.confirmation .actionError) { color:#fda4af; }
