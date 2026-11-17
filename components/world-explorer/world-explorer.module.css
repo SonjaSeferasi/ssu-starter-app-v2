@@ -180,3 +180,10 @@
 .journeyPanel .countryDetail{flex-shrink:1;min-height:150px}
 .countryDetail>.playButton{position:sticky;bottom:0;z-index:1;flex-shrink:0}
 @media(min-width:701px) and (max-height:820px){.intro{top:100px}.intro h1{font-size:clamp(34px,3.6vw,44px);letter-spacing:-1.5px;margin-bottom:12px}.intro>p:not(.eyebrow){font-size:13px;line-height:1.5;margin:0}.intro .playButton{margin-top:14px}}
+
+/* SRS-627.6: only navigation controls change; illustrated atlas/canvas remain intact. */
+:global(html[data-appearance='light']) .explorer :is(.back,.header nav button) { color:#123340; background:#f2f8f3ed; border-color:#819b94; color-scheme:light; }
+:global(html[data-appearance='dark']) .explorer :is(.back,.header nav button) { color:#f6f5df; background:#142c38ef; border-color:#8aaca4; color-scheme:dark; }
+:global(html[data-appearance='light']) .explorer :is(.modal,.journeyPanel) { background:#edf5f0f7; color:#123340; }
+:global(html[data-appearance='light']) .explorer .modal :is(p,li,h3,a) { color:#234e50; }
+:global(html[data-appearance='dark']) .explorer :is(.modal,.journeyPanel) { background:#142c38f7; color:#f6f5df; }

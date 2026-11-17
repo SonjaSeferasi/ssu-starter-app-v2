@@ -214,3 +214,12 @@
 @media (max-width: 420px) {
   .shell[data-navigation='top'] .destination, .shell[data-navigation='top'] .preferenceToggle { font-size: 10px; padding: 6px 2px; }
 }
+
+/* SRS-627: explicit account appearance takes priority over decorative scenery. */
+.shell[data-theme-dark='true'] { --ink:#f3f1fb; --muted:#bbc4d2; --line:#475569; color-scheme:dark; background:#141b2a; color:var(--ink); }
+.shell[data-theme-dark='true'] :is(.header,.navigation,.sidebarCard,.preferencePanel) { background:#202a3beF; color:var(--ink); border-color:var(--line); }
+.shell[data-theme-dark='true'] :is(.searchBox,.placementChoices button,.closePreferences,.createDialog,.createDialog a,.createDialog button,.customizeScreenLink) { background:#273449; color:#f3f1fb; border-color:#64748b; }
+.shell[data-theme-dark='true'] .placementChoices button[aria-pressed='true'] { background:#c4b5fd; color:#24133d; border-color:#e9d5ff; }
+.shell[data-theme-dark='true'] :is(.sidebarCardBody,.sidebarNote,.customizeScreenLink small) { color:#cbd5e1; }
+.shell[data-theme-dark='true'] :is(.destination[aria-current='page'],.preferenceToggle:hover) { background:#35435d; color:#fff; }
+.shell[data-theme-dark='true'] :is(.title,.eyebrow,.description) { color:#edf2fb; }

@@ -10,6 +10,7 @@ import { accessToken } from '../../lib/account/session';
 import { MessageCountIcon, useMessageNotifications } from '../chat/message-notifications';
 import type { ScreenTheme } from '../../lib/screen-themes';
 import { PointsBadge } from './points-badge';
+import { AppearanceChoices, useAppearance } from './appearance-preferences';
 
 type IconName = (typeof navigationDestinations)[number]['icon'] | 'profile' | 'search' | 'bell' | 'settings';
 
@@ -75,6 +76,7 @@ export function SocialNavigation({ pathname, position = 'side', onPositionChange
           </div>
           {saving && <p role="status">Saving preference…</p>}
           {preferenceError && <p role="alert">{preferenceError} <button onClick={onRetry} disabled={saving}>Retry</button></p>}
+          <AppearanceChoices />
           {/* "Customize Your Screen" (additional functionality, not in the
               official SRS): the canonical entry point lives here, not on
               Profile Settings, so it's discoverable from Preferences
@@ -145,8 +147,9 @@ function NotificationBell({ pathname }: { pathname: string }) {
 //
 // Also used by the development-only preview; no session or private data lives here.
 export function NavigationFrame({ pathname, children, community, position = 'side', backgroundTheme, ...preferences }: { pathname: string; children: React.ReactNode; community?: string | null; backgroundTheme?: ScreenTheme | null } & PlacementProps) {
+  const appearance = useAppearance();
   return (
-    <div className={styles.shell} data-navigation={position} data-theme-active={backgroundTheme ? 'true' : undefined} data-theme-dark={backgroundTheme?.isDark ? 'true' : undefined} data-profile={pathname === '/friends' || pathname === '/profile' || pathname.startsWith('/profile/') || pathname.startsWith('/students/') ? 'true' : undefined}>
+    <div className={styles.shell} data-navigation={position} data-theme-active={backgroundTheme ? 'true' : undefined} data-theme-dark={(appearance ? appearance.theme === 'dark' : backgroundTheme?.isDark) ? 'true' : undefined} data-profile={pathname === '/friends' || pathname === '/profile' || pathname.startsWith('/profile/') || pathname.startsWith('/students/') ? 'true' : undefined}>
       {backgroundTheme ? (
         <div
           className={styles.themeBackdrop}

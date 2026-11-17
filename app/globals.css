@@ -15,3 +15,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   background: linear-gradient(135deg, #020617 0%, #111827 45%, #111827 100%);
 }
+
+/* SRS-627: native form controls follow the account appearance. No artwork filters. */
+html[data-appearance='light'] { color-scheme: light; }
+html[data-appearance='dark'] { color-scheme: dark; }

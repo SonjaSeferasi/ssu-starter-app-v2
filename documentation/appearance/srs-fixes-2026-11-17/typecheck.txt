@@ -1,0 +1,1 @@
+Focused TypeScript check: 0 diagnostics. Appearance API, provider, navigation and Game Room dependency graph. Not a full-project build.

@@ -1235,3 +1235,7 @@
 /* A shared hall has one world size on phones and desktops. The viewport scrolls over it. */
 .hallInterior { width:1024px; min-width:1024px; max-width:1024px }
 .hallStage { max-width:1024px; overflow-x:auto }
+
+/* SRS-627.6: shared appearance affects controls, not the rendered room. */
+:global(html[data-appearance='dark']) .game .button { background:#302c3e; color:#f5f0ff; border-color:#9682aa; box-shadow:inset -3px -3px 0 #1e192b,inset 3px 3px 0 #514461; }
+:global(html[data-appearance='dark']) .game .panel { background:#282334; color:#f5f0ff; }

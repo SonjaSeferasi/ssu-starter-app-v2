@@ -136,3 +136,8 @@
 .musicControls h3, .musicControls p { margin: 0; }
 .musicControls label { display: grid; gap: 6px; font-size: 14px; }
 .musicControls input { max-width: 100%; }
+
+/* SRS-627.6: only DOM controls; never change the Three.js canvas or scenery. */
+:global(html[data-appearance='dark']) .game :is(.button,.settingsPanel,.dialog,.controls,.voicePanel,.musicPanel) { background:#202d3b; color:#f0f5fa; border-color:#718197; }
+:global(html[data-appearance='dark']) .game .toolbar h2 { color:#f0f5fa; }
+:global(html[data-appearance='dark']) .settingsPanel :is(p,button) { background:#304456; color:#f0f5fa; }

@@ -172,3 +172,24 @@
 @media (max-width: 760px) { .page { padding: 12px; border-radius: 0; } }
 @media (max-width: 420px) { .smallIcon { display: none; } .panelHeading h2 { font-size: 19px; } .bannerMascot { display: none; } }
 @media (prefers-reduced-motion: reduce) { .gameCard, .gameAction, .primaryButton, .swatch { transition: none; } .gameCard:hover, .gameAction:hover, .primaryButton:hover:not(:disabled), .swatch:hover:not(:disabled) { transform: none; } }
+
+/* SRS-629.3: purely decorative, device-local backgrounds. */
+.page[data-room-background='adventure-sky'] { background:linear-gradient(#e8f4ffcc,#eee7ffd9),url('/theme-assets/backgrounds/sky_clouds.webp') center/cover fixed; }
+.backgroundChoices { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; padding:14px 18px; margin-bottom:18px; border:1px solid var(--line); border-radius:20px; background:var(--panel); }
+.backgroundChoices small { display:block; margin-top:4px; color:var(--grey); }
+.backgroundButtons { display:flex; flex-wrap:wrap; gap:10px; }
+.backgroundButtons button { display:flex; align-items:center; gap:8px; padding:8px 12px; border:2px solid var(--line); border-radius:14px; background:var(--panel); color:var(--plum); cursor:pointer; }
+.backgroundButtons button[aria-pressed='true'] { border-color:#8b45e6; box-shadow:0 0 0 2px #8b45e622; font-weight:800; }
+.backgroundButtons button:focus-visible { outline:3px solid #8b45e6; outline-offset:3px; }
+.backgroundSwatch { width:36px; height:28px; border-radius:8px; background:linear-gradient(135deg,#ffd6e7,#d6c3ff); }
+.backgroundSwatch[data-background='adventure-sky'] { background:#cceeff url('/theme-assets/backgrounds/sky_clouds.webp') center/cover; }
+.backgroundChoices p { flex-basis:100%; margin:0; }
+:global(html[data-appearance='dark']) .page { --plum:#f4edff; --grey:#c4b6d6; --line:#534268; --panel:#282139; color-scheme:dark; }
+:global(html[data-appearance='dark']) .backgroundChoices { box-shadow:0 6px 20px #16102233; }
+:global(html[data-appearance='dark']) :is(.controls,.bodyChoices,.collectionTabs,.tabs button,.completeOption,.paintedSkin,.styleChoices button,.option) { background:#352b48; color:#f4edff; }
+:global(html[data-appearance='dark']) :is(.bodyChoices button,.collectionTabs button) { color:#f4edff; }
+:global(html[data-appearance='dark']) :is(.bodyChoices button,.collectionTabs button,.tabs button,.completeOption,.paintedSkin,.styleChoices button,.option)[aria-pressed='true'] { background:#64428b; color:#fff; }
+:global(html[data-appearance='dark']) :is(.gameCard,.gameCard[data-accent],.participation,.streakBoard) { background:#30263f; }
+:global(html[data-appearance='dark']) .participation p { color:#d8cee4; }
+:global(html[data-appearance='dark']) .participation p strong { color:#ffb66e; }
+:global(html[data-appearance='dark']) .streakHeading button { color:#d8b4fe; }

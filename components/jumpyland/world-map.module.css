@@ -41,3 +41,6 @@
 @media(max-height:550px) and (min-width:701px){.panel{bottom:43px;padding:12px 18px;gap:18px;width:600px;border-radius:18px}.description h2{font-size:21px;margin:4px 0}.description>p{font-size:11px}.panelActions{padding-left:18px}.map .start{padding:11px 16px;font-size:14px;min-width:160px}.mapTools{bottom:8px;left:16px;right:16px}.mapTools p,.map .mapTools button{padding:7px 10px;font-size:9px}}
 @media(max-height:650px) and (max-width:700px){.worldSwitcher{top:65px}.panel{padding:12px;gap:9px;bottom:46px}.description h2{font-size:20px}.description>p{display:none}.mapTools{bottom:8px}.map .start{padding:10px}.mission>div{max-height:32svh}}
 @media(prefers-reduced-motion:reduce){.avatar,.orb{transition:none}.rider{animation:none}}
+
+/* SRS-627.6: theme the menu surfaces; leave the map and world artwork unchanged. */
+:global(html[data-appearance='dark']) .panel { background:#192b29f2; color:#fff9e7; }

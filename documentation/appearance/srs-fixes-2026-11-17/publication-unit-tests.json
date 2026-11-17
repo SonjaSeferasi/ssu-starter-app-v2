@@ -1,0 +1,993 @@
+{
+  "evidence": "Rerun in original working checkout before publication; isolated database fixtures, not hosted account writes.",
+  "passed": 86,
+  "tests": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation renders four live, clickable destinations with one combined Events and Trending link",
+          "status": "passed",
+          "title": "renders four live, clickable destinations with one combined Events and Trending link",
+          "duration": 52.43260000000009,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation provides the SRS-604 creation choices using the existing workflows",
+          "status": "passed",
+          "title": "provides the SRS-604 creation choices using the existing workflows",
+          "duration": 14.638200000000325,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation tags teammates' already-working features as \"Soon\" without disabling them",
+          "status": "passed",
+          "title": "tags teammates' already-working features as \"Soon\" without disabling them",
+          "duration": 8.08600000000024,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation renders not-yet-built destinations as disabled, non-navigable placeholders",
+          "status": "passed",
+          "title": "renders not-yet-built destinations as disabled, non-navigable placeholders",
+          "duration": 7.6271999999999025,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation has no Snipe destination with side placement",
+          "status": "passed",
+          "title": "has no Snipe destination with side placement",
+          "duration": 8.701799999999821,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation has no Snipe destination with bottom placement",
+          "status": "passed",
+          "title": "has no Snipe destination with bottom placement",
+          "duration": 7.037199999999757,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation selects exactly one sidebar item on /",
+          "status": "passed",
+          "title": "selects exactly one sidebar item on /",
+          "duration": 5.4922999999998865,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation selects exactly one sidebar item on /messages",
+          "status": "passed",
+          "title": "selects exactly one sidebar item on /messages",
+          "duration": 3.4187000000001717,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation selects exactly one sidebar item on /game-room",
+          "status": "passed",
+          "title": "selects exactly one sidebar item on /game-room",
+          "duration": 5.4879000000000815,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation selects exactly one sidebar item on /events",
+          "status": "passed",
+          "title": "selects exactly one sidebar item on /events",
+          "duration": 4.417499999999563,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation selects exactly one sidebar item on /messages/conversation-123",
+          "status": "passed",
+          "title": "selects exactly one sidebar item on /messages/conversation-123",
+          "duration": 4.42450000000008,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation moves selection from Campus Feed to Events and Trending without matching similar route names",
+          "status": "passed",
+          "title": "moves selection from Campus Feed to Events and Trending without matching similar route names",
+          "duration": 0.722700000000259,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation highlights the header profile link only on /profile",
+          "status": "passed",
+          "title": "highlights the header profile link only on /profile",
+          "duration": 11.860700000000179,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation excludes shared navigation on /login",
+          "status": "passed",
+          "title": "excludes shared navigation on /login",
+          "duration": 0.7285000000001673,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation excludes shared navigation on /register",
+          "status": "passed",
+          "title": "excludes shared navigation on /register",
+          "duration": 0.3283000000001266,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation excludes shared navigation on /game-1",
+          "status": "passed",
+          "title": "excludes shared navigation on /game-1",
+          "duration": 0.22469999999975698,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation excludes shared navigation on /game-1/levels/1",
+          "status": "passed",
+          "title": "excludes shared navigation on /game-1/levels/1",
+          "duration": 0.20839999999952852,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation excludes shared navigation on /wordle",
+          "status": "passed",
+          "title": "excludes shared navigation on /wordle",
+          "duration": 0.1463000000003376,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation excludes shared navigation on /wordle/results",
+          "status": "passed",
+          "title": "excludes shared navigation on /wordle/results",
+          "duration": 0.13990000000012515,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation excludes shared navigation on /game-room/game-1/pause",
+          "status": "passed",
+          "title": "excludes shared navigation on /game-room/game-1/pause",
+          "duration": 0.14870000000064465,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation excludes shared navigation on /game-room/wordle",
+          "status": "passed",
+          "title": "excludes shared navigation on /game-room/wordle",
+          "duration": 0.13810000000012224,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation keeps Events and Trending selected on the create-event page",
+          "status": "passed",
+          "title": "keeps Events and Trending selected on the create-event page",
+          "duration": 0.2521999999999025,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation links the Events and Trending page to event creation",
+          "status": "passed",
+          "title": "links the Events and Trending page to event creation",
+          "duration": 1.753700000000208,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation allows shared navigation on /",
+          "status": "passed",
+          "title": "allows shared navigation on /",
+          "duration": 0.45830000000023574,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation allows shared navigation on /game-room",
+          "status": "passed",
+          "title": "allows shared navigation on /game-room",
+          "duration": 0.3654999999998836,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation allows shared navigation on /profile",
+          "status": "passed",
+          "title": "allows shared navigation on /profile",
+          "duration": 0.28810000000066793,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation allows shared navigation on /messages",
+          "status": "passed",
+          "title": "allows shared navigation on /messages",
+          "duration": 0.28440000000045984,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "UR-600 navigation"
+          ],
+          "fullName": "UR-600 navigation allows shared navigation on /events",
+          "status": "passed",
+          "title": "allows shared navigation on /events",
+          "duration": 0.41299999999955617,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1794925234869,
+      "endTime": 1794925235011.413,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Csc 351/ssu-starter-app-v2/__tests__/navigation.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "SRS-627 appearance account boundary"
+          ],
+          "fullName": "SRS-627 appearance account boundary reads a default without exposing cacheable account data",
+          "status": "passed",
+          "title": "reads a default without exposing cacheable account data",
+          "duration": 56.21100000000001,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "SRS-627 appearance account boundary"
+          ],
+          "fullName": "SRS-627 appearance account boundary saves light only for the verified user",
+          "status": "passed",
+          "title": "saves light only for the verified user",
+          "duration": 3.7454999999999927,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "SRS-627 appearance account boundary"
+          ],
+          "fullName": "SRS-627 appearance account boundary saves dark only for the verified user",
+          "status": "passed",
+          "title": "saves dark only for the verified user",
+          "duration": 2.1498999999998887,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "SRS-627 appearance account boundary"
+          ],
+          "fullName": "SRS-627 appearance account boundary rejects unsupported preference \"system\" before database access",
+          "status": "passed",
+          "title": "rejects unsupported preference \"system\" before database access",
+          "duration": 1.9838999999999487,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "SRS-627 appearance account boundary"
+          ],
+          "fullName": "SRS-627 appearance account boundary rejects unsupported preference \"\" before database access",
+          "status": "passed",
+          "title": "rejects unsupported preference \"\" before database access",
+          "duration": 1.3653000000001612,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "SRS-627 appearance account boundary"
+          ],
+          "fullName": "SRS-627 appearance account boundary rejects unsupported preference null before database access",
+          "status": "passed",
+          "title": "rejects unsupported preference null before database access",
+          "duration": 1.258299999999963,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "SRS-627 appearance account boundary"
+          ],
+          "fullName": "SRS-627 appearance account boundary rejects unsupported preference 5 before database access",
+          "status": "passed",
+          "title": "rejects unsupported preference 5 before database access",
+          "duration": 0.983600000000024,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "SRS-627 appearance account boundary"
+          ],
+          "fullName": "SRS-627 appearance account boundary rejects unsupported preference {} before database access",
+          "status": "passed",
+          "title": "rejects unsupported preference {} before database access",
+          "duration": 0.9067999999999756,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "SRS-627 appearance account boundary"
+          ],
+          "fullName": "SRS-627 appearance account boundary rejects unsupported preference true before database access",
+          "status": "passed",
+          "title": "rejects unsupported preference true before database access",
+          "duration": 3.324200000000019,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "SRS-627 appearance account boundary"
+          ],
+          "fullName": "SRS-627 appearance account boundary requires sign-in",
+          "status": "passed",
+          "title": "requires sign-in",
+          "duration": 2.304300000000012,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "SRS-627 appearance account boundary"
+          ],
+          "fullName": "SRS-627 appearance account boundary rejects unverified accounts",
+          "status": "passed",
+          "title": "rejects unverified accounts",
+          "duration": 1.8558000000000447,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "SRS-627 appearance account boundary"
+          ],
+          "fullName": "SRS-627 appearance account boundary rejects revoked sessions",
+          "status": "passed",
+          "title": "rejects revoked sessions",
+          "duration": 1.5967000000000553,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "SRS-627 appearance account boundary"
+          ],
+          "fullName": "SRS-627 appearance account boundary reports database failure PGRST202 without a false saved response",
+          "status": "passed",
+          "title": "reports database failure PGRST202 without a false saved response",
+          "duration": 2.2361000000000786,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "SRS-627 appearance account boundary"
+          ],
+          "fullName": "SRS-627 appearance account boundary reports database failure XX000 without a false saved response",
+          "status": "passed",
+          "title": "reports database failure XX000 without a false saved response",
+          "duration": 1.416400000000067,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "SRS-627 appearance account boundary"
+          ],
+          "fullName": "SRS-627 appearance account boundary reports database failure 42501 without a false saved response",
+          "status": "passed",
+          "title": "reports database failure 42501 without a false saved response",
+          "duration": 1.2950999999998203,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "SRS-627 appearance account boundary"
+          ],
+          "fullName": "SRS-627 appearance account boundary does not treat malformed storage results as a saved preference",
+          "status": "passed",
+          "title": "does not treat malformed storage results as a saved preference",
+          "duration": 1.1313000000000102,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1794925231337,
+      "endTime": 1794925231421.1313,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Csc 351/ssu-starter-app-v2/__tests__/api/appearance-preferences.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "Game Room account boundary"
+          ],
+          "fullName": "Game Room account boundary rejects requests without a session before accessing account data",
+          "status": "passed",
+          "title": "rejects requests without a session before accessing account data",
+          "duration": 38.93179999999984,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Game Room account boundary"
+          ],
+          "fullName": "Game Room account boundary rejects unverified identities",
+          "status": "passed",
+          "title": "rejects unverified identities",
+          "duration": 2.0815999999999804,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Game Room account boundary"
+          ],
+          "fullName": "Game Room account boundary requires a linked SocialU profile",
+          "status": "passed",
+          "title": "requires a linked SocialU profile",
+          "duration": 4.36010000000033,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Game Room account boundary"
+          ],
+          "fullName": "Game Room account boundary identifies missing Game Room integration so the UI can offer unsaved design samples",
+          "status": "passed",
+          "title": "identifies missing Game Room integration so the UI can offer unsaved design samples",
+          "duration": 21.704999999999927,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Game Room account boundary"
+          ],
+          "fullName": "Game Room account boundary does not describe unrelated storage failures as missing setup",
+          "status": "passed",
+          "title": "does not describe unrelated storage failures as missing setup",
+          "duration": 2.5579999999999927,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Game Room account boundary"
+          ],
+          "fullName": "Game Room account boundary derives avatar ownership from the token rather than caller IDs",
+          "status": "passed",
+          "title": "derives avatar ownership from the token rather than caller IDs",
+          "duration": 4.148400000000038,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Game Room account boundary"
+          ],
+          "fullName": "Game Room account boundary returns a forbidden outcome when storage rejects an unowned outfit",
+          "status": "passed",
+          "title": "returns a forbidden outcome when storage rejects an unowned outfit",
+          "duration": 1.8299999999999272,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Game Room account boundary"
+          ],
+          "fullName": "Game Room account boundary rejects invalid appearance IDs {\"outfitId\":\"sample-campus\",\"faceId\":\"2\"}",
+          "status": "passed",
+          "title": "rejects invalid appearance IDs {\"outfitId\":\"sample-campus\",\"faceId\":\"2\"}",
+          "duration": 1.3668000000002394,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Game Room account boundary"
+          ],
+          "fullName": "Game Room account boundary rejects invalid appearance IDs {\"outfitId\":\"1\",\"faceId\":{}}",
+          "status": "passed",
+          "title": "rejects invalid appearance IDs {\"outfitId\":\"1\",\"faceId\":{}}",
+          "duration": 1.374000000000251,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Game Room account boundary"
+          ],
+          "fullName": "Game Room account boundary rejects invalid appearance IDs {\"outfitId\":\"1 OR 1=1\",\"faceId\":\"2\"}",
+          "status": "passed",
+          "title": "rejects invalid appearance IDs {\"outfitId\":\"1 OR 1=1\",\"faceId\":\"2\"}",
+          "duration": 1.2117000000002918,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Game Room account boundary"
+          ],
+          "fullName": "Game Room account boundary rejects invalid appearance IDs {\"outfitId\":\"9223372036854775808\",\"faceId\":\"2\"}",
+          "status": "passed",
+          "title": "rejects invalid appearance IDs {\"outfitId\":\"9223372036854775808\",\"faceId\":\"2\"}",
+          "duration": 1.1137999999996282,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Game Room account boundary"
+          ],
+          "fullName": "Game Room account boundary saves side placement for the verified account only",
+          "status": "passed",
+          "title": "saves side placement for the verified account only",
+          "duration": 2.0059000000001106,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Game Room account boundary"
+          ],
+          "fullName": "Game Room account boundary saves bottom placement for the verified account only",
+          "status": "passed",
+          "title": "saves bottom placement for the verified account only",
+          "duration": 1.9122999999999593,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Game Room account boundary"
+          ],
+          "fullName": "Game Room account boundary saves top placement for the verified account only",
+          "status": "passed",
+          "title": "saves top placement for the verified account only",
+          "duration": 2.087199999999939,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Game Room account boundary"
+          ],
+          "fullName": "Game Room account boundary rejects unsupported placement \"left\"",
+          "status": "passed",
+          "title": "rejects unsupported placement \"left\"",
+          "duration": 1.2137000000002445,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Game Room account boundary"
+          ],
+          "fullName": "Game Room account boundary rejects unsupported placement \"\"",
+          "status": "passed",
+          "title": "rejects unsupported placement \"\"",
+          "duration": 1.01070000000027,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Game Room account boundary"
+          ],
+          "fullName": "Game Room account boundary rejects unsupported placement null",
+          "status": "passed",
+          "title": "rejects unsupported placement null",
+          "duration": 11.16359999999986,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Game Room account boundary"
+          ],
+          "fullName": "Game Room account boundary rejects unsupported placement 3",
+          "status": "passed",
+          "title": "rejects unsupported placement 3",
+          "duration": 10.080199999999877,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization saves whole avatar campus-hijab-6 through the existing verified account bridge",
+          "status": "passed",
+          "title": "saves whole avatar campus-hijab-6 through the existing verified account bridge",
+          "duration": 6.996900000000096,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization saves whole avatar campus-v4-female-4-2-glasses through the existing verified account bridge",
+          "status": "passed",
+          "title": "saves whole avatar campus-v4-female-4-2-glasses through the existing verified account bridge",
+          "duration": 4.805199999999786,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization saves a chosen body shape and skin colour with the complete avatar",
+          "status": "passed",
+          "title": "saves a chosen body shape and skin colour with the complete avatar",
+          "duration": 1.7642000000000735,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization rejects an unknown body or skin choice {\"bodyShape\":\"huge\"}",
+          "status": "passed",
+          "title": "rejects an unknown body or skin choice {\"bodyShape\":\"huge\"}",
+          "duration": 0.9061999999998989,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization rejects an unknown body or skin choice {\"skinColor\":\"#000000\"}",
+          "status": "passed",
+          "title": "rejects an unknown body or skin choice {\"skinColor\":\"#000000\"}",
+          "duration": 1.1015999999999622,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization rejects an unknown body or skin choice {\"skinColor\":3}",
+          "status": "passed",
+          "title": "rejects an unknown body or skin choice {\"skinColor\":3}",
+          "duration": 0.7231999999999061,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization rejects an invalid complete avatar id \"unknown\"",
+          "status": "passed",
+          "title": "rejects an invalid complete avatar id \"unknown\"",
+          "duration": 0.9296999999996842,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization rejects an invalid complete avatar id null",
+          "status": "passed",
+          "title": "rejects an invalid complete avatar id null",
+          "duration": 0.6615999999999076,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization rejects an invalid complete avatar id 2",
+          "status": "passed",
+          "title": "rejects an invalid complete avatar id 2",
+          "duration": 0.5928999999996449,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization sends all selected details through the verified account bridge",
+          "status": "passed",
+          "title": "sends all selected details through the verified account bridge",
+          "duration": 1.4187000000001717,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization rejects unsupported customization {\"outfitId\":\"1\",\"faceId\":\"2\",\"faceStyle\":\"freckles\",\"shirtColor\":\"pink\",\"pantsColor\":\"khaki\"}",
+          "status": "passed",
+          "title": "rejects unsupported customization {\"outfitId\":\"1\",\"faceId\":\"2\",\"faceStyle\":\"freckles\",\"shirtColor\":\"pink\",\"pantsColor\":\"khaki\"}",
+          "duration": 3.0084999999999127,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization rejects unsupported customization {\"outfitId\":\"1\",\"faceId\":\"2\",\"faceStyle\":\"freckles\",\"shirtColor\":\"purple\",\"pantsColor\":null}",
+          "status": "passed",
+          "title": "rejects unsupported customization {\"outfitId\":\"1\",\"faceId\":\"2\",\"faceStyle\":\"freckles\",\"shirtColor\":\"purple\",\"pantsColor\":null}",
+          "duration": 0.7705000000000837,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization rejects unsupported customization {\"outfitId\":\"1\",\"faceId\":\"2\",\"faceStyle\":[],\"shirtColor\":\"purple\",\"pantsColor\":\"khaki\"}",
+          "status": "passed",
+          "title": "rejects unsupported customization {\"outfitId\":\"1\",\"faceId\":\"2\",\"faceStyle\":[],\"shirtColor\":\"purple\",\"pantsColor\":\"khaki\"}",
+          "duration": 0.9834999999998217,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization loads legacy avatars while the new migration is pending",
+          "status": "passed",
+          "title": "loads legacy avatars while the new migration is pending",
+          "duration": 1.1875,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization saves the layered look (skin tone, hijab, top and pants) with the other details",
+          "status": "passed",
+          "title": "saves the layered look (skin tone, hijab, top and pants) with the other details",
+          "duration": 1.324500000000171,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization fills the required details when only layered fields change",
+          "status": "passed",
+          "title": "fills the required details when only layered fields change",
+          "duration": 1.7998999999999796,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization rejects unknown layered option {\"skinTone\":\"tone-7\"}",
+          "status": "passed",
+          "title": "rejects unknown layered option {\"skinTone\":\"tone-7\"}",
+          "duration": 0.7654999999999745,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization rejects unknown layered option {\"headStyle\":\"hat\"}",
+          "status": "passed",
+          "title": "rejects unknown layered option {\"headStyle\":\"hat\"}",
+          "duration": 0.8542999999999665,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization rejects unknown layered option {\"topColor\":3}",
+          "status": "passed",
+          "title": "rejects unknown layered option {\"topColor\":3}",
+          "duration": 0.7887000000000626,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization never claims a customized avatar is saved without its database migration",
+          "status": "passed",
+          "title": "never claims a customized avatar is saved without its database migration",
+          "duration": 3.013300000000072,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization explains when an older customization function cannot save layered options ({\"code\":\"22023\",\"message\":\"Invalid avatar selection\"})",
+          "status": "passed",
+          "title": "explains when an older customization function cannot save layered options ({\"code\":\"22023\",\"message\":\"Invalid avatar selection\"})",
+          "duration": 1.5560999999997875,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "Independent avatar customization"
+          ],
+          "fullName": "Independent avatar customization explains when an older customization function cannot save layered options ({\"code\":\"23514\",\"message\":\"new row violates check constraint \\\"avatar_customization_options\\\"\"})",
+          "status": "passed",
+          "title": "explains when an older customization function cannot save layered options ({\"code\":\"23514\",\"message\":\"new row violates check constraint \\\"avatar_customization_options\\\"\"})",
+          "duration": 1.2602999999999156,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1794925231859,
+      "endTime": 1794925232008.2603,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Csc 351/ssu-starter-app-v2/__tests__/api/game-room.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "SRS-627: defaults, account isolation, persistence, independent placement and execution permissions",
+          "status": "passed",
+          "title": "SRS-627: defaults, account isolation, persistence, independent placement and execution permissions",
+          "duration": 6035.347699999999,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1794925231278,
+      "endTime": 1794925237313.3477,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Csc 351/ssu-starter-app-v2/__tests__/database/appearance-preferences.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "upgrades existing preferences and persists Top for only the selected account",
+          "status": "passed",
+          "title": "upgrades existing preferences and persists Top for only the selected account",
+          "duration": 6504.5944,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1794925231276,
+      "endTime": 1794925237780.5945,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Csc 351/ssu-starter-app-v2/__tests__/database/navigation-placement.test.ts"
+    }
+  ]
+}

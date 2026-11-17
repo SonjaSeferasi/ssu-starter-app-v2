@@ -1,0 +1,35 @@
+{
+  "evidence": "Local Edge with intercepted API fixtures, not hosted persistence or physical-device acceptance.",
+  "checks": [
+    "627.1/627.2: Light and Dark available; new fixture account defaults to Light",
+    "627.3/627.9: Dark applied and automatically saved without navigation or lost draft",
+    "627.7/627.8: failed Light save explains unsaved state; Retry submits exactly Light",
+    "627.5: selected Dark retained during client navigation to Game Room",
+    "629.3: Adventure Sky persists on reload; no account/game/points/avatar writes",
+    "629.3: background chooser fits 390px viewport",
+    "627.4/629.3: fresh browser context restores account Dark, but defaults its own device background to Campus Day (fixture-backed)",
+    "627.4: account switch resets appearance and loads the new account preference",
+    "627.4: failed initial preference load is visible and can be retried",
+    "629.3: corrupt local background preference safely defaults to Campus Day",
+    "627.6: Jumpyland instructions change to Dark without closing the dialog or changing canvas dimensions/filter"
+  ],
+  "errors": [],
+  "writes": [
+    {
+      "owner": "alice",
+      "theme": "dark"
+    },
+    {
+      "owner": "alice",
+      "theme": "light"
+    },
+    {
+      "owner": "alice",
+      "theme": "light"
+    },
+    {
+      "owner": "alice",
+      "theme": "dark"
+    }
+  ]
+}

@@ -21,6 +21,7 @@ import { Droplet, PersonStanding, Scissors, Shirt, Smile, Sparkles, Gamepad2 } f
 import { ParticipationStreak } from './participation-streak';
 import styles from './game-room.module.css';
 import { PhotoFaceEditor } from './photo-face-editor';
+import { RoomBackgroundChoices, useRoomBackground } from './room-background';
 
 export function GameRoom() {
   const session = useNavigationSession();
@@ -35,6 +36,7 @@ function completeAppearance(data: GameRoomData, value: AvatarAppearance | null):
 }
 
 export function GameRoomContent({ preview = false }: { preview?: boolean }) {
+  const roomBackground = useRoomBackground();
   const [room, setRoom] = useState<GameRoomData | null>(preview ? { ...gameRoomSamples, appearance: completeAppearance(gameRoomSamples, gameRoomSamples.appearance) } : null);
   const [appearance, setAppearance] = useState<AvatarAppearance | null>(preview ? completeAppearance(gameRoomSamples, gameRoomSamples.appearance) : null);
   const [editor, setEditor] = useState<'hair' | 'face' | 'skin' | 'body' | 'outfit'>('outfit');
@@ -119,8 +121,9 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
     void saveAvatar(next);
   }
   const chooseFigure = (change: Pick<AvatarAppearance, 'bodyShape' | 'skinColor'>) => selectedAvatar && chooseCompleteAvatar(selectedAvatar.id, change);
-  return <main className={styles.page}><div className={styles.layout}>
+  return <main className={styles.page} data-room-background={roomBackground.background}><div className={styles.layout}>
     <WelcomeBanner />
+    <RoomBackgroundChoices {...roomBackground} />
     {photoEditor && selectedAvatar && appearance && <PhotoFaceEditor avatar={selectedAvatar} appearance={appearance}
       onClose={() => setPhotoEditor(false)} onSaved={photo => {
         const confirmed = { ...appearance, faceId: null, ...photo };
