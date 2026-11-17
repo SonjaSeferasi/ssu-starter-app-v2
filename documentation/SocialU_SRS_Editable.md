@@ -7694,6 +7694,14 @@ Acceptance criterion: Given the student plays the United Kingdom level to the fi
 
 Traces to: UR-632.
 
+##### SRS-632.2, SS — Present the Alhambra in the Spain level.
+
+When the student plays the Spain level, the system shall show the red walls and battlemented towers of the Alhambra on its hill above the river, with the Torre de la Vela and its bell, the Comares Tower, the tiled roofs of the Nasrid palaces, the Palace of Charles V, the white Generalife among cypresses, the white houses of the Albayzín and the snow of the Sierra Nevada; and, on the route, slender-columned arcades, tiled walls, a pool with a fountain, myrtle hedges and potted orange trees, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Spain level, when the level opens and when the explorer reaches the finish, then the red fortress and the white Albayzín are visible from the first frame, the Generalife stands behind the finish gate, and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
