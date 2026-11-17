@@ -1,0 +1,36 @@
+{
+  "environment": "Actual local Next production UI/API/SQL; fixture Auth/PostgREST/private storage transport retaining actual uploaded PNG bytes",
+  "twoTab": {
+    "orderedMemoryCaptions": [
+      "X — older photo from another tab",
+      "Y — photo I just uploaded"
+    ],
+    "createdMemoryId": 2,
+    "expectedMemoryId": 2,
+    "insertedCaption": "Y — photo I just uploaded",
+    "persistedMemoryId": 2,
+    "sameDocument": true
+  },
+  "singleTab": {
+    "createdMemoryId": 3,
+    "savedMemoryIds": [
+      2,
+      3
+    ]
+  },
+  "uploadSha256": [
+    {
+      "memoryId": 1,
+      "sha256": "733ffd55a6e8f89ee33e67ed57a96323c0b13bab6d013badff03dba297137088"
+    },
+    {
+      "memoryId": 2,
+      "sha256": "b755fdc59f515b9fc124b79072114b4bf13df8a11297428e5eaf63234ed78735"
+    },
+    {
+      "memoryId": 3,
+      "sha256": "2f3ea4233ddcc01996a9986f973db9c99fce102275a5fc7907e01befa4e60614"
+    }
+  ],
+  "result": "passed"
+}

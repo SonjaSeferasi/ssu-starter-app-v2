@@ -80,7 +80,7 @@ export function ProfileBoard({profile,look,status,onSaved,onDirtyChange}:{profil
   </div>
   <p className={styles.hint}><Move size={14}/> {editing?'Changes stay in this editor until you save.':'On a small screen, swipe across the board to explore.'}</p>
   {historyDecision&&<ConfirmDialog title="Leave without saving your board?" busy={false} error="" cancelLabel="Stay" confirmLabel="Leave without saving" onClose={()=>{historyDecision.stay();setHistoryDecision(null);}} onConfirm={()=>{historyDecision.leave();setHistoryDecision(null);}}>Your unsaved board changes will be lost. Choose Stay to keep editing.</ConfirmDialog>}
-  {uploading&&<MemoryEditor onClose={()=>setUploading(false)} onSaved={photos=>{const added=photos.find(photo=>!memories.some(old=>old.id===photo.id));setMemories(photos);setUploading(false);if(added)add('photo',{memoryId:added.id});}}/>}
+  {uploading&&<MemoryEditor onClose={()=>setUploading(false)} onSaved={(photos,createdMemoryId)=>{setMemories(photos);setUploading(false);add('photo',{memoryId:createdMemoryId});}}/>}
  </section>;
 }
 function BoardContent({item,memories,editing}:{item:BoardItem;memories:ProfileMemory[];editing:boolean}){

@@ -1,0 +1,16 @@
+{
+  "environment": "Actual local Next production UI/API/SQL; fixture Auth/PostgREST/private storage transport retaining actual uploaded PNG bytes",
+  "twoTab": {
+    "orderedMemoryCaptions": [
+      "X — older photo from another tab",
+      "Y — photo I just uploaded"
+    ],
+    "createdMemoryId": null,
+    "expectedMemoryId": 2,
+    "insertedCaption": "X — older photo from another tab",
+    "persistedMemoryId": 1,
+    "sameDocument": true
+  },
+  "result": "failed",
+  "error": "AssertionError: expected 1 to be 2 // Object.is equality"
+}

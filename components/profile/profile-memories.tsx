@@ -71,7 +71,7 @@ export function ProfileMemories({ profile }: { profile: StudentProfile }) {
   </section>;
 }
 
-export function MemoryEditor({ onClose, onSaved }: { onClose: () => void; onSaved: (memories: ProfileMemory[]) => void }) {
+export function MemoryEditor({ onClose, onSaved }: { onClose: () => void; onSaved: (memories: ProfileMemory[], createdMemoryId: number) => void }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [photo, setPhoto] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -104,7 +104,11 @@ export function MemoryEditor({ onClose, onSaved }: { onClose: () => void; onSave
       const response = await fetch('/api/profiles/memories', { method: 'POST', cache: 'no-store', headers: { Authorization: `Bearer ${token}` }, body: form });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error || 'Unable to pin this memory.');
-      onSaved(data.memories);
+      if (!Number.isSafeInteger(data.createdMemoryId) || data.createdMemoryId < 1
+        || !Array.isArray(data.memories) || !data.memories.some((memory: ProfileMemory) => memory.id === data.createdMemoryId)) {
+        throw new Error('Your photo was pinned, but its identity could not be confirmed. Reload your pinned memories before trying again.');
+      }
+      onSaved(data.memories, data.createdMemoryId);
     } catch (reason) { setError(reason instanceof Error ? reason.message : 'Unable to pin this memory.'); setSaving(false); }
   }
 

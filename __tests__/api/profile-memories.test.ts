@@ -19,7 +19,7 @@ beforeEach(() => {
   upload.mockResolvedValue({ error: null }); remove.mockResolvedValue({ error: null });
   sign.mockResolvedValue({ data: { signedUrl: 'https://signed.example/photo' }, error: null });
   results = [];
-  rpc.mockImplementation(async (fn: string) => fn === 'socialu_session_guard' ? { data: true, error: null } : results.shift() ?? { data: { memories: [stored], removedKey: null }, error: null });
+  rpc.mockImplementation(async (fn: string, args: any) => fn === 'socialu_session_guard' ? { data: true, error: null } : results.shift() ?? { data: { memories: [args.p_action === 'add' ? {...stored,id:2,key:args.p_storage_key} : stored], removedKey: null }, error: null });
 });
 
 describe('pinned memories API', () => {
@@ -34,6 +34,19 @@ describe('pinned memories API', () => {
     const key = upload.mock.calls[0][0] as string;
     expect(key).toMatch(new RegExp(`^profile-memories/${user.id}/[0-9a-f-]{36}\\.jpg$`));
     expect(rpc).toHaveBeenCalledWith('socialu_profile_memories', { p_auth_id: user.id, p_action: 'add', p_storage_key: key, p_caption: 'Small wins', p_doodle: 'sparkles' });
+  });
+  it('returns the exact newly uploaded ID even when another-tab photo appears earlier in the list', async()=>{
+    rpc.mockImplementation(async(fn:string,args:any)=>fn==='socialu_session_guard'?{data:true,error:null}:args.p_action==='read'?{data:{memories:[stored],removedKey:null},error:null}:{data:{memories:[stored,{...stored,id:2,key:'other-tab-photo'},{...stored,id:3,key:args.p_storage_key}],removedKey:null},error:null});
+    const response=await POST(post({photo:jpeg()}));const data=await response.json();
+    expect(response.status).toBe(200);expect(data.createdMemoryId).toBe(3);
+    expect(data.memories.map((m:any)=>m.id)).toEqual([1,2,3]);expect(JSON.stringify(data)).not.toContain('profile-memories/');
+  });
+  it('returns the created ID on a single-tab upload', async()=>{
+    const data=await(await POST(post({photo:jpeg()}))).json();expect(data.createdMemoryId).toBe(2);
+  });
+  it('fails closed without deleting committed media if the new memory identity is absent', async()=>{
+    results=[{data:{memories:[],removedKey:null},error:null},{data:{memories:[stored],removedKey:null},error:null}];
+    const response=await POST(post({photo:jpeg()}));expect(response.status).toBe(503);expect((await response.json()).error).toContain('identity could not be confirmed');expect(remove).not.toHaveBeenCalled();
   });
   it('removes the uploaded photo when pinning fails', async () => {
     results = [{ data: { memories: [], removedKey: null }, error: null }, { data: null, error: { code: '22023', message: 'Choose a photo, a short caption, and a doodle.' } }];

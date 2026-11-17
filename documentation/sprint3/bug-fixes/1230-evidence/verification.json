@@ -1,0 +1,15 @@
+{
+  "baseCommit": "5c7e8edcac31428a4a5e6a67b91c9a73db691e2b",
+  "testedSourceSha256": {
+    "app/api/profiles/memories/route.ts": "d7d9ac8c78d7b2e2089a97842f08290ec1031dcc514c040687b485dd7e674ade",
+    "components/profile/profile-memories.tsx": "66b6a8176101336ee72c3e1422d4a4555d90ec6da29529546ef87a5d9d20ac73",
+    "components/profile/profile-board.tsx": "cb15e93417df0874321e89b63f02cbf78733e290ced1adda07a5367693f4a7ca",
+    "scripts/tests/board-upload-identity.browser.ts": "9420bbac2a850a2a273c752a787c3355ccc999b6b90cd9b06f4ef46f45871d6e",
+    "vitest.board-upload-evidence.config.ts": "dd8f2ae2e68d682f2855b08208197bd687a40e125a36a041c8800976f1b95b71"
+  },
+  "focusedTests": 64,
+  "browserRegressions": 1,
+  "productionBuild": "passed including TypeScript",
+  "migration": "None required: exact ID derived server-side from the unique uploaded storage key in the existing SQL response.",
+  "limits": "Actual local Next production UI/API and real SQL on disposable PGlite. Auth/PostgREST/storage provider transport fixtures retain actual uploaded PNG bytes. Existing public artwork supplies three distinct test images. No hosted boards/photos/accounts changed."
+}
