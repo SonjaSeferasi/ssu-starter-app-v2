@@ -7682,6 +7682,18 @@ Acceptance criterion: Given the student is playing the France level, when the st
 
 Traces to: UR-631.
 
+#### UR-632, SS - Recognise a country from its level.
+
+User requirement: As a student, I want each European country's level to show that country's own landmark, buildings and street life in real detail, so that I can tell where I am without reading the title and learn what the place looks like.
+
+##### SRS-632.1, SS — Present Westminster in the United Kingdom level.
+
+When the student plays the United Kingdom level, the system shall show, along the far bank of the Thames, the Palace of Westminster with its Gothic window bays and pinnacles, Victoria Tower flying the Union Flag, the Central Tower, and Elizabeth Tower with four clock dials; Westminster Bridge with a red double-decker bus and a black cab; the embankment with its lamps; and, on the route, London street furniture (red telephone box, red pillar box, lamp posts, railings, balustrades and chimney pots) that never stands in the walking lane.
+
+Acceptance criterion: Given the student plays the United Kingdom level to the finish gate, when the student looks at the scene at the start and at the finish, then the palace front is visible from the first frame, the clock dial of Elizabeth Tower is inside the view above the finish gate with the bridge and the red bus beside it, and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
