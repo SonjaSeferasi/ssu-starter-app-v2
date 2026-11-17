@@ -147,7 +147,11 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 /* SRS-211.3 (#1281): the send time below the message, closing it. Same colour as the sender name above it
    (5.9:1 on white, 5.5:1 on the panel). The margin sets it in from the bubble's edge; white-space stops
    "Nov 16, 6:14 PM" wrapping onto two lines. The list aligns it to whichever side the message is on. */
-.messageTime { margin: 2px 6px 0; color: #536963; font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.messageMeta { display: flex; align-items: baseline; gap: 6px; margin: 2px 6px 0; }
+.messageTime { color: #536963; font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* SRS-211.8 (#1283): "Read", beside the time. Green rather than grey so it reads as a state that has been
+   reached, not as more metadata. 7.0:1 on white, 6.6:1 on the panel. */
+.messageRead { color: #28634e; font-size: 12px; font-weight: 700; white-space: nowrap; }
 /* SRS-211.2 (#1282): the sender's photo beside their messages. align-self keeps it level with the first
    line of a long bubble rather than floating to its middle. The spacer holds the same width for the rest of
    a run, so consecutive bubbles stay in one column. */
