@@ -7838,6 +7838,14 @@ Acceptance criterion: Given the student plays the Finland level, when the explor
 
 Traces to: UR-632.
 
+##### SRS-632.20, SS — Present Þingvellir in the Iceland level.
+
+When the student plays the Iceland level, the system shall show a plain of dark lava with hummocks of moss, lava blocks, drifts of purple lupins and straight fissures of blue water; the wall of the rift as a cliff of basalt columns along the whole valley, with a lower wall before it; a waterfall dropping over the cliff and a river winding from it to the lake; the white church with its green roof and tower; the farmhouse of five white gables; the Law Rock with its walkway and the Icelandic flag; grazing horses; birch scrub; a snow-capped volcano above the rift wall; rising steam; and, on the route, rope rails, lava blocks, lupins, cairns, benches and clusters of basalt columns, none of which stands in the walking lane or changes where the explorer can stand. The water of the falls and the steam move unless the student has asked for reduced motion.
+
+Acceptance criterion: Given the student plays the Iceland level, when the explorer is in the first half of the route, then the flag on the Law Rock, the church and the five gables of the farmhouse are visible in front of the rift wall; when the explorer is past the middle, then the waterfall is visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
