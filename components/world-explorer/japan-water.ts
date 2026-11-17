@@ -1,4 +1,5 @@
 import * as T from 'three';
+import {japanAtmosphere} from './japan-atmosphere';
 import {mesh,random} from './scenic-kit';
 
 export type JapanWaterfallSite={x:number;top:number;z:number;width:number;intensity?:number;channelLength?:number};
@@ -88,7 +89,7 @@ const surfaceVertex=`
  }`;
 
 const surfaceFragment=`
- uniform float time;uniform float opacity;varying vec2 waterUv;varying vec3 waterPoint;
+ uniform float time;uniform float opacity;uniform vec3 lakeDeep;uniform vec3 lakePale;uniform vec3 lakeSparkle;varying vec2 waterUv;varying vec3 waterPoint;
  #include <fog_pars_fragment>
  ${noiseGLSL}
  void main(){vec2 p=waterPoint.xz;
@@ -97,8 +98,7 @@ const surfaceFragment=`
   vec2 warp=vec2(waterNoise(p*.11+vec2(7.1,2.4)),waterNoise(p*.09+vec2(1.3,9.2)))-.5;
   float ripples=waterNoise(p*vec2(.18,.65)+warp*2.4+drift*2.);
   float brokenLight=smoothstep(.57,.79,ripples)*smoothstep(.31,.72,large);
-  vec3 deep=vec3(.055,.23,.29),pale=vec3(.17,.39,.43);
-  vec3 color=mix(deep,pale,large*.66+.16)+brokenLight*vec3(.055,.075,.072);
+  vec3 color=mix(lakeDeep,lakePale,large*.66+.16)+brokenLight*lakeSparkle;
   gl_FragColor=vec4(color,opacity);
   #include <tonemapping_fragment>
   #include <colorspace_fragment>
@@ -114,7 +114,7 @@ function geometry(positions:number[],uv:number[],indices:number[],seeds?:number[
  * All resources belong to the returned root and are disposed by its owner. */
 export function createJapanWater(parent:T.Object3D,{finish,sites,low=false}:{finish:number;sites:readonly JapanWaterfallSite[];low?:boolean}){
  const root=new T.Group();root.name='japan-valley-water';root.userData.decorative=true;root.userData.waterfallCount=sites.length;root.userData.drawBudget=6;parent.add(root);
- const time={value:0},waterNoiseMap={value:createJapanWaterNoiseTexture()},surfaceMaterial=new T.ShaderMaterial({uniforms:{...T.UniformsUtils.clone(T.UniformsLib.fog),time,waterNoiseMap,opacity:{value:1}},vertexShader:surfaceVertex,fragmentShader:surfaceFragment,fog:true,side:T.DoubleSide});
+ const time={value:0},waterNoiseMap={value:createJapanWaterNoiseTexture()},surfaceMaterial=new T.ShaderMaterial({uniforms:{...T.UniformsUtils.clone(T.UniformsLib.fog),time,waterNoiseMap,opacity:{value:1},lakeDeep:{value:new T.Vector3(...japanAtmosphere.lake.deep)},lakePale:{value:new T.Vector3(...japanAtmosphere.lake.pale)},lakeSparkle:{value:new T.Vector3(...japanAtmosphere.lake.sparkle)}},vertexShader:surfaceVertex,fragmentShader:surfaceFragment,fog:true,side:T.DoubleSide});
  const lake=mesh(root,new T.PlaneGeometry(finish+190,175),surfaceMaterial,finish*.5,-23,-59);lake.rotation.x=-Math.PI/2;lake.name='japan-mountain-lake';lake.castShadow=lake.receiveShadow=false;
  const positions:number[]=[],uv:number[]=[],indices:number[]=[],seeds:number[]=[],intensities:number[]=[],sourceP:number[]=[],sourceUv:number[]=[],sourceI:number[]=[],cols=low?6:10,rows=low?20:36;
  sites.forEach((site,index)=>{
