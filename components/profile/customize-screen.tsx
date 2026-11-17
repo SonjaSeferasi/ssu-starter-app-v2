@@ -166,7 +166,7 @@ function BackgroundPicker({ value, onChange }: { value: ScreenThemeId | null; on
     <div className="space-y-3">
       <p className="text-xs text-stone-500">Changes the entire page background behind posts, sidebars, and content.</p>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3" role="radiogroup" aria-label="Background style">
-        <DefaultTile selected={value === null} onClick={() => onChange(null)} />
+        <DefaultTile selected={value === null} onClick={() => onChange(null)} aspect="aspect-video" />
         {SCREEN_THEMES.map((theme) => (
           <ThumbnailTile
             key={theme.id}
@@ -241,7 +241,7 @@ function HeaderPicker({ value, onChange }: { value: HeaderThemeId | null; onChan
   );
 }
 
-function DefaultTile({ selected, onClick }: { selected: boolean; onClick: () => void }) {
+function DefaultTile({ selected, onClick, aspect = 'aspect-[4/1]' }: { selected: boolean; onClick: () => void; aspect?: string }) {
   return (
     <button
       type="button"
@@ -250,7 +250,7 @@ function DefaultTile({ selected, onClick }: { selected: boolean; onClick: () => 
       onClick={onClick}
       className={`overflow-hidden rounded-2xl border-2 text-left transition ${selected ? 'border-emerald-600' : 'border-stone-200 hover:border-emerald-300'}`}
     >
-      <div className="flex aspect-[4/1] items-center justify-center bg-stone-100 text-xs text-stone-400">No theme</div>
+      <div className={`flex ${aspect} items-center justify-center bg-stone-100 text-xs text-stone-400`}>No theme</div>
       <div className="flex items-center justify-between px-3 py-2">
         <span className="text-xs font-medium text-stone-700">Default</span>
         {selected ? <span aria-hidden="true" className="text-emerald-600">✓</span> : null}

@@ -27,6 +27,7 @@ export type RepostOf = {
   authorName: string;
   authorUsername: string;
   authorPhotoUrl: string | null;
+  visibility: 'public' | 'friends_only';
   publishedAt: string;
   textContent: string | null;
   photos: FeedPhoto[];

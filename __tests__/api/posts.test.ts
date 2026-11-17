@@ -424,6 +424,22 @@ describe('Remove a post photo (SRS-306.3/306.5)', () => {
     expect(storageRemove).toHaveBeenCalledWith(['post_photo/1/7.jpg']);
   });
 
+  // #1210 investigation: a Storage cleanup failure must not be reported to
+  // the client as the removal failing. The database change (the RPC call
+  // above) is the single source of truth and has already committed by the
+  // time storage.remove() runs; browser testing confirmed that before this
+  // fix, a rejected storage.remove() produced an error response describing
+  // a photo as "failed to remove" when it had, in fact, already been
+  // removed from the post.
+  it('still reports success when the DB removal succeeds but the Storage cleanup throws (confirmed #1210 inconsistency)', async () => {
+    rpc.mockResolvedValue({ data: 'post_photo/1/7.jpg', error: null });
+    storageRemove.mockRejectedValue(new Error('simulated Supabase Storage network failure'));
+    const response = await removePhoto(removeReq('valid'), { params: Promise.resolve({ postId: '1', assetId: '7' }) });
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body).toEqual({ removed: true });
+  });
+
   it("student B cannot remove a photo from student A's post (SRS-306.5)", async () => {
     rpc.mockResolvedValue({ data: null, error: { code: '42501', message: 'Only the post author can edit this post.' } });
     const response = await removePhoto(removeReq('valid'), { params: Promise.resolve({ postId: '1', assetId: '7' }) });

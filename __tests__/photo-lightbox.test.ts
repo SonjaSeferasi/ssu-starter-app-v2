@@ -76,7 +76,7 @@ describe('Photo viewer', () => {
       createElement(PostCard, {
         post: post({ isRepost: true, repostOf: {
           postId: 9, authorId: 3, authorName: 'Sam Lee', authorUsername: 'sam', authorPhotoUrl: null,
-          publishedAt: '2026-10-20T00:00:00Z', textContent: 'Original caption', photos: [photo(5)],
+          visibility: 'public', publishedAt: '2026-10-20T00:00:00Z', textContent: 'Original caption', photos: [photo(5)],
         } }),
         accessToken: 'token', isOwnPost: false, authorInitial: 'M', currentStudentId: 1,
         onUpdated: () => {}, onDeleted: () => {},
