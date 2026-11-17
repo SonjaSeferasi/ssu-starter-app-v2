@@ -1,0 +1,783 @@
+{
+  "evidence": "Local Edge, synthetic API fixtures; no hosted writes.",
+  "checks": [
+    {
+      "placement": "top",
+      "width": 320,
+      "rects": [
+        {
+          "label": "＋ Create",
+          "left": 12,
+          "right": 250.078125,
+          "top": 76.5,
+          "bottom": 136.5
+        },
+        {
+          "label": "Preferences",
+          "left": 254.078125,
+          "right": 312,
+          "top": 76.5,
+          "bottom": 136.5
+        }
+      ],
+      "overlaps": [],
+      "overflow": false
+    },
+    {
+      "placement": "top",
+      "width": 390,
+      "rects": [
+        {
+          "label": "＋ Create",
+          "left": 12,
+          "right": 320.078125,
+          "top": 76.5,
+          "bottom": 136.5
+        },
+        {
+          "label": "Preferences",
+          "left": 324.078125,
+          "right": 382,
+          "top": 76.5,
+          "bottom": 136.5
+        }
+      ],
+      "overlaps": [],
+      "overflow": false
+    },
+    {
+      "placement": "top",
+      "width": 640,
+      "rects": [
+        {
+          "label": "＋ Create",
+          "left": 12,
+          "right": 560.6875,
+          "top": 77.75,
+          "bottom": 137.75
+        },
+        {
+          "label": "Preferences",
+          "left": 564.6875,
+          "right": 632,
+          "top": 77.75,
+          "bottom": 137.75
+        }
+      ],
+      "overlaps": [],
+      "overflow": false
+    },
+    {
+      "placement": "top",
+      "width": 768,
+      "rects": [
+        {
+          "label": "＋ Create",
+          "left": 12,
+          "right": 688.6875,
+          "top": 84.75,
+          "bottom": 144.75
+        },
+        {
+          "label": "Preferences",
+          "left": 692.6875,
+          "right": 760,
+          "top": 84.75,
+          "bottom": 144.75
+        }
+      ],
+      "overlaps": [],
+      "overflow": false
+    },
+    {
+      "placement": "top",
+      "width": 1000,
+      "rects": [
+        {
+          "label": "＋ Create",
+          "left": 12,
+          "right": 920.6875,
+          "top": 84.75,
+          "bottom": 144.75
+        },
+        {
+          "label": "Preferences",
+          "left": 924.6875,
+          "right": 992,
+          "top": 84.75,
+          "bottom": 144.75
+        }
+      ],
+      "overlaps": [],
+      "overflow": false
+    },
+    {
+      "placement": "top",
+      "width": 1080,
+      "rects": [
+        {
+          "label": "Campus Feed",
+          "left": 20,
+          "right": 174.359375,
+          "top": 84,
+          "bottom": 128
+        },
+        {
+          "label": "MessagesSoon",
+          "left": 178.359375,
+          "right": 302.734375,
+          "top": 84,
+          "bottom": 128
+        },
+        {
+          "label": "Game RoomSoon",
+          "left": 306.734375,
+          "right": 447.765625,
+          "top": 84,
+          "bottom": 128
+        },
+        {
+          "label": "InvitationsSoon",
+          "left": 451.765625,
+          "right": 575.3125,
+          "top": 84,
+          "bottom": 128
+        },
+        {
+          "label": "EventsSoon",
+          "left": 579.3125,
+          "right": 681.171875,
+          "top": 84,
+          "bottom": 128
+        },
+        {
+          "label": "＋ Create",
+          "left": 364.390625,
+          "right": 903.125,
+          "top": 84,
+          "bottom": 128
+        },
+        {
+          "label": "Preferences",
+          "left": 915.125,
+          "right": 1060,
+          "top": 84,
+          "bottom": 128
+        }
+      ],
+      "overlaps": [
+        [
+          "Game RoomSoon",
+          "＋ Create"
+        ],
+        [
+          "InvitationsSoon",
+          "＋ Create"
+        ],
+        [
+          "EventsSoon",
+          "＋ Create"
+        ]
+      ],
+      "overflow": false
+    },
+    {
+      "placement": "top",
+      "width": 1280,
+      "rects": [
+        {
+          "label": "Campus Feed",
+          "left": 20,
+          "right": 174.359375,
+          "top": 84,
+          "bottom": 128
+        },
+        {
+          "label": "MessagesSoon",
+          "left": 178.359375,
+          "right": 302.734375,
+          "top": 84,
+          "bottom": 128
+        },
+        {
+          "label": "Game RoomSoon",
+          "left": 306.734375,
+          "right": 447.765625,
+          "top": 84,
+          "bottom": 128
+        },
+        {
+          "label": "InvitationsSoon",
+          "left": 451.765625,
+          "right": 575.3125,
+          "top": 84,
+          "bottom": 128
+        },
+        {
+          "label": "EventsSoon",
+          "left": 579.3125,
+          "right": 681.171875,
+          "top": 84,
+          "bottom": 128
+        },
+        {
+          "label": "＋ Create",
+          "left": 399.5625,
+          "right": 1103.125,
+          "top": 84,
+          "bottom": 128
+        },
+        {
+          "label": "Preferences",
+          "left": 1115.125,
+          "right": 1260,
+          "top": 84,
+          "bottom": 128
+        }
+      ],
+      "overlaps": [
+        [
+          "Game RoomSoon",
+          "＋ Create"
+        ],
+        [
+          "InvitationsSoon",
+          "＋ Create"
+        ],
+        [
+          "EventsSoon",
+          "＋ Create"
+        ]
+      ],
+      "overflow": false
+    },
+    {
+      "placement": "top",
+      "width": 1440,
+      "rects": [
+        {
+          "label": "Campus Feed",
+          "left": 20,
+          "right": 174.359375,
+          "top": 84,
+          "bottom": 128
+        },
+        {
+          "label": "MessagesSoon",
+          "left": 178.359375,
+          "right": 302.734375,
+          "top": 84,
+          "bottom": 128
+        },
+        {
+          "label": "Game RoomSoon",
+          "left": 306.734375,
+          "right": 447.765625,
+          "top": 84,
+          "bottom": 128
+        },
+        {
+          "label": "InvitationsSoon",
+          "left": 451.765625,
+          "right": 575.3125,
+          "top": 84,
+          "bottom": 128
+        },
+        {
+          "label": "EventsSoon",
+          "left": 579.3125,
+          "right": 681.171875,
+          "top": 84,
+          "bottom": 128
+        },
+        {
+          "label": "＋ Create",
+          "left": 422.71875,
+          "right": 1263.125,
+          "top": 84,
+          "bottom": 128
+        },
+        {
+          "label": "Preferences",
+          "left": 1275.125,
+          "right": 1420,
+          "top": 84,
+          "bottom": 128
+        }
+      ],
+      "overlaps": [
+        [
+          "Game RoomSoon",
+          "＋ Create"
+        ],
+        [
+          "InvitationsSoon",
+          "＋ Create"
+        ],
+        [
+          "EventsSoon",
+          "＋ Create"
+        ]
+      ],
+      "overflow": false
+    },
+    {
+      "placement": "bottom",
+      "width": 320,
+      "rects": [
+        {
+          "label": "Campus Feed",
+          "left": 4,
+          "right": 49.453125,
+          "top": 826,
+          "bottom": 896
+        },
+        {
+          "label": "MessagesSoon",
+          "left": 53.453125,
+          "right": 105.03125,
+          "top": 826,
+          "bottom": 896
+        },
+        {
+          "label": "Game RoomSoon",
+          "left": 109.03125,
+          "right": 142.265625,
+          "top": 826,
+          "bottom": 896
+        },
+        {
+          "label": "InvitationsSoon",
+          "left": 146.265625,
+          "right": 197.296875,
+          "top": 826,
+          "bottom": 896
+        },
+        {
+          "label": "EventsSoon",
+          "left": 201.296875,
+          "right": 237.875,
+          "top": 826,
+          "bottom": 896
+        },
+        {
+          "label": "＋ Create",
+          "left": 237.875,
+          "right": 271.890625,
+          "top": 836,
+          "bottom": 886
+        },
+        {
+          "label": "Preferences",
+          "left": 271.890625,
+          "right": 329.8125,
+          "top": 831.5,
+          "bottom": 890.5
+        }
+      ],
+      "overlaps": [],
+      "overflow": true
+    },
+    {
+      "placement": "bottom",
+      "width": 390,
+      "rects": [
+        {
+          "label": "Campus Feed",
+          "left": 4,
+          "right": 56.890625,
+          "top": 826,
+          "bottom": 896
+        },
+        {
+          "label": "MessagesSoon",
+          "left": 60.890625,
+          "right": 112.46875,
+          "top": 826,
+          "bottom": 896
+        },
+        {
+          "label": "Game RoomSoon",
+          "left": 116.46875,
+          "right": 167.46875,
+          "top": 826,
+          "bottom": 896
+        },
+        {
+          "label": "InvitationsSoon",
+          "left": 171.46875,
+          "right": 222.5,
+          "top": 826,
+          "bottom": 896
+        },
+        {
+          "label": "EventsSoon",
+          "left": 226.5,
+          "right": 263.078125,
+          "top": 826,
+          "bottom": 896
+        },
+        {
+          "label": "＋ Create",
+          "left": 263.078125,
+          "right": 328.078125,
+          "top": 836,
+          "bottom": 886
+        },
+        {
+          "label": "Preferences",
+          "left": 328.078125,
+          "right": 386,
+          "top": 831.5,
+          "bottom": 890.5
+        }
+      ],
+      "overlaps": [],
+      "overflow": false
+    },
+    {
+      "placement": "bottom",
+      "width": 640,
+      "rects": [
+        {
+          "label": "Campus Feed",
+          "left": 26.078125,
+          "right": 91.078125,
+          "top": 826,
+          "bottom": 896
+        },
+        {
+          "label": "MessagesSoon",
+          "left": 139.234375,
+          "right": 190.8125,
+          "top": 826,
+          "bottom": 896
+        },
+        {
+          "label": "Game RoomSoon",
+          "left": 238.984375,
+          "right": 301.671875,
+          "top": 826,
+          "bottom": 896
+        },
+        {
+          "label": "InvitationsSoon",
+          "left": 349.828125,
+          "right": 400.859375,
+          "top": 826,
+          "bottom": 896
+        },
+        {
+          "label": "EventsSoon",
+          "left": 449.03125,
+          "right": 485.609375,
+          "top": 826,
+          "bottom": 896
+        },
+        {
+          "label": "＋ Create",
+          "left": 507.6875,
+          "right": 572.6875,
+          "top": 834.5,
+          "bottom": 887.5
+        },
+        {
+          "label": "Preferences",
+          "left": 572.6875,
+          "right": 636,
+          "top": 830.75,
+          "bottom": 891.25
+        }
+      ],
+      "overlaps": [],
+      "overflow": false
+    },
+    {
+      "placement": "bottom",
+      "width": 768,
+      "rects": [
+        {
+          "label": "Campus Feed",
+          "left": -82.890625,
+          "right": 27.796875,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "MessagesSoon",
+          "left": 31.796875,
+          "right": 118.5,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "Game RoomSoon",
+          "left": 122.5,
+          "right": 222.53125,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "InvitationsSoon",
+          "left": 226.53125,
+          "right": 312.5625,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "EventsSoon",
+          "left": 316.5625,
+          "right": 385.25,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "＋ Create",
+          "left": 405.25,
+          "right": 513.28125,
+          "top": 787.71875,
+          "bottom": 837.71875
+        },
+        {
+          "label": "Preferences",
+          "left": 533.28125,
+          "right": 686.15625,
+          "top": 787.71875,
+          "bottom": 837.71875
+        }
+      ],
+      "overlaps": [],
+      "overflow": true
+    },
+    {
+      "placement": "bottom",
+      "width": 1000,
+      "rects": [
+        {
+          "label": "Campus Feed",
+          "left": 16,
+          "right": 126.6875,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "MessagesSoon",
+          "left": 130.6875,
+          "right": 217.390625,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "Game RoomSoon",
+          "left": 221.390625,
+          "right": 321.421875,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "InvitationsSoon",
+          "left": 325.421875,
+          "right": 411.453125,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "EventsSoon",
+          "left": 415.453125,
+          "right": 484.140625,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "＋ Create",
+          "left": 504.140625,
+          "right": 646.375,
+          "top": 787.71875,
+          "bottom": 837.71875
+        },
+        {
+          "label": "Preferences",
+          "left": 666.375,
+          "right": 819.25,
+          "top": 787.71875,
+          "bottom": 837.71875
+        }
+      ],
+      "overlaps": [],
+      "overflow": false
+    },
+    {
+      "placement": "bottom",
+      "width": 1080,
+      "rects": [
+        {
+          "label": "Campus Feed",
+          "left": 16,
+          "right": 126.6875,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "MessagesSoon",
+          "left": 130.6875,
+          "right": 217.390625,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "Game RoomSoon",
+          "left": 221.390625,
+          "right": 321.421875,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "InvitationsSoon",
+          "left": 325.421875,
+          "right": 411.453125,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "EventsSoon",
+          "left": 415.453125,
+          "right": 484.140625,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "＋ Create",
+          "left": 504.140625,
+          "right": 726.375,
+          "top": 787.71875,
+          "bottom": 837.71875
+        },
+        {
+          "label": "Preferences",
+          "left": 746.375,
+          "right": 899.25,
+          "top": 787.71875,
+          "bottom": 837.71875
+        }
+      ],
+      "overlaps": [],
+      "overflow": false
+    },
+    {
+      "placement": "bottom",
+      "width": 1280,
+      "rects": [
+        {
+          "label": "Campus Feed",
+          "left": 16,
+          "right": 126.6875,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "MessagesSoon",
+          "left": 130.6875,
+          "right": 217.390625,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "Game RoomSoon",
+          "left": 221.390625,
+          "right": 321.421875,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "InvitationsSoon",
+          "left": 325.421875,
+          "right": 411.453125,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "EventsSoon",
+          "left": 415.453125,
+          "right": 484.140625,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "＋ Create",
+          "left": 504.140625,
+          "right": 926.375,
+          "top": 787.71875,
+          "bottom": 837.71875
+        },
+        {
+          "label": "Preferences",
+          "left": 946.375,
+          "right": 1099.25,
+          "top": 787.71875,
+          "bottom": 837.71875
+        }
+      ],
+      "overlaps": [],
+      "overflow": false
+    },
+    {
+      "placement": "bottom",
+      "width": 1440,
+      "rects": [
+        {
+          "label": "Campus Feed",
+          "left": 16,
+          "right": 126.6875,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "MessagesSoon",
+          "left": 130.6875,
+          "right": 217.390625,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "Game RoomSoon",
+          "left": 221.390625,
+          "right": 321.421875,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "InvitationsSoon",
+          "left": 325.421875,
+          "right": 411.453125,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "EventsSoon",
+          "left": 415.453125,
+          "right": 484.140625,
+          "top": 780.71875,
+          "bottom": 844.71875
+        },
+        {
+          "label": "＋ Create",
+          "left": 504.140625,
+          "right": 1077.25,
+          "top": 787.71875,
+          "bottom": 837.71875
+        },
+        {
+          "label": "Preferences",
+          "left": 1097.25,
+          "right": 1250.125,
+          "top": 787.71875,
+          "bottom": 837.71875
+        }
+      ],
+      "overlaps": [],
+      "overflow": false
+    }
+  ],
+  "errors": [],
+  "broken": 5
+}

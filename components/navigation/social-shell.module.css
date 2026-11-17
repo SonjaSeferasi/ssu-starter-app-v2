@@ -149,8 +149,11 @@
 .shell[data-navigation='bottom'] .destinationList { display: flex; gap: 4px; }
 .shell[data-navigation='bottom'] .destination { flex-direction: column; gap: 5px; font-size: 12px; min-height: 64px; padding: 8px 16px; }
 .shell[data-navigation='bottom'] .content { margin-left: 0; padding-bottom: 110px; }
-.shell[data-navigation='bottom'] .sidebarNote { display: none; }
+.shell[data-navigation='bottom'] .sidebarCard, .shell[data-navigation='bottom'] .sidebarNote { display: none; }
 .shell[data-navigation='bottom'] .preferences { margin: 0; }
+/* Horizontal bars need content-sized actions, not the side rail's full-width button. */
+.shell:is([data-navigation='top'],[data-navigation='bottom']) .navigation > .preferenceToggle { width: auto; flex: 0 0 auto; }
+.shell:is([data-navigation='top'],[data-navigation='bottom']) .preferences { flex: 0 0 auto; }
 .shell[data-navigation='bottom'] .preferencePanel { position: absolute; bottom: 60px; right: 0; width: 240px; box-shadow: 0 12px 40px #102c3020; }
 .preferenceToggle:focus-visible, .preferencePanel button:focus-visible { outline: 3px solid #28634e; outline-offset: 3px; }
 @media (max-width: 700px) {
@@ -172,7 +175,8 @@
   .preferenceToggle { flex-direction: column; padding: 8px 2px; gap: 4px; font-size: 11px; }
   .preferencePanel { position: fixed; bottom: 100px; left: 110px; right: 16px; max-width: 280px; z-index: 30; box-shadow: 0 12px 40px #102c3020; }
   .shell[data-navigation='bottom'] .navigation { gap: 0; justify-content: space-around; padding: 4px; }
-  .shell[data-navigation='bottom'] .destinationList { flex: 1; justify-content: space-around; }
+  .shell[data-navigation='bottom'] .destinationList { flex: 1; min-width: 0; gap: 0; justify-content: space-around; }
+  .shell[data-navigation='bottom'] .destinationList li { flex: 1; min-width: 0; }
   .shell[data-navigation='bottom'] .destination { padding: 8px 3px; font-size: 10px; max-width: 65px; }
   .shell[data-navigation='bottom'] .preferenceToggle { max-width: 65px; }
   .shell[data-navigation='bottom'] .preferencePanel { left: auto; bottom: 78px; }
@@ -205,6 +209,10 @@
 .shell[data-navigation='top'] .preferenceToggle { min-height: 44px; gap: 8px; }
 .shell[data-navigation='top'] .preferencePanel { position: absolute; top: calc(100% + 8px); right: 0; bottom: auto; left: auto; width: 280px; max-width: calc(100vw - 24px); max-height: calc(100dvh - 160px); overflow-y: auto; margin: 0; box-shadow: 0 12px 40px #102c3020; }
 @media (max-width: 1000px) {
+  .shell[data-navigation='bottom'] .navigation { gap: 4px; padding: 6px 8px; }
+  .shell[data-navigation='bottom'] .destinationList { flex: 1; min-width: 0; gap: 0; justify-content: space-around; }
+  .shell[data-navigation='bottom'] .destination { padding: 8px 3px; font-size: 10px; white-space: normal; }
+  .shell[data-navigation='bottom'] .preferenceToggle { flex-direction: column; justify-content: center; gap: 4px; padding: 6px 2px; font-size: 11px; }
   .shell[data-navigation='top'] .navigation { gap: 4px; padding: 6px 8px; }
   .shell[data-navigation='top'] .destinationList { flex: 1; justify-content: space-around; gap: 2px; }
   .shell[data-navigation='top'] .destinationList li { flex: 1; min-width: 0; }

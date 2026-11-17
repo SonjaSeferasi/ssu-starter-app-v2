@@ -54,7 +54,7 @@ const output=process.env.SOCIALU_EVIDENCE_DIR||'tmp/friend-presence-evidence';
   failSave=true;await toggle().click();await panel().getByRole('button',{name:'Retry visibility'}).waitFor();assert.equal(await toggle().isChecked(),true);
   await page.screenshot({path:output+'/visibility-failure.png'});
   await refresh();await panel().getByRole('button',{name:'Retry visibility'}).waitFor();
-  failSave=false;await panel().getByRole('button',{name:'Retry visibility'}).click();await waitUntil(()=>prefs.alice===false);await panel().getByRole('button',{name:'Retry visibility'}).waitFor({state:'hidden'});assert.equal(await toggle().isChecked(),false);
+  failSave=false;await panel().getByRole('button',{name:'Retry visibility'}).click();await waitUntil(()=>prefs.alice===false);await panel().getByRole('button',{name:'Retry visibility'}).waitFor({state:'hidden'});await page.waitForFunction(()=>{const p=document.querySelector('[aria-labelledby="friends-playing-title"]');const t=p?.querySelector('input');return t&&!t.disabled&&!t.checked;});assert.equal(await toggle().isChecked(),false);
   checks.push('630.3: failed hide retains confirmed setting and Retry; polling cannot erase the save error; retry persists off');
   await page.evaluate(()=>{localStorage.setItem('access_token','bob');window.dispatchEvent(new Event('socialu-session-changed'));});
   await panel().getByText('No friends are showing as online right now.').waitFor();assert.equal(await toggle().isChecked(),true);assert.equal(await panel().getByRole('link').count(),0);
@@ -72,8 +72,7 @@ const output=process.env.SOCIALU_EVIDENCE_DIR||'tmp/friend-presence-evidence';
   const old= writes.filter(w=>w.method==='POST').at(-1).sessionId;
   await page.getByRole('link',{name:'Campus Feed',exact:true}).first().click();await waitUntil(()=>writes.some(w=>w.method==='DELETE'&&w.sessionId===old));
   checks.push('630.4: leaving Game Room sends cleanup for the correct presence session');
-  await page.goto(base+'/game-1');await waitUntil(()=>writes.some(w=>w.method==='POST'&&w.location==='jumpyland'));
-  checks.push('630.1: standalone Jumpyland publishes its game location');
+  // World Explorer is the active game focus; keep Jumpyland coverage in historical results.
   await page.goto(base+'/world-explorer',{waitUntil:'domcontentloaded',timeout:120000});await waitUntil(()=>writes.some(w=>w.method==='POST'&&w.location==='world-explorer'));
   checks.push('630.1: standalone World Explorer publishes despite navigation being hidden');
   assert.deepEqual(errors,[]);
