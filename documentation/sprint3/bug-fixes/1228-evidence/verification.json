@@ -1,0 +1,23 @@
+{
+  "baseCommit": "e8235383d8d47513b529161521511421dfc8dbd0",
+  "testedSourceSha256": {
+    "lib/realtime-client.ts": "637e1c6b10811a8f18f3c0ae9022a91f1dafde5b58f803c5af60c96661706420",
+    "supabase/migrations/20261117010000_realtime_session_revocation.sql": "5303f3c9b68416ac7c36029119106582151ebfa92155213ab8b92f64666a1680"
+  },
+  "focusedTests": 28,
+  "productionBuild": "passed, including TypeScript",
+  "liveTests": [
+    "Legacy cached connection reproduced delivery after app revocation, then stopped after migration",
+    "Session-specific target and caller both received before logout; only caller received afterward; revoked rejoin denied"
+  ],
+  "hostedMigration": {
+    "project": "sfrpokisjlwgknxlzllu",
+    "historyVersion": "20261117010000",
+    "session_policy_installed": true,
+    "session_topic_installed": true,
+    "legacy_producers_removed": true
+  },
+  "observationWindow": "After the authorized post-logout send, caller delivery was positively observed and the revoked connection remained open for an additional 2.5 seconds without delivery. This does not claim retroactive removal of already queued messages.",
+  "environmentLimit": "Local production UI/API connected to real hosted Supabase Auth/SQL/WebSockets. Deployed app authenticated API reported 503 Authentication is unavailable. Check the server Supabase configuration.",
+  "cleanup": "Six private disposable QA accounts across an initial environment probe and two live test runs were deactivated and all app sessions revoked; synthetic account/message records are retained, not claimed physically deleted."
+}

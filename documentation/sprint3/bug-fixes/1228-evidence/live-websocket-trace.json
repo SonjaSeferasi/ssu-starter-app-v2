@@ -1,0 +1,15 @@
+{
+  "environment": "Local production UI/API connected to live Supabase Auth, SQL and private WebSocket delivery with two disposable accounts; raw target connection stays open across migration",
+  "before": {
+    "revokedTargetReceived": true
+  },
+  "after": {
+    "callerReceived": true,
+    "revokedCachedConnectionReceived": false,
+    "revokedNewJoinDenied": true,
+    "callerAppAllowed": true,
+    "targetAppAllowed": false
+  },
+  "result": "passed",
+  "disposableAccountsDeactivatedAndAppSessionsRevoked": 2
+}

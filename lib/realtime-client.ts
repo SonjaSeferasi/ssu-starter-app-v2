@@ -3,7 +3,7 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import type { ChatReaction } from './chat-reactions';
 
 // SRS-201.1 (#298): browser side of Supabase Realtime. Uses only the public URL and anon key;
-// the realtime.messages policy limits each student to their own student:<auth uid> channel.
+// the realtime.messages policy limits each student to their own session:<auth uid>:<session id> channel.
 // SRS-201.9 (#799): emoji messages also carry kind 'emoji' (the emoji is in text); text messages have no kind.
 // SRS-209.3 (#991): a reply carries the id of the message it answers; an ordinary message leaves it out.
 // SRS-201.6 (#1024): a photo message carries no text -- the schema forbids it -- so it arrives with kind
@@ -32,12 +32,13 @@ function browserClient() {
   return client;
 }
 
-// The channel topic must equal the token's user ID; the server-side policy rejects any other topic.
-function tokenUserId(token: string) {
+// Claims select a topic only; the database verifies the user AND login session.
+function tokenChannelIdentity(token: string) {
   try {
     const part = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
     const claims = JSON.parse(atob(part.padEnd(Math.ceil(part.length / 4) * 4, '=')));
-    return typeof claims.sub === 'string' ? claims.sub : null;
+    return typeof claims.sub === 'string' && typeof claims.session_id === 'string'
+      ? `${claims.sub}:${claims.session_id}` : null;
   } catch { return null; }
 }
 
@@ -63,7 +64,7 @@ function each(call: (listener: ChatListener) => void) {
 function openChannel(supabase: SupabaseClient, token: string, userId: string) {
   const state = { userId, status: 'connecting' as ChatLiveStatus, close: () => {} };
   shared = state;
-  const channel = supabase.channel(`student:${userId}`, { config: { private: true } })
+  const channel = supabase.channel(`session:${userId}`, { config: { private: true } })
     .on('broadcast', { event: 'message_created' }, ({ payload }) => each((l) => l.onMessage(payload as ChatMessageEvent)))
     .on('broadcast', { event: 'conversation_updated' }, ({ payload }) => each((l) => l.onConversation?.(payload as ChatConversationEvent)))
     .on('broadcast', { event: 'group_invitation_created' }, ({ payload }) => each((l) => l.onInvitation?.(payload as ChatInvitationEvent)))
@@ -88,11 +89,11 @@ export function subscribeToChat(onMessage: (message: ChatMessageEvent) => void, 
   const supabase = browserClient();
   if (!supabase) { onStatus('unavailable'); return () => {}; }
   const token = storedAccessToken();
-  const userId = token ? tokenUserId(token) : null;
+  const userId = token ? tokenChannelIdentity(token) : null;
   if (!token || !userId) { onStatus('signed-out'); return () => {}; }
 
   clearTimeout(closeTimer);
-  // A different student signed in on this tab: their own channel replaces the old one.
+  // A different account or login session replaces the previous channel.
   if (shared && shared.userId !== userId) { shared.close(); shared = null; }
   const listener: ChatListener = { onMessage, onStatus, onConversation, onInvitation, onReaction, onDeleted };
   listeners.add(listener);

@@ -1,0 +1,16 @@
+{
+  "environment": "Local production UI/API and live Supabase Auth/SQL/WebSockets; target session channel remains connected across selected logout",
+  "before": {
+    "targetReceived": true,
+    "callerReceived": true
+  },
+  "after": {
+    "callerReceived": true,
+    "revokedCachedConnectionReceived": false,
+    "revokedNewJoinDenied": true,
+    "callerAppAllowed": true,
+    "targetAppAllowed": false
+  },
+  "result": "passed",
+  "disposableAccountsDeactivatedAndAppSessionsRevoked": 2
+}
