@@ -194,3 +194,14 @@ export function levelDefinitionFor(code:string,difficulty:Difficulty=1):LevelDef
  const stable=platforms.filter((p,i)=>i>count*.4&&i<count-2&&!p.motion),checkpoint=stable[0]||platforms[0],discovery=stable.at(-1)||checkpoint;
  return validateLevel({id:availability.levelId,countryId:availability.countryId,legacyCode:country.code,title:availability.title,environmentId:countryProfile(country.code)?.biome||'alpine',spawn:{platformId:platforms[0].id,offset:1.2},platforms,coins,stars:[.25,.5,.75].map((fraction,i)=>{const p=platforms[Math.floor(count*fraction)];return{id:`star-${i}`,platformId:p.id,offset:p.width*.5,height:i===1?1.1:2.1};}),checkpoints:[{id:'checkpoint-01',platformId:checkpoint.id,offset:checkpoint.width*.35}],discovery:{id:'discovery-01',platformId:discovery.id,offset:discovery.width*.65,factId:country.code==='ANTARCTICA'?'antarctic-science':country.iso2.toLowerCase()+'-discovery'},finish:{platformId:platforms.at(-1)!.id,offset:platforms.at(-1)!.width*.7},hazards:[],physics:{gravity:20,jumpSpeed:8.6,runSpeed:5.4,acceleration:25,airControl:.65,coyoteTime:.12,jumpBuffer:.12,playerRadius:.2,playerHeight:1.6,killY:-7}});
 }
+
+const expertChallenges=new Map<string,boolean>();
+/** True when the Expert challenge gives this destination a different level
+ * from its normal one. Route-graph countries without patrols, and routes that
+ * are already expert, have no tougher version to offer. */
+export function hasExpertChallenge(code:string,normal:Difficulty):boolean{
+ const key=`${code.toUpperCase()}:${normal}`,known=expertChallenges.get(key);if(known!==undefined)return known;
+ let differs=false;
+ try{differs=normal<4&&JSON.stringify(levelDefinitionFor(code,normal))!==JSON.stringify(levelDefinitionFor(code,4));}catch{differs=false;}
+ expertChallenges.set(key,differs);return differs;
+}
