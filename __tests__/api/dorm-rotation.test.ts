@@ -18,7 +18,7 @@ it.each([0, 90, 180, 270])('passes %s degree rotation using the verified owner',
   const response = await PUT(request({ itemId: 'bed', x: 1, y: 2, rotation }));
   expect(response.status).toBe(200);
   expect(rpc).toHaveBeenCalledWith('socialu_dorm', { p_action: 'save', p_auth_id: 'verified-owner', p_owner: null,
-    p_payload: { version: 1, placements: [{ itemId: 'bed', x: 1, y: 2, rotation }], wallItemId: null, floorItemId: null } });
+    p_payload: { version: 1, placements: [{ itemId: 'bed', x: 1, y: 2, rotation }] } });
 });
 it.each([-90, 45, 360, 90.5, '90', null, true, {}])('rejects invalid rotation %j before saving', async rotation => {
   expect((await PUT(request({ itemId: 'bed', x: 1, y: 2, rotation }))).status).toBe(400);
@@ -45,4 +45,12 @@ it('returns the appearance-versus-furniture rule through the API (#1216)', async
   const response = await PUT(request({ itemId: '1', x: 1, y: 1 }));
   expect(response.status).toBe(400);
   expect(await response.json()).toEqual({ error: message });
+});
+
+it.each([{ wallItemId: '2' }, { floorItemId: '3' }, { wallItemId: null, floorItemId: null }])('preserves omitted appearance keys while forwarding explicit choices/resets %j (#1215)', async appearance => {
+  const response = await PUT(new Request('http://localhost/api/dorm', { method: 'PUT',
+    headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' },
+    body: JSON.stringify({ version: 1, placements: [], ...appearance }) }));
+  expect(response.status).toBe(200);
+  expect(rpc.mock.calls.find(([name]) => name === 'socialu_dorm')?.[1].p_payload).toEqual({ version: 1, placements: [], ...appearance });
 });

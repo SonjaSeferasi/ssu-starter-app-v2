@@ -4224,11 +4224,15 @@ Traces to: UR-500.
 
 When the owner selects an available wall color, the system shall apply that color to their dorm walls.
 
+Acceptance clarification, Sprint 5: a save that omits the wall selection retains its last accepted value; an explicit null resets it to the default appearance.
+
 Traces to: UR-500.
 
 ##### SRS-500.14, DP — Floor appearance selection.
 
 When the owner selects an available flooring option, the system shall apply that appearance to their dorm floor.
+
+Acceptance clarification, Sprint 5: a save that omits the flooring selection retains its last accepted value; an explicit null resets it to the default appearance.
 
 Traces to: UR-500.
 

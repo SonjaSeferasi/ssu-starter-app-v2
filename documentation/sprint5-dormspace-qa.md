@@ -31,3 +31,14 @@ before its footprint foreign key fails. It retains the ownership denial for
 unowned/unknown items. Existing API and editor error propagation are preserved.
 Real PostgreSQL tests verify both owned wall/floor choices, ownership rejection,
 unchanged saved data, migration reapplication and API status/message propagation.
+
+## SRS-500.13: wall color selection (also SRS-500.14)
+
+Parent #551; implementation #1292; acceptance #1293; defect #1215.
+Branch `srs-500.13-preserve-dorm-appearance` was created before implementation.
+The API retains absent fields as absent, and the database retains each existing
+appearance choice when that key is absent. Explicit null still resets to the
+default. The SRS acceptance text now distinguishes omission from reset.
+Real PostgreSQL/API checks cover independent omissions, both omissions, explicit
+resets, invalid selections and stale-version rollback. The integrated editor
+continues to send the complete appearance and uses the same saved data.

@@ -42,8 +42,14 @@ export async function PUT(request: Request) {
       if (!isRotation(rotation)) throw new AccountError('Choose a rotation of 0, 90, 180 or 270 degrees.', 400);
       return { itemId: p.itemId, x: p.x, y: p.y, rotation };
     });
+    const appearance: Record<string, string | null> = {};
+    for (const field of ['wallItemId', 'floorItemId'] as const) {
+      if (!Object.prototype.hasOwnProperty.call(body, field)) continue;
+      if (body[field] !== null && typeof body[field] !== 'string') throw new AccountError('Choose a valid wall color and floor style.', 400);
+      appearance[field] = body[field] as string | null;
+    }
     const dorm = await dormOperation(user.id, 'save', null, {
-      version: body.version, placements, wallItemId: body.wallItemId ?? null, floorItemId: body.floorItemId ?? null,
+      version: body.version, placements, ...appearance,
     });
     return Response.json(dorm, noStore);
   } catch (error) { return accountResponse(error); }
