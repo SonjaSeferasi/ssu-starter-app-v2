@@ -7546,6 +7546,70 @@ Acceptance criterion: Given Light is active, when Dark is selected, then saving 
 
 Traces to: UR-627.
 
+#### UR-629, SS - Enjoy a welcoming Game Room.
+
+User requirement: As a student, I want the Game Room to look like a friendly campus game lounge that clearly shows my avatar, the games I can play and my streak, so that I can find something to play at a glance.
+
+##### SRS-629.1, SS — Present the Game Room dashboard.
+
+When the student opens the Game Room, the system shall present a welcome banner followed by three areas: avatar customization, the available games, and the participation streak with its rankings.
+
+Acceptance criterion: Given a signed-in student on a desktop-width window, when the Game Room opens, then the banner, the avatar area, the games area and the streak area are all visible, and on a phone-width window the same areas appear in one column without horizontal scrolling.
+
+Traces to: UR-629.
+
+##### SRS-629.2, SS — Present the three games.
+
+When the Game Room shows the available games, the system shall present DormSpace 3D, Jumpyland and World Explorer each with an image, its name, a short description and one action that opens that game, and shall not present a game that SocialU does not offer.
+
+Acceptance criterion: Given all three games are available to the account, when the games area appears, then exactly those three games are listed, Play Jumpyland opens Jumpyland, Enter DormSpace opens DormSpace 3D and Explore the World opens World Explorer.
+
+Traces to: UR-629.
+
+##### SRS-629.3, SS — Choose a Game Room background.
+
+When the student selects a Game Room background, the system shall apply that background to the Game Room on that device and keep it for later visits on that device, without changing points, streaks, avatar or game progress.
+
+Acceptance criterion: Given Campus Day is shown, when the student selects Adventure Sky and reopens the Game Room on the same device, then Adventure Sky is shown and the student's points, streak and saved avatar are unchanged.
+
+Traces to: UR-629.
+
+#### UR-630, SS - See friends who are playing now.
+
+User requirement: As a student, I want to see which of my friends are in the Game Room or playing a game right now, and to choose whether my friends can see me, so that playing feels social without giving up my privacy.
+
+##### SRS-630.1, SS — Show friends who are playing now.
+
+When the student opens the Game Room, the system shall list the student's accepted friends who are currently in the Game Room or in a game, showing each friend's name and where they are.
+
+Acceptance criterion: Given an accepted friend opened Jumpyland within the last minute and has visibility on, when the student opens the Game Room, then that friend is listed as playing Jumpyland.
+
+Traces to: UR-630.
+
+##### SRS-630.2, SS — Limit presence to accepted friends.
+
+The system shall show a student as playing now only to that student's accepted friends, and never to a student who is blocked by or has blocked them.
+
+Acceptance criterion: Given student A is in the Game Room and student B is not an accepted friend of A, when B opens the Game Room, then A is not listed.
+
+Traces to: UR-630.
+
+##### SRS-630.3, SS — Let the student hide their presence.
+
+When the student turns off Show me as online, the system shall stop showing that student as playing now to anyone until the student turns it on again, and shall keep that choice with the account.
+
+Acceptance criterion: Given the student turned Show me as online off, when an accepted friend opens the Game Room while the student is playing, then the student is not listed, and the switch is still off after the student signs in again.
+
+Traces to: UR-630.
+
+##### SRS-630.4, SS — Remove friends who have left.
+
+When a friend leaves the Game Room and games, the system shall stop listing that friend as playing now within 90 seconds.
+
+Acceptance criterion: Given a listed friend closes SocialU, when 90 seconds have passed and the list refreshes, then that friend is no longer listed.
+
+Traces to: UR-630.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements

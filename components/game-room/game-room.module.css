@@ -123,3 +123,23 @@
 @media (max-width: 760px) { .avatarLayout { grid-template-columns: 1fr; } .avatarStage { min-height: 400px; } .avatarStage > svg[role='img'] { max-width: 320px; } }
 @media (max-width: 420px) { .smallIcon { display: none; } .panelHeading h2 { font-size: 19px; } }
 @media (max-width: 600px) { .page { padding: 24px 16px; } .pageHeader p { font-size: 14px; } .avatarPanel, .activities { padding: 14px; } .controls { padding: 16px; } .activityColumn { grid-template-columns: 1fr; } .playLink, .openLink { width: 100%; } }
+
+/* Game cards (SRS-629.2): consistent artwork, radius, padding and one action each.
+   Artwork sits beside the copy and wraps above it by itself when the card gets narrow. */
+.gameGrid { --plum: #302044; --grey: #70677d; --purple: #8b45e6; --purple-deep: #6f2fd0; --line: #eadcf7; display: grid; grid-template-columns: 1fr; gap: 14px; }
+.gameCard { display: flex; flex-wrap: wrap; min-width: 0; border: 1px solid var(--line); border-top: 4px solid #cdb2f5; border-radius: 18px; overflow: hidden; background: #fff; box-shadow: 0 4px 12px #7b4bc50f; transition: transform .14s ease, box-shadow .14s ease; }
+.gameCard:hover { transform: translateY(-3px); box-shadow: 0 12px 24px #7b4bc526; }
+.gameCard[data-accent='dorm'] { border-top-color: #ffb98a; background: linear-gradient(180deg, #fff6ee 0%, #fff 70%); }
+.gameCard[data-accent='jumpy'] { border-top-color: #6fc7f2; background: linear-gradient(180deg, #eef9ff 0%, #fff 70%); }
+.gameCard[data-accent='explorer'] { border-top-color: #4fc9c0; background: linear-gradient(180deg, #ecfbf8 0%, #fff 70%); }
+.gameArt { flex: 1 1 130px; min-height: 150px; position: relative; overflow: hidden; background: #f1e9ff; }
+.gameArt img, .gameArt svg { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
+.gameBody { flex: 1.6 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 8px; padding: 14px 16px 16px; }
+.gameBody h3 { font-size: 20px; font-weight: 800; margin: 0; color: var(--plum); }
+.gameBody p { font-size: 14px; line-height: 1.5; color: var(--grey); margin: 0; flex: 1; }
+.gameAction { align-self: flex-start; max-width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 10px 16px; border-radius: 999px; background: var(--purple); color: #fff;
+  border: 1px solid var(--purple-deep); font-size: 14px; font-weight: 800; text-decoration: none; white-space: nowrap; box-shadow: 0 6px 14px #8b45e633; transition: background .12s ease, transform .12s ease; }
+.gameAction svg { flex-shrink: 0; }
+.gameAction:hover { background: var(--purple-deep); transform: translateY(-1px); }
+.gameAction:active { transform: translateY(1px); }
+@media (prefers-reduced-motion: reduce) { .gameCard, .gameAction { transition: none; } .gameCard:hover, .gameAction:hover { transform: none; } }

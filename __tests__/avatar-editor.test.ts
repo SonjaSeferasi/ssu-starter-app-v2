@@ -1,15 +1,12 @@
 import { createElement } from 'react';
 import { createRequire } from 'node:module';
 import type { ReactNode } from 'react';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { avatarEditorPreview } from '../lib/avatar-editor';
 import { avatarParts, avatarVariant, completeAvatar } from '../lib/avatar-collection';
 import { gameRoomSamples, type AvatarAppearance } from '../lib/game-room';
 import { GameRoomContent } from '../components/game-room/game-room';
 import { AvatarPreview } from '../components/game-room/avatar-preview';
-
-// Activity illustrations are outside the avatar editor's render contract.
-vi.mock('../components/game-room/activity-art', () => ({ ActivityArt: () => null }));
 
 const { renderToStaticMarkup } = createRequire(import.meta.url)('react-dom/server') as { renderToStaticMarkup(node: ReactNode): string };
 
