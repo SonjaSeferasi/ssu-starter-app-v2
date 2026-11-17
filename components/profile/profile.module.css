@@ -374,3 +374,23 @@
 
 .highlightPhotos { display: grid; gap: 12px; margin-top: 16px; }
 .highlightPhotos img { display: block; width: 100%; max-height: 70vh; object-fit: contain; border-radius: 8px; }
+
+/* Account dark appearance: pair readable text with its surface. */
+:global(html[data-appearance='dark']) :is(.page) { --ink:#edf2f7; --muted:#bcc9d8; --line:#53657b; --card:#202b3b; --accent:#9ee2bd; --soft:#354961; }
+:global(html[data-appearance='dark']) :is(.button:hover,.secondary:hover,.avatarBadge:hover) { background:#354961; color:#fff; }
+:global(html[data-appearance='dark']) :is(.setupBanner) { background:#42351f; color:#fde68a; border-color:#8b7543; }
+
+:global(html[data-appearance='dark']) :is(.field input,.field select,.field textarea,.close,.viewerBody) { background:#202b3b; color:#edf2f7; border-color:#53657b; }
+
+:global(html[data-appearance='dark']) :is(.textInput,.peopleTabs,.peopleTab[aria-selected='true']) { background:#202b3b; color:#edf2f7; border-color:#53657b; }
+:global(html[data-appearance='dark']) .peopleTab { color:#bcc9d8; }
+:global(html[data-appearance='dark']) .peopleTab:hover:not([aria-selected='true']) { background:#354961; color:#fff; }
+:global(html[data-appearance='dark']) .profilePage .actions .button { background:#294739; color:#c6f6dc; border-color:#62977d; }
+
+:global(html[data-appearance='dark']) :is(.dialog,.form,.settingsPanel,.shareMessage,.highlightDialog) { background:#202b3b; color:#edf2f7; border-color:#53657b; }
+:global(html[data-appearance='dark']) .error { background:#482631; color:#fecaca; border-color:#915260; }
+
+:global(html[data-appearance='dark']) .button { background:#31543d; color:#fff; }
+:global(html[data-appearance='dark']) .secondary { background:#2d3b50; color:#edf2f7; border-color:#53657b; }
+:global(html[data-appearance='dark']) :is(.profileDock,.tileTextBg) { background:#202b3b; }
+:global(html[data-appearance='dark']) .avatar { color:#28533c; }

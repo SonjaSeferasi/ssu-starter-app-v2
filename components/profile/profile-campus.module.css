@@ -194,3 +194,13 @@
 @media(prefers-reduced-motion:reduce){.photoEdit{transition:none}}
 
 .layout[data-board=true]>.mainColumn{grid-column:1/-1}
+
+/* Account dark appearance: pair readable text with its surface. */
+:global(html[data-appearance='dark']) :is(.page) { --ink:#edf2f7; --muted:#bcc9d8; --line:#53657b; --card:#202b3b; --accent:#9ee2bd; background:#141b2a; color:#edf2f7; }
+:global(html[data-appearance='dark']) :is(.stats,.journalPosts > article,.empty,.loadingCard,.sidePanel) { background:#202b3b; border-color:#53657b; }
+:global(html[data-appearance='dark']) :is(.page .profileSettings,.handle,.study,.stats span,.contentTabs button,.eventRow > svg,.connectionRow > svg) { color:#bcc9d8; }
+:global(html[data-appearance='dark']) :is(.stats strong) { color:#edf2f7; }
+:global(html[data-appearance='dark']) :is(.stats svg,.stats button:hover,.sidePanel header > a,.sidePanel header > button,.sideLink,.eventRow:hover,.connectionRow:hover) { color:#9ee2bd; }
+:global(html[data-appearance='dark']) :is(.verified,.eventIcon) { background:#294739; color:#c6f6dc; }
+:global(html[data-appearance='dark']) :is(.verified svg) { color:#c6f6dc; }
+:global(html[data-appearance='dark']) :is(.photoEdit) { background:#214f3c; color:#fff; }

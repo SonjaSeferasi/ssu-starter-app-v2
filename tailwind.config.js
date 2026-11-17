@@ -4,13 +4,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: 'rgb(244 247 244 / <alpha-value>)',
-        foreground: 'rgb(25 43 36 / <alpha-value>)',
-        card: 'rgb(255 255 255 / <alpha-value>)',
+        background: 'rgb(var(--color-background, 244 247 244) / <alpha-value>)',
+        foreground: 'rgb(var(--color-foreground, 25 43 36) / <alpha-value>)',
+        card: 'rgb(var(--color-card, 255 255 255) / <alpha-value>)',
         primary: { DEFAULT: 'rgb(30 112 78 / <alpha-value>)', foreground: 'rgb(255 255 255 / <alpha-value>)' },
-        muted: { foreground: 'rgb(100 116 108 / <alpha-value>)' },
-        border: 'rgb(214 224 217 / <alpha-value>)',
-        input: 'rgb(214 224 217 / <alpha-value>)',
+        muted: { foreground: 'rgb(var(--color-muted, 100 116 108) / <alpha-value>)' },
+        border: 'rgb(var(--color-border, 214 224 217) / <alpha-value>)',
+        input: 'rgb(var(--color-border, 214 224 217) / <alpha-value>)',
         ring: 'rgb(30 112 78 / <alpha-value>)',
       },
     },

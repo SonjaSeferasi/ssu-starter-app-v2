@@ -64,3 +64,10 @@
 .suggestions > div { display:flex;flex-wrap:wrap;gap:7px; }
 .suggestions button { padding:7px 10px;border:1px solid #dce5d7;border-radius:16px;background:#fff;color:#536b50;font:inherit;font-size:11px;line-height:1.5;text-align:left; }
 .suggestions button:hover:enabled,.suggestions button[aria-pressed=true] { background:#edf3e8;border-color:#9bb28e; }
+
+/* Keep profile editor dialogs readable independently of the page behind them. */
+:global(html[data-appearance='dark']) :is(.dialog,.preview,.previewCard,.footer,.field textarea,.field input,.prompts button,.interests button,.actions button,.suggestions button) { background:#202b3b; color:#edf2f7; border-color:#53657b; }
+:global(html[data-appearance='dark']) :is(.header p,.header span,.header > button,.controls legend > span,.field,.counter,.spotifyLabel small,.help,.previewLabel,.caption,.footer p,.suggestions p) { color:#bcc9d8; }
+:global(html[data-appearance='dark']) :is(.prompts .selectedPrompt,.interests .selectedInterest,.suggestions button[aria-pressed=true],.suggestions button:hover:enabled,.actions button:hover:enabled,.header > button:hover) { background:#354961; color:#edf2f7; border-color:#9ee2bd; }
+:global(html[data-appearance='dark']) .actions button[type=submit] { background:#31543d; color:#fff; }
+:global(html[data-appearance='dark']) :is(.invalid,.footer p.invalid) { color:#fecaca; }
