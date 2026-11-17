@@ -7990,6 +7990,14 @@ Acceptance criterion: Given the student plays the Moldova level, when the explor
 
 Traces to: UR-632.
 
+##### SRS-632.39, SS — Present the Danube Delta in the Romania level.
+
+When the student plays the Romania level, the system shall show low islands of reed and willow across the water and a wall of reeds behind them; on the largest island a fishing village of white houses with blue frames under steep thatch behind reed fences, a church with blue onion domes, fish drying on racks, a net on poles, and a jetty with black tarred boats and the Romanian flag; a wooden bird hide on stilts; the old white lighthouse with its gallery, lit lantern and red cap, and the keeper's house; rafts of pelicans, herons and water lilies on the water; pelicans flying over; a fisherman rowing a black boat, who stays still when reduced motion is on; and, on the route, rope rails, storm lanterns, fish racks, nets on poles and reed bundles, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Romania level, when the explorer starts the route, then the bird hide on stilts and the reed beds are visible; when the explorer reaches the middle of the route, then the thatched houses, the blue onion domes and the flag are visible; when the explorer nears the finish, then the white lighthouse is visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
