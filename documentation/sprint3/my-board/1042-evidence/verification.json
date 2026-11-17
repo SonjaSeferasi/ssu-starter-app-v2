@@ -1,0 +1,145 @@
+{
+  "startedAt": "2026-11-17T05:05:51.127Z",
+  "sourceCommit": "540caa4944632e7b9ef7a6bcf2f16b53fa6a9ad2",
+  "environment": "Clean local production UI/API; actual SQL in disposable PGlite; fixture Auth/PostgREST/signing",
+  "hostedWrites": false,
+  "steps": [
+    {
+      "name": "focused",
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "__tests__/profile-board.test.ts",
+        "__tests__/api",
+        "__tests__/supabase-freshness.test.ts",
+        "__tests__/database/profile-space.test.ts",
+        "__tests__/database/profile-board-atomic-save.test.ts",
+        "__tests__/database/board-photo-ownership.test.ts",
+        "__tests__/database/profile-memories.test.ts",
+        "__tests__/board-history-guard.test.ts",
+        "--maxWorkers=2",
+        "--minWorkers=1",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=/private/tmp/ssu-1042-results/focused.json"
+      ],
+      "status": 0,
+      "signal": null,
+      "tests": 1039,
+      "passed": 1039,
+      "failed": 0
+    },
+    {
+      "name": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "status": 0,
+      "signal": null
+    },
+    {
+      "name": "atomic-rotation-history",
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "--config",
+        "vitest.board-evidence.config.ts",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=/private/tmp/ssu-1042-results/atomic-rotation-history.json"
+      ],
+      "status": 0,
+      "signal": null,
+      "tests": 3,
+      "passed": 3,
+      "failed": 0
+    },
+    {
+      "name": "photo-ownership",
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "--config",
+        "vitest.board-photo-evidence.config.ts",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=/private/tmp/ssu-1042-results/photo-ownership.json"
+      ],
+      "status": 0,
+      "signal": null,
+      "tests": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "name": "uploaded-photo-identity",
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "--config",
+        "vitest.board-upload-evidence.config.ts",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=/private/tmp/ssu-1042-results/uploaded-photo-identity.json"
+      ],
+      "status": 0,
+      "signal": null,
+      "tests": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "name": "contract-owner-viewer-block",
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "--config",
+        "vitest.board-contract-evidence.config.ts",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=/private/tmp/ssu-1042-results/contract-owner-viewer-block.json"
+      ],
+      "status": 0,
+      "signal": null,
+      "tests": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "name": "editor-save-reload",
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "--config",
+        "vitest.board-editor-evidence.config.ts",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=/private/tmp/ssu-1042-results/editor-save-reload.json"
+      ],
+      "status": 0,
+      "signal": null,
+      "tests": 1,
+      "passed": 1,
+      "failed": 0
+    }
+  ],
+  "testedProductionSourceSha256": {
+    "app/api/profiles/space/route.ts": "b06d6333c667aee390ef75d1c505072b3e7ff5d54a21f41e4873021ef0e6308c",
+    "components/profile/profile-board.tsx": "cb15e93417df0874321e89b63f02cbf78733e290ced1adda07a5367693f4a7ca",
+    "lib/profile-board.ts": "eba20688cd32708d18a0af34ceed059ec6a3950fbc0eaf1143dd04f5eb0ca923",
+    "lib/profile-space.ts": "f7f53841c70ea78f546064b073fd0d8aef19f79204d8dbedfb91e68aec1748e6"
+  },
+  "matchesApproved1039HostedSource": true,
+  "providerTransportSha256": "0b8f79d23c0bce871027a7b9e87d039ddb776d6047ea4e380a98ea5182200128",
+  "hostedEvidence": "Historical approved #1039 run at a9d7160c88f2ab86f6102746972fe15445bac700 reused explicitly. Core board sources match; provider transport now disables fetch caching (#1291), verified locally, not rerun against hosted accounts.",
+  "finishedAt": "2026-11-17T05:07:01.362Z",
+  "result": "passed"
+}

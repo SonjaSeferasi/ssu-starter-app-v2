@@ -9,6 +9,9 @@ export function getSupabaseClient() {
   }
 
   return createClient(supabaseUrl, supabaseKey, {
+    // Auth, session guards and owner/viewer permissions must read current state.
+    // Next's server fetch cache can otherwise reuse an earlier RPC permission.
+    global: { fetch: (input, init) => fetch(input, { ...init, cache: 'no-store' }) },
     auth: {
       persistSession: false,
     },

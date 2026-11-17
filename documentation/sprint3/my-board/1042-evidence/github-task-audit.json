@@ -1,0 +1,80 @@
+{
+  "observedTasks": [
+    {
+      "task": 1039,
+      "pr": 1280,
+      "merged": true,
+      "mergeCommit": "8a994bb9c23a36f1d8fbf9e5c5933161b03e44ca",
+      "head": "srs-124.1-task-1039-data-ownership-acceptance",
+      "retainedBranchAtActualHead": true,
+      "assignedTo": "Dieulinhh23",
+      "state": "closed",
+      "stateReason": "completed"
+    },
+    {
+      "task": 1040,
+      "pr": 1284,
+      "merged": true,
+      "mergeCommit": "330d5b50be2f7be9e3b44f8e7b6847f88b79767a",
+      "head": "srs-124.1-task-1040-authenticated-save-acceptance",
+      "retainedBranchAtActualHead": true,
+      "assignedTo": "Dieulinhh23",
+      "state": "closed",
+      "stateReason": "completed"
+    },
+    {
+      "task": 1041,
+      "pr": 1286,
+      "merged": true,
+      "mergeCommit": "540caa4944632e7b9ef7a6bcf2f16b53fa6a9ad2",
+      "head": "srs-124.1-task-1041-board-editor-acceptance",
+      "retainedBranchAtActualHead": true,
+      "assignedTo": "Dieulinhh23",
+      "state": "closed",
+      "stateReason": "completed"
+    }
+  ],
+  "parentSubissues": [
+    {
+      "number": 1039,
+      "state": "closed"
+    },
+    {
+      "number": 1040,
+      "state": "closed"
+    },
+    {
+      "number": 1041,
+      "state": "closed"
+    },
+    {
+      "number": 1042,
+      "state": "open"
+    },
+    {
+      "number": 1223,
+      "state": "closed"
+    },
+    {
+      "number": 1224,
+      "state": "closed"
+    },
+    {
+      "number": 1225,
+      "state": "closed"
+    },
+    {
+      "number": 1229,
+      "state": "closed"
+    },
+    {
+      "number": 1230,
+      "state": "closed"
+    },
+    {
+      "number": 1291,
+      "state": "open"
+    }
+  ],
+  "note": "1042 intentionally open while current verification is in progress; Done statuses separately observed in Project UI."
+}

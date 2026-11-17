@@ -1,0 +1,76 @@
+{
+  "environment": "Actual local production UI/API and real SQL on disposable PGlite; two isolated browser contexts; Auth/PostgREST/media signing fixtures",
+  "board": {
+    "items": [
+      {
+        "id": "contract-note",
+        "kind": "note",
+        "x": 3.25,
+        "y": 7.125,
+        "width": 25,
+        "rotation": -9,
+        "text": "1039: my saved board, visible to classmates",
+        "color": "pink"
+      },
+      {
+        "id": "contract-photo",
+        "kind": "photo",
+        "x": 35.5,
+        "y": 10.25,
+        "width": 30,
+        "rotation": 6,
+        "memoryId": 1
+      },
+      {
+        "id": "contract-sticker",
+        "kind": "sticker",
+        "x": 75,
+        "y": 6,
+        "width": 15,
+        "rotation": 12,
+        "sticker": "star"
+      },
+      {
+        "id": "contract-project",
+        "kind": "project",
+        "x": 4,
+        "y": 46,
+        "width": 28,
+        "rotation": 0,
+        "text": "A verified saved project card",
+        "title": "Owner project",
+        "url": "https://example.edu/project"
+      },
+      {
+        "id": "contract-music",
+        "kind": "music",
+        "x": 40,
+        "y": 48,
+        "width": 40,
+        "rotation": -3,
+        "url": "https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC"
+      }
+    ]
+  },
+  "postgresRoundTrip": true,
+  "unrelatedLookPreserved": true,
+  "visitorReadExact": true,
+  "visitorHasNoEditControls": true,
+  "forgedOwnerFieldsIgnored": true,
+  "explicitForeignWriteDenied": true,
+  "blockedVisitor": {
+    "status": 404,
+    "data": {
+      "error": "This profile or note is not available."
+    }
+  },
+  "blockedProfileApi": {
+    "status": 404,
+    "data": {
+      "error": "This profile is not available."
+    }
+  },
+  "ownerStillReadsAfterBlock": true,
+  "blockedProfilePageDenied": true,
+  "result": "passed"
+}
