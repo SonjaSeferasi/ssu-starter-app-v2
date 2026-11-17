@@ -36,6 +36,15 @@ export function ConfessionCard({
     onUpdated({ ...confession, reactionCounts, myReaction });
   }
 
+  // Like handleReactionChanged above, this also notifies the parent (not
+  // just local state) -- the Trending Confessions sidebar's engagement
+  // counts need to know about new comments too, not only reactions
+  // (confirmed bug #1183).
+  function handleCommentCountChange(count: number) {
+    setCommentCount(count);
+    onUpdated({ ...confession, commentCount: count });
+  }
+
   async function confirmDelete() {
     if (deleting) return;
     setDeleting(true);
@@ -154,7 +163,7 @@ export function ConfessionCard({
           confessionId={confession.confessionId}
           accessToken={accessToken}
           allowMentions={confession.category === 'campus_crush'}
-          onCountChange={setCommentCount}
+          onCountChange={handleCommentCountChange}
         />
       ) : null}
 
