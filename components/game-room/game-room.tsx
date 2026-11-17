@@ -3,9 +3,9 @@
 import { GameRoomRequestError, roomRequest } from '../../lib/game-room-client';
 
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 import type { AvatarAppearance, GameRoomData } from '../../lib/game-room';
-import { activityEntrypoints, gameRoomSamples } from '../../lib/game-room';
+import { gameRoomSamples } from '../../lib/game-room';
+import { availableGameCards } from '../../lib/game-room-cards';
 import { useNavigationSession } from '../navigation/social-shell';
 import { SessionNotice } from '../navigation/section-page';
 import { layeredKeys } from '../../lib/avatar-layers';
@@ -13,7 +13,7 @@ import { avatarEditorPreview } from '../../lib/avatar-editor';
 import { completeAvatar, avatarGroups, avatarParts, avatarVariant, collectionHair, collectionFaces, type AvatarGroup } from '../../lib/avatar-collection';
 import { bodyShapes, skinColors } from '../../lib/avatar-figure';
 import { CompleteAvatar } from './complete-avatar';
-import { ActivityArt } from './activity-art';
+import { GameCardView } from './game-card';
 import { ParticipationStreak } from './participation-streak';
 import styles from './game-room.module.css';
 
@@ -88,7 +88,7 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
   }
 
   const dirty = JSON.stringify(appearance) !== JSON.stringify(room?.appearance || null);
-  const available = room?.activities.filter(activity => activity.included && Object.hasOwn(activityEntrypoints, activity.code)) || [];
+  const games = availableGameCards(room?.activities);
   const statusTone = retrySelection ? 'error' : saving ? 'pending' : dirty ? 'unsaved' : saveMessage === 'Avatar saved.' ? 'saved' : 'idle';
   const legacyPreview = !completeAvatar(appearance?.avatarId);
   const statusText = saveMessage || (temporaryPreview ? 'Preview only; account saving is unavailable here.' : legacyPreview ? 'Choose a complete look, then save it to update your avatar.' : 'Choose your look, then save your avatar.');
@@ -162,36 +162,10 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
       <div className={styles.activityColumn}>
         <section className={styles.activities} aria-labelledby="activity-title">
           <h2 id="activity-title">Pick your next break</h2>
-          {available.map(activity => {
-            const entry = activityEntrypoints[activity.code];
-            const card = activityCards[activity.code];
-            const name = card?.name || activity.name;
-            return <article className={styles.activityCard} key={activity.code}>
-              <div className={styles.activityImage}>{card?.image ? <img src={card.image} alt="" /> : <ActivityArt code={activity.code} />}</div>
-              <div className={styles.activityBody}>
-                <div className={styles.activityCopy}><h3>{name}</h3><p>{card?.tagline || activity.description}</p>{card?.meta && <span className={styles.activityMeta}>{card.meta}</span>}</div>
-                {entry.href ? <Link href={entry.href} className={card?.primary ? styles.playLink : styles.openLink}>{entry.action} {name} <span aria-hidden="true">→</span></Link>
-                  : <span className={styles.unavailable}>{entry.unavailable}</span>}
-              </div>
-            </article>;
-          })}
-          {!available.length && <p className={styles.footnote}>Included activities have not been configured yet.</p>}
-          <article className={styles.activityCard}>
-            <div className={styles.activityBody}>
-              <div className={styles.activityCopy}><h3>World Explorer</h3><p>Play country levels from Japan and East Asia to Europe, Africa, Oceania, North America and all twelve countries of South America, or explore country scenery previews.</p><span className={styles.activityMeta}>Playable levels on six continents · 193 country profiles</span></div>
-              <Link href="/world-explorer" className={styles.openLink}>Explore the world <span aria-hidden="true">→</span></Link>
-            </div>
-          </article>
+          <div className={styles.gameGrid}>{games.map(card => <GameCardView key={card.key} card={card} />)}</div>
         </section>
         <ParticipationStreak preview={temporaryPreview} />
       </div>
     </div>}
   </main>;
 }
-
-// Presentation for the activity cards; routes and availability stay in lib/game-room.
-const activityCards: Partial<Record<string, { name: string; tagline: string; meta?: string; image?: string; primary?: boolean }>> = {
-  game1: { name: 'Jumpyland', tagline: 'Three themed worlds. One little adventure.', meta: '3 levels', image: '/jumpyland/world-map-v1.png', primary: true },
-  dormspace: { name: 'DormSpace 3D', tagline: 'Explore the 3D DormHall and make your room your own.' },
-  wordle: { name: 'Wordle', tagline: 'Guess today’s five-letter word.', meta: 'Daily puzzle' },
-};
