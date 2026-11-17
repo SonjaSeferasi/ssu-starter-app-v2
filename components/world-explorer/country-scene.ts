@@ -15,7 +15,7 @@ import {mountCountryPuzzles} from './kit/country-puzzles';
 import {createTimedHazard} from './kit/hazards';
 import {levelDefinitionFor} from '../../lib/world-explorer/level-manifest';
 import {FIXED_STEP,LevelSimulation,cameraFrame,hazardAt,solidPlatform,windAt} from '../../lib/world-explorer/simulation';
-import {cameraTrackingHeight} from '../../lib/world-explorer/game-camera';
+import {cameraTrackingHeight,openingSweepFrame,openingSweepSeconds} from '../../lib/world-explorer/game-camera';
 import {explorerAssist} from '../../lib/world-explorer/difficulty';
 import {createExplorerAudio} from '../../lib/world-explorer/audio';
 import type {CountryCallbacks,ExplorerRunPreferences,PlatformDefinition,SimulationEvent,SimulationInput} from '../../lib/world-explorer/game-types';
@@ -166,7 +166,10 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
  canvas.addEventListener('webglcontextlost',contextLost);window.addEventListener('keydown',keydown);window.addEventListener('keyup',keyup);window.addEventListener('blur',clear);window.addEventListener('pointerdown',unlock,{passive:true});parent.addEventListener('explorer-input',control);
  const focus=()=>canvas.focus({preventScroll:true});canvas.addEventListener('pointerdown',focus);
  const resize=()=>{renderer.setSize(Math.max(1,parent.clientWidth),Math.max(1,parent.clientHeight),false);camera.aspect=Math.max(1,parent.clientWidth)/Math.max(1,parent.clientHeight);camera.updateProjectionMatrix();};
- const observer=new ResizeObserver(resize);observer.observe(parent);resize();const initial=cameraFrame(level,simulation.state.x,simulation.state.y,camera.aspect);camera.position.set(initial.x,initial.y,initial.z);camera.lookAt(initial.x,initial.lookY,-1);notify();
+ const observer=new ResizeObserver(resize);observer.observe(parent);resize();
+ // Japan opens with a sweep down from the vista (skipped for reduced motion).
+ const sweeps=level.countryId==='JP';let sweepElapsed=0;
+ const settled=cameraFrame(level,simulation.state.x,simulation.state.y,camera.aspect),initial=sweeps&&!reducedMotion?openingSweepFrame(settled,0):settled;camera.position.set(initial.x,initial.y,initial.z);camera.lookAt(initial.x,initial.lookY,-1);notify();
  const zones=level.zones||[];
  let cameraGroundY=simulation.state.y,cameraLookY=initial.lookY;
  const render=(dt:number)=>{
@@ -196,6 +199,7 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
  if(reviewView==='scan'){const frame=cameraFrame(level,scanX,scanY??groundAt(scanX),camera.aspect);camera.position.set(frame.x,frame.y,frame.z);camera.lookAt(frame.x,frame.lookY,-1);}
   else if(reviewView==='camera'&&reviewCamera){camera.far=600;camera.fov=reviewCamera.fov??44;camera.position.set(...reviewCamera.position);camera.lookAt(...reviewCamera.target);camera.updateProjectionMatrix();}
   else if(reviewView==='overview'){const distance=(finish+18)/(2*Math.tan(T.MathUtils.degToRad(44)/2)*camera.aspect)+18;camera.far=Math.max(300,distance+200);camera.fov=44;camera.position.set(finish/2,19,distance);camera.lookAt(finish/2,1,-14);camera.updateProjectionMatrix();}
+  else if(sweeps&&!reducedMotion&&sweepElapsed<openingSweepSeconds){sweepElapsed+=dt;const frame=openingSweepFrame(target,sweepElapsed);camera.position.set(frame.x,frame.y,frame.z);cameraLookY=frame.lookY;camera.lookAt(frame.x,cameraLookY,-1);}
   else{camera.position.lerp(new T.Vector3(target.x,target.y,target.z),blend);cameraLookY=T.MathUtils.lerp(cameraLookY,target.lookY,blend);camera.lookAt(camera.position.x,cameraLookY,-1);const fov=44;if(Math.abs(camera.fov-fov)>.02){camera.fov=T.MathUtils.damp(camera.fov,fov,3,dt);camera.updateProjectionMatrix();}}
   scenery?.frame(camera.position.x);sun.position.set(s.x-8,18,12);sun.target.position.set(s.x,0,0);
   scenery?.update(s.elapsedSeconds,dt,{time:visualTime,platforms:simulation.platforms,wind:zones.map(zone=>({id:zone.id,force:zone.force,...windAt(zone,s.elapsedSeconds)})),playerX:s.x});

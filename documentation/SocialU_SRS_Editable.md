@@ -7614,6 +7614,58 @@ Acceptance criterion: Given a listed friend closes SocialU, when 90 seconds have
 
 Traces to: UR-630.
 
+#### UR-631, SS - Play a cinematic country level.
+
+User requirement: As a student, I want a World Explorer level to feel like a small animated adventure, with a close camera, warm atmosphere and clear celebration of what I collect and finish, so that playing is engaging enough to come back to.
+
+##### SRS-631.1, SS — Follow the explorer with a close camera.
+
+When the student plays the Japan level, the system shall follow the explorer with a close side camera in which the explorer fills 15% to 19% of the height of a landscape screen, shall keep at least one and a half full jumps of the route visible ahead, and shall open the level with a sweep from a high, distant view of the vista down to that framing, which is skipped when reduced motion is on.
+
+Acceptance criterion: Given the student starts the Japan level on a 16:9 screen with reduced motion off, when the level opens, then the view glides down from the distant vista within three seconds and the explorer then fills between 15% and 19% of the screen height with the next ledge in view.
+
+Traces to: UR-631.
+
+##### SRS-631.2, SS — Present Japan in golden-hour light.
+
+The system shall present the Japan level in warm golden-hour light: a warm horizon under a cooler zenith, warm sunlight, and haze that lightens the distant valley and Mount Fuji while leaving the playable route clear.
+
+Acceptance criterion: Given the student is playing the Japan level, when the student looks at the scene, then the horizon and haze are warm-toned, Mount Fuji is visibly hazed but present, and the platforms of the route are not hazed.
+
+Traces to: UR-631.
+
+##### SRS-631.3, SS — Dress the Japan route.
+
+The system shall dress the playable islands of the Japan level with dense ferns and grass, a stone arch, railings on the arched bridge, mist at the waterfalls and drifting petals, without changing where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Japan level from start to finish, when the student crosses each island, then each island shows planted foliage and the collision surfaces are the same as before.
+
+Traces to: UR-631.
+
+##### SRS-631.4, SS — Celebrate each collected coin and star.
+
+When the explorer collects a coin or a star, the system shall show a flash and a spray of gold glints at the pickup and a label that rises and fades above it, "+1" for a coin and a star mark for a star, and shall show none of these when reduced motion is on.
+
+Acceptance criterion: Given reduced motion is off, when the explorer touches a coin, then a "+1" label rises from the coin and disappears within one second and the coin counter increases by one.
+
+Traces to: UR-631.
+
+##### SRS-631.5, SS — Celebrate level completion.
+
+When the explorer reaches the finish, the system shall show "Level Complete!" with a burst of light and falling confetti over the level for about two seconds before the results appear, shall announce it to assistive technology, and shall go straight to the results when reduced motion is on.
+
+Acceptance criterion: Given reduced motion is off, when the explorer reaches the finish gate, then "Level Complete!" and confetti are shown and the results dialog opens about two seconds later.
+
+Traces to: UR-631.
+
+##### SRS-631.6, SS — Stamp the passport.
+
+When the results of a completed level appear, the system shall show an open passport with a stamp pressed onto the page that carries the country's name and the date of completion.
+
+Acceptance criterion: Given the student completes Japan on 17 November 2026, when the results appear, then the passport shows a stamp reading JAPAN and 17 NOV 2026.
+
+Traces to: UR-631.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
