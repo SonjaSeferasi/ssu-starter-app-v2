@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import { ImagePreview, type PendingImage } from './ImagePreview';
 import { VisibilitySelector, type Visibility } from './VisibilitySelector';
@@ -33,6 +33,24 @@ export function PostComposer({
   const [publishing, setPublishing] = useState(false);
   const [error, setError] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const photoInputRef = useRef<HTMLInputElement>(null);
+  const photoButtonRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    let frame = 0;
+    const focusEntry = () => {
+      cancelAnimationFrame(frame);
+      // Let route/fragment scroll handling finish before focusing the composer.
+      frame = requestAnimationFrame(() => {
+        const target = window.location.hash === '#create-text-post' ? inputRef.current
+          : window.location.hash === '#create-photo-post' ? photoButtonRef.current : null;
+        target?.scrollIntoView({ block: 'center' });
+        target?.focus({ preventScroll: true });
+      });
+    };
+    focusEntry();
+    window.addEventListener('hashchange', focusEntry);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('hashchange', focusEntry); };
+  }, []);
   const mention = useMentionAutocomplete();
 
   function handleTextChange(value: string, cursor: number) {
@@ -120,6 +138,8 @@ export function PostComposer({
         <FeedAvatar photoUrl={authorPhotoUrl} name={authorInitial} username={authorUsername} />
         <div className="relative min-w-0 flex-1">
           <input
+            id="create-text-post"
+            aria-label="Post text"
             ref={inputRef}
             value={text}
             onChange={(e) => handleTextChange(e.target.value, e.target.selectionStart ?? e.target.value.length)}
@@ -152,8 +172,11 @@ export function PostComposer({
       {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
 
       <div className="mt-3 flex items-center gap-2 pl-[52px]">
-        <label className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-stone-200 text-stone-500 hover:border-emerald-300 hover:text-emerald-700">
+        <button id="create-photo-post" ref={photoButtonRef} type="button" aria-label="Choose photos for your post" onClick={() => photoInputRef.current?.click()} className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-stone-200 text-stone-500 hover:border-emerald-300 hover:text-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700">
+          <span aria-hidden="true">📷</span>
+        </button>
           <input
+            ref={photoInputRef}
             type="file"
             accept="image/*"
             multiple
@@ -163,8 +186,6 @@ export function PostComposer({
               e.target.value = '';
             }}
           />
-          📷
-        </label>
         <VisibilitySelector value={visibility} onChange={setVisibility} />
       </div>
     </div>

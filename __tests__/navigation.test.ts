@@ -11,10 +11,22 @@ import { isCurrentDestination, isStandalonePage } from '../lib/navigation';
 describe('UR-600 navigation', () => {
   it('renders four live, clickable destinations with one combined Events and Trending link', () => {
     const html = renderToStaticMarkup(createElement(SocialNavigation, { pathname: '/game-room' }));
-    const links = [...html.matchAll(/<a\b[^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/g)]
+    const destinations = html.match(/<ul\b[^>]*>[\s\S]*?<\/ul>/)?.[0] ?? '';
+    const links = [...destinations.matchAll(/<a\b[^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/g)]
       .map(([, href, body]) => ({ href, text: body.replace(/<[^>]+>/g, '') }));
     expect(links.map((l) => l.href)).toEqual(['/', '/messages', '/game-room', '/events']);
     expect(links[0].text).toBe('Campus Feed');
+  });
+
+  it('provides the SRS-604 creation choices using the existing workflows', () => {
+    const html = renderToStaticMarkup(createElement(SocialNavigation, { pathname: '/profile' }));
+    expect(html).toContain('aria-haspopup="dialog"');
+    const dialog = html.match(/<dialog\b[^>]*>[\s\S]*?<\/dialog>/)?.[0] ?? '';
+    expect(dialog).toContain('href="/#create-text-post"');
+    expect(dialog).toContain('href="/#create-photo-post"');
+    expect(dialog).toContain('href="/events/create"');
+    expect(dialog).toContain('Cancel');
+    expect(dialog).not.toMatch(/<dialog\b[^>]*\sopen(?:[\s=>])/);
   });
 
   it('tags teammates\' already-working features as "Soon" without disabling them', () => {

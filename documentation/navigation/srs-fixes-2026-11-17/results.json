@@ -1,0 +1,15 @@
+{
+  "evidence": "Local Next.js application in headless Chromium/Edge with intercepted API fixtures. Not hosted acceptance.",
+  "checks": [
+    "SRS-601.3: Profile Bottom stays fixed at viewport bottom at 390px",
+    "SRS-601.3: Profile Bottom stays fixed at viewport bottom at 640px",
+    "SRS-601.3: Profile Bottom stays fixed at viewport bottom at 1280px",
+    "SRS-601.3: Side/Top/Bottom switch correctly; fixture preference restores on reload",
+    "SRS-603.1: 4 private + 7 group unread = 11; invitation excluded; bell remains 3 notification entries",
+    "SRS-603.2: unread badge disappears after messages are read, even with a pending invitation",
+    "SRS-604.3: Escape and Cancel retain current page; Escape restores focus to Create",
+    "SRS-604.1/604.2: Text Post focuses existing composer; Photo Post focuses working photo selector and retains draft",
+    "SRS-604.2: Event opens the existing event creation form"
+  ],
+  "errors": []
+}

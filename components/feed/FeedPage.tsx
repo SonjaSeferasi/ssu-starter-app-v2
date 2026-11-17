@@ -53,6 +53,14 @@ export function FeedPage() {
   const [authorUsername, setAuthorUsername] = useState<string | null>(null);
   const [currentStudentId, setCurrentStudentId] = useState<number | null>(null);
   const [tab, setTab] = useState<FeedTab>(initialTab);
+  useEffect(() => {
+    const openComposer = () => {
+      if (['#create-text-post', '#create-photo-post'].includes(window.location.hash)) setTab('for-you');
+    };
+    openComposer();
+    window.addEventListener('hashchange', openComposer);
+    return () => window.removeEventListener('hashchange', openComposer);
+  }, []);
   const [posts, setPosts] = useState<FeedPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');

@@ -142,12 +142,17 @@ export function useMessageNotifications() {
   return { messages, invitations, error, reload: reloadMessageNotifications, count: (messages?.length ?? 0) + invitations.length };
 }
 
-// SRS-212.9: the Messages link's icon, with the number of message notifications in a badge like the bell's.
-export function MessageCountIcon({ children }: { children: ReactNode }) {
-  const { count } = useMessageNotifications();
+export function countUnreadMessages(messages: Pick<MessageNotification, 'unread_count'>[] | null): number {
+  return (messages ?? []).reduce((total, message) => total + message.unread_count, 0);
+}
+
+// The shared bell retains notification counts; SRS-603.1 navigation counts messages only.
+export function MessageCountIcon({ children, unreadMessagesOnly = false }: { children: ReactNode; unreadMessagesOnly?: boolean }) {
+  const notifications = useMessageNotifications();
+  const count = unreadMessagesOnly ? countUnreadMessages(notifications.messages) : notifications.count;
   return <span className={own.iconWithCount}>
     {children}
-    {count > 0 && <span className={own.count}><span aria-hidden="true">{count > 9 ? '9+' : count}</span><span className={own.srOnly}>{count} unread, </span></span>}
+    {count > 0 && <span className={own.count}><span aria-hidden="true">{unreadMessagesOnly ? count : count > 9 ? '9+' : count}</span><span className={own.srOnly}>{count} unread, </span></span>}
   </span>;
 }
 

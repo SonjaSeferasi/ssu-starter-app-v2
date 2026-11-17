@@ -9,7 +9,7 @@ export async function GET(request: Request) {
 export async function PUT(request: Request) {
   try {
     const body = await jsonBody(request);
-    if (body.position !== 'side' && body.position !== 'bottom') throw new AccountError('Choose Side or Bottom.', 400);
+    if (body.position !== 'side' && body.position !== 'bottom' && body.position !== 'top') throw new AccountError('Choose Side, Bottom, or Top.', 400);
     return Response.json(await gameRoomOperation(request, 'save_preferences', { p_position: body.position }),
       { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) { return accountResponse(error); }

@@ -42,7 +42,7 @@ export function SocialShell({ children }: { children: React.ReactNode }) {
     setPosition('side'); setSaving(true); setPreferenceError(''); setPreferenceLoadFailed(false);
     void fetch('/api/preferences', { headers: { Authorization: `Bearer ${storedAccessToken() || ''}` }, cache: 'no-store', signal: controller.signal })
       .then(async response => { if (!response.ok) throw new Error(); return response.json(); })
-      .then(data => { if (!controller.signal.aborted && (data.position === 'side' || data.position === 'bottom')) { setPosition(data.position); setPreferenceError(''); } })
+      .then(data => { if (!controller.signal.aborted && (data.position === 'side' || data.position === 'bottom' || data.position === 'top')) { setPosition(data.position); setPreferenceError(''); } })
       .catch(() => { if (!controller.signal.aborted) { setPreferenceError('Your saved placement could not be loaded.'); setPreferenceLoadFailed(true); } })
       .finally(() => { if (!controller.signal.aborted) setSaving(false); });
     return () => controller.abort();

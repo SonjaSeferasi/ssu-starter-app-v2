@@ -170,7 +170,7 @@ CREATE TABLE student_blocks (
 -- Purpose: Stores account-wide navigation position and interface appearance preferences.
 CREATE TABLE student_preferences (
     student_id BIGINT PRIMARY KEY REFERENCES students(student_id),
-    navigation_position VARCHAR(6) NOT NULL DEFAULT 'side' CHECK (navigation_position IN ('side','bottom')),
+    navigation_position VARCHAR(6) NOT NULL DEFAULT 'side' CHECK (navigation_position IN ('side','bottom','top')),
     theme VARCHAR(5) NOT NULL DEFAULT 'light' CHECK (theme IN ('light','dark'))
 );
 

@@ -2,7 +2,7 @@ import { validLayeredFields, type LayeredLook } from './avatar-layers';
 import { completeAvatar } from './avatar-collection';
 import { bodyShapes, skinColors, type BodyShape, type SkinColor } from './avatar-figure';
 
-export type NavigationPosition = 'side' | 'bottom';
+export type NavigationPosition = 'side' | 'bottom' | 'top';
 export const faceDetails = [
   { id: 'natural', name: 'Natural' }, { id: 'round-glasses', name: 'Round glasses' },
   { id: 'square-glasses', name: 'Square glasses' }, { id: 'freckles', name: 'Freckles' },

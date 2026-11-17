@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Palette } from 'lucide-react';
 import { isCurrentDestination, navigationDestinations } from '../../lib/navigation';
@@ -33,6 +33,7 @@ type PlacementProps = { position?: NavigationPosition; onPositionChange?: (posit
 
 export function SocialNavigation({ pathname, position = 'side', onPositionChange, saving, preferenceError, onRetry }: { pathname: string } & PlacementProps) {
   const [preferencesOpen, setPreferencesOpen] = useState(false);
+  const createDialog = useRef<HTMLDialogElement>(null);
   return (
     <nav className={styles.navigation} aria-label="Main navigation">
       <ul className={styles.destinationList}>
@@ -44,14 +45,25 @@ export function SocialNavigation({ pathname, position = 'side', onPositionChange
               </span>
             ) : (
               <Link href={href} className={styles.destination} aria-current={isCurrentDestination(pathname, href) ? 'page' : undefined}>
-                {/* SRS-212.9 (LP, Chat): the Messages link shows how many message notifications there are. */}
-                {icon === 'messages' ? <MessageCountIcon><NavigationIcon name={icon} /></MessageCountIcon> : <NavigationIcon name={icon} />}<span>{label}</span>
+                {/* SRS-603.1: unread private/group messages, excluding invitations. */}
+                {icon === 'messages' ? <MessageCountIcon unreadMessagesOnly><NavigationIcon name={icon} /></MessageCountIcon> : <NavigationIcon name={icon} />}<span>{label}</span>
                 {tag === 'soon' ? <span className={styles.soonTag}>Soon</span> : null}
               </Link>
             )}
           </li>
         ))}
       </ul>
+      <button className={styles.preferenceToggle} onClick={() => createDialog.current?.showModal()} aria-haspopup="dialog">
+        <span aria-hidden="true">＋</span> Create
+      </button>
+      <dialog ref={createDialog} className={styles.createDialog} aria-labelledby="create-heading">
+        <h2 id="create-heading">What would you like to create?</h2>
+        {/* Native fragment links also reopen the composer when already on the feed. */}
+        <a href="/#create-text-post" onClick={() => createDialog.current?.close()}>Text Post</a>
+        <a href="/#create-photo-post" onClick={() => createDialog.current?.close()}>Photo Post</a>
+        <Link href="/events/create" onClick={() => createDialog.current?.close()}>Event</Link>
+        <button onClick={() => createDialog.current?.close()}>Cancel</button>
+      </dialog>
       <div className={styles.preferences}>
         <button className={styles.preferenceToggle} onClick={() => setPreferencesOpen(!preferencesOpen)} aria-expanded={preferencesOpen} aria-controls="navigation-preferences">
           <NavigationIcon name="settings" /> Preferences
@@ -59,7 +71,7 @@ export function SocialNavigation({ pathname, position = 'side', onPositionChange
         {preferencesOpen && <section id="navigation-preferences" className={styles.preferencePanel} aria-label="Navigation preferences">
           <p>Navigation placement</p>
           <div className={styles.placementChoices}>
-            {(['side', 'bottom'] as const).map(choice => <button key={choice} aria-pressed={position === choice} disabled={saving || !onPositionChange} onClick={() => onPositionChange?.(choice)}>{choice === 'side' ? 'Side' : 'Bottom'}</button>)}
+            {(['side', 'bottom', 'top'] as const).map(choice => <button key={choice} aria-pressed={position === choice} disabled={saving || !onPositionChange} onClick={() => onPositionChange?.(choice)}>{choice === 'side' ? 'Side' : choice === 'bottom' ? 'Bottom' : 'Top'}</button>)}
           </div>
           {saving && <p role="status">Saving preference…</p>}
           {preferenceError && <p role="alert">{preferenceError} <button onClick={onRetry} disabled={saving}>Retry</button></p>}

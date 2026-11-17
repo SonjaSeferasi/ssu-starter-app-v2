@@ -1,0 +1,36 @@
+The CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.
+
+ RUN  v2.1.8 C:/Csc 351/ssu-starter-app-v2
+
+stderr | __tests__/api/game-room.test.ts > Game Room account boundary > identifies missing Game Room integration so the UI can offer unsaved design samples
+Game Room database operation failed { code: 'PGRST202', message: undefined }
+
+stderr | __tests__/api/game-room.test.ts > Game Room account boundary > does not describe unrelated storage failures as missing setup
+Game Room database operation failed { code: 'PGRST001', message: undefined }
+
+stderr | __tests__/api/game-room.test.ts > Game Room account boundary > returns a forbidden outcome when storage rejects an unowned outfit
+Game Room database operation failed { code: '42501', message: undefined }
+
+stderr | __tests__/api/game-room.test.ts > Independent avatar customization > never claims a customized avatar is saved without its database migration
+Game Room database operation failed { code: 'PGRST202', message: undefined }
+
+stderr | __tests__/api/game-room.test.ts > Independent avatar customization > explains when an older customization function cannot save layered options ({"code":"22023","message":"Invalid avatar selection"})
+Game Room database operation failed { code: '22023', message: 'Invalid avatar selection' }
+
+stderr | __tests__/api/game-room.test.ts > Independent avatar customization > explains when an older customization function cannot save layered options ({"code":"23514","message":"new row violates check constraint \"avatar_customization_options\""})
+Game Room database operation failed {
+  code: '23514',
+  message: 'new row violates check constraint "avatar_customization_options"'
+}
+
+ ✓ __tests__/api/game-room.test.ts (40 tests) 114ms
+ ✓ __tests__/api/message-notifications.test.ts (4 tests) 63ms
+ ✓ __tests__/database/navigation-placement.test.ts (1 test) 5786ms
+   ✓ upgrades existing preferences and persists Top for only the selected account 5782ms
+ ✓ __tests__/navigation.test.ts (28 tests) 109ms
+ ✓ __tests__/navigation-unread-messages.test.ts (3 tests) 9ms
+
+ Test Files  5 passed (5)
+      Tests  76 passed (76)
+   Start at  00:59:25
+   Duration  17.05s (transform 1.93s, setup 0ms, collect 16.38s, tests 6.08s, environment 2ms, prepare 1.56s)

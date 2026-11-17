@@ -52,10 +52,12 @@ describe('Game Room account boundary', () => {
   it.each([{ outfitId: 'sample-campus', faceId: '2' }, { outfitId: '1', faceId: {} }, { outfitId: '1 OR 1=1', faceId: '2' }, { outfitId: '9223372036854775808', faceId: '2' }])('rejects invalid appearance IDs %j', async body => {
     expect((await PUT(req('PUT', body))).status).toBe(400); expect(rpc).not.toHaveBeenCalled();
   });
-  it('accepts only the two specified navigation placements', async () => {
-    expect((await savePreferences(req('PUT', { position: 'top' }))).status).toBe(400); expect(rpc).not.toHaveBeenCalled();
-    expect((await savePreferences(req('PUT', { position: 'bottom', student_id: '999' }))).status).toBe(200);
-    expect(rpc).toHaveBeenCalledWith('socialu_game_room', { p_action: 'save_preferences', p_auth_id: user.id, p_position: 'bottom' });
+  it.each(['side', 'bottom', 'top'])('saves %s placement for the verified account only', async position => {
+    expect((await savePreferences(req('PUT', { position, student_id: '999' }))).status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('socialu_game_room', { p_action: 'save_preferences', p_auth_id: user.id, p_position: position });
+  });
+  it.each(['left', '', null, 3])('rejects unsupported placement %j', async position => {
+    expect((await savePreferences(req('PUT', { position }))).status).toBe(400); expect(rpc).not.toHaveBeenCalled();
   });
 });
 
