@@ -34,9 +34,18 @@ function ownedCache(owner:string):ExplorerProgress{return{...loadAccountDevicePr
  * signed-in student starts from their own account cache, so a result recorded
  * during an outage is stored for that account and not in the anonymous key. */
 export function sessionDeviceProgress():ExplorerProgress{
- let owner:string|undefined;
- try{owner=tokenOwner(storedAccessToken());}catch{owner=undefined;}
+ const owner=sessionOwner();
  return owner?ownedCache(owner):loadExplorerProgress();
+}
+function sessionOwner(){try{return tokenOwner(storedAccessToken());}catch{return undefined;}}
+
+/** A session event also fires when the same student's token is refreshed.
+ * `changed()` is true only when the signed-in account itself is different
+ * (another student, sign-out or sign-in), so a routine refresh does not close
+ * a running adventure or its result screen. */
+export function accountSwitchDetector(){
+ let owner=sessionOwner();
+ return{changed(){const next=sessionOwner();if(next===owner)return false;owner=next;return true;}};
 }
 
 /** Reconcile best scores without incrementing attempts. The owner is resolved

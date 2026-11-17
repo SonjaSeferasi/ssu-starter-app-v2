@@ -5,7 +5,7 @@ import Link from 'next/link';
 import {ArrowLeft,ArrowRight,BookOpen,Check,Compass,Flag,Globe2,MapPin,Mountain,Play,Search,Settings,Snowflake,Star,Trophy,X} from 'lucide-react';
 import {countries,continents,countriesForContinent,countryByCode,type Country,type ContinentId} from '../../lib/world-explorer/catalog';
 import {STORAGE_KEY,loadExplorerProgress,saveExplorerProgress,recordCountryResult,mergeExplorerProgress,continentProgress,overallProgress,type ExplorerProgress} from '../../lib/world-explorer-progress';
-import {loadAccountProgress,saveAccountResult,sessionDeviceProgress} from '../../lib/world-explorer/progress-client';
+import {accountSwitchDetector,loadAccountProgress,saveAccountResult,sessionDeviceProgress} from '../../lib/world-explorer/progress-client';
 import {discoveryFor} from '../../lib/world-explorer-discoveries';
 import {countryProfile} from '../../lib/world-explorer/profiles';
 import {CountryFlag} from './country-flag';
@@ -89,7 +89,8 @@ export default function WorldExplorer(){
    const request=++accountEpoch.current,local=loadExplorerProgress();setProgress(sessionDeviceProgress());setStorageChannel('device');
    void loadAccountProgress(local).then(result=>{if(current&&request===accountEpoch.current){setProgress(previous=>mergeExplorerProgress(previous,result.progress));setStorageChannel(result.storage);setSaveMessage(result.message||(result.storage==='account'?'Passport connected to your SocialU account':'Progress stays on this device'));}});
   };
-  const sessionChanged=()=>{setPlaying(null);hydrate();};hydrate();window.addEventListener('socialu-session-changed',sessionChanged);
+  // A token refresh for the same student keeps the current run and result screen.
+  const account=accountSwitchDetector(),sessionChanged=()=>{if(!account.changed())return;setPlaying(null);hydrate();};hydrate();window.addEventListener('socialu-session-changed',sessionChanged);
   // Another tab saved a result: show it here too instead of a stale passport.
   const passportStored=(event:StorageEvent)=>{if(event.key?.startsWith(STORAGE_KEY))setProgress(previous=>mergeExplorerProgress(previous,sessionDeviceProgress()));};window.addEventListener('storage',passportStored);
   const params=new URLSearchParams(window.location.search),code=params.get('country')?.toUpperCase();
