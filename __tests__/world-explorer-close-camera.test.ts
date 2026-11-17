@@ -1,6 +1,6 @@
 import {describe,it,expect} from 'vitest';
 import * as T from 'three';
-import {closeFollowScale,japanCloseCamera,referenceCameraFrame} from '../lib/world-explorer/game-camera';
+import {closeFollowScale,closeViewHaze,japanCloseCamera,referenceCameraFrame} from '../lib/world-explorer/game-camera';
 import {isAuthoredLevel,levelDefinitionFor} from '../lib/world-explorer/level-manifest';
 import {countries} from '../lib/world-explorer/catalog';
 import {readFileSync} from 'node:fs';
@@ -36,5 +36,23 @@ describe('close follow camera in every country',()=>{
  it('opens every complete level with the sweep, not only Japan',()=>{
   const scene=readFileSync('components/world-explorer/country-scene.ts','utf8');
   expect(scene).toContain('const sweeps=authored;');expect(scene).not.toContain("const sweeps=level.countryId==='JP'");
+ });
+});
+
+// SRS-631.8: each country's own haze starts nearer in the close view.
+describe('depth haze for the close view',()=>{
+ it('starts the haze nearer but never in front of the route',()=>{
+  for(const [near,far] of [[35,170],[50,200],[60,230],[80,300],[180,360]]){
+   const haze=closeViewHaze(near,far);
+   expect(haze.near).toBeLessThan(near);expect(haze.near).toBeGreaterThanOrEqual(20);
+   expect(haze.far).toBeLessThanOrEqual(far);expect(haze.far).toBeGreaterThanOrEqual(haze.near+60);
+  }
+  expect(closeViewHaze(10,40)).toEqual({near:20,far:80});
+ });
+ it('is applied by the level scene in gameplay only, leaves Japan to its own range and is not applied twice',()=>{
+  const scene=readFileSync('components/world-explorer/country-scene.ts','utf8');
+  expect(scene).toContain("if(view!=='gameplay'||level.countryId==='JP'||!(fog instanceof T.Fog))return;");
+  expect(scene).toContain('if(hazed&&fog.near===hazed.near&&fog.far===hazed.far)return;');
+  expect(scene).toContain("scenery.setView?.('gameplay');depthHaze('gameplay');");
  });
 });

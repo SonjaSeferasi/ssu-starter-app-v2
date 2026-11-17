@@ -7674,6 +7674,14 @@ Acceptance criterion: Given the student starts the level of any of the 193 count
 
 Traces to: UR-631.
 
+##### SRS-631.8, SS — Layer every country in depth haze.
+
+When the student plays the level of any country other than Japan, the system shall start that country's own haze nearer to the camera than in the wide view, in the country's own haze colour, so that scenery behind the route recedes in layers, and shall never haze the playable route.
+
+Acceptance criterion: Given the student is playing the France level, when the student looks at the scene, then the distant skyline and the Eiffel Tower are visibly hazed in the level's own haze colour and the rooftops the explorer walks on are not hazed.
+
+Traces to: UR-631.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
