@@ -222,3 +222,15 @@ textarea.input { resize: none; }
 .trendingAuthor img { width: 100%; height: 100%; object-fit: cover; }
 .trendingHandle { color: #536963; font-weight: 500; }
 .trendingPreview { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-height: 1.4; }
+
+/* Account dark appearance: pair readable text with its surface. */
+:global(html[data-appearance='dark']) :is(.featured,.card,.sideCard,.panel,.formCard,.sectionBlock,.dateBadge,.input,.searchField,.coverButton) { background:#202b3b; border-color:#53657b; color:#edf2f7; }
+:global(html[data-appearance='dark']) :is(.title,.backLink,.featuredTitle,.sectionTitle,.cardTitle,.sideTitle,.week li,.empty h2,.label,.goingSummary strong,.trendingItem,.trendingText strong,.commentMeta strong,.commentText,.attendee strong,.subheading,.searchInput,.candidateName strong,.invitationTitle,.goingLink) { color:#edf2f7; }
+:global(html[data-appearance='dark']) :is(.subtitle,.tab,.count,.meta,.metaRow svg,.description,.sideBody,.empty,.hint,.goingSummary,.action,.sideEmpty,.trendingText,.commentMeta,.attendee,.candidate,.invitationMeta,.trendingHandle) { color:#bcc9d8; }
+:global(html[data-appearance='dark']) :is(.kicker,.rank,.trendingLikes) { color:#9ee2bd; }
+:global(html[data-appearance='dark']) :is(.secondaryButton,.goingButton,.goingOn,.keepButton,.notice,.invitedTag,.rsvpTag) { background:#294739; color:#c6f6dc; border-color:#62977d; }
+:global(html[data-appearance='dark']) :is(.action:hover,.attendee:hover,.candidate:hover,.invitationItem:hover,.secondaryButton:hover,.goingButton:hover,.goingOn:hover,.keepButton:hover) { background:#354961; color:#fff; }
+:global(html[data-appearance='dark']) :is(.alert,.coverError,.cancelledNotice,.cancelledTag) { background:#482631; color:#fecaca; }
+:global(html[data-appearance='dark']) :is(.actionError,.action[aria-pressed="true"]) { color:#fda4af; }
+:global(html[data-appearance='dark']) :is(.input::placeholder) { color:#bcc9d8; }
+:global(html[data-appearance='dark']) :is(.tab[aria-selected="true"]) { color:#c6f6dc; border-color:#9ee2bd; }

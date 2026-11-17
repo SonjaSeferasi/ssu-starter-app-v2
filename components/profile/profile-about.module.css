@@ -48,3 +48,11 @@
 .hometown .countryFlag { flex:0 0 auto;font-size:26px;line-height:1; }
 .hometownForm label + label { margin-top:12px; }.hometownForm label small { font-size:10px;color:#7b887a; }
 .hometownForm select { width:100%;min-width:0;padding:9px;border:1px solid #ccd9c7;border-radius:6px;background:#fff;color:#2d4534;font:inherit; }
+
+/* Account dark appearance: pair readable text with its surface. */
+:global(html[data-appearance='dark']) :is(.card,.hometownForm) { background:#202b3b; color:#edf2f7; border-color:#53657b; }
+:global(html[data-appearance='dark']) :is(.prompts svg,.prompts h3,.interestBlock h3) { color:#edf2f7; }
+:global(html[data-appearance='dark']) :is(.edit,.bio,.prompts p,.emptyAbout,.music > div,.addPrompt,.note,.hometown,.hometown small,.hometown button,.addHometown,.hometownForm label,.hometownForm p,.hometownForm label small) { color:#bcc9d8; }
+:global(html[data-appearance='dark']) :is(.interests span,.interests span:nth-child(n),.music button,.edit:hover,.addPrompt:hover,.hometownForm input,.hometownForm select,.hometownForm button) { background:#2d3b50; color:#edf2f7; border-color:#53657b; }
+:global(html[data-appearance='dark']) :is(.note button) { color:#9ee2bd; }
+:global(html[data-appearance='dark']) :is(.hometownForm .hometownError) { color:#fda4af; }

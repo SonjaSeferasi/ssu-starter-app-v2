@@ -94,3 +94,14 @@
 .theme[data-design-theme=notebook] { --space-paper:#fcf6e7;--space-bg:#faf3e5;background-image:repeating-linear-gradient(0deg,transparent,transparent 31px,#cabb9f16 32px); }
 .theme[data-design-theme=pixel] { --space-paper:#fcf9ff;--space-bg:#f3edfb;--space-line:#ddd1ee;background-image:linear-gradient(90deg,#a18bb009 1px,transparent 1px),linear-gradient(#a18bb009 1px,transparent 1px);background-size:16px 16px; }
 .theme[data-design-theme=minimal] { --space-paper:#fff;--space-bg:#fff;--space-line:#e6e7e2; }
+
+/* Dark account appearance changes interface paper, not saved artwork or sticky notes. */
+:global(html[data-appearance='dark']) .theme.theme { --space-accent:#9ee2bd; --space-soft:#294739; --space-paper:#202b3b; --space-bg:#141b2a; --space-line:#53657b; }
+:global(html[data-appearance='dark']) .theme[data-palette=lavender] { --space-accent:#d8b4fe; --space-soft:#413055; }
+:global(html[data-appearance='dark']) .theme[data-palette=peach] { --space-accent:#fed7aa; --space-soft:#49352a; }
+:global(html[data-appearance='dark']) .theme[data-palette=sky] { --space-accent:#bae6fd; --space-soft:#253e50; }
+:global(html[data-appearance='dark']) .theme[data-palette=rose] { --space-accent:#fbcfe8; --space-soft:#4a2b3e; }
+:global(html[data-appearance='dark']) :is(.noteCard,.decorateLink) { background:#202b3b; color:#edf2f7; border-color:#53657b; }
+:global(html[data-appearance='dark']) .noteHeader h2 { color:#edf2f7; }
+:global(html[data-appearance='dark']) :is(.spaceToolbar p,.emptyNotes) { color:#bcc9d8; }
+:global(html[data-appearance='dark']) .savedLookNotice { background:#294739; color:#c6f6dc; border-color:#62977d; }

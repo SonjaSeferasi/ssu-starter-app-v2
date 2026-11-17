@@ -337,3 +337,24 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 .leaveGroup:hover:not(:disabled) { background: #f8e7e3; }
 .leaveGroup:disabled { opacity: .6; cursor: progress; }
 .leaveGroup:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+
+/* Account dark appearance for chat panels, messages and dialogs. */
+:global(html[data-appearance='dark']) :is(.listPanel,.conversation,.invitePanel,.reactionPicker,.composer,.emojiPanel,.memberPanel) { border:1px solid #53657b; background:#202b3b; }
+:global(html[data-appearance='dark']) :is(.heading,.conversationItem,.itemUnread .itemName,.itemUnread .itemPreview,.invitationsTitle,.stepTitle,.backButton,.title,.bubble.emojiBubble,.input,.emptyTitle) { color:#edf2f7; }
+:global(html[data-appearance='dark']) :is(.tabs,.conversationItem:hover,.backButton:hover,button.conversationItem:hover:not(:disabled),.reactionOption:hover:not(:disabled),.emojiOption:hover:not(:disabled)) { background:#2d3b50; }
+:global(html[data-appearance='dark']) :is(.tab,.emptyList,.itemLine,.stepText,.closeButton,.pickerHint,.renameButton,.subtitle,.emptyMessages,.senderName,.reactButton,.replyButton,.quotedText,.photoToggle,.chosenPhotoRemove,.photoDeleted,.replyBarQuote,.replyCancel,.emojiToggle,.emptyText) { color:#bcc9d8; }
+:global(html[data-appearance='dark']) :is(.tab[aria-pressed='true'],.newGroup,.inviteButton,.backLink) { background:#294739; color:#edf2f7; }
+:global(html[data-appearance='dark']) :is(.conversationList li + li,.invitationItem + .invitationItem,.inviteRow + .inviteRow,.memberItem) { border-top:1px solid #53657b; }
+:global(html[data-appearance='dark']) :is(.conversationItem[aria-current='page'],.reactionOption[aria-pressed='true']) { background:#294739; }
+:global(html[data-appearance='dark']) :is(.itemAvatar,.roleBadge,.avatar) { background:#294739; color:#a7f3d0; }
+:global(html[data-appearance='dark']) :is(.conversationItem[aria-current='page'] .itemAvatar,.footer) { background:#202b3b; }
+:global(html[data-appearance='dark']) :is(.formerBadge) { background:#2d3b50; color:#bcc9d8; }
+:global(html[data-appearance='dark']) :is(.newGroup:hover:not(:disabled),.inviteButton:hover,.backLink:hover) { background:#365b48; }
+:global(html[data-appearance='dark']) :is(.listError,.error,.leaveGroup) { color:#fecaca; }
+:global(html[data-appearance='dark']) :is(.invitations) { border:1px solid #53657b; background:#243b35; }
+:global(html[data-appearance='dark']) :is(.closeButton:hover,.bubble,.photoConfirmCancel) { background:#2d3b50; color:#edf2f7; }
+:global(html[data-appearance='dark']) :is(.pickerSearch,.reactionChip) { border:1px solid #53657b; background:#202b3b; color:#edf2f7; }
+:global(html[data-appearance='dark']) :is(.renameButton:hover,.invitedBadge,.reactButton:hover,.reactButton[aria-expanded='true'],.replyButton:hover,.replyButton[aria-pressed='true'],.photoToggle:hover,.reactionChip[aria-pressed='true'],.emojiToggle:hover,.emojiToggle[aria-expanded='true']) { background:#2d3b50; color:#a7f3d0; }
+:global(html[data-appearance='dark']) :is(.findPeople,.quotedWho,.chosenPhotoMark,.chosenPhotoText,.chosenPhotoRemove:hover,.replyBarMark,.replyBarWho,.replyCancel:hover,.retry) { color:#a7f3d0; }
+:global(html[data-appearance='dark']) :is(.header) { border-bottom:1px solid #53657b; background:#202b3b; }
+:global(html[data-appearance='dark']) :is(.readOnlyNotice) { border:1px solid #53657b; }
