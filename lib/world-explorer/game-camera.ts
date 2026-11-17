@@ -61,3 +61,12 @@ export function openingSweepFrame<F extends {x:number;y:number;z:number;lookY:nu
  const t=clamp(elapsed/openingSweepSeconds,0,1),far=Math.pow(1-t,3);
  return{...frame,x:frame.x+far*7,y:frame.y+far*5.5,z:frame.z+far*15,lookY:frame.lookY+far*3.2};
 }
+
+/** Depth haze for the close view (SRS-631.8). A country's own haze was tuned
+ * for the wide camera; from close range it starts nearer so the valley behind
+ * the route still recedes in layers. The route itself, at most about 17 units
+ * from the camera, always stays in front of the haze. */
+export function closeViewHaze(near:number,far:number){
+ const start=Math.max(20,near*.6);
+ return{near:start,far:Math.max(start+60,far*.95)};
+}
