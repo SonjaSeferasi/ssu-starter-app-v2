@@ -7920,6 +7920,14 @@ Acceptance criterion: Given the student plays the Albania level, when the explor
 
 Traces to: UR-632.
 
+##### SRS-632.30, SS — Present the Rock in the Monaco level.
+
+When the student plays the Monaco level, the system shall show the Rock with its cliffs and battlemented rampart; on it the Prince's Palace with its battlements, arcade, clock tower, corner towers, cannons, striped sentry boxes and the red and white flag of Monaco; the white cathedral with its two towers; the Oceanographic Museum built into the cliff face above the sea; to the left the Casino with its twin turrets, copper-green roofs and fountain; pastel apartment towers stepping up the hill; palms along the quay; yachts and sailing boats moored in the harbour and one yacht under sail; and, on the route, red and white kerbs, steel barriers, tyre stacks and lamps on the ground platforms and balustrades, potted orange trees, cafe tables and benches on the terraces, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Monaco level, when the explorer starts the route, then the Casino and the apartment towers are visible; when the explorer is in the middle of the route, then the palace with its clock tower and flag, the cathedral and the museum on the cliff are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
