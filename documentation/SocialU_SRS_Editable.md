@@ -7822,6 +7822,14 @@ Acceptance criterion: Given the student plays the Denmark level, when the explor
 
 Traces to: UR-632.
 
+##### SRS-632.18, SS — Present Brú na Bóinne in the Ireland level.
+
+When the student plays the Ireland level, the system shall show the meadows of the Boyne with small fields between hedges and dry-stone walls; the mound of Newgrange with its grass dome, its curving front wall of white quartz studded with dark cobbles, its ring of kerbstones, its passage entrance under the roof-box and the entrance stone carved with spirals; six tall standing stones before the mound; the mounds of Knowth, with its smaller satellite mounds, and Dowth; a whitewashed thatched cottage with a red door and the Irish flag; sheep; hawthorn trees; green hills; a faint rainbow; swans on the river; and, on the route, dry-stone walls, kerbstones carved with spirals, a standing stone, ferns, wildflowers and benches, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Ireland level, when the explorer starts the route, then the cottage, the flag and the rainbow are visible; when the explorer is past the middle of the route, then the white quartz wall of Newgrange, its entrance and at least three standing stones are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
