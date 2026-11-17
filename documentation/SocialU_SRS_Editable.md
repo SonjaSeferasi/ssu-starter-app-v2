@@ -7774,6 +7774,14 @@ Acceptance criterion: Given the student plays the Croatia level, when the explor
 
 Traces to: UR-632.
 
+##### SRS-632.12, SS — Present Kyiv in the Ukraine level.
+
+When the student plays the Ukraine level, the system shall show Sophia Square with flower beds in blue and yellow and the Ukrainian flag; Saint Sophia Cathedral with its white walls, green roofs and thirteen domes, the central ones gilded; the four-tiered blue-and-white bell tower with its golden cap; the mounted monument on its granite rock; St Michael's Monastery with its sky-blue walls, golden domes and bell tower; beyond the finish, the wooded Dnipro hills with the Lavra bell tower and golden domes; chestnut trees; a pleasure boat on the river; and, on the route, lamps, a flower stall, sunflowers, painted eggs, benches, iron railings, small golden cupolas and balustrades, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Ukraine level, when the explorer is in the first half of the route, then the bell tower and the gilded central dome of Saint Sophia are visible to their tops; when the explorer reaches the finish, then the golden domes of St Michael's and the Lavra bell tower are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
