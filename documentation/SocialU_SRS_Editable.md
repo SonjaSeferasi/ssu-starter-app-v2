@@ -7862,6 +7862,14 @@ Acceptance criterion: Given the student plays the Latvia level, when the explore
 
 Traces to: UR-632.
 
+##### SRS-632.23, SS — Present Vilnius in the Lithuania level.
+
+When the student plays the Lithuania level, the system shall show low old-town houses with red roofs along the Neris; Gediminas' eight-sided brick tower on its wooded hill under the Lithuanian flag; the white cathedral with its six-column porch, pediment statues and separate tiered bell tower; the red-brick Gothic front of St Anne's with its towers and pinnacles; three Baroque churches, one with twin pink towers, one with a crowned dark dome and one white with a green dome; the Three Crosses on their hill beyond the finish; hot-air balloons drifting over the city; and, on the route, lanterns, a stall or a statue, benches, potted trees, chimneys, flower boxes, dormer windows and balustrades, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Lithuania level, when the explorer starts the route, then Gediminas' Tower is visible on its hill; when the explorer is in the first half of the route, then the cathedral porch and its bell tower are visible; when the explorer is in the second half, then the front of St Anne's and the twin pink towers are visible; at least one hot-air balloon is visible during the level; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
