@@ -7974,6 +7974,14 @@ Acceptance criterion: Given the student plays the Bulgaria level, when the explo
 
 Traces to: UR-632.
 
+##### SRS-632.37, SS — Present Stari Ras and Sopoćani in the Serbia level.
+
+When the student plays the Serbia level, the system shall show the small round church of St Peter with its apse, tiled cone roofs and old stone crosses; the ruined ramparts and gate-tower stumps of the fortress of Ras on its hill; the monastery of Sopoćani inside its wall and roofed gate, with the bell tower, the open porch, the long nave under lead roofs, the dome on its square base, the round apse, the timber-galleried lodging house and the Serbian flag; the church of the Pillars of St George with its two towers on a hilltop; pastures with haystacks built round poles, sheep, plum trees and a field fence; woods and rolling hills behind; and, on the route, fences and handrails, painted beehives, crates of plums, small haystacks, stone walls, chimneys and benches, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Serbia level, when the explorer starts the route, then the round church of St Peter is visible; when the explorer is in the first half of the route, then the ruined fortress on its hill is visible; when the explorer is in the second half of the route, then the monastery's bell tower, dome and flag are visible; when the explorer nears the finish, then the two towers on the hilltop are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
