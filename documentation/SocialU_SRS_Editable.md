@@ -7750,6 +7750,14 @@ Acceptance criterion: Given the student plays the Russia level, when the explore
 
 Traces to: UR-632.
 
+##### SRS-632.9, SS — Present Český Krumlov in the Czechia level.
+
+When the student plays the Czechia level, the system shall show low gabled houses under red roofs along the Vltava; the castle on its rock with its painted wings; the round Castle Tower in pink, cream and green bands with its arcaded gallery and copper cap; the Cloak Bridge with its arches on tall stone piers and covered corridors; St Vitus Church with its steep roof and slender tower; wooded hills; the Czech flag over the castle; a raft and canoes drifting on the river; and, on the route, lamps, an inn sign, tables with parasols, barrels, a market stall, benches, a saint's statue, flower boxes, chimneys, dormer windows, balustrades and a fountain, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Czechia level, when the explorer is in the first half of the route, then the Castle Tower is visible to the top of its copper cap above the red roofs; when the explorer is in the second half, then the arches of the Cloak Bridge are visible between the castle wings; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
