@@ -1,0 +1,97 @@
+{
+  "environment": "Actual local production UI/API and real SQL on disposable PGlite; Auth/PostgREST/media signing transport fixtures",
+  "removedPhoto": {
+    "status": 200,
+    "body": {
+      "look": {
+        "board": {
+          "items": [
+            {
+              "x": 32,
+              "y": 25,
+              "id": "9b63bf34-95dd-427a-ba59-63aafca2d6f3",
+              "kind": "note",
+              "text": "Keep my draft when a photo disappears.",
+              "color": "pink",
+              "width": 28,
+              "rotation": 0
+            },
+            {
+              "x": 32,
+              "y": 25,
+              "id": "ef740367-dd44-4270-b776-e01524ec5465",
+              "kind": "photo",
+              "width": 28,
+              "memoryId": 1,
+              "rotation": 0
+            }
+          ]
+        },
+        "cover": "meadow",
+        "frame": "rounded",
+        "layout": "about-first",
+        "palette": "sage",
+        "hometown": "Original",
+        "stickers": []
+      },
+      "notes": [],
+      "available": true
+    }
+  },
+  "missing": {
+    "status": 200,
+    "data": {
+      "look": {
+        "board": {
+          "items": [
+            {
+              "x": 10,
+              "y": 10,
+              "id": "photo-test",
+              "kind": "photo",
+              "width": 28,
+              "memoryId": 999999,
+              "rotation": 0
+            }
+          ]
+        },
+        "cover": "meadow",
+        "frame": "rounded",
+        "layout": "about-first",
+        "palette": "sage",
+        "hometown": "Original",
+        "stickers": []
+      },
+      "notes": [],
+      "available": true
+    }
+  },
+  "foreign": {
+    "status": 200,
+    "data": {
+      "look": {
+        "board": {
+          "items": [
+            {
+              "x": 10,
+              "y": 10,
+              "id": "photo-test",
+              "kind": "photo",
+              "width": 28,
+              "memoryId": 2,
+              "rotation": 0
+            }
+          ]
+        },
+        "cover": "meadow",
+        "frame": "rounded",
+        "layout": "about-first",
+        "palette": "sage",
+        "hometown": "Original",
+        "stickers": []
+      },
+      "notes": [],
+      "available": true
+    }
+  }
+}
