@@ -7790,6 +7790,14 @@ Acceptance criterion: Given the student plays the Belgium level, when the explor
 
 Traces to: UR-632.
 
+##### SRS-632.14, SS — Present Drottningholm in the Sweden level.
+
+When the student plays the Sweden level, the system shall show the island shore with its granite edge, lawns and gravel walks; Drottningholm Palace with its pale yellow front, its tall centre block, its two corner pavilions under dark domed roofs with lanterns, its terrace with urns and its stair, under the Swedish flag; the baroque garden with box parterres, clipped yews, the fountain, statues and a lime avenue; the white palace theatre; the red-and-yellow Chinese Pavilion under its green tent roofs beyond the finish; a white steamer on the lake; and, on the route, clipped yews in white planters, urns, lanterns, white benches, statues, balustrades and orange trees in tubs, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Sweden level, when the explorer is in the first half of the route, then the palace front is visible with both corner pavilions and the flag; when the explorer is in the second half, then the box parterres of the garden are visible; when the explorer reaches the finish, then the Chinese Pavilion is visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
