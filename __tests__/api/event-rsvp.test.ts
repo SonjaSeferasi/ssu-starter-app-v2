@@ -54,7 +54,7 @@ describe('UR-403 an invited student accepts an event invitation', () => {
   it('explains who can answer, and when', async () => {
     dbResult(null, { code: 'SE403', message: 'not invited' });
     let response = await answer(request({ response: 'attending' }), ctx());
-    expect([response.status, (await response.json()).error]).toEqual([403, 'Only invited students can answer this invitation.']);
+    expect([response.status, (await response.json()).error]).toEqual([403, 'You can’t answer an invitation to your own event.']);
     dbResult(null, { code: 'SE409', message: 'started' });
     response = await answer(request({ response: 'attending' }), ctx());
     expect([response.status, (await response.json()).error]).toEqual([409, 'This event has already started, so your RSVP can no longer change.']);

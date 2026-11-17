@@ -264,3 +264,26 @@ textarea.input { resize: none; }
 :global(html[data-appearance='dark']) :is(.historyItem svg) { color:#fda4af; }
 :global(html[data-appearance='dark']) :is(.hostTag) { background:#294739; color:#c6f6dc; }
 :global(html[data-appearance='dark']) :is(.historyMore) { color:#9ee2bd; }
+
+/* Invitations: Accept and Decline on every invitation, and the full Invitations page. */
+.sideTitleLink { color: inherit; text-decoration: none; }
+.sideTitleLink:hover { text-decoration: underline; }
+.sideTitleLink:focus-visible { outline: 3px solid #28634e; outline-offset: 3px; border-radius: 6px; }
+.inviteActions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 2px 0 8px; }
+.inviteAccept, .inviteDecline, .inviteAccepted { display: inline-flex; align-items: center; min-height: 32px; padding: 4px 14px; border: 0; border-radius: 10px; font: inherit; font-size: 13px; font-weight: 700; }
+.inviteAccept { background: #1f6b4f; color: #ffffff; cursor: pointer; }
+.inviteAccept:hover { background: #185a42; }
+.inviteDecline { background: #e6efe9; color: #102c30; cursor: pointer; }
+.inviteDecline:hover { background: #d7e6dd; }
+.inviteAccepted { background: #dcebe1; color: #1f6b4f; }
+.inviteAccept:disabled, .inviteDecline:disabled { cursor: not-allowed; opacity: .6; }
+.inviteAccept:focus-visible, .inviteDecline:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+.invitationPage { display: grid; gap: 12px; margin: 20px 0 0; padding: 0; list-style: none; }
+.invitationPage > li { padding: 16px 18px; border: 1px solid #d7e5da; border-radius: 16px; background: #ffffff; }
+.invitationPageItem { display: grid; gap: 4px; color: #102c30; text-decoration: none; }
+.invitationPageItem:hover strong, .invitationPageItem:hover > span:first-child { text-decoration: underline; }
+.invitationPageItem:focus-visible { outline: 3px solid #28634e; outline-offset: 3px; border-radius: 8px; }
+.invitationPageTitle { font-size: 17px; font-weight: 800; }
+:global(html[data-appearance='dark']) :is(.invitationPage > li) { background:#202b3b; border-color:#53657b; }
+:global(html[data-appearance='dark']) :is(.invitationPageItem,.invitationPageTitle) { color:#edf2f7; }
+:global(html[data-appearance='dark']) :is(.inviteDecline,.inviteAccepted) { background:#294739; color:#c6f6dc; }
