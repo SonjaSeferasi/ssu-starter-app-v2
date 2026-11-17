@@ -1,0 +1,17 @@
+.page { max-width: 960px; margin: 0 auto; padding: 32px clamp(16px, 4vw, 48px); color: #102c30; }
+.page h1 { font-size: clamp(26px, 4vw, 38px); font-weight: 750; margin-bottom: 20px; }
+.page h2 { font-size: 22px; margin: 28px 0 16px; overflow-wrap: anywhere; }
+.page h3 { font-size: 19px; font-weight: 700; margin-bottom: 12px; }
+.page p { margin: 12px 0; line-height: 1.6; }
+.page section { background: #fff; border: 1px solid #d3e2da; border-radius: 16px; padding: 20px; margin: 16px 0; }
+.page ul { list-style: none; padding: 0; margin: 0; }
+.page li + li { border-top: 1px solid #e4ede7; }
+.page li a { display: flex; flex-direction: column; gap: 4px; padding: 14px 8px; text-decoration: none; border-radius: 8px; overflow-wrap: anywhere; }
+.page li a:hover { background: #edf5ef; }
+.page li span { color: #536963; font-size: 14px; }
+.form { display: flex; gap: 8px; border: 1px solid #8fac9c; border-radius: 12px; padding: 8px 12px; background: #fff; }
+.form input { width: 100%; min-width: 0; padding: 8px 0; background: transparent; color: #102c30; }
+.form button, .page > button { padding: 8px 12px; border-radius: 8px; color: #fff; background: #28634e; }
+.pages { display: flex; flex-wrap: wrap; gap: 20px; }
+.pages a { padding: 12px 0; text-decoration: underline; }
+.page a:focus-visible, .page button:focus-visible, .page input:focus-visible { outline: 3px solid #39775e; outline-offset: 3px; }

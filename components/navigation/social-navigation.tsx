@@ -10,6 +10,7 @@ import { accessToken } from '../../lib/account/session';
 import { MessageCountIcon, useMessageNotifications } from '../chat/message-notifications';
 import type { ScreenTheme } from '../../lib/screen-themes';
 import { PointsBadge } from './points-badge';
+import { SearchForm } from './search-form';
 import { AppearanceChoices, useAppearance } from './appearance-preferences';
 
 type IconName = (typeof navigationDestinations)[number]['icon'] | 'profile' | 'search' | 'bell' | 'settings';
@@ -161,11 +162,9 @@ export function NavigationFrame({ pathname, children, community, position = 'sid
       <header className={styles.header}>
         <Link href="/" className={styles.brand} aria-label="SocialU home">Social<span>U</span></Link>
         <span className={styles.tagline}>{community || 'Your campus community'}</span>
-        <div className={styles.searchBox} aria-disabled="true" title="Search isn't built yet">
-          <NavigationIcon name="search" />
-          <input type="search" placeholder="Search students, groups, events…" disabled />
-        </div>
+        <SearchForm className={styles.searchBox} />
         <div className={styles.headerActions}>
+          <Link href="/search" className={`${styles.profileLink} ${styles.mobileSearch}`} aria-label="Search your campus"><NavigationIcon name="search" /></Link>
           <PointsBadge pathname={pathname} />
           <NotificationBell pathname={pathname} />
           <Link href="/profile" className={styles.profileLink} aria-current={isCurrentDestination(pathname, '/profile') ? 'page' : undefined} aria-label="Your profile">

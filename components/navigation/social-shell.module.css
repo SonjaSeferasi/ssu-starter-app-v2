@@ -17,7 +17,10 @@
 .searchBox svg { width: 18px; height: 18px; flex-shrink: 0; }
 .searchBox input { flex: 1; min-width: 0; border: none; background: none; font-size: 14px; color: var(--ink); }
 .searchBox input::placeholder { color: var(--muted); }
-.searchBox input:disabled { cursor: not-allowed; }
+.searchBox button { display: flex; padding: 4px; border: 0; background: transparent; color: inherit; cursor: pointer; }
+.searchBox:focus-within { outline: 2px solid #39775e; outline-offset: 2px; }
+.searchBox button:focus-visible { outline: 2px solid #39775e; outline-offset: 2px; }
+.profileLink.mobileSearch { display: none; }
 .headerActions { display: flex; align-items: center; gap: 12px; margin-left: auto; flex-shrink: 0; }
 .pointsBadge { flex-shrink: 0; padding: 8px 16px; border-radius: 999px; background: #f8fbf8; border: 1px solid var(--line); color: var(--muted); font-weight: 700; font-size: 14px; }
 .profileLink { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 999px; color: var(--ink); background: #f8fbf8; border: 1px solid var(--line); flex-shrink: 0; }
@@ -158,10 +161,12 @@
 .preferenceToggle:focus-visible, .preferencePanel button:focus-visible { outline: 3px solid #28634e; outline-offset: 3px; }
 @media (max-width: 700px) {
   .shell { --sidebar-width: 104px; --header-height: 68px; }
-  .header { padding: 12px 18px; }
+  .header { padding: 12px; gap: 12px; }
+  .headerActions { gap: 6px; }
   .brand { font-size: 30px; }
   .tagline { display: none; }
   .searchBox { display: none; }
+  .profileLink.mobileSearch { display: flex; }
   .pointsBadge { padding: 8px 10px; font-size: 12px; }
   .navigation { padding: 18px 6px; }
   .destination { flex-direction: column; gap: 6px; min-height: 76px; padding: 10px 4px; font-size: 12px; line-height: 1.25; text-align: center; white-space: normal; }
@@ -192,6 +197,10 @@
 /* Very small phones: a slimmer rail leaves more room for page content. */
 @media (max-width: 420px) {
   .shell { --sidebar-width: 84px; }
+  .header { gap: 6px; }
+  .brand { font-size: 26px; }
+  .profileLink { width: 38px; height: 38px; }
+  .pointsBadge { padding: 8px 6px; font-size: 11px; }
   .destination { font-size: 11px; padding: 8px 2px; min-height: 70px; }
   .preferenceToggle { font-size: 10px; }
   .page { padding: 20px 12px; }

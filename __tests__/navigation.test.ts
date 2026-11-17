@@ -3,12 +3,22 @@ import { createRequire } from 'node:module';
 import type { ReactNode } from 'react';
 // Keep this server-render smoke test independent of optional react-dom type packages.
 const { renderToStaticMarkup } = createRequire(import.meta.url)('react-dom/server') as { renderToStaticMarkup(node: ReactNode): string };
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { SocialNavigation, NavigationFrame } from '../components/navigation/social-navigation';
+vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn() }) }));
 import { SectionContent } from '../components/navigation/section-page';
 import { isCurrentDestination, isStandalonePage } from '../lib/navigation';
 
 describe('UR-600 navigation', () => {
+  it('provides an enabled header search form and a mobile search link', () => {
+    const html = renderToStaticMarkup(createElement(NavigationFrame, { pathname: '/', children: null }));
+    expect(html).toContain('action="/search"');
+    expect(html).toContain('name="q"');
+    expect(html).toContain('type="submit"');
+    expect(html).toContain('aria-label="Search your campus"');
+    expect(html).not.toContain("Search isn&#x27;t built yet");
+    expect(html.match(/<input\b[^>]*type="search"[^>]*>/)?.[0]).not.toContain('disabled');
+  });
   it('renders four live, clickable destinations with one combined Events and Trending link', () => {
     const html = renderToStaticMarkup(createElement(SocialNavigation, { pathname: '/game-room' }));
     const destinations = html.match(/<ul\b[^>]*>[\s\S]*?<\/ul>/)?.[0] ?? '';
