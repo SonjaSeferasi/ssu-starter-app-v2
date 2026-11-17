@@ -29,3 +29,22 @@ it('rejects numeric aliases as one item and keeps the previous arrangement atomi
     expect(moved.placements).toEqual([{ itemId: bed, x: 2, y: 1, rotation: 0 }]);
   } finally { await db.close(); }
 }, 25000);
+
+it('identifies owned appearance items as unsuitable furniture, retaining ownership denial and saved data (#1216)', async () => {
+  const db = await createDorm3dDatabase(1, SHOP_ONLY);
+  try {
+    const migration = readFileSync('supabase/migrations/20261117050233_dormspace_placement_rule_feedback.sql', 'utf8');
+    await db.exec(migration); await db.exec(migration);
+    const room = await dormCall(db, 1, 'open');
+    await db.exec('SET ROLE service_role');
+    for (const itemId of [room.wallItemId, room.floorItemId]) {
+      expect(room.owned).toContain(itemId);
+      await expect(dormCall(db, 1, 'save', null, { ...room, placements: [{ itemId, x: 1, y: 1 }] }))
+        .rejects.toMatchObject({ code: '22023', message: 'Wall colors and floor styles cannot be placed as furniture.' });
+      expect(await dormCall(db, 1, 'open')).toEqual(room);
+    }
+    await expect(dormCall(db, 1, 'save', null, { ...room, placements: [{ itemId: '999999999', x: 1, y: 1 }] }))
+      .rejects.toMatchObject({ code: '22023', message: 'You can only use items you own.' });
+    expect(await dormCall(db, 1, 'open')).toEqual(room);
+  } finally { await db.close(); }
+}, 25000);
