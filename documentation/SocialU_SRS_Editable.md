@@ -7734,6 +7734,14 @@ Acceptance criterion: Given the student plays the Austria level, when the explor
 
 Traces to: UR-632.
 
+##### SRS-632.7, SS — Present Kraków in the Poland level.
+
+When the student plays the Poland level, the system shall show St Mary's Basilica with its two unequal brick towers, the taller under a helm ringed by turrets and a gilded crown; the Cloth Hall with its ground-floor arcade and ornate parapet; the Town Hall Tower with its clock; St Adalbert's domed church and the poet's monument on the square; the coloured burgher houses; Wawel Hill with its brick ramparts, the royal castle, the cathedral and the golden chapel dome under the Polish flag; horse-drawn carriages; and, on the route, lamps, striped flower stalls, pretzel carts, benches, flower pots, balustrades, chimneys, flower boxes and dormer windows, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Poland level, when the explorer crosses the square in the first half of the route, then both towers of St Mary's Basilica are visible to their tops above the burgher houses and the Cloth Hall arcade is visible behind the route; when the explorer reaches the finish, then Wawel Castle and the Polish flag are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
