@@ -7830,6 +7830,14 @@ Acceptance criterion: Given the student plays the Ireland level, when the explor
 
 Traces to: UR-632.
 
+##### SRS-632.19, SS — Present Suomenlinna in the Finland level.
+
+When the student plays the Finland level, the system shall show smooth granite skerries along the island shore; grass-topped granite ramparts with four pointed bastions, cannon in their embrasures and the Finnish flag; the King's Gate with its archway, flanking towers and steps down to the water; the garrison church with its dome and its lighthouse lantern, which flashes unless the student has asked for reduced motion; the long pink barracks with its arched gateway; an ochre building and red wooden houses with white trim; a submarine on its cradle at the shore; birches and pines; Helsinki's cathedral on the horizon; the island ferry crossing under the flag; and, on the route, bollards with ropes, lamps, cannon, piles of shot, lilac bushes, benches and chimneys, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Finland level, when the explorer starts the route, then the pink barracks are visible; when the explorer is in the first half of the route, then the King's Gate is visible; when the explorer is in the second half, then the church dome with its lantern and the flag are visible; when the explorer reaches the finish, then the submarine and the red wooden houses are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
