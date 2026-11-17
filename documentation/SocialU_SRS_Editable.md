@@ -7870,6 +7870,14 @@ Acceptance criterion: Given the student plays the Lithuania level, when the expl
 
 Traces to: UR-632.
 
+##### SRS-632.24, SS — Present Mir Castle in the Belarus level.
+
+When the student plays the Belarus level, the system shall show the pond with reeds at its far shore and park lawns behind; Mir Castle with its red-brick curtain walls and row of white blind arches, a tower at each corner banded with white plaster niches under a pointed roof, the taller gate tower in the middle of the front and the pale palace wing inside the walls; the Belarusian flag on a pole beside the castle; the brick chapel with its rose window and side tower; painted wooden houses with carved white window frames behind picket fences; a stork on its nest on a pole; old lime trees; swans and a rowing boat on the pond; and, on the route, picket fences, lamps, flower beds, benches, a stork's nest on a pole and brick battlements, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Belarus level, when the explorer is in the first half of the route, then the chapel and its side tower are visible; when the explorer is past the middle, then the castle's gate tower and both front corner towers are visible to the tops of their roofs; when the explorer reaches the finish, then the painted wooden houses are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
