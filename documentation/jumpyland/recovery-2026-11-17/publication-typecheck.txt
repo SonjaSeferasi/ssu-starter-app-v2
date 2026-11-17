@@ -1,0 +1,2 @@
+Publication check: staged versions of modified tracked files; untracked files hidden. Jumpyland Game, bounded request helper, regression tests and transitive imports.
+0 TypeScript diagnostics

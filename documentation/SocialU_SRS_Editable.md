@@ -7044,6 +7044,8 @@ User requirement: As a student, I want to be told whether a fall or hazard ended
 
 ##### SRS-620.1, SS — End an attempt after a fall or hazard.
 
+Revision flag — November 17, 2026: Sonja explicitly selected keeping the current three-heart gameplay and checkpoint respawns. The single-fall/single-hazard wording and acceptance criterion below are retained for traceability but require team-approved revision. Do not treat the current three-heart implementation as satisfying that original criterion or change it to one-hit failure. Unlimited retries and preservation of confirmed level progress remain required.
+
 When the character falls below the level's playable area or touches a hazard during running gameplay, the system shall end the attempt unsuccessfully.
 
 Acceptance criterion: Given an attempt is running, when either failure condition occurs, then that attempt stops unsuccessfully.
