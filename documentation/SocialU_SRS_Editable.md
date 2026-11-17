@@ -7944,6 +7944,14 @@ Acceptance criterion: Given the student plays the Liechtenstein level, when the 
 
 Traces to: UR-632.
 
+##### SRS-632.33, SS — Present the three towers in the San Marino level.
+
+When the student plays the San Marino level, the system shall show the long limestone ridge of Mount Titano behind the town with a sheer cliff toward the route; along its crest the three towers, Guaita with its curtain wall and the flag of San Marino, Cesta on the highest point and slim Montale standing alone, joined by a battlemented wall walk; stone pines on the ridge; below it the stone houses and terracotta roofs of the town, the Palazzo Pubblico with its battlements, arcade and clock tower and the statue of Liberty before it, and the basilica with its columned porch and bell tower; a cable car that climbs from its station to the ridge, and stays still when reduced motion is on; green hills behind; and, on the route, crossbow targets, white and blue bunting, lanterns, battlemented walls, chimneys, balustrades, benches and potted trees, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the San Marino level, when the explorer starts the route, then the Palazzo Pubblico with its clock tower and the cable car line are visible; when the explorer is in the first half of the route, then the Guaita tower and its flag are visible on the ridge; when the explorer is in the second half of the route, then the towers and the wall walk on the crest are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
