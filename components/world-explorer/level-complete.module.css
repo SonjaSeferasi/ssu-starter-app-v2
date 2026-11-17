@@ -1,0 +1,29 @@
+/* Level complete celebration (SRS-631.5) and passport stamp (SRS-631.6). */
+.banner{position:absolute;inset:0;z-index:30;display:grid;place-items:center;overflow:hidden;pointer-events:none;animation:bannerLeave .35s ease-in 1.55s both}
+.rays{position:absolute;left:50%;top:50%;width:160vmax;height:160vmax;margin:-80vmax 0 0 -80vmax;border-radius:50%;
+ background:radial-gradient(circle,#fffbe0 0,#ffe98ad9 9%,#ffd86a66 22%,transparent 46%),repeating-conic-gradient(from 0deg,#fff3b03d 0 7deg,transparent 7deg 18deg);
+ animation:raysIn .5s ease-out both,raysTurn 9s linear infinite}
+.title{position:relative;margin:0;padding:0 16px;text-align:center;font:900 clamp(40px,9vw,112px)/1 'Trebuchet MS','Segoe UI',Arial,sans-serif;letter-spacing:.02em;text-transform:uppercase;color:#fffdf2;
+ -webkit-text-stroke:clamp(2px,.35vw,5px) #a8621a;paint-order:stroke fill;text-shadow:0 .06em 0 #c9822a,0 .12em 0 #8a4f12,0 .2em .35em #5b2f0680,0 0 .6em #fff3a8;animation:titlePop .6s cubic-bezier(.2,1.5,.4,1) both}
+.confetti{position:absolute;inset:0}
+.confetti i{position:absolute;top:-6%;width:10px;height:16px;border-radius:2px;opacity:0;animation:confettiFall 1.7s cubic-bezier(.3,.6,.5,1) var(--delay) both}
+.confetti i.wide{width:16px;height:9px;border-radius:9px}
+@keyframes titlePop{from{transform:scale(.3) rotate(-4deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+@keyframes raysIn{from{transform:scale(.2);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes raysTurn{to{rotate:360deg}}
+@keyframes confettiFall{0%{transform:translate3d(0,0,0) rotate(0);opacity:1}85%{opacity:1}100%{transform:translate3d(var(--drift),112vh,0) rotate(var(--turn));opacity:0}}
+@keyframes bannerLeave{to{opacity:0}}
+
+.passport{display:grid;grid-template-columns:1fr 1.25fr;width:min(100%,330px);margin:0 auto 14px;filter:drop-shadow(0 8px 14px #0006);transform:rotate(-2deg)}
+.cover{display:grid;justify-items:center;align-content:center;gap:7px;padding:14px 8px;border-radius:10px 3px 3px 10px;background:linear-gradient(135deg,#7a4a2c,#5a3420 60%,#4a2a18);color:#e6c27a;
+ font:700 9px/1.2 Georgia,'Times New Roman',serif;letter-spacing:.14em;text-align:center;border:1px solid #3a2012;box-shadow:inset 0 0 0 3px #6d4127,inset 0 0 0 4px #c9a25a55}
+.cover svg{width:44px;height:44px}
+.page{position:relative;display:grid;place-items:center;min-height:128px;padding:10px;border-radius:3px 10px 10px 3px;background:linear-gradient(90deg,#e8dcc4,#f8f0df 12%,#f5ecd9);border:1px solid #d6c7a6;
+ background-image:linear-gradient(90deg,#e8dcc4,#f8f0df 12%,#f5ecd9),repeating-linear-gradient(0deg,transparent 0 17px,#b9a98522 17px 18px)}
+.stamp{display:grid;justify-items:center;gap:1px;padding:7px 14px 6px;border:3px solid currentColor;border-radius:10px;outline:1.5px solid currentColor;outline-offset:3px;color:#c62f33;
+ font:900 15px/1.05 'Trebuchet MS','Segoe UI',Arial,sans-serif;letter-spacing:.12em;transform:rotate(-7deg);opacity:.9;mix-blend-mode:multiply;animation:stampPress .55s cubic-bezier(.3,1.4,.5,1) .25s both}
+.stamp svg{width:58px;height:27px}
+.stamp small{font:700 8px/1.3 'Courier New',monospace;letter-spacing:.16em;margin-top:2px}
+@keyframes stampPress{0%{transform:rotate(-16deg) scale(2.6);opacity:0}60%{transform:rotate(-7deg) scale(.92);opacity:1}100%{transform:rotate(-7deg) scale(1);opacity:.9}}
+
+@media(prefers-reduced-motion:reduce){.banner,.rays,.title,.confetti i,.stamp{animation:none}.confetti{display:none}}

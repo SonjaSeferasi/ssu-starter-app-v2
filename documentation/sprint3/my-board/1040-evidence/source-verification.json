@@ -1,0 +1,8 @@
+{
+  "baseCommit": "8a994bb9c23a36f1d8fbf9e5c5933161b03e44ca",
+  "apiSourceSha256": "b06d6333c667aee390ef75d1c505072b3e7ff5d54a21f41e4873021ef0e6308c",
+  "apiMatchesApproved1039HostedRun": true,
+  "focusedTests": 45,
+  "newRealPostgresApiTests": 6,
+  "hostedEvidence": "Reused, explicitly: approved #1039 run, commit a9d7160c88f2ab86f6102746972fe15445bac700. No new hosted writes/accounts."
+}

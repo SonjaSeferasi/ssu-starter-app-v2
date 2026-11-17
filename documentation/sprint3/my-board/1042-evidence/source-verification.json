@@ -1,0 +1,12 @@
+{
+  "testedCommittedTree": "65e6ca59d18d07ac987e2ce3986eb434c0613d9f",
+  "integratedMainBase": "7b7f82106c95236a521e8f44d47c1eb585612224",
+  "testedSourceSha256": {
+    "lib/supabase.ts": "0b8f79d23c0bce871027a7b9e87d039ddb776d6047ea4e380a98ea5182200128",
+    "scripts/tests/board-contract-ownership.browser.ts": "7f32b1086af7fe71d340e3ed2818ceb1f72abd6e07b50f5a80e5e7701e6bef22",
+    "scripts/tests/verify-board-slice.cjs": "629123b0b4e7f436bfef1c08f66910704e00bbec55cfa026eba64a6a043d0001",
+    "__tests__/supabase-freshness.test.ts": "9f02936fad0e6cd40d602e8675a4101086b60ce02d13556c2a838a4d0c6a4d99"
+  },
+  "environment": "Clean git archive of tested committed tree plus node_modules symlink; unrelated user profile edits excluded",
+  "note": "verification.json sourceCommit identifies integrated-main base; the tested tree includes the #1042/#1291 fix merged with that base. Later commit changes evidence/docs only."
+}

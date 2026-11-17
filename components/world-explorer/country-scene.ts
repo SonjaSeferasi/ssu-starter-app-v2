@@ -8,6 +8,7 @@ import {createExplorerCharacter} from './explorer-character';
 import type {GameRoomData} from '../../lib/game-room';
 import {createCollectibleBurst} from './japan-interactives';
 import {woodenDeck} from './kit/wooden-deck';
+import {createPickupPopups} from './kit/pickup-popups';
 import {skyEnvironment} from './kit/sky';
 import {createGate,createPressurePlate,createSwingRopes} from './kit/mechanisms';
 import {materialUpgradeQueue} from './kit/material-upgrade-queue';
@@ -15,7 +16,7 @@ import {mountCountryPuzzles} from './kit/country-puzzles';
 import {createTimedHazard} from './kit/hazards';
 import {levelDefinitionFor} from '../../lib/world-explorer/level-manifest';
 import {FIXED_STEP,LevelSimulation,cameraFrame,hazardAt,solidPlatform,windAt} from '../../lib/world-explorer/simulation';
-import {cameraTrackingHeight} from '../../lib/world-explorer/game-camera';
+import {cameraTrackingHeight,closeViewHaze,openingSweepFrame,openingSweepSeconds} from '../../lib/world-explorer/game-camera';
 import {explorerAssist} from '../../lib/world-explorer/difficulty';
 import {createExplorerAudio} from '../../lib/world-explorer/audio';
 import type {CountryCallbacks,ExplorerRunPreferences,PlatformDefinition,SimulationEvent,SimulationInput} from '../../lib/world-explorer/game-types';
@@ -74,6 +75,11 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
   root.name='playable-'+p.id;return{...p,root};
  });
  const scenery=environment?environment.mount(context):null;
+ // The close view brings each country's own haze nearer (Japan sets its own range).
+ // A view switch may restore the country's wide-view range, so it is applied again
+ // only when the range is not already the close-view one.
+ let hazed:{near:number;far:number}|null=null;
+ const depthHaze=(view:'gameplay'|'overview')=>{const fog=scene.fog;if(view!=='gameplay'||level.countryId==='JP'||!(fog instanceof T.Fog))return;if(hazed&&fog.near===hazed.near&&fog.far===hazed.far)return;hazed=closeViewHaze(fog.near,fog.far);fog.near=hazed.near;fog.far=hazed.far;};
  let reflections:T.WebGLRenderTarget|null=null;
  if(environment&&scenery){
   const light=environment.lighting;
@@ -82,7 +88,7 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
   for(const object of scene.children){if(object instanceof T.HemisphereLight){object.intensity=light.hemisphere;object.color.set(light.sky);object.groundColor.set(light.ground);}else if(object instanceof T.DirectionalLight&&object!==sun&&light.rim){object.color.set(light.rim);object.intensity=light.rimIntensity??.75;}}
   sun.shadow.mapSize.set(low?512:1024,low?512:1024);
   if(light.reflections&&!low){reflections=skyEnvironment(renderer,light.reflections);scene.environment=reflections.texture;scene.environmentIntensity=light.reflections.intensity;}
-  scenery.setView?.('gameplay');
+  scenery.setView?.('gameplay');depthHaze('gameplay');
  }
  if(!authored){
   scene.fog=new T.Fog(palette.fog,27,110);const mountains=new T.Group();scene.add(mountains);skyMountains(mountains,biome,finish,hash(country.code));batchStatic(mountains);countryLandmarks(scene,country.code,biome,profile);
@@ -114,6 +120,8 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
  // Timed hazards (geysers, surges, calving ice) show their warning and eruption.
  const timedHazards=level.hazards.filter(hazard=>hazard.cycle).map(hazard=>({hazard,visual:createTimedHazard(scene,hazard,environment?.hazardPalette)}));
  const bursts:{effect:ReturnType<typeof createCollectibleBurst>;born:number}[]=[];
+ // A "+1" for each coin and a star mark for each star, floating up from the pickup.
+ const popups=createPickupPopups(scene);
  for(const p of platforms)batchStatic(p.root);
  // Materials that change after mounting (photographic surface maps arriving
  // late) are prepared on stand-ins first: shallow clones of the meshes that
@@ -166,7 +174,10 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
  canvas.addEventListener('webglcontextlost',contextLost);window.addEventListener('keydown',keydown);window.addEventListener('keyup',keyup);window.addEventListener('blur',clear);window.addEventListener('pointerdown',unlock,{passive:true});parent.addEventListener('explorer-input',control);
  const focus=()=>canvas.focus({preventScroll:true});canvas.addEventListener('pointerdown',focus);
  const resize=()=>{renderer.setSize(Math.max(1,parent.clientWidth),Math.max(1,parent.clientHeight),false);camera.aspect=Math.max(1,parent.clientWidth)/Math.max(1,parent.clientHeight);camera.updateProjectionMatrix();};
- const observer=new ResizeObserver(resize);observer.observe(parent);resize();const initial=cameraFrame(level,simulation.state.x,simulation.state.y,camera.aspect);camera.position.set(initial.x,initial.y,initial.z);camera.lookAt(initial.x,initial.lookY,-1);notify();
+ const observer=new ResizeObserver(resize);observer.observe(parent);resize();
+ // Every authored level opens with a sweep down from the vista (skipped for reduced motion).
+ const sweeps=authored;let sweepElapsed=0;
+ const settled=cameraFrame(level,simulation.state.x,simulation.state.y,camera.aspect),initial=sweeps&&!reducedMotion?openingSweepFrame(settled,0):settled;camera.position.set(initial.x,initial.y,initial.z);camera.lookAt(initial.x,initial.lookY,-1);notify();
  const zones=level.zones||[];
  let cameraGroundY=simulation.state.y,cameraLookY=initial.lookY;
  const render=(dt:number)=>{
@@ -186,6 +197,7 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
   for(const enemy of simulation.enemies){const object=enemies.get(enemy.id);if(object){object.root.position.set(enemy.x,enemy.y,.1);object.update(reducedMotion?0:visualTime,enemy.direction,enemy.state);}}
   for(const [id,block] of blocks){const age=visualTime-block.bounceAt;block.object.position.y=block.baseY+(!reducedMotion&&age<.3?Math.sin(age/.3*Math.PI)*.16:0);block.object.userData.activated=simulation.activatedBlocks.has(id);}
   for(let i=bursts.length-1;i>=0;i--)if(!bursts[i].effect.update(visualTime-bursts[i].born)){bursts[i].effect.dispose();bursts.splice(i,1);}
+  popups.update(visualTime);
   hero.position.set(s.x,s.y,.2);hero.visible=s.invulnerable<=0||Math.floor(s.invulnerable*12)%2===0;
   body.rotation.y=T.MathUtils.damp(body.rotation.y,s.facing===1?1.15:-1.15,9,dt);body.rotation.z=T.MathUtils.damp(body.rotation.z,s.animation==='damage'?s.facing*.3:-s.vx*.01,12,dt);body.scale.y=T.MathUtils.damp(body.scale.y,s.animation==='land'?.91:1,14,dt);body.position.y=reducedMotion?0:s.animation==='celebrate'?Math.abs(Math.sin(visualTime*6))*.08:s.animation==='collect'?.06:s.grounded?Math.abs(Math.sin(visualTime*12))*.035*Math.min(1,Math.abs(s.vx)):0;
   for(let i=0;i<2;i++){const swing=Math.sin(visualTime*12+i*Math.PI)*.65*Math.min(1,Math.abs(s.vx)),air=s.animation==='jump'||s.animation==='fall',climb=s.animation==='climb'?Math.sin(visualTime*10+i*Math.PI):0;legs[i].rotation.x=s.animation==='climb'?climb*.6:air?i?-.5:.7:s.grounded?swing:.2;arms[i].rotation.x=s.animation==='climb'?-2.5+climb*.5:s.animation==='celebrate'?0:air?-.5:-swing*.9;arms[i].rotation.z=s.animation==='celebrate'?(i?1:-1)*2.4:0;}
@@ -196,6 +208,7 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
  if(reviewView==='scan'){const frame=cameraFrame(level,scanX,scanY??groundAt(scanX),camera.aspect);camera.position.set(frame.x,frame.y,frame.z);camera.lookAt(frame.x,frame.lookY,-1);}
   else if(reviewView==='camera'&&reviewCamera){camera.far=600;camera.fov=reviewCamera.fov??44;camera.position.set(...reviewCamera.position);camera.lookAt(...reviewCamera.target);camera.updateProjectionMatrix();}
   else if(reviewView==='overview'){const distance=(finish+18)/(2*Math.tan(T.MathUtils.degToRad(44)/2)*camera.aspect)+18;camera.far=Math.max(300,distance+200);camera.fov=44;camera.position.set(finish/2,19,distance);camera.lookAt(finish/2,1,-14);camera.updateProjectionMatrix();}
+  else if(sweeps&&!reducedMotion&&sweepElapsed<openingSweepSeconds){sweepElapsed+=dt;const frame=openingSweepFrame(target,sweepElapsed);camera.position.set(frame.x,frame.y,frame.z);cameraLookY=frame.lookY;camera.lookAt(frame.x,cameraLookY,-1);}
   else{camera.position.lerp(new T.Vector3(target.x,target.y,target.z),blend);cameraLookY=T.MathUtils.lerp(cameraLookY,target.lookY,blend);camera.lookAt(camera.position.x,cameraLookY,-1);const fov=44;if(Math.abs(camera.fov-fov)>.02){camera.fov=T.MathUtils.damp(camera.fov,fov,3,dt);camera.updateProjectionMatrix();}}
   scenery?.frame(camera.position.x);sun.position.set(s.x-8,18,12);sun.target.position.set(s.x,0,0);
   scenery?.update(s.elapsedSeconds,dt,{time:visualTime,platforms:simulation.platforms,wind:zones.map(zone=>({id:zone.id,force:zone.force,...windAt(zone,s.elapsedSeconds)})),playerX:s.x});
@@ -220,7 +233,7 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
    for(const event of events){
     if(event.type==='coin'||event.type==='star'||event.type==='block'){
      const item=event.type==='coin'?level.coins.find(item=>item.id===event.id):event.type==='star'?level.stars.find(item=>item.id===event.id):undefined;
-     const point=item?simulation.position(item):level.discoveryBlocks?.find(block=>block.id===event.id);if(point&&authored&&!reducedMotion)bursts.push({effect:createCollectibleBurst(scene,point.x,point.y,.2),born:visualTime});
+     const point=item?simulation.position(item):level.discoveryBlocks?.find(block=>block.id===event.id);if(point&&authored&&!reducedMotion){bursts.push({effect:createCollectibleBurst(scene,point.x,point.y,.2),born:visualTime});if(event.type!=='block')popups.spawn(event.type==='coin'?'+1':'\u2605',point.x,point.y+.15,.4,visualTime);}
      if(event.type==='block'){const block=blocks.get(event.id||'');if(block)block.bounceAt=visualTime;audio.play('checkpoint');}
     }
     if(event.type==='switch'||event.type==='gate-open'||event.type==='raise')audio.play('checkpoint');
@@ -248,5 +261,5 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
  if(authored&&!reducedMotion){const sample=createCollectibleBurst(scene,0,-50,0);sample.root.visible=false;sample.root.name='collectible-burst-shader-sample';}
  const prepare=async()=>{await Promise.race([surfaces,new Promise(resolve=>setTimeout(resolve,3000))]);if(!dead)await renderer.compileAsync(scene,camera);};
  prepare().then(start,start);setTimeout(start,6000);
- return{avatarNotices:character.notices,autoplay(inputs:SimulationInput[]){autoplay={inputs,index:0,carry:0};clear();focus();},reviewState(){const s=simulation.state;return{...simulation.stats(),status:s.status,x:s.x,y:s.y,standing:s.standing,lightPuzzles:simulation.lightPuzzles.map(p=>({...p})),waterBasins:(level.waterBasins||[]).map(b=>({id:b.id,y:simulation.waterSurface(b.id)})),elapsed:s.elapsedSeconds,discoveryFound:s.discoveryFound,coinIds:[...simulation.collectedCoins].sort(),starIds:[...simulation.collectedStars].sort(),autoplayIndex:autoplay?.index??0,autoplayLength:autoplay?.inputs.length??0,tally:{...reviewTally}};},pause(){simulation.pause();clear();audio.pause();},resume(){if(finishedReported||graphicsFailed)return;simulation.resume();clear();previous=performance.now();audio.resume();focus();},reviewStats(){const memory=renderer.info.memory;return{frameTimes:[...frameTimes],calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:memory.geometries,textures:memory.textures};},setReviewCamera(view:{position:[number,number,number];target:[number,number,number];fov?:number}){reviewCamera=view;reviewView='camera';clear();scenery?.setView?.('gameplay');simulation.pause();audio.pause();render(0);},setReviewView(view:'gameplay'|'overview'|'scan',x=0,y?:number){reviewView=view;scanX=x;scanY=y;clear();scenery?.setView?.(view==='overview'?'overview':'gameplay');if(view!=='gameplay'){simulation.pause();audio.pause();}else{simulation.resume();audio.resume();const position=cameraFrame(level,simulation.state.x,simulation.state.y,camera.aspect);camera.position.set(position.x,position.y,position.z);cameraLookY=position.lookY;cameraGroundY=simulation.state.y;camera.far=190;camera.updateProjectionMatrix();focus();}render(0);},setPreferences(preferences:ExplorerRunPreferences){audio.setVolumes({musicVolume:preferences.musicVolume,effectsVolume:preferences.effectsVolume});if(preferences.reducedMotion!==undefined){reducedMotion=preferences.reducedMotion;context.reducedMotion=reducedMotion;scenery?.setReducedMotion(reducedMotion);}},destroy(){if(dead)return;dead=true;upgrades.dispose();cancelAnimationFrame(frame);observer.disconnect();window.removeEventListener('keydown',keydown);window.removeEventListener('keyup',keyup);window.removeEventListener('blur',clear);window.removeEventListener('pointerdown',unlock);parent.removeEventListener('explorer-input',control);canvas.removeEventListener('pointerdown',focus);canvas.removeEventListener('webglcontextlost',contextLost);bursts.forEach(burst=>burst.effect.dispose());haloMaterial.map?.dispose();haloMaterial.dispose();audio.dispose();flag.dispose();finalized?.dispose();scenery?.dispose();scene.environment=null;reflections?.dispose();character.dispose?.();dispose(renderer,scene);}};
+ return{avatarNotices:character.notices,autoplay(inputs:SimulationInput[]){autoplay={inputs,index:0,carry:0};clear();focus();},reviewState(){const s=simulation.state;return{...simulation.stats(),status:s.status,x:s.x,y:s.y,standing:s.standing,lightPuzzles:simulation.lightPuzzles.map(p=>({...p})),waterBasins:(level.waterBasins||[]).map(b=>({id:b.id,y:simulation.waterSurface(b.id)})),elapsed:s.elapsedSeconds,discoveryFound:s.discoveryFound,coinIds:[...simulation.collectedCoins].sort(),starIds:[...simulation.collectedStars].sort(),autoplayIndex:autoplay?.index??0,autoplayLength:autoplay?.inputs.length??0,tally:{...reviewTally}};},pause(){simulation.pause();clear();audio.pause();},resume(){if(finishedReported||graphicsFailed)return;simulation.resume();clear();previous=performance.now();audio.resume();focus();},reviewStats(){const memory=renderer.info.memory;return{frameTimes:[...frameTimes],calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:memory.geometries,textures:memory.textures};},setReviewCamera(view:{position:[number,number,number];target:[number,number,number];fov?:number}){reviewCamera=view;reviewView='camera';clear();scenery?.setView?.('gameplay');simulation.pause();audio.pause();render(0);},setReviewView(view:'gameplay'|'overview'|'scan',x=0,y?:number){reviewView=view;scanX=x;scanY=y;clear();scenery?.setView?.(view==='overview'?'overview':'gameplay');depthHaze(view==='overview'?'overview':'gameplay');if(view!=='gameplay'){simulation.pause();audio.pause();}else{simulation.resume();audio.resume();const position=cameraFrame(level,simulation.state.x,simulation.state.y,camera.aspect);camera.position.set(position.x,position.y,position.z);cameraLookY=position.lookY;cameraGroundY=simulation.state.y;camera.far=190;camera.updateProjectionMatrix();focus();}render(0);},setPreferences(preferences:ExplorerRunPreferences){audio.setVolumes({musicVolume:preferences.musicVolume,effectsVolume:preferences.effectsVolume});if(preferences.reducedMotion!==undefined){reducedMotion=preferences.reducedMotion;context.reducedMotion=reducedMotion;scenery?.setReducedMotion(reducedMotion);}},destroy(){if(dead)return;dead=true;upgrades.dispose();cancelAnimationFrame(frame);observer.disconnect();window.removeEventListener('keydown',keydown);window.removeEventListener('keyup',keyup);window.removeEventListener('blur',clear);window.removeEventListener('pointerdown',unlock);parent.removeEventListener('explorer-input',control);canvas.removeEventListener('pointerdown',focus);canvas.removeEventListener('webglcontextlost',contextLost);bursts.forEach(burst=>burst.effect.dispose());popups.dispose();haloMaterial.map?.dispose();haloMaterial.dispose();audio.dispose();flag.dispose();finalized?.dispose();scenery?.dispose();scene.environment=null;reflections?.dispose();character.dispose?.();dispose(renderer,scene);}};
 }

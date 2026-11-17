@@ -5,6 +5,7 @@ import {createFujiVista,createJapanSky,addJapanRidges,addJapanCloudBanks} from '
 import {createJapanPagoda,createJapanHouse,createJapanTorii,createJapanLantern} from './japan-architecture';
 import {createJapanScenicCliff} from './japan-terrain';
 import {createJapanWater} from './japan-water';
+import {japanAtmosphere} from './japan-atmosphere';
 
 export type JapanEnvironmentOptions={
  platforms:readonly {x:number;y:number;width:number;motion:string|null}[];
@@ -65,7 +66,7 @@ function leafyPatchGeometry(low:boolean){
 export function mountJapanEnvironment(scene:T.Scene,options:JapanEnvironmentOptions){
  const finish=Math.max(30,Number.isFinite(options.finish)?options.finish:120),low=options.quality==='low',r=random(hash('japan-spring-slice'));let reduced=options.reducedMotion===true;
  const root=new T.Group();root.name='japan-spring-environment';root.userData.environmentId=japanEnvironmentInfo.id;root.userData.license=japanEnvironmentInfo.license;root.userData.decorative=true;root.userData.quality=low?'low':'standard';root.userData.layers=['immediate-foreground','playable-context','near-background','distant-landscape','sky-atmosphere'];scene.add(root);
- const oldBackground=scene.background,oldFog=scene.fog;scene.background=new T.Color('#75b8f5');scene.fog=new T.Fog('#bed8e3',52,230);
+ const oldBackground=scene.background,oldFog=scene.fog;scene.background=new T.Color(japanAtmosphere.background);scene.fog=new T.Fog(japanAtmosphere.fog.color,japanAtmosphere.fog.near,japanAtmosphere.fog.far);
  const atmosphere=createJapanSky(root);
  const staticRoot=new T.Group();staticRoot.name='japan-static-scenery';root.add(staticRoot);
  const far=new T.Group();far.name='japan-distant-landscape';staticRoot.add(far);const vista=createFujiVista(far);addJapanRidges(far,finish,low);

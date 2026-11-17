@@ -4224,11 +4224,15 @@ Traces to: UR-500.
 
 When the owner selects an available wall color, the system shall apply that color to their dorm walls.
 
+Acceptance clarification, Sprint 5: a save that omits the wall selection retains its last accepted value; an explicit null resets it to the default appearance.
+
 Traces to: UR-500.
 
 ##### SRS-500.14, DP — Floor appearance selection.
 
 When the owner selects an available flooring option, the system shall apply that appearance to their dorm floor.
+
+Acceptance clarification, Sprint 5: a save that omits the flooring selection retains its last accepted value; an explicit null resets it to the default appearance.
 
 Traces to: UR-500.
 
@@ -7611,6 +7615,238 @@ When a friend leaves the Game Room and games, the system shall stop listing that
 Acceptance criterion: Given a listed friend closes SocialU, when 90 seconds have passed and the list refreshes, then that friend is no longer listed.
 
 Traces to: UR-630.
+
+#### UR-631, SS - Play a cinematic country level.
+
+User requirement: As a student, I want a World Explorer level to feel like a small animated adventure, with a close camera, warm atmosphere and clear celebration of what I collect and finish, so that playing is engaging enough to come back to.
+
+##### SRS-631.1, SS — Follow the explorer with a close camera.
+
+When the student plays the Japan level, the system shall follow the explorer with a close side camera in which the explorer fills 15% to 19% of the height of a landscape screen, shall keep at least one and a half full jumps of the route visible ahead, and shall open the level with a sweep from a high, distant view of the vista down to that framing, which is skipped when reduced motion is on.
+
+Acceptance criterion: Given the student starts the Japan level on a 16:9 screen with reduced motion off, when the level opens, then the view glides down from the distant vista within three seconds and the explorer then fills between 15% and 19% of the screen height with the next ledge in view.
+
+Traces to: UR-631.
+
+##### SRS-631.2, SS — Present Japan in golden-hour light.
+
+The system shall present the Japan level in warm golden-hour light: a warm horizon under a cooler zenith, warm sunlight, and haze that lightens the distant valley and Mount Fuji while leaving the playable route clear.
+
+Acceptance criterion: Given the student is playing the Japan level, when the student looks at the scene, then the horizon and haze are warm-toned, Mount Fuji is visibly hazed but present, and the platforms of the route are not hazed.
+
+Traces to: UR-631.
+
+##### SRS-631.3, SS — Dress the Japan route.
+
+The system shall dress the playable islands of the Japan level with dense ferns and grass, a stone arch, railings on the arched bridge, mist at the waterfalls and drifting petals, without changing where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Japan level from start to finish, when the student crosses each island, then each island shows planted foliage and the collision surfaces are the same as before.
+
+Traces to: UR-631.
+
+##### SRS-631.4, SS — Celebrate each collected coin and star.
+
+When the explorer collects a coin or a star, the system shall show a flash and a spray of gold glints at the pickup and a label that rises and fades above it, "+1" for a coin and a star mark for a star, and shall show none of these when reduced motion is on.
+
+Acceptance criterion: Given reduced motion is off, when the explorer touches a coin, then a "+1" label rises from the coin and disappears within one second and the coin counter increases by one.
+
+Traces to: UR-631.
+
+##### SRS-631.5, SS — Celebrate level completion.
+
+When the explorer reaches the finish, the system shall show "Level Complete!" with a burst of light and falling confetti over the level for about two seconds before the results appear, shall announce it to assistive technology, and shall go straight to the results when reduced motion is on.
+
+Acceptance criterion: Given reduced motion is off, when the explorer reaches the finish gate, then "Level Complete!" and confetti are shown and the results dialog opens about two seconds later.
+
+Traces to: UR-631.
+
+##### SRS-631.6, SS — Stamp the passport.
+
+When the results of a completed level appear, the system shall show an open passport with a stamp pressed onto the page that carries the country's name and the date of completion.
+
+Acceptance criterion: Given the student completes Japan on 17 November 2026, when the results appear, then the passport shows a stamp reading JAPAN and 17 NOV 2026.
+
+Traces to: UR-631.
+
+##### SRS-631.7, SS — Follow the explorer closely in every country.
+
+When the student plays the level of any country, the system shall follow the explorer with the close side camera, in which the explorer fills 14% to 19% of the height of a landscape screen with at least one and a half full jumps of the route visible ahead, and shall open the level with the sweep from a high, distant view, which is skipped when reduced motion is on.
+
+Acceptance criterion: Given the student starts the level of any of the 193 countries on a 16:9 screen with reduced motion off, when the level opens, then the view glides down to the close framing within three seconds and the explorer then fills between 14% and 19% of the screen height.
+
+Traces to: UR-631.
+
+##### SRS-631.8, SS — Layer every country in depth haze.
+
+When the student plays the level of any country other than Japan, the system shall start that country's own haze nearer to the camera than in the wide view, in the country's own haze colour, so that scenery behind the route recedes in layers, and shall never haze the playable route.
+
+Acceptance criterion: Given the student is playing the France level, when the student looks at the scene, then the distant skyline and the Eiffel Tower are visibly hazed in the level's own haze colour and the rooftops the explorer walks on are not hazed.
+
+Traces to: UR-631.
+
+#### UR-632, SS - Recognise a country from its level.
+
+User requirement: As a student, I want each European country's level to show that country's own landmark, buildings and street life in real detail, so that I can tell where I am without reading the title and learn what the place looks like.
+
+##### SRS-632.1, SS — Present Westminster in the United Kingdom level.
+
+When the student plays the United Kingdom level, the system shall show, along the far bank of the Thames, the Palace of Westminster with its Gothic window bays and pinnacles, Victoria Tower flying the Union Flag, the Central Tower, and Elizabeth Tower with four clock dials; Westminster Bridge with a red double-decker bus and a black cab; the embankment with its lamps; and, on the route, London street furniture (red telephone box, red pillar box, lamp posts, railings, balustrades and chimney pots) that never stands in the walking lane.
+
+Acceptance criterion: Given the student plays the United Kingdom level to the finish gate, when the student looks at the scene at the start and at the finish, then the palace front is visible from the first frame, the clock dial of Elizabeth Tower is inside the view above the finish gate with the bridge and the red bus beside it, and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.2, SS — Present the Alhambra in the Spain level.
+
+When the student plays the Spain level, the system shall show the red walls and battlemented towers of the Alhambra on its hill above the river, with the Torre de la Vela and its bell, the Comares Tower, the tiled roofs of the Nasrid palaces, the Palace of Charles V, the white Generalife among cypresses, the white houses of the Albayzín and the snow of the Sierra Nevada; and, on the route, slender-columned arcades, tiled walls, a pool with a fountain, myrtle hedges and potted orange trees, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Spain level, when the level opens and when the explorer reaches the finish, then the red fortress and the white Albayzín are visible from the first frame, the Generalife stands behind the finish gate, and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.3, SS — Present the Acropolis in the Greece level.
+
+When the student plays the Greece level, the system shall show the Sacred Rock with its retaining wall, the Doric colonnade of the Parthenon with its broken south flank, the Propylaia gateway, the temple of Athena Nike, the Erechtheion with the porch of six maidens, the arched front of the Odeon of Herodes Atticus, the columns of the Olympieion and Hadrian's Arch, white Athens and Lycabettus hill; and, on the route, ancient column stubs, marble blocks, amphorae, rope barriers and olive trees, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Greece level, when the level opens and when the explorer passes the middle of the route, then the Olympieion columns are visible from the first frame, the whole height of the Parthenon colonnade is inside the view at the middle of the route, and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.4, SS — Present Schokland in the Netherlands level.
+
+When the student plays the Netherlands level, the system shall show the mound of the former island with its white church, tarred timber houses with red pantile roofs, the row of wooden sea-wall posts and the lighthouse with the keeper's house; the polder behind it with strips of tulips, cows, lines of poplars, a drainage mill whose sails turn and wind turbines on the far dike; a brown-sailed fishing boat crossing the water; and, on the route, tulip beds, bicycles, milk churns, clogs and mooring posts, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Netherlands level with reduced motion off, when the student watches the scene, then the mill sails and the turbine blades turn, the fishing boat moves across the water, the church and lighthouse are visible along the route, and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.5, SS — Present Aachen in the Germany level.
+
+When the student plays the Germany level, the system shall show Aachen Cathedral with Charlemagne's octagon under its pleated dome, the sixteen-sided ambulatory, the Gothic choir of tall windows and the spired west tower; the Gothic town hall with its two towers and the Charlemagne fountain; the columned rotunda of the Elisenbrunnen; half-timbered houses; and, on the route, chimneys, dormer windows, geranium boxes and weathercocks on the roofs and beer-garden tables, market stalls, lamps and linden trees on the squares, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Germany level, when the explorer crosses the roofs in the middle of the route, then the dome of the octagon and the windows of the Gothic choir are visible behind the route, half-timbered houses are visible from the first frame, and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.6, SS — Present Salzburg in the Austria level.
+
+When the student plays the Austria level, the system shall show the pastel houses of the Salzach quay; Salzburg Cathedral with its twin towers and green dome; the towers of the old town churches; Hohensalzburg Fortress with its white walls, red roofs and flag on its wooded hill; the Mönchsberg cliff; the Alps on the horizon; a river steamer on the Salzach; and, on the route, lamps, a hanging shop sign, a statue or fountain, café tables with parasols, balustrades, benches, chimneys, flower boxes and dormer windows, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Austria level, when the explorer reaches the second half of the route, then the fortress and its flag are visible above the roofs of the quay houses with the Alps behind them, the cathedral dome is visible earlier on the route, and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.7, SS — Present Kraków in the Poland level.
+
+When the student plays the Poland level, the system shall show St Mary's Basilica with its two unequal brick towers, the taller under a helm ringed by turrets and a gilded crown; the Cloth Hall with its ground-floor arcade and ornate parapet; the Town Hall Tower with its clock; St Adalbert's domed church and the poet's monument on the square; the coloured burgher houses; Wawel Hill with its brick ramparts, the royal castle, the cathedral and the golden chapel dome under the Polish flag; horse-drawn carriages; and, on the route, lamps, striped flower stalls, pretzel carts, benches, flower pots, balustrades, chimneys, flower boxes and dormer windows, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Poland level, when the explorer crosses the square in the first half of the route, then both towers of St Mary's Basilica are visible to their tops above the burgher houses and the Cloth Hall arcade is visible behind the route; when the explorer reaches the finish, then Wawel Castle and the Polish flag are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.8, SS — Present Saint Petersburg in the Russia level.
+
+When the student plays the Russia level, the system shall show a granite embankment with iron railings; the Peter and Paul Fortress with its bastions and the cathedral's golden spire; the Rostral Columns; the green-and-white front of the Winter Palace with its columns and roof statues; the Church of the Savior on Spilled Blood with its patterned onion domes; St Isaac's Cathedral with its gilded dome and the Admiralty with its golden spire; canal houses, side canals and humpbacked bridges with lamps; a canal boat; and, on the route, granite sphinxes, ornate lamps, iron railings, rows of nesting dolls, balustrades, chimneys and dormer windows, none of which stands in the walking lane or changes where the explorer can stand. The level shall show no mountain range behind the city.
+
+Acceptance criterion: Given the student plays the Russia level, when the explorer starts the route, then the golden spire of the Peter and Paul Cathedral and the Rostral Columns are visible; when the explorer reaches the finish, then the onion domes of the Church of the Savior on Spilled Blood and the gilded dome of St Isaac's Cathedral are visible to their tops; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.9, SS — Present Český Krumlov in the Czechia level.
+
+When the student plays the Czechia level, the system shall show low gabled houses under red roofs along the Vltava; the castle on its rock with its painted wings; the round Castle Tower in pink, cream and green bands with its arcaded gallery and copper cap; the Cloak Bridge with its arches on tall stone piers and covered corridors; St Vitus Church with its steep roof and slender tower; wooded hills; the Czech flag over the castle; a raft and canoes drifting on the river; and, on the route, lamps, an inn sign, tables with parasols, barrels, a market stall, benches, a saint's statue, flower boxes, chimneys, dormer windows, balustrades and a fountain, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Czechia level, when the explorer is in the first half of the route, then the Castle Tower is visible to the top of its copper cap above the red roofs; when the explorer is in the second half, then the arches of the Cloak Bridge are visible between the castle wings; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.10, SS — Present Budapest in the Hungary level.
+
+When the student plays the Hungary level, the system shall show the Buda embankment with its tram line and a yellow tram; castle-garden lawns and the retaining walls of Castle Hill; the long front of Buda Castle with its columned centre, green dome and the Hungarian flag; Matthias Church with its patterned tile roof and stone spire; the Fisherman's Bastion with its white arcades and seven conical turrets; beyond the finish, the Chain Bridge with its two stone towers, chains and guardian lions, and Gellért Hill with the Liberty Statue; a river boat on the Danube; and, on the route, ornate lamps, iron railings, benches, a paprika stall or a statue, potted trees, balustrades, a fountain, chimneys and dormer windows, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Hungary level, when the explorer is in the first half of the route, then the turrets of the Fisherman's Bastion and the spire of Matthias Church are visible; when the explorer is past the middle, then the dome of Buda Castle is visible to its top; when the explorer reaches the finish, then the Chain Bridge and the Liberty Statue are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.11, SS — Present Split in the Croatia level.
+
+When the student plays the Croatia level, the system shall show the Riva promenade with palms, white lamps, benches and café tables under white parasols; the sea wall of Diocletian's Palace with its lower doorways, its upper gallery of arches between columns and a square tower at each end; the tiered bell tower of the Cathedral of St Domnius and the eight-sided mausoleum; stone houses with red roofs; Marjan Hill with its pines, chapel and flag; bare limestone mountains on the horizon; fishing boats at the quay, sailing boats and a white ferry in the harbour; the Croatian flag; and, on the route, palms, white lamps, café tables, benches, red granite columns, a black sphinx, washing lines, chimneys, balustrades and potted oleanders, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Croatia level, when the explorer is in the middle of the route, then the gallery of arches of the palace wall is visible behind the palms of the Riva and the cathedral bell tower is visible above it; when the explorer starts the route, then Marjan Hill and its flag are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.12, SS — Present Kyiv in the Ukraine level.
+
+When the student plays the Ukraine level, the system shall show Sophia Square with flower beds in blue and yellow and the Ukrainian flag; Saint Sophia Cathedral with its white walls, green roofs and thirteen domes, the central ones gilded; the four-tiered blue-and-white bell tower with its golden cap; the mounted monument on its granite rock; St Michael's Monastery with its sky-blue walls, golden domes and bell tower; beyond the finish, the wooded Dnipro hills with the Lavra bell tower and golden domes; chestnut trees; a pleasure boat on the river; and, on the route, lamps, a flower stall, sunflowers, painted eggs, benches, iron railings, small golden cupolas and balustrades, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Ukraine level, when the explorer is in the first half of the route, then the bell tower and the gilded central dome of Saint Sophia are visible to their tops; when the explorer reaches the finish, then the golden domes of St Michael's and the Lavra bell tower are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.13, SS — Present a Flemish béguinage in the Belgium level.
+
+When the student plays the Belgium level, the system shall show a low white wall along the canal; the green behind it with its lawn, gravel paths, drifts of daffodils and tall lime trees; whitewashed houses with stepped brick gables, green doors and red roofs around the green; the white gatehouse with the Belgian flag; the brick church with its steep slate roof and ridge turret; the belfry of Bruges on the skyline; swans and a tour boat on the canal; and, on the route, lanterns, iron railings, bicycles, benches, daffodils, a lace stall, a water pump, flower boxes, chimneys and dormer windows, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Belgium level, when the explorer starts the route, then the gatehouse and the stepped gables of the whitewashed houses are visible; when the explorer is in the second half of the route, then the church and the lawn of the green are visible and the belfry is visible on the skyline; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.14, SS — Present Drottningholm in the Sweden level.
+
+When the student plays the Sweden level, the system shall show the island shore with its granite edge, lawns and gravel walks; Drottningholm Palace with its pale yellow front, its tall centre block, its two corner pavilions under dark domed roofs with lanterns, its terrace with urns and its stair, under the Swedish flag; the baroque garden with box parterres, clipped yews, the fountain, statues and a lime avenue; the white palace theatre; the red-and-yellow Chinese Pavilion under its green tent roofs beyond the finish; a white steamer on the lake; and, on the route, clipped yews in white planters, urns, lanterns, white benches, statues, balustrades and orange trees in tubs, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Sweden level, when the explorer is in the first half of the route, then the palace front is visible with both corner pavilions and the flag; when the explorer is in the second half, then the box parterres of the garden are visible; when the explorer reaches the finish, then the Chinese Pavilion is visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.15, SS — Present Angra do Heroísmo in the Portugal level.
+
+When the student plays the Portugal level, the system shall show the harbour quay of dark basalt and white paving; three terraces of white houses with coloured frames and red roofs, with hydrangea hedges at their feet; the blue-and-white Misericórdia church with its twin towers; the cathedral with its basalt trim and tiled spires on the upper terrace; a painted chapel of the Holy Spirit with its crown; basalt bastions with three round sentry boxes and the Portuguese flag; green pasture hills; Monte Brasil with its two green summits and fortress walls beyond the finish; a three-masted ship at anchor and painted fishing boats; and, on the route, bollards with ropes, lanterns, fish crates, benches, hydrangeas, mooring posts, balustrades and cannon, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Portugal level, when the explorer starts the route, then the basalt bastions, a sentry box and the Portuguese flag are visible; when the explorer is in the middle of the route, then the twin towers of the Misericórdia church and the masts of the ship are visible; when the explorer reaches the finish, then the cathedral spires are visible above the roofs and Monte Brasil is visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.16, SS — Present the Abbey of St Gall in the Switzerland level.
+
+When the student plays the Switzerland level, the system shall show the abbey cathedral with its curved east front between twin towers under green caps; the white wings of the abbey around the monastery courtyard with the library portal and the Swiss flag; painted old-town houses, every second one with a carved oriel window; the tower and green spire of St Laurence; green hills with farmhouses and fir trees; the snowy Alps on the horizon; and, on the route, lamps, a town fountain with a painted column and geraniums, a cheese stall, benches, flower boxes, chimneys and dormer windows, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Switzerland level, when the explorer starts the route, then old-town houses with oriel windows are visible; when the explorer is past the middle of the route, then both towers of the cathedral are visible to the tops of their caps and the abbey wings are visible beside them; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.17, SS — Present Jelling in the Denmark level.
+
+When the student plays the Denmark level, the system shall show a broad meadow with strips of rapeseed, corn and ploughed earth and round bales behind it; the two great grass mounds, each with a path to its top; between them the whitewashed church with its stepped-gable tower, red roofs, churchyard wall and the Danish flag on a white pole; before the church the two runestones, the larger bound with carved red and blue ribbons; a row of white posts marking the palisade and low stones marking the outline of the stone ship; a thatched half-timbered farmhouse; a red barn; a white windmill whose sails turn; beech trees; and, on the route, post-and-rail fences, small rune stones, poppies and daisies, benches, lamps and white marker posts, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Denmark level, when the explorer is in the first half of the route, then the north mound and the church tower are visible; when the explorer reaches the finish, then the south mound, the red barn and the windmill are visible and the windmill's sails are turning, unless the student has asked for reduced motion; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.18, SS — Present Brú na Bóinne in the Ireland level.
+
+When the student plays the Ireland level, the system shall show the meadows of the Boyne with small fields between hedges and dry-stone walls; the mound of Newgrange with its grass dome, its curving front wall of white quartz studded with dark cobbles, its ring of kerbstones, its passage entrance under the roof-box and the entrance stone carved with spirals; six tall standing stones before the mound; the mounds of Knowth, with its smaller satellite mounds, and Dowth; a whitewashed thatched cottage with a red door and the Irish flag; sheep; hawthorn trees; green hills; a faint rainbow; swans on the river; and, on the route, dry-stone walls, kerbstones carved with spirals, a standing stone, ferns, wildflowers and benches, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Ireland level, when the explorer starts the route, then the cottage, the flag and the rainbow are visible; when the explorer is past the middle of the route, then the white quartz wall of Newgrange, its entrance and at least three standing stones are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.19, SS — Present Suomenlinna in the Finland level.
+
+When the student plays the Finland level, the system shall show smooth granite skerries along the island shore; grass-topped granite ramparts with four pointed bastions, cannon in their embrasures and the Finnish flag; the King's Gate with its archway, flanking towers and steps down to the water; the garrison church with its dome and its lighthouse lantern, which flashes unless the student has asked for reduced motion; the long pink barracks with its arched gateway; an ochre building and red wooden houses with white trim; a submarine on its cradle at the shore; birches and pines; Helsinki's cathedral on the horizon; the island ferry crossing under the flag; and, on the route, bollards with ropes, lamps, cannon, piles of shot, lilac bushes, benches and chimneys, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Finland level, when the explorer starts the route, then the pink barracks are visible; when the explorer is in the first half of the route, then the King's Gate is visible; when the explorer is in the second half, then the church dome with its lantern and the flag are visible; when the explorer reaches the finish, then the submarine and the red wooden houses are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.20, SS — Present Þingvellir in the Iceland level.
+
+When the student plays the Iceland level, the system shall show a plain of dark lava with hummocks of moss, lava blocks, drifts of purple lupins and straight fissures of blue water; the wall of the rift as a cliff of basalt columns along the whole valley, with a lower wall before it; a waterfall dropping over the cliff and a river winding from it to the lake; the white church with its green roof and tower; the farmhouse of five white gables; the Law Rock with its walkway and the Icelandic flag; grazing horses; birch scrub; a snow-capped volcano above the rift wall; rising steam; and, on the route, rope rails, lava blocks, lupins, cairns, benches and clusters of basalt columns, none of which stands in the walking lane or changes where the explorer can stand. The water of the falls and the steam move unless the student has asked for reduced motion.
+
+Acceptance criterion: Given the student plays the Iceland level, when the explorer is in the first half of the route, then the flag on the Law Rock, the church and the five gables of the farmhouse are visible in front of the rift wall; when the explorer is past the middle, then the waterfall is visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
 
 <a id="nfr"></a>
 

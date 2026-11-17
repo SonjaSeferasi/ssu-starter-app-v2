@@ -122,6 +122,27 @@ const loaders:Record<string,()=>Promise<{environment:CountryEnvironment}>>={
  'africa-sz':()=>import('./africa/eswatini'),
  // Europe: one shared chunk; each country's look comes from its place data.
  ...Object.fromEntries(europeCodes.map(code=>['europe-'+europePlaces[code].iso2.toLowerCase(),()=>import('./europe').then(m=>({environment:m.europeEnvironment(code)}))])),
+ // European countries with their own detailed scenery replace the shared builder.
+ 'europe-gb':()=>import('./united-kingdom'),
+ 'europe-es':()=>import('./spain'),
+ 'europe-gr':()=>import('./greece'),
+ 'europe-nl':()=>import('./netherlands'),
+ 'europe-de':()=>import('./germany'),
+ 'europe-at':()=>import('./austria'),
+ 'europe-pl':()=>import('./poland'),
+ 'europe-ru':()=>import('./russia'),
+ 'europe-cz':()=>import('./czechia'),
+ 'europe-hu':()=>import('./hungary'),
+ 'europe-ua':()=>import('./ukraine'),
+ 'europe-hr':()=>import('./croatia'),
+ 'europe-be':()=>import('./belgium'),
+ 'europe-se':()=>import('./sweden'),
+ 'europe-pt':()=>import('./portugal'),
+ 'europe-ch':()=>import('./switzerland'),
+ 'europe-dk':()=>import('./denmark'),
+ 'europe-ie':()=>import('./ireland'),
+ 'europe-fi':()=>import('./finland'),
+ 'europe-is':()=>import('./iceland'),
  // Oceania: one shared chunk, like Europe.
  ...Object.fromEntries(oceaniaCodes.map(code=>['oceania-'+oceaniaPlaces[code].iso2.toLowerCase(),()=>import('./oceania').then(m=>({environment:m.oceaniaEnvironment(code)}))])),
  // South America (phase 1 continental release).

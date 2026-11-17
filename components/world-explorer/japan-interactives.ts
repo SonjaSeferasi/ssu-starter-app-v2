@@ -125,19 +125,23 @@ export function createJapanDiscoveryBlock(parent:T.Object3D,width=1,height=1){
  batchStatic(root);return root;
 }
 
-/** Lightweight original gold sparkle burst, aged by the engine. update(age)
- * returns false after .7 seconds; the owner then calls dispose exactly once. */
+/** Original gold sparkle burst, aged by the engine: a quick flash ring and a
+ * spray of gold glints that arc outward and fall. update(age) returns false
+ * after .7 seconds; the owner then calls dispose exactly once. */
 export function createCollectibleBurst(parent:T.Object3D,x:number,y:number,z:number){
  const root=new T.Group();root.name='japan-collectible-sparkle-burst';root.position.set(x,y,z);parent.add(root);
  const material=new T.MeshBasicMaterial({color:'#ffe8a5',transparent:true,opacity:1,depthWrite:false,toneMapped:false});
- const geometry=new T.OctahedronGeometry(1,0),particles=new T.InstancedMesh(geometry,material,18),dummy=new T.Object3D(),r=random(902);
+ const geometry=new T.OctahedronGeometry(1,0),particles=new T.InstancedMesh(geometry,material,26),dummy=new T.Object3D(),r=random(902);
  particles.frustumCulled=false;particles.castShadow=false;root.add(particles);
- const seeds=Array.from({length:particles.count},(_,i)=>{const a=i/particles.count*Math.PI*2;return{x:Math.cos(a)*(.45+r()*.55),y:.3+r()*.85,z:(r()-.5)*.5,size:.018+r()*.023,phase:r()*6};});
+ const ringMaterial=new T.MeshBasicMaterial({color:'#fff4c4',transparent:true,opacity:.9,depthWrite:false,toneMapped:false,side:T.DoubleSide}),ringGeometry=new T.RingGeometry(.82,1,28),ring=new T.Mesh(ringGeometry,ringMaterial);
+ ring.name='collectible-flash-ring';ring.castShadow=false;ring.frustumCulled=false;root.add(ring);
+ const seeds=Array.from({length:particles.count},(_,i)=>{const a=i/particles.count*Math.PI*2;return{x:Math.cos(a)*(.7+r()*.9),y:.45+r()*1.25,z:(r()-.5)*.5,size:.04+r()*.05,phase:r()*6};});
  let disposed=false;
  const update=(age:number)=>{
   if(disposed)return false;const t=Math.max(0,Number.isFinite(age)?age:0),life=Math.max(0,1-t/.7);root.visible=life>0;material.opacity=life;
-  for(let i=0;i<seeds.length;i++){const seed=seeds[i];dummy.position.set(seed.x*t,seed.y*t-.9*t*t,seed.z*t);dummy.rotation.set(t*3+seed.phase,t*2,seed.phase);dummy.scale.setScalar(seed.size*life);dummy.updateMatrix();particles.setMatrixAt(i,dummy.matrix);}particles.instanceMatrix.needsUpdate=true;
+  for(let i=0;i<seeds.length;i++){const seed=seeds[i];dummy.position.set(seed.x*t,seed.y*t-1.3*t*t,seed.z*t);dummy.rotation.set(t*3+seed.phase,t*2,seed.phase);dummy.scale.setScalar(seed.size*life);dummy.updateMatrix();particles.setMatrixAt(i,dummy.matrix);}particles.instanceMatrix.needsUpdate=true;
+  const flash=Math.min(1,t/.32);ring.scale.setScalar(.15+flash*.75);ringMaterial.opacity=.9*(1-flash);ring.visible=flash<1;
   return life>0;
  };
- update(0);return{root,update,dispose(){if(disposed)return;disposed=true;particles.dispose();geometry.dispose();material.dispose();root.removeFromParent();}};
+ update(0);return{root,update,dispose(){if(disposed)return;disposed=true;particles.dispose();geometry.dispose();material.dispose();ringGeometry.dispose();ringMaterial.dispose();root.removeFromParent();}};
 }

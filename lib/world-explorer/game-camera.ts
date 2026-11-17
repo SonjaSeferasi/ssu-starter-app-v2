@@ -4,20 +4,30 @@ const clamp=(value:number,min:number,max:number)=>Math.max(min,Math.min(max,valu
 /** The tuned Japan reference framing is the default for every authored level. */
 const referenceCamera:CameraDefinition={height:4.4,look:1.35,follow:.35,maxRise:1.25};
 
+/** The close cinematic follow camera for Japan (SRS-631.1). At this distance a
+ * 1.83-unit player fills about 15-18% of the view height, roughly half again
+ * as large as the wide framing, while the lead still shows the next landings. */
+export const japanCloseCamera={height:2.95,look:1.35,follow:.78,maxRise:4,distance:12.8,portraitDistance:17} as const;
+
 /** Hold the horizon through ordinary jumps, follow a new landing elevation,
  * and keep a long fall from carrying the player beneath the viewport. */
 export function cameraTrackingHeight(previous:number,y:number,grounded:boolean){
  return grounded?y:y<previous-2.5?y+2.5:previous;
 }
 
-/** The close gameplay camera for redesigned levels. At the authored distance a
- * 1.83-unit player fills about 9-12% of the view height; 18% of the view width
+/** Every country is followed from the same close range as Japan (SRS-631.7).
+ * Authored distances were set for a wide view; scaling them keeps each level's
+ * own proportions while the most common distance, 20.5, becomes Japan's 12.8. */
+export const closeFollowScale=japanCloseCamera.distance/20.5;
+
+/** The close gameplay camera for redesigned levels. At the scaled distance a
+ * 1.83-unit player fills about 15-18% of the view height; 18% of the view width
  * of look-ahead keeps them on the left third with the next obstacles visible.
  * `y` is the tracked ground height, so the view climbs with the terrain while
  * ordinary jumps leave it still. Portrait screens pull back to keep the lead. */
 export function gameplayCameraFrame(level:LevelDefinition,camera:CameraDefinition,x:number,y:number,aspect:number){
  const last=level.platforms.find(p=>p.id===level.finish.platformId)!,spawn=level.platforms.find(p=>p.id===level.spawn.platformId)!;
- const ratio=Math.max(.35,Math.min(aspect,2.4)),z=(camera.distance||20)*(ratio<1?1.25:1);
+ const ratio=Math.max(.35,Math.min(aspect,2.4)),z=(camera.distance||20)*closeFollowScale*(ratio<1?1.25:1);
  const visibleWidth=2*Math.tan(44*Math.PI/360)*z*ratio,lead=visibleWidth*.18,start=spawn.x+level.spawn.offset+lead;
  const ground=spawn.y+(y-spawn.y)*camera.follow;
  return{x:clamp(x+lead,start,Math.max(start,last.x+last.width-visibleWidth*.2)),y:ground+camera.height,z,lookY:ground+camera.look};
@@ -34,11 +44,29 @@ export function referenceCameraFrame(level:LevelDefinition,x:number,y:number,asp
  }
  const japan=level.countryId==='JP';
  if(!japan&&level.camera?.distance)return gameplayCameraFrame(level,level.camera,x,y,aspect);
- const camera=japan?{height:3.5,look:1.3,follow:.78,maxRise:4}:level.camera||referenceCamera;
- const ratio=Math.max(.35,Math.min(aspect,2.4)),z=japan?(ratio<1?21:19.5):ratio<1?29:24;
+ const camera=japan?japanCloseCamera:level.camera||referenceCamera;
+ const ratio=Math.max(.35,Math.min(aspect,2.4)),z=japan?(ratio<1?japanCloseCamera.portraitDistance:japanCloseCamera.distance):(ratio<1?29:24)*closeFollowScale;
  const visibleWidth=2*Math.tan(44*Math.PI/360)*z*ratio,lead=visibleWidth*.18;
  const spawnPlatform=level.platforms.find(p=>p.id===level.spawn.platformId)!;
  const initialCenter=spawnPlatform.x+level.spawn.offset+lead;
  const rise=clamp((y-(japan?.7:1.8))*camera.follow,0,camera.maxRise);
  return{x:clamp(x+lead,initialCenter,Math.max(initialCenter,last.x+last.width-visibleWidth*.2)),y:camera.height+rise,z,lookY:camera.look+rise};
+}
+
+/** Opening sweep (SRS-631.1): a level begins high and far back on the vista,
+ * then glides down into the gameplay framing. The offset shrinks to nothing,
+ * so the follow camera takes over without a jump. */
+export const openingSweepSeconds=2.8;
+export function openingSweepFrame<F extends {x:number;y:number;z:number;lookY:number}>(frame:F,elapsed:number):F{
+ const t=clamp(elapsed/openingSweepSeconds,0,1),far=Math.pow(1-t,3);
+ return{...frame,x:frame.x+far*7,y:frame.y+far*5.5,z:frame.z+far*15,lookY:frame.lookY+far*3.2};
+}
+
+/** Depth haze for the close view (SRS-631.8). A country's own haze was tuned
+ * for the wide camera; from close range it starts nearer so the valley behind
+ * the route still recedes in layers. The route itself, at most about 17 units
+ * from the camera, always stays in front of the haze. */
+export function closeViewHaze(near:number,far:number){
+ const start=Math.max(20,near*.6);
+ return{near:start,far:Math.max(start+60,far*.95)};
 }

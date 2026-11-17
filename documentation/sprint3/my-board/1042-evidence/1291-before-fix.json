@@ -1,0 +1,41 @@
+{
+  "environment": "Local clean production app, actual SQL in disposable PGlite, fixture provider transport",
+  "boardApiAfterBlock": {
+    "status": 404,
+    "data": {
+      "error": "This profile or note is not available."
+    }
+  },
+  "directSqlProfileAfterBlock": {
+    "code": "P0002",
+    "message": "This profile is not available."
+  },
+  "profileApiAfterBlock": {
+    "status": 200,
+    "data": {
+      "profile": {
+        "id": "1",
+        "bio": "",
+        "name": "Dorm Student 1",
+        "major": null,
+        "is_own": false,
+        "username": "dorm1",
+        "full_name": "Dorm Student 1",
+        "is_friend": false,
+        "class_year": null,
+        "post_count": 0,
+        "university": "Salem State University",
+        "display_name": null,
+        "friend_count": 0,
+        "friend_request": null,
+        "setup_completed": false,
+        "display_name_next_change_at": null,
+        "photo_url": null
+      }
+    }
+  },
+  "providerProfileCallsAfterBlock": 0,
+  "settledUnavailablePageObserved": false,
+  "expectedTestResult": "failed: blocked profile header should be denied",
+  "originalPollingFinding": "Counting zero tabs during a loading skeleton could falsely pass."
+}
