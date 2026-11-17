@@ -7766,6 +7766,14 @@ Acceptance criterion: Given the student plays the Hungary level, when the explor
 
 Traces to: UR-632.
 
+##### SRS-632.11, SS — Present Split in the Croatia level.
+
+When the student plays the Croatia level, the system shall show the Riva promenade with palms, white lamps, benches and café tables under white parasols; the sea wall of Diocletian's Palace with its lower doorways, its upper gallery of arches between columns and a square tower at each end; the tiered bell tower of the Cathedral of St Domnius and the eight-sided mausoleum; stone houses with red roofs; Marjan Hill with its pines, chapel and flag; bare limestone mountains on the horizon; fishing boats at the quay, sailing boats and a white ferry in the harbour; the Croatian flag; and, on the route, palms, white lamps, café tables, benches, red granite columns, a black sphinx, washing lines, chimneys, balustrades and potted oleanders, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Croatia level, when the explorer is in the middle of the route, then the gallery of arches of the palace wall is visible behind the palms of the Riva and the cathedral bell tower is visible above it; when the explorer starts the route, then Marjan Hill and its flag are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
