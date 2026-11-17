@@ -1,0 +1,17 @@
+{
+  "posted": null,
+  "result": {
+    "unread": 0
+  },
+  "notifications": [
+    {
+      "actor": "dorm3",
+      "read_at": "2026-11-16T18:59:14.142-05:00"
+    },
+    {
+      "actor": "dorm2",
+      "read_at": "2026-11-16T18:59:14.142-05:00"
+    }
+  ],
+  "environment": "Actual local Next UI/API and disposable SQL; Auth/PostgREST fixtures"
+}
