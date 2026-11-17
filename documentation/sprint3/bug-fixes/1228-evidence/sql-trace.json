@@ -1,0 +1,16 @@
+{
+  "before": {
+    "targetAppAllowed": false,
+    "targetRealtimeAllowed": true
+  },
+  "after": {
+    "targetAppAllowed": false,
+    "targetRealtimeAllowed": false,
+    "callerAppAllowed": true,
+    "callerRealtimeAllowed": true,
+    "broadcastTopics": [
+      "session:00000000-0000-0000-0000-000000000001:10000000-0000-4000-8000-000000000001"
+    ],
+    "providerTargetSessionRetained": true
+  }
+}
