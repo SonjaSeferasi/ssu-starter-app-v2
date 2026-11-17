@@ -7742,6 +7742,14 @@ Acceptance criterion: Given the student plays the Poland level, when the explore
 
 Traces to: UR-632.
 
+##### SRS-632.8, SS — Present Saint Petersburg in the Russia level.
+
+When the student plays the Russia level, the system shall show a granite embankment with iron railings; the Peter and Paul Fortress with its bastions and the cathedral's golden spire; the Rostral Columns; the green-and-white front of the Winter Palace with its columns and roof statues; the Church of the Savior on Spilled Blood with its patterned onion domes; St Isaac's Cathedral with its gilded dome and the Admiralty with its golden spire; canal houses, side canals and humpbacked bridges with lamps; a canal boat; and, on the route, granite sphinxes, ornate lamps, iron railings, rows of nesting dolls, balustrades, chimneys and dormer windows, none of which stands in the walking lane or changes where the explorer can stand. The level shall show no mountain range behind the city.
+
+Acceptance criterion: Given the student plays the Russia level, when the explorer starts the route, then the golden spire of the Peter and Paul Cathedral and the Rostral Columns are visible; when the explorer reaches the finish, then the onion domes of the Church of the Savior on Spilled Blood and the gilded dome of St Isaac's Cathedral are visible to their tops; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements

@@ -20,8 +20,9 @@ const groveKind:Record<string,TreeKind>={conifer:'conifer',deciduous:'plane',oli
 const skyFor={temperate:{zenith:'#6f9fca',horizon:'#e2e9ee'},alpine:{zenith:'#5f97cc',horizon:'#e4ecf2'},coastal:{zenith:'#4f97d2',horizon:'#e6eef2'},forest:{zenith:'#6e9cc2',horizon:'#e0e8ea'},grassland:{zenith:'#6aa2d2',horizon:'#eaeee6'}};
 
 /** `landmark:false` leaves out the generic landmark composition, for a country
- * whose own module builds a detailed one in its place. */
-export function europeEnvironment(code:EuropeCode,options:{landmark?:boolean}={}):CountryEnvironment{
+ * whose own module builds a detailed one in its place. `backdrop:false` leaves
+ * out the distant snowy range, for a city that stands on flat land. */
+export function europeEnvironment(code:EuropeCode,options:{landmark?:boolean;backdrop?:boolean}={}):CountryEnvironment{
  const place:EuropePlace=europePlaces[code],p=place.palette,s=place.scene,id='europe-'+place.iso2.toLowerCase();
  const cave=s.terrain==='karst',rift=s.terrain==='rift';
  const land:LandmassPalette={top:p.ground,topAlt:new T.Color(p.ground).multiplyScalar(.9).getStyle(),edge:p.ground,face:p.rock,faceDark:new T.Color(p.rock).multiplyScalar(.72).getStyle(),band:new T.Color(p.rock).multiplyScalar(.82).getStyle(),rough:.2,strata:.55,
@@ -47,7 +48,7 @@ export function europeEnvironment(code:EuropeCode,options:{landmark?:boolean}={}
    // Landform behind the route.
    const height=s.terrain==='mountains'?ridgedRange(4100+code.charCodeAt(1),{peaks:7,height:38,sharpness:1.3}):s.terrain==='hills'||s.terrain==='cliffs'||s.terrain==='rock'?rollingHills(3300+code.charCodeAt(0),9,2.6):s.terrain==='rift'?(u:number,v:number)=>Math.abs(Math.sin(u*9))*1.5+v*3:(u:number,v:number)=>(1-v)*.6+Math.sin(u*14)*.3;
    const ground=createHeightfield(features,{name:s.landmark+'-ground',x:finish/2,y:groundY-(s.terrain==='mountains'?6:0),z:wet&&wet!=='river'&&wet!=='canal'?-70:-52,width:finish+170,depth:s.terrain==='mountains'?70:80,segments:[low?40:80,low?16:30],height,color:s.terrain==='mountains'?mountainColor({snowLine:place.biome==='alpine'?30:100,treeLine:place.biome==='alpine'?20:100,rock:p.rock,forest:p.foliage,snow:'#eef3f5',grass:p.ground}):()=>new T.Color(p.ground)});ground.updateMatrixWorld(true);
-   if(place.biome==='alpine'&&s.terrain!=='mountains'&&!cave)createHeightfield(features,{name:s.landmark+'-alpine-backdrop',x:finish/2,y:-12,z:-140,width:finish+260,depth:60,segments:[low?40:90,low?14:28],height:ridgedRange(5500+code.charCodeAt(2),{peaks:9,height:44,sharpness:1.5}),color:mountainColor({snowLine:30,treeLine:18,rock:'#8b8a86',forest:p.foliage,snow:'#eef3f5'})});
+   if(options.backdrop!==false&&place.biome==='alpine'&&s.terrain!=='mountains'&&!cave)createHeightfield(features,{name:s.landmark+'-alpine-backdrop',x:finish/2,y:-12,z:-140,width:finish+260,depth:60,segments:[low?40:90,low?14:28],height:ridgedRange(5500+code.charCodeAt(2),{peaks:9,height:44,sharpness:1.5}),color:mountainColor({snowLine:30,treeLine:18,rock:'#8b8a86',forest:p.foliage,snow:'#eef3f5'})});
    // Town, landmark and vegetation.
    const b=new Builder(),ctx={x:finish*.62,y:groundY,z:-10,finish,r,low,palette:p};
    if(s.town)townRow(b,ctx,-24,finish*.36,-30,s.town);
