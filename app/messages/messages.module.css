@@ -144,6 +144,12 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 /* SRS-210.1 (#802): each message's React button sits beside its bubble (on the left of the student's own). It shows
    while the message is hovered or focused, and always on touch screens. */
 .bubbleRow { display: flex; align-items: center; gap: 4px; width: 100%; }
+/* SRS-211.2 (#1282): the sender's photo beside their messages. align-self keeps it level with the first
+   line of a long bubble rather than floating to its middle. The spacer holds the same width for the rest of
+   a run, so consecutive bubbles stay in one column. */
+.messageAvatar, .messageAvatarSpacer { flex-shrink: 0; width: 32px; height: 32px; align-self: flex-end; }
+.messageAvatar { display: grid; place-items: center; overflow: hidden; border-radius: 50%; background: #c0ddcb; color: #28634e; }
+.messageAvatarImage { width: 100%; height: 100%; object-fit: cover; }
 .messageOwn .bubbleRow { flex-direction: row-reverse; }
 .reactButton { display: grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #536963; cursor: pointer; opacity: 0; }
 .message:hover .reactButton, .message:focus-within .reactButton, .reactButton[aria-expanded='true'] { opacity: 1; }

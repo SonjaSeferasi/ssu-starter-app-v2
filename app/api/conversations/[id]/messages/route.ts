@@ -2,6 +2,7 @@ import { AccountError, accountResponse, jsonBody, verifiedUser } from '../../../
 import { chatOperation, conversationIdParam, messageIdParam } from '../../../../../lib/chat-access';
 import { EMOJI_REQUIRED, isSingleEmoji } from '../../../../../lib/chat-emoji';
 import { withPhotoUrls } from '../../../../../lib/chat-photo-urls';
+import { withSenderPhotoUrls } from '../../../../../lib/chat-sender-photos';
 export const dynamic = 'force-dynamic';
 
 // SRS-201.2 (#317): a conversation participant retrieves the saved text messages, oldest first.
@@ -16,7 +17,9 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
     const user = await verifiedUser(request);
     const conversationId = conversationIdParam((await context.params).id);
     const history = await chatOperation('socialu_conversation_messages', { p_auth_id: user.id, p_conversation_id: conversationId });
-    return Response.json(await withPhotoUrls(history), { headers: { 'Cache-Control': 'no-store' } });
+    // SRS-211.2 (#1282): each sender's profile photo arrives as a storage key too, for the same reason, and
+    // is swapped for a signed link here. withSenderPhotoUrls removes the key rather than adding beside it.
+    return Response.json(await withSenderPhotoUrls(await withPhotoUrls(history)), { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) { return accountResponse(error); }
 }
 

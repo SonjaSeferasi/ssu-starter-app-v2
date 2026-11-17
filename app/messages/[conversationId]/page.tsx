@@ -86,8 +86,8 @@ function Conversation() {
   // SRS-205.10 (#885) where the owner or administrator removes a regular member.
   const [showingMembers, setShowingMembers] = useState(false);
   // SRS-211.1 (#831): sender names by student ID, returned with the history.
-  const [senders, setSenders] = useState<Record<string, { name: string; username: string }>>({});
-  const sendersRef = useRef<Record<string, { name: string; username: string }> | null>(null);
+  const [senders, setSenders] = useState<Record<string, { name: string; username: string; photo_url?: string | null }>>({});
+  const sendersRef = useRef<Record<string, { name: string; username: string; photo_url?: string | null }> | null>(null);
   // SRS-210.4 (#811, #812): each message's reactions by message ID, from the history and then live.
   const [reactions, setReactions] = useState<Record<string, ChatReaction[]>>({});
   // SRS-209.5 (#997): the message each reply answers, as the history reports it.
@@ -655,6 +655,10 @@ function Conversation() {
               // shown above each run of messages from another member.
               const sender = mine ? 'You' : senders[message.sender_id]?.name ?? (info?.kind === 'group' ? 'A member' : peer?.name ?? 'Them');
               const showName = info?.kind === 'group' && !mine && messages[index - 1]?.sender_id !== message.sender_id;
+              // SRS-211.2 (#1282): the photo follows the same run rule as the name, but in private
+              // conversations as well as groups -- the name is a group-only affordance, a face is not.
+              const showAvatar = !mine && messages[index - 1]?.sender_id !== message.sender_id;
+              const senderPhoto = senders[message.sender_id]?.photo_url ?? null;
               const chips = sortReactions(reactions[message.id] ?? []);
               const picking = reactingTo === message.id;
               // SRS-209.1 (#986): a group message can be chosen as the target of a reply.
@@ -686,6 +690,24 @@ function Conversation() {
                     </span>
                   )}
                   <div className={styles.bubbleRow}>
+                    {/* SRS-211.2 (#1282): the sender's profile photo, beside their messages. Shown on the
+                        first message of each run from another student -- the same rule the sender name
+                        follows above -- so a burst of messages is not a column of repeated faces. The space
+                        is held for the rest of the run, keeping the bubbles in line.
+                        Not shown on the student's own messages: the requirement is about knowing who sent a
+                        message, and your own side already says "You". Say the word and it is one line. */}
+                    {!mine && (
+                      showAvatar ? (
+                        <span className={styles.messageAvatar} aria-hidden="true">
+                          {senderPhoto
+                            /* eslint-disable-next-line @next/next/no-img-element -- a signed URL from a
+                               private bucket, expiring hourly; next/image would need the host allow-listed
+                               and would cache it beyond its life. */
+                            ? <img src={senderPhoto} alt="" className={styles.messageAvatarImage} loading="lazy" />
+                            : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>}
+                        </span>
+                      ) : <span className={styles.messageAvatarSpacer} aria-hidden="true" />
+                    )}
                     <p className={bubble}>
                       <span className={styles.srOnly}>
                         {quoted ? `${sender}, replying to ${quoted.sender}: ` : `${sender}: `}
