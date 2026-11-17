@@ -1,5 +1,5 @@
 import * as T from 'three';
-import {box,cone,cyl} from './europe-landmarks';
+import {box,cone,cyl,roof} from './europe-landmarks';
 import {Builder,pixelTexture,vertexMaterial} from '../kit/common';
 import {markSurface,type SurfaceSet} from '../kit/surface-maps';
 
@@ -12,6 +12,9 @@ export const REAR=-1.12;
 export const texturedStone=(set:SurfaceSet,tint:string,repeat=1.5,roughness=.9)=>{const material=vertexMaterial(roughness);markSurface(material,set,tint,repeat);return material;};
 export const glowMaterial=(color='#ffe9b0',intensity=.7)=>vertexMaterial(.4,{emissive:new T.Color(color),emissiveIntensity:intensity});
 /** Copy a part built facing +z at the origin to a place and a turn about y. */
+/** Scales a finished landmark about a pivot and sets it further back, so a
+ * tall monument stands deep enough in the view for its top to stay on screen. */
+export function settle(group:T.Object3D,pivot:readonly [number,number,number],scale:number,back:number,lift=0){group.scale.setScalar(scale);group.position.set(pivot[0]*(1-scale),pivot[1]*(1-scale)+lift,pivot[2]*(1-scale)-back);}
 export function place(target:Builder,part:T.BufferGeometry,x:number,y:number,z:number,turn=0){target.parts.push(part.clone().applyMatrix4(new T.Matrix4().makeRotationY(turn).setPosition(x,y,z)));}
 /** The four faces of a square plan: turn about y and the outward direction. */
 export const FACES=[[0,0,1],[Math.PI/2,1,0],[Math.PI,0,-1],[-Math.PI/2,-1,0]] as const;
@@ -76,4 +79,58 @@ export function pottedTree(b:Builder,x:number,y:number,z:number,size:number,c:{p
 export function finishProps(root:T.Object3D,b:Builder,glow:Builder,name:string){
  if(b.parts.length){const props=b.mesh(root,vertexMaterial(.72),name);props.userData={decorative:true,collidable:false};}
  if(glow.parts.length){const lamps=glow.mesh(root,glowMaterial('#ffe9b0',.8),name+'-lamps');lamps.castShadow=false;}
+}
+
+// Larger building blocks shared by several countries.
+export type FacadeColors={wall:string;trim:string;glass:string;roof:string};
+/** A grid of windows on a +z face: `arched` gives round heads, otherwise square sashes with sills. */
+export function windowGrid(stone:Builder,plain:Builder,x:number,y:number,z:number,w:number,h:number,columns:number,rows:number,c:FacadeColors,arched=false,low=false){
+ const stepX=w/columns,stepY=h/rows,ww=Math.min(.8,stepX*.5),wh=Math.min(1.5,stepY*.58);
+ for(let row=0;row<rows;row++)for(let col=0;col<columns;col++){const wx=x-w/2+stepX*(col+.5),wy=y+stepY*row+stepY*.22;
+  if(arched)archedWindow(stone,plain,wx,wy,z,ww,wh*.8,{frame:c.trim,glass:c.glass});else{box(plain,ww,wh,.07,c.glass,wx,wy,z+.03);if(!low){box(stone,ww+.2,.1,.14,c.trim,wx,wy-.1,z+.05);box(stone,ww+.24,.12,.16,c.trim,wx,wy+wh,z+.05);}}}
+}
+/** A plastered townhouse facing +z: plinth, storeys of windows, cornice and a roof (gabled to the street, hipped, or a flat parapet). */
+export function townhouse(stone:Builder,plain:Builder,x:number,y:number,z:number,w:number,h:number,d:number,c:FacadeColors,options:{rows?:number;roof?:'gable'|'hip'|'parapet';arched?:boolean;door?:boolean;low?:boolean}={}){
+ const rows=options.rows??Math.max(2,Math.round(h/2.4)),low=options.low??false;
+ box(stone,w,h,d,c.wall,x,y,z-d/2);box(stone,w+.1,.5,d+.1,c.trim,x,y,z-d/2);box(stone,w+.2,.22,d+.2,c.trim,x,y+h-.11,z-d/2);
+ windowGrid(stone,plain,x,y+(options.door?h/rows:.3),z,w-.4,h-(options.door?h/rows:.3)-.4,Math.max(2,Math.round(w/1.5)),options.door?rows-1:rows,c,options.arched,low);
+ if(options.door){archedWindow(stone,plain,x,y,z,1,h/rows*.62,{frame:c.trim,glass:'#3a2a20'});if(w>4)for(const side of [-1,1])box(plain,.9,h/rows*.5,.07,c.glass,x+side*w*.3,y+.5,z+.03);}
+ if(options.roof==='gable'){stone.add(new T.CylinderGeometry(.02,w/2,Math.min(2.6,w*.55),3,1),c.wall,[x,y+h+Math.min(2.6,w*.55)/2,z-.12],[0,-Math.PI/2,0],[.24,1,1]);roof(plain,d,Math.min(2.6,w*.55),w+.3,c.roof,x,y+h,z-d/2,Math.PI/2);}
+ else if(options.roof==='parapet'){box(stone,w,.7,.3,c.wall,x,y+h,z-.15);box(stone,w+.2,.14,.4,c.trim,x,y+h+.7,z-.15);}
+ else pyramid(plain,w*.12,w*.56,Math.min(2.2,w*.42),c.roof,x,y+h,z-d/2);
+}
+/** A drum, a ribbed dome and a lantern with a finial. */
+export function drumDome(stone:Builder,plain:Builder,x:number,y:number,z:number,radius:number,drumHeight:number,c:{wall:string;trim:string;dome:string;finial:string;glass:string},options:{sides?:number;stretch?:number;low?:boolean;cross?:boolean}={}){
+ const sides=options.sides??8,stretch=options.stretch??1.05,low=options.low??false;
+ cyl(stone,radius,radius*1.03,drumHeight,c.wall,x,y,z,low?Math.min(sides,12):sides);cyl(stone,radius*1.08,radius*1.08,.25,c.trim,x,y+drumHeight,z,low?12:Math.max(sides,16));
+ for(let k=0;k<sides;k++){const a=(k+.5)/sides*Math.PI*2;if(drumHeight>1.6)plain.add(new T.BoxGeometry(radius*.34,drumHeight*.55,.08),c.glass,[x+Math.sin(a)*radius*1.0,y+drumHeight*.5,z+Math.cos(a)*radius*1.0],[0,a,0]);}
+ plain.add(new T.SphereGeometry(radius*1.02,low?12:20,low?6:10,0,Math.PI*2,0,Math.PI/2),c.dome,[x,y+drumHeight+.25,z],[0,0,0],[1,stretch,1]);
+ if(!low)for(let k=0;k<sides;k++){const a=k/sides*Math.PI*2;plain.add(new T.TorusGeometry(radius*1.03,.05,4,10,Math.PI/2),c.trim,[x,y+drumHeight+.25,z],[0,a-Math.PI/2,0],[1,stretch,1]);}
+ const top=y+drumHeight+.25+radius*1.02*stretch;cyl(stone,radius*.2,radius*.24,radius*.5,c.wall,x,top-.05,z,8);cone(plain,radius*.27,radius*.5,c.dome,x,top+radius*.45,z,8);plain.add(new T.SphereGeometry(radius*.09,8,6),c.finial,[x,top+radius*1.02,z]);
+ if(options.cross){box(plain,.06,radius*.5,.06,c.finial,x,top+radius*1.05,z);box(plain,radius*.3,.06,.06,c.finial,x,top+radius*1.33,z);}
+ return top+radius*1.6;
+}
+/** A roof dormer with a small window. */
+export function dormer(b:Builder,x:number,y:number,z:number,wall:string,glass:string,roofColor:string){box(b,.9,.75,.5,wall,x,y,z);box(b,.5,.45,.06,glass,x,y+.14,z+.25);roof(b,.6,.4,1.1,roofColor,x,y+.75,z,Math.PI/2);}
+/** A window box of flowers. */
+export function flowerBox(b:Builder,from:number,to:number,y:number,z:number,wood:string,blooms:readonly string[],leaf='#4a7d3f'){box(b,to-from,.16,.2,wood,(from+to)/2,y,z);for(let x=from+.08,k=0;x<to;x+=.16,k++){b.add(new T.SphereGeometry(.07,6,5),blooms[k%blooms.length],[x,y+.25+(k%2)*.04,z]);if(k%2)b.add(new T.SphereGeometry(.07,6,5),leaf,[x,y+.18,z+.07]);}}
+/** A round café table with two chairs under a parasol. */
+export function cafeTable(b:Builder,x:number,y:number,z:number,c:{metal:string;top:string;parasol:string;parasolAlt:string}){
+ cyl(b,.03,.04,.72,c.metal,x,y,z,6);cyl(b,.36,.36,.04,c.top,x,y+.72,z,12);cyl(b,.025,.025,2.2,c.metal,x+.02,y+.76,z-.02,5);
+ for(let k=0;k<8;k++)b.add(new T.CylinderGeometry(.02,.95,.42,3,1,false,k/8*Math.PI*2,Math.PI/4),k%2?c.parasol:c.parasolAlt,[x,y+2.6,z]);
+ for(const side of [-1,1]){box(b,.34,.04,.34,c.top,x+side*.62,y+.44,z);box(b,.34,.42,.04,c.top,x+side*.62,y+.48,z-.17);for(const leg of [-.14,.14])box(b,.03,.44,.03,c.metal,x+side*.62+leg,y,z+leg);}
+}
+/** A market stall with a striped awning and goods on the counter. */
+export function awningStall(b:Builder,x:number,y:number,z:number,c:{wood:string;stripeA:string;stripeB:string;goods:readonly string[]}){
+ for(const sx of [-.9,.9])for(const sz of [-.4,.4])box(b,.06,2,.06,c.wood,x+sx,y,z+sz);box(b,1.9,.7,.9,c.wood,x,y,z);
+ for(let k=0;k<6;k++)box(b,.34,.05,1.3,k%2?c.stripeA:c.stripeB,x-.85+k*.34,y+2,z);for(let k=0;k<6;k++)b.add(new T.SphereGeometry(.09,6,5),c.goods[k%c.goods.length],[x-.7+k*.28,y+.78,z]);
+}
+/** A statue on a stepped pedestal: a simple standing figure in bronze or stone. */
+export function statue(b:Builder,x:number,y:number,z:number,height:number,c:{pedestal:string;figure:string}){
+ box(b,1.1,.2,1.1,c.pedestal,x,y,z);box(b,.8,height*.45,.8,c.pedestal,x,y+.2,z);box(b,.95,.12,.95,c.pedestal,x,y+.2+height*.45,z);const base=y+.32+height*.45;
+ cyl(b,.14,.2,height*.3,c.figure,x,base,z,8);cyl(b,.17,.14,height*.2,c.figure,x,base+height*.3,z,8);b.add(new T.SphereGeometry(.11,8,6),c.figure,[x,base+height*.56,z]);b.strut(new T.Vector3(x+.16,base+height*.45,z),new T.Vector3(x+.36,base+height*.3,z+.1),.04,c.figure,5,1);
+}
+/** A basin fountain with a central column and bowl. */
+export function fountain(b:Builder,x:number,y:number,z:number,radius:number,c:{stone:string;water:string}){
+ cyl(b,radius,radius*1.05,.42,c.stone,x,y,z,14);cyl(b,radius*.86,radius*.86,.06,c.water,x,y+.4,z,14);cyl(b,radius*.14,radius*.2,radius*.9,c.stone,x,y+.4,z,8);cyl(b,radius*.45,radius*.16,radius*.16,c.stone,x,y+.4+radius*.9,z,12);cyl(b,radius*.38,radius*.38,.04,c.water,x,y+.4+radius*1.05,z,12);cyl(b,.03,.04,radius*.5,'#cfe8ee',x,y+.4+radius*1.05,z,5);
 }
