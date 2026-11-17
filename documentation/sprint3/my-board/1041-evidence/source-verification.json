@@ -1,0 +1,12 @@
+{
+  "baseCommit": "330d5b50be2f7be9e3b44f8e7b6847f88b79767a",
+  "testedProductionSourceSha256": {
+    "app/api/profiles/space/route.ts": "b06d6333c667aee390ef75d1c505072b3e7ff5d54a21f41e4873021ef0e6308c",
+    "components/profile/profile-board.tsx": "cb15e93417df0874321e89b63f02cbf78733e290ced1adda07a5367693f4a7ca",
+    "lib/profile-board.ts": "eba20688cd32708d18a0af34ceed059ec6a3950fbc0eaf1143dd04f5eb0ca923",
+    "lib/profile-space.ts": "f7f53841c70ea78f546064b073fd0d8aef19f79204d8dbedfb91e68aec1748e6"
+  },
+  "matchesApproved1039HostedRun": true,
+  "browserAcceptance": "passed: all five card types, movement, width, rotation, removal, rejected draft, cancel warning, retry, reload, visitor privacy",
+  "hostedEvidence": "Reused #1039 approved run; no additional hosted accounts or writes."
+}
