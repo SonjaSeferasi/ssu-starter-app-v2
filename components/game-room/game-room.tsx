@@ -14,6 +14,7 @@ import { completeAvatar, avatarGroups, avatarParts, avatarVariant, collectionHai
 import { bodyShapes, skinColors } from '../../lib/avatar-figure';
 import { CompleteAvatar } from './complete-avatar';
 import { ActivityArt } from './activity-art';
+import { ParticipationStreak } from './participation-streak';
 import styles from './game-room.module.css';
 
 export function GameRoom() {
@@ -87,7 +88,7 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
   }
 
   const dirty = JSON.stringify(appearance) !== JSON.stringify(room?.appearance || null);
-  const available = room?.activities.filter(activity => activity.included) || [];
+  const available = room?.activities.filter(activity => activity.included && Object.hasOwn(activityEntrypoints, activity.code)) || [];
   const statusTone = retrySelection ? 'error' : saving ? 'pending' : dirty ? 'unsaved' : saveMessage === 'Avatar saved.' ? 'saved' : 'idle';
   const legacyPreview = !completeAvatar(appearance?.avatarId);
   const statusText = saveMessage || (temporaryPreview ? 'Preview only; account saving is unavailable here.' : legacyPreview ? 'Choose a complete look, then save it to update your avatar.' : 'Choose your look, then save your avatar.');
@@ -182,7 +183,7 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
             </div>
           </article>
         </section>
-        <section className={styles.participation} aria-labelledby="participation-title"><span className={styles.streakIcon} aria-hidden="true">♨</span><div><h2 id="participation-title">Shared participation streak</h2><p>Status will appear when connected.</p></div></section>
+        <ParticipationStreak preview={temporaryPreview} />
       </div>
     </div>}
   </main>;
