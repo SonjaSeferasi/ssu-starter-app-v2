@@ -7854,6 +7854,14 @@ Acceptance criterion: Given the student plays the Estonia level, when the explor
 
 Traces to: UR-632.
 
+##### SRS-632.22, SS — Present Riga in the Latvia level.
+
+When the student plays the Latvia level, the system shall show the Daugava quay with its railings; the three spires of the old town, St Peter's with its tiered green steeple, the cathedral with its swelling cap on a brick tower, and the needle of St James; Riga Castle with its round tower and the Latvian flag; the House of the Blackheads with its stepped brick gable, white ornaments and blue-and-gold clock; the Three Brothers; a row of Art Nouveau fronts in pale colours with white pilasters, masks and corner turrets; the Freedom Monument with its three gold stars; dark timber houses; a river boat; and, on the route, lanterns, iron railings, columns, an amber stall, benches, potted trees, chimneys, dormer windows, balustrades and a black cat on a turret, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Latvia level, when the explorer starts the route, then the castle with its round tower is visible; when the explorer is in the first half of the route, then the stepped gable and clock of the House of the Blackheads are visible; when the explorer reaches the finish, then the Art Nouveau fronts and the Freedom Monument are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
