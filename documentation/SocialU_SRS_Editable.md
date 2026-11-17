@@ -7910,6 +7910,14 @@ Acceptance criterion: Given the student plays the Bosnia and Herzegovina level, 
 
 Traces to: UR-632.
 
+##### SRS-632.29, SS — Present Butrint in the Albania level.
+
+When the student plays the Albania level, the system shall show, along the wooded shore of the lagoon, the square Venetian tower; the roofless basilica with its two rows of arches and its apse; the Greek theatre with its half-ring of stone seats, stairways, orchestra and stage wall; the round baptistery with its rings of columns and its mosaic floor; and the Lion Gate in the great block wall; on the hill behind, the Venetian castle with the Albanian flag; stone pines and olive trees; reeds, mussel poles and egrets at the water's edge; a cable ferry beyond the finish; and, on the route, amphorae, column stumps, stone seats, ruined walls and reeds, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Albania level, when the explorer starts the route, then the Venetian tower and the arches of the basilica are visible; when the explorer reaches the middle of the route, then the theatre's rings of seats and the castle with its flag are visible; when the explorer nears the finish, then the baptistery columns and the Lion Gate are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
