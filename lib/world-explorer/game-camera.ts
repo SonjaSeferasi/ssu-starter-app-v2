@@ -4,6 +4,11 @@ const clamp=(value:number,min:number,max:number)=>Math.max(min,Math.min(max,valu
 /** The tuned Japan reference framing is the default for every authored level. */
 const referenceCamera:CameraDefinition={height:4.4,look:1.35,follow:.35,maxRise:1.25};
 
+/** The close cinematic follow camera for Japan (SRS-631.1). At this distance a
+ * 1.83-unit player fills about 15-18% of the view height, roughly half again
+ * as large as the wide framing, while the lead still shows the next landings. */
+export const japanCloseCamera={height:2.95,look:1.35,follow:.78,maxRise:4,distance:12.8,portraitDistance:17} as const;
+
 /** Hold the horizon through ordinary jumps, follow a new landing elevation,
  * and keep a long fall from carrying the player beneath the viewport. */
 export function cameraTrackingHeight(previous:number,y:number,grounded:boolean){
@@ -34,11 +39,20 @@ export function referenceCameraFrame(level:LevelDefinition,x:number,y:number,asp
  }
  const japan=level.countryId==='JP';
  if(!japan&&level.camera?.distance)return gameplayCameraFrame(level,level.camera,x,y,aspect);
- const camera=japan?{height:3.5,look:1.3,follow:.78,maxRise:4}:level.camera||referenceCamera;
- const ratio=Math.max(.35,Math.min(aspect,2.4)),z=japan?(ratio<1?21:19.5):ratio<1?29:24;
+ const camera=japan?japanCloseCamera:level.camera||referenceCamera;
+ const ratio=Math.max(.35,Math.min(aspect,2.4)),z=japan?(ratio<1?japanCloseCamera.portraitDistance:japanCloseCamera.distance):ratio<1?29:24;
  const visibleWidth=2*Math.tan(44*Math.PI/360)*z*ratio,lead=visibleWidth*.18;
  const spawnPlatform=level.platforms.find(p=>p.id===level.spawn.platformId)!;
  const initialCenter=spawnPlatform.x+level.spawn.offset+lead;
  const rise=clamp((y-(japan?.7:1.8))*camera.follow,0,camera.maxRise);
  return{x:clamp(x+lead,initialCenter,Math.max(initialCenter,last.x+last.width-visibleWidth*.2)),y:camera.height+rise,z,lookY:camera.look+rise};
+}
+
+/** Opening sweep (SRS-631.1): a level begins high and far back on the vista,
+ * then glides down into the gameplay framing. The offset shrinks to nothing,
+ * so the follow camera takes over without a jump. */
+export const openingSweepSeconds=2.8;
+export function openingSweepFrame<F extends {x:number;y:number;z:number;lookY:number}>(frame:F,elapsed:number):F{
+ const t=clamp(elapsed/openingSweepSeconds,0,1),far=Math.pow(1-t,3);
+ return{...frame,x:frame.x+far*7,y:frame.y+far*5.5,z:frame.z+far*15,lookY:frame.lookY+far*3.2};
 }
