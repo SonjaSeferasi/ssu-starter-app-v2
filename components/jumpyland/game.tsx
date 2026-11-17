@@ -19,6 +19,8 @@ import {GameAudio} from './audio';
 import {Preparation} from './preparation';
 import {emptyLoadout,runCostume,type RunLoadout} from './wardrobe';
 import { boundedJumpylandRequest, isConfirmedJumpylandCompletion } from '../../lib/jumpyland-request';
+import { loadJumpylandEntry } from '../../lib/jumpyland-entry';
+import entryStyles from '../game-room/activity-error.module.css';
 
 type Status='menu'|'starting'|'running'|'paused'|'failed'|'saving'|'saved'|'unsaved';
 const emptyWorld:WorldState={guarding:false,guardCooldown:0,blockedShots:0,hearts:3,region:'',cooldown:0,defeated:0,shield:false,skyJump:0,rapid:0,nimbus:0,saiyan:0,special:'',specialSeconds:0,notice:''};
@@ -97,15 +99,11 @@ export default function Game() {
     mounted.current=true;return()=>{mounted.current=false;};
   },[]);
   useEffect(()=>{
-    let cancelled=false;setLoaded(false);setError('');
-    (async()=>{
-      const token=await accessToken();
-      if(!token)throw new Error('Please sign in again.');
-      const [progress,response]=await Promise.all([api(),fetch('/api/game-room',{headers:{Authorization:`Bearer ${token}`},cache:'no-store',signal:AbortSignal.timeout(10000)})]);
-      const data=await response.json();if(!response.ok)throw new Error(data.error||'Your saved avatar could not be loaded.');
-      if(!cancelled){setRoom(data);setCompleted(progress.completed);setBalance(Number.isSafeInteger(progress.balance)?progress.balance:null);setLoaded(true);}
-    })().catch(e=>{if(!cancelled)setError(e.name==='TimeoutError'?'The connection took too long. Please retry.':e.message);});
-    return()=>{cancelled=true;};
+    const cancellation=new AbortController();setLoaded(false);setError('');
+    void loadJumpylandEntry(cancellation.signal).then(data=>{
+      if(!cancellation.signal.aborted){setRoom(data.room);setCompleted(data.completed);setBalance(data.balance);setLoaded(true);}
+    }).catch(e=>{if(!cancellation.signal.aborted)setError(e.name==='TimeoutError'?'The connection took too long. Please retry.':e.message);});
+    return()=>cancellation.abort();
   },[reload]);
   function pause(){if(statusRef.current==='running'){controller.current?.pause();audio.current?.pause();change('paused');}}
   useEffect(()=>{
@@ -164,7 +162,7 @@ export default function Game() {
     </header>
     {fullscreenError&&<p className={styles.fullscreenNotice} role="status">{fullscreenError}</p>}
     <div ref={avatar} className={styles.avatarSource} aria-hidden="true">{room&&<AvatarPreview appearance={room.appearance} outfits={room.outfits} faces={room.faces} costume={runCostume(loadout,level)}/>}</div>
-    {!loaded ? <section className={styles.loading} aria-live="polite"><h2>{error?'We couldn’t open Jumpyland':'Loading your campus adventure…'}</h2><p>{error||'Getting your saved avatar and level progress.'}</p>{error&&<button onClick={()=>setReload(n=>n+1)}>Retry connection</button>}</section>:<>
+    {!loaded ? <section className={styles.loading} aria-live="polite"><h2>{error?'We couldn’t open Jumpyland':'Loading your campus adventure…'}</h2><p>{error||'Getting your saved avatar and level progress.'}</p>{error&&<div className={entryStyles.actions}><button onClick={()=>setReload(n=>n+1)}>Retry</button><a href="/game-room">Return to Game Room</a></div>}</section>:<>
       {status==='menu'&&<WorldMap room={room!} completed={completed} busy={false} error={error} onStart={number=>void start(number)} onPrepare={number=>setPreparing(number)}/>}
       <section className={styles.play} hidden={!active}>
         <div className={styles.hud}><div><span>LEVEL {level} / 3</span><h2>{course.name}</h2><span>{themeFor(level).inspiration}</span></div><div className={styles.collectibles} role="status" aria-label={coins+' of '+course.coins.length+' '+themeFor(level).collectible+' collected this attempt'}>

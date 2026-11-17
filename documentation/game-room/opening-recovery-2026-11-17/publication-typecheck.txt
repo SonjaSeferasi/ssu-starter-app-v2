@@ -1,0 +1,2 @@
+Publication check: staged versions of modified tracked files; untracked files hidden. Game, entry loader, all three route error screens, shared recovery component, regression tests and transitive imports.
+0 TypeScript diagnostics

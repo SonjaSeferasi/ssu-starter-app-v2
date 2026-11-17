@@ -1,0 +1,63 @@
+{
+  "evidence": "Actual route error components and installed Next ErrorBoundaryHandler with simulated render failures; actual Jumpyland entry with intercepted APIs and map/engine adapters. Not a hosted save, real gameplay, or full Next router test.",
+  "browser": "157.0.4341.60",
+  "checks": [
+    "Jumpyland: actual route error screen catches simulated render failure and provides both choices without raw exception text",
+    "Jumpyland: persistent failure remains recoverable after Retry",
+    "Jumpyland: Retry reloads the same URL and recovers after the fixture failure clears",
+    "Jumpyland: Return opens /game-room",
+    "World Explorer: actual route error screen catches simulated render failure and provides both choices without raw exception text",
+    "World Explorer: persistent failure remains recoverable after Retry",
+    "World Explorer: Retry reloads the same URL and recovers after the fixture failure clears",
+    "World Explorer: Return opens /game-room",
+    "DormSpace: actual route error screen catches simulated render failure and provides both choices without raw exception text",
+    "DormSpace: persistent failure remains recoverable after Retry",
+    "DormSpace: Retry reloads the same URL and recovers after the fixture failure clears",
+    "DormSpace: Return opens /game-room",
+    "Jumpyland: failed entry offers Retry and restores saved progression after a successful retry",
+    "Jumpyland: malformed progression opens recovery rather than crashing the map",
+    "Jumpyland: stalled refresh produces recovery in 9336ms and sends no late entry reads",
+    "Jumpyland: retry works after the timed-out refresh eventually resolves",
+    "390px: both recovery actions fit without horizontal overflow",
+    "Keyboard: Retry and Return are reachable in normal tab order"
+  ],
+  "errors": [],
+  "requests": [
+    {
+      "path": "/api/jumpyland",
+      "method": "GET"
+    },
+    {
+      "path": "/api/game-room",
+      "method": "GET"
+    },
+    {
+      "path": "/api/jumpyland",
+      "method": "GET"
+    },
+    {
+      "path": "/api/game-room",
+      "method": "GET"
+    },
+    {
+      "path": "/api/jumpyland",
+      "method": "GET"
+    },
+    {
+      "path": "/api/game-room",
+      "method": "GET"
+    },
+    {
+      "path": "/api/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/jumpyland",
+      "method": "GET"
+    },
+    {
+      "path": "/api/game-room",
+      "method": "GET"
+    }
+  ]
+}
