@@ -9,7 +9,10 @@ import type { ChatReaction } from './chat-reactions';
 // SRS-201.6 (#1024): a photo message carries no text -- the schema forbids it -- so it arrives with kind
 // 'photo' and the id of its stored asset. photo_url is only ever set locally, by the send that just happened
 // or by the history (SRS-201.7); a signed link cannot be broadcast, because only the server can make one.
-export type ChatMessageEvent = { id: string; conversation_id: string; sender_id: string; text: string; sent_at: string; kind?: 'emoji' | 'photo'; reply_to_id?: string | null; asset_id?: string; photo_url?: string | null; deleted?: boolean };
+// SRS-211.8 (#1283): 'read' says whether the recipient has read this message. The history sets it, and only
+// on the student's own messages in a private conversation; a live event never carries it, because a message
+// that has only just arrived has not been read yet and the sender is told by the next load.
+export type ChatMessageEvent = { id: string; conversation_id: string; sender_id: string; text: string; sent_at: string; kind?: 'emoji' | 'photo'; reply_to_id?: string | null; asset_id?: string; photo_url?: string | null; deleted?: boolean; read?: boolean | null };
 // SRS-202.6 (#844): sent to each current member when a group is named or renamed.
 // #1106: sent to each current participant when the sender deletes their photo, so it leaves their screen
 // instead of lingering on a signed link that keeps working for up to an hour.
