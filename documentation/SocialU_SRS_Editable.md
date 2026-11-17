@@ -7936,6 +7936,46 @@ Acceptance criterion: Given the student plays the Luxembourg level, when the exp
 
 Traces to: UR-632.
 
+##### SRS-632.32, SS — Present Vaduz Castle in the Liechtenstein level.
+
+When the student plays the Liechtenstein level, the system shall show Vaduz Castle on its wooded cliff, with the great round bastion under a low cone roof, the square keep, the red-roofed wings with red and white shutters, the smaller south bastion and the flag of Liechtenstein; rows of vines below the castle; in the town the cathedral with its spire, the government building under its patterned roof, the black cube of the art museum and the Red House with its stepped gable and white tower; cows in the meadow; wooded foothills and the snowy Alps behind; and, on the route, vine trellises with grapes, barrels, stone parapets with geranium boxes, lanterns, chimneys, balustrades, benches and potted trees, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Liechtenstein level, when the explorer starts the route, then the cathedral spire and the town houses are visible; when the explorer reaches the middle of the route, then the castle's round bastion, keep and flag and the vine rows below it are visible; when the explorer nears the finish, then the Red House is visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.33, SS — Present the three towers in the San Marino level.
+
+When the student plays the San Marino level, the system shall show the long limestone ridge of Mount Titano behind the town with a sheer cliff toward the route; along its crest the three towers, Guaita with its curtain wall and the flag of San Marino, Cesta on the highest point and slim Montale standing alone, joined by a battlemented wall walk; stone pines on the ridge; below it the stone houses and terracotta roofs of the town, the Palazzo Pubblico with its battlements, arcade and clock tower and the statue of Liberty before it, and the basilica with its columned porch and bell tower; a cable car that climbs from its station to the ridge, and stays still when reduced motion is on; green hills behind; and, on the route, crossbow targets, white and blue bunting, lanterns, battlemented walls, chimneys, balustrades, benches and potted trees, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the San Marino level, when the explorer starts the route, then the Palazzo Pubblico with its clock tower and the cable car line are visible; when the explorer is in the first half of the route, then the Guaita tower and its flag are visible on the ridge; when the explorer is in the second half of the route, then the towers and the wall walk on the crest are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.34, SS — Present the Madriu valley in the Andorra level.
+
+When the student plays the Andorra level, the system shall show, beyond the mountain stream and its boulders, summer pastures divided by dry-stone walls and stepped in stone terraces; shepherds' stone huts under slate roofs and round turf-roofed shelters; a small Romanesque church with a tall square bell tower, an apse, a porch on wooden posts and the flag of Andorra; grey rock walls closing both ends of the valley, with a waterfall dropping down the eastern one just past the finish; pine forest, wooded slopes and snowy peaks behind; grazing horses and cows and an isard on the rocks; vultures circling; and, on the route, wooden fences, trail signposts, milk churns, dry-stone walls, cairns, rope handrails and benches, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Andorra level, when the explorer starts the route, then the western rock wall and the church bell tower are visible; when the explorer reaches the middle of the route, then the church, its flag and the stone huts are visible; when the explorer reaches the finish, then the waterfall on the eastern rock wall is visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.35, SS — Present Banská Štiavnica in the Slovakia level.
+
+When the student plays the Slovakia level, the system shall show a street of pastel Renaissance houses with arched windows and tiled roofs; the timber headframe of a mine shaft with its winding wheels and engine shed; the Klopačka tower with its timber gallery and shingled cap; the plague column in the square; the Old Castle, a fortified church with its gate tower, onion cap, clock, round bastion and the Slovak flag; the New Castle, a tall white block with four round corner bastions, on its hill; the Calvary, red and white churches and chapels climbing a green hill; fir trees and wooded hills around the town; and, on the route, timber rails, crossed-hammer signs, mine carts of ore, stone parapets, miners' lamps, chimneys, balustrades and benches, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Slovakia level, when the explorer starts the route, then the mine headframe and the Klopačka tower are visible; when the explorer is in the first half of the route, then the plague column and the Old Castle with its flag are visible; when the explorer is in the second half of the route, then the New Castle on its hill and the red and white churches of the Calvary are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.36, SS — Present Boyana Church in the Bulgaria level.
+
+When the student plays the Bulgaria level, the system shall show Boyana Church in its walled garden: the east church, a brick cube with pale bands, an apse and a dome on a round drum; the taller middle church with its own dome; and the plain stone west wing under a tiled roof with its door; tall dark trees round the church; the garden wall with its tiled coping and roofed gate; a bell hung in a wooden frame and the Bulgarian flag by the gate; Revival houses with white ground floors and timber upper floors along the lane; boulder fields, pine forest, wooded foothills and the summit of Vitosha behind; and, on the route, wooden fences and handrails, rose bushes, lanterns, chimneys and red and white martenitsi, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Bulgaria level, when the explorer starts the route, then Revival houses and the flag by the gate are visible; when the explorer reaches the middle of the route, then the three parts of the church and its two domes are visible; when the explorer reaches the finish, then the boulder fields are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
