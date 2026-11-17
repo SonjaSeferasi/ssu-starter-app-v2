@@ -246,7 +246,19 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 .composer { display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 18px; border: 1px solid #d3e2da; border-radius: 14px; background: #ffffff; }
 /* #1222 (SRS-205.13, 207.5, 208.7, 213.5): stands exactly where the message box stands for a current
    member, so the conversation does not look broken or half-loaded -- it reads as finished. 7.9:1. */
-.readOnlyNotice { margin: 0; padding: 14px 18px; border: 1px solid #d3e2da; border-radius: 14px; background: #eef4f0; color: #3a4f48; font-size: 14px; text-align: center; }
+.readOnlyNotice { margin: 0; padding: 14px 18px; border: 1px solid #d3e2da; border-radius: 14px; background: #eef4f0; color: #3a4f48; font-size: 14px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.readOnlyText { margin: 0; }
+
+/* SRS-207.6 (#1264): the option to remove this conversation from the student's own Messages, and the
+   warning before it acts. Contrast on the notice background: the control 7.3:1, Remove 6.5:1, Cancel 12.6:1. */
+.conversationDelete { min-height: 36px; padding: 7px 14px; border: 1px solid #c9b2b2; border-radius: 10px; background: transparent; color: #8d3030; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+.conversationDelete:hover:not(:disabled) { background: #f6eaea; border-color: #a33a3a; }
+.conversationDelete:disabled { opacity: .6; cursor: default; }
+.conversationConfirm { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
+.conversationConfirmText { margin: 0; color: #2f4039; font-weight: 600; line-height: 1.45; text-wrap: balance; }
+.conversationConfirmActions { display: flex; gap: 10px; justify-content: center; }
+/* The shared buttons outline in white, which is for the dark overlay on a photo, not for this notice. */
+.conversationConfirmActions button:focus-visible { outline: 3px solid #2f4039; outline-offset: 2px; }
 /* The message box stays visible at the bottom of the screen while the conversation scrolls
    (above the bottom navigation bar when a student places navigation at the bottom). */
 .footer { position: sticky; bottom: 0; z-index: 1; padding: 12px 16px 16px; border-radius: 0 0 16px 16px; background: #f8fbf8; }

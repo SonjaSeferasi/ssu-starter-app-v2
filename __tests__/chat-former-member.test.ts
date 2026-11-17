@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { FORMER_MEMBER_BADGE, FORMER_MEMBER_NOTICE, isReadOnly } from '../lib/chat-former-member';
+import { DELETE_CONVERSATION_CONFIRM, DELETE_CONVERSATION_FAILED, DELETE_CONVERSATION_LABEL, FORMER_MEMBER_BADGE, FORMER_MEMBER_NOTICE, canDeleteConversation, isReadOnly } from '../lib/chat-former-member';
 
 describe('#1222 when the conversation opens read-only', () => {
   it('is read-only for a group the student has left', () => {
@@ -50,5 +50,57 @@ describe('#1222 what the student is told', () => {
   it('marks the conversation in the list without implying how it ended either', () => {
     expect(FORMER_MEMBER_BADGE).not.toMatch(/left|removed|kicked/i);
     expect(FORMER_MEMBER_BADGE.length).toBeLessThanOrEqual(16);
+  });
+});
+
+describe('#1264 (SRS-207.6) when the delete option is offered', () => {
+  it('is offered to a student who has left the group', () => {
+    expect(canDeleteConversation({ kind: 'group', role: null, former: true })).toBe(true);
+  });
+
+  it('is not offered while they are still in the group', () => {
+    // SRS-207.6 begins "After a student leaves a group". Leaving comes first (SRS-207.1), and the database
+    // refuses with SCH02 if the page ever offered it anyway.
+    expect(canDeleteConversation({ kind: 'group', role: 'member', former: false })).toBe(false);
+    expect(canDeleteConversation({ kind: 'group', role: 'owner', former: false })).toBe(false);
+  });
+
+  it('is never offered for a private conversation, which has no membership to leave', () => {
+    expect(canDeleteConversation({ kind: 'private', role: null, former: null })).toBe(false);
+    expect(canDeleteConversation({ kind: 'private', role: null, former: true })).toBe(false);
+  });
+
+  it('is not offered before the conversation has loaded, or by a server without the migration', () => {
+    expect(canDeleteConversation(null)).toBe(false);
+    expect(canDeleteConversation(undefined)).toBe(false);
+    expect(canDeleteConversation({ kind: 'group', role: 'member' })).toBe(false);
+  });
+});
+
+describe('#1264 what the student is warned', () => {
+  it('says the group keeps the conversation, which is the whole of SRS-207.7', () => {
+    // A button called "delete" in a group chat invites exactly one wrong assumption: that it deletes the
+    // conversation for everybody. The warning has to answer that before it is acted on.
+    expect(DELETE_CONVERSATION_CONFIRM).toMatch(/the group keeps it/i);
+    expect(DELETE_CONVERSATION_CONFIRM).toMatch(/from your Messages/i);
+  });
+
+  it('says what the student loses, so the choice is an informed one', () => {
+    expect(DELETE_CONVERSATION_CONFIRM).toMatch(/not be able to read it again/i);
+    expect(DELETE_CONVERSATION_CONFIRM).toMatch(/unless you rejoin/i);
+  });
+
+  it('never claims the messages themselves are destroyed', () => {
+    expect(DELETE_CONVERSATION_CONFIRM).not.toMatch(/for everyone|permanently|cannot be undone|erase/i);
+  });
+
+  it('labels the control plainly and keeps it short enough to sit under the notice', () => {
+    expect(DELETE_CONVERSATION_LABEL).toBe('Delete conversation');
+    expect(DELETE_CONVERSATION_LABEL.length).toBeLessThanOrEqual(24);
+  });
+
+  it('fails with something the student can act on rather than a code', () => {
+    expect(DELETE_CONVERSATION_FAILED).toMatch(/try again/i);
+    expect(DELETE_CONVERSATION_FAILED).not.toMatch(/SCH0|SC404|error \d/i);
   });
 });

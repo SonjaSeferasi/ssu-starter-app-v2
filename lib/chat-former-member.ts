@@ -23,3 +23,21 @@ export type ConversationInfo = { kind: 'private' | 'group'; role?: string | null
 export function isReadOnly(info: ConversationInfo): boolean {
   return info?.kind === 'group' && info.former === true;
 }
+
+// SRS-207.6 (#1264): the option to delete a group conversation from this student's own view, offered only
+// where SRS-207.6 says it exists -- after they have left. It is the same condition as read-only, named
+// separately so the page reads as the requirement does and so a change to one does not silently change the
+// other.
+export function canDeleteConversation(info: ConversationInfo): boolean {
+  return isReadOnly(info);
+}
+
+export const DELETE_CONVERSATION_LABEL = 'Delete conversation';
+
+// Says whose copy goes and whose does not, because that distinction is the whole of SRS-207.7 and it is the
+// thing a student is most likely to get wrong about a button labelled "delete". "Remove it from your
+// Messages" rather than "delete it" for the same reason.
+export const DELETE_CONVERSATION_CONFIRM =
+  'Remove this conversation from your Messages? The group keeps it, and you will not be able to read it again unless you rejoin.';
+
+export const DELETE_CONVERSATION_FAILED = 'This conversation could not be deleted. Please try again.';
