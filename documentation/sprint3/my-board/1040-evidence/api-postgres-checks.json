@@ -1,0 +1,11 @@
+{
+  "environment": "Actual PATCH handler and PostgreSQL RPCs in disposable PGlite; Auth provider fixture; injected confirmation/order/unavailable faults explicitly labeled",
+  "checks": [
+    "Concurrent look fields preserved; exact board confirmed despite JSONB key order",
+    "Forged owner fields cannot change another student board",
+    "Unauthenticated save rejected before RPC",
+    "Invalid geometry/duplicate IDs rejected without a write",
+    "Unconfirmed response produces 503, not false success or a second write",
+    "Unavailable atomic RPC safely returns preview with no legacy overwrite fallback"
+  ]
+}

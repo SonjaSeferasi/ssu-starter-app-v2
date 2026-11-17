@@ -15,11 +15,14 @@ import type {CountryRunResult,CountryStats,Difficulty,ExplorerRunPreferences} fr
 import type {ExplorerPreferences} from '../../lib/world-explorer/preferences';
 import {CountryFlag} from './country-flag';
 import {recordExplorerParticipation} from '../../lib/game-participation-client';
+import {AvatarPreview} from '../game-room/avatar-preview';
+import {loadExplorerAvatar} from '../../lib/world-explorer/avatar';
+import type {GameRoomData} from '../../lib/game-room';
 import {LandmarkPhoto} from './landmark-photo';
 import {PreferencesControls} from './preferences-panel';
 import styles from './world-explorer.module.css';
 
-type Controller={pause:()=>void;resume:()=>void;destroy:()=>void;setPreferences?:(preferences:ExplorerRunPreferences)=>void;setReviewView?:(view:'gameplay'|'overview'|'scan',x?:number,y?:number)=>void;setReviewCamera?:(view:{position:[number,number,number];target:[number,number,number];fov?:number})=>void;reviewStats?:()=>{frameTimes:number[];calls:number;triangles:number;geometries:number;textures:number}};
+type Controller={avatarNotices?:readonly string[];pause:()=>void;resume:()=>void;destroy:()=>void;setPreferences?:(preferences:ExplorerRunPreferences)=>void;setReviewView?:(view:'gameplay'|'overview'|'scan',x?:number,y?:number)=>void;setReviewCamera?:(view:{position:[number,number,number];target:[number,number,number];fov?:number})=>void;reviewStats?:()=>{frameTimes:number[];calls:number;triangles:number;geometries:number;textures:number}};
 export type RunOutcome=CountryRunResult;
 const initialStats:CountryStats={hearts:3,coins:0,totalCoins:0,stars:0,totalStars:3,checkpointActive:false,timeSeconds:0,discoveryFound:false};
 const labels=['Discovery','Adventure','Hard','Expert'];
@@ -31,6 +34,8 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
  const stage=useRef<HTMLDivElement>(null),controller=useRef<Controller|null>(null),finished=useRef(false),statsRef=useRef(initialStats),dialog=useRef<HTMLDivElement>(null),attempt=useRef('');
  const [status,setStatus]=useState<RunStatus>('starting'),[error,setError]=useState(''),[distance,setDistance]=useState(0),[stats,setStats]=useState(initialStats),[showSettings,setShowSettings]=useState(false),[leaving,setLeaving]=useState<ExitTarget|null>(null);
  const [review,setReview]=useState(false),[overview,setOverview]=useState(false),[performance,setPerformance]=useState<{fps:number;drawCalls:number;triangles:number}|null>(null);
+ const [avatar,setAvatar]=useState<GameRoomData|null>(null);
+ const [avatarNotices,setAvatarNotices]=useState<readonly string[]>([]);
  const availability=levelAvailability(country.code),profile=countryProfile(country.code),level=useMemo(()=>levelDefinitionFor(country.code,difficulty),[country.code,difficulty]),authored=isAuthoredLevel(country.code);
  const finalPlatform=level.platforms.find(platform=>platform.id===level.finish.platformId)!,finishX=finalPlatform.x+level.finish.offset;
  const checkpointMarks=level.checkpoints.map(point=>{const platform=level.platforms.find(item=>item.id===point.platformId)!;return(platform.x+point.offset)/finishX*100;});
@@ -38,13 +43,15 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
  const starMarks=level.stars.map(star=>{const platform=level.platforms.find(item=>item.id===star.platformId)!;return{id:star.id,percent:(platform.x+star.offset)/finishX*100};});
  useEffect(()=>{
   let disposed=false,expired=false,game:Controller|undefined;
+  const avatarRequest=new AbortController();
   const reviewing=new URLSearchParams(window.location.search).get('review')==='1';
   attempt.current=runId();setReview(reviewing);
-  const timeout=setTimeout(()=>{if(disposed)return;expired=true;setError('The level took too long to load. Check the connection and try again.');setStatus('failed');},20000);
+  const timeout=setTimeout(()=>{if(disposed)return;expired=true;avatarRequest.abort();setError('The level took too long to load. Check the connection and try again.');setStatus('failed');},20000);
   // Country scenery is a separate chunk, fetched only for the chosen level.
-  Promise.all([import('./country-scene'),authored?import('./countries/registry').then(registry=>registry.loadCountryEnvironment(level.environmentId)):Promise.resolve(null)]).then(([{mountCountryStage},environment])=>{
+  Promise.all([import('./country-scene'),authored?import('./countries/registry').then(registry=>registry.loadCountryEnvironment(level.environmentId)):Promise.resolve(null),loadExplorerAvatar(avatarRequest.signal)]).then(([{mountCountryStage},environment,savedAvatar])=>{
    if(disposed||expired||!stage.current)return;
-   game=mountCountryStage(stage.current,{...country,difficulty,...preferences},{
+   setAvatar(savedAvatar);
+   game=mountCountryStage(stage.current,{...country,difficulty,...preferences,avatar:savedAvatar},{
     onReady:()=>{
      clearTimeout(timeout);
      if(disposed||expired)return;
@@ -58,11 +65,11 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
     onFinish:(coins,result)=>{if(disposed||finished.current)return;finished.current=true;const latest=statsRef.current;onResult(true,coins??latest.coins,result||{stars:latest.stars,elapsedMs:Math.round(latest.timeSeconds*1000),discoveryFound:latest.discoveryFound},attempt.current);setStatus('complete');},
     onFail:()=>{if(disposed||finished.current)return;finished.current=true;const latest=statsRef.current;onResult(false,latest.coins,{stars:latest.stars,elapsedMs:Math.round(latest.timeSeconds*1000),discoveryFound:latest.discoveryFound},attempt.current);setStatus('failed');},
     onError:message=>{clearTimeout(timeout);if(!disposed){setError(message);setStatus('failed');}}
-   },environment);controller.current=game;
+   },environment);controller.current=game;setAvatarNotices(game.avatarNotices||[]);
    // Review builds expose a camera scan for scenery checks; gameplay pauses meanwhile.
    if(reviewing)Object.assign(window,{worldExplorerReview:game,__worldExplorerFinish:finishX});
-  }).catch(reason=>{clearTimeout(timeout);if(!disposed){setError(reason instanceof Error?reason.message:'The 3D level could not open.');setStatus('failed');}});
-  return()=>{disposed=true;clearTimeout(timeout);game?.destroy();controller.current=null;};
+  }).catch(reason=>{clearTimeout(timeout);if(!disposed&&!expired){setError(reason instanceof Error?reason.message:'The 3D level could not open.');setStatus('failed');}});
+  return()=>{disposed=true;avatarRequest.abort();clearTimeout(timeout);game?.destroy();controller.current=null;};
  // The parent keys attempts; updates to HUD and preferences must not restart physics.
  // eslint-disable-next-line react-hooks/exhaustive-deps
  },[]);
@@ -105,7 +112,7 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
     <progress aria-label="Level progress" value={distance} max={100}/>
     {checkpointMarks.map((mark,index)=><i key={index} className={index<=activeCheckpoint?styles.checkpointEarned:undefined} style={{left:mark+'%'}} aria-label={index<=activeCheckpoint?'Checkpoint activated':'Checkpoint ahead'}/>)}
     {starMarks.map((star,index)=><span key={star.id} className={`${styles.routeStar} ${stats.collectedStarIds?.includes(star.id)?styles.routeStarEarned:''}`} style={{left:star.percent+'%'}} aria-label={`Star ${index+1}${stats.collectedStarIds?.includes(star.id)?' collected':' ahead'}`}><Star size={25} fill="currentColor"/></span>)}
-    <span className={styles.routeExplorer} style={{left:Math.max(2,Math.min(96,distance))+'%'}}><RoutePortrait/></span><span className={styles.routeDestination}><DestinationIcon environment={level.environmentId}/></span>
+    <span className={styles.routeExplorer} style={{left:Math.max(2,Math.min(96,distance))+'%'}}>{avatar?<AvatarPreview appearance={avatar.appearance} outfits={avatar.outfits} faces={avatar.faces} small portrait/>:<RoutePortrait/>}</span><span className={styles.routeDestination}><DestinationIcon environment={level.environmentId}/></span>
    </div>:<div className={styles.playProgress} aria-label="Level route"><div><span>Start</span><span>Checkpoint</span><Flag size={12}/></div><progress aria-label="Level progress" value={distance} max={100}/>{checkpointMarks.map((mark,index)=><i key={index} className={index<=activeCheckpoint?styles.checkpointEarned:undefined} style={{left:mark+'%'}} aria-label={index<=activeCheckpoint?'Checkpoint activated':'Checkpoint ahead'}/>)}</div>}
    <div className={styles.playCounters}><span aria-label={`${stats.coins} of ${stats.totalCoins} coins`}><i className={styles.coin}/>{stats.coins}<small>/{stats.totalCoins}</small></span><span aria-label={`${stats.stars} of ${stats.totalStars} stars`}><Star size={23} fill="#efcf65"/>{stats.stars}<small>/{stats.totalStars}</small></span><button onClick={pause} disabled={!['running','paused','discovery'].includes(status)} aria-label={status==='running'?'Pause level':'Resume level'}>{status==='running'?<Pause/>:<Play/>}</button></div>
   </header>
@@ -117,8 +124,8 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
    {leaving?<>
     <h2 id="run-dialog-title">{leaveConfirmation.title}</h2><p>{leaveConfirmation.body}</p>
     <button className={styles.playButton} onClick={()=>setLeaving(null)}>{leaveConfirmation.stay}</button><button className={styles.quietButton} onClick={()=>leave(leaving)}>{leaveConfirmation.leave}</button>
-   </>:status==='starting'?<><Compass className={styles.loadingCompass}/><h2 id="run-dialog-title">Preparing {country.name}</h2><p>Loading the landscape and checking your route.</p></>:status==='paused'?<>
-    <Pause size={30}/><h2 id="run-dialog-title">Adventure paused</h2><button className={styles.playButton} onClick={resume}><Play size={17}/>Continue adventure</button>
+   </>:status==='starting'?<><Compass className={styles.loadingCompass}/><h2 id="run-dialog-title">Preparing {country.name}</h2><p>Loading your avatar, the landscape, and your route.</p></>:status==='paused'?<>
+    <Pause size={30}/><h2 id="run-dialog-title">Adventure paused</h2>{avatarNotices.map(notice=><p key={notice}>{notice}</p>)}<button className={styles.playButton} onClick={resume}><Play size={17}/>Continue adventure</button>
     <div className={styles.dialogActions}><button onClick={()=>setShowSettings(value=>!value)}><Settings size={16}/>Settings</button><button onClick={onRetry}><RotateCcw size={16}/>Restart level</button></div>
     {showSettings&&<PreferencesControls value={preferences} onChange={onPreferences} inGame/>}<button className={styles.quietButton} onClick={()=>requestExit('world-map')}>Return to world map</button><button className={styles.quietButton} onClick={()=>requestExit('game-room')}>Back to Game Room</button>
    </>:status==='discovery'?<>

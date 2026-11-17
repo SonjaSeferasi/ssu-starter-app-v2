@@ -1,5 +1,7 @@
 import * as T from 'three';
 import {batchStatic,mesh,matte,random} from './scenic-kit';
+import {createDormAvatar,disposeDormAvatar} from '../dormspace-3d/avatar-model';
+import type {DormAvatarInput} from '../dormspace-3d/avatar-style';
 
 const vector=(x:number,y:number,z:number)=>new T.Vector3(x,y,z);
 
@@ -33,7 +35,14 @@ function batchCharacterPart(root:T.Object3D,retired:Set<T.Material>){
  * shoes rest at y=0 and the curly crown ends at approximately y=1.6. Legs and
  * arms retain their own hip/shoulder pivots for the shared gameplay animator.
  * Clothing, hair and equipment are real geometry, not layered avatar images. */
-export function createExplorerCharacter(scene:T.Scene){
+export function createExplorerCharacter(scene:T.Scene,appearance?:DormAvatarInput){
+ if(appearance){
+  const model=createDormAvatar(appearance);
+  model.root.name='saved-game-room-explorer';
+  scene.add(model.root);
+  return {hero:model.root,body:model.joints.body,legs:model.joints.legs,arms:model.joints.arms,
+   height:model.height,notices:model.notices,dispose:()=>disposeDormAvatar(model)};
+ }
  const hero=new T.Group(),body=new T.Group(),details=new T.Group();
  const retiredMaterials=new Set<T.Material>();
  hero.name='original-student-explorer';body.name='explorer-animated-body';details.name='explorer-clothed-torso-and-head';
@@ -140,5 +149,5 @@ export function createExplorerCharacter(scene:T.Scene){
  // Metadata describes the animation contract, not a separate collision body.
  body.userData.forwardAxis='+Z';body.userData.limbPivotContract='hip-and-shoulder';
  retiredMaterials.forEach(material=>material.dispose());
- return{hero,body,legs,arms};
+ return{hero,body,legs,arms,height:1.59,notices:[] as readonly string[],dispose:undefined};
 }
