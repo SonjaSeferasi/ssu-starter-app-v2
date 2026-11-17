@@ -1,0 +1,111 @@
+{
+  "environment": "Local production app with real hosted Supabase Auth/PostgreSQL/private storage; two isolated browser contexts",
+  "fixtureAccounts": [
+    {
+      "id": "132d514a-cbc9-4bca-911b-de155e504669",
+      "username": "qa1039_4cb92458_1"
+    },
+    {
+      "id": "9401b37e-e067-48a0-b6ec-b266d3ad0aac",
+      "username": "qa1039_4cb92458_2"
+    }
+  ],
+  "hostedPostgresRoundTrip": true,
+  "exactBoard": {
+    "items": [
+      {
+        "id": "live-note",
+        "kind": "note",
+        "text": "1039: owner board, visible to classmates",
+        "color": "pink",
+        "x": 3.25,
+        "y": 7.125,
+        "width": 25,
+        "rotation": -9
+      },
+      {
+        "id": "live-photo",
+        "kind": "photo",
+        "memoryId": 4,
+        "x": 35.5,
+        "y": 10.25,
+        "width": 30,
+        "rotation": 6
+      },
+      {
+        "id": "live-sticker",
+        "kind": "sticker",
+        "sticker": "star",
+        "x": 75,
+        "y": 6,
+        "width": 15,
+        "rotation": 12
+      },
+      {
+        "id": "live-project",
+        "kind": "project",
+        "title": "Owner project",
+        "text": "Saved project card",
+        "url": "https://example.edu/project",
+        "x": 4,
+        "y": 46,
+        "width": 28,
+        "rotation": 0
+      },
+      {
+        "id": "live-music",
+        "kind": "music",
+        "url": "https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC",
+        "x": 40,
+        "y": 48,
+        "width": 40,
+        "rotation": -3
+      }
+    ]
+  },
+  "liveViewerReadsExactBoard": true,
+  "visitorHasNoEditControls": true,
+  "forgedOwnerFieldsIgnored": true,
+  "explicitForeignWriteDenied": true,
+  "blockedViewerDenied": true,
+  "ownerStillReads": true,
+  "result": "passed",
+  "cleanup": [
+    [
+      {
+        "stage": "clear own board",
+        "ok": true
+      },
+      {
+        "stage": "remove own pinned photo/media",
+        "ok": true
+      },
+      {
+        "stage": "remove verified QA-only storage object",
+        "ok": true
+      },
+      {
+        "stage": "deactivate QA account",
+        "ok": true
+      },
+      {
+        "stage": "revoke QA app sessions",
+        "ok": true
+      }
+    ],
+    [
+      {
+        "stage": "clear own board",
+        "ok": true
+      },
+      {
+        "stage": "deactivate QA account",
+        "ok": true
+      },
+      {
+        "stage": "revoke QA app sessions",
+        "ok": true
+      }
+    ]
+  ]
+}

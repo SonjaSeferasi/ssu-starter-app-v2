@@ -8,5 +8,6 @@
   },
   "focusedTests": 53,
   "localBrowserChecks": "passed",
-  "hostedAcceptance": "not run; explicit approval required after automatic-review rejection"
+  "hostedAcceptance": "passed after explicit user approval; all cleanup stages passed",
+  "productionBuild": "passed including TypeScript"
 }
