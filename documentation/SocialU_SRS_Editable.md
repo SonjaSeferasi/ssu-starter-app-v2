@@ -7958,6 +7958,14 @@ Acceptance criterion: Given the student plays the Andorra level, when the explor
 
 Traces to: UR-632.
 
+##### SRS-632.35, SS — Present Banská Štiavnica in the Slovakia level.
+
+When the student plays the Slovakia level, the system shall show a street of pastel Renaissance houses with arched windows and tiled roofs; the timber headframe of a mine shaft with its winding wheels and engine shed; the Klopačka tower with its timber gallery and shingled cap; the plague column in the square; the Old Castle, a fortified church with its gate tower, onion cap, clock, round bastion and the Slovak flag; the New Castle, a tall white block with four round corner bastions, on its hill; the Calvary, red and white churches and chapels climbing a green hill; fir trees and wooded hills around the town; and, on the route, timber rails, crossed-hammer signs, mine carts of ore, stone parapets, miners' lamps, chimneys, balustrades and benches, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Slovakia level, when the explorer starts the route, then the mine headframe and the Klopačka tower are visible; when the explorer is in the first half of the route, then the plague column and the Old Castle with its flag are visible; when the explorer is in the second half of the route, then the New Castle on its hill and the red and white churches of the Calvary are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
