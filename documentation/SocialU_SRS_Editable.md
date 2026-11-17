@@ -7968,6 +7968,14 @@ Acceptance criterion: Given the student plays the Slovakia level, when the explo
 
 Traces to: UR-632.
 
+##### SRS-632.36, SS — Present Boyana Church in the Bulgaria level.
+
+When the student plays the Bulgaria level, the system shall show Boyana Church in its walled garden: the east church, a brick cube with pale bands, an apse and a dome on a round drum; the taller middle church with its own dome; and the plain stone west wing under a tiled roof with its door; tall dark trees round the church; the garden wall with its tiled coping and roofed gate; a bell hung in a wooden frame and the Bulgarian flag by the gate; Revival houses with white ground floors and timber upper floors along the lane; boulder fields, pine forest, wooded foothills and the summit of Vitosha behind; and, on the route, wooden fences and handrails, rose bushes, lanterns, chimneys and red and white martenitsi, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Bulgaria level, when the explorer starts the route, then Revival houses and the flag by the gate are visible; when the explorer reaches the middle of the route, then the three parts of the church and its two domes are visible; when the explorer reaches the finish, then the boulder fields are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
