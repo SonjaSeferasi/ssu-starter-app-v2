@@ -14,7 +14,7 @@ import {LevelPreview} from './level-preview';
 import {CountryRun,type RunOutcome} from './country-run';
 import {PreferencesControls} from './preferences-panel';
 import {defaultExplorerPreferences,loadExplorerPreferences,saveExplorerPreferences,type ExplorerPreferences} from '../../lib/world-explorer/preferences';
-import {authoredDifficulty,isAuthoredLevel,levelAvailability} from '../../lib/world-explorer/level-manifest';
+import {authoredDifficulty,hasExpertChallenge,isAuthoredLevel,levelAvailability} from '../../lib/world-explorer/level-manifest';
 import {cardStatus,designRecord,type CardStatus} from '../../lib/world-explorer/design-manifest';
 import {tierName} from '../../lib/world-explorer/difficulty';
 import {southAmericaEntry} from '../../lib/world-explorer/south-america';
@@ -58,6 +58,11 @@ function difficultyFor(index:number,total:number,code?:string):1|2|3|4{
  if(total===1)return 3;
  const portion=index/Math.max(1,total-1);
  return portion>.84?4:portion>.52?3:portion>.18?2:1;
+}
+/** The difficulty a run actually uses: Expert only where it changes the level. */
+function runDifficulty(country:Country,wantsExpert:boolean):1|2|3|4{
+ const list=countryList(country.continent),normal=difficultyFor(list.findIndex(c=>c.code===country.code),list.length,country.code);
+ return wantsExpert&&hasExpertChallenge(country.code,normal)?4:normal;
 }
 function countryList(id:ContinentId){
  if(id==='antarctica')return[antarctica];
@@ -123,7 +128,9 @@ export default function WorldExplorer(){
  atlasCountry.current=active;
  const current=continents.find(c=>c.id===continent)!,done=continentProgress(progress,continent),overall=overallProgress(progress);
  const index=active?list.findIndex(c=>c.code===active.code):0;
- const difficulty=challenge?4:difficultyFor(index,list.length,active?.code);
+ const normalDifficulty=difficultyFor(index,list.length,active?.code),expertAvailable=!!active&&hasExpertChallenge(active.code,normalDifficulty);
+ // Expert is only applied where it produces a different level for this destination.
+ const difficulty=challenge&&expertAvailable?4:normalDifficulty;
  // Tier and status come from the design manifest. Every built level is open
  // from the start; the tier only tells a player how demanding the route is.
  const completedCodes=new Set(Object.keys(progress.countries).filter(code=>progress.countries[code]?.completed));
@@ -162,7 +169,7 @@ export default function WorldExplorer(){
    <div className={styles.brand}><span><Globe2 size={28}/> World Explorer</span><p>LEARN THROUGH ADVENTURE</p></div>
    <nav aria-label="Explorer tools"><button onClick={()=>setPanel(panel==='passport'?null:'passport')} disabled={!!playing}><BookOpen size={20}/><span>Passport</span></button><button onClick={()=>setPanel(panel==='achievements'?null:'achievements')} disabled={!!playing}><Trophy size={20}/><span>Milestones</span></button><button onClick={()=>setPanel(panel==='settings'?null:'settings')} disabled={!!playing}><Settings size={20}/><span>Settings</span></button><button onClick={()=>setPanel(panel==='sources'?null:'sources')} disabled={!!playing}><Compass size={20}/><span>Field guide</span></button></nav>
   </header>
-  {playing?<CountryRun key={playing.code+'-'+replay} country={playing} preferences={preferences} saveStatus={saveMessage} onPreferences={updatePreferences} difficulty={challenge?4:difficultyFor(countryList(playing.continent).findIndex(c=>c.code===playing.code),countryList(playing.continent).length,playing.code)} onExit={()=>{setPlaying(null);setPanel('journey');}} onResult={(completed,coins,result,runId)=>saveResult(playing,completed,coins,result,runId)} onRetry={()=>setReplay(v=>v+1)} onNext={nextCountry}/>:<>
+  {playing?<CountryRun key={playing.code+'-'+replay} country={playing} preferences={preferences} saveStatus={saveMessage} onPreferences={updatePreferences} difficulty={runDifficulty(playing,challenge)} onExit={()=>{setPlaying(null);setPanel('journey');}} onResult={(completed,coins,result,runId)=>saveResult(playing,completed,coins,result,runId)} onRetry={()=>setReplay(v=>v+1)} onNext={nextCountry}/>:<>
    <section className={styles.intro} aria-label="World Explorer introduction"><p className={styles.eyebrow}>JUMPYLAND · WORLD EXPLORER</p><h1>A world of<br/>discovery.</h1><p>{playableCount} playable countries, including all twelve in South America, from Japan’s spring mountains to Patagonia’s glaciers.<br/>A real 3D adventure, one country at a time.</p><button className={styles.playButton} onClick={()=>launch(countryByCode('JPN')!)}><Play size={17}/>Start in Japan<ArrowRight size={17}/></button><span className={styles.edition}><span/> 193 country profiles · {playableCount} playable levels · country previews</span></section>
    <div className={styles.mapHint}><MapPin size={15}/> Choose a continent on the map</div>
    {atlasError&&<p role="alert" className={styles.atlasError}>{atlasError}</p>}
@@ -189,7 +196,7 @@ export default function WorldExplorer(){
     <p>{activeLevelCard?activeLevelCard.setting:countryProfile(active.code)?.features.join(' · ')}</p>
     <details className={styles.sourceDetail}><summary>Country sources{liveStatus==='available'?' · World Bank refreshed':''}</summary><a href={countryProfile(active.code)?.sourceUrl||active.sources[0]} target="_blank" rel="noreferrer">View source for this destination</a>{liveFacts&&<p>World Bank lists {liveFacts.capital||'no capital in its record'}. Retrieved {new Date(liveFacts.retrievedAt).toLocaleDateString('en-US',{timeZone:'UTC'})}. This is the provider’s administrative listing; the country snapshot retains multi-capital notes. <a href={liveFacts.sourceUrl} target="_blank" rel="noreferrer">API record</a></p>}{countryApi&&<p>countries.dev lists {countryApi.capital||'no capital in its record'}. Retrieved {new Date(countryApi.retrievedAt).toLocaleDateString('en-US',{timeZone:'UTC'})}. <a href={countryApi.sourceUrl} target="_blank" rel="noreferrer">Country API record</a></p>}</details>
     {activeLevelCard?<LevelPreview key={active.code} title={activeLevelCard.title} src={activeLevelCard.previewImage}/>:<LandmarkPhoto key={active.code} code={active.code}/>}
-    <label className={styles.challenge}><input type="checkbox" checked={challenge} onChange={e=>setChallenge(e.target.checked)}/><span><strong>Expert challenge</strong><small>A tougher route with tighter jumps</small></span><Trophy size={18}/></label>
+    <label className={styles.challenge}><input type="checkbox" checked={challenge&&expertAvailable} disabled={!expertAvailable} onChange={e=>setChallenge(e.target.checked)}/><span><strong>Expert challenge</strong><small>{expertAvailable?'A tougher route with tighter jumps':'This destination has one calibrated route, so no tougher version is offered.'}</small></span><Trophy size={18}/></label>
     <button className={styles.playButton} onClick={()=>launch(active)}><Play size={17} fill="currentColor"/> {activeLevel?.stage==='prototype'?(progress.countries[active.code]?.completed?'Replay level':'Play level'):'Explore environment preview'} <ArrowRight size={19}/></button>
     <small className={styles.factStatus}>{continent==='antarctica'?'Antarctic Treaty reference':liveStatus==='loading'?'Checking optional country metadata…':liveStatus==='available'?'World Bank metadata available · sourced country snapshot':'Bundled country facts · external services are optional'}</small>
    </section>}
