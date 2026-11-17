@@ -758,16 +758,6 @@ function Conversation() {
                         <span className={styles.srOnly}>{`, sent ${messageTimeFull(message.sent_at)}`}</span>
                       )}
                     </p>
-                    {/* SRS-211.3 (#1281): when it was sent, beside the bubble -- bubbleRow reverses for the
-                        student's own messages, so it sits on the outer edge either way. The short label is
-                        for glancing at; dateTime and title carry the exact instant. aria-hidden because the
-                        bubble above already speaks it, after the sender and the text where it belongs. */}
-                    {messageTime(message.sent_at) && (
-                      <time className={styles.messageTime} aria-hidden="true"
-                        dateTime={messageDateTimeAttribute(message.sent_at)} title={messageTimeFull(message.sent_at)}>
-                        {messageTime(message.sent_at)}
-                      </time>
-                    )}
                     {/* #1262 (SRS-210.1): the React button used to be hidden on a photo, because
                         socialu_react_to_message accepted only text and emoji and would always have refused.
                         20261117040000 widened it, so a photo is offered like any other existing message. */}
@@ -788,6 +778,18 @@ function Conversation() {
                     )}
                   </div>
                   {chips.length > 0 && <ReactionChips reactions={chips} disabled={reactionBusy} onPick={(emoji) => void react(message.id, emoji)} />}
+                  {/* SRS-211.3 (#1281): when it was sent, below the message. It closes the message rather
+                      than sitting inside the bubble row, so reactions stay attached to the bubble they
+                      belong to and the time reads as the message's footer. The list aligns it to the
+                      student's own side or the other's, the same as the bubble above it.
+                      The short label is for glancing at; dateTime and title carry the exact instant.
+                      aria-hidden because the bubble already speaks it, after the sender and the text. */}
+                  {messageTime(message.sent_at) && (
+                    <time className={styles.messageTime} aria-hidden="true"
+                      dateTime={messageDateTimeAttribute(message.sent_at)} title={messageTimeFull(message.sent_at)}>
+                      {messageTime(message.sent_at)}
+                    </time>
+                  )}
                   {picking && (
                     <ReactionPicker current={chips.find((reaction) => reaction.mine)?.emoji ?? null} disabled={reactionBusy} onClose={closeReactions}
                       onPick={(emoji) => { closeReactions(); void react(message.id, emoji); }} />

@@ -144,10 +144,10 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 /* SRS-210.1 (#802): each message's React button sits beside its bubble (on the left of the student's own). It shows
    while the message is hovered or focused, and always on touch screens. */
 .bubbleRow { display: flex; align-items: center; gap: 4px; width: 100%; }
-/* SRS-211.3 (#1281): the send time beside the bubble. Same colour as the sender name above it (5.9:1 on
-   white, 5.5:1 on the panel). flex-shrink keeps it whole when a long message pushes against it, and
-   white-space stops "Nov 16, 6:14 PM" wrapping onto two lines. */
-.messageTime { flex-shrink: 0; color: #536963; font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* SRS-211.3 (#1281): the send time below the message, closing it. Same colour as the sender name above it
+   (5.9:1 on white, 5.5:1 on the panel). The margin sets it in from the bubble's edge; white-space stops
+   "Nov 16, 6:14 PM" wrapping onto two lines. The list aligns it to whichever side the message is on. */
+.messageTime { margin: 2px 6px 0; color: #536963; font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 /* SRS-211.2 (#1282): the sender's photo beside their messages. align-self keeps it level with the first
    line of a long bubble rather than floating to its middle. The spacer holds the same width for the rest of
    a run, so consecutive bubbles stay in one column. */
