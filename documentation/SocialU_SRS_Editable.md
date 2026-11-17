@@ -7726,6 +7726,14 @@ Acceptance criterion: Given the student plays the Germany level, when the explor
 
 Traces to: UR-632.
 
+##### SRS-632.6, SS — Present Salzburg in the Austria level.
+
+When the student plays the Austria level, the system shall show the pastel houses of the Salzach quay; Salzburg Cathedral with its twin towers and green dome; the towers of the old town churches; Hohensalzburg Fortress with its white walls, red roofs and flag on its wooded hill; the Mönchsberg cliff; the Alps on the horizon; a river steamer on the Salzach; and, on the route, lamps, a hanging shop sign, a statue or fountain, café tables with parasols, balustrades, benches, chimneys, flower boxes and dormer windows, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Austria level, when the explorer reaches the second half of the route, then the fortress and its flag are visible above the roofs of the quay houses with the Alps behind them, the cathedral dome is visible earlier on the route, and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
