@@ -1,10 +1,10 @@
 The CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.
 
- RUN  v2.1.8 /private/tmp/ssu-1042-source
+ RUN  v2.1.8 /private/tmp/ssu-1042-final-source
 
- ✓ __tests__/api/posts.test.ts (62 tests) 25ms
- ✓ __tests__/api/snipes.test.ts (33 tests) 54ms
- ✓ __tests__/api/snipe-uploads.test.ts (35 tests) 35ms
+ ✓ __tests__/api/posts.test.ts (62 tests) 29ms
+ ✓ __tests__/api/snipes.test.ts (33 tests) 61ms
+ ✓ __tests__/api/snipe-uploads.test.ts (35 tests) 34ms
  ✓ __tests__/api/comments.test.ts (35 tests) 12ms
 stderr | __tests__/api/auth.test.ts > SocialU login and registration > reports missing migration without exposing internal errors
 Friendship operation failed {
@@ -13,10 +13,10 @@ Friendship operation failed {
   code: 'PGRST202'
 }
 
- ✓ __tests__/api/auth.test.ts (43 tests) 14ms
+ ✓ __tests__/api/auth.test.ts (43 tests) 15ms
  ✓ __tests__/api/group-administrator.test.ts (33 tests) 12ms
- ✓ __tests__/api/snipe-moderation.test.ts (31 tests) 11ms
  ✓ __tests__/api/dorm-hall-shop.test.ts (24 tests) 11ms
+ ✓ __tests__/api/snipe-moderation.test.ts (31 tests) 12ms
 stderr | __tests__/api/game-room.test.ts > Game Room account boundary > identifies missing Game Room integration so the UI can offer unsaved design samples
 Game Room database operation failed { code: 'PGRST202', message: undefined }
 
@@ -29,88 +29,88 @@ Game Room database operation failed { code: '42501', message: undefined }
 stderr | __tests__/api/game-room.test.ts > Independent avatar customization > never claims a customized avatar is saved without its database migration
 Game Room database operation failed { code: 'PGRST202', message: undefined }
 
+ ✓ __tests__/api/game-room.test.ts (34 tests) 13ms
 stderr | __tests__/api/game-room.test.ts > Independent avatar customization > explains when an older customization function cannot save layered options ({"code":"22023","message":"Invalid avatar selection"})
 Game Room database operation failed { code: '22023', message: 'Invalid avatar selection' }
 
- ✓ __tests__/api/game-room.test.ts (34 tests) 12ms
 stderr | __tests__/api/game-room.test.ts > Independent avatar customization > explains when an older customization function cannot save layered options ({"code":"23514","message":"new row violates check constraint \"avatar_customization_options\""})
 Game Room database operation failed {
   code: '23514',
   message: 'new row violates check constraint "avatar_customization_options"'
 }
 
- ✓ __tests__/api/profile-space.test.ts (39 tests) 14ms
- ✓ __tests__/api/events.test.ts (15 tests) 10ms
- ✓ __tests__/api/student-profile.test.ts (28 tests) 30ms
+ ✓ __tests__/api/profile-space.test.ts (39 tests) 13ms
+ ✓ __tests__/api/events.test.ts (15 tests) 11ms
+ ✓ __tests__/api/student-profile.test.ts (28 tests) 32ms
  ✓ __tests__/api/profile-notifications.test.ts (16 tests) 15ms
  ✓ __tests__/api/snipe-sharing.test.ts (29 tests) 12ms
- ✓ __tests__/api/messages.test.ts (21 tests) 9ms
+ ✓ __tests__/api/messages.test.ts (21 tests) 10ms
  ✓ __tests__/api/snipe-reports.test.ts (24 tests) 10ms
- ✓ __tests__/api/message-reactions.test.ts (24 tests) 11ms
+ ✓ __tests__/api/message-reactions.test.ts (24 tests) 12ms
  ✓ __tests__/api/snipe-pagination.test.ts (22 tests) 16ms
- ✓ __tests__/api/password-reset-link.test.ts (17 tests) 12ms
+ ✓ __tests__/api/password-reset-link.test.ts (17 tests) 13ms
 Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
   npx update-browserslist-db@latest
   Why you should do it regularly: https://github.com/browserslist/update-db#readme
- ✓ __tests__/api/profile-memories.test.ts (13 tests) 12ms
- ✓ __tests__/api/event-invitations.test.ts (12 tests) 12ms
+ ✓ __tests__/api/profile-memories.test.ts (13 tests) 13ms
+ ✓ __tests__/api/event-invitations.test.ts (12 tests) 11ms
  ✓ __tests__/api/group-invitations.test.ts (13 tests) 9ms
- ✓ __tests__/api/emoji-messages.test.ts (19 tests) 40ms
- ✓ __tests__/api/report.test.ts (11 tests) 8ms
- ✓ __tests__/api/profile-corner.test.ts (27 tests) 11ms
- ✓ __tests__/api/group-invitation-answers.test.ts (11 tests) 16ms
- ✓ __tests__/api/trending-posts.test.ts (6 tests) 11ms
+ ✓ __tests__/api/emoji-messages.test.ts (19 tests) 24ms
+ ✓ __tests__/api/report.test.ts (11 tests) 7ms
+ ✓ __tests__/api/profile-corner.test.ts (27 tests) 10ms
+ ✓ __tests__/api/group-invitation-answers.test.ts (11 tests) 36ms
+ ✓ __tests__/api/trending-posts.test.ts (6 tests) 10ms
  ✓ __tests__/api/event-engagement.test.ts (15 tests) 8ms
- ✓ __tests__/api/board-save-postgres.test.ts (6 tests) 1385ms
- ✓ __tests__/api/conversations.test.ts (16 tests) 8ms
+ ✓ __tests__/api/board-save-postgres.test.ts (6 tests) 1294ms
  ✓ __tests__/api/dormspace-voice.test.ts (4 tests) 10ms
- ✓ __tests__/api/event-covers.test.ts (7 tests) 20ms
+ ✓ __tests__/api/conversations.test.ts (16 tests) 8ms
+ ✓ __tests__/api/event-covers.test.ts (7 tests) 21ms
  ✓ __tests__/api/event-cancellation.test.ts (7 tests) 10ms
- ✓ __tests__/api/friends.test.ts (28 tests) 10ms
- ✓ __tests__/api/profile-personality.test.ts (25 tests) 8ms
+ ✓ __tests__/api/friends.test.ts (28 tests) 74ms
+ ✓ __tests__/api/profile-personality.test.ts (25 tests) 9ms
  ✓ __tests__/api/dormspace-music.test.ts (7 tests) 7ms
- ✓ __tests__/api/event-rsvp.test.ts (6 tests) 15ms
- ✓ __tests__/api/login-activity.test.ts (18 tests) 19ms
- ✓ __tests__/api/event-update.test.ts (5 tests) 9ms
- ✓ __tests__/api/profile.test.ts (10 tests) 7ms
+ ✓ __tests__/api/event-rsvp.test.ts (6 tests) 13ms
+ ✓ __tests__/api/login-activity.test.ts (18 tests) 15ms
+ ✓ __tests__/api/event-update.test.ts (5 tests) 10ms
+ ✓ __tests__/api/profile.test.ts (10 tests) 8ms
  ✓ __tests__/api/group-name.test.ts (13 tests) 8ms
- ✓ __tests__/api/reply-send.test.ts (8 tests) 7ms
- ✓ __tests__/database/profile-space.test.ts (1 test) 1216ms
-   ✓ persists owner decorations, controls hello-note access, soft removal, blocking, and rate limits 1216ms
+ ✓ __tests__/api/reply-send.test.ts (8 tests) 9ms
+ ✓ __tests__/database/profile-space.test.ts (1 test) 1210ms
+   ✓ persists owner decorations, controls hello-note access, soft removal, blocking, and rate limits 1210ms
  ✓ __tests__/board-history-guard.test.ts (4 tests) 15ms
  ✓ __tests__/api/group-leaving.test.ts (8 tests) 6ms
- ✓ __tests__/api/profile-highlights.test.ts (6 tests) 7ms
- ✓ __tests__/api/profile-corner-artwork.test.ts (17 tests) 8ms
+ ✓ __tests__/api/profile-highlights.test.ts (6 tests) 8ms
+ ✓ __tests__/api/profile-corner-artwork.test.ts (17 tests) 9ms
  ✓ __tests__/api/conversation-delete.test.ts (7 tests) 6ms
- ✓ __tests__/api/profile-cover.test.ts (6 tests) 19ms
- ✓ __tests__/api/reset-password.test.ts (6 tests) 9ms
+ ✓ __tests__/api/profile-cover.test.ts (6 tests) 16ms
+ ✓ __tests__/api/reset-password.test.ts (6 tests) 8ms
  ✓ __tests__/api/profile-photo.test.ts (8 tests) 7ms
- ✓ __tests__/api/message-notifications.test.ts (4 tests) 5ms
+ ✓ __tests__/api/message-notifications.test.ts (4 tests) 6ms
  ✓ __tests__/api/jumpyland.test.ts (12 tests) 7ms
  ✓ __tests__/api/conversation-read.test.ts (7 tests) 6ms
  ✓ __tests__/api/profile-social.test.ts (18 tests) 7ms
- ✓ __tests__/api/dorm-live.test.ts (23 tests) 8ms
- ✓ __tests__/api/session.test.ts (5 tests) 7ms
+ ✓ __tests__/api/dorm-live.test.ts (23 tests) 9ms
+ ✓ __tests__/api/session.test.ts (5 tests) 5ms
  ✓ __tests__/api/world-explorer-progress.test.ts (5 tests) 7ms
  ✓ __tests__/api/campus-members.test.ts (8 tests) 7ms
  ✓ __tests__/api/avatar.test.ts (5 tests) 5ms
+ ✓ __tests__/api/dorm-rotation.test.ts (14 tests) 8ms
  ✓ __tests__/api/sender-names.test.ts (2 tests) 5ms
  ✓ __tests__/api/game-participation.test.ts (2 tests) 5ms
- ✓ __tests__/database/board-photo-ownership.test.ts (1 test) 1461ms
-   ✓ rejects missing, removed and foreign photos on atomic and full-look saves without changing stored data 1460ms
- ✓ __tests__/database/profile-memories.test.ts (1 test) 1398ms
-   ✓ lets only the owner pin up to six memories in their own folder, and hides them from blocked students 1397ms
- ✓ __tests__/api/dorm-rotation.test.ts (13 tests) 7ms
- ✓ __tests__/api/conversation-peer.test.ts (2 tests) 5ms
- ✓ __tests__/profile-board.test.ts (11 tests) 3ms
- ✓ __tests__/api/points.test.ts (3 tests) 5ms
- ✓ __tests__/database/profile-board-atomic-save.test.ts (1 test) 1084ms
-   ✓ merges board-only writes with current profile data and enforces owner isolation 1083ms
- ✓ __tests__/supabase-freshness.test.ts (1 test) 5ms
+ ✓ __tests__/database/board-photo-ownership.test.ts (1 test) 1483ms
+   ✓ rejects missing, removed and foreign photos on atomic and full-look saves without changing stored data 1482ms
+ ✓ __tests__/database/profile-memories.test.ts (1 test) 1433ms
+   ✓ lets only the owner pin up to six memories in their own folder, and hides them from blocked students 1432ms
+ ✓ __tests__/api/conversation-peer.test.ts (2 tests) 4ms
+ ✓ __tests__/profile-board.test.ts (11 tests) 5ms
+ ✓ __tests__/api/points.test.ts (3 tests) 4ms
+ ✓ __tests__/database/profile-board-atomic-save.test.ts (1 test) 1102ms
+   ✓ merges board-only writes with current profile data and enforces owner isolation 1102ms
+ ✓ __tests__/supabase-freshness.test.ts (1 test) 6ms
 
  Test Files  70 passed (70)
-      Tests  1039 passed (1039)
-   Start at  00:05:51
-   Duration  9.41s (transform 1.38s, setup 0ms, collect 3.27s, tests 7.31s, environment 6ms, prepare 2.28s)
+      Tests  1040 passed (1040)
+   Start at  00:10:19
+   Duration  9.39s (transform 1.30s, setup 0ms, collect 3.27s, tests 7.37s, environment 6ms, prepare 2.17s)
 
-JSON report written to /private/tmp/ssu-1042-results/focused.json
+JSON report written to /private/tmp/ssu-1042-final-results/focused.json

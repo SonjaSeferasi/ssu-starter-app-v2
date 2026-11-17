@@ -1,6 +1,6 @@
 {
-  "startedAt": "2026-11-17T05:05:51.127Z",
-  "sourceCommit": "540caa4944632e7b9ef7a6bcf2f16b53fa6a9ad2",
+  "startedAt": "2026-11-17T05:10:18.920Z",
+  "sourceCommit": "7b7f82106c95236a521e8f44d47c1eb585612224",
   "environment": "Clean local production UI/API; actual SQL in disposable PGlite; fixture Auth/PostgREST/signing",
   "hostedWrites": false,
   "steps": [
@@ -22,12 +22,12 @@
         "--minWorkers=1",
         "--reporter=default",
         "--reporter=json",
-        "--outputFile=/private/tmp/ssu-1042-results/focused.json"
+        "--outputFile=/private/tmp/ssu-1042-final-results/focused.json"
       ],
       "status": 0,
       "signal": null,
-      "tests": 1039,
-      "passed": 1039,
+      "tests": 1040,
+      "passed": 1040,
       "failed": 0
     },
     {
@@ -50,7 +50,7 @@
         "vitest.board-evidence.config.ts",
         "--reporter=default",
         "--reporter=json",
-        "--outputFile=/private/tmp/ssu-1042-results/atomic-rotation-history.json"
+        "--outputFile=/private/tmp/ssu-1042-final-results/atomic-rotation-history.json"
       ],
       "status": 0,
       "signal": null,
@@ -68,7 +68,7 @@
         "vitest.board-photo-evidence.config.ts",
         "--reporter=default",
         "--reporter=json",
-        "--outputFile=/private/tmp/ssu-1042-results/photo-ownership.json"
+        "--outputFile=/private/tmp/ssu-1042-final-results/photo-ownership.json"
       ],
       "status": 0,
       "signal": null,
@@ -86,7 +86,7 @@
         "vitest.board-upload-evidence.config.ts",
         "--reporter=default",
         "--reporter=json",
-        "--outputFile=/private/tmp/ssu-1042-results/uploaded-photo-identity.json"
+        "--outputFile=/private/tmp/ssu-1042-final-results/uploaded-photo-identity.json"
       ],
       "status": 0,
       "signal": null,
@@ -104,7 +104,7 @@
         "vitest.board-contract-evidence.config.ts",
         "--reporter=default",
         "--reporter=json",
-        "--outputFile=/private/tmp/ssu-1042-results/contract-owner-viewer-block.json"
+        "--outputFile=/private/tmp/ssu-1042-final-results/contract-owner-viewer-block.json"
       ],
       "status": 0,
       "signal": null,
@@ -122,7 +122,7 @@
         "vitest.board-editor-evidence.config.ts",
         "--reporter=default",
         "--reporter=json",
-        "--outputFile=/private/tmp/ssu-1042-results/editor-save-reload.json"
+        "--outputFile=/private/tmp/ssu-1042-final-results/editor-save-reload.json"
       ],
       "status": 0,
       "signal": null,
@@ -140,6 +140,6 @@
   "matchesApproved1039HostedSource": true,
   "providerTransportSha256": "0b8f79d23c0bce871027a7b9e87d039ddb776d6047ea4e380a98ea5182200128",
   "hostedEvidence": "Historical approved #1039 run at a9d7160c88f2ab86f6102746972fe15445bac700 reused explicitly. Core board sources match; provider transport now disables fetch caching (#1291), verified locally, not rerun against hosted accounts.",
-  "finishedAt": "2026-11-17T05:07:01.362Z",
+  "finishedAt": "2026-11-17T05:11:43.481Z",
   "result": "passed"
 }

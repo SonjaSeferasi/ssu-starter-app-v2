@@ -5,6 +5,15 @@
   ▲ Next.js 14.2.15
 
    Creating an optimized production build ...
+Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
  ✓ Compiled successfully
    Linting and checking validity of types ...
    Collecting page data ...
@@ -18,9 +27,9 @@
 
 Route (app)                                                      Size     First Load JS
 ┌ ○ /                                                            13.8 kB         200 kB
-├ ○ /_not-found                                                  881 B          91.5 kB
+├ ○ /_not-found                                                  881 B          91.4 kB
 ├ ○ /account/login-activity                                      5.95 kB         103 kB
-├ ○ /account/security                                            149 B           104 kB
+├ ○ /account/security                                            148 B           104 kB
 ├ ƒ /api/account/deactivate                                      0 B                0 B
 ├ ƒ /api/account/login-activity                                  0 B                0 B
 ├ ƒ /api/auth/change-password                                    0 B                0 B
@@ -130,16 +139,16 @@ Route (app)                                                      Size     First 
 ├ ○ /dev/dormspace-3d                                            5.33 kB         108 kB
 ├ ○ /dev/dormspace-3d/scene                                      4.58 kB         211 kB
 ├ ○ /dev/dormspace-art                                           1.38 kB         114 kB
-├ ○ /dev/game-room                                               390 B           191 kB
+├ ○ /dev/game-room                                               393 B           191 kB
 ├ ○ /dev/jumpyland                                               6.86 kB         103 kB
-├ ○ /dev/navigation                                              212 B           172 kB
+├ ○ /dev/navigation                                              212 B           171 kB
 ├ ○ /events                                                      3.77 kB         185 kB
 ├ ƒ /events/[id]                                                 5.93 kB         187 kB
 ├ ○ /events/create                                               4.3 kB          179 kB
 ├ ○ /forgot-password                                             149 B           104 kB
-├ ○ /friends                                                     2.12 kB         242 kB
+├ ○ /friends                                                     2.13 kB         241 kB
 ├ ○ /game-1                                                      1.68 kB         176 kB
-├ ○ /game-room                                                   211 B           191 kB
+├ ○ /game-room                                                   212 B           191 kB
 ├ ○ /game-room/dormspace                                         828 B           222 kB
 ├ ○ /game-room/dormspace/art-credits                             180 B          97.6 kB
 ├ ○ /game-room/dormspace/campus                                  9.53 kB         210 kB
@@ -153,8 +162,8 @@ Route (app)                                                      Size     First 
 ├ ○ /profile/decorate                                            11.5 kB         251 kB
 ├ ○ /profile/edit                                                4.23 kB         244 kB
 ├ ○ /profile/settings                                            2.78 kB         242 kB
-├ ○ /profile/settings/customize                                  2.31 kB         242 kB
-├ ○ /register                                                    149 B           104 kB
+├ ○ /profile/settings/customize                                  2.32 kB         242 kB
+├ ○ /register                                                    148 B           104 kB
 ├ ○ /reset-password                                              148 B           104 kB
 ├ ƒ /students/[username]                                         215 B           240 kB
 ├ ○ /verify-email                                                149 B           104 kB
@@ -162,7 +171,7 @@ Route (app)                                                      Size     First 
 + First Load JS shared by all                                    90.6 kB
   ├ chunks/5558-ee38f633b8f0ff3c.js                              31.7 kB
   ├ chunks/cfcbb68b-aec855a929402525.js                          53.6 kB
-  └ other shared chunks (total)                                  5.21 kB
+  └ other shared chunks (total)                                  5.18 kB
 
 
 ○  (Static)   prerendered as static content

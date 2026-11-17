@@ -4,13 +4,13 @@ Parent SRS-124.1 #1038 → UR-124. Owner Dieulinhh23. Branch `srs-124.1-task-104
 
 ## Verification scope
 
-The clean snapshot starts at main commit `540caa4944632e7b9ef7a6bcf2f16b53fa6a9ad2`, with this task's runner, server fetch-freshness fix and strengthened blocked-viewer test overlaid. Unrelated local profile-settings edits are excluded. The newly found #1291 changes production behavior: provider reads explicitly bypass the server fetch cache so current permissions apply.
+The clean snapshot starts at main commit `7b7f82106c95236a521e8f44d47c1eb585612224`, with this task's fix merged in committed tree `65e6ca59d18d07ac987e2ce3986eb434c0613d9f` (clean git archive). Unrelated local profile-settings edits are excluded. The newly found #1291 changes production behavior: provider reads explicitly bypass the server fetch cache so current permissions apply.
 
 `node scripts/tests/verify-board-slice.cjs` runs the focused tests, production build and five local browser suites sequentially. Set `BOARD_VERIFICATION_DIR`, `BOARD_VERIFICATION_COMMIT`, `SOCIALU_PLAYWRIGHT_MODULE` and `BOARD_BROWSER_EXECUTABLE` as needed. It records per-step results and hashes and stops on failure. It never invokes the opt-in hosted script.
 
 | Layer/check | Result |
 | --- | --- |
-| All API tests, board validation, real SQL, history guard and provider freshness | 1,039/1,039 tests in 70 files |
+| All API tests, board validation, real SQL, history guard and provider freshness | 1,040/1,040 tests in 70 files |
 | Production compilation and TypeScript | Passed |
 | Atomic save, bounded rotation, Back/Forward draft protection | 3/3 browser checks |
 | Photo ownership | 1/1 browser check |
@@ -20,7 +20,7 @@ The clean snapshot starts at main commit `540caa4944632e7b9ef7a6bcf2f16b53fa6a9a
 
 Captured logs have terminal color codes/trailing whitespace removed; results are unchanged.
 
-[Machine-readable execution receipt](1042-evidence/verification.json) · [Pre-merge GitHub task/branch audit](1042-evidence/github-task-audit.json).
+[Machine-readable execution receipt](1042-evidence/verification.json) · [Pre-merge GitHub task/branch audit](1042-evidence/github-task-audit.json) · [Exact tested-tree/source verification](1042-evidence/source-verification.json).
 
 The first combined run exposed a false-positive possibility in the original blocked-UI assertion: the one-second check could pass while the page showed its loading skeleton. Waiting for the settled page exposed actual defect [#1291](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1291): direct SQL rejected the blocked viewer with P0002 and the board API returned 404, yet the profile API reused a previous 200 header without another provider RPC. The local Next fetch cache contained that RPC response.
 

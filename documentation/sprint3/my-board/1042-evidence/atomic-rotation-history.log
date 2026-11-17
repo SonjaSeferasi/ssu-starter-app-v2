@@ -1,15 +1,15 @@
 The CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.
 
- RUN  v2.1.8 /private/tmp/ssu-1042-source
+ RUN  v2.1.8 /private/tmp/ssu-1042-final-source
 
- ✓ scripts/tests/profile-board-atomic.browser.ts (3 tests) 17091ms
-   ✓ retains a newer hometown, theme and decorations when a real board save resumes 1916ms
-   ✓ keeps rotated starter cards savable and restores their saved angles after reload 9941ms
-   ✓ protects dirty boards on Back and Forward while preserving normal navigation 2378ms
+ ✓ scripts/tests/profile-board-atomic.browser.ts (3 tests) 16523ms
+   ✓ retains a newer hometown, theme and decorations when a real board save resumes 1862ms
+   ✓ keeps rotated starter cards savable and restores their saved angles after reload 9143ms
+   ✓ protects dirty boards on Back and Forward while preserving normal navigation 2539ms
 
  Test Files  1 passed (1)
       Tests  3 passed (3)
-   Start at  00:06:20
-   Duration  17.33s (transform 54ms, setup 0ms, collect 79ms, tests 17.09s, environment 0ms, prepare 41ms)
+   Start at  00:11:03
+   Duration  16.79s (transform 58ms, setup 0ms, collect 83ms, tests 16.52s, environment 0ms, prepare 40ms)
 
-JSON report written to /private/tmp/ssu-1042-results/atomic-rotation-history.json
+JSON report written to /private/tmp/ssu-1042-final-results/atomic-rotation-history.json
