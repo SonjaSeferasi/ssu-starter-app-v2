@@ -7814,6 +7814,14 @@ Acceptance criterion: Given the student plays the Switzerland level, when the ex
 
 Traces to: UR-632.
 
+##### SRS-632.17, SS — Present Jelling in the Denmark level.
+
+When the student plays the Denmark level, the system shall show a broad meadow with strips of rapeseed, corn and ploughed earth and round bales behind it; the two great grass mounds, each with a path to its top; between them the whitewashed church with its stepped-gable tower, red roofs, churchyard wall and the Danish flag on a white pole; before the church the two runestones, the larger bound with carved red and blue ribbons; a row of white posts marking the palisade and low stones marking the outline of the stone ship; a thatched half-timbered farmhouse; a red barn; a white windmill whose sails turn; beech trees; and, on the route, post-and-rail fences, small rune stones, poppies and daisies, benches, lamps and white marker posts, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Denmark level, when the explorer is in the first half of the route, then the north mound and the church tower are visible; when the explorer reaches the finish, then the south mound, the red barn and the windmill are visible and the windmill's sails are turning, unless the student has asked for reduced motion; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
