@@ -7926,6 +7926,14 @@ Acceptance criterion: Given the student plays the Monaco level, when the explore
 
 Traces to: UR-632.
 
+##### SRS-632.31, SS — Present the fortress city in the Luxembourg level.
+
+When the student plays the Luxembourg level, the system shall show, across the river, the slate-roofed houses and the long abbey of the lower town; behind them the sandstone cliff of the upper town with the Corniche wall along its edge; the Bock with its rows of casemate openings, the broken tower called the Hollow Tooth and the Luxembourg flag; the red two-level Castle Bridge over the rock cut; the houses of the upper town with the palace turrets and the three spires of the cathedral; the stone arch of the Adolphe Bridge across the side valley, parallel to the route and not reaching it; the Golden Lady on her obelisk; and, on the route, iron railings, lanterns, benches, stone parapets with flower boxes, balustrades, cafe tables and potted trees, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Luxembourg level, when the explorer starts the route, then the lower-town houses, the casemate wall and the flag on the Bock are visible; when the explorer reaches the middle of the route, then the arch of the Adolphe Bridge and the cathedral spires are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
