@@ -19,10 +19,10 @@ async function call(args: Record<string, unknown>) {
   return data as { memories: StoredMemory[]; removedKey: string | null };
 }
 // Storage keys stay on the server; viewers get short-lived signed photo links.
-async function respond(data: Awaited<ReturnType<typeof call>>) {
+async function respond(data: Awaited<ReturnType<typeof call>>, createdMemoryId?: number) {
   if (data === null) return Response.json({ memories: [], available: false }, { headers });
   const memories = await Promise.all(data.memories.map(async ({ key, ...memory }) => ({ ...memory, url: await resolveMediaUrl(accountClient(), key) })));
-  return Response.json({ memories, available: true }, { headers });
+  return Response.json({ memories, available: true, ...(createdMemoryId === undefined ? {} : { createdMemoryId }) }, { headers });
 }
 function preview(): never { throw new AccountError('Pinned memories are in preview. Saving isn’t available yet.',503,'MEMORIES_PREVIEW'); }
 
@@ -54,8 +54,14 @@ export async function POST(request: Request) {
     uploadedKey = key;
     const saved = await call({ p_auth_id:user.id,p_action:'add',p_storage_key:key,p_caption:values.caption,p_doodle:values.doodle });
     if (saved === null) preview();
+    // The database write committed. Never delete its photo because confirmation/signing fails.
     uploadedKey = null;
-    return await respond(saved);
+    // Identify this request's unique object key, not a list diff, timestamp or ordering guess.
+    const created = saved.memories.find(memory => memory.key === key);
+    if (!created || !Number.isSafeInteger(created.id) || created.id < 1) {
+      throw new AccountError('Your photo was pinned, but its identity could not be confirmed. Reload your pinned memories before trying again.',503);
+    }
+    return await respond(saved, created.id);
   } catch (error) {
     if (uploadedKey) await accountClient().storage.from('media').remove([uploadedKey]).catch(()=>undefined);
     return accountResponse(error);
