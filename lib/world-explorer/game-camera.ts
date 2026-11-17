@@ -15,14 +15,19 @@ export function cameraTrackingHeight(previous:number,y:number,grounded:boolean){
  return grounded?y:y<previous-2.5?y+2.5:previous;
 }
 
-/** The close gameplay camera for redesigned levels. At the authored distance a
- * 1.83-unit player fills about 9-12% of the view height; 18% of the view width
+/** Every country is followed from the same close range as Japan (SRS-631.7).
+ * Authored distances were set for a wide view; scaling them keeps each level's
+ * own proportions while the most common distance, 20.5, becomes Japan's 12.8. */
+export const closeFollowScale=japanCloseCamera.distance/20.5;
+
+/** The close gameplay camera for redesigned levels. At the scaled distance a
+ * 1.83-unit player fills about 15-18% of the view height; 18% of the view width
  * of look-ahead keeps them on the left third with the next obstacles visible.
  * `y` is the tracked ground height, so the view climbs with the terrain while
  * ordinary jumps leave it still. Portrait screens pull back to keep the lead. */
 export function gameplayCameraFrame(level:LevelDefinition,camera:CameraDefinition,x:number,y:number,aspect:number){
  const last=level.platforms.find(p=>p.id===level.finish.platformId)!,spawn=level.platforms.find(p=>p.id===level.spawn.platformId)!;
- const ratio=Math.max(.35,Math.min(aspect,2.4)),z=(camera.distance||20)*(ratio<1?1.25:1);
+ const ratio=Math.max(.35,Math.min(aspect,2.4)),z=(camera.distance||20)*closeFollowScale*(ratio<1?1.25:1);
  const visibleWidth=2*Math.tan(44*Math.PI/360)*z*ratio,lead=visibleWidth*.18,start=spawn.x+level.spawn.offset+lead;
  const ground=spawn.y+(y-spawn.y)*camera.follow;
  return{x:clamp(x+lead,start,Math.max(start,last.x+last.width-visibleWidth*.2)),y:ground+camera.height,z,lookY:ground+camera.look};
@@ -40,7 +45,7 @@ export function referenceCameraFrame(level:LevelDefinition,x:number,y:number,asp
  const japan=level.countryId==='JP';
  if(!japan&&level.camera?.distance)return gameplayCameraFrame(level,level.camera,x,y,aspect);
  const camera=japan?japanCloseCamera:level.camera||referenceCamera;
- const ratio=Math.max(.35,Math.min(aspect,2.4)),z=japan?(ratio<1?japanCloseCamera.portraitDistance:japanCloseCamera.distance):ratio<1?29:24;
+ const ratio=Math.max(.35,Math.min(aspect,2.4)),z=japan?(ratio<1?japanCloseCamera.portraitDistance:japanCloseCamera.distance):(ratio<1?29:24)*closeFollowScale;
  const visibleWidth=2*Math.tan(44*Math.PI/360)*z*ratio,lead=visibleWidth*.18;
  const spawnPlatform=level.platforms.find(p=>p.id===level.spawn.platformId)!;
  const initialCenter=spawnPlatform.x+level.spawn.offset+lead;

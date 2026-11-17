@@ -170,8 +170,8 @@ export function mountCountryStage(parent:HTMLElement,country:ExplorerCountry,cal
  const focus=()=>canvas.focus({preventScroll:true});canvas.addEventListener('pointerdown',focus);
  const resize=()=>{renderer.setSize(Math.max(1,parent.clientWidth),Math.max(1,parent.clientHeight),false);camera.aspect=Math.max(1,parent.clientWidth)/Math.max(1,parent.clientHeight);camera.updateProjectionMatrix();};
  const observer=new ResizeObserver(resize);observer.observe(parent);resize();
- // Japan opens with a sweep down from the vista (skipped for reduced motion).
- const sweeps=level.countryId==='JP';let sweepElapsed=0;
+ // Every authored level opens with a sweep down from the vista (skipped for reduced motion).
+ const sweeps=authored;let sweepElapsed=0;
  const settled=cameraFrame(level,simulation.state.x,simulation.state.y,camera.aspect),initial=sweeps&&!reducedMotion?openingSweepFrame(settled,0):settled;camera.position.set(initial.x,initial.y,initial.z);camera.lookAt(initial.x,initial.lookY,-1);notify();
  const zones=level.zones||[];
  let cameraGroundY=simulation.state.y,cameraLookY=initial.lookY;
