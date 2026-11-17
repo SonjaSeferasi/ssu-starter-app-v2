@@ -7896,6 +7896,14 @@ Acceptance criterion: Given the student plays the Montenegro level, when the exp
 
 Traces to: UR-632.
 
+##### SRS-632.27, SS — Present Ohrid in the North Macedonia level.
+
+When the student plays the North Macedonia level, the system shall show the old town of Ohrid climbing the hill in white houses whose upper floors lean out on dark timber brackets under red roofs, with cypresses between them; Samuel's Fortress on the hilltop with its towers and the Macedonian flag; the many-domed church of St Clement among the houses; the small striped church of St John at Kaneo with its eight-sided dome on a rocky cliff above the lake; reeds, wooden piers and canopied boats along the shore; swans on the water; snowy mountains across the lake; and, on the route, rope rails, lanterns, fishing nets, reeds, benches, balustrades and potted fig trees, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the North Macedonia level, when the explorer is in the first half of the route, then the white houses with their overhanging upper floors, the fortress and its flag are visible; when the explorer nears the finish, then the church of St John at Kaneo on its cliff is visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
