@@ -1,0 +1,2 @@
+0 publication TypeScript diagnostics
+Checked indexed repository sources; unrelated untracked source files hidden. Installed dependencies and next-env.d.ts retained.

@@ -8,6 +8,7 @@ export type ParticipationStatus = {
   qualifiedToday: boolean;
   forgivenRemaining: number;
   rewardPoints: number;
+  earnedPointsToday: number;
   leaderboards: Partial<Record<Game, { username: string; days: number }[]>>;
 };
 
@@ -27,7 +28,10 @@ async function requestParticipation(init: RequestInit) {
   const response = await fetch('/api/game-participation', {
     ...init, cache: 'no-store', headers: { Authorization: `Bearer ${token}`, ...init.headers },
   });
-  if (!response.ok) throw new Error('Participation streaks are temporarily unavailable.');
+  if (!response.ok) {
+    const body = await response.json().catch(() => null);
+    throw new Error(typeof body?.error === 'string' ? body.error : 'Participation streaks are temporarily unavailable.');
+  }
   return response;
 }
 
@@ -42,4 +46,5 @@ export async function recordExplorerParticipation(country: string) {
     body: JSON.stringify({ country, timeZone: browserZone() }),
   });
   window.dispatchEvent(new Event('socialu-points-changed'));
+  return readParticipation(new AbortController().signal);
 }

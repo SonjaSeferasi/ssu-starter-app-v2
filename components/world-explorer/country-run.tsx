@@ -14,7 +14,8 @@ import {isAuthoredLevel,levelAvailability,levelDefinitionFor} from '../../lib/wo
 import type {CountryRunResult,CountryStats,Difficulty,ExplorerRunPreferences} from '../../lib/world-explorer/game-types';
 import type {ExplorerPreferences} from '../../lib/world-explorer/preferences';
 import {CountryFlag} from './country-flag';
-import {recordExplorerParticipation} from '../../lib/game-participation-client';
+import {recordExplorerParticipation,type ParticipationStatus} from '../../lib/game-participation-client';
+import {StreakCelebration} from '../game-room/streak-celebration';
 import {AvatarPreview} from '../game-room/avatar-preview';
 import {loadExplorerAvatar} from '../../lib/world-explorer/avatar';
 import type {GameRoomData} from '../../lib/game-room';
@@ -36,6 +37,18 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
  const [review,setReview]=useState(false),[overview,setOverview]=useState(false),[performance,setPerformance]=useState<{fps:number;drawCalls:number;triangles:number}|null>(null);
  const [avatar,setAvatar]=useState<GameRoomData|null>(null);
  const [avatarNotices,setAvatarNotices]=useState<readonly string[]>([]);
+ const [participation,setParticipation]=useState<{state:'saving'|'saved'|'failed';reward?:ParticipationStatus;message?:string}|null>(null);
+ const participationRequest=useRef(false),participationSaved=useRef(false);
+ async function saveParticipation(){
+  if(participationRequest.current||participationSaved.current)return;
+  participationRequest.current=true;setParticipation({state:'saving'});
+  try{
+   const saved=await recordExplorerParticipation(country.code);
+   participationSaved.current=true;
+   setParticipation({state:'saved',reward:saved});
+  }catch(reason){setParticipation({state:'failed',message:reason instanceof Error?reason.message:'Could not save your daily participation.'});}
+  finally{participationRequest.current=false;}
+ }
  const availability=levelAvailability(country.code),profile=countryProfile(country.code),level=useMemo(()=>levelDefinitionFor(country.code,difficulty),[country.code,difficulty]),authored=isAuthoredLevel(country.code);
  const finalPlatform=level.platforms.find(platform=>platform.id===level.finish.platformId)!,finishX=finalPlatform.x+level.finish.offset;
  const checkpointMarks=level.checkpoints.map(point=>{const platform=level.platforms.find(item=>item.id===point.platformId)!;return(platform.x+point.offset)/finishX*100;});
@@ -56,7 +69,7 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
      clearTimeout(timeout);
      if(disposed||expired)return;
      setStatus('running');
-     if(authored&&!reviewing)void recordExplorerParticipation(country.code).catch(()=>{});
+     if(authored&&!reviewing)void saveParticipation();
     },
     onProgress:value=>{if(!disposed)setDistance(value);},
     onPerformance:value=>{if(!disposed)setPerformance(value);},
@@ -134,6 +147,11 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
    </>:status==='complete'?<>
     <Trophy size={38}/><p className={styles.eyebrow}>PASSPORT STAMP EARNED</p><h2 id="run-dialog-title">{country.name} explored!</h2><div className={styles.resultStars} aria-label={`${stats.stars} of 3 stars earned`}>{[0,1,2].map(index=><Star key={index} size={34} fill={index<stats.stars?'#f2d174':'none'} color={index<stats.stars?'#f2d174':'#819b91'}/>)}</div>
     <div className={styles.resultDetails}><span><i className={styles.coin}/>{stats.coins} / {stats.totalCoins} coins</span><span>{formatTime(stats.timeSeconds)}</span><span><BookOpen size={14}/>{stats.discoveryFound?'Discovery learned':'Discovery still to find'}</span></div><p role="status" className={styles.muted}>{saveStatus}</p>
+    {participation&&<div role="status">
+     {participation.state==='saving'?<p>Saving daily participation…</p>
+      :participation.state==='failed'?<><p>{participation.message}</p><button className={styles.quietButton} onClick={()=>void saveParticipation()}>Retry daily reward</button></>
+      :participation.reward&&<StreakCelebration status={participation.reward}/>}
+    </div>}
     {stats.discoveryFound&&<Discovery country={country} compact/>}<button className={styles.playButton} onClick={onRetry}><RotateCcw size={17}/>Replay level</button><button className={styles.quietButton} onClick={onNext}>Choose another destination <ArrowRight size={13}/></button><button className={styles.quietButton} onClick={onExit}>World map and passport</button><button className={styles.quietButton} onClick={toGameRoom}>Back to Game Room</button>
    </>:<>
     <Heart size={32}/><h2 id="run-dialog-title">{error?'The world could not open':'Another adventure awaits'}</h2><p>{error||'Try again with three fresh hearts. Your best result stays in your passport.'}</p><button className={styles.playButton} onClick={onRetry}><RotateCcw size={17}/>Try again</button><button className={styles.quietButton} onClick={onExit}>Return to world map</button><button className={styles.quietButton} onClick={toGameRoom}>Back to Game Room</button>

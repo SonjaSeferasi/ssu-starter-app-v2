@@ -1,0 +1,16 @@
+.week { border-top:1px solid var(--line,#d8cde4); padding-top:14px; min-width:0; }
+.week h3 { margin:0 0 8px; font-size:15px; }
+.week .zone { font-size:11px; line-height:1.5; overflow-wrap:anywhere; }
+.days { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:3px; padding:0; margin:12px 0; list-style:none; }
+.days li { display:flex; flex-direction:column; align-items:center; gap:5px; padding:7px 0; border-radius:9px; color:#4c4261; background:#f3edf9; font-size:11px; border:1px solid #d9cde6; }
+.days abbr { text-decoration:none; font-weight:800; }
+.days li[aria-current='date'] { outline:2px solid #9456ce; outline-offset:1px; }
+.symbol { display:grid; place-items:center; width:23px; height:23px; border-radius:50%; font-size:18px; font-weight:800; }
+.days li[data-state='played'] .symbol { background:#227c54; color:#fff; }
+.days li[data-state='forgiven'] .symbol { background:#7541a5; color:#fff; }
+.days li[data-state='reset'] .symbol { background:#af4735; color:#fff; }
+.week summary,.week button { cursor:pointer; font:inherit; font-size:12px; }
+.week button { text-decoration:underline; font-weight:700; }
+.legend { padding-left:16px; font-size:12px; line-height:1.8; }
+.srOnly { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+:global(html[data-appearance='dark']) .days li { color:#f2eafa; background:#3c304c; border-color:#79628e; }

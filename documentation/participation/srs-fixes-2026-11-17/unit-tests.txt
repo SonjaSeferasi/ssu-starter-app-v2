@@ -1,0 +1,22 @@
+The CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.
+
+ RUN  v2.1.8 C:/Csc 351/ssu-starter-app-v2
+
+ ✓ __tests__/participation-reminder.test.ts (16 tests) 6ms
+ ✓ __tests__/game-participation-client.test.ts (3 tests) 76ms
+ ✓ __tests__/api/participation-calendar.test.ts (13 tests) 77ms
+ ✓ __tests__/api/game-participation.test.ts (2 tests) 51ms
+ ✓ __tests__/database/game-participation-streaks.test.ts (3 tests) 9383ms
+   ✓ tracks one shared reward and ranks each game by active consecutive days 4274ms
+   ✓ preserves the shared count through three misses and resets on the fourth 2502ms
+   ✓ awards a previously recorded day on the next real play without duplicating points 2605ms
+ ✓ __tests__/database/participation-calendar.test.ts (4 tests) 11663ms
+   ✓ 612.4: Sunday-Saturday states settle three misses, then identify a reset and inactive dates 4084ms
+   ✓ 614: dismissal persists per account/day, is idempotent, and cannot dismiss a different day 2559ms
+   ✓ uses the saved zone, a DST-aware deadline, and never establishes a zone on a read 2504ms
+   ✓ suppresses reminders after qualification or allowance renewal and restricts execution 2514ms
+
+ Test Files  6 passed (6)
+      Tests  41 passed (41)
+   Start at  01:57:17
+   Duration  15.05s (transform 2.79s, setup 0ms, collect 5.01s, tests 21.26s, environment 2ms, prepare 1.94s)

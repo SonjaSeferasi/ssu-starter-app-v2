@@ -1,0 +1,13 @@
+.reminder { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin:16px clamp(12px,3vw,32px); padding:18px; border:1px solid #e9b565; border-radius:20px; background:linear-gradient(110deg,#fff4df,#ffe9db); color:#603b20; box-shadow:0 8px 22px #b7782512; }
+.flame { width:38px; height:38px; color:#cb580c; flex-shrink:0; }
+.reminder>div { flex:1 1 240px; }
+.reminder strong { font-size:17px; }
+.reminder p { margin:5px 0; font-size:14px; line-height:1.5; }
+.reminder small { font-size:11px; }
+.reminder a,.reminder button,.error button { min-height:44px; padding:10px 14px; border-radius:12px; border:1px solid #ba7a36; font-size:13px; font-weight:700; cursor:pointer; }
+.reminder a { color:white; background:#93440f; text-decoration:none; }
+.reminder button { color:#603b20; background:#fff9ed; }
+.reminder :is(a,button):focus-visible,.error button:focus-visible { outline:3px solid #8556b0; outline-offset:3px; }
+.error { margin:12px 24px; font-size:13px; }
+:global(html[data-appearance='dark']) .reminder { color:#ffe7c7; background:linear-gradient(110deg,#3d2c27,#35233f); border-color:#bc8756; }
+:global(html[data-appearance='dark']) .flame { color:#ffae58; }

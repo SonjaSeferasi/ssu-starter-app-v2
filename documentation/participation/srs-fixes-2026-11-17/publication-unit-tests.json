@@ -1,0 +1,429 @@
+{
+  "evidence": "Rerun in original working checkout before publication; isolated database fixtures, not hosted account writes.",
+  "passed": 41,
+  "tests": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "shows the server error without announcing a reward when recording fails",
+          "status": "passed",
+          "title": "shows the server error without announcing a reward when recording fails",
+          "duration": 264.00790000000006,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "reads confirmed daily points from the server after recording participation",
+          "status": "passed",
+          "title": "reads confirmed daily points from the server after recording participation",
+          "duration": 6.085800000000063,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "requires sign-in before sending a participation request",
+          "status": "passed",
+          "title": "requires sign-in before sending a participation request",
+          "duration": 1.4022999999999683,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1794925231185,
+      "endTime": 1794925231456.4023,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Csc 351/ssu-starter-app-v2/__tests__/game-participation-client.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "requires all four at-risk conditions",
+          "status": "passed",
+          "title": "requires all four at-risk conditions",
+          "duration": 2.1742000000001553,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "suppresses reminders in /game-1",
+          "status": "passed",
+          "title": "suppresses reminders in /game-1",
+          "duration": 0.42419999999992797,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "suppresses reminders in /game-room/game-1",
+          "status": "passed",
+          "title": "suppresses reminders in /game-room/game-1",
+          "duration": 0.15980000000013206,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "suppresses reminders in /wordle",
+          "status": "passed",
+          "title": "suppresses reminders in /wordle",
+          "duration": 0.2116000000000895,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "suppresses reminders in /game-room/wordle",
+          "status": "passed",
+          "title": "suppresses reminders in /game-room/wordle",
+          "duration": 0.12049999999999272,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "suppresses reminders in /world-explorer",
+          "status": "passed",
+          "title": "suppresses reminders in /world-explorer",
+          "duration": 0.11239999999997963,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "suppresses reminders in /world-explorer/JPN",
+          "status": "passed",
+          "title": "suppresses reminders in /world-explorer/JPN",
+          "duration": 0.09080000000017208,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "suppresses reminders in /game-room/dormspace",
+          "status": "passed",
+          "title": "suppresses reminders in /game-room/dormspace",
+          "duration": 0.08789999999999054,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "suppresses reminders in /game-room/dormspace/classic",
+          "status": "passed",
+          "title": "suppresses reminders in /game-room/dormspace/classic",
+          "duration": 0.21169999999983702,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "suppresses reminders in /dev/jumpyland",
+          "status": "passed",
+          "title": "suppresses reminders in /dev/jumpyland",
+          "duration": 0.1514999999999418,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "allows reminders outside games at /",
+          "status": "passed",
+          "title": "allows reminders outside games at /",
+          "duration": 0.3007000000000062,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "allows reminders outside games at /profile",
+          "status": "passed",
+          "title": "allows reminders outside games at /profile",
+          "duration": 0.14059999999994943,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "allows reminders outside games at /game-room",
+          "status": "passed",
+          "title": "allows reminders outside games at /game-room",
+          "duration": 0.24450000000001637,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "allows reminders outside games at /events",
+          "status": "passed",
+          "title": "allows reminders outside games at /events",
+          "duration": 0.12829999999985375,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "allows reminders outside games at /messages",
+          "status": "passed",
+          "title": "allows reminders outside games at /messages",
+          "duration": 0.12040000000001783,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "allows reminders outside games at /game-123",
+          "status": "passed",
+          "title": "allows reminders outside games at /game-123",
+          "duration": 0.08220000000005712,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1794925231144,
+      "endTime": 1794925231149.2444,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Csc 351/ssu-starter-app-v2/__tests__/participation-reminder.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "credits a successfully opened dorm, with the viewer as the participating student",
+          "status": "passed",
+          "title": "credits a successfully opened dorm, with the viewer as the participating student",
+          "duration": 81.98979999999938,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "reads the signed-in streak and qualifies only playable Explorer levels",
+          "status": "passed",
+          "title": "reads the signed-in streak and qualifies only playable Explorer levels",
+          "duration": 11.049999999999272,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1794925238293,
+      "endTime": 1794925238387.05,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Csc 351/ssu-starter-app-v2/__tests__/api/game-participation.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "derives read and dismissal ownership from the verified token",
+          "status": "passed",
+          "title": "derives read and dismissal ownership from the verified token",
+          "duration": 67.63599999999997,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "rejects invalid dismissal date \"bad\"",
+          "status": "passed",
+          "title": "rejects invalid dismissal date \"bad\"",
+          "duration": 2.5372999999999593,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "rejects invalid dismissal date \"2025-02-30\"",
+          "status": "passed",
+          "title": "rejects invalid dismissal date \"2025-02-30\"",
+          "duration": 27.486199999999826,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "rejects invalid dismissal date \"2025-13-01\"",
+          "status": "passed",
+          "title": "rejects invalid dismissal date \"2025-13-01\"",
+          "duration": 5.813799999999901,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "rejects invalid dismissal date null",
+          "status": "passed",
+          "title": "rejects invalid dismissal date null",
+          "duration": 1.6911999999999807,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "rejects invalid dismissal date 14",
+          "status": "passed",
+          "title": "rejects invalid dismissal date 14",
+          "duration": 1.2308000000000447,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "rejects invalid dismissal date {}",
+          "status": "passed",
+          "title": "rejects invalid dismissal date {}",
+          "duration": 1.9656999999999698,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "requires sign-in and rejects revoked sessions",
+          "status": "passed",
+          "title": "requires sign-in and rejects revoked sessions",
+          "duration": 2.27800000000002,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "reports 22008 as 409, never successful dismissal",
+          "status": "passed",
+          "title": "reports 22008 as 409, never successful dismissal",
+          "duration": 3.6371999999998934,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "reports 42501 as 403, never successful dismissal",
+          "status": "passed",
+          "title": "reports 42501 as 403, never successful dismissal",
+          "duration": 2.633100000000013,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "reports PGRST202 as 503, never successful dismissal",
+          "status": "passed",
+          "title": "reports PGRST202 as 503, never successful dismissal",
+          "duration": 1.1760999999999058,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "reports 42883 as 503, never successful dismissal",
+          "status": "passed",
+          "title": "reports 42883 as 503, never successful dismissal",
+          "duration": 1.7971000000000004,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "reports XX000 as 503, never successful dismissal",
+          "status": "passed",
+          "title": "reports XX000 as 503, never successful dismissal",
+          "duration": 1.5026000000000295,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1794925231338,
+      "endTime": 1794925231460.5027,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Csc 351/ssu-starter-app-v2/__tests__/api/participation-calendar.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "tracks one shared reward and ranks each game by active consecutive days",
+          "status": "passed",
+          "title": "tracks one shared reward and ranks each game by active consecutive days",
+          "duration": 6552.9115,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "preserves the shared count through three misses and resets on the fourth",
+          "status": "passed",
+          "title": "preserves the shared count through three misses and resets on the fourth",
+          "duration": 3578.761800000001,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "awards a previously recorded day on the next real play without duplicating points",
+          "status": "passed",
+          "title": "awards a previously recorded day on the next real play without duplicating points",
+          "duration": 3647.202000000001,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1794925231279,
+      "endTime": 1794925245059.202,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Csc 351/ssu-starter-app-v2/__tests__/database/game-participation-streaks.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "612.4: Sunday-Saturday states settle three misses, then identify a reset and inactive dates",
+          "status": "passed",
+          "title": "612.4: Sunday-Saturday states settle three misses, then identify a reset and inactive dates",
+          "duration": 6175.2080000000005,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "614: dismissal persists per account/day, is idempotent, and cannot dismiss a different day",
+          "status": "passed",
+          "title": "614: dismissal persists per account/day, is idempotent, and cannot dismiss a different day",
+          "duration": 3810.439700000001,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "uses the saved zone, a DST-aware deadline, and never establishes a zone on a read",
+          "status": "passed",
+          "title": "uses the saved zone, a DST-aware deadline, and never establishes a zone on a read",
+          "duration": 3550.4779,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "suppresses reminders after qualification or allowance renewal and restricts execution",
+          "status": "passed",
+          "title": "suppresses reminders after qualification or allowance renewal and restricts execution",
+          "duration": 3320.469799999999,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1794925231270,
+      "endTime": 1794925248127.4697,
+      "status": "passed",
+      "message": "",
+      "name": "C:/Csc 351/ssu-starter-app-v2/__tests__/database/participation-calendar.test.ts"
+    }
+  ]
+}

@@ -6,6 +6,9 @@ export async function gameParticipation(accountId: string, activity?: 'dormspace
     ...(activity ? { p_activity: activity, p_zone: zone } : {}),
   });
   if (error?.code === '22023') throw new AccountError('Choose a valid participation time zone.', 400);
+  if (error?.code === 'PGRST202' || error?.code === '42883') {
+    throw new AccountError('Daily rewards are not set up yet. Please ask the team to finish the participation database update.', 503);
+  }
   if (error || !data) throw new AccountError('Participation streaks are temporarily unavailable.', 503);
   return data;
 }

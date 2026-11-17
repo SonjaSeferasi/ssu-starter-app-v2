@@ -1,0 +1,22 @@
+.card { position: relative; isolation: isolate; overflow: hidden; width: 100%; box-sizing: border-box; padding: 22px 20px 0; border: 1px solid #f2cf9b; border-radius: 24px; background: radial-gradient(ellipse at 50% 25%, #fff0c6 0, transparent 56%), linear-gradient(155deg, #fffdf6, #fff5e8); color: #63351f; text-align: center; box-shadow: 0 8px 28px #9e54220c, inset 0 1px 0 #fff; font-family: inherit; animation: arrive .45s ease-out both; }
+.eyebrow { display: flex; align-items: center; justify-content: center; gap: 6px; color: #98623d; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; line-height: 1.5; }
+.flameScene { position: relative; display: grid; place-items: center; width: 152px; height: 135px; margin: 8px auto 0; }
+.halo { position: absolute; width: 116px; height: 116px; border-radius: 50%; background: #ffdf8c66; box-shadow: 0 0 0 13px #ffdf8c22, 0 0 38px #ffc65c55; }
+.flame { position: relative; width: 103px; height: 125px; filter: drop-shadow(0 7px 5px #db762526); transform-origin: 50% 90%; animation: kindle 1s ease-in-out 2; }
+.sparkLeft, .sparkRight { position: absolute; color: #da8a20; }
+.sparkLeft { left: 0; top: 31px; transform: rotate(-12deg); }
+.sparkRight { right: 0; top: 73px; transform: rotate(13deg); }
+.streak { display: flex; align-items: baseline; justify-content: center; gap: 8px; margin-top: 2px; }
+.streak strong { font-size: 42px; font-weight: 850; line-height: 1.1; letter-spacing: -2px; color: #c95520; }
+.streak span { font-size: 13px; font-weight: 700; color: #9e512e; }
+.card .title { margin: 8px 0 14px; font-size: 24px; line-height: 1.2; letter-spacing: -.7px; font-weight: 800; color: #63351f; }
+.reward { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; padding: 9px 14px; border: 1px solid #f0cc78; border-radius: 50px; background: #fff0bd; color: #895019; font-size: 13px; line-height: 1.4; }
+.reward strong { font-weight: 800; }
+.reward span { color: #815a2e; font-size: 11px; }
+.card .message { margin: 15px 0 19px; color: #805b43; font-size: 13px; line-height: 1.65; font-weight: 500; }
+.tomorrow { display: flex; align-items: center; justify-content: center; gap: 7px; margin: 0 -20px; padding: 13px 14px; background: #f8e8d566; border-top: 1px solid #eed4b4; color: #976444; font-size: 11px; line-height: 1.5; }
+.tomorrow svg { flex-shrink: 0; }
+@keyframes arrive { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes kindle { 0%, 100% { transform: rotate(-2deg) scale(1); } 50% { transform: rotate(2deg) scale(1.04); } }
+@media (max-width: 420px) { .card { padding-top: 18px; } .flameScene { height: 115px; } .flame { width: 87px; height: 106px; } .halo { width: 96px; height: 96px; } .lineBreak { display: none; } }
+@media (prefers-reduced-motion: reduce) { .card, .flame { animation: none; } }

@@ -1,0 +1,36 @@
+{
+  "evidence": "Real local Next application in headless Edge, intercepted API fixtures with synthetic dates/accounts. Not hosted persistence, reward issuance or physical-device acceptance.",
+  "checks": [
+    "614.1: at-risk reminder states the saved-zone midnight deadline outside games",
+    "614.3: dismissal closes the reminder without participating or losing the draft",
+    "612.4: Sunday-Saturday row, date markers, current date, state symbols and text legend",
+    "614.5: account dismissal survives navigation, reload and simulated sign-in event",
+    "614.5: another account does not inherit the first account dismissal",
+    "614.3/614.5: failed dismissal remains closed, explains persistence failure and retries the same day",
+    "614.4: participation notification refresh suppresses reminder after qualification",
+    "614.1: no reminder with remaining allowance or zero streak",
+    "614.2: no reminder on Jumpyland or DormSpace routes (DormSpace fixture stops before play)",
+    "614.5: a new server-reported participation day can show its own reminder",
+    "612.4: failed calendar fetch offers Retry and does not show invented day states",
+    "612.4: weekly row fits 390px without horizontal overflow"
+  ],
+  "errors": [],
+  "writes": [
+    {
+      "owner": "alice",
+      "date": "2025-01-09"
+    },
+    {
+      "owner": "bob",
+      "date": "2025-01-09"
+    },
+    {
+      "owner": "bob",
+      "date": "2025-01-09"
+    },
+    {
+      "owner": "bob",
+      "date": "2025-01-09"
+    }
+  ]
+}

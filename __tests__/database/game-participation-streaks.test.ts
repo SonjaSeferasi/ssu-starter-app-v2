@@ -21,13 +21,13 @@ it('tracks one shared reward and ranks each game by active consecutive days', as
       'SELECT public.socialu_game_participation($1, $2, $3)', [testUid(1), activity, zone],
     );
 
-    expect(await status()).toMatchObject({ count: 0, qualifiedToday: false, forgivenRemaining: 3, rewardPoints: 5 });
+    expect(await status()).toMatchObject({ count: 0, qualifiedToday: false, forgivenRemaining: 3, rewardPoints: 10, earnedPointsToday: 0 });
     await record('dormspace');
     await record('explorer', 'America/New_York');
     await record('explorer');
     await record('dormspace');
     expect(await status()).toEqual({
-      count: 1, qualifiedToday: true, forgivenRemaining: 3, rewardPoints: 5,
+      count: 1, qualifiedToday: true, forgivenRemaining: 3, rewardPoints: 10, earnedPointsToday: 10,
       leaderboards: {
         dormspace: [{ username: 'dorm1', days: 1 }],
         explorer: [{ username: 'dorm2', days: 2 }, { username: 'dorm1', days: 1 }],
@@ -36,7 +36,9 @@ it('tracks one shared reward and ranks each game by active consecutive days', as
     expect((await db.query('SELECT time_zone FROM socialu.participation_settings WHERE student_id=1')).rows)
       .toEqual([{ time_zone: 'UTC' }]);
     expect((await db.query('SELECT points_change FROM socialu.point_transactions WHERE student_id=1')).rows)
-      .toEqual([{ points_change: 5 }]);
+      .toEqual([{ points_change: 10 }]);
+    expect((await db.query('SELECT balance FROM socialu.points_balances WHERE student_id=1')).rows)
+      .toEqual([{ balance: '10' }]);
     await expect(record('explorer', 'invalid/time-zone')).rejects.toThrow(/Invalid participation/);
     await db.exec('SET ROLE authenticated');
     await expect(status()).rejects.toThrow(/permission denied/);
@@ -64,5 +66,29 @@ it('preserves the shared count through three misses and resets on the fourth', a
     await db.exec("SELECT socialu.settle_participation_days(1, DATE '2025-01-10')");
     expect((await db.query('SELECT state FROM socialu.participation_days ORDER BY participation_date')).rows)
       .toEqual(['played', 'forgiven', 'forgiven', 'forgiven', 'reset'].map(state => ({ state })));
+  } finally { await db.close(); }
+}, 30000);
+
+it('awards a previously recorded day on the next real play without duplicating points', async () => {
+  const db = await createDormDatabase(1);
+  try {
+    await db.exec(`
+      SET TIME ZONE 'UTC';
+      INSERT INTO socialu.participation_settings(student_id,time_zone) VALUES(1,'UTC');
+      INSERT INTO socialu.streak_instances(student_id,started_on) VALUES(1,CURRENT_DATE);
+      WITH event AS (
+        INSERT INTO socialu.participation_events(event_id,student_id,activity_code,occurred_at)
+        VALUES(gen_random_uuid(),1,'dormspace',CURRENT_TIMESTAMP) RETURNING event_id
+      )
+      INSERT INTO socialu.participation_days(student_id,participation_date,state,streak_id,first_event_id)
+      SELECT 1,CURRENT_DATE,'played',streak_id,event_id FROM socialu.streak_instances CROSS JOIN event WHERE student_id=1;
+    `);
+    await db.exec(readFileSync('supabase/migrations/20261117030000_game_participation_streaks.sql', 'utf8'));
+    expect((await db.query('SELECT * FROM socialu.point_transactions WHERE student_id=1')).rows).toHaveLength(0);
+    for (const game of ['dormspace', 'explorer', 'explorer']) {
+      await db.query('SELECT public.socialu_game_participation($1,$2,$3)', [testUid(1),game,'UTC']);
+    }
+    expect((await db.query('SELECT points_change FROM socialu.point_transactions WHERE student_id=1')).rows)
+      .toEqual([{ points_change: 10 }]);
   } finally { await db.close(); }
 }, 30000);

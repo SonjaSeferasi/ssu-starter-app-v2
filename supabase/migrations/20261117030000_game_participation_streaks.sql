@@ -15,8 +15,12 @@ ALTER TABLE socialu.participation_events ADD CONSTRAINT participation_events_act
 CREATE INDEX game_participation_history ON socialu.participation_events (student_id, activity_code, occurred_at)
   WHERE activity_code IN ('dormspace', 'explorer');
 
+-- Preserve original ledger entries when activating the new daily rate.
+UPDATE socialu.reward_rules SET is_current = false
+WHERE category = 'daily_participation' AND is_current AND points_per_unit <> 10;
+
 INSERT INTO socialu.reward_rules (category, points_per_unit, eligibility_text)
-SELECT 'daily_participation', 5, 'Points for the first qualifying activity of an account participation day.'
+SELECT 'daily_participation', 10, 'Points for the first qualifying activity of an account participation day.'
 WHERE NOT EXISTS (SELECT 1 FROM socialu.reward_rules WHERE category = 'daily_participation' AND is_current);
 
 CREATE FUNCTION socialu.credit_daily_game_participation() RETURNS trigger
@@ -117,6 +121,15 @@ BEGIN
       INSERT INTO socialu.participation_days (student_id, participation_date, state, streak_id, first_event_id)
       VALUES (student, today, 'played', active_streak, new_event) ON CONFLICT DO NOTHING;
     END IF;
+    -- A played day may predate the reward trigger (or come from another game).
+    -- Credit it on this real play request; the unique ledger key prevents repeats.
+    INSERT INTO socialu.point_transactions
+      (student_id, category, points_change, action_key, reward_rule_id, reward_units, participation_date)
+    SELECT student, rule.category, rule.points_per_unit, gen_random_uuid(), rule.rule_id, 1, today
+    FROM socialu.reward_rules rule
+    WHERE rule.category = 'daily_participation' AND rule.is_current
+      AND EXISTS (SELECT 1 FROM socialu.participation_days WHERE student_id = student AND participation_date = today AND state = 'played')
+    ON CONFLICT (student_id, participation_date) WHERE category = 'daily_participation' DO NOTHING;
     RETURN jsonb_build_object('recorded', true);
   END IF;
 
@@ -156,6 +169,10 @@ BEGIN
     'qualifiedToday', EXISTS (SELECT 1 FROM socialu.participation_days WHERE student_id = student AND participation_date = today AND state = 'played'),
     'forgivenRemaining', 3 - (SELECT count(*) FROM socialu.participation_days WHERE student_id = student AND state = 'forgiven' AND participation_date BETWEEN week_start AND today),
     'rewardPoints', coalesce(reward_points, 0),
+    'earnedPointsToday', coalesce((
+      SELECT points_change FROM socialu.point_transactions
+      WHERE student_id = student AND category = 'daily_participation' AND participation_date = today
+    ), 0),
     'leaderboards', boards
   );
 END;

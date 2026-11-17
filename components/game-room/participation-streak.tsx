@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { Flame } from 'lucide-react';
 import { readParticipation, type ParticipationStatus } from '../../lib/game-participation-client';
 import styles from './game-room.module.css';
+import { StreakCelebration } from './streak-celebration';
+import { ParticipationWeek } from './participation-week';
 
 const games = [
   { key: 'dormspace', label: 'DormSpace' },
@@ -52,7 +54,7 @@ export function ParticipationStreak({ preview }: { preview: boolean }) {
 
   return <section className={styles.participation} aria-labelledby="participation-title">
     <div className={styles.streakHeading}>
-      <Flame className={styles.streakIcon} aria-hidden="true" />
+      {!preview && !failed && status?.qualifiedToday && <Flame className={styles.streakIcon} aria-hidden="true" />}
       <div>
         <h2 id="participation-title">Shared participation streak</h2>
         <div aria-live="polite">
@@ -60,11 +62,14 @@ export function ParticipationStreak({ preview }: { preview: boolean }) {
             : failed ? <p>Couldn’t refresh streaks. <button type="button" onClick={() => setAttempt(value => value + 1)}>Retry</button></p>
             : status ? <>
               <p><strong>{status.count} {status.count === 1 ? 'day' : 'days'}</strong> · {status.qualifiedToday ? 'Qualified today' : 'Not yet qualified today'}</p>
-              <p>{status.forgivenRemaining} of 3 forgiven misses left this week{status.rewardPoints > 0 && ` · ${status.rewardPoints} points for your first qualifying activity each day`}</p>
+              {!status.qualifiedToday && status.rewardPoints > 0 && <p>Earn {status.rewardPoints} points with your first qualifying activity today.</p>}
+              <p>{status.forgivenRemaining} of 3 forgiven misses left this week</p>
             </> : <p>Loading your streak…</p>}
         </div>
       </div>
     </div>
+    {!preview && <ParticipationWeek />}
+    {!preview && status && !failed && <StreakCelebration status={status} />}
     {!preview && status && !failed && <div className={styles.streakBoards}>
       {games.map(game => {
         const entries = status.leaderboards[game.key] ?? [];

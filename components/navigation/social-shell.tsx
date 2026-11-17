@@ -10,6 +10,7 @@ import type { NavigationPosition } from '../../lib/game-room';
 import { useScreenTheme, ScreenThemeContext } from '../profile/use-screen-theme';
 import { getScreenTheme } from '../../lib/screen-themes';
 import { AppearanceProvider } from './appearance-preferences';
+import { ParticipationReminder } from './participation-reminder';
 import { GamePresencePublisher } from '../game-room/friend-presence';
 
 type SessionState = 'loading' | 'signed-in' | 'signed-out' | 'unavailable';
@@ -128,6 +129,7 @@ function ThemedNavigationFrame({ pathname, children, ...frameProps }: { pathname
   return (
     <ScreenThemeContext.Provider value={themeState}>
       <NavigationFrame pathname={pathname} backgroundTheme={backgroundTheme} {...frameProps}>
+        <ParticipationReminder pathname={pathname} />
         {children}
       </NavigationFrame>
     </ScreenThemeContext.Provider>
