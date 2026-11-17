@@ -7798,6 +7798,14 @@ Acceptance criterion: Given the student plays the Sweden level, when the explore
 
 Traces to: UR-632.
 
+##### SRS-632.15, SS — Present Angra do Heroísmo in the Portugal level.
+
+When the student plays the Portugal level, the system shall show the harbour quay of dark basalt and white paving; three terraces of white houses with coloured frames and red roofs, with hydrangea hedges at their feet; the blue-and-white Misericórdia church with its twin towers; the cathedral with its basalt trim and tiled spires on the upper terrace; a painted chapel of the Holy Spirit with its crown; basalt bastions with three round sentry boxes and the Portuguese flag; green pasture hills; Monte Brasil with its two green summits and fortress walls beyond the finish; a three-masted ship at anchor and painted fishing boats; and, on the route, bollards with ropes, lanterns, fish crates, benches, hydrangeas, mooring posts, balustrades and cannon, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Portugal level, when the explorer starts the route, then the basalt bastions, a sentry box and the Portuguese flag are visible; when the explorer is in the middle of the route, then the twin towers of the Misericórdia church and the masts of the ship are visible; when the explorer reaches the finish, then the cathedral spires are visible above the roofs and Monte Brasil is visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
