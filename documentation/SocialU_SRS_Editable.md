@@ -7666,6 +7666,14 @@ Acceptance criterion: Given the student completes Japan on 17 November 2026, whe
 
 Traces to: UR-631.
 
+##### SRS-631.7, SS — Follow the explorer closely in every country.
+
+When the student plays the level of any country, the system shall follow the explorer with the close side camera, in which the explorer fills 14% to 19% of the height of a landscape screen with at least one and a half full jumps of the route visible ahead, and shall open the level with the sweep from a high, distant view, which is skipped when reduced motion is on.
+
+Acceptance criterion: Given the student starts the level of any of the 193 countries on a 16:9 screen with reduced motion off, when the level opens, then the view glides down to the close framing within three seconds and the explorer then fills between 14% and 19% of the screen height.
+
+Traces to: UR-631.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
