@@ -8,6 +8,20 @@ import styles from '../../app/events/events.module.css';
 
 type Cancellation = Pick<CampusEvent, 'status' | 'cancelled_at' | 'cancellation_note'>;
 
+// Cancels the event as its signed-in creator; returns the saved cancellation or throws with the server's message.
+export async function requestCancel(eventId: string, note = ''): Promise<Cancellation> {
+  const token = storedAccessToken();
+  if (!token) throw new Error('Please sign in again.');
+  const response = await fetch(`/api/events/${eventId}/cancel`, {
+    method: 'POST', cache: 'no-store',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ note }),
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || 'The event could not be cancelled. Please try again.');
+  return data.event;
+}
+
 // UR-404: what invited students (and everyone else who can open the event) read once it is cancelled.
 export function cancellationNotice(event: Cancellation) {
   if (event.status !== 'cancelled') return null;
@@ -35,21 +49,12 @@ export function CancelEvent({ eventId, onCancelled }: { eventId: string; onCance
   const [error, setError] = useState('');
 
   async function cancel() {
-    const token = storedAccessToken();
-    if (!token) { setError('Please sign in again.'); return; }
     setSaving(true);
     setError('');
     try {
-      const response = await fetch(`/api/events/${eventId}/cancel`, {
-        method: 'POST', cache: 'no-store',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ note }),
-      });
-      const data = await response.json();
-      if (!response.ok) { setError(data.error || 'The event could not be cancelled. Please try again.'); return; }
-      onCancelled(data.event);
-    } catch {
-      setError('The event could not be cancelled. Please try again.');
+      onCancelled(await requestCancel(eventId, note));
+    } catch (err) {
+      setError((err as Error).message || 'The event could not be cancelled. Please try again.');
     } finally {
       setSaving(false);
     }
@@ -81,5 +86,42 @@ export function CancelEvent({ eventId, onCancelled }: { eventId: string; onCance
       )}
       {error ? <p role="alert" className={styles.actionError}>{error}</p> : null}
     </section>
+  );
+}
+
+// UR-404, on the host's event cards: Cancel event, then confirm. The event then leaves the active lists and
+// moves to Cancelled and History.
+export function CancelEventButton({ eventId, title, onCancelled }: { eventId: string; title: string; onCancelled: (cancellation: Cancellation) => void }) {
+  const [confirming, setConfirming] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+
+  async function cancel() {
+    setSaving(true);
+    setError('');
+    try {
+      onCancelled(await requestCancel(eventId));
+    } catch (err) {
+      setError((err as Error).message || 'The event could not be cancelled. Please try again.');
+      setSaving(false);
+    }
+  }
+
+  if (!confirming) {
+    return (
+      <button type="button" className={styles.cardCancel} onClick={() => setConfirming(true)} aria-label={`Cancel ${title}`}>
+        <Ban aria-hidden="true" /> Cancel event
+      </button>
+    );
+  }
+  return (
+    <div className={styles.cardCancelConfirm} role="group" aria-label={`Cancel ${title}?`}>
+      <p>Cancel this event? Invited students will see that it is cancelled. This cannot be undone.</p>
+      <div>
+        <button type="button" className={styles.keepButton} disabled={saving} onClick={() => { setConfirming(false); setError(''); }}>Keep event</button>
+        <button type="button" className={styles.dangerButton} disabled={saving} onClick={cancel}>{saving ? 'Cancelling…' : 'Yes, cancel'}</button>
+      </div>
+      {error ? <p role="alert" className={styles.actionError}>{error}</p> : null}
+    </div>
   );
 }

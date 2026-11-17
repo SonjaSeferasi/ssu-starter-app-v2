@@ -5,16 +5,23 @@ import styles from '../../app/events/events.module.css';
 import { EventArt } from './EventArt';
 import { EventActions, GoingSummary } from './EventActions';
 import { CoverPhotoButton } from './CoverPhotoButton';
+import { CancelEventButton } from './CancelEvent';
 import { formatWhen, monthFormat, weekDays, weekdayFormat, type CampusEvent, type EventEngagement } from '../../lib/events';
 
 type OnEngagement = (eventId: string, engagement: EventEngagement) => void;
 const ignore: OnEngagement = () => {};
 // Hosts can add or change a cover photo on their own events.
-type CoverProps = { hostId?: string | null; onCover?: (eventId: string, url: string | null) => void };
+type CoverProps = { hostId?: string | null; onCover?: (eventId: string, url: string | null) => void; onCancel?: (event: CampusEvent) => void };
 
 function HostCover({ event, hostId, onCover }: { event: CampusEvent } & CoverProps) {
   if (!hostId || hostId !== event.creator_id || !onCover) return null;
   return <CoverPhotoButton eventId={event.event_id} hasCover={Boolean(event.cover_url)} onChange={(url) => onCover(event.event_id, url)} />;
+}
+
+// UR-404: hosts can cancel their own upcoming events from the card; the page moves it to Cancelled and History.
+function HostCancel({ event, hostId, onCancel }: { event: CampusEvent } & CoverProps) {
+  if (!hostId || hostId !== event.creator_id || !onCancel || Date.parse(event.starts_at) <= Date.now()) return null;
+  return <CancelEventButton eventId={event.event_id} title={event.title} onCancelled={(cancellation) => onCancel({ ...event, ...cancellation })} />;
 }
 
 export type { CampusEvent } from '../../lib/events';
@@ -47,7 +54,7 @@ function EventDetails({ event }: { event: CampusEvent }) {
 }
 
 // The soonest event, shown large at the top of Discover.
-export function FeaturedEvent({ event, onEngagement = ignore, hostId, onCover }: { event: CampusEvent; onEngagement?: OnEngagement } & CoverProps) {
+export function FeaturedEvent({ event, onEngagement = ignore, hostId, onCover, onCancel }: { event: CampusEvent; onEngagement?: OnEngagement } & CoverProps) {
   return (
     <article className={styles.featured} aria-labelledby={`featured-${event.event_id}`}>
       <EventArt id={event.event_id} title={event.title} className={styles.featuredArt} coverUrl={event.cover_url}>
@@ -63,6 +70,7 @@ export function FeaturedEvent({ event, onEngagement = ignore, hostId, onCover }:
         <GoingSummary event={event} />
         <EventActions event={event} onChange={(engagement) => onEngagement(event.event_id, engagement)} />
         <Link href={`/events/${event.event_id}`} className={styles.secondaryButton}>View details</Link>
+        <HostCancel event={event} hostId={hostId} onCancel={onCancel} />
       </div>
     </article>
   );
@@ -70,7 +78,7 @@ export function FeaturedEvent({ event, onEngagement = ignore, hostId, onCover }:
 
 // SRS-401.1-.6: each active event with its current title, description, location, date, and time,
 // or a message when no active events are available.
-export function EventList({ events, emptyMessage = NO_ACTIVE_EVENTS, emptyHint = 'Check back later, or create an event for your campus.', onEngagement = ignore, hostId, onCover }:
+export function EventList({ events, emptyMessage = NO_ACTIVE_EVENTS, emptyHint = 'Check back later, or create an event for your campus.', onEngagement = ignore, hostId, onCover, onCancel }:
   { events: CampusEvent[]; emptyMessage?: string; emptyHint?: string; onEngagement?: OnEngagement } & CoverProps) {
   if (events.length === 0) {
     return (
@@ -103,6 +111,7 @@ export function EventList({ events, emptyMessage = NO_ACTIVE_EVENTS, emptyHint =
               <p className={`${styles.description} ${styles.clamp}`}>{event.description}</p>
               <GoingSummary event={event} />
               <EventActions event={event} onChange={(engagement) => onEngagement(event.event_id, engagement)} />
+              <HostCancel event={event} hostId={hostId} onCancel={onCancel} />
             </div>
           </li>
         );

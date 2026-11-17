@@ -10,14 +10,16 @@ import { useNavigationSession } from '../../components/navigation/social-shell';
 import { SessionNotice } from '../../components/navigation/section-page';
 import { EventList, FeaturedEvent, WeekStrip, type CampusEvent } from '../../components/events/EventList';
 import { TrendingPosts } from '../../components/events/TrendingPosts';
+import { CancelledEventList, EventHistory, useCancelledEvents } from '../../components/events/CancelledEvents';
 import { InvitationList, useMyInvitations } from '../../components/events/MyInvitations';
 import { goingTo, hostedBy, splitByTime, type EventEngagement } from '../../lib/events';
 
-type Tab = 'discover' | 'rsvps' | 'hosting';
+type Tab = 'discover' | 'rsvps' | 'hosting' | 'cancelled';
 const TABS: { id: Tab; label: string }[] = [
   { id: 'discover', label: 'Discover' },
   { id: 'rsvps', label: 'My RSVPs' },
   { id: 'hosting', label: 'Hosting' },
+  { id: 'cancelled', label: 'Cancelled' },
 ];
 
 // SRS-401.1-.6: students view active campus events with their current title, description, location, date, and time.
@@ -31,6 +33,7 @@ export default function EventsPage() {
   const [created, setCreated] = useState(false);
   const [coverFailed, setCoverFailed] = useState(false);
   const invitations = useMyInvitations();
+  const cancelled = useCancelledEvents();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -79,7 +82,12 @@ export default function EventsPage() {
   function updateCover(eventId: string, coverUrl: string | null) {
     setEvents((current) => current.map((event) => event.event_id === eventId ? { ...event, cover_url: coverUrl } : event));
   }
-  const cover = { hostId: studentId, onCover: updateCover };
+  // UR-404: a cancelled event leaves the active lists at once and moves to Cancelled and History.
+  function cancelEvent(event: CampusEvent) {
+    setEvents((current) => current.filter((item) => item.event_id !== event.event_id));
+    cancelled.add({ ...event, hosted_by_me: true });
+  }
+  const cover = { hostId: studentId, onCover: updateCover, onCancel: cancelEvent };
 
   if (session !== 'signed-in') return <SessionNotice state={session} />;
 
@@ -144,6 +152,8 @@ export default function EventsPage() {
                   ) : null}
                 </>
               )
+            ) : tab === 'cancelled' ? (
+              <CancelledEventList events={cancelled.events} />
             ) : tab === 'hosting' ? (
               <EventList events={hosting} onEngagement={updateEngagement} {...cover} emptyMessage="You aren’t hosting any active events."
                 emptyHint="Events you create will appear here." />
@@ -164,6 +174,7 @@ export default function EventsPage() {
             }} />
           </section>
           <TrendingPosts />
+          <EventHistory events={cancelled.events} onShowAll={() => setTab('cancelled')} />
         </aside>
       </div>
     </main>
