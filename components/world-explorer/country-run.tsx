@@ -2,6 +2,7 @@
 import {remainingNorthAmericaPlaces,type RemainingNorthAmericaCode} from '../../lib/world-explorer/north-america-remaining';
 import {useEffect,useMemo,useRef,useState} from 'react';
 import {useRouter} from 'next/navigation';
+import {leaveConfirmation,needsLeaveConfirmation,statusWhileConfirming,type ExitTarget,type RunStatus} from '../../lib/world-explorer/run-exit';
 import {ArrowLeft,ArrowRight,ArrowUp,BookOpen,Check,Compass,Flag,Heart,Pause,Play,RotateCcw,Settings,Star,Trophy,Volume2} from 'lucide-react';
 import type {Country} from '../../lib/world-explorer/catalog';
 import {discoveryFor} from '../../lib/world-explorer-discoveries';
@@ -17,7 +18,6 @@ import {LandmarkPhoto} from './landmark-photo';
 import {PreferencesControls} from './preferences-panel';
 import styles from './world-explorer.module.css';
 
-type RunStatus='starting'|'running'|'paused'|'discovery'|'complete'|'failed';
 type Controller={pause:()=>void;resume:()=>void;destroy:()=>void;setPreferences?:(preferences:ExplorerRunPreferences)=>void;setReviewView?:(view:'gameplay'|'overview'|'scan',x?:number,y?:number)=>void;setReviewCamera?:(view:{position:[number,number,number];target:[number,number,number];fov?:number})=>void;reviewStats?:()=>{frameTimes:number[];calls:number;triangles:number;geometries:number;textures:number}};
 export type RunOutcome=CountryRunResult;
 const initialStats:CountryStats={hearts:3,coins:0,totalCoins:0,stars:0,totalStars:3,checkpointActive:false,timeSeconds:0,discoveryFound:false};
@@ -28,7 +28,7 @@ function runId(){return globalThis.crypto?.randomUUID?.()||'xxxxxxxx-xxxx-4xxx-y
 export function CountryRun({country,difficulty,preferences,saveStatus,onPreferences,onExit,onResult,onRetry,onNext}:{country:Country;difficulty:Difficulty;preferences:ExplorerPreferences;saveStatus:string;onPreferences:(value:ExplorerPreferences)=>void;onExit:()=>void;onResult:(completed:boolean,coins:number,result:RunOutcome,runId:string)=>void;onRetry:()=>void;onNext:()=>void}){
  const router=useRouter(),toGameRoom=()=>router.push('/game-room');
  const stage=useRef<HTMLDivElement>(null),controller=useRef<Controller|null>(null),finished=useRef(false),statsRef=useRef(initialStats),dialog=useRef<HTMLDivElement>(null),attempt=useRef('');
- const [status,setStatus]=useState<RunStatus>('starting'),[error,setError]=useState(''),[distance,setDistance]=useState(0),[stats,setStats]=useState(initialStats),[showSettings,setShowSettings]=useState(false);
+ const [status,setStatus]=useState<RunStatus>('starting'),[error,setError]=useState(''),[distance,setDistance]=useState(0),[stats,setStats]=useState(initialStats),[showSettings,setShowSettings]=useState(false),[leaving,setLeaving]=useState<ExitTarget|null>(null);
  const [review,setReview]=useState(false),[overview,setOverview]=useState(false),[performance,setPerformance]=useState<{fps:number;drawCalls:number;triangles:number}|null>(null);
  const availability=levelAvailability(country.code),profile=countryProfile(country.code),level=useMemo(()=>levelDefinitionFor(country.code,difficulty),[country.code,difficulty]),authored=isAuthoredLevel(country.code);
  const finalPlatform=level.platforms.find(platform=>platform.id===level.finish.platformId)!,finishX=finalPlatform.x+level.finish.offset;
@@ -60,13 +60,21 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
  },[]);
  useEffect(()=>{controller.current?.setPreferences?.(preferences);},[preferences]);
  function resume(){controller.current?.resume();setShowSettings(false);setStatus('running');}
- function pause(){if(status==='running'){controller.current?.pause();setStatus('paused');}else if(status==='paused'||status==='discovery')resume();}
+ // Escape or P on the leave confirmation means Stay; it never resumes the run behind the dialog.
+ function pause(){if(leaving){setLeaving(null);return;}if(status==='running'){controller.current?.pause();setStatus('paused');}else if(status==='paused'||status==='discovery')resume();}
+ function leave(target:ExitTarget){setLeaving(null);if(target==='game-room')toGameRoom();else onExit();}
+ /** An attempt still in progress pauses and asks before it is discarded. */
+ function requestExit(target:ExitTarget){
+  if(!needsLeaveConfirmation(status,finished.current)){leave(target);return;}
+  if(status==='running')controller.current?.pause();
+  setShowSettings(false);setStatus(statusWhileConfirming(status));setLeaving(target);
+ }
  useEffect(()=>{
   const keyboard=(event:KeyboardEvent)=>{if(event.repeat||event.altKey||event.ctrlKey||event.metaKey)return;if(['Escape','KeyP'].includes(event.code)){event.preventDefault();pause();}};
   const visibility=()=>{if(document.hidden&&status==='running'){controller.current?.pause();setStatus('paused');}};
   window.addEventListener('keydown',keyboard);document.addEventListener('visibilitychange',visibility);return()=>{window.removeEventListener('keydown',keyboard);document.removeEventListener('visibilitychange',visibility);};
  // eslint-disable-next-line react-hooks/exhaustive-deps
- },[status]);
+ },[status,leaving]);
  useEffect(()=>{
   if(status==='running'||status==='starting')return;
   const first=dialog.current?.querySelector<HTMLElement>('button,a,input,select');first?.focus({preventScroll:true});
@@ -75,7 +83,7 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
    const first=controls[0],last=controls.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}
   };
   window.addEventListener('keydown',trap);return()=>window.removeEventListener('keydown',trap);
- },[status,showSettings]);
+ },[status,showSettings,leaving]);
  useEffect(()=>{
   if(!preferences.debugMode&&!review&&overview){controller.current?.setReviewView?.('gameplay');setOverview(false);}
  },[preferences.debugMode,review,overview]);
@@ -84,7 +92,7 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
  return <section className={`${styles.run} ${authored?styles.referenceRun:''}`} aria-label={country.name+' country level'} data-environment={level.environmentId} data-touch-controls={preferences.touchControls?'on':'auto'} data-debug={preferences.debugMode||review?'on':'off'}>
   <div ref={stage} className={styles.runStage}/>
   <header className={styles.playHeader}>
-   <div className={styles.playIdentity}><button onClick={onExit} aria-label="Return to the world map"><ArrowLeft size={19}/></button><CountryFlag iso2={country.iso2} name={country.name} size={42}/><div><h1>{country.name}</h1><p>Level 1: {availability?.title}</p>{!authored&&<small>Environment preview · {labels[difficulty-1]}</small>}</div></div>
+   <div className={styles.playIdentity}><button onClick={()=>requestExit('world-map')} aria-label="Return to the world map"><ArrowLeft size={19}/></button><CountryFlag iso2={country.iso2} name={country.name} size={42}/><div><h1>{country.name}</h1><p>Level 1: {availability?.title}</p>{!authored&&<small>Environment preview · {labels[difficulty-1]}</small>}</div></div>
    {authored?<div className={styles.referenceProgress} aria-label="Level route">
     <progress aria-label="Level progress" value={distance} max={100}/>
     {checkpointMarks.map((mark,index)=><i key={index} className={index<=activeCheckpoint?styles.checkpointEarned:undefined} style={{left:mark+'%'}} aria-label={index<=activeCheckpoint?'Checkpoint activated':'Checkpoint ahead'}/>)}
@@ -98,10 +106,13 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
   {(review||preferences.debugMode)&&status==='running'&&<div className={styles.reviewTools}><button onClick={()=>{controller.current?.setReviewView?.(overview?'gameplay':'overview');setOverview(value=>!value);}}>{overview?'Player camera':'Full-level overview'}</button><span>{overview?'Scenery review · gameplay paused':'Gameplay review'}{performance?` · ${performance.fps} FPS · ${performance.drawCalls} draws · ${performance.triangles.toLocaleString()} triangles`:''}</span></div>}
   <div className={styles.touchControls} aria-label="Touch game controls">{(level.lightPuzzles?.length?['left','right','interact','jump'] as const:['left','right','jump'] as const).map(action=><button key={action} aria-label={action==='jump'?'Jump':action==='interact'?'Turn mirror':'Move '+action} onPointerDown={event=>{event.preventDefault();event.currentTarget.setPointerCapture(event.pointerId);signal(action,true);}} onPointerUp={()=>signal(action,false)} onPointerCancel={()=>signal(action,false)} onLostPointerCapture={()=>signal(action,false)}>{action==='left'?<ArrowLeft/>:action==='right'?<ArrowRight/>:action==='interact'?<span aria-hidden="true">&#x21bb;</span>:<ArrowUp/>}</button>)}</div>
   {status!=='running'&&<div className={styles.runOverlay}><div ref={dialog} role="dialog" aria-modal="true" aria-labelledby="run-dialog-title" className={styles.gameDialog}>
-   {status==='starting'?<><Compass className={styles.loadingCompass}/><h2 id="run-dialog-title">Preparing {country.name}</h2><p>Loading the landscape and checking your route.</p></>:status==='paused'?<>
+   {leaving?<>
+    <h2 id="run-dialog-title">{leaveConfirmation.title}</h2><p>{leaveConfirmation.body}</p>
+    <button className={styles.playButton} onClick={()=>setLeaving(null)}>{leaveConfirmation.stay}</button><button className={styles.quietButton} onClick={()=>leave(leaving)}>{leaveConfirmation.leave}</button>
+   </>:status==='starting'?<><Compass className={styles.loadingCompass}/><h2 id="run-dialog-title">Preparing {country.name}</h2><p>Loading the landscape and checking your route.</p></>:status==='paused'?<>
     <Pause size={30}/><h2 id="run-dialog-title">Adventure paused</h2><button className={styles.playButton} onClick={resume}><Play size={17}/>Continue adventure</button>
     <div className={styles.dialogActions}><button onClick={()=>setShowSettings(value=>!value)}><Settings size={16}/>Settings</button><button onClick={onRetry}><RotateCcw size={16}/>Restart level</button></div>
-    {showSettings&&<PreferencesControls value={preferences} onChange={onPreferences} inGame/>}<button className={styles.quietButton} onClick={onExit}>Return to world map</button><button className={styles.quietButton} onClick={toGameRoom}>Back to Game Room</button>
+    {showSettings&&<PreferencesControls value={preferences} onChange={onPreferences} inGame/>}<button className={styles.quietButton} onClick={()=>requestExit('world-map')}>Return to world map</button><button className={styles.quietButton} onClick={()=>requestExit('game-room')}>Back to Game Room</button>
    </>:status==='discovery'?<>
     <BookOpen size={30}/><p className={styles.eyebrow}>{stats.discoveryFound?'DISCOVERY UNLOCKED':'COUNTRY FIELD GUIDE'}</p><h2 id="run-dialog-title">Discover {country.name}</h2><Discovery country={country}/>
     <button className={styles.playButton} onClick={resume}>Continue adventure<ArrowRight size={17}/></button>
