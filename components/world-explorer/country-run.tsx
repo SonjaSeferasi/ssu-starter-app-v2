@@ -3,7 +3,7 @@ import {remainingNorthAmericaPlaces,type RemainingNorthAmericaCode} from '../../
 import {useEffect,useMemo,useRef,useState} from 'react';
 import {useRouter} from 'next/navigation';
 import {leaveConfirmation,needsLeaveConfirmation,statusWhileConfirming,type ExitTarget,type RunStatus} from '../../lib/world-explorer/run-exit';
-import {ArrowLeft,ArrowRight,ArrowUp,BookOpen,Check,Compass,Flag,Heart,Pause,Play,RotateCcw,Settings,Star,Trophy,Volume2} from 'lucide-react';
+import {ArrowLeft,ArrowRight,ArrowUp,BookOpen,Check,Compass,Flag,Heart,Pause,Play,RotateCcw,Settings,Star,Volume2} from 'lucide-react';
 import type {Country} from '../../lib/world-explorer/catalog';
 import {discoveryFor} from '../../lib/world-explorer-discoveries';
 import {countryProfile} from '../../lib/world-explorer/profiles';
@@ -20,7 +20,7 @@ import {loadExplorerAvatar} from '../../lib/world-explorer/avatar';
 import type {GameRoomData} from '../../lib/game-room';
 import {LandmarkPhoto} from './landmark-photo';
 import {PreferencesControls} from './preferences-panel';
-import {LevelCompleteBanner,celebrationMs} from './level-complete';
+import {LevelCompleteBanner,PassportStamp,celebrationMs} from './level-complete';
 import styles from './world-explorer.module.css';
 
 type Controller={avatarNotices?:readonly string[];pause:()=>void;resume:()=>void;destroy:()=>void;setPreferences?:(preferences:ExplorerRunPreferences)=>void;setReviewView?:(view:'gameplay'|'overview'|'scan',x?:number,y?:number)=>void;setReviewCamera?:(view:{position:[number,number,number];target:[number,number,number];fov?:number})=>void;reviewStats?:()=>{frameTimes:number[];calls:number;triangles:number;geometries:number;textures:number}};
@@ -37,7 +37,7 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
  const [review,setReview]=useState(false),[overview,setOverview]=useState(false),[performance,setPerformance]=useState<{fps:number;drawCalls:number;triangles:number}|null>(null);
  const [avatar,setAvatar]=useState<GameRoomData|null>(null);
  // The finish plays a short "Level Complete!" moment before the results (skipped for reduced motion).
- const [celebrating,setCelebrating]=useState(false),calm=useRef(false),celebration=useRef<ReturnType<typeof setTimeout>>();calm.current=preferences.reducedMotion;
+ const [celebrating,setCelebrating]=useState(false),completedAt=useRef(new Date()),calm=useRef(false),celebration=useRef<ReturnType<typeof setTimeout>>();calm.current=preferences.reducedMotion;
  const [avatarNotices,setAvatarNotices]=useState<readonly string[]>([]);
  const availability=levelAvailability(country.code),profile=countryProfile(country.code),level=useMemo(()=>levelDefinitionFor(country.code,difficulty),[country.code,difficulty]),authored=isAuthoredLevel(country.code);
  const finalPlatform=level.platforms.find(platform=>platform.id===level.finish.platformId)!,finishX=finalPlatform.x+level.finish.offset;
@@ -65,7 +65,7 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
     onPerformance:value=>{if(!disposed)setPerformance(value);},
     onStats:value=>{if(!disposed){statsRef.current=value;setStats(value);}},
     onDiscovery:()=>{if(!disposed){setShowSettings(false);setStatus('discovery');}},
-    onFinish:(coins,result)=>{if(disposed||finished.current)return;finished.current=true;const latest=statsRef.current;onResult(true,coins??latest.coins,result||{stars:latest.stars,elapsedMs:Math.round(latest.timeSeconds*1000),discoveryFound:latest.discoveryFound},attempt.current);if(!calm.current){setCelebrating(true);celebration.current=setTimeout(()=>setCelebrating(false),celebrationMs);}setStatus('complete');},
+    onFinish:(coins,result)=>{if(disposed||finished.current)return;finished.current=true;const latest=statsRef.current;onResult(true,coins??latest.coins,result||{stars:latest.stars,elapsedMs:Math.round(latest.timeSeconds*1000),discoveryFound:latest.discoveryFound},attempt.current);completedAt.current=new Date();if(!calm.current){setCelebrating(true);celebration.current=setTimeout(()=>setCelebrating(false),celebrationMs);}setStatus('complete');},
     onFail:()=>{if(disposed||finished.current)return;finished.current=true;const latest=statsRef.current;onResult(false,latest.coins,{stars:latest.stars,elapsedMs:Math.round(latest.timeSeconds*1000),discoveryFound:latest.discoveryFound},attempt.current);setStatus('failed');},
     onError:message=>{clearTimeout(timeout);if(!disposed){setError(message);setStatus('failed');}}
    },environment);controller.current=game;setAvatarNotices(game.avatarNotices||[]);
@@ -136,7 +136,7 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
     <BookOpen size={30}/><p className={styles.eyebrow}>{stats.discoveryFound?'DISCOVERY UNLOCKED':'COUNTRY FIELD GUIDE'}</p><h2 id="run-dialog-title">Discover {country.name}</h2><Discovery country={country}/>
     <button className={styles.playButton} onClick={resume}>Continue adventure<ArrowRight size={17}/></button>
    </>:status==='complete'?<>
-    <Trophy size={38}/><p className={styles.eyebrow}>PASSPORT STAMP EARNED</p><h2 id="run-dialog-title">{country.name} explored!</h2><div className={styles.resultStars} aria-label={`${stats.stars} of 3 stars earned`}>{[0,1,2].map(index=><Star key={index} size={34} fill={index<stats.stars?'#f2d174':'none'} color={index<stats.stars?'#f2d174':'#819b91'}/>)}</div>
+    <PassportStamp countryName={country.name} date={completedAt.current}/><p className={styles.eyebrow}>PASSPORT STAMP EARNED</p><h2 id="run-dialog-title">{country.name} explored!</h2><div className={styles.resultStars} aria-label={`${stats.stars} of 3 stars earned`}>{[0,1,2].map(index=><Star key={index} size={34} fill={index<stats.stars?'#f2d174':'none'} color={index<stats.stars?'#f2d174':'#819b91'}/>)}</div>
     <div className={styles.resultDetails}><span><i className={styles.coin}/>{stats.coins} / {stats.totalCoins} coins</span><span>{formatTime(stats.timeSeconds)}</span><span><BookOpen size={14}/>{stats.discoveryFound?'Discovery learned':'Discovery still to find'}</span></div><p role="status" className={styles.muted}>{saveStatus}</p>
     {stats.discoveryFound&&<Discovery country={country} compact/>}<button className={styles.playButton} onClick={onRetry}><RotateCcw size={17}/>Replay level</button><button className={styles.quietButton} onClick={onNext}>Choose another destination <ArrowRight size={13}/></button><button className={styles.quietButton} onClick={onExit}>World map and passport</button><button className={styles.quietButton} onClick={toGameRoom}>Back to Game Room</button>
    </>:<>

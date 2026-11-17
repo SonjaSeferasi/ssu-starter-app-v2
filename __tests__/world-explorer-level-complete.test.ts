@@ -4,9 +4,9 @@ import {readFileSync} from 'node:fs';
 import type {ReactNode} from 'react';
 const {renderToStaticMarkup}=createRequire(import.meta.url)('react-dom/server') as {renderToStaticMarkup(node:ReactNode):string};
 import {describe,it,expect} from 'vitest';
-import {LevelCompleteBanner,celebrationMs,confettiPieces} from '../components/world-explorer/level-complete';
+import {LevelCompleteBanner,PassportStamp,celebrationMs,confettiPieces,stampDate} from '../components/world-explorer/level-complete';
 
-// SRS-631.5: the finish celebration.
+// SRS-631.5 and SRS-631.6: the finish celebration and the passport stamp.
 describe('level complete celebration',()=>{
  it('announces "Level Complete!" as a status and hides the decoration from screen readers',()=>{
   const html=renderToStaticMarkup(createElement(LevelCompleteBanner));
@@ -24,5 +24,17 @@ describe('level complete celebration',()=>{
   const page=readFileSync('components/world-explorer/country-run.tsx','utf8');
   expect(page).toContain('if(!calm.current){setCelebrating(true);');expect(page).toContain("status==='complete'&&celebrating&&!leaving&&<LevelCompleteBanner/>");
   expect(page).toContain('clearTimeout(celebration.current)');
+ });
+});
+describe('passport stamp',()=>{
+ it('inks the country name and the completion date and describes itself in words',()=>{
+  const html=renderToStaticMarkup(createElement(PassportStamp,{countryName:'Japan',date:new Date(2026,10,17)}));
+  expect(html).toContain('role="img"');expect(html).toContain('aria-label="Passport stamped: Japan, 17 NOV 2026"');
+  expect(html.match(/>JAPAN</g)).toHaveLength(2);expect(html).toContain('17 NOV 2026');expect(html).toContain('WORLD EXPLORER');
+ });
+ it('formats single-digit days with a leading zero',()=>{expect(stampDate(new Date(2027,0,5))).toBe('05 JAN 2027');});
+ it('replaces the trophy in the result dialog',()=>{
+  const page=readFileSync('components/world-explorer/country-run.tsx','utf8');
+  expect(page).toContain('<PassportStamp countryName={country.name} date={completedAt.current}/><p className={styles.eyebrow}>PASSPORT STAMP EARNED</p>');
  });
 });
