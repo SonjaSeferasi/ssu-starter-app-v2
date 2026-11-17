@@ -7886,6 +7886,14 @@ Acceptance criterion: Given the student plays the Malta level, when the explorer
 
 Traces to: UR-632.
 
+##### SRS-632.26, SS — Present Kotor in the Montenegro level.
+
+When the student plays the Montenegro level, the system shall show a palm-lined stone quay; the battlemented town wall with the round tower at its end and the Sea Gate under its clock tower; the stone houses and red roofs of the old town; the cathedral with its two square towers joined by an arch; the church of St Nicholas with its dark domes; the bare limestone hill with the wall climbing it in zigzags past a small white church to the fortress and the Montenegrin flag at the top; grey mountains behind; a white cruise ship and small boats in the bay; and, on the route, bollards and ropes, lanterns, benches, battlemented walls, balustrades, potted trees and the cats of Kotor, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Montenegro level, when the explorer starts the route, then the round tower and the battlemented wall are visible; when the explorer is in the second half of the route, then the cathedral's two towers, the zigzag wall on the hill and the flag on the fortress are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
