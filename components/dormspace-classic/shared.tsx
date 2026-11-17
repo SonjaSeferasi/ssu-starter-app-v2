@@ -1,5 +1,6 @@
 'use client';
 
+import { dormParticipationHeaders } from '../../lib/game-participation-client';
 import { storedAccessToken } from '../../lib/account/session';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -13,10 +14,13 @@ export async function dormApi<T>(path: string, init: RequestInit = {}): Promise<
     const token = storedAccessToken() ?? '';
     const response = await fetch(path, {
       ...init, cache: 'no-store',
-      headers: { ...(init.body ? { 'Content-Type': 'application/json' } : {}), Authorization: `Bearer ${token}`, ...init.headers },
+      headers: { ...dormParticipationHeaders(path, init.method), ...(init.body ? { 'Content-Type': 'application/json' } : {}), Authorization: `Bearer ${token}`, ...init.headers },
     });
     const data = await response.json().catch(() => ({}));
-    if (response.ok) return { ok: true, status: response.status, data: data as T };
+    if (response.ok) {
+      if (response.headers.get('X-SocialU-Participation-Recorded') === '1') window.dispatchEvent(new Event('socialu-points-changed'));
+      return { ok: true, status: response.status, data: data as T };
+    }
     return { ok: false, status: response.status, error: data.error || 'Something went wrong. Please try again.' };
   } catch {
     return { ok: false, status: 0, error: 'You appear to be offline. Check your connection and try again.' };

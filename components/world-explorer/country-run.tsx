@@ -14,6 +14,7 @@ import {isAuthoredLevel,levelAvailability,levelDefinitionFor} from '../../lib/wo
 import type {CountryRunResult,CountryStats,Difficulty,ExplorerRunPreferences} from '../../lib/world-explorer/game-types';
 import type {ExplorerPreferences} from '../../lib/world-explorer/preferences';
 import {CountryFlag} from './country-flag';
+import {recordExplorerParticipation} from '../../lib/game-participation-client';
 import {LandmarkPhoto} from './landmark-photo';
 import {PreferencesControls} from './preferences-panel';
 import styles from './world-explorer.module.css';
@@ -36,13 +37,20 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
  const activeCheckpoint=level.checkpoints.findIndex(point=>point.id===stats.checkpointId);
  const starMarks=level.stars.map(star=>{const platform=level.platforms.find(item=>item.id===star.platformId)!;return{id:star.id,percent:(platform.x+star.offset)/finishX*100};});
  useEffect(()=>{
-  let disposed=false,expired=false,game:Controller|undefined;attempt.current=runId();setReview(new URLSearchParams(window.location.search).get('review')==='1');
+  let disposed=false,expired=false,game:Controller|undefined;
+  const reviewing=new URLSearchParams(window.location.search).get('review')==='1';
+  attempt.current=runId();setReview(reviewing);
   const timeout=setTimeout(()=>{if(disposed)return;expired=true;setError('The level took too long to load. Check the connection and try again.');setStatus('failed');},20000);
   // Country scenery is a separate chunk, fetched only for the chosen level.
   Promise.all([import('./country-scene'),authored?import('./countries/registry').then(registry=>registry.loadCountryEnvironment(level.environmentId)):Promise.resolve(null)]).then(([{mountCountryStage},environment])=>{
    if(disposed||expired||!stage.current)return;
    game=mountCountryStage(stage.current,{...country,difficulty,...preferences},{
-    onReady:()=>{clearTimeout(timeout);if(!disposed&&!expired)setStatus('running');},
+    onReady:()=>{
+     clearTimeout(timeout);
+     if(disposed||expired)return;
+     setStatus('running');
+     if(authored&&!reviewing)void recordExplorerParticipation(country.code).catch(()=>{});
+    },
     onProgress:value=>{if(!disposed)setDistance(value);},
     onPerformance:value=>{if(!disposed)setPerformance(value);},
     onStats:value=>{if(!disposed){statsRef.current=value;setStats(value);}},
@@ -52,7 +60,7 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
     onError:message=>{clearTimeout(timeout);if(!disposed){setError(message);setStatus('failed');}}
    },environment);controller.current=game;
    // Review builds expose a camera scan for scenery checks; gameplay pauses meanwhile.
-   if(new URLSearchParams(window.location.search).get('review')==='1')Object.assign(window,{worldExplorerReview:game,__worldExplorerFinish:finishX});
+   if(reviewing)Object.assign(window,{worldExplorerReview:game,__worldExplorerFinish:finishX});
   }).catch(reason=>{clearTimeout(timeout);if(!disposed){setError(reason instanceof Error?reason.message:'The 3D level could not open.');setStatus('failed');}});
   return()=>{disposed=true;clearTimeout(timeout);game?.destroy();controller.current=null;};
  // The parent keys attempts; updates to HUD and preferences must not restart physics.

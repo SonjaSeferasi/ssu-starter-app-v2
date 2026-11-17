@@ -1,5 +1,6 @@
 import { AccountError, accountResponse, jsonBody, verifiedUser } from '../../../lib/socialu-account';
 import { dormOperation, ownerParam } from '../../../lib/dormspace';
+import { gameParticipation } from '../../../lib/game-participation-server';
 import { isRotation } from '../../../lib/dormspace-rules';
 
 export const dynamic = 'force-dynamic';
@@ -13,7 +14,18 @@ export async function GET(request: Request) {
     if (params.get('view') === 'hall') return Response.json(await dormOperation(user.id, 'hall'), noStore);
     const check = ownerParam(params.get('check'));
     if (check) return Response.json(await dormOperation(user.id, 'access', check), noStore);
-    return Response.json(await dormOperation(user.id, 'open', ownerParam(params.get('owner'))), noStore);
+    const dorm = await dormOperation(user.id, 'open', ownerParam(params.get('owner')));
+    const zone = request.headers.get('x-socialu-participation-zone');
+    if (zone && zone.length <= 100) {
+      try {
+        await gameParticipation(user.id, 'dormspace', zone);
+        return Response.json(dorm, { headers: { ...noStore.headers, 'X-SocialU-Participation-Recorded': '1' } });
+      } catch {
+        // Streak storage can be unavailable while the room itself is available.
+        console.warn('DormSpace participation could not be recorded.');
+      }
+    }
+    return Response.json(dorm, noStore);
   } catch (error) { return accountResponse(error); }
 }
 
