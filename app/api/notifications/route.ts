@@ -34,11 +34,15 @@ export async function GET(request: Request) {
   } catch (error) { return accountResponse(error); }
 }
 
-// Opening the Notifications page marks everything read, which clears the bell badge.
+// Acknowledge only the exact rows returned in the displayed snapshot.
 export async function POST(request: Request) {
   try {
     const user = await verifiedUser(request);
-    await profileRpc('socialu_mark_notifications_read', { p_auth_id: user.id });
-    return Response.json({ unread: 0 }, { headers: { 'Cache-Control': 'no-store' } });
+    const body = await request.json().catch(() => null);
+    if (!Array.isArray(body?.ids) || body.ids.length > 10000 || body.ids.some((id: unknown) => typeof id !== 'string' || !/^[1-9][0-9]{0,18}$/.test(id) || BigInt(id) > BigInt('9223372036854775807'))) {
+      return Response.json({ error: 'Provide the displayed notification IDs.' }, { status: 400 });
+    }
+    const result = await profileRpc<{unread:number}>('socialu_mark_notification_snapshot_read', { p_auth_id: user.id, p_ids: [...new Set(body.ids)] });
+    return Response.json(result, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) { return accountResponse(error); }
 }
