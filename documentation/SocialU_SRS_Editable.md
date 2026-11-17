@@ -7710,6 +7710,14 @@ Acceptance criterion: Given the student plays the Greece level, when the level o
 
 Traces to: UR-632.
 
+##### SRS-632.4, SS — Present Schokland in the Netherlands level.
+
+When the student plays the Netherlands level, the system shall show the mound of the former island with its white church, tarred timber houses with red pantile roofs, the row of wooden sea-wall posts and the lighthouse with the keeper's house; the polder behind it with strips of tulips, cows, lines of poplars, a drainage mill whose sails turn and wind turbines on the far dike; a brown-sailed fishing boat crossing the water; and, on the route, tulip beds, bicycles, milk churns, clogs and mooring posts, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Netherlands level with reduced motion off, when the student watches the scene, then the mill sails and the turbine blades turn, the fishing boat moves across the water, the church and lighthouse are visible along the route, and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
