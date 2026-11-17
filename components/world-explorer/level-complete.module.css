@@ -1,0 +1,17 @@
+/* Level complete celebration (SRS-631.5). */
+.banner{position:absolute;inset:0;z-index:30;display:grid;place-items:center;overflow:hidden;pointer-events:none;animation:bannerLeave .35s ease-in 1.55s both}
+.rays{position:absolute;left:50%;top:50%;width:160vmax;height:160vmax;margin:-80vmax 0 0 -80vmax;border-radius:50%;
+ background:radial-gradient(circle,#fffbe0 0,#ffe98ad9 9%,#ffd86a66 22%,transparent 46%),repeating-conic-gradient(from 0deg,#fff3b03d 0 7deg,transparent 7deg 18deg);
+ animation:raysIn .5s ease-out both,raysTurn 9s linear infinite}
+.title{position:relative;margin:0;padding:0 16px;text-align:center;font:900 clamp(40px,9vw,112px)/1 'Trebuchet MS','Segoe UI',Arial,sans-serif;letter-spacing:.02em;text-transform:uppercase;color:#fffdf2;
+ -webkit-text-stroke:clamp(2px,.35vw,5px) #a8621a;paint-order:stroke fill;text-shadow:0 .06em 0 #c9822a,0 .12em 0 #8a4f12,0 .2em .35em #5b2f0680,0 0 .6em #fff3a8;animation:titlePop .6s cubic-bezier(.2,1.5,.4,1) both}
+.confetti{position:absolute;inset:0}
+.confetti i{position:absolute;top:-6%;width:10px;height:16px;border-radius:2px;opacity:0;animation:confettiFall 1.7s cubic-bezier(.3,.6,.5,1) var(--delay) both}
+.confetti i.wide{width:16px;height:9px;border-radius:9px}
+@keyframes titlePop{from{transform:scale(.3) rotate(-4deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+@keyframes raysIn{from{transform:scale(.2);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes raysTurn{to{rotate:360deg}}
+@keyframes confettiFall{0%{transform:translate3d(0,0,0) rotate(0);opacity:1}85%{opacity:1}100%{transform:translate3d(var(--drift),112vh,0) rotate(var(--turn));opacity:0}}
+@keyframes bannerLeave{to{opacity:0}}
+
+@media(prefers-reduced-motion:reduce){.banner,.rays,.title,.confetti i{animation:none}.confetti{display:none}}
