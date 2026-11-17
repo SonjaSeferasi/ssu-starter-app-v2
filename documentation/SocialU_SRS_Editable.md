@@ -7880,6 +7880,14 @@ Acceptance criterion: Given the student plays the Belarus level, when the explor
 
 Traces to: UR-632.
 
+##### SRS-632.25, SS — Present Valletta in the Malta level.
+
+When the student plays the Malta level, the system shall show bastions of honey-coloured limestone rising from the harbour, with pointed bastions that each carry a domed watchtower; the saluting battery with its row of cannon; the arcade of the upper gardens with its trees; the Maltese flag; three rising rows of flat-roofed stone houses hung with enclosed wooden balconies in green, red, blue and brown; the great dome of the Carmelite church on its columned drum and the stone spire beside it; the bell memorial rotunda beyond the finish; pines; painted fishing boats with an eye on each prow and a canopied water taxi crossing the harbour; and, on the route, bollards with ropes, lanterns, benches, stone arches, balustrades, cannon, palms and prickly pears, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Malta level, when the explorer is in the first half of the route, then the arcade of the upper gardens and at least three coloured balconies are visible; when the explorer is in the second half, then the dome and the spire are visible to their tops; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
