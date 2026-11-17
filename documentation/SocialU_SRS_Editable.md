@@ -7984,6 +7984,14 @@ Acceptance criterion: Given the student plays the Serbia level, when the explore
 
 Traces to: UR-632.
 
+##### SRS-632.38, SS — Present the Struve Arc point in the Moldova level.
+
+When the student plays the Moldova level, the system shall show, on a low hill, the dark stone marker of the Struve Arc point with its bronze globe inside posts and chains, the tall timber signal tower over it with its platform and sighting target, and the Moldovan flag; smaller signals on the far hills; a field of sunflowers facing the route; vine rows and striped farmland; a village of white houses with blue porches, window frames and fences; a roofed well; a wayside cross; a small white monastery church with green domes; storks on pole-top nests; trees; and, on the route, wattle fences and handrails, sunflowers, surveyors' theodolites on tripods, red and white ranging poles, chimneys and benches, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Moldova level, when the explorer starts the route, then the white houses with blue porches are visible; when the explorer reaches the middle of the route, then the signal tower, the flag and the sunflower field are visible; when the explorer nears the finish, then the monastery church and a stork on its nest are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements

@@ -160,6 +160,7 @@ const loaders:Record<string,()=>Promise<{environment:CountryEnvironment}>>={
  'europe-sk':()=>import('./slovakia'),
  'europe-bg':()=>import('./bulgaria'),
  'europe-rs':()=>import('./serbia'),
+ 'europe-md':()=>import('./moldova'),
  // Oceania: one shared chunk, like Europe.
  ...Object.fromEntries(oceaniaCodes.map(code=>['oceania-'+oceaniaPlaces[code].iso2.toLowerCase(),()=>import('./oceania').then(m=>({environment:m.oceaniaEnvironment(code)}))])),
  // South America (phase 1 continental release).
