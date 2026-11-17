@@ -7782,6 +7782,14 @@ Acceptance criterion: Given the student plays the Ukraine level, when the explor
 
 Traces to: UR-632.
 
+##### SRS-632.13, SS — Present a Flemish béguinage in the Belgium level.
+
+When the student plays the Belgium level, the system shall show a low white wall along the canal; the green behind it with its lawn, gravel paths, drifts of daffodils and tall lime trees; whitewashed houses with stepped brick gables, green doors and red roofs around the green; the white gatehouse with the Belgian flag; the brick church with its steep slate roof and ridge turret; the belfry of Bruges on the skyline; swans and a tour boat on the canal; and, on the route, lanterns, iron railings, bicycles, benches, daffodils, a lace stall, a water pump, flower boxes, chimneys and dormer windows, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Belgium level, when the explorer starts the route, then the gatehouse and the stepped gables of the whitewashed houses are visible; when the explorer is in the second half of the route, then the church and the lawn of the green are visible and the belfry is visible on the skyline; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
