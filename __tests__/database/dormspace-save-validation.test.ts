@@ -48,3 +48,34 @@ it('identifies owned appearance items as unsuitable furniture, retaining ownersh
     expect(await dormCall(db, 1, 'open')).toEqual(room);
   } finally { await db.close(); }
 }, 25000);
+
+it('retains omitted wall/floor selections independently while allowing explicit resets (#1215)', async () => {
+  const db = await createDorm3dDatabase(1, SHOP_ONLY);
+  try {
+    for (const file of [duplicateMigration, 'supabase/migrations/20261117050233_dormspace_placement_rule_feedback.sql',
+      'supabase/migrations/20261117050419_dormspace_preserve_omitted_appearance.sql']) {
+      const migration = readFileSync(file, 'utf8'); await db.exec(migration); await db.exec(migration);
+    }
+    let room = await dormCall(db, 1, 'open');
+    const id = (key: string) => room.catalog.find((item: any) => item.previewKey === key).id;
+    const wall = id('wall-sky'), floor = id('floor-tile');
+    await db.exec('SET ROLE service_role');
+    room = await dormCall(db, 1, 'save', null, { ...room, wallItemId: wall, floorItemId: floor });
+    const save = async (extra: object) => {
+      room = await dormCall(db, 1, 'save', null, { version: room.version, placements: room.placements, ...extra });
+      return room;
+    };
+    await save({});
+    expect([room.wallItemId, room.floorItemId]).toEqual([wall, floor]);
+    await save({ wallItemId: null });
+    expect([room.wallItemId, room.floorItemId]).toEqual([null, floor]);
+    await save({ wallItemId: wall });
+    await save({ floorItemId: null });
+    expect([room.wallItemId, room.floorItemId]).toEqual([wall, null]);
+    await save({ floorItemId: floor });
+    await expect(dormCall(db, 1, 'save', null, { version: room.version - 1, placements: [] })).rejects.toMatchObject({ code: 'DS409' });
+    expect(await dormCall(db, 1, 'open')).toEqual(room);
+    await expect(save({ wallItemId: '999999999' })).rejects.toMatchObject({ code: '22023' });
+    expect(await dormCall(db, 1, 'open')).toEqual(room);
+  } finally { await db.close(); }
+}, 25000);
