@@ -7846,6 +7846,14 @@ Acceptance criterion: Given the student plays the Iceland level, when the explor
 
 Traces to: UR-632.
 
+##### SRS-632.21, SS — Present Tallinn in the Estonia level.
+
+When the student plays the Estonia level, the system shall show the grey limestone town wall with its covered walk and round towers under red cone roofs; the squat gun tower at its seaward end and the twin towers of the town gate; tall gabled merchant houses with hoist beams; St Olaf's Church with its green needle spire; the town hall with its slender tower and vane; Toompea on its limestone cliff with the pink castle, the Estonian flag on Tall Hermann and the dark onion domes of the cathedral; pines; a Hanseatic cog offshore; and, on the route, lanterns, market stalls, barrels, benches, chimneys, dormer windows, weather vanes, balustrades and potted trees, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Estonia level, when the explorer starts the route, then the gun tower and the red cone roofs of the wall towers are visible; when the explorer is in the second half of the route, then the castle, the flag on Tall Hermann and the onion domes are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
