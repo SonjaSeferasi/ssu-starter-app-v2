@@ -28,3 +28,12 @@ it('defaults legacy placements to zero degrees', async () => {
   expect((await PUT(request({ itemId: 'bed', x: 1, y: 2 }))).status).toBe(200);
   expect(rpc.mock.calls.find(([name]) => name === 'socialu_dorm')?.[1].p_payload.placements[0].rotation).toBe(0);
 });
+
+it('returns the duplicate placement rule as 400 rather than an unavailable error (#1214)', async () => {
+  rpc.mockImplementation(async (name: string) => name === 'socialu_session_guard'
+    ? { data: true, error: null }
+    : { data: null, error: { code: '22023', message: 'Each item can only be placed once.' } });
+  const response = await PUT(request({ itemId: '07', x: 1, y: 1 }));
+  expect(response.status).toBe(400);
+  expect(await response.json()).toEqual({ error: 'Each item can only be placed once.' });
+});

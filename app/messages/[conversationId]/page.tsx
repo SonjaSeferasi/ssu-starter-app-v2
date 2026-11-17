@@ -730,10 +730,10 @@ function Conversation() {
                             : <span className={styles.photoPending}>{message.photo_url ? PHOTO_UNAVAILABLE : 'Photo'}</span>
                         : message.text}
                     </p>
-                    {/* SRS-201.7: photos are now in the conversation, and socialu_react_to_message accepts
-                        only text and emoji (SRS-210), so a React button on a photo would always fail. It is
-                        hidden rather than left to refuse what it offers. */}
-                    {message.kind !== 'photo' && !readOnly && (
+                    {/* #1262 (SRS-210.1): the React button used to be hidden on a photo, because
+                        socialu_react_to_message accepted only text and emoji and would always have refused.
+                        20261117040000 widened it, so a photo is offered like any other existing message. */}
+                    {!readOnly && (
                     <button ref={(button) => { reactButtons.current[message.id] = button; }} type="button" className={styles.reactButton}
                       onClick={() => setReactingTo(picking ? null : message.id)} aria-expanded={picking}
                       aria-label={mine ? 'React to your message' : `React to ${sender}’s message`} title="React">
