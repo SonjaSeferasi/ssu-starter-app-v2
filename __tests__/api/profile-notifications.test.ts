@@ -95,11 +95,18 @@ describe('GET /api/notifications', () => {
     expect(body.notifications[1]).toMatchObject({ kind: 'comment_reply', post_id: 42, comment_id: 99, read_at: '2026-10-23T08:30:00Z' });
   });
 
-  it('marks all notifications read', async () => {
-    result = { data: null, error: null };
-    const response = await markRead(new Request('http://localhost/api/notifications', { method: 'POST', headers: { Authorization: `Bearer ${token}` } }));
+  it.each([null,{}, {ids:[3]}, {ids:['-1']}, {ids:['9223372036854775808']}])('rejects invalid or missing snapshots %j', async body => {
+    const response=await markRead(post(body));
+    expect(response.status).toBe(400);
+    expect(rpc).not.toHaveBeenCalledWith('socialu_mark_notification_snapshot_read',expect.anything());
+  });
+
+  it('marks only displayed IDs read and returns the remaining count', async () => {
+    result = { data: {unread:1}, error: null };
+    const response = await markRead(new Request('http://localhost/api/notifications', { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type':'application/json' }, body: JSON.stringify({ids:['3']}) }));
     expect(response.status).toBe(200);
-    expect(rpc).toHaveBeenCalledWith('socialu_mark_notifications_read', { p_auth_id: user.id });
+    expect(rpc).toHaveBeenCalledWith('socialu_mark_notification_snapshot_read', { p_auth_id: user.id, p_ids:['3'] });
+    expect(await response.json()).toEqual({unread:1});
   });
 });
 

@@ -11,6 +11,7 @@ import { Avatar, profileFetch } from './profile-view';
 import styles from './profile.module.css';
 
 type NotificationItem = {
+  read_ids?: string[];
   notification_id: number;
   kind: 'friend_request' | 'friendship_accepted' | 'post_like' | 'post_comment' | 'comment_reply' | 'mention' | 'repost' | 'whisper_comment';
   created_at: string;
@@ -133,8 +134,8 @@ function NotificationsContent() {
           && !list.some(item => item.kind !== 'friend_request' && !item.read_at)) setTab('friends');
         firstLoad.current = false;
         setItems(list); setError('');
-        // Seeing the list counts as reading it, so the bell badge clears.
-        if (data.unread > 0) return profileFetch('/api/notifications', { method: 'POST' })
+        // Acknowledge this snapshot only; later arrivals must keep their badge.
+        if (data.unread > 0) return profileFetch('/api/notifications', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ids: list.flatMap(item => item.read_ids ?? []) }) })
           .then(() => { window.dispatchEvent(new Event('socialu-notifications-changed')); }, () => undefined);
       })
       .catch(reason => setError(reason instanceof Error ? reason.message : 'Unable to load notifications.'));

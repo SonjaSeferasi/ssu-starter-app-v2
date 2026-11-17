@@ -1,0 +1,19 @@
+{
+  "base": "41f1b81b6473b2b099ef06df75107ad3bdf5c70b",
+  "testedSourceSha256": {
+    "app/api/notifications/route.ts": "65415bd49a2b8887f2b99bc85f65d93e7b679123fafe5c143b9c919a91637334",
+    "components/profile/notifications-view.tsx": "a52bd5968ad7f288f81d1c67b3d5650ba846cdb964549c7ddb2de727c1a1dd9c",
+    "supabase/migrations/20261116233000_notification_read_snapshot.sql": "f1bbbeef5f3a8e229fadceddc30653903c909b79b98ee2c727fe2b71473b617a",
+    "scripts/tests/notification-read-snapshot.browser.ts": "dcb0dc5c0769c539f5c5dd92fcb0080ea9167788990348aedb589059e4b52814"
+  },
+  "tests": 19,
+  "browserTests": 1,
+  "cleanProductionBuild": "passed",
+  "hostedMigration": {
+    "project": "sfrpokisjlwgknxlzllu",
+    "snapshot_installed": true,
+    "owner_ack_installed": true,
+    "historyVersion": "20261116233000"
+  },
+  "limits": "Actual local UI/API and SQL with Auth/PostgREST fixtures; hosted migration installation verified, no live-account race claimed."
+}
