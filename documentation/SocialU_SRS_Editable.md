@@ -7718,6 +7718,14 @@ Acceptance criterion: Given the student plays the Netherlands level with reduced
 
 Traces to: UR-632.
 
+##### SRS-632.5, SS — Present Aachen in the Germany level.
+
+When the student plays the Germany level, the system shall show Aachen Cathedral with Charlemagne's octagon under its pleated dome, the sixteen-sided ambulatory, the Gothic choir of tall windows and the spired west tower; the Gothic town hall with its two towers and the Charlemagne fountain; the columned rotunda of the Elisenbrunnen; half-timbered houses; and, on the route, chimneys, dormer windows, geranium boxes and weathercocks on the roofs and beer-garden tables, market stalls, lamps and linden trees on the squares, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Germany level, when the explorer crosses the roofs in the middle of the route, then the dome of the octagon and the windows of the Gothic choir are visible behind the route, half-timbered houses are visible from the first frame, and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
