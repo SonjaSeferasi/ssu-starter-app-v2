@@ -176,3 +176,7 @@
 @media(max-height:500px) and (orientation:landscape){.referenceRun:is([data-environment=oceania-fj],[data-environment=oceania-pg],[data-environment=oceania-sb],[data-environment=oceania-vu]) .playIdentity h1{font-size:13px}.referenceRun:is([data-environment=oceania-fj],[data-environment=oceania-pg],[data-environment=oceania-sb],[data-environment=oceania-vu]) .playIdentity p{font-size:10px}}
 /* Portrait tablets: a level with a fourth touch button (the mirror turn) widens the left control group into the centred hearts and guide panel; lift the panel above the controls, as phones already do. */
 @media(min-width:701px) and (max-width:1100px) and (orientation:portrait){.explorer .referenceRun:has(.touchControls button:nth-child(4)) .playSecondary{bottom:calc(max(24px,env(safe-area-inset-bottom)) + clamp(72px,10vw,124px) + 14px)}}
+/* Issue #1234 (SRS-628.1): on a short laptop window the intro is compacted so "Start in Japan" sits clear of the continent deck, and the country panel's details shrink to the panel with "Play level" pinned in view. */
+.journeyPanel .countryDetail{flex-shrink:1;min-height:150px}
+.countryDetail>.playButton{position:sticky;bottom:0;z-index:1;flex-shrink:0}
+@media(min-width:701px) and (max-height:820px){.intro{top:100px}.intro h1{font-size:clamp(34px,3.6vw,44px);letter-spacing:-1.5px;margin-bottom:12px}.intro>p:not(.eyebrow){font-size:13px;line-height:1.5;margin:0}.intro .playButton{margin-top:14px}}
