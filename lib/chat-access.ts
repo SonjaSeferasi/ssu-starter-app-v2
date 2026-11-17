@@ -83,6 +83,11 @@ export async function chatOperation(fn: string, args: Record<string, string>) {
     if (error.code === 'SCM02') throw new AccountError(MEMBER_NOT_AVAILABLE, 404);
     // SRS-207.1: leave a group.
     if (error.code === 'SCL01') throw new AccountError('Assign an administrator before you leave the group.', 409);
+    // SRS-207.7 (#888): delete a group you have left from your own view. A conversation that is not a group,
+    // or one this student is still in, is named rather than hidden: they can see it, so "not available" would
+    // only confuse. Never having been in it stays SC404, like everywhere else.
+    if (error.code === 'SCH01') throw new AccountError('Only a group you have left can be deleted.', 400);
+    if (error.code === 'SCH02') throw new AccountError('Leave the group before deleting this conversation.', 409);
     if (error.code === '42501') throw new AccountError('A verified, active university account is required.', 403);
     if (error.code === '22023') throw new AccountError('Messages must contain 1 to 500 characters.', 400);
     throw new AccountError('Chat is unavailable. Check that the chat migration has been applied.', 503);
