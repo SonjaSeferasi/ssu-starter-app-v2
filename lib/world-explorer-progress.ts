@@ -41,6 +41,12 @@ export function saveExplorerProgress(progress:ExplorerProgress,storage:WriteStor
  if(!storage)return false;
  try{const safe=sanitizeExplorerProgress(progress);storage.setItem(keyFor(safe),JSON.stringify(safe));return true;}catch{return false;}
 }
+/** Remove the anonymous passport once one account has claimed it, so a later
+ * account on this browser cannot import the same unowned snapshot. */
+export function clearGuestProgress(storage:Pick<Storage,'removeItem'>|undefined=localStore()):boolean{
+ if(!storage)return false;
+ try{storage.removeItem(STORAGE_KEY);return true;}catch{return false;}
+}
 export function loadAccountDeviceProgress(accountId:string,storage:ReadStorage|undefined=localStore()):ExplorerProgress{
  if(!uuid(accountId)||!storage)return emptyExplorerProgress();
  try{const raw=storage.getItem(`${STORAGE_KEY}:account:${accountId.toLowerCase()}`),safe=raw?sanitizeExplorerProgress(JSON.parse(raw)):emptyExplorerProgress();return safe.accountId===accountId.toLowerCase()?safe:emptyExplorerProgress();}catch{return emptyExplorerProgress();}

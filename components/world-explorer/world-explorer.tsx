@@ -5,7 +5,7 @@ import Link from 'next/link';
 import {ArrowLeft,ArrowRight,BookOpen,Check,Compass,Flag,Globe2,MapPin,Mountain,Play,Search,Settings,Snowflake,Star,Trophy,X} from 'lucide-react';
 import {countries,continents,countriesForContinent,countryByCode,type Country,type ContinentId} from '../../lib/world-explorer/catalog';
 import {loadExplorerProgress,saveExplorerProgress,recordCountryResult,mergeExplorerProgress,continentProgress,overallProgress,type ExplorerProgress} from '../../lib/world-explorer-progress';
-import {loadAccountProgress,saveAccountResult} from '../../lib/world-explorer/progress-client';
+import {loadAccountProgress,saveAccountResult,sessionDeviceProgress} from '../../lib/world-explorer/progress-client';
 import {discoveryFor} from '../../lib/world-explorer-discoveries';
 import {countryProfile} from '../../lib/world-explorer/profiles';
 import {CountryFlag} from './country-flag';
@@ -86,7 +86,7 @@ export default function WorldExplorer(){
   let current=true;
   setPreferences(loadExplorerPreferences());
   const hydrate=()=>{
-   const request=++accountEpoch.current,local=loadExplorerProgress();setProgress(local);setStorageChannel('device');
+   const request=++accountEpoch.current,local=loadExplorerProgress();setProgress(sessionDeviceProgress());setStorageChannel('device');
    void loadAccountProgress(local).then(result=>{if(current&&request===accountEpoch.current){setProgress(previous=>mergeExplorerProgress(previous,result.progress));setStorageChannel(result.storage);setSaveMessage(result.message||(result.storage==='account'?'Passport connected to your SocialU account':'Progress stays on this device'));}});
   };
   const sessionChanged=()=>{setPlaying(null);hydrate();};hydrate();window.addEventListener('socialu-session-changed',sessionChanged);

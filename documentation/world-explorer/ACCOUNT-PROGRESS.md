@@ -30,8 +30,12 @@ attempts. A run-result request increments attempts once per UUID; repeating the
 same request does not inflate the result.
 
 The device fallback uses `socialu.world-explorer.v1` for anonymous play. Account
-caches use `socialu.world-explorer.v1:account:<verified UUID>` and are loaded only
-after an authenticated response identifies their owner. Signing out must reset
+caches use `socialu.world-explorer.v1:account:<verified UUID>`. The owner of the
+device cache is read from the session token already stored on the device, so a
+signed-in student's result is cached for that account even when the account
+request fails (issue #1231). An anonymous passport is claimed by the first
+account that signs in and the anonymous key is then cleared, so a second account
+on the same browser never imports it. Signing out must reset
 the UI from the anonymous key before another account hydration. The client does
 not upload cached data known to belong to another account. The account UUID is
 never accepted in a merge/result request; the authenticated response includes it
