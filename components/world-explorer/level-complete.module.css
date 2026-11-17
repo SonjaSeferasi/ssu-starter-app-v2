@@ -1,4 +1,4 @@
-/* Level complete celebration (SRS-631.5). */
+/* Level complete celebration (SRS-631.5) and passport stamp (SRS-631.6). */
 .banner{position:absolute;inset:0;z-index:30;display:grid;place-items:center;overflow:hidden;pointer-events:none;animation:bannerLeave .35s ease-in 1.55s both}
 .rays{position:absolute;left:50%;top:50%;width:160vmax;height:160vmax;margin:-80vmax 0 0 -80vmax;border-radius:50%;
  background:radial-gradient(circle,#fffbe0 0,#ffe98ad9 9%,#ffd86a66 22%,transparent 46%),repeating-conic-gradient(from 0deg,#fff3b03d 0 7deg,transparent 7deg 18deg);
@@ -14,4 +14,16 @@
 @keyframes confettiFall{0%{transform:translate3d(0,0,0) rotate(0);opacity:1}85%{opacity:1}100%{transform:translate3d(var(--drift),112vh,0) rotate(var(--turn));opacity:0}}
 @keyframes bannerLeave{to{opacity:0}}
 
-@media(prefers-reduced-motion:reduce){.banner,.rays,.title,.confetti i{animation:none}.confetti{display:none}}
+.passport{display:grid;grid-template-columns:1fr 1.25fr;width:min(100%,330px);margin:0 auto 14px;filter:drop-shadow(0 8px 14px #0006);transform:rotate(-2deg)}
+.cover{display:grid;justify-items:center;align-content:center;gap:7px;padding:14px 8px;border-radius:10px 3px 3px 10px;background:linear-gradient(135deg,#7a4a2c,#5a3420 60%,#4a2a18);color:#e6c27a;
+ font:700 9px/1.2 Georgia,'Times New Roman',serif;letter-spacing:.14em;text-align:center;border:1px solid #3a2012;box-shadow:inset 0 0 0 3px #6d4127,inset 0 0 0 4px #c9a25a55}
+.cover svg{width:44px;height:44px}
+.page{position:relative;display:grid;place-items:center;min-height:128px;padding:10px;border-radius:3px 10px 10px 3px;background:linear-gradient(90deg,#e8dcc4,#f8f0df 12%,#f5ecd9);border:1px solid #d6c7a6;
+ background-image:linear-gradient(90deg,#e8dcc4,#f8f0df 12%,#f5ecd9),repeating-linear-gradient(0deg,transparent 0 17px,#b9a98522 17px 18px)}
+.stamp{display:grid;justify-items:center;gap:1px;padding:7px 14px 6px;border:3px solid currentColor;border-radius:10px;outline:1.5px solid currentColor;outline-offset:3px;color:#c62f33;
+ font:900 15px/1.05 'Trebuchet MS','Segoe UI',Arial,sans-serif;letter-spacing:.12em;transform:rotate(-7deg);opacity:.9;mix-blend-mode:multiply;animation:stampPress .55s cubic-bezier(.3,1.4,.5,1) .25s both}
+.stamp svg{width:58px;height:27px}
+.stamp small{font:700 8px/1.3 'Courier New',monospace;letter-spacing:.16em;margin-top:2px}
+@keyframes stampPress{0%{transform:rotate(-16deg) scale(2.6);opacity:0}60%{transform:rotate(-7deg) scale(.92);opacity:1}100%{transform:rotate(-7deg) scale(1);opacity:.9}}
+
+@media(prefers-reduced-motion:reduce){.banner,.rays,.title,.confetti i,.stamp{animation:none}.confetti{display:none}}
