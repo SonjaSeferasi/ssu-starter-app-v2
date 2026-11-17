@@ -7758,6 +7758,14 @@ Acceptance criterion: Given the student plays the Czechia level, when the explor
 
 Traces to: UR-632.
 
+##### SRS-632.10, SS — Present Budapest in the Hungary level.
+
+When the student plays the Hungary level, the system shall show the Buda embankment with its tram line and a yellow tram; castle-garden lawns and the retaining walls of Castle Hill; the long front of Buda Castle with its columned centre, green dome and the Hungarian flag; Matthias Church with its patterned tile roof and stone spire; the Fisherman's Bastion with its white arcades and seven conical turrets; beyond the finish, the Chain Bridge with its two stone towers, chains and guardian lions, and Gellért Hill with the Liberty Statue; a river boat on the Danube; and, on the route, ornate lamps, iron railings, benches, a paprika stall or a statue, potted trees, balustrades, a fountain, chimneys and dormer windows, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Hungary level, when the explorer is in the first half of the route, then the turrets of the Fisherman's Bastion and the spire of Matthias Church are visible; when the explorer is past the middle, then the dome of Buda Castle is visible to its top; when the explorer reaches the finish, then the Chain Bridge and the Liberty Statue are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
