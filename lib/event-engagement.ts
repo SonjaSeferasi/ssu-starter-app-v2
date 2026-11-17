@@ -9,7 +9,7 @@ const STARTED: Record<string, string> = {
 
 const NOT_CREATOR: Record<string, string> = {
   socialu_event_cancel: 'Only the event’s creator can cancel it.',
-  socialu_event_rsvp: 'Only invited students can answer this invitation.',
+  socialu_event_rsvp: 'You can’t answer an invitation to your own event.',
   socialu_event_update: 'Only the event’s creator can edit it.',
 };
 

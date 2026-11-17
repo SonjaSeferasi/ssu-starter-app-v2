@@ -11,10 +11,11 @@ import { SessionNotice } from '../../components/navigation/section-page';
 import { EventList, FeaturedEvent, WeekStrip, type CampusEvent } from '../../components/events/EventList';
 import { TrendingPosts } from '../../components/events/TrendingPosts';
 import { CancelledEventList, EventHistory, useCancelledEvents } from '../../components/events/CancelledEvents';
-import { InvitationList, useMyInvitations } from '../../components/events/MyInvitations';
+import { InvitationList, shownInvitations, useInvitations } from '../../components/events/MyInvitations';
 import { goingTo, hostedBy, splitByTime, type EventEngagement } from '../../lib/events';
 
 type Tab = 'discover' | 'rsvps' | 'hosting' | 'cancelled';
+const SIDEBAR_INVITATIONS = 5;
 const TABS: { id: Tab; label: string }[] = [
   { id: 'discover', label: 'Discover' },
   { id: 'rsvps', label: 'My RSVPs' },
@@ -32,7 +33,8 @@ export default function EventsPage() {
   const [error, setError] = useState('');
   const [created, setCreated] = useState(false);
   const [coverFailed, setCoverFailed] = useState(false);
-  const invitations = useMyInvitations();
+  const { invitations, respond, error: answerError } = useInvitations();
+  const invitationCount = invitations ? shownInvitations(invitations).length : 0;
   const cancelled = useCancelledEvents();
 
   useEffect(() => {
@@ -167,11 +169,18 @@ export default function EventsPage() {
         <aside className={styles.sideColumn}>
           <WeekStrip events={events} />
           <section className={styles.sideCard} aria-labelledby="invited-title">
-            <h2 id="invited-title" className={styles.sideTitle}>You’re invited</h2>
-            <InvitationList invitations={invitations} classNames={{
+            <h2 id="invited-title" className={styles.sideTitle}>
+              <Link href="/events/invitations" className={styles.sideTitleLink}>You’re invited{invitationCount ? ` (${invitationCount})` : ''}</Link>
+            </h2>
+            <InvitationList invitations={invitations} onRespond={respond} limit={SIDEBAR_INVITATIONS} classNames={{
               list: styles.invitationList, item: styles.invitationItem, title: styles.invitationTitle,
               meta: styles.invitationMeta, empty: styles.sideEmpty, cancelled: styles.cancelledTag,
+              actions: styles.inviteActions, accept: styles.inviteAccept, decline: styles.inviteDecline, accepted: styles.inviteAccepted,
             }} />
+            {answerError ? <p role="alert" className={styles.actionError}>{answerError}</p> : null}
+            <Link href="/events/invitations" className={styles.historyMore}>
+              {invitationCount > SIDEBAR_INVITATIONS ? `See all ${invitationCount} invitations` : 'Open invitations'}
+            </Link>
           </section>
           <TrendingPosts />
           <EventHistory events={cancelled.events} onShowAll={() => setTab('cancelled')} />

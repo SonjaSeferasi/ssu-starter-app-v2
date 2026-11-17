@@ -132,7 +132,7 @@ export default function EventDetailPage() {
             </article>
 
             {invitation && upcoming && !cancelled ? (
-              <RsvpInvitation eventId={event.event_id} host={event.creator_username} rsvp={rsvp ?? invitation.rsvp} onChange={setRsvp} />
+              <RsvpInvitation eventId={event.event_id} host={event.creator_username} rsvp={rsvp ?? invitation.rsvp} onChange={setRsvp} invited={invitation.invited !== false} />
             ) : null}
 
             {isCreator && upcoming && !cancelled ? (

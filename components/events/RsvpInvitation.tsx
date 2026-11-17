@@ -16,7 +16,7 @@ export function rsvpStatus(rsvp: string) {
 
 // UR-403, for an invited student: accept (RSVP 'attending') or decline the invitation, and change their mind
 // until the event starts.
-export function RsvpInvitation({ eventId, host, rsvp, onChange }: { eventId: string; host: string; rsvp: string; onChange: (rsvp: Rsvp) => void }) {
+export function RsvpInvitation({ eventId, host, rsvp, onChange, invited = true }: { eventId: string; host: string; rsvp: string; onChange: (rsvp: Rsvp) => void; invited?: boolean }) {
   const [saving, setSaving] = useState<Rsvp | null>(null);
   const [error, setError] = useState('');
 
@@ -44,7 +44,7 @@ export function RsvpInvitation({ eventId, host, rsvp, onChange }: { eventId: str
   return (
     <section className={styles.sectionBlock} aria-labelledby="rsvp-title">
       <h2 id="rsvp-title" className={styles.sectionTitle}>Your invitation</h2>
-      <p className={styles.sideBody}>@{host} invited you. <span role="status">{rsvpStatus(rsvp)}</span></p>
+      <p className={styles.sideBody}>{invited ? `@${host} invited you.` : `@${host} posted this event.`} <span role="status">{rsvpStatus(rsvp)}</span></p>
       <div className={styles.rsvpButtons}>
         <button type="button" className={styles.primaryButton} aria-pressed={rsvp === 'attending'}
           disabled={saving !== null || rsvp === 'attending'} onClick={() => answer('attending')}>
