@@ -8000,6 +8000,14 @@ Acceptance criterion: Given the student plays the Romania level, when the explor
 
 Traces to: UR-632.
 
+##### SRS-632.40, SS — Present the Škocjan Caves in the Slovenia level.
+
+When the student plays the Slovenia level, the system shall show a dark underground hall with a rock back wall and a roof hung with stalactites; a rock ledge along the far wall carrying the visitors' path with steel railings and lit lamps; stalagmites on the ledge; the stepped rimstone pools; the three great stalagmites called the Giants, the middle one joined to the roof; a high slender bridge over the side chasm, parallel to the route and not reaching it, with stairs climbing to it on both sides, lamps and the Slovenian flag; the flowstone curtain called the Organ; foam on the river; at the end an opening to daylight showing sky, green slopes, trees, a cliff with a waterfall and the village church on the rim; bats flying under the roof; and, on the route, stalagmites, cave lamps, steel railings and pale cave salamanders, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Slovenia level, when the explorer starts the route, then the stalactites, the railed path and its lamps are visible; when the explorer is in the first half of the route, then the Giants are visible; when the explorer reaches the middle of the route, then the high bridge, its stairs and the flag are visible; when the explorer reaches the finish, then the opening to daylight with the church on the rim is visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
