@@ -21,6 +21,7 @@ import { PHOTO_ACCEPT, PHOTO_SEND_FAILED, choosePhoto, describeChosenPhoto, phot
 import { PHOTO_DELETED, PHOTO_DELETE_CONFIRM, PHOTO_UNAVAILABLE, canDeletePhoto, markPhotoDeleted, mergePhotoUrl, photoLinkRefreshDelay, photoLinksExpired } from '../../../lib/chat-photo-links';
 import { DELETE_CONVERSATION_CONFIRM, DELETE_CONVERSATION_FAILED, DELETE_CONVERSATION_LABEL, FORMER_MEMBER_NOTICE, canDeleteConversation, isReadOnly } from '../../../lib/chat-former-member';
 import { messageDateTimeAttribute, messageTime, messageTimeFull } from '../../../lib/chat-time';
+import { READ_LABEL, showsReadReceipt } from '../../../lib/chat-read-status';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -785,10 +786,20 @@ function Conversation() {
                       The short label is for glancing at; dateTime and title carry the exact instant.
                       aria-hidden because the bubble already speaks it, after the sender and the text. */}
                   {messageTime(message.sent_at) && (
-                    <time className={styles.messageTime} aria-hidden="true"
-                      dateTime={messageDateTimeAttribute(message.sent_at)} title={messageTimeFull(message.sent_at)}>
-                      {messageTime(message.sent_at)}
-                    </time>
+                    <span className={styles.messageMeta}>
+                      <time className={styles.messageTime} aria-hidden="true"
+                        dateTime={messageDateTimeAttribute(message.sent_at)} title={messageTimeFull(message.sent_at)}>
+                        {messageTime(message.sent_at)}
+                      </time>
+                      {/* SRS-211.8 (#1283): that the other student has read it, beside the time. Nothing is
+                          shown until it has been read -- "Sent" would be SRS-211.4, which is a separate
+                          requirement and not built. SRS-211.9: never in a group, which showsReadReceipt
+                          enforces and the database backs by not sending the field at all.
+                          Spoken, unlike the time, because the bubble does not say it. */}
+                      {showsReadReceipt(info?.kind, message, myStudentId) && (
+                        <span className={styles.messageRead}>{READ_LABEL}</span>
+                      )}
+                    </span>
                   )}
                   {picking && (
                     <ReactionPicker current={chips.find((reaction) => reaction.mine)?.emoji ?? null} disabled={reactionBusy} onClose={closeReactions}

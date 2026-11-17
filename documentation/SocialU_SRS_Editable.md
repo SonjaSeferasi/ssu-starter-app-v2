@@ -7976,6 +7976,38 @@ Acceptance criterion: Given the student plays the Bulgaria level, when the explo
 
 Traces to: UR-632.
 
+##### SRS-632.37, SS — Present Stari Ras and Sopoćani in the Serbia level.
+
+When the student plays the Serbia level, the system shall show the small round church of St Peter with its apse, tiled cone roofs and old stone crosses; the ruined ramparts and gate-tower stumps of the fortress of Ras on its hill; the monastery of Sopoćani inside its wall and roofed gate, with the bell tower, the open porch, the long nave under lead roofs, the dome on its square base, the round apse, the timber-galleried lodging house and the Serbian flag; the church of the Pillars of St George with its two towers on a hilltop; pastures with haystacks built round poles, sheep, plum trees and a field fence; woods and rolling hills behind; and, on the route, fences and handrails, painted beehives, crates of plums, small haystacks, stone walls, chimneys and benches, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Serbia level, when the explorer starts the route, then the round church of St Peter is visible; when the explorer is in the first half of the route, then the ruined fortress on its hill is visible; when the explorer is in the second half of the route, then the monastery's bell tower, dome and flag are visible; when the explorer nears the finish, then the two towers on the hilltop are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.38, SS — Present the Struve Arc point in the Moldova level.
+
+When the student plays the Moldova level, the system shall show, on a low hill, the dark stone marker of the Struve Arc point with its bronze globe inside posts and chains, the tall timber signal tower over it with its platform and sighting target, and the Moldovan flag; smaller signals on the far hills; a field of sunflowers facing the route; vine rows and striped farmland; a village of white houses with blue porches, window frames and fences; a roofed well; a wayside cross; a small white monastery church with green domes; storks on pole-top nests; trees; and, on the route, wattle fences and handrails, sunflowers, surveyors' theodolites on tripods, red and white ranging poles, chimneys and benches, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Moldova level, when the explorer starts the route, then the white houses with blue porches are visible; when the explorer reaches the middle of the route, then the signal tower, the flag and the sunflower field are visible; when the explorer nears the finish, then the monastery church and a stork on its nest are visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.39, SS — Present the Danube Delta in the Romania level.
+
+When the student plays the Romania level, the system shall show low islands of reed and willow across the water and a wall of reeds behind them; on the largest island a fishing village of white houses with blue frames under steep thatch behind reed fences, a church with blue onion domes, fish drying on racks, a net on poles, and a jetty with black tarred boats and the Romanian flag; a wooden bird hide on stilts; the old white lighthouse with its gallery, lit lantern and red cap, and the keeper's house; rafts of pelicans, herons and water lilies on the water; pelicans flying over; a fisherman rowing a black boat, who stays still when reduced motion is on; and, on the route, rope rails, storm lanterns, fish racks, nets on poles and reed bundles, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Romania level, when the explorer starts the route, then the bird hide on stilts and the reed beds are visible; when the explorer reaches the middle of the route, then the thatched houses, the blue onion domes and the flag are visible; when the explorer nears the finish, then the white lighthouse is visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
+##### SRS-632.40, SS — Present the Škocjan Caves in the Slovenia level.
+
+When the student plays the Slovenia level, the system shall show a dark underground hall with a rock back wall and a roof hung with stalactites; a rock ledge along the far wall carrying the visitors' path with steel railings and lit lamps; stalagmites on the ledge; the stepped rimstone pools; the three great stalagmites called the Giants, the middle one joined to the roof; a high slender bridge over the side chasm, parallel to the route and not reaching it, with stairs climbing to it on both sides, lamps and the Slovenian flag; the flowstone curtain called the Organ; foam on the river; at the end an opening to daylight showing sky, green slopes, trees, a cliff with a waterfall and the village church on the rim; bats flying under the roof; and, on the route, stalagmites, cave lamps, steel railings and pale cave salamanders, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Slovenia level, when the explorer starts the route, then the stalactites, the railed path and its lamps are visible; when the explorer is in the first half of the route, then the Giants are visible; when the explorer reaches the middle of the route, then the high bridge, its stairs and the flag are visible; when the explorer reaches the finish, then the opening to daylight with the church on the rim is visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
