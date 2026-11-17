@@ -1,5 +1,6 @@
 import { AccountError, accountClient, accountOperation, verifiedUser } from './socialu-account';
 import { layeredKeys } from './avatar-layers';
+import { avatarPhotoRpc, signedAvatarPhoto } from './avatar-photo-server';
 
 // Browser requests never select the acting student. Raw socialu tables stay private.
 export async function gameRoomOperation(request: Request, action: string, args: Record<string, unknown> = {}) {
@@ -31,6 +32,10 @@ export async function gameRoomOperation(request: Request, action: string, args: 
     if (error.code === '42501') throw new AccountError('This appearance is not available to your account.', 403);
     if (error.code === '22023') throw new AccountError('Choose an available face and complete outfit.', 400);
     throw new AccountError('Game Room storage is unavailable. Please try again.', 503);
+  }
+  if (data?.appearance?.faceId === null) {
+    const photo = await avatarPhotoRpc(user.id);
+    if (photo) data = { ...data, appearance: { ...data.appearance, photoFaceId: photo.id, photoFaceUrl: await signedAvatarPhoto(photo.key) } };
   }
   return data;
 }

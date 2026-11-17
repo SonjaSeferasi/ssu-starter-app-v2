@@ -2,7 +2,7 @@
 
 import { GameRoomRequestError, roomRequest } from '../../lib/game-room-client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { AvatarAppearance, GameRoomData } from '../../lib/game-room';
 import { gameRoomSamples } from '../../lib/game-room';
 import { availableGameCards } from '../../lib/game-room-cards';
@@ -15,9 +15,10 @@ import { bodyShapes, skinColors } from '../../lib/avatar-figure';
 import { CompleteAvatar } from './complete-avatar';
 import { GameCardView } from './game-card';
 import { WelcomeBanner } from './welcome-banner';
-import { Check, Droplet, PersonStanding, Scissors, Shirt, Smile, Sparkles, Gamepad2 } from 'lucide-react';
+import { Droplet, PersonStanding, Scissors, Shirt, Smile, Sparkles, Gamepad2 } from 'lucide-react';
 import { ParticipationStreak } from './participation-streak';
 import styles from './game-room.module.css';
+import { PhotoFaceEditor } from './photo-face-editor';
 
 export function GameRoom() {
   const session = useNavigationSession();
@@ -38,6 +39,10 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
   const [loading, setLoading] = useState(!preview);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
+  const saveLock = useRef(false);
+  const mounted = useRef(true);
+  const [photoEditor, setPhotoEditor] = useState(false);
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   const [saveMessage, setSaveMessage] = useState('');
   const [retrySelection, setRetrySelection] = useState<AvatarAppearance | null>(null);
   const [attempt, setAttempt] = useState(0);
@@ -74,39 +79,52 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
     return () => controller.abort();
   }, [preview, attempt]);
 
-  async function saveAvatar() {
-    if (saving || !appearance) return;
-    if (temporaryPreview) { setSaveMessage('This is a design preview. Sign in to save an avatar to your account.'); return; }
-    const selected = { ...appearance };
-    setSaving(true); setRetrySelection(null); setSaveMessage('Saving your avatar…');
+  async function saveAvatar(selected: AvatarAppearance) {
+    if (saveLock.current) return;
+    if (temporaryPreview) { setAppearance(selected); setSaveMessage('Preview only; changes are not saved.'); return; }
+    const previous = room?.appearance || null;
+    saveLock.current = true;
+    setAppearance(selected); setSaving(true); setRetrySelection(null); setSaveMessage('Saving your avatar…');
     try {
       const saved = await roomRequest('PUT', selected);
+      if (!mounted.current) return;
       const confirmed = completeAppearance(saved, saved.appearance);
       setRoom({ ...saved, appearance: confirmed }); setAppearance(confirmed); setSaveMessage('Avatar saved.');
     } catch (failure) {
-      setRetrySelection(selected);
-      setSaveMessage(failure instanceof Error ? failure.message + ' Your changes are still here; try saving again.' : 'The save could not be confirmed. Your changes are still here.');
-    } finally { setSaving(false); }
+      if (!mounted.current) return;
+      setAppearance(previous); setRetrySelection(selected);
+      setSaveMessage((failure instanceof Error ? failure.message : 'The save could not be confirmed.') + ' Showing your previously saved appearance. Retry to apply your selection.');
+    } finally { saveLock.current = false; if (mounted.current) setSaving(false); }
   }
 
   const dirty = JSON.stringify(appearance) !== JSON.stringify(room?.appearance || null);
   const games = availableGameCards(room?.activities);
   const statusTone = retrySelection ? 'error' : saving ? 'pending' : dirty ? 'unsaved' : saveMessage === 'Avatar saved.' ? 'saved' : 'idle';
   const legacyPreview = !completeAvatar(appearance?.avatarId);
-  const statusText = saveMessage || (temporaryPreview ? 'Preview only; account saving is unavailable here.' : legacyPreview ? 'Choose a complete look, then save it to update your avatar.' : 'Choose your look, then save your avatar.');
-  function chooseCompleteAvatar(id: string, change: Pick<AvatarAppearance, 'bodyShape' | 'skinColor'> = {}) {
-    if (!completeAvatar(id) || !room || saving) return;
+  const statusText = saveMessage || (temporaryPreview ? 'Preview only; account saving is unavailable here.' : legacyPreview ? 'Choose a complete look to save it automatically.' : 'Your selections save automatically.');
+  function chooseCompleteAvatar(id: string, change: Pick<AvatarAppearance, 'bodyShape' | 'skinColor'> = {}, defaultFace = false) {
+    if (!completeAvatar(id) || !room || saveLock.current) return;
     const current = appearance || completeAppearance(room, { outfitId: room.outfits[0]?.id || '', faceId: room.faces.find(face => face.initial)?.id || room.faces[0]?.id || null });
     const next = { ...current!, avatarId: id, ...change };
+    if (defaultFace) {
+      next.faceId = room.faces.find(face => face.initial)?.id || room.faces[0]?.id || null;
+      delete next.photoFaceUrl; delete next.photoFaceId;
+    }
     for (const key of layeredKeys) delete next[key];
     // The defaults (average body, skin as painted) are not stored.
     if (!next.bodyShape || next.bodyShape === 'average') delete next.bodyShape;
     if (!next.skinColor) delete next.skinColor;
-    setAppearance(next); setRetrySelection(null); setSaveMessage('Unsaved changes');
+    void saveAvatar(next);
   }
   const chooseFigure = (change: Pick<AvatarAppearance, 'bodyShape' | 'skinColor'>) => selectedAvatar && chooseCompleteAvatar(selectedAvatar.id, change);
   return <main className={styles.page}><div className={styles.layout}>
     <WelcomeBanner />
+    {photoEditor && selectedAvatar && appearance && <PhotoFaceEditor avatar={selectedAvatar} appearance={appearance}
+      onClose={() => setPhotoEditor(false)} onSaved={photo => {
+        const confirmed = { ...appearance, faceId: null, ...photo };
+        setAppearance(confirmed); setRoom(current => current ? { ...current, appearance: confirmed } : current);
+        setPhotoEditor(false); setRetrySelection(null); setSaveMessage('Photograph saved.');
+      }} />}
     {temporaryPreview && !error && <aside className={styles.previewNotice} role="status">
       <p><strong>Game Room preview.</strong> Complete avatars are available to try. Changes are temporary and are not saved to your account.</p>
       {!preview && <button className={styles.secondaryButton} onClick={() => setAttempt(value => value + 1)} disabled={loading}>Retry account connection</button>}
@@ -116,7 +134,7 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
         <div className={styles.panelHeading}><span className={styles.smallIcon} aria-hidden="true"><Sparkles size={22} /></span><div><h2 id="avatar-title">Customize your avatar</h2><p>Your look, across your games.</p></div></div>
         <div className={styles.avatarLayout}>
           <div className={styles.avatarStage}>
-            {selectedAvatar && <CompleteAvatar avatar={selectedAvatar} look={look} />}
+            {selectedAvatar && <CompleteAvatar avatar={selectedAvatar} look={look} photoFaceUrl={shown?.photoFaceUrl} />}
             <span className={styles.avatarLabel}>{temporaryPreview ? 'Campus collection · sample' : dirty ? 'Previewing your changes' : legacyPreview ? 'Complete avatar preview' : 'Your saved avatar'}</span>
           </div>
           <div className={styles.controls}>
@@ -136,7 +154,7 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
               })}
               {editor === 'face' && collectionFaces.map(face => {
                 const choice = avatarVariant(visibleGroup, parts.outfit, parts.hair, face.id);
-                return <button key={face.id} aria-label={face.name} aria-pressed={selectedAvatar?.group === visibleGroup && parts.detail === face.id} disabled={saving} className={styles.completeOption} onClick={() => chooseCompleteAvatar(choice.id)}><CompleteAvatar avatar={choice} look={look} small portrait /><span>{face.name}</span></button>;
+                return <button key={face.id} aria-label={face.name} aria-pressed={selectedAvatar?.group === visibleGroup && parts.detail === face.id} disabled={saving} className={styles.completeOption} onClick={() => chooseCompleteAvatar(choice.id, {}, true)}><CompleteAvatar avatar={choice} look={look} small portrait /><span>{face.name}</span></button>;
               })}
               {editor === 'skin' && selectedAvatar && <>
                 <button className={styles.paintedSkin} aria-pressed={!look.skinColor} disabled={saving} onClick={() => chooseFigure({ skinColor: undefined })}>As painted</button>
@@ -153,10 +171,10 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
               })}
             </section>
             <p className={styles.footnote}>{selectedAvatar?.description}{look.bodyShape && look.bodyShape !== 'average' ? `, ${bodyName.toLowerCase()} body` : ''}{skinName ? `, ${skinName.toLowerCase()} skin` : ''}.</p>
-            <p className={styles.previewHint}>Changes preview instantly.</p>
+            {editor === 'face' && selectedAvatar && appearance && <button className={styles.secondaryButton} disabled={saving || temporaryPreview} onClick={() => setPhotoEditor(true)}>Use a Photograph</button>}
+            <p className={styles.previewHint}>Outfit and default-face choices save automatically. Photographs are saved only when you confirm.</p>
             <p className={styles.saveStatus} data-tone={statusTone} role={retrySelection ? 'alert' : 'status'} aria-live="polite">{statusText}</p>
-            <button className={styles.primaryButton} onClick={() => void saveAvatar()} disabled={saving || !appearance || !appearance.outfitId || !dirty || temporaryPreview}>{saving ? 'Saving…' : <>Save Look <Check size={18} aria-hidden="true" /></>}</button>
-            <button className={styles.secondaryButton} disabled={saving || !dirty} onClick={() => { setAppearance(room?.appearance || null); setCollectionGroup(null); setRetrySelection(null); setSaveMessage('Changes discarded.'); }}>Discard changes</button>
+            {retrySelection && <button className={styles.primaryButton} onClick={() => void saveAvatar(retrySelection)} disabled={saving}>Retry</button>}
             <p className={styles.footnote}>Customization is optional. Your avatar is ready to play.</p>
           </div>
         </div>

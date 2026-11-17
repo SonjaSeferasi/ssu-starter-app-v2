@@ -1,0 +1,17 @@
+{
+  "evidence": "Local Edge, intercepted API fixture, synthetic camera and synthetic image; optional official HEIC sample. Not hosted persistence or physical-camera acceptance.",
+  "checks": [
+    "608.3: outfit saves automatically and restores on fixture reload",
+    "608.6: failed outfit rolls back; Retry saves the failed selection",
+    "608.5: default face saves without Save Look",
+    "609.1–609.7: file validation, resize/reposition and image preview; no save before confirmation",
+    "609.10–609.12: Keep Editing retains crop; Escape/Discard closes without changing saved face",
+    "609.8–609.9: failed Save retains candidate; Retry explicitly saves photograph",
+    "Saved photo restores after fixture reload, survives outfit changes, and is replaced by default face",
+    "609.2: synthetic camera capture enters the same editable crop workflow",
+    "609.13: denied camera access explains the problem and offers file selection",
+    "Photo dialog fits 390px mobile viewport",
+    "609.3: genuine heic2any demo HEIC decoded locally and produced an editable image"
+  ],
+  "errors": []
+}

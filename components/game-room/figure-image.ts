@@ -1,5 +1,5 @@
 import { avatarFrame, type CompleteAvatar } from '../../lib/avatar-collection';
-import { adjustFigure, bodyShapes, skinColors, type BodyShape, type SkinColor } from '../../lib/avatar-figure';
+import { adjustFigure, figureLandmarks, bodyShapes, skinColors, type BodyShape, type SkinColor } from '../../lib/avatar-figure';
 
 export type FigureLook = { bodyShape?: BodyShape; skinColor?: SkinColor };
 
@@ -13,6 +13,33 @@ const sheets = new Map<string, Promise<HTMLImageElement>>();
 // Most recently used last; old object URLs are released.
 const figures = new Map<string, Promise<string>>();
 const keep = 48;
+
+export type PhotoFaceFrame = { cx: number; cy: number; rx: number; ry: number };
+const photoFrames = new Map<string, Promise<PhotoFaceFrame>>();
+/** Measure each painted head rather than assuming every atlas cell is centered. */
+export function photoFaceFrame(avatar: CompleteAvatar): Promise<PhotoFaceFrame> {
+  const existing = photoFrames.get(avatar.id); if (existing) return existing;
+  const result = (async () => {
+    const image = await sheet(avatar.sheet), frame = avatarFrame(avatar);
+    const canvas = document.createElement('canvas'); canvas.width = frame.width; canvas.height = frame.height;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    if (!ctx) throw new Error('Avatar rendering is unavailable.');
+    ctx.drawImage(image, frame.x, frame.y, frame.width, frame.height, 0, 0, frame.width, frame.height);
+    const pixels = ctx.getImageData(0, 0, frame.width, frame.height), marks = figureLandmarks(pixels);
+    if (!marks) throw new Error('Avatar head could not be measured.');
+    const tall = marks.bottom - marks.top;
+    let total = 0, weighted = 0;
+    for (let y = Math.round(marks.top + tall * .06); y < marks.top + tall * .1; y++) {
+      for (let x = 0; x < frame.width; x++) {
+        const alpha = pixels.data[(y * frame.width + x) * 4 + 3];
+        if (alpha > 40) { total += alpha; weighted += x * alpha; }
+      }
+    }
+    return { cx: (430 - frame.width) / 2 + (total ? weighted / total : marks.center),
+      cy: (760 - frame.height) / 2 + marks.top + tall * .1, rx: tall * .046, ry: tall * .061 };
+  })();
+  photoFrames.set(avatar.id, result); result.catch(() => photoFrames.delete(avatar.id)); return result;
+}
 
 function sheet(href: string) {
   let image = sheets.get(href);

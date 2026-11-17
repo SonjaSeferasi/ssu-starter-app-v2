@@ -21,6 +21,9 @@ export const pantsColors = [
 export type AvatarAppearance = {
   outfitId: string; faceId: string | null;
   avatarId?: string;
+  /** Read-only, short-lived private photo URL; never accepted as a save target. */
+  photoFaceUrl?: string;
+  photoFaceId?: string;
   /** Complete avatars only. Absent: average body, skin as painted. */
   bodyShape?: BodyShape;
   skinColor?: SkinColor;
