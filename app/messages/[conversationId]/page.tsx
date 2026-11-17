@@ -19,7 +19,7 @@ import { SnipePanel } from '../../../components/snipe/snipe-panel';
 import { canSelectForReply, findReplyTarget, keepReplyTarget, replyIndication, replyPreview, replyQuote, toggleReplyTarget, type ReplyTargets } from '../../../lib/chat-reply';
 import { PHOTO_ACCEPT, PHOTO_SEND_FAILED, choosePhoto, describeChosenPhoto, photoError, type ChosenPhoto } from '../../../lib/chat-photo';
 import { PHOTO_DELETED, PHOTO_DELETE_CONFIRM, PHOTO_UNAVAILABLE, canDeletePhoto, markPhotoDeleted, mergePhotoUrl, photoLinkRefreshDelay, photoLinksExpired } from '../../../lib/chat-photo-links';
-import { FORMER_MEMBER_NOTICE, isReadOnly } from '../../../lib/chat-former-member';
+import { DELETE_CONVERSATION_CONFIRM, DELETE_CONVERSATION_FAILED, DELETE_CONVERSATION_LABEL, FORMER_MEMBER_NOTICE, canDeleteConversation, isReadOnly } from '../../../lib/chat-former-member';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -234,6 +234,40 @@ function Conversation() {
   useEffect(() => {
     setConfirmingDelete((current) => (current && messages.some((m) => m.id === current && !m.deleted) ? current : null));
   }, [messages]);
+
+  // SRS-207.6 (#1264) / SRS-207.7 (#888): removing the whole conversation from this student's own view.
+  // Separate state from confirmingDelete above, which is per photo: these two warnings can never be on
+  // screen together, because the photo control is hidden once the conversation is read-only.
+  const [confirmingConversationDelete, setConfirmingConversationDelete] = useState(false);
+  const [deletingConversation, setDeletingConversation] = useState(false);
+  // Escape backs out here too.
+  useEffect(() => {
+    if (!confirmingConversationDelete) return;
+    function onKeyDown(event: KeyboardEvent) { if (event.key === 'Escape' && !deletingConversation) setConfirmingConversationDelete(false); }
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [confirmingConversationDelete, deletingConversation]);
+
+  async function deleteConversation() {
+    if (deletingConversation) return;
+    setDeletingConversation(true);
+    setError('');
+    try {
+      const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}`, {
+        method: 'DELETE', headers: { Authorization: `Bearer ${storedAccessToken() ?? ''}` },
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || DELETE_CONVERSATION_FAILED);
+      // It is gone from this student's list as well, so there is nothing to come back to. A full navigation
+      // rather than router.push, so the Messages list is fetched again instead of being restored from
+      // whatever the client had cached before the deletion.
+      window.location.assign('/messages');
+    } catch (err) {
+      setConfirmingConversationDelete(false);
+      setDeletingConversation(false);
+      setError(err instanceof Error && !(err instanceof TypeError) ? err.message : DELETE_CONVERSATION_FAILED);
+    }
+  }
 
   const deletingRef = useRef(false);
   async function deletePhoto(messageId: string) {
@@ -772,7 +806,33 @@ function Conversation() {
               it. Every write still refuses them in the database, so the composer is replaced rather than
               disabled -- a greyed-out box invites them to try and then explains nothing. */}
           {readOnly ? (
-            <p className={styles.readOnlyNotice}>{FORMER_MEMBER_NOTICE}</p>
+            <div className={styles.readOnlyNotice}>
+              <p className={styles.readOnlyText}>{FORMER_MEMBER_NOTICE}</p>
+              {/* SRS-207.6 (#1264): the option to put it away for good. Offered here rather than on the list
+                  row because this is where the student can see what they would be giving up. */}
+              {canDeleteConversation(info) && !confirmingConversationDelete && (
+                <button type="button" className={styles.conversationDelete} disabled={deletingConversation}
+                  onClick={() => setConfirmingConversationDelete(true)}>
+                  {DELETE_CONVERSATION_LABEL}
+                </button>
+              )}
+              {/* The warning sits in the page, not in window.confirm, for the reason given at
+                  confirmingDelete above: a suppressed dialog answers "no" without showing anything. */}
+              {confirmingConversationDelete && (
+                <div className={styles.conversationConfirm} role="alertdialog"
+                  aria-label="Confirm removing this conversation from your Messages">
+                  <p className={styles.conversationConfirmText}>{DELETE_CONVERSATION_CONFIRM}</p>
+                  <div className={styles.conversationConfirmActions}>
+                    <button type="button" className={styles.photoConfirmCancel} disabled={deletingConversation}
+                      onClick={() => setConfirmingConversationDelete(false)}>Cancel</button>
+                    <button type="button" className={styles.photoConfirmDelete} autoFocus disabled={deletingConversation}
+                      onClick={() => void deleteConversation()}>
+                      {deletingConversation ? 'Removing…' : 'Remove'}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           ) : (
           <form className={styles.composer} onSubmit={send}>
             <button ref={emojiButton} type="button" className={styles.emojiToggle} onClick={() => setPicking((open) => !open)}
