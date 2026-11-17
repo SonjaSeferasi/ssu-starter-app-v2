@@ -1,15 +1,17 @@
 import * as T from 'three';
 import {batchStatic,matte,mesh,random} from './scenic-kit';
+import {japanAtmosphere} from './japan-atmosphere';
 
-/** A shaded sky volume with a pale horizon and a deeper blue zenith. */
+/** A shaded sky volume with a warm peach horizon, a soft blue zenith and a
+ * broad low-sun glow (colours from japan-atmosphere). */
 export function createJapanSky(parent:T.Object3D){
  const material=new T.ShaderMaterial({side:T.BackSide,depthWrite:false,
-  uniforms:{zenith:{value:new T.Color('#3887e4')},horizon:{value:new T.Color('#d1e8f7')}},
+  uniforms:{zenith:{value:new T.Color(japanAtmosphere.sky.zenith)},horizon:{value:new T.Color(japanAtmosphere.sky.horizon)},glowColor:{value:new T.Vector3(...japanAtmosphere.sky.glow)},glowFocus:{value:japanAtmosphere.sky.glowFocus}},
   vertexShader:'varying vec3 worldPoint; void main(){vec4 p=modelMatrix*vec4(position,1.0);worldPoint=p.xyz;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
-  fragmentShader:`uniform vec3 zenith;uniform vec3 horizon;varying vec3 worldPoint;
-   void main(){vec3 direction=normalize(worldPoint-cameraPosition);float t=smoothstep(-.65,.4,direction.y);
-    vec3 color=mix(horizon,zenith,t);float glow=pow(max(0.0,dot(direction,normalize(vec3(-.7,.65,-.8)))),48.0);
-    color+=vec3(.19,.12,.035)*glow;gl_FragColor=vec4(color,1.0);
+  fragmentShader:`uniform vec3 zenith;uniform vec3 horizon;uniform vec3 glowColor;uniform float glowFocus;varying vec3 worldPoint;
+   void main(){vec3 direction=normalize(worldPoint-cameraPosition);float t=smoothstep(-.16,.4,direction.y);
+    vec3 color=mix(horizon,zenith,t);float glow=pow(max(0.0,dot(direction,normalize(vec3(-.55,.42,-.8)))),glowFocus);
+    color+=glowColor*glow;gl_FragColor=vec4(color,1.0);
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
    }`});
@@ -87,7 +89,7 @@ export function addJapanRidges(parent:T.Object3D,finish:number,low:boolean){
  const trunks=new T.InstancedMesh(new T.CylinderGeometry(.045,.065,1,5),matte('#685b4c'),samples.length),crowns=new T.InstancedMesh(crownGeometry,matte('#68896c'),samples.length),dummy=new T.Object3D();trunks.name='surface-anchored-ridge-trunks';crowns.name='surface-anchored-ridge-canopies';trunks.castShadow=crowns.castShadow=false;
  samples.forEach((sample,i)=>{
   dummy.position.set(sample.x,sample.y+sample.height*.4,sample.z);dummy.rotation.set(0,i*.4,.035*Math.sin(i));dummy.scale.set(1,sample.height*.8,1);dummy.updateMatrix();trunks.setMatrixAt(i,dummy.matrix);
-  dummy.position.set(sample.x,sample.y+sample.height*.85,sample.z);dummy.scale.set(sample.height*.55,sample.height*.63,sample.height*.46);dummy.updateMatrix();crowns.setMatrixAt(i,dummy.matrix);crowns.setColorAt(i,new T.Color(sample.band===1?'#72968c':'#528362').multiplyScalar(.89+r()*.19));
+  dummy.position.set(sample.x,sample.y+sample.height*.85,sample.z);dummy.scale.set(sample.height*.55,sample.height*.63,sample.height*.46);dummy.updateMatrix();crowns.setMatrixAt(i,dummy.matrix);crowns.setColorAt(i,new T.Color(sample.band===1?'#7ba77f':'#5c9a62').multiplyScalar(.89+r()*.19));
  });root.add(trunks,crowns);batchStatic(root);return root;
 }
 
