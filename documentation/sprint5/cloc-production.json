@@ -1,0 +1,29 @@
+{"header" : {
+  "cloc_url"           : "github.com/AlDanial/cloc",
+  "cloc_version"       : "2.12",
+  "elapsed_seconds"    : 1.0252149105072,
+  "n_files"            : 1003,
+  "n_lines"            : 83641,
+  "files_per_second"   : 978.331459794891,
+  "lines_per_second"   : 81583.8700186486,
+  "report_file"        : "/private/tmp/sprint5-cloc.json"},
+"TypeScript" :{
+  "nFiles": 814,
+  "blank": 2816,
+  "comment": 4948,
+  "code": 48747},
+"SQL" :{
+  "nFiles": 158,
+  "blank": 1325,
+  "comment": 3710,
+  "code": 17845},
+"CSS" :{
+  "nFiles": 31,
+  "blank": 151,
+  "comment": 226,
+  "code": 3873},
+"SUM": {
+  "blank": 4292,
+  "comment": 8884,
+  "code": 70465,
+  "nFiles": 1003} }
