@@ -20,6 +20,7 @@ import {loadExplorerAvatar} from '../../lib/world-explorer/avatar';
 import type {GameRoomData} from '../../lib/game-room';
 import {LandmarkPhoto} from './landmark-photo';
 import {PreferencesControls} from './preferences-panel';
+import {LevelCompleteBanner,celebrationMs} from './level-complete';
 import styles from './world-explorer.module.css';
 
 type Controller={avatarNotices?:readonly string[];pause:()=>void;resume:()=>void;destroy:()=>void;setPreferences?:(preferences:ExplorerRunPreferences)=>void;setReviewView?:(view:'gameplay'|'overview'|'scan',x?:number,y?:number)=>void;setReviewCamera?:(view:{position:[number,number,number];target:[number,number,number];fov?:number})=>void;reviewStats?:()=>{frameTimes:number[];calls:number;triangles:number;geometries:number;textures:number}};
@@ -35,6 +36,8 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
  const [status,setStatus]=useState<RunStatus>('starting'),[error,setError]=useState(''),[distance,setDistance]=useState(0),[stats,setStats]=useState(initialStats),[showSettings,setShowSettings]=useState(false),[leaving,setLeaving]=useState<ExitTarget|null>(null);
  const [review,setReview]=useState(false),[overview,setOverview]=useState(false),[performance,setPerformance]=useState<{fps:number;drawCalls:number;triangles:number}|null>(null);
  const [avatar,setAvatar]=useState<GameRoomData|null>(null);
+ // The finish plays a short "Level Complete!" moment before the results (skipped for reduced motion).
+ const [celebrating,setCelebrating]=useState(false),calm=useRef(false),celebration=useRef<ReturnType<typeof setTimeout>>();calm.current=preferences.reducedMotion;
  const [avatarNotices,setAvatarNotices]=useState<readonly string[]>([]);
  const availability=levelAvailability(country.code),profile=countryProfile(country.code),level=useMemo(()=>levelDefinitionFor(country.code,difficulty),[country.code,difficulty]),authored=isAuthoredLevel(country.code);
  const finalPlatform=level.platforms.find(platform=>platform.id===level.finish.platformId)!,finishX=finalPlatform.x+level.finish.offset;
@@ -62,14 +65,14 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
     onPerformance:value=>{if(!disposed)setPerformance(value);},
     onStats:value=>{if(!disposed){statsRef.current=value;setStats(value);}},
     onDiscovery:()=>{if(!disposed){setShowSettings(false);setStatus('discovery');}},
-    onFinish:(coins,result)=>{if(disposed||finished.current)return;finished.current=true;const latest=statsRef.current;onResult(true,coins??latest.coins,result||{stars:latest.stars,elapsedMs:Math.round(latest.timeSeconds*1000),discoveryFound:latest.discoveryFound},attempt.current);setStatus('complete');},
+    onFinish:(coins,result)=>{if(disposed||finished.current)return;finished.current=true;const latest=statsRef.current;onResult(true,coins??latest.coins,result||{stars:latest.stars,elapsedMs:Math.round(latest.timeSeconds*1000),discoveryFound:latest.discoveryFound},attempt.current);if(!calm.current){setCelebrating(true);celebration.current=setTimeout(()=>setCelebrating(false),celebrationMs);}setStatus('complete');},
     onFail:()=>{if(disposed||finished.current)return;finished.current=true;const latest=statsRef.current;onResult(false,latest.coins,{stars:latest.stars,elapsedMs:Math.round(latest.timeSeconds*1000),discoveryFound:latest.discoveryFound},attempt.current);setStatus('failed');},
     onError:message=>{clearTimeout(timeout);if(!disposed){setError(message);setStatus('failed');}}
    },environment);controller.current=game;setAvatarNotices(game.avatarNotices||[]);
    // Review builds expose a camera scan for scenery checks; gameplay pauses meanwhile.
    if(reviewing)Object.assign(window,{worldExplorerReview:game,__worldExplorerFinish:finishX});
   }).catch(reason=>{clearTimeout(timeout);if(!disposed&&!expired){setError(reason instanceof Error?reason.message:'The 3D level could not open.');setStatus('failed');}});
-  return()=>{disposed=true;avatarRequest.abort();clearTimeout(timeout);game?.destroy();controller.current=null;};
+  return()=>{disposed=true;avatarRequest.abort();clearTimeout(timeout);clearTimeout(celebration.current);game?.destroy();controller.current=null;};
  // The parent keys attempts; updates to HUD and preferences must not restart physics.
  // eslint-disable-next-line react-hooks/exhaustive-deps
  },[]);
@@ -98,7 +101,7 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
    const first=controls[0],last=controls.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}
   };
   window.addEventListener('keydown',trap);return()=>window.removeEventListener('keydown',trap);
- },[status,showSettings,leaving]);
+ },[status,showSettings,leaving,celebrating]);
  useEffect(()=>{
   if(!preferences.debugMode&&!review&&overview){controller.current?.setReviewView?.('gameplay');setOverview(false);}
  },[preferences.debugMode,review,overview]);
@@ -120,7 +123,8 @@ export function CountryRun({country,difficulty,preferences,saveStatus,onPreferen
   <p className={styles.controlsHint}>← → / A D to move · Space / ↑ / W to jump · P / Esc to pause</p>
   {(review||preferences.debugMode)&&status==='running'&&<div className={styles.reviewTools}><button onClick={()=>{controller.current?.setReviewView?.(overview?'gameplay':'overview');setOverview(value=>!value);}}>{overview?'Player camera':'Full-level overview'}</button><span>{overview?'Scenery review · gameplay paused':'Gameplay review'}{performance?` · ${performance.fps} FPS · ${performance.drawCalls} draws · ${performance.triangles.toLocaleString()} triangles`:''}</span></div>}
   <div className={styles.touchControls} aria-label="Touch game controls">{(level.lightPuzzles?.length?['left','right','interact','jump'] as const:['left','right','jump'] as const).map(action=><button key={action} aria-label={action==='jump'?'Jump':action==='interact'?'Turn mirror':'Move '+action} onPointerDown={event=>{event.preventDefault();event.currentTarget.setPointerCapture(event.pointerId);signal(action,true);}} onPointerUp={()=>signal(action,false)} onPointerCancel={()=>signal(action,false)} onLostPointerCapture={()=>signal(action,false)}>{action==='left'?<ArrowLeft/>:action==='right'?<ArrowRight/>:action==='interact'?<span aria-hidden="true">&#x21bb;</span>:<ArrowUp/>}</button>)}</div>
-  {status!=='running'&&<div className={styles.runOverlay}><div ref={dialog} role="dialog" aria-modal="true" aria-labelledby="run-dialog-title" className={styles.gameDialog}>
+  {status==='complete'&&celebrating&&!leaving&&<LevelCompleteBanner/>}
+  {status!=='running'&&!(status==='complete'&&celebrating&&!leaving)&&<div className={styles.runOverlay}><div ref={dialog} role="dialog" aria-modal="true" aria-labelledby="run-dialog-title" className={styles.gameDialog}>
    {leaving?<>
     <h2 id="run-dialog-title">{leaveConfirmation.title}</h2><p>{leaveConfirmation.body}</p>
     <button className={styles.playButton} onClick={()=>setLeaving(null)}>{leaveConfirmation.stay}</button><button className={styles.quietButton} onClick={()=>leave(leaving)}>{leaveConfirmation.leave}</button>
