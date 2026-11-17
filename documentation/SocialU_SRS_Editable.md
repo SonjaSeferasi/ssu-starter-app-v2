@@ -7702,6 +7702,14 @@ Acceptance criterion: Given the student plays the Spain level, when the level op
 
 Traces to: UR-632.
 
+##### SRS-632.3, SS — Present the Acropolis in the Greece level.
+
+When the student plays the Greece level, the system shall show the Sacred Rock with its retaining wall, the Doric colonnade of the Parthenon with its broken south flank, the Propylaia gateway, the temple of Athena Nike, the Erechtheion with the porch of six maidens, the arched front of the Odeon of Herodes Atticus, the columns of the Olympieion and Hadrian's Arch, white Athens and Lycabettus hill; and, on the route, ancient column stubs, marble blocks, amphorae, rope barriers and olive trees, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Greece level, when the level opens and when the explorer passes the middle of the route, then the Olympieion columns are visible from the first frame, the whole height of the Parthenon colonnade is inside the view at the middle of the route, and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
