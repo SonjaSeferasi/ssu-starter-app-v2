@@ -310,7 +310,11 @@ function ProfileContent({ username }: { username?: string }) {
     {!username && <Link href="/profile/edit" className={styles.button} style={{ marginTop: 16 }}>Set up profile</Link>}
   </div></main>;
   if (error) return <main className={styles.page}><p className={`${styles.notice} ${styles.error}`} role="alert">{error}</p></main>;
-  if (!profile) return <main className={styles.page} aria-busy="true"><div className={`${styles.skeleton}`} style={{ height: 240 }} /></main>;
+  // Do not paint DEFAULT_LOOK before the account's saved appearance arrives.
+  if (!profile || space.status === 'loading') return <main className={styles.page} aria-busy="true" aria-label="Loading profile"><div className={`${styles.skeleton}`} style={{ height: 240 }} /></main>;
+  if (space.status === 'error') return <main className={styles.page}><p className={`${styles.notice} ${styles.error}`} role="alert">
+    Your saved profile appearance couldn’t load. <button type="button" className={styles.button} onClick={space.reload}>Try again</button>
+  </p></main>;
 
   return <main className={`${styles.page} ${campus.page} ${spaceStyles.theme}`} data-palette={space.look.palette} data-design-theme={space.look.theme} data-frame={space.look.frame}>
     {lookSaved&&<p className={spaceStyles.savedLookNotice} role="status"><Check size={16}/>Your look is saved to your profile.</p>}
@@ -370,5 +374,5 @@ function ProfileContent({ username }: { username?: string }) {
 
 export function ProfileView({ username }: { username?: string }) {
   const session = useNavigationSession();
-  return session === 'signed-in' ? <ProfileContent username={username} /> : <SessionNotice state={session} />;
+  return session === 'signed-in' ? <ProfileContent key={username || 'own-profile'} username={username} /> : <SessionNotice state={session} />;
 }
