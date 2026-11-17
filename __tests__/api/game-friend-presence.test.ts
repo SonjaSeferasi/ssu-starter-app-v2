@@ -1,0 +1,21 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+const { getClient,getUser,rpc }=vi.hoisted(()=>({getClient:vi.fn(),getUser:vi.fn(),rpc:vi.fn()}));
+vi.mock('../../lib/supabase',()=>({getSupabaseClient:getClient}));
+import { GET,PUT,POST,DELETE } from '../../app/api/game-room/presence/route';
+const token='header.'+Buffer.from(JSON.stringify({iat:1791849600,session_id:'fixture'})).toString('base64url')+'.signature';
+const sid='10000000-0000-4000-8000-000000000001';
+const request=(method:string,body?:unknown,auth=token)=>new Request('http://localhost/api/game-room/presence',{method,headers:{Authorization:`Bearer ${auth}`,'Content-Type':'application/json'},...(body===undefined?{}:{body:JSON.stringify(body)})});
+beforeEach(()=>{vi.resetAllMocks();vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY','fixture');getClient.mockReturnValue({auth:{getUser},rpc});getUser.mockResolvedValue({data:{user:{id:'verified-owner',email_confirmed_at:'2026-11-17'}}});rpc.mockImplementation(async(name,args)=>({data:name==='socialu_session_guard'?true:args.p_action==='read'?{visible:false,serverTime:new Date().toISOString(),friends:[]}:{visible:args.p_visible??true}}));});
+describe('Presence HTTP account boundary',()=>{
+  it('returns a non-cacheable snapshot',async()=>{const res=await GET(request('GET'));expect(res.status).toBe(200);expect(res.headers.get('cache-control')).toBe('no-store');});
+  it('takes owner exclusively from verified session',async()=>{expect((await PUT(request('PUT',{visible:true,p_auth_id:'victim',student_id:9}))).status).toBe(200);expect(rpc).toHaveBeenCalledWith('socialu_game_presence',{p_auth_id:'verified-owner',p_action:'visibility',p_visible:true});});
+  it.each(['game-room','jumpyland','dormspace','world-explorer'])('accepts %s heartbeat',async location=>{expect((await POST(request('POST',{sessionId:sid,location}))).status).toBe(200);});
+  it('leaves only the verified account session',async()=>{expect((await DELETE(request('DELETE',{sessionId:sid}))).status).toBe(200);expect(rpc).toHaveBeenCalledWith('socialu_game_presence',{p_auth_id:'verified-owner',p_action:'leave',p_session:sid});});
+  it.each([null,'yes',1,{},[]])('rejects invalid visibility %j',async visible=>{expect((await PUT(request('PUT',{visible}))).status).toBe(400);expect(rpc).not.toHaveBeenCalled();});
+  it.each([{sessionId:'invalid',location:'jumpyland'},{sessionId:sid,location:'messages'},{sessionId:sid,location:'toString'},{sessionId:sid}])('rejects invalid heartbeat %j',async body=>{expect((await POST(request('POST',body))).status).toBe(400);expect(rpc).not.toHaveBeenCalled();});
+  it('rejects missing authentication',async()=>{expect((await GET(request('GET',undefined,''))).status).toBe(401);});
+  it('rejects unverified users',async()=>{getUser.mockResolvedValue({data:{user:{id:'x'}}});expect((await GET(request('GET'))).status).toBe(403);});
+  it('rejects revoked sessions',async()=>{rpc.mockResolvedValue({data:false});expect((await POST(request('POST',{sessionId:sid,location:'game-room'}))).status).toBe(401);expect(rpc).toHaveBeenCalledTimes(1);});
+  it.each(['PGRST202','XX000','42501'])('reports storage error %s',async code=>{rpc.mockImplementation(async name=>name==='socialu_session_guard'?{data:true}:{error:{code}});expect((await GET(request('GET'))).status).toBe(code==='42501'?403:503);});
+  it('rejects malformed storage instead of displaying a fabricated state',async()=>{rpc.mockImplementation(async name=>({data:name==='socialu_session_guard'?true:{visible:true,friends:[null]}}));expect((await GET(request('GET'))).status).toBe(503);});
+});

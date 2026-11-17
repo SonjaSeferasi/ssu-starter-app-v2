@@ -1,0 +1,120 @@
+{
+  "evidence": "Real local Next UI, headless Edge, intercepted synthetic account responses. Database privacy tested separately in PGlite. Not hosted two-account acceptance.",
+  "checks": [
+    "630.1/630.3: renders names and games from API, visibility off initially",
+    "630.3: enabling saves through account endpoint and survives page reload",
+    "630.3: failed hide retains confirmed setting and Retry; polling cannot erase the save error; retry persists off",
+    "630.3: account switch resets old friends and loads the new account visibility",
+    "630.4: rendered friends expire on server-relative deadline without a new network response",
+    "630.1/630.4: read failure clears stale friends and Retry restores current results",
+    "630.1: panel fits 390px and remains readable in dark appearance",
+    "630.4: leaving Game Room sends cleanup for the correct presence session",
+    "630.1: standalone Jumpyland publishes its game location",
+    "630.1: standalone World Explorer publishes despite navigation being hidden"
+  ],
+  "errors": [],
+  "writes": [
+    {
+      "method": "POST",
+      "owner": "alice",
+      "sessionId": "6c30f74a-a600-416d-ba1e-571e45e67958",
+      "location": "game-room"
+    },
+    {
+      "method": "PUT",
+      "owner": "alice",
+      "visible": true
+    },
+    {
+      "method": "POST",
+      "owner": "alice",
+      "sessionId": "6c30f74a-a600-416d-ba1e-571e45e67958",
+      "location": "game-room"
+    },
+    {
+      "method": "POST",
+      "owner": "alice",
+      "sessionId": "47001884-c21d-455a-ab6c-a5e8921e3025",
+      "location": "game-room"
+    },
+    {
+      "method": "PUT",
+      "owner": "alice",
+      "visible": false
+    },
+    {
+      "method": "POST",
+      "owner": "alice",
+      "sessionId": "47001884-c21d-455a-ab6c-a5e8921e3025",
+      "location": "game-room"
+    },
+    {
+      "method": "PUT",
+      "owner": "alice",
+      "visible": false
+    },
+    {
+      "method": "POST",
+      "owner": "alice",
+      "sessionId": "47001884-c21d-455a-ab6c-a5e8921e3025",
+      "location": "game-room"
+    },
+    {
+      "method": "DELETE",
+      "owner": "alice",
+      "sessionId": "47001884-c21d-455a-ab6c-a5e8921e3025"
+    },
+    {
+      "method": "POST",
+      "owner": "bob",
+      "sessionId": "0f7d939d-5d3e-4dd1-9f96-1e24268e448d",
+      "location": "game-room"
+    },
+    {
+      "method": "DELETE",
+      "owner": "bob",
+      "sessionId": "0f7d939d-5d3e-4dd1-9f96-1e24268e448d"
+    },
+    {
+      "method": "POST",
+      "owner": "alice",
+      "sessionId": "c5450879-cfa7-440d-8fb4-0a9b2cdc5559",
+      "location": "game-room"
+    },
+    {
+      "method": "POST",
+      "owner": "alice",
+      "sessionId": "c5450879-cfa7-440d-8fb4-0a9b2cdc5559",
+      "location": "game-room"
+    },
+    {
+      "method": "POST",
+      "owner": "alice",
+      "sessionId": "c5450879-cfa7-440d-8fb4-0a9b2cdc5559",
+      "location": "game-room"
+    },
+    {
+      "method": "POST",
+      "owner": "alice",
+      "sessionId": "c5450879-cfa7-440d-8fb4-0a9b2cdc5559",
+      "location": "game-room"
+    },
+    {
+      "method": "DELETE",
+      "owner": "alice",
+      "sessionId": "c5450879-cfa7-440d-8fb4-0a9b2cdc5559"
+    },
+    {
+      "method": "POST",
+      "owner": "alice",
+      "sessionId": "45284631-21d0-45a5-9038-297d95935d3f",
+      "location": "jumpyland"
+    },
+    {
+      "method": "POST",
+      "owner": "alice",
+      "sessionId": "070f116d-d962-4c23-a3e9-5dba77ac0126",
+      "location": "world-explorer"
+    }
+  ]
+}

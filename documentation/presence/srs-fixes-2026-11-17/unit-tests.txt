@@ -1,0 +1,6 @@
+Verified test run 2026-11-17, original checkout, local disposable databases.
+Command: npx vitest run __tests__/database/game-friend-presence.test.ts __tests__/api/game-friend-presence.test.ts __tests__/game-presence.test.ts __tests__/database/friendships.test.ts __tests__/api/friends.test.ts
+Final result: 5 test files passed; 84 tests passed; exit code 0.
+Presence database: 18; presence API: 23; route/validation: 14; existing friends API: 28; existing comprehensive friendship database: 1.
+Duration reported: 8.81 seconds. No hosted data used.
+This is a summary of captured test output, not a full-project test run.

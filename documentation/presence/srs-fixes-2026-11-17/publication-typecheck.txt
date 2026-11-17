@@ -1,0 +1,2 @@
+Publication check: staged versions of modified tracked files; untracked files hidden. New presence implementation, both shared integration files, tests and transitive imports.
+0 TypeScript diagnostics

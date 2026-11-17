@@ -1,0 +1,15 @@
+.panel { border-radius: 22px; padding: 22px; background: var(--surface, #fffafc); color: var(--text, #30233e); border: 1px solid #ad87c744; min-width: 0; box-shadow: 0 5px 18px #6a40800d; }
+.panel h2 { font-size: 1.15rem; margin: 0 0 8px; }
+.panel p { font-size: .9rem; line-height: 1.5; }
+.toggle { display: flex; align-items: center; gap: 10px; font-weight: 700; padding: 12px 0 0; }
+.toggle input { width: 21px; height: 21px; accent-color: #7940bd; flex-shrink: 0; }
+.hint { opacity: .8; }
+.panel ul { list-style: none; margin: 16px 0 0; padding: 0; }
+.panel li { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid #ad87c733; }
+.panel li div { display: grid; gap: 4px; min-width: 0; overflow-wrap: anywhere; }
+.panel a { color: inherit; font-weight: 700; text-underline-offset: 3px; }
+.panel li span { font-size: .85rem; }
+.dot { width: 10px; height: 10px; background: #22835a; border-radius: 50%; flex-shrink: 0; }
+.panel button { padding: 8px 12px; border: 1px solid #9676b4; border-radius: 10px; background: transparent; color: inherit; cursor: pointer; }
+.panel :focus-visible { outline: 3px solid #9676d1; outline-offset: 3px; }
+:global(html[data-appearance='dark']) .panel { background: #282032; color: #f5edff; }

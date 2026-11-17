@@ -1,5 +1,7 @@
 'use client';
 
+import { FriendsPlaying } from './friend-presence';
+
 import { GameRoomRequestError, roomRequest } from '../../lib/game-room-client';
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -185,6 +187,7 @@ export function GameRoomContent({ preview = false }: { preview?: boolean }) {
       </section>
       <aside className={styles.sideColumn} aria-label="Streak and rankings">
         <ParticipationStreak preview={temporaryPreview} />
+        {!temporaryPreview && <FriendsPlaying />}
       </aside>
     </div>}
   </div></main>;

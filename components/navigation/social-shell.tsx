@@ -8,6 +8,7 @@ import { accessToken, storedAccessToken } from '../../lib/account/session';
 import type { NavigationPosition } from '../../lib/game-room';
 import { useScreenTheme, ScreenThemeContext } from '../profile/use-screen-theme';
 import { getScreenTheme } from '../../lib/screen-themes';
+import { GamePresencePublisher } from '../game-room/friend-presence';
 
 type SessionState = 'loading' | 'signed-in' | 'signed-out' | 'unavailable';
 const SessionContext = createContext<SessionState>('loading');
@@ -95,6 +96,7 @@ export function SocialShell({ children }: { children: React.ReactNode }) {
 
   return (
     <SessionContext.Provider value={session}>
+      <GamePresencePublisher pathname={pathname} />
       {!standalone && pathname !== '/profile/decorate' && session === 'signed-in'
         ? <ThemedNavigationFrame community={community} pathname={pathname} position={position} onPositionChange={selected => void savePosition(selected)} saving={saving} preferenceError={preferenceError} onRetry={() => preferenceLoadFailed ? setPreferenceReload(value => value+1) : void savePosition(pendingPosition)}>{children}</ThemedNavigationFrame>
         : children}
