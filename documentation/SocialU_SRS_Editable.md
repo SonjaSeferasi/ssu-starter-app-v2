@@ -7936,6 +7936,14 @@ Acceptance criterion: Given the student plays the Luxembourg level, when the exp
 
 Traces to: UR-632.
 
+##### SRS-632.32, SS — Present Vaduz Castle in the Liechtenstein level.
+
+When the student plays the Liechtenstein level, the system shall show Vaduz Castle on its wooded cliff, with the great round bastion under a low cone roof, the square keep, the red-roofed wings with red and white shutters, the smaller south bastion and the flag of Liechtenstein; rows of vines below the castle; in the town the cathedral with its spire, the government building under its patterned roof, the black cube of the art museum and the Red House with its stepped gable and white tower; cows in the meadow; wooded foothills and the snowy Alps behind; and, on the route, vine trellises with grapes, barrels, stone parapets with geranium boxes, lanterns, chimneys, balustrades, benches and potted trees, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Liechtenstein level, when the explorer starts the route, then the cathedral spire and the town houses are visible; when the explorer reaches the middle of the route, then the castle's round bastion, keep and flag and the vine rows below it are visible; when the explorer nears the finish, then the Red House is visible; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
