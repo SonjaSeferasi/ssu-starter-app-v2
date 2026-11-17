@@ -124,6 +124,11 @@ describe('Board publishing',()=>{
   const response=await PATCH(request('PATCH',{field:'board',value:board}));
   expect(response.status).toBe(503);expect((await response.json()).code).toBe('SPACE_PREVIEW');
  });
+ it('returns a clear 400 when the database rejects a photo reference',async()=>{
+  rpc.mockImplementation(async(fn)=>fn==='socialu_session_guard'?{data:true,error:null}:fn==='socialu_save_profile_board'?{data:null,error:{code:'22023',message:'Choose an existing photo from your pinned memories, or remove unavailable photo cards.'}}:result);
+  const response=await PATCH(request('PATCH',{field:'board',value:{items:[{id:'photo-test',kind:'photo',x:10,y:10,width:28,rotation:0,memoryId:99999}]}}));
+  expect(response.status).toBe(400);expect((await response.json()).error).toContain('Choose an existing photo');
+ });
  it('does not claim success if storage drops the board',async()=>{
   const response=await PATCH(request('PATCH',{field:'board',value:board}));expect(response.status).toBe(503);
  });

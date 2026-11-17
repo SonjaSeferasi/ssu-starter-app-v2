@@ -1,0 +1,48 @@
+{
+  "environment": "Actual local production UI/API and real SQL on disposable PGlite; Auth/PostgREST/media signing transport fixtures",
+  "removedPhoto": {
+    "status": 400,
+    "body": {
+      "error": "Choose an existing photo from your pinned memories, or remove unavailable photo cards."
+    }
+  },
+  "missing": {
+    "status": 400,
+    "data": {
+      "error": "Choose an existing photo from your pinned memories, or remove unavailable photo cards."
+    }
+  },
+  "foreign": {
+    "status": 400,
+    "data": {
+      "error": "Choose an existing photo from your pinned memories, or remove unavailable photo cards."
+    }
+  },
+  "draftRetained": true,
+  "storedBoardUnchanged": true,
+  "validOwnerPhotoSaved": true,
+  "savedNoteAndPhoto": {
+    "items": [
+      {
+        "x": 2,
+        "y": 25,
+        "id": "d25c8e94-367b-4489-8bab-cf6f01f245aa",
+        "kind": "note",
+        "text": "Keep my draft when a photo disappears.",
+        "color": "pink",
+        "width": 28,
+        "rotation": 0
+      },
+      {
+        "x": 32,
+        "y": 25,
+        "id": "f1edea42-44db-40e0-8a20-1f3a67fda7c9",
+        "kind": "photo",
+        "width": 28,
+        "memoryId": 3,
+        "rotation": 0
+      }
+    ]
+  },
+  "result": "passed"
+}

@@ -1,0 +1,21 @@
+{
+  "baseCommit": "7e82e19395f58b2798a23c12d44860a4d4db7564",
+  "testedSourceSha256": {
+    "supabase/migrations/20261117020000_board_photo_ownership.sql": "7d557c7b355e34d22685693d35a7c5c41a7650b41780e68b7ec89f2ed4fc14da",
+    "app/api/profiles/space/route.ts": "b06d6333c667aee390ef75d1c505072b3e7ff5d54a21f41e4873021ef0e6308c",
+    "components/profile/profile-board.tsx": "522c29e2c2f7776b959c650ffffc7a969df4edb7ea591ce3cc6f7a8d332da333",
+    "lib/profile-board.ts": "eba20688cd32708d18a0af34ceed059ec6a3950fbc0eaf1143dd04f5eb0ca923",
+    "scripts/tests/board-photo-ownership.browser.ts": "4b57893c354f12fb6b60f50257d74004f706854f61381cc2da2a7020c02317f4"
+  },
+  "focusedTests": 52,
+  "browserRegressions": 1,
+  "productionBuild": "passed, including TypeScript",
+  "hostedMigration": {
+    "project": "sfrpokisjlwgknxlzllu",
+    "version": "20261117020000",
+    "photo_guard_installed": true,
+    "migration_recorded": true,
+    "editorReadbackSha256": "021d6ce891357775c05b07c2063860384101f4bbd644f2e3ac2b9b00b9e02c4f"
+  },
+  "limits": "Actual local Next production UI/API and real SQL on disposable PGlite; Auth/PostgREST/media signing fixtures. Hosted installation verified; no hosted student boards or photos edited."
+}
