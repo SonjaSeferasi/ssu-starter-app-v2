@@ -1,6 +1,6 @@
 'use client';
-import {accessToken} from '../account/session';
-import {emptyExplorerProgress,loadAccountDeviceProgress,mergeExplorerProgress,sanitizeExplorerProgress,saveExplorerProgress,type ExplorerProgress,type ExplorerRunResult} from '../world-explorer-progress';
+import {accessToken,storedAccessToken} from '../account/session';
+import {clearGuestProgress,emptyExplorerProgress,loadAccountDeviceProgress,loadExplorerProgress,mergeExplorerProgress,sanitizeExplorerProgress,saveExplorerProgress,type ExplorerProgress,type ExplorerRunResult} from '../world-explorer-progress';
 
 export type ProgressStorageResult={storage:'account'|'device';message?:string};
 export type ProgressLoadResult=ProgressStorageResult&{progress:ExplorerProgress};
@@ -18,24 +18,50 @@ async function passportRequest(token:string,body?:Record<string,unknown>){
 }
 function failure(error:unknown){return error instanceof ProgressRequestError&&error.code==='EXPLORER_SETUP_REQUIRED'?'Account sync needs the World Explorer database update. Progress stays on this device.':offlineMessage;}
 
-/** Reconcile best scores without incrementing attempts. Account caches are
- * isolated from the legacy anonymous key, including after signing out. */
+/** The signed-in account, read from the session token already on this device.
+ * It only selects the device cache; the server still derives the owner of every
+ * account write from the verified session and never from this value. */
+function tokenOwner(token:string|null|undefined){
+ try{
+  const part=token?.split('.')[1];if(!part)return undefined;
+  const claims=JSON.parse(atob(part.replace(/-/g,'+').replace(/_/g,'/')));
+  return sanitizeExplorerProgress({version:1,countries:{},accountId:claims?.sub}).accountId;
+ }catch{return undefined;}
+}
+function ownedCache(owner:string):ExplorerProgress{return{...loadAccountDeviceProgress(owner),accountId:owner};}
+
+/** Device progress for the current session before the network answers. A
+ * signed-in student starts from their own account cache, so a result recorded
+ * during an outage is stored for that account and not in the anonymous key. */
+export function sessionDeviceProgress():ExplorerProgress{
+ let owner:string|undefined;
+ try{owner=tokenOwner(storedAccessToken());}catch{owner=undefined;}
+ return owner?ownedCache(owner):loadExplorerProgress();
+}
+
+/** Reconcile best scores without incrementing attempts. The owner is resolved
+ * from the session before the account request, so an outage keeps progress in
+ * that account's cache. An anonymous passport is claimed by the first account
+ * that signs in and is then cleared; it is never offered to a second account. */
 export async function loadAccountProgress(local:ExplorerProgress):Promise<ProgressLoadResult>{
  let progress=sanitizeExplorerProgress(local);
+ const store=()=>{if(saveExplorerProgress(progress)&&progress.accountId)clearGuestProgress();};
  try{
   const token=await accessToken();
   if(!token)return{progress:progress.accountId?emptyExplorerProgress():progress,storage:'device',message:localMessage};
+  const owner=tokenOwner(token);
+  if(owner)progress=mergeExplorerProgress(progress,ownedCache(owner));
   const remote=await passportRequest(token),cached=loadAccountDeviceProgress(remote.accountId!);
   progress=mergeExplorerProgress(progress,mergeExplorerProgress(cached,remote));
   if(Object.keys(progress.countries).length){
    const uploaded=await passportRequest(token,{action:'merge',progress:{version:1,countries:progress.countries}});
    progress=mergeExplorerProgress(progress,uploaded);
   }
-  saveExplorerProgress(progress);
+  store();
   return{progress,storage:'account'};
  }catch(error){
   // Preserve valid device data on an outage; the UI must keep the device badge.
-  saveExplorerProgress(progress);
+  store();
   return{progress,storage:'device',message:failure(error)};
  }
 }
