@@ -21,3 +21,13 @@ unchanged room/version after rejection, valid movement of a single item,
 malformed IDs and migration reapplication. The API regression verifies the
 student-facing 400 response. Running-app acceptance evidence is recorded after
 integration; these automated checks do not claim a live browser test.
+
+## SRS-500.11: invalid placement feedback
+
+Parent #549; implementation #1289; acceptance #1290; defect #1216.
+Branch `srs-500.11-placement-rule-feedback` was created before implementation.
+The placement trigger now distinguishes an owned appearance item from furniture
+before its footprint foreign key fails. It retains the ownership denial for
+unowned/unknown items. Existing API and editor error propagation are preserved.
+Real PostgreSQL tests verify both owned wall/floor choices, ownership rejection,
+unchanged saved data, migration reapplication and API status/message propagation.

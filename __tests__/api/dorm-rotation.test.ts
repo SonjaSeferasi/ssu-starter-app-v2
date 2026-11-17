@@ -37,3 +37,12 @@ it('returns the duplicate placement rule as 400 rather than an unavailable error
   expect(response.status).toBe(400);
   expect(await response.json()).toEqual({ error: 'Each item can only be placed once.' });
 });
+
+it('returns the appearance-versus-furniture rule through the API (#1216)', async () => {
+  const message = 'Wall colors and floor styles cannot be placed as furniture.';
+  rpc.mockImplementation(async (name: string) => name === 'socialu_session_guard'
+    ? { data: true, error: null } : { data: null, error: { code: '22023', message } });
+  const response = await PUT(request({ itemId: '1', x: 1, y: 1 }));
+  expect(response.status).toBe(400);
+  expect(await response.json()).toEqual({ error: message });
+});
