@@ -16,3 +16,17 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     return Response.json({ conversation }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) { return accountResponse(error); }
 }
+
+// SRS-207.7 (#888): a former group member deletes the conversation from their own conversation history.
+// It is their view that is deleted, never the conversation: the database writes one row for this student and
+// the group carries on untouched for everyone still in it.
+// The student always comes from the verified token, so nobody can delete anyone else's view, and the database
+// checks that they really have left the group (SRS-207.1 comes first).
+export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
+  try {
+    const user = await verifiedUser(request);
+    const conversationId = conversationIdParam((await context.params).id);
+    const result = await chatOperation('socialu_delete_conversation', { p_auth_id: user.id, p_conversation_id: conversationId });
+    return Response.json(result, { headers: { 'Cache-Control': 'no-store' } });
+  } catch (error) { return accountResponse(error); }
+}
