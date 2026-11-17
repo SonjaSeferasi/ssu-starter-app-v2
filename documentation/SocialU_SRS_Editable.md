@@ -8008,6 +8008,14 @@ Acceptance criterion: Given the student plays the Slovenia level, when the explo
 
 Traces to: UR-632.
 
+##### SRS-632.41, SS — Keep scenery water below the walking route.
+
+When the student plays a European level that has a sea, lake, lagoon, river or canal, the system shall draw the water surface below every platform of the walking route, so that no platform is hidden under the water. Where the lowest platform of a level is under the usual waterline, the system shall set the water, the banks and the landmarks lower together by the same amount, and shall leave the platforms, the collisions, the progress and the scoring of the level unchanged.
+
+Acceptance criterion: Given the student plays the Albania level, when the explorer reaches the last ledges and the finish, then the platforms, the ruins on them and the finish ring are visible above the lagoon; given the student plays the Iceland, North Macedonia, Finland, Belarus, Russia or Slovenia level, when the explorer reaches the lowest platforms of the route, then they are visible above the water; given any European level with water, then its water surface is at least 0.4 below its lowest platform.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements

@@ -24,6 +24,8 @@ const skyFor={temperate:{zenith:'#6f9fca',horizon:'#e2e9ee'},alpine:{zenith:'#5f
  * out the distant snowy range, for a city that stands on flat land.
  * `flat:true` lays level ground behind the route and `town:false` leaves out
  * the generic town row, for a country that builds its own bank and streets. */
+/** Height of the water surface before any lowering for a low route. */
+export const WATERLINE=-2.4;
 export function europeEnvironment(code:EuropeCode,options:{landmark?:boolean;backdrop?:boolean;flat?:boolean;town?:boolean}={}):CountryEnvironment{
  const place:EuropePlace=europePlaces[code],p=place.palette,s=place.scene,id='europe-'+place.iso2.toLowerCase();
  const cave=s.terrain==='karst',rift=s.terrain==='rift';
@@ -59,7 +61,11 @@ export function europeEnvironment(code:EuropeCode,options:{landmark?:boolean;bac
    if(!cave){const spots:Placement[]=[];for(let i=0;i<(low?20:40);i++){const x=-20+r()*(finish+40),z=-14-r()*44,hit=new T.Raycaster(v3(x,60,z),v3(0,-1,0)).intersectObject(ground)[0];if(hit&&hit.point.y>groundY-1)spots.push({x,y:hit.point.y-.03,z,scale:.7+r()*.6,rotation:r()*6});}
     const grove=plantGrove(staticRoot,groveKind[s.vegetation]??'plane',spots,{low,name:s.landmark+'-vegetation'});grove.userData.groundSurface=ground.name;}
    if(s.water==='delta'||s.water==='lake'||s.water==='sea'||s.water==='bay'){const birds=createFlock(features,{name:'europe-water-birds',count:low?4:8,centre:[finish*.5,14,-40],radius:[24,3,8],speed:.18,size:1,color:'#f2f2ee',wing:'#d8d8d2',seed:code.charCodeAt(0),glide:true});shell.animate({update:t=>birds.update(t),motion:true});}
-   return shell.finish();
+   // Water must stay below the walking route. Where a level's lowest platform
+   // dips under the usual waterline, the whole scenery (water, banks and
+   // landmarks together) is set lower by the same amount; the route is untouched.
+   const mounted=shell.finish(),lowest=Math.min(...context.level.platforms.map(p=>p.y)),sink=wet?Math.max(0,WATERLINE+.45-lowest):0;
+   mounted.root.position.y-=sink;mounted.root.userData.waterline=WATERLINE-sink;return mounted;
   },
   dressPlatform(root,definition,context){
    const {low}=context,w=definition.width,surface=localSurface(definition),t=definition.terrain;
