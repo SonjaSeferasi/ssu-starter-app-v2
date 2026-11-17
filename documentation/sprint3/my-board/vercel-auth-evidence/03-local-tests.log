@@ -1,0 +1,20 @@
+The CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.
+
+ RUN  v2.1.8 /private/tmp/ssu-vercel-auth-source
+
+ ✓ __tests__/supabase-freshness.test.ts (1 test) 9ms
+ ✓ __tests__/vercel-build.test.ts (7 tests) 68ms
+stderr | __tests__/api/auth.test.ts > SocialU login and registration > reports missing migration without exposing internal errors
+Friendship operation failed {
+  operation: 'socialu_account_lifecycle',
+  action: 'status',
+  code: 'PGRST202'
+}
+
+ ✓ __tests__/api/auth.test.ts (43 tests) 20ms
+ ✓ __tests__/api/profile-space.test.ts (39 tests) 20ms
+
+ Test Files  4 passed (4)
+      Tests  90 passed (90)
+   Start at  00:36:45
+   Duration  431ms (transform 262ms, setup 0ms, collect 386ms, tests 117ms, environment 0ms, prepare 300ms)
