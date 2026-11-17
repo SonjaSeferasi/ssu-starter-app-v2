@@ -7806,6 +7806,14 @@ Acceptance criterion: Given the student plays the Portugal level, when the explo
 
 Traces to: UR-632.
 
+##### SRS-632.16, SS — Present the Abbey of St Gall in the Switzerland level.
+
+When the student plays the Switzerland level, the system shall show the abbey cathedral with its curved east front between twin towers under green caps; the white wings of the abbey around the monastery courtyard with the library portal and the Swiss flag; painted old-town houses, every second one with a carved oriel window; the tower and green spire of St Laurence; green hills with farmhouses and fir trees; the snowy Alps on the horizon; and, on the route, lamps, a town fountain with a painted column and geraniums, a cheese stall, benches, flower boxes, chimneys and dormer windows, none of which stands in the walking lane or changes where the explorer can stand.
+
+Acceptance criterion: Given the student plays the Switzerland level, when the explorer starts the route, then old-town houses with oriel windows are visible; when the explorer is past the middle of the route, then both towers of the cathedral are visible to the tops of their caps and the abbey wings are visible beside them; and the explorer can walk every platform exactly as before.
+
+Traces to: UR-632.
+
 <a id="nfr"></a>
 
 ## 10. Non-Functional Requirements
