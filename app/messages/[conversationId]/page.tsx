@@ -20,6 +20,7 @@ import { canSelectForReply, findReplyTarget, keepReplyTarget, replyIndication, r
 import { PHOTO_ACCEPT, PHOTO_SEND_FAILED, choosePhoto, describeChosenPhoto, photoError, type ChosenPhoto } from '../../../lib/chat-photo';
 import { PHOTO_DELETED, PHOTO_DELETE_CONFIRM, PHOTO_UNAVAILABLE, canDeletePhoto, markPhotoDeleted, mergePhotoUrl, photoLinkRefreshDelay, photoLinksExpired } from '../../../lib/chat-photo-links';
 import { DELETE_CONVERSATION_CONFIRM, DELETE_CONVERSATION_FAILED, DELETE_CONVERSATION_LABEL, FORMER_MEMBER_NOTICE, canDeleteConversation, isReadOnly } from '../../../lib/chat-former-member';
+import { messageDateTimeAttribute, messageTime, messageTimeFull } from '../../../lib/chat-time';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -729,7 +730,22 @@ function Conversation() {
                               </>
                             : <span className={styles.photoPending}>{message.photo_url ? PHOTO_UNAVAILABLE : 'Photo'}</span>
                         : message.text}
+                      {/* SRS-211.3 (#1281): the time, spoken after the sender and the message rather than
+                          before them, so a screen reader reads who said what and then when. */}
+                      {messageTimeFull(message.sent_at) && (
+                        <span className={styles.srOnly}>{`, sent ${messageTimeFull(message.sent_at)}`}</span>
+                      )}
                     </p>
+                    {/* SRS-211.3 (#1281): when it was sent, beside the bubble -- bubbleRow reverses for the
+                        student's own messages, so it sits on the outer edge either way. The short label is
+                        for glancing at; dateTime and title carry the exact instant. aria-hidden because the
+                        bubble above already speaks it, after the sender and the text where it belongs. */}
+                    {messageTime(message.sent_at) && (
+                      <time className={styles.messageTime} aria-hidden="true"
+                        dateTime={messageDateTimeAttribute(message.sent_at)} title={messageTimeFull(message.sent_at)}>
+                        {messageTime(message.sent_at)}
+                      </time>
+                    )}
                     {/* #1262 (SRS-210.1): the React button used to be hidden on a photo, because
                         socialu_react_to_message accepted only text and emoji and would always have refused.
                         20261117040000 widened it, so a photo is offered like any other existing message. */}
