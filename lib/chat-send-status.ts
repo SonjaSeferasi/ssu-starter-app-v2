@@ -95,7 +95,9 @@ export function hasFailedToSend(message: { id?: string; status?: unknown } | nul
 export type RetainedMessage = { text: string; kind?: 'emoji'; replyToId?: string };
 
 export function retainedContent(
-  message: { id?: string; text?: string; kind?: string; reply_to_id?: string | null } | null | undefined,
+  // status is accepted and ignored, the same way sendStatusLabel accepts it: a message that carries one
+  // is not thereby entitled to anything.
+  message: { id?: string; text?: string; kind?: string; reply_to_id?: string | null; status?: unknown } | null | undefined,
 ): RetainedMessage | null {
   if (!isLocalMessage(message) || !message?.text) return null;
   return {
