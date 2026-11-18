@@ -14,6 +14,7 @@ import {
   isLocalMessage,
   localMessageId,
   markSendFailed,
+  retainedContent,
   sendStatusLabel,
   startSending,
 } from '../lib/chat-send-status';
@@ -164,5 +165,45 @@ describe('where an unsent message sits', () => {
     const first = startSending({ localId: localMessageId(1), conversationId: '9', senderId: '7', text: 'first', now: new Date('2026-11-18T20:28:00.000Z') });
     const second = startSending({ localId: localMessageId(2), conversationId: '9', senderId: '7', text: 'second', now: new Date('2026-11-18T20:28:01.000Z') });
     expect([second, first].sort(compareMessages).map((message) => message.text)).toEqual(['first', 'second']);
+  });
+});
+
+// SRS-201.17 (#1370): once the message box is cleared, the failed message is the only place the content
+// lives, so reading it back off the message has to give everything a send needs.
+describe('what a failed message keeps', () => {
+  it('keeps the text', () => {
+    const pending = startSending({ localId: localMessageId(1), conversationId: '9', senderId: '7', text: 'Running ten minutes late' });
+    expect(retainedContent(markSendFailed([pending], pending.id)[0])).toEqual({ text: 'Running ten minutes late' });
+  });
+
+  it('keeps that it was an emoji, which is a kind of its own', () => {
+    const pending = startSending({ localId: localMessageId(2), conversationId: '9', senderId: '7', text: '👍', kind: 'emoji' });
+    expect(retainedContent(pending)).toEqual({ text: '👍', kind: 'emoji' });
+  });
+
+  it('keeps what it was answering', () => {
+    // A retry that had lost the reply target would quietly send an ordinary message instead, which is not
+    // the message the student wrote.
+    const pending = startSending({ localId: localMessageId(3), conversationId: '9', senderId: '7', text: 'On my way', replyToId: '41' });
+    expect(retainedContent(pending)).toEqual({ text: 'On my way', replyToId: '41' });
+  });
+
+  it('keeps it whether the send is still going or has already failed', () => {
+    const pending = startSending({ localId: localMessageId(4), conversationId: '9', senderId: '7', text: 'Hello' });
+    expect(retainedContent(pending)).toEqual({ text: 'Hello' });
+    expect(retainedContent(markSendFailed([pending], pending.id)[0])).toEqual({ text: 'Hello' });
+  });
+
+  it('gives nothing back for a message the server has saved', () => {
+    // A saved message needs no retry, and its text is the server's rather than a draft. Content for one
+    // would invite a "retry" that sent a second copy of something already sent.
+    expect(retainedContent(saved('41', '2026-11-18T20:28:00.000Z'))).toBeNull();
+    expect(retainedContent({ ...saved('41', '2026-11-18T20:28:00.000Z'), status: 'failed' })).toBeNull();
+  });
+
+  it('gives nothing back when there is nothing to send', () => {
+    const empty = startSending({ localId: localMessageId(5), conversationId: '9', senderId: '7', text: '' });
+    expect(retainedContent(empty)).toBeNull();
+    expect(retainedContent(null)).toBeNull();
   });
 });

@@ -18,11 +18,12 @@ import { ReactionChips, ReactionPicker } from '../message-reactions';
 import { SnipePanel } from '../../../components/snipe/snipe-panel';
 import { canSelectForReply, findReplyTarget, keepReplyTarget, replyIndication, replyPreview, replyQuote, toggleReplyTarget, type ReplyTargets } from '../../../lib/chat-reply';
 import { PHOTO_ACCEPT, PHOTO_SEND_FAILED, choosePhoto, describeChosenPhoto, photoError, type ChosenPhoto } from '../../../lib/chat-photo';
-import { PHOTO_DELETED, PHOTO_DELETE_CONFIRM, PHOTO_UNAVAILABLE, canDeletePhoto, markPhotoDeleted, mergePhotoUrl, photoLinkRefreshDelay, photoLinksExpired } from '../../../lib/chat-photo-links';
+import { PHOTO_DELETED, PHOTO_DELETE_CONFIRM, PHOTO_UNAVAILABLE, canDeletePhoto, markPhotoDeleted, photoLinkRefreshDelay, photoLinksExpired } from '../../../lib/chat-photo-links';
 import { DELETE_CONVERSATION_CONFIRM, DELETE_CONVERSATION_FAILED, DELETE_CONVERSATION_LABEL, FORMER_MEMBER_NOTICE, canDeleteConversation, isReadOnly } from '../../../lib/chat-former-member';
 import { messageDateTimeAttribute, messageTime, messageTimeFull } from '../../../lib/chat-time';
 import { READ_LABEL, showsReadReceipt } from '../../../lib/chat-read-status';
-import { canActOnMessage, compareMessages, dropLocalMessage, hasFailedToSend, isLocalMessage, localMessageId, markSendFailed, sendStatusLabel, startSending } from '../../../lib/chat-send-status';
+import { canActOnMessage, dropLocalMessage, hasFailedToSend, isLocalMessage, localMessageId, markSendFailed, sendStatusLabel, startSending } from '../../../lib/chat-send-status';
+import { mergeMessages } from '../../../lib/chat-messages';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -38,17 +39,6 @@ export default function ConversationPage() {
   const { conversationId } = useParams<{ conversationId: string }>();
   // The key starts each conversation with empty state when moving from one chat to another.
   return session === 'signed-in' ? <Conversation key={conversationId} /> : <SessionNotice state={session} />;
-}
-
-// Saved history and live events can overlap; keep one copy of each message, oldest first.
-function mergeMessages(current: ChatMessageEvent[], incoming: ChatMessageEvent[]) {
-  const byId = new Map(current.map((message) => [message.id, message]));
-  // SRS-201.7 (#1029): a live photo arrives with no signed link, so merging keeps the one already known
-  // rather than blanking out a photo the student is looking at. A newer link still wins.
-  for (const message of incoming) byId.set(message.id, mergePhotoUrl(byId.get(message.id), message));
-  // SRS-201.16 (#1368): compareMessages is the old comparator with one rule in front of it -- a message the
-  // server has not saved sorts after every message it has.
-  return [...byId.values()].sort(compareMessages);
 }
 
 // SRS-201.1 (#302): send a text message in a conversation, laid out like the Messages UI design.
@@ -383,7 +373,13 @@ function Conversation() {
   // SRS-201.16 (#1368): the counter that names each message the browser is holding. A ref rather than state,
   // because nothing renders from it and bumping it must not cause a render of its own.
   const localCount = useRef(0);
-  async function deliver(body: { text: string; replyTo?: string } | { kind: 'emoji'; emoji: string }) {
+  // SRS-201.17 (#1370): onQueued runs the moment the message is in the conversation, which is when the
+  // message box is cleared. Clearing on success instead would leave a failed message's text in two places
+  // at once; clearing before the send starts would empty the box even when the double-send guard refused.
+  async function deliver(
+    body: { text: string; replyTo?: string } | { kind: 'emoji'; emoji: string },
+    onQueued?: () => void,
+  ) {
     if (sendingRef.current) return false;
     sendingRef.current = true;
     setSending(true);
@@ -399,6 +395,7 @@ function Conversation() {
       ...('replyTo' in body && body.replyTo ? { replyToId: body.replyTo } : {}),
     });
     setMessages((current) => mergeMessages(current, [pending]));
+    onQueued?.();
     try {
       // No sender ID is sent: the server reads the sender from the token.
       const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/messages`, {
@@ -434,11 +431,14 @@ function Conversation() {
     if (photo) { await sendPhoto(photo); return; }
     if (!text.trim()) return;
     // SRS-209.3 (#992): a chosen message is sent with the reply, so the two are associated (SRS-209.4).
-    // The choice is only cleared once the reply is actually sent, so a failed send keeps it for a retry.
-    if (await deliver(replyingTo ? { text, replyTo: replyingTo } : { text })) {
+    // SRS-201.17 (#1370): the box and the reply bar are cleared as soon as the message is in the
+    // conversation, not when the server answers. What was typed is on the message now -- retainedContent
+    // reads it back -- so holding a second copy in the box would only invite the student to lose one of
+    // them by typing over it.
+    await deliver(replyingTo ? { text, replyTo: replyingTo } : { text }, () => {
       setText('');
       setReplyingTo(null);
-    }
+    });
   }
 
   // SRS-201.8 (#797): the emoji picker beside the message box; a chosen emoji is sent straight away.
