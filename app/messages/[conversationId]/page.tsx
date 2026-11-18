@@ -22,6 +22,7 @@ import { PHOTO_DELETED, PHOTO_DELETE_CONFIRM, PHOTO_UNAVAILABLE, canDeletePhoto,
 import { DELETE_CONVERSATION_CONFIRM, DELETE_CONVERSATION_FAILED, DELETE_CONVERSATION_LABEL, FORMER_MEMBER_NOTICE, canDeleteConversation, isReadOnly } from '../../../lib/chat-former-member';
 import { messageDateTimeAttribute, messageTime, messageTimeFull } from '../../../lib/chat-time';
 import { READ_LABEL, showsReadReceipt } from '../../../lib/chat-read-status';
+import { canActOnMessage, compareMessages, dropLocalMessage, hasFailedToSend, isLocalMessage, localMessageId, markSendFailed, sendStatusLabel, startSending } from '../../../lib/chat-send-status';
 import styles from '../messages.module.css';
 
 const liveLabels: Record<ChatLiveStatus, string> = {
@@ -45,7 +46,9 @@ function mergeMessages(current: ChatMessageEvent[], incoming: ChatMessageEvent[]
   // SRS-201.7 (#1029): a live photo arrives with no signed link, so merging keeps the one already known
   // rather than blanking out a photo the student is looking at. A newer link still wins.
   for (const message of incoming) byId.set(message.id, mergePhotoUrl(byId.get(message.id), message));
-  return [...byId.values()].sort((a, b) => Date.parse(a.sent_at) - Date.parse(b.sent_at) || Number(a.id) - Number(b.id));
+  // SRS-201.16 (#1368): compareMessages is the old comparator with one rule in front of it -- a message the
+  // server has not saved sorts after every message it has.
+  return [...byId.values()].sort(compareMessages);
 }
 
 // SRS-201.1 (#302): send a text message in a conversation, laid out like the Messages UI design.
@@ -360,7 +363,10 @@ function Conversation() {
     const added = messages.length - shownCount.current;
     shownCount.current = messages.length;
     if (added <= 0) return;
-    const mine = messages[messages.length - 1].sender_id === myStudentId;
+    // SRS-201.16 (#1368): a message the browser is still holding is the student's own by construction,
+    // and their own id may not be known yet on a first send, so being local settles it.
+    const latest = messages[messages.length - 1];
+    const mine = isLocalMessage(latest) || latest.sender_id === myStudentId;
     if (!opened.current) { opened.current = true; scrollToLatest('auto'); }
     else if (mine || atLatestRef.current) scrollToLatest();
     else setUnseen((count) => count + added);
@@ -374,11 +380,25 @@ function Conversation() {
   // Text (SRS-201.1) and emoji (SRS-201.8) messages are sent the same way; the ref stops double-sends
   // before the disabled state shows. Returns whether the message was sent.
   const sendingRef = useRef(false);
+  // SRS-201.16 (#1368): the counter that names each message the browser is holding. A ref rather than state,
+  // because nothing renders from it and bumping it must not cause a render of its own.
+  const localCount = useRef(0);
   async function deliver(body: { text: string; replyTo?: string } | { kind: 'emoji'; emoji: string }) {
     if (sendingRef.current) return false;
     sendingRef.current = true;
     setSending(true);
     setError('');
+    // SRS-201.16 (#1368): the message goes into the conversation before the server has been asked, so there
+    // is something for a failed status to be attached to. It is dropped when the saved message arrives.
+    const pending = startSending({
+      localId: localMessageId(localCount.current += 1),
+      conversationId,
+      senderId: myStudentId,
+      text: 'emoji' in body ? body.emoji : body.text,
+      ...('emoji' in body ? { kind: 'emoji' as const } : {}),
+      ...('replyTo' in body && body.replyTo ? { replyToId: body.replyTo } : {}),
+    });
+    setMessages((current) => mergeMessages(current, [pending]));
     try {
       // No sender ID is sent: the server reads the sender from the token.
       const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/messages`, {
@@ -387,12 +407,17 @@ function Conversation() {
         body: JSON.stringify(body),
       });
       const data = await response.json().catch(() => ({}));
-      if (response.status === 404) { setHistory('denied'); return false; }
+      // The conversation is gone from under them; the whole screen is replaced, so the pending copy goes too.
+      if (response.status === 404) { setMessages((current) => dropLocalMessage(current, pending.id)); setHistory('denied'); return false; }
       if (!response.ok) throw new Error(data.error || 'Your message could not be sent. Please try again.');
+      setMessages((current) => dropLocalMessage(current, pending.id));
       addMessage(data.message);
       setMyStudentId((current) => current ?? data.message.sender_id);
       return true;
     } catch (err) {
+      // SRS-201.16 / SRS-211.5: it stays, marked. The line under the message box says what went wrong;
+      // the message itself says which message it was.
+      setMessages((current) => markSendFailed(current, pending.id));
       setError(err instanceof Error && !(err instanceof TypeError) ? err.message : 'Your message could not be sent. Please try again.');
       return false;
     } finally {
@@ -649,7 +674,7 @@ function Conversation() {
           {messages.length === 0
             ? <li className={styles.emptyMessages}>{history === 'loading' ? 'Loading messages…' : history === 'loaded' ? 'Send a message to start the conversation.' : 'No messages to show yet.'}</li>
             : messages.map((message, index) => {
-              const mine = message.sender_id === myStudentId;
+              const mine = isLocalMessage(message) || message.sender_id === myStudentId;
               // SRS-201.9 (#800): an emoji message is shown larger, without a bubble, on the sender's side.
               // SRS-201.6 (#1024): a photo bubble holds the photo itself, so it drops the text padding.
               const bubble = `${styles.bubble}${mine ? ` ${styles.bubbleOwn}` : ''}${message.kind === 'emoji' ? ` ${styles.emojiBubble}` : ''}${message.kind === 'photo' ? ` ${styles.photoBubble}` : ''}`;
@@ -664,7 +689,14 @@ function Conversation() {
               const chips = sortReactions(reactions[message.id] ?? []);
               const picking = reactingTo === message.id;
               // SRS-209.1 (#986): a group message can be chosen as the target of a reply.
-              const canReply = !readOnly && canSelectForReply(info?.kind, message);
+              // SRS-201.16 (#1368): canActOnMessage keeps replying, reacting and deleting off a message the
+              // server has never seen. Each of those names a message by its id, and a local id names nothing.
+              const canReply = !readOnly && canActOnMessage(message) && canSelectForReply(info?.kind, message);
+              // SRS-201.16 / SRS-211.5: 'Sending…' or 'Not sent', or null once the server has saved it.
+              const sendStatus = sendStatusLabel(message);
+              // A message that has not been sent has no sent time, so none is shown. The browser's clock is
+              // on it for ordering only.
+              const sentTime = isLocalMessage(message) ? '' : messageTime(message.sent_at);
               const replying = replyingTo === message.id;
               // SRS-209.5 (#998): what this message replies to, if anything still visible to this student.
               const quoted = replyQuote(message, replyTargets, messages, senders, myStudentId);
@@ -754,15 +786,17 @@ function Conversation() {
                             : <span className={styles.photoPending}>{message.photo_url ? PHOTO_UNAVAILABLE : 'Photo'}</span>
                         : message.text}
                       {/* SRS-211.3 (#1281): the time, spoken after the sender and the message rather than
-                          before them, so a screen reader reads who said what and then when. */}
-                      {messageTimeFull(message.sent_at) && (
+                          before them, so a screen reader reads who said what and then when.
+                          SRS-201.16 (#1368): not on a message that has not been sent. It has no sent time,
+                          and the status beside it says what is true instead. */}
+                      {!isLocalMessage(message) && messageTimeFull(message.sent_at) && (
                         <span className={styles.srOnly}>{`, sent ${messageTimeFull(message.sent_at)}`}</span>
                       )}
                     </p>
                     {/* #1262 (SRS-210.1): the React button used to be hidden on a photo, because
                         socialu_react_to_message accepted only text and emoji and would always have refused.
                         20261117040000 widened it, so a photo is offered like any other existing message. */}
-                    {!readOnly && (
+                    {!readOnly && canActOnMessage(message) && (
                     <button ref={(button) => { reactButtons.current[message.id] = button; }} type="button" className={styles.reactButton}
                       onClick={() => setReactingTo(picking ? null : message.id)} aria-expanded={picking}
                       aria-label={mine ? 'React to your message' : `React to ${sender}’s message`} title="React">
@@ -785,20 +819,29 @@ function Conversation() {
                       student's own side or the other's, the same as the bubble above it.
                       The short label is for glancing at; dateTime and title carry the exact instant.
                       aria-hidden because the bubble already speaks it, after the sender and the text. */}
-                  {messageTime(message.sent_at) && (
+                  {(sentTime || sendStatus) && (
                     <span className={styles.messageMeta}>
-                      <time className={styles.messageTime} aria-hidden="true"
-                        dateTime={messageDateTimeAttribute(message.sent_at)} title={messageTimeFull(message.sent_at)}>
-                        {messageTime(message.sent_at)}
-                      </time>
-                      {/* SRS-211.8 (#1283): that the other student has read it, beside the time. Nothing is
-                          shown until it has been read -- "Sent" would be SRS-211.4, which is a separate
-                          requirement and not built. SRS-211.9: never in a group, which showsReadReceipt
-                          enforces and the database backs by not sending the field at all.
-                          Spoken, unlike the time, because the bubble does not say it. */}
-                      {showsReadReceipt(info?.kind, message, myStudentId) && (
-                        <span className={styles.messageRead}>{READ_LABEL}</span>
+                      {sentTime && (
+                        <time className={styles.messageTime} aria-hidden="true"
+                          dateTime={messageDateTimeAttribute(message.sent_at)} title={messageTimeFull(message.sent_at)}>
+                          {sentTime}
+                        </time>
                       )}
+                      {/* SRS-201.16 (#1368) / SRS-211.5 (#1369): what happened to this message, in the slot
+                          the read status already uses -- one state at a time, never two at once. Spoken,
+                          because the bubble says nothing about it. */}
+                      {sendStatus ? (
+                        <span className={hasFailedToSend(message) ? styles.messageNotSent : styles.messageSending}>
+                          {sendStatus}
+                        </span>
+                      ) : (
+                      /* SRS-211.8 (#1283): that the other student has read it, beside the time. Nothing is
+                         shown until it has been read -- "Sent" would be SRS-211.4, which is a separate
+                         requirement and not built. SRS-211.9: never in a group, which showsReadReceipt
+                         enforces and the database backs by not sending the field at all. */
+                      showsReadReceipt(info?.kind, message, myStudentId) && (
+                        <span className={styles.messageRead}>{READ_LABEL}</span>
+                      ))}
                     </span>
                   )}
                   {picking && (
