@@ -82,6 +82,32 @@ export function hasFailedToSend(message: { id?: string; status?: unknown } | nul
   return isLocalMessage(message) && message?.status === 'failed';
 }
 
+// SRS-201.17 (#1370): everything that would have to be sent for this message to go, read back off the
+// message itself.
+//
+// This is what "retain the message content for a retry attempt" means in practice. Once the message box has
+// been cleared -- which happens as soon as the message moves into the conversation, so that the student can
+// carry on typing without destroying what failed -- the failed message is the only place the content lives.
+// SRS-201.18 (#1371) is the control that takes this and sends it.
+//
+// Only ever read off a local message. A saved message needs no retry and its text is the server's, not a
+// draft; returning content for one would invite a "retry" that sent a copy of something already sent.
+export type RetainedMessage = { text: string; kind?: 'emoji'; replyToId?: string };
+
+export function retainedContent(
+  message: { id?: string; text?: string; kind?: string; reply_to_id?: string | null } | null | undefined,
+): RetainedMessage | null {
+  if (!isLocalMessage(message) || !message?.text) return null;
+  return {
+    text: message.text,
+    // SRS-201.9: an emoji message is a kind of its own and has to go back as one.
+    ...(message.kind === 'emoji' ? { kind: 'emoji' as const } : {}),
+    // SRS-209.3 (#992): what it was answering. Retrying a reply that had lost its target would quietly
+    // send an ordinary message instead, which is not the message the student wrote.
+    ...(message.reply_to_id ? { replyToId: message.reply_to_id } : {}),
+  };
+}
+
 // A message that does not exist on the server cannot be reacted to, replied to, deleted or read.
 // Every one of those names a message by its id, and a local id names nothing the server knows.
 export function canActOnMessage(message: { id?: string } | null | undefined): boolean {
