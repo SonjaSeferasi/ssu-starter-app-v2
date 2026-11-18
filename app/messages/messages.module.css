@@ -158,6 +158,12 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
    same wherever it appears. 5.9:1 and 7.1:1 on white, 5.6:1 and 6.8:1 on the panel. */
 .messageSending { color: #536963; font-size: 12px; white-space: nowrap; }
 .messageNotSent { color: #a32d2d; font-size: 12px; font-weight: 700; white-space: nowrap; }
+/* SRS-201.18 (#1371): send a failed message again. Underlined green, the same treatment the history's own
+   "Try again" uses, so the one control that undoes a failure looks the same wherever it appears. The tap
+   target is padded out to 24px without moving the text off the status line. 6.8:1 on the panel. */
+.messageRetry { padding: 4px 2px; margin: -4px 0; border: 0; background: none; color: #28634e; font: inherit; font-size: 12px; font-weight: 700; line-height: 1; text-decoration: underline; white-space: nowrap; cursor: pointer; }
+.messageRetry:hover { color: #1f4e3d; }
+.messageRetry:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; border-radius: 4px; }
 /* SRS-211.2 (#1282): the sender's photo beside their messages. align-self keeps it level with the first
    line of a long bubble rather than floating to its middle. The spacer holds the same width for the rest of
    a run, so consecutive bubbles stay in one column. */

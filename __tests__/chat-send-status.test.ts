@@ -14,7 +14,10 @@ import {
   isLocalMessage,
   localMessageId,
   markSendFailed,
+  markSending,
   retainedContent,
+  retryDescription,
+  sendBody,
   sendStatusLabel,
   startSending,
 } from '../lib/chat-send-status';
@@ -205,5 +208,64 @@ describe('what a failed message keeps', () => {
     const empty = startSending({ localId: localMessageId(5), conversationId: '9', senderId: '7', text: '' });
     expect(retainedContent(empty)).toBeNull();
     expect(retainedContent(null)).toBeNull();
+  });
+});
+
+// SRS-201.18 (#1371): sending a failed message again, exactly as it was.
+describe('retrying', () => {
+  function failedWith(fields: { text: string; kind?: 'emoji'; replyToId?: string }, sequence = 1) {
+    const pending = startSending({ localId: localMessageId(sequence), conversationId: '9', senderId: '7', ...fields });
+    return markSendFailed([pending], pending.id)[0];
+  }
+
+  it('sends a text message as the text it was', () => {
+    expect(sendBody(retainedContent(failedWith({ text: 'Running ten minutes late' }))!)).toEqual({ text: 'Running ten minutes late' });
+  });
+
+  it('sends an emoji back as an emoji', () => {
+    // Sent as text it would arrive as a text message that happens to contain an emoji, which renders
+    // differently (SRS-201.9) and is not what was written.
+    expect(sendBody(retainedContent(failedWith({ text: '👍', kind: 'emoji' }))!)).toEqual({ kind: 'emoji', emoji: '👍' });
+  });
+
+  it('sends a reply back as a reply to the same message', () => {
+    expect(sendBody(retainedContent(failedWith({ text: 'On my way', replyToId: '41' }))!))
+      .toEqual({ text: 'On my way', replyTo: '41' });
+  });
+
+  it('puts the message back on its way, keeping its id and its place', () => {
+    // The same message, not a second one. Keeping the id is the whole of "without recreating the message".
+    const failed = failedWith({ text: 'Running ten minutes late' });
+    const [again] = markSending([failed], failed.id);
+    expect(again.id).toBe(failed.id);
+    expect(sendStatusLabel(again)).toBe(SENDING_LABEL);
+    expect(hasFailedToSend(again)).toBe(false);
+    // And it can fail again, and be retried again.
+    expect(sendStatusLabel(markSendFailed([again], again.id)[0])).toBe(NOT_SENT_LABEL);
+  });
+
+  it('marks only the message being retried', () => {
+    const first = failedWith({ text: 'first' }, 1);
+    const second = failedWith({ text: 'second' }, 2);
+    const marked = markSending([first, second], second.id);
+    expect(sendStatusLabel(marked[0])).toBe(NOT_SENT_LABEL);
+    expect(sendStatusLabel(marked[1])).toBe(SENDING_LABEL);
+  });
+
+  it('names the message in the accessible label, because every button says "Retry"', () => {
+    expect(retryDescription(failedWith({ text: 'Running ten minutes late' }))).toBe('Send “Running ten minutes late” again');
+    expect(retryDescription(failedWith({ text: '👍', kind: 'emoji' }))).toBe('Send “👍” again');
+  });
+
+  it('cuts a long message short in the label rather than reading the whole thing out', () => {
+    const long = 'I will be a little late because the bus is stuck on the bridge again';
+    const label = retryDescription(failedWith({ text: long }));
+    expect(label).toBe('Send “I will be a little late because the bus…” again');
+    expect(label).toContain('…');
+  });
+
+  it('falls back to the plain label when there is nothing to send', () => {
+    expect(retryDescription(saved('41', '2026-11-18T20:28:00.000Z'))).toBe('Retry');
+    expect(retryDescription(null)).toBe('Retry');
   });
 });
