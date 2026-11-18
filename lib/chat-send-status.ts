@@ -61,9 +61,19 @@ export function dropLocalMessage(messages: ChatMessageEvent[], localId: string):
   return messages.filter((message) => message.id !== localId);
 }
 
+function withStatus(messages: ChatMessageEvent[], localId: string, status: SendStatus): ChatMessageEvent[] {
+  return messages.map((message) => (message.id === localId ? { ...message, status } : message));
+}
+
 // The server refused. The message stays where it is, marked, with everything it needs to be sent again.
 export function markSendFailed(messages: ChatMessageEvent[], localId: string): ChatMessageEvent[] {
-  return messages.map((message) => (message.id === localId ? { ...message, status: 'failed' as const } : message));
+  return withStatus(messages, localId, 'failed');
+}
+
+// SRS-201.18 (#1371): the student asked for it to be sent again, so it is on its way once more. The same
+// message, in the same place, with the same id -- a retry must not make a second message.
+export function markSending(messages: ChatMessageEvent[], localId: string): ChatMessageEvent[] {
+  return withStatus(messages, localId, 'sending');
 }
 
 // What the status slot beside the time should say, or null for nothing to say.
@@ -126,4 +136,31 @@ export function compareMessages(a: ChatMessageEvent, b: ChatMessageEvent): numbe
   const local = Number(isLocalMessage(a)) - Number(isLocalMessage(b));
   if (local) return local;
   return Date.parse(a.sent_at) - Date.parse(b.sent_at) || (Number(a.id) || 0) - (Number(b.id) || 0);
+}
+
+// SRS-201.18 (#1371): sending a failed message again.
+
+export const RETRY_LABEL = 'Retry';
+
+// The request body for what was retained, in the shape the messages route expects. This is the whole of
+// "without recreating the message": nothing is read from the message box, from the reply bar, or from
+// anywhere else the student may have moved on to since.
+export type SendBody = { text: string; replyTo?: string } | { kind: 'emoji'; emoji: string };
+
+export function sendBody(content: RetainedMessage): SendBody {
+  // SRS-201.9: an emoji goes back as an emoji. Sent as text it would arrive as a text message that
+  // happens to contain an emoji, which renders differently and is not what was written.
+  if (content.kind === 'emoji') return { kind: 'emoji', emoji: content.text };
+  return content.replyToId ? { text: content.text, replyTo: content.replyToId } : { text: content.text };
+}
+
+// Several messages can be sitting failed at once, and every Retry button reads "Retry". The accessible
+// name says which message, so a screen reader is not offered a row of identical buttons.
+const RETRY_PREVIEW = 40;
+
+export function retryDescription(message: { id?: string; text?: string; kind?: string } | null | undefined): string {
+  const content = retainedContent(message);
+  if (!content) return RETRY_LABEL;
+  const shown = content.text.length > RETRY_PREVIEW ? `${content.text.slice(0, RETRY_PREVIEW).trimEnd()}…` : content.text;
+  return `Send “${shown}” again`;
 }

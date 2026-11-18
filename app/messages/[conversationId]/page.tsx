@@ -22,7 +22,7 @@ import { PHOTO_DELETED, PHOTO_DELETE_CONFIRM, PHOTO_UNAVAILABLE, canDeletePhoto,
 import { DELETE_CONVERSATION_CONFIRM, DELETE_CONVERSATION_FAILED, DELETE_CONVERSATION_LABEL, FORMER_MEMBER_NOTICE, canDeleteConversation, isReadOnly } from '../../../lib/chat-former-member';
 import { messageDateTimeAttribute, messageTime, messageTimeFull } from '../../../lib/chat-time';
 import { READ_LABEL, showsReadReceipt } from '../../../lib/chat-read-status';
-import { canActOnMessage, dropLocalMessage, hasFailedToSend, isLocalMessage, localMessageId, markSendFailed, sendStatusLabel, startSending } from '../../../lib/chat-send-status';
+import { RETRY_LABEL, canActOnMessage, dropLocalMessage, hasFailedToSend, isLocalMessage, localMessageId, markSendFailed, markSending, retainedContent, retryDescription, sendBody, sendStatusLabel, startSending, type SendBody } from '../../../lib/chat-send-status';
 import { mergeMessages } from '../../../lib/chat-messages';
 import styles from '../messages.module.css';
 
@@ -397,6 +397,19 @@ function Conversation() {
     setMessages((current) => mergeMessages(current, [pending]));
     onQueued?.();
     try {
+      return await sendLocalMessage(pending.id, body);
+    } finally {
+      sendingRef.current = false;
+      setSending(false);
+    }
+  }
+
+  // SRS-201.16 / SRS-201.18 (#1368, #1371): ask the server to save the message the browser is holding, and
+  // answer for it either way. A first send and a retry are the same call on the same local id, which is what
+  // makes "without recreating the message" true: the retry keeps the message's place in the conversation
+  // rather than adding a second one below it.
+  async function sendLocalMessage(localId: string, body: SendBody) {
+    try {
       // No sender ID is sent: the server reads the sender from the token.
       const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/messages`, {
         method: 'POST',
@@ -405,21 +418,41 @@ function Conversation() {
       });
       const data = await response.json().catch(() => ({}));
       // The conversation is gone from under them; the whole screen is replaced, so the pending copy goes too.
-      if (response.status === 404) { setMessages((current) => dropLocalMessage(current, pending.id)); setHistory('denied'); return false; }
+      if (response.status === 404) { setMessages((current) => dropLocalMessage(current, localId)); setHistory('denied'); return false; }
       if (!response.ok) throw new Error(data.error || 'Your message could not be sent. Please try again.');
-      setMessages((current) => dropLocalMessage(current, pending.id));
+      setMessages((current) => dropLocalMessage(current, localId));
       addMessage(data.message);
       setMyStudentId((current) => current ?? data.message.sender_id);
       return true;
     } catch (err) {
       // SRS-201.16 / SRS-211.5: it stays, marked. The line under the message box says what went wrong;
       // the message itself says which message it was.
-      setMessages((current) => markSendFailed(current, pending.id));
+      setMessages((current) => markSendFailed(current, localId));
       setError(err instanceof Error && !(err instanceof TypeError) ? err.message : 'Your message could not be sent. Please try again.');
       return false;
+    }
+  }
+
+  // SRS-201.18 (#1371): send a failed message again, exactly as it was.
+  //
+  // Everything sent comes from the message itself (SRS-201.17), never from the message box or the reply bar
+  // -- the student has moved on from both by now, and may well have typed something else into them.
+  //
+  // One retry at a time per message. The control disappears the moment the message reads as sending again,
+  // but a second click can land before React has re-rendered, and a retry that fired twice could put two
+  // copies of one message into the conversation -- the one thing a retry must never do. The ref closes that
+  // window, as sendingRef does for the message box and reactingRef does for reactions.
+  const retryingRef = useRef(new Set<string>());
+  async function retrySend(message: ChatMessageEvent) {
+    const content = retainedContent(message);
+    if (!content || !hasFailedToSend(message) || retryingRef.current.has(message.id)) return;
+    retryingRef.current.add(message.id);
+    setError('');
+    setMessages((current) => markSending(current, message.id));
+    try {
+      await sendLocalMessage(message.id, sendBody(content));
     } finally {
-      sendingRef.current = false;
-      setSending(false);
+      retryingRef.current.delete(message.id);
     }
   }
 
@@ -831,9 +864,22 @@ function Conversation() {
                           the read status already uses -- one state at a time, never two at once. Spoken,
                           because the bubble says nothing about it. */}
                       {sendStatus ? (
-                        <span className={hasFailedToSend(message) ? styles.messageNotSent : styles.messageSending}>
-                          {sendStatus}
-                        </span>
+                        <>
+                          <span className={hasFailedToSend(message) ? styles.messageNotSent : styles.messageSending}>
+                            {sendStatus}
+                          </span>
+                          {/* SRS-201.18 (#1371): send it again, exactly as it was. Only on a message that has
+                              actually failed -- while it is on its way there is nothing to retry, and once it
+                              is saved it is no longer this message's to send. Always visible rather than
+                              revealed on hover: a control nobody finds is a control that is not there, and
+                              this is the only way back from a failed send. */}
+                          {hasFailedToSend(message) && (
+                            <button type="button" className={styles.messageRetry}
+                              onClick={() => void retrySend(message)} aria-label={retryDescription(message)}>
+                              {RETRY_LABEL}
+                            </button>
+                          )}
+                        </>
                       ) : (
                       /* SRS-211.8 (#1283): that the other student has read it, beside the time. Nothing is
                          shown until it has been read -- "Sent" would be SRS-211.4, which is a separate
