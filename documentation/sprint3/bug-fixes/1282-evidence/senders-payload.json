@@ -1,0 +1,9 @@
+{
+  "note": "GET /api/conversations/3/messages as Test1, against the evidence fixture. 'senders' is the block added by 20261117050000; photo_url is null here because the fixture has no Supabase Storage to sign against. The point this records is that 'photo_key' -- the private storage path the migration returns -- does not appear anywhere in the response the browser receives.",
+  "senders": {
+    "1": { "name": "Loens", "username": "loens", "photo_url": null },
+    "2": { "name": "Test1", "username": "test1", "photo_url": null },
+    "3": { "name": "Test 2", "username": "test2", "photo_url": null }
+  },
+  "response_contains_photo_key": false
+}

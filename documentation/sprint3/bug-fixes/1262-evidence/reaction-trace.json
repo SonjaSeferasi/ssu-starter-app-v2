@@ -1,0 +1,18 @@
+{
+  "note": "PUT /api/conversations/1/messages/<messageId>/reaction with {\"emoji\":\"\ud83d\udc4d\"}, sent by Loens, who is a participant of conversation 1. Message 3 is a photo, message 1 is text, both in that same conversation.",
+  "before": {
+    "fixture": "node scripts/tests/chat-evidence-fixture.mjs --without=20261117040000",
+    "results": [
+      { "message_id": "3  (photo)", "status": 404, "body": { "error": "This message is no longer available." } },
+      { "message_id": "1  (text)",  "status": 200, "body": { "reactions": [ { "emoji": "\ud83d\udc4d", "count": 1, "mine": true } ] } }
+    ],
+    "what_this_shows": "The write path accepted kind 'text' and 'emoji' only, so a photo was refused as if it had been deleted. The hidden React button in the old client was the symptom; this refusal was the cause."
+  },
+  "after": {
+    "fixture": "node scripts/tests/chat-evidence-fixture.mjs",
+    "results": [
+      { "message_id": "3  (photo)", "status": 200, "body": { "reactions": [ { "emoji": "\ud83d\udc4d", "count": 1, "mine": true } ] } }
+    ],
+    "what_this_shows": "The same call now succeeds, and the reaction reads back on the photo. A deleted photo is still refused: 20261117040000 adds a socialu.deleted_messages guard to the add path."
+  }
+}

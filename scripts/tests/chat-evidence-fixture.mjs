@@ -9,12 +9,15 @@
 // this one seeds, serves, prints the sign-in tokens and stays up so a browser can be driven against it
 // by hand.
 //
-//   node scripts/tests/chat-evidence-fixture.mjs            # fixed build (the state on main)
-//   node scripts/tests/chat-evidence-fixture.mjs --before   # without the two fixes, for the before shots
+//   node scripts/tests/chat-evidence-fixture.mjs                          # fixed build (the state on main)
+//   node scripts/tests/chat-evidence-fixture.mjs --before                 # without the two fixes, for the before shots
+//   node scripts/tests/chat-evidence-fixture.mjs --without=20261116120000 # leave one named migration out
 //
 // --before omits 20261112120000 (#1217) and 20261116130000 (#1222) so the older function bodies stay in
-// place. The client code is the fixed client in both runs, because the point of the pair is to show what
-// the database change does.
+// place. --without= takes a comma-separated list and drops every migration whose filename contains one of
+// the pieces, which is how a before run is taken for any other fix without editing this file. The client
+// code is the fixed client in every run, because the point of a pair is to show what the database change
+// does.
 
 import { PGlite } from '@electric-sql/pglite';
 import { createServer } from 'node:http';
@@ -31,7 +34,14 @@ const photo = ['20261102120000_chat_send_reply.sql', '20261102130000_chat_reply_
 const base = ['20261008000100_link_supabase_accounts.sql', '20261008000200_feed_functions.sql', '20261008000300_fix_deferred_post_trigger.sql', '20261012230000_srs_100_105_auth.sql', '20261013200000_srs_109_113_profile.sql', '20261015180000_profile_social.sql', '20261015190000_profile_full_name.sql', '20261016000100_like_post.sql', '20261016001000_optional_profile_bio.sql', '20261016010000_friendships.sql', '20261016020000_feed_profile_links.sql', '20261016030000_edit_profile_username.sql', '20261016040000_friend_accept_mutual_follow.sql', '20261017000100_unlike_post.sql', '20261018000100_post_comments.sql', '20261018010000_integrate_profile_feed.sql'];
 
 const withoutFixes = new Set(['20261112120000_chat_photo_in_list_and_notifications.sql', '20261116130000_chat_former_member_history.sql']);
-const migrations = [...base, ...chat, ...sprint3, ...photo].filter((f) => !(BEFORE && withoutFixes.has(f)));
+// --without=a,b drops any migration whose filename contains one of the pieces, so a before run can be taken
+// for a fix that is not one of the two above.
+const withoutArg = (process.argv.find((a) => a.startsWith('--without=')) || '').slice('--without='.length);
+const alsoWithout = withoutArg.split(',').map((piece) => piece.trim()).filter(Boolean);
+const everyMigration = [...base, ...chat, ...sprint3, ...photo];
+const dropped = (f) => (BEFORE && withoutFixes.has(f)) || alsoWithout.some((piece) => f.includes(piece));
+const migrations = everyMigration.filter((f) => !dropped(f));
+if (alsoWithout.length) console.log(`leaving out: ${everyMigration.filter(dropped).join(', ') || '(nothing matched)'}`);
 
 // The three accounts LP tests with. They are seeded here as local rows with the same names, so the
 // screenshots read like the accounts the team already knows; the hosted accounts themselves are not used

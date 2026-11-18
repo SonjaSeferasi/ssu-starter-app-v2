@@ -1,0 +1,22 @@
+{
+  "note": "GET /api/conversations/<id>/messages against the evidence fixture, read by two different students. 'read' is present only on the viewer's own messages in a private conversation, and never in a group. 'read_at' is never sent, so a receipt says that a message was read, not when.",
+  "private_conversation_1": {
+    "as_Loens_student_1": [
+      { "id": "1", "sender_id": "2", "read": "absent (received message)" },
+      { "id": "3", "sender_id": "2", "read": "absent (received message)" },
+      { "id": "4", "sender_id": "1", "read": true }
+    ],
+    "as_Test1_student_2": [
+      { "id": "1", "sender_id": "2", "read": true },
+      { "id": "3", "sender_id": "2", "read": true },
+      { "id": "4", "sender_id": "1", "read": "absent (received message)" }
+    ]
+  },
+  "group_conversation_3_as_Test1": [
+    { "id": "5", "sender_id": "3", "read": "absent" },
+    { "id": "6", "sender_id": "1", "read": "absent" },
+    { "id": "7", "sender_id": "2", "read": "absent (own message, but the conversation is a group)" },
+    { "id": "8", "sender_id": "3", "read": "absent" }
+  ],
+  "read_at_exposed": false
+}
