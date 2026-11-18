@@ -1,0 +1,21 @@
+{
+  "note": "DELETE /api/conversations/1/photos/<messageId>, sent by Test 2, who is not a participant of conversation 1. The three ids are: a real photo in that conversation, a real text message in that conversation, and an id that does not exist at all. An outsider must not be able to tell them apart. Both runs are the evidence fixture (scripts/tests/chat-evidence-fixture.mjs) with the same seed and the same client; only the migration differs.",
+  "before": {
+    "fixture": "node scripts/tests/chat-evidence-fixture.mjs --without=20261116120000",
+    "results": [
+      { "message_id": "3  (a real photo)",     "status": 404, "body": { "error": "Conversation not available." } },
+      { "message_id": "1  (a real text)",      "status": 404, "body": { "error": "That photo is no longer available." } },
+      { "message_id": "99999  (nonexistent)",  "status": 404, "body": { "error": "That photo is no longer available." } }
+    ],
+    "what_this_shows": "Two different answers. A stranger who walks message ids learns which ones are photographs, because only a photograph answers 'Conversation not available.'"
+  },
+  "after": {
+    "fixture": "node scripts/tests/chat-evidence-fixture.mjs",
+    "results": [
+      { "message_id": "3  (a real photo)",     "status": 404, "body": { "error": "Conversation not available." } },
+      { "message_id": "1  (a real text)",      "status": 404, "body": { "error": "Conversation not available." } },
+      { "message_id": "99999  (nonexistent)",  "status": 404, "body": { "error": "Conversation not available." } }
+    ],
+    "what_this_shows": "One answer for all three. Participancy is decided before the message is looked at, so nothing about the message can leak to someone who is not in the conversation."
+  }
+}
