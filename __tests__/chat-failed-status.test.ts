@@ -75,7 +75,7 @@ describe('one slot, one status', () => {
     // SRS-211.5 and SRS-211.8 draw in the same place, beside the time, so something has to choose. It
     // chooses the send status, and that is what messageStatus exists to make testable.
     const message = failed();
-    expect(messageStatus('private', message, ME)).toEqual({ label: NOT_SENT_LABEL, state: 'failed' });
+    expect(messageStatus('private', message, ME, true)).toEqual({ label: NOT_SENT_LABEL, state: 'failed' });
   });
 
   it('shows "Not sent" rather than "Read" on a failed message that claims to have been read', () => {
@@ -84,29 +84,37 @@ describe('one slot, one status', () => {
     // their message was read when it was never sent. The rule is asked in the order that cannot be wrong.
     const message = { ...failed(), read: true };
     expect(showsReadReceipt('private', message, ME)).toBe(true);
-    expect(messageStatus('private', message, ME)).toEqual({ label: NOT_SENT_LABEL, state: 'failed' });
+    expect(messageStatus('private', message, ME, true)).toEqual({ label: NOT_SENT_LABEL, state: 'failed' });
   });
 
   it('shows the read receipt once the message is a saved one', () => {
     const saved = received({ sender_id: ME, read: true });
-    expect(messageStatus('private', saved, ME)).toEqual({ label: READ_LABEL, state: 'read' });
+    expect(messageStatus('private', saved, ME, true)).toEqual({ label: READ_LABEL, state: 'read' });
   });
 
   it('shows "Sending…" ahead of anything else while a message is on its way', () => {
     const pending = startSending({ localId: localMessageId(4), conversationId: '1', senderId: ME, text: 'On my way' });
-    expect(messageStatus('private', { ...pending, read: true }, ME)).toEqual({ label: SENDING_LABEL, state: 'sending' });
+    expect(messageStatus('private', { ...pending, read: true }, ME, true)).toEqual({ label: SENDING_LABEL, state: 'sending' });
   });
 
-  it('shows nothing on a received message, or on a saved one nobody has read', () => {
-    expect(messageStatus('private', received(), ME)).toBeNull();
-    expect(messageStatus('private', received({ sender_id: ME }), ME)).toBeNull();
-    // SRS-211.9: never in a group, whatever the server said.
-    expect(messageStatus('group', received({ sender_id: ME, read: true }), ME)).toBeNull();
+  it('shows nothing on a message the student received, latest or not', () => {
+    expect(messageStatus('private', received(), ME, true)).toBeNull();
+    expect(messageStatus('private', received(), ME, false)).toBeNull();
+  });
+
+  it('shows nothing on the student’s own message once it is no longer their latest', () => {
+    // SRS-211.4 (#1372) limited "Sent" and "Read" to the latest own message. The send statuses above are
+    // not limited that way -- a failed message says so wherever it sits -- which is why this case sits
+    // here rather than only in the SRS-211.4 tests.
+    expect(messageStatus('private', received({ sender_id: ME, read: true }), ME, false)).toBeNull();
   });
 
   it('gives exactly one answer for every message in a conversation that has one of each', () => {
-    const conversation = [received(), received({ id: '42', sender_id: ME, read: true }), failed()];
-    expect(conversation.map((message) => messageStatus('private', message, ME)?.state ?? null))
+    // A failed message at the bottom, and above it the last message that actually reached the server.
+    const read = received({ id: '42', sender_id: ME, read: true });
+    const conversation = [received(), read, failed()];
+    const latest = read.id;
+    expect(conversation.map((message) => messageStatus('private', message, ME, message.id === latest)?.state ?? null))
       .toEqual([null, 'read', 'failed']);
   });
 });

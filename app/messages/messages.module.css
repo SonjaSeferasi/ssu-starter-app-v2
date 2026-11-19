@@ -152,6 +152,10 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 /* SRS-211.8 (#1283): "Read", beside the time. Green rather than grey so it reads as a state that has been
    reached, not as more metadata. 7.0:1 on white, 6.6:1 on the panel. */
 .messageRead { color: #28634e; font-size: 12px; font-weight: 700; white-space: nowrap; }
+/* SRS-211.4 (#1372): "Sent", in the same slot. Bold, in the time's own grey rather than the read status's
+   green: being sent is the ordinary outcome and should not announce itself the way being read does, but it
+   has to be legible as a word and not read as part of the time beside it. 5.9:1 on white, 5.6:1 on panel. */
+.messageSent { color: #536963; font-size: 12px; font-weight: 700; white-space: nowrap; }
 /* SRS-201.16 (#1368) / SRS-211.5 (#1369): what happened to a message the server has not saved, in the same
    slot as the read status. "Sending…" is the time's own grey, because it is a passing state and should not
    pull the eye; "Not sent" is the colour the message box already uses for errors, so a failure reads the
