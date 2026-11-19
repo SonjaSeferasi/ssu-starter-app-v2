@@ -21,7 +21,7 @@ import { PHOTO_ACCEPT, PHOTO_SEND_FAILED, choosePhoto, describeChosenPhoto, phot
 import { PHOTO_DELETED, PHOTO_DELETE_CONFIRM, PHOTO_UNAVAILABLE, canDeletePhoto, markPhotoDeleted, photoLinkRefreshDelay, photoLinksExpired } from '../../../lib/chat-photo-links';
 import { DELETE_CONVERSATION_CONFIRM, DELETE_CONVERSATION_FAILED, DELETE_CONVERSATION_LABEL, FORMER_MEMBER_NOTICE, canDeleteConversation, isReadOnly } from '../../../lib/chat-former-member';
 import { messageDateTimeAttribute, messageTime, messageTimeFull } from '../../../lib/chat-time';
-import { messageStatus, type MessageStatusState } from '../../../lib/chat-message-status';
+import { latestOwnMessageId, messageStatus, type MessageStatusState } from '../../../lib/chat-message-status';
 import { RETRY_LABEL, canActOnMessage, dropLocalMessage, hasFailedToSend, isLocalMessage, localMessageId, markSendFailed, markSending, retainedContent, retryDescription, sendBody, startSending, type SendBody } from '../../../lib/chat-send-status';
 import { mergeMessages } from '../../../lib/chat-messages';
 import styles from '../messages.module.css';
@@ -31,6 +31,7 @@ import styles from '../messages.module.css';
 const statusStyles: Record<MessageStatusState, string> = {
   sending: styles.messageSending,
   failed: styles.messageNotSent,
+  sent: styles.messageSent,
   read: styles.messageRead,
 };
 
@@ -333,6 +334,9 @@ function Conversation() {
 
   // Show the latest message: on open, after the student's own message, and for new messages while they
   // are already at the bottom. If they scrolled up to read, keep their place and offer a button instead.
+  // SRS-211.4 (#1372): "Sent" and "Read" are shown on the student's latest message only, so the list needs
+  // to know which one that is. Computed once per render rather than per message.
+  const latestOwn = latestOwnMessageId(messages, myStudentId);
   const [atLatest, setAtLatest] = useState(true);
   const [unseen, setUnseen] = useState(0);
   const atLatestRef = useRef(true);
@@ -736,7 +740,7 @@ function Conversation() {
               // SRS-211.5 (#1369): the one status this message shows, chosen between the send status
               // (SRS-201.16) and the read receipt (SRS-211.8). They share a slot, so only one can win,
               // and which one is a rule with tests rather than a ternary written here.
-              const status = messageStatus(info?.kind, message, myStudentId);
+              const status = messageStatus(info?.kind, message, myStudentId, message.id === latestOwn);
               // A message that has not been sent has no sent time, so none is shown. The browser's clock is
               // on it for ordering only.
               const sentTime = isLocalMessage(message) ? '' : messageTime(message.sent_at);
