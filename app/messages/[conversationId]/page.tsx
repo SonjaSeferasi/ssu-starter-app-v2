@@ -21,10 +21,18 @@ import { PHOTO_ACCEPT, PHOTO_SEND_FAILED, choosePhoto, describeChosenPhoto, phot
 import { PHOTO_DELETED, PHOTO_DELETE_CONFIRM, PHOTO_UNAVAILABLE, canDeletePhoto, markPhotoDeleted, photoLinkRefreshDelay, photoLinksExpired } from '../../../lib/chat-photo-links';
 import { DELETE_CONVERSATION_CONFIRM, DELETE_CONVERSATION_FAILED, DELETE_CONVERSATION_LABEL, FORMER_MEMBER_NOTICE, canDeleteConversation, isReadOnly } from '../../../lib/chat-former-member';
 import { messageDateTimeAttribute, messageTime, messageTimeFull } from '../../../lib/chat-time';
-import { READ_LABEL, showsReadReceipt } from '../../../lib/chat-read-status';
-import { RETRY_LABEL, canActOnMessage, dropLocalMessage, hasFailedToSend, isLocalMessage, localMessageId, markSendFailed, markSending, retainedContent, retryDescription, sendBody, sendStatusLabel, startSending, type SendBody } from '../../../lib/chat-send-status';
+import { messageStatus, type MessageStatusState } from '../../../lib/chat-message-status';
+import { RETRY_LABEL, canActOnMessage, dropLocalMessage, hasFailedToSend, isLocalMessage, localMessageId, markSendFailed, markSending, retainedContent, retryDescription, sendBody, startSending, type SendBody } from '../../../lib/chat-send-status';
 import { mergeMessages } from '../../../lib/chat-messages';
 import styles from '../messages.module.css';
+
+// SRS-211.5 (#1369): the three states of the status slot, each in its own colour. Which one a message is
+// in is messageStatus's decision; this is only how each one looks.
+const statusStyles: Record<MessageStatusState, string> = {
+  sending: styles.messageSending,
+  failed: styles.messageNotSent,
+  read: styles.messageRead,
+};
 
 const liveLabels: Record<ChatLiveStatus, string> = {
   connecting: 'Connecting to live updates…',
@@ -725,8 +733,10 @@ function Conversation() {
               // SRS-201.16 (#1368): canActOnMessage keeps replying, reacting and deleting off a message the
               // server has never seen. Each of those names a message by its id, and a local id names nothing.
               const canReply = !readOnly && canActOnMessage(message) && canSelectForReply(info?.kind, message);
-              // SRS-201.16 / SRS-211.5: 'Sending…' or 'Not sent', or null once the server has saved it.
-              const sendStatus = sendStatusLabel(message);
+              // SRS-211.5 (#1369): the one status this message shows, chosen between the send status
+              // (SRS-201.16) and the read receipt (SRS-211.8). They share a slot, so only one can win,
+              // and which one is a rule with tests rather than a ternary written here.
+              const status = messageStatus(info?.kind, message, myStudentId);
               // A message that has not been sent has no sent time, so none is shown. The browser's clock is
               // on it for ordering only.
               const sentTime = isLocalMessage(message) ? '' : messageTime(message.sent_at);
@@ -852,7 +862,7 @@ function Conversation() {
                       student's own side or the other's, the same as the bubble above it.
                       The short label is for glancing at; dateTime and title carry the exact instant.
                       aria-hidden because the bubble already speaks it, after the sender and the text. */}
-                  {(sentTime || sendStatus) && (
+                  {(sentTime || status) && (
                     <span className={styles.messageMeta}>
                       {sentTime && (
                         <time className={styles.messageTime} aria-hidden="true"
@@ -863,31 +873,23 @@ function Conversation() {
                       {/* SRS-201.16 (#1368) / SRS-211.5 (#1369): what happened to this message, in the slot
                           the read status already uses -- one state at a time, never two at once. Spoken,
                           because the bubble says nothing about it. */}
-                      {sendStatus ? (
-                        <>
-                          <span className={hasFailedToSend(message) ? styles.messageNotSent : styles.messageSending}>
-                            {sendStatus}
-                          </span>
-                          {/* SRS-201.18 (#1371): send it again, exactly as it was. Only on a message that has
-                              actually failed -- while it is on its way there is nothing to retry, and once it
-                              is saved it is no longer this message's to send. Always visible rather than
-                              revealed on hover: a control nobody finds is a control that is not there, and
-                              this is the only way back from a failed send. */}
-                          {hasFailedToSend(message) && (
-                            <button type="button" className={styles.messageRetry}
-                              onClick={() => void retrySend(message)} aria-label={retryDescription(message)}>
-                              {RETRY_LABEL}
-                            </button>
-                          )}
-                        </>
-                      ) : (
-                      /* SRS-211.8 (#1283): that the other student has read it, beside the time. Nothing is
-                         shown until it has been read -- "Sent" would be SRS-211.4, which is a separate
-                         requirement and not built. SRS-211.9: never in a group, which showsReadReceipt
-                         enforces and the database backs by not sending the field at all. */
-                      showsReadReceipt(info?.kind, message, myStudentId) && (
-                        <span className={styles.messageRead}>{READ_LABEL}</span>
-                      ))}
+                      {/* SRS-201.16 / SRS-211.5 "Sending…" and "Not sent"; SRS-211.8 (#1283) "Read", which
+                          is never shown in a group (SRS-211.9) and which the database backs by not sending
+                          the field at all. One of them, or nothing -- messageStatus decides which. */}
+                      {status && (
+                        <span className={statusStyles[status.state]}>{status.label}</span>
+                      )}
+                      {/* SRS-201.18 (#1371): send it again, exactly as it was. Only on a message that has
+                          actually failed -- while it is on its way there is nothing to retry, and once it
+                          is saved it is no longer this message's to send. Always visible rather than
+                          revealed on hover: a control nobody finds is a control that is not there, and
+                          this is the only way back from a failed send. */}
+                      {status?.state === 'failed' && (
+                        <button type="button" className={styles.messageRetry}
+                          onClick={() => void retrySend(message)} aria-label={retryDescription(message)}>
+                          {RETRY_LABEL}
+                        </button>
+                      )}
                     </span>
                   )}
                   {picking && (
