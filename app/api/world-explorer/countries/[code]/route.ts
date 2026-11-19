@@ -2,8 +2,10 @@ import {countryByCode} from '../../../../../lib/world-explorer/catalog';
 import {fetchCountryFacts,fetchCountriesDevFacts} from '../../../../../lib/world-explorer/providers';
 
 /** Public reference facts; account progress never travels through this route. */
-export async function GET(_request:Request,{params}:{params:{code:string}}){
- const code=typeof params.code==='string'?params.code.toUpperCase():'';
+export async function GET(_request:Request,{params}:{params:Promise<{code:string}>}){
+ // Next 16 hands params to the handler as a promise; reading it directly yields undefined.
+ const {code:requestedCode}=await params;
+ const code=typeof requestedCode==='string'?requestedCode.toUpperCase():'';
  const country=/^[A-Z]{3}$/.test(code)?countryByCode(code):undefined;
  if(!country)return Response.json({error:'Choose one of the 193 UN member-state country levels.'},{status:404});
  let live:Awaited<ReturnType<typeof fetchCountryFacts>>=null;

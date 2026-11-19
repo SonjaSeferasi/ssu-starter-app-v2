@@ -25,7 +25,10 @@ const call=async(fn:string,...args:unknown[])=>(await db.query<any>(`SELECT publ
 const code=(expected:string)=>(error:any)=>error.code===expected;
 const day=(n:number)=>new Date(Date.now()+n*86400000).toISOString();
 const create=async(n:number,title:string,when=day(1))=>(await call('socialu_create_event',uid(n),title,'Details.','Quad',when)).event_id;
-const invitations=async(n:number)=>(await call('socialu_my_event_invitations',uid(n))).map((i:any)=>[i.title,i.rsvp,i.invited]);
+// One row of socialu_my_event_invitations, flattened. Naming the shape here is what lets the
+// destructuring below infer its parameters instead of falling back to an implicit any.
+type Invitation=[title:string,rsvp:string,invited:boolean];
+const invitations=async(n:number):Promise<Invitation[]>=>(await call('socialu_my_event_invitations',uid(n))).map((i:any)=>[i.title,i.rsvp,i.invited]);
 const shown=async(n:number)=>(await invitations(n)).filter(([,rsvp])=>rsvp!=='not_attending').map(([title])=>title);
 
 const parade=await create(1,'Halloween Parade');

@@ -38,18 +38,18 @@ describe('World Explorer reference endpoint',()=>{
  beforeEach(()=>{vi.mocked(fetchCountryFacts).mockReset();});
  it('keeps bundled play available when the optional reference service is unavailable',async()=>{
   vi.mocked(fetchCountryFacts).mockRejectedValue(new Error('offline'));
-  const response=await GET(new Request('http://localhost/api/world-explorer/countries/JPN'),{params:{code:'JPN'}}),body=await response.json();
+  const response=await GET(new Request('http://localhost/api/world-explorer/countries/JPN'),{params:Promise.resolve({code:'JPN'})}),body=await response.json();
   expect(response.status).toBe(200);expect(body.country.code).toBe('JPN');expect(body.live).toBeNull();expect(body.source).toBe('bundled');
  });
  it('publishes optional provider facts separately from the fixed membership record',async()=>{
   const live={code:'JPN',capital:'Tokyo',latitude:35.6,longitude:139.6,sourceUrl:'https://api.worldbank.org/v2/country/JPN?format=json',retrievedAt:'2026-10-27T12:00:00Z',provider:'world-bank' as const};
   vi.mocked(fetchCountryFacts).mockResolvedValue(live);
-  const response=await GET(new Request('http://localhost/api/world-explorer/countries/jpn'),{params:{code:'jpn'}}),body=await response.json();
+  const response=await GET(new Request('http://localhost/api/world-explorer/countries/jpn'),{params:Promise.resolve({code:'jpn'})}),body=await response.json();
   expect(body.country.code).toBe('JPN');expect(body.live).toEqual(live);expect(body.source).toBe('world-bank');expect(response.headers.get('cache-control')).toContain('max-age=600');
  });
  it('does not send arbitrary URLs, non-members or the Antarctic expedition to an upstream provider',async()=>{
   for(const code of ['ANTARCTICA','ATA','VAT','PSE','XKX','TWN','https://evil.test','JPN/../../USA']){
-   const response=await GET(new Request('http://localhost/api/world-explorer/countries/test'),{params:{code}});expect(response.status).toBe(404);
+   const response=await GET(new Request('http://localhost/api/world-explorer/countries/test'),{params:Promise.resolve({code})});expect(response.status).toBe(404);
   }
   expect(fetchCountryFacts).not.toHaveBeenCalled();
  });

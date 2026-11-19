@@ -37,8 +37,8 @@ it('612.4: Sunday-Saturday states settle three misses, then identify a reset and
     expect(after).toMatchObject({ count: 0, atRisk: false });
     expect(after.days.map((day: any) => day.state)).toEqual(['played', 'forgiven', 'forgiven', 'forgiven', 'reset', 'inactive', 'today-unqualified']);
     // Reading/settling does not create a qualifying day or grant another reward.
-    expect((await db.query('SELECT count(*) AS n FROM socialu.participation_events')).rows[0].n).toBe(1);
-    expect((await db.query('SELECT sum(points_change) AS n FROM socialu.point_transactions')).rows[0].n).toBe('10');
+    expect((await db.query<{ n: number }>('SELECT count(*) AS n FROM socialu.participation_events')).rows[0].n).toBe(1);
+    expect((await db.query<{ n: string }>('SELECT sum(points_change) AS n FROM socialu.point_transactions')).rows[0].n).toBe('10');
   } finally { await db.close(); }
 }, 30000);
 
@@ -51,7 +51,7 @@ it('614: dismissal persists per account/day, is idempotent, and cannot dismiss a
     await call(1, '2025-01-09');
     expect(await call()).toMatchObject({ dismissedToday: true, atRisk: false });
     expect(await call(2)).toMatchObject({ dismissedToday: false, atRisk: true });
-    expect((await db.query('SELECT count(*) AS n FROM socialu.reminder_dismissals')).rows[0].n).toBe(1);
+    expect((await db.query<{ n: number }>('SELECT count(*) AS n FROM socialu.reminder_dismissals')).rows[0].n).toBe(1);
     await expect(call(1, '2025-01-10')).rejects.toThrow(/Participation day changed/);
     await play(1, '2025-01-09');
     await at('2025-01-10 12:00:00+00');
@@ -65,7 +65,7 @@ it('uses the saved zone, a DST-aware deadline, and never establishes a zone on a
   try {
     await at('2025-03-09 05:00:00+00');
     expect(await call()).toMatchObject({ timeZone: null, count: 0, atRisk: false });
-    expect((await db.query('SELECT count(*) AS n FROM socialu.participation_settings')).rows[0].n).toBe(0);
+    expect((await db.query<{ n: number }>('SELECT count(*) AS n FROM socialu.participation_settings')).rows[0].n).toBe(0);
     await play(1, '2025-03-08', 'America/New_York');
     const result = await call();
     expect(result.today).toBe('2025-03-09');
