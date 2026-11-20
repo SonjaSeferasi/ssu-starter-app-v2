@@ -42,6 +42,7 @@ function AccountLoginActivity({identity}:{identity:string|null}){
     try{
       const {response,data}=await loginActivityRequest(identity,'/api/account/login-activity',{signal:controller.signal,method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:selected.id,confirm:true})});
       if(!response.ok)throw new Error(data.error||'Could not log out this device.');
+      if(data.ended!==true||data.currentSessionActive!==true)throw new Error('Remote logout is not fully confirmed. Refresh Login Activity to check both sessions.');
       setSelected(null);refresh();setMessage('That session has been logged out. Your current session is still active.');
     }catch(reason){if(!controller.signal.aborted)setActionError(reason instanceof Error?reason.message:'Please try again.');}
     finally{if(!controller.signal.aborted)setEnding(false);}
