@@ -1,0 +1,14 @@
+{
+  "environment": "Local Next production UI/API with actual PostgreSQL schema/functions in disposable PGlite; provider Auth/PostgREST fixtures. No hosted data.",
+  "checks": [
+    "Current session has no remote logout action",
+    "Cancel dismisses without a POST or database revocation",
+    "Escape cancels once before confirmation",
+    "Failed server response preserves dialog and enables recovery without success feedback",
+    "Confirmed SQL revocation removes target action and keeps current session active",
+    "Target authorization fails; caller authorization still passes",
+    "Held response settles at the deadline with an unconfirmed-result message; controls recover",
+    "Refresh reconciles a write that committed before its response timed out"
+  ],
+  "result": "passed"
+}

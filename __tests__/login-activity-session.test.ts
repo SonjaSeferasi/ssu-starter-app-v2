@@ -4,7 +4,7 @@ import {accessToken,storedAccessToken} from '../lib/account/session';
 import {loginActivityIdentity,currentLoginActivityIdentity,loginActivityRequest} from '../lib/account/login-activity-session';
 const token=(sub='A',session_id='session-A',extra={})=>'e30.'+Buffer.from(JSON.stringify({sub,session_id,...extra})).toString('base64url')+'.test';
 beforeEach(()=>{vi.stubGlobal('window',{});vi.mocked(storedAccessToken).mockReturnValue(token());vi.mocked(accessToken).mockResolvedValue(token());});
-afterEach(()=>{vi.unstubAllGlobals();vi.clearAllMocks();});
+afterEach(()=>{vi.useRealTimers();vi.unstubAllGlobals();vi.clearAllMocks();});
 describe('Login Activity account boundary',()=>{
  it('keeps the same key on refresh but changes it for another account or session',()=>{
   const key=loginActivityIdentity(token());
@@ -31,5 +31,36 @@ describe('Login Activity account boundary',()=>{
   const fetch=vi.fn().mockResolvedValue(Response.json({entries:[]}));vi.stubGlobal('fetch',fetch);
   await loginActivityRequest(loginActivityIdentity(token()),'/api/account/login-activity',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
   const init=fetch.mock.calls[0][1];expect(init.headers.get('Authorization')).toBe('Bearer '+token());expect(init.headers.get('Content-Type')).toBe('application/json');
+ });
+});
+
+describe('Login Activity request recovery',()=>{
+ it('bounds a logout when the transport ignores cancellation',async()=>{
+  vi.useFakeTimers();vi.stubGlobal('fetch',vi.fn(()=>new Promise(()=>{})));
+  let outcome='pending',message='';
+  const pending=loginActivityRequest(loginActivityIdentity(token()),'/api/account/login-activity',{method:'POST',body:'{}'}).then(()=>{outcome='success';},error=>{outcome='rejected';message=error.message;});
+  await vi.advanceTimersByTimeAsync(12000);
+  expect(outcome).toBe('rejected');expect(message).toMatch(/not confirmed/i);await pending;
+ });
+ it('does not send a logout after a timed-out token refresh resolves',async()=>{
+  vi.useFakeTimers();let finish!:(value:string)=>void;
+  vi.mocked(accessToken).mockImplementationOnce(()=>new Promise(resolve=>{finish=resolve;}));
+  const fetch=vi.fn();vi.stubGlobal('fetch',fetch);let outcome='pending';
+  const pending=loginActivityRequest(loginActivityIdentity(token()),'/api/account/login-activity',{method:'POST',body:'{}'}).then(()=>{outcome='success';},()=>{outcome='rejected';});
+  await vi.advanceTimersByTimeAsync(12000);expect(outcome).toBe('rejected');
+  finish(token());await pending;await Promise.resolve();expect(fetch).not.toHaveBeenCalled();
+ });
+});
+
+describe('Login Activity decoding and cancellation recovery',()=>{
+ it('bounds a stalled response body',async()=>{
+  vi.useFakeTimers();vi.stubGlobal('fetch',vi.fn().mockResolvedValue({json:()=>new Promise(()=>{})}));
+  let message='';const pending=loginActivityRequest(loginActivityIdentity(token()),'/api/account/login-activity').catch(error=>{message=error.message;});
+  await vi.advanceTimersByTimeAsync(10001);await pending;expect(message).toContain('took too long');
+ });
+ it('settles caller cancellation even when fetch ignores its signal',async()=>{
+  const controller=new AbortController();vi.stubGlobal('fetch',vi.fn(()=>new Promise(()=>{})));
+  const pending=loginActivityRequest(loginActivityIdentity(token()),'/api/account/login-activity',{signal:controller.signal});
+  const rejected=expect(pending).rejects.toThrow('cancelled');controller.abort();await rejected;
  });
 });
