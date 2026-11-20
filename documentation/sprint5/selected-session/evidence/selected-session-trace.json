@@ -1,0 +1,11 @@
+{
+  "environment": "Actual local production UI/API and PostgreSQL; local Auth/PostgREST adapters issue synthetic sessions. No hosted account or provider is accessed.",
+  "checks": [
+    "Cancel preserves the other local browser session",
+    "Foreign, current and unconfirmed targets are refused",
+    "Actual app session guard denies the target, preserves its history and keeps the caller active",
+    "Provider adapter refreshes the same session ID, but the actual app guard still denies access",
+    "A newly issued local login succeeds; the revoked historical session remains ended and another caller endpoint still works"
+  ],
+  "result": "passed"
+}
