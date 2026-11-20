@@ -8,7 +8,10 @@ const { createClient, storedAccessToken, accessToken, subscribeToChat } = vi.hoi
 vi.mock('@supabase/supabase-js', () => ({ createClient }));
 vi.mock('../lib/account/session', () => ({ storedAccessToken, accessToken }));
 
-const token = (sub: string) => 'header.' + Buffer.from(JSON.stringify({ sub })).toString('base64url') + '.signature';
+// SRS-107.8 (#1228): the channel is per login session, so the token carries session_id as well as sub.
+// A token without one cannot name a topic, and the client treats it as signed out.
+const token = (sub: string, session_id?: string) =>
+  'header.' + Buffer.from(JSON.stringify(session_id ? { sub, session_id } : { sub })).toString('base64url') + '.signature';
 
 function fakeSupabase() {
   const handlers: Record<string, (message: { payload: unknown }) => void> = {};
@@ -32,7 +35,7 @@ describe('SRS-212.9 one live channel for every listener', () => {
     vi.doUnmock('../lib/realtime-client');
     supabase = fakeSupabase();
     createClient.mockReturnValue(supabase.client);
-    storedAccessToken.mockReturnValue(token('user-1'));
+    storedAccessToken.mockReturnValue(token('user-1', 'session-1'));
     vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', 'https://example.supabase.co');
     vi.stubEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY', 'public-anon-key');
     ({ subscribeToChat: subscribe } = await import('../lib/realtime-client'));
@@ -40,14 +43,14 @@ describe('SRS-212.9 one live channel for every listener', () => {
   afterEach(() => { vi.useRealTimers(); vi.unstubAllEnvs(); });
   const add = (l: ReturnType<typeof listener>) => subscribe(l.message, l.status, l.conversation, l.invitation, l.reaction);
 
-  it('opens one channel on the student’s own topic and gives every listener each event', async () => {
+  it('opens one channel on the student’s own login-session topic and gives every listener each event', async () => {
     const bell = listener(), page = listener();
     add(bell); add(page);
     await settle();
     expect(supabase.client.channel).toHaveBeenCalledTimes(1);
-    expect(supabase.client.channel).toHaveBeenCalledWith('student:user-1', { config: { private: true } });
+    expect(supabase.client.channel).toHaveBeenCalledWith('session:user-1:session-1', { config: { private: true } });
     expect(supabase.channel.subscribe).toHaveBeenCalledTimes(1);
-    expect(supabase.client.realtime.setAuth).toHaveBeenCalledWith(token('user-1'));
+    expect(supabase.client.realtime.setAuth).toHaveBeenCalledWith(token('user-1', 'session-1'));
 
     supabase.emit('message_created', { id: '5' });
     supabase.emit('conversation_updated', { conversation_id: '3', name: 'Team' });
@@ -103,13 +106,13 @@ describe('SRS-212.9 one live channel for every listener', () => {
     expect(supabase.client.removeChannel).toHaveBeenCalledTimes(1);
   });
 
-  it('opens a new channel for a different student on the same tab', async () => {
+  it('opens a new channel for a different login session on the same tab', async () => {
     add(listener());
     await settle();
-    storedAccessToken.mockReturnValue(token('user-2'));
+    storedAccessToken.mockReturnValue(token('user-2', 'session-2'));
     add(listener());
     expect(supabase.client.removeChannel).toHaveBeenCalledTimes(1);
-    expect(supabase.client.channel).toHaveBeenLastCalledWith('student:user-2', { config: { private: true } });
+    expect(supabase.client.channel).toHaveBeenLastCalledWith('session:user-2:session-2', { config: { private: true } });
   });
 
   it('opens nothing when signed out or when live updates are not configured', () => {
@@ -117,6 +120,11 @@ describe('SRS-212.9 one live channel for every listener', () => {
     const signedOut = listener();
     add(signedOut);
     expect(signedOut.status).toHaveBeenCalledWith('signed-out');
+    // SRS-107.8 (#1228): a token from before per-session channels names no topic, so nothing opens.
+    storedAccessToken.mockReturnValue(token('user-1'));
+    const sessionless = listener();
+    add(sessionless);
+    expect(sessionless.status).toHaveBeenCalledWith('signed-out');
     vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', '');
     const unconfigured = listener();
     add(unconfigured);
