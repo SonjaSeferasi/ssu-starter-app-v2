@@ -1,4 +1,4 @@
-import {AccountError,accountClient,accountResponse,jsonBody,verifiedUser} from '../../../../lib/socialu-account';
+import {AccountError,accountClient,accountResponse,jsonBody,verifiedUser,checkAppSession} from '../../../../lib/socialu-account';
 import {loginHistory,historyCursor,currentSessionId} from '../../../../lib/login-activity';
 export const dynamic='force-dynamic';
 export async function GET(request:Request){
@@ -21,6 +21,9 @@ export async function POST(request:Request){
     if(error?.code==='P0002')throw new AccountError('That sign-in was not found.',404);
     if(error?.code==='22023')throw new AccountError('Use Log Out to end your current session.',400);
     if(error||data!==true)throw new AccountError('Could not log out this device. Please try again later.',503);
-    return Response.json({ended:true},{headers:{'Cache-Control':'no-store'}});
+    // The selected write may succeed while an independent security action ends the caller.
+    // Confirm current authorization before the UI claims this session remains active.
+    await checkAppSession(request.headers.get('Authorization')!.slice(7),user.id);
+    return Response.json({ended:true,currentSessionActive:true},{headers:{'Cache-Control':'no-store'}});
   }catch(error){return accountResponse(error);}
 }

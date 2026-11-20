@@ -120,7 +120,7 @@ it('ends only the selected session, denies refreshed access and permits a new lo
   expect(after.data.entries.find((e:any)=>e.id===callerId)).toMatchObject({active:true,is_current:true});
   expect(after.data.entries.find((e:any)=>e.id===targetId)).toMatchObject({active:false,is_current:false});
   await screenshot(caller,'02-selected-ended-caller-stays-active');trace.checks.push('Actual app session guard denies the target, preserves its history and keeps the caller active');
-  await target.reload({waitUntil:'domcontentloaded'});await target.getByRole('alert').waitFor();await screenshot(target,'03-revoked-protected-request-denied');
+  await target.reload({waitUntil:'domcontentloaded'});await target.getByRole('alert').filter({hasText:'Your session was ended by a security action'}).waitFor();await screenshot(target,'03-revoked-protected-request-denied');
   const refreshed=await target.evaluate(async()=>{
    const raw=JSON.parse(sessionStorage.getItem('socialu_session')||localStorage.getItem('socialu_session')||'{}');
    const r=await fetch('/api/auth/refresh',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({refreshToken:raw.refresh_token})});return r.status;

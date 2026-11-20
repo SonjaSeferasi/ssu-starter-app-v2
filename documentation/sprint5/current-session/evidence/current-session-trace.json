@@ -1,0 +1,9 @@
+{
+  "environment": "Actual local production UI/API and disposable PostgreSQL; Auth/PostgREST adapter; malformed-response and independent-revocation fault injection",
+  "checks": [
+    "HTTP 200 without explicit preservation confirmation does not produce false success; dialog is recoverable",
+    "Confirmed response corresponds to actual SQL target revocation, caller authorization and persistence after refresh",
+    "An independent caller revocation after the target write produces 401 and no preservation claim; the completed target logout is not undone"
+  ],
+  "result": "passed"
+}

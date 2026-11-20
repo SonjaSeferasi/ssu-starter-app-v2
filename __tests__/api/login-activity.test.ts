@@ -1,10 +1,10 @@
 import {beforeEach,describe,expect,it,vi} from 'vitest';
-const {verified,rpc}=vi.hoisted(()=>({verified:vi.fn(),rpc:vi.fn()}));
-vi.mock('../../lib/socialu-account',async original=>({...await original<typeof import('../../lib/socialu-account')>(),verifiedUser:verified,accountClient:()=>({rpc})}));
+const {verified,rpc,checkSession}=vi.hoisted(()=>({verified:vi.fn(),rpc:vi.fn(),checkSession:vi.fn()}));
+vi.mock('../../lib/socialu-account',async original=>({...await original<typeof import('../../lib/socialu-account')>(),verifiedUser:verified,checkAppSession:checkSession,accountClient:()=>({rpc})}));
 import {AccountError} from '../../lib/socialu-account';
 import {GET,POST} from '../../app/api/account/login-activity/route';
 import {loginHistory} from '../../lib/login-activity';
-beforeEach(()=>{vi.resetAllMocks();verified.mockResolvedValue({id:'owner'});rpc.mockResolvedValue({data:{entries:[]},error:null});});
+beforeEach(()=>{vi.resetAllMocks();verified.mockResolvedValue({id:'owner'});checkSession.mockResolvedValue(undefined);rpc.mockResolvedValue({data:{entries:[]},error:null});});
 it('authorizes options only with a known caller session and other active rows',async()=>{
  const entries=[{id:'1',active:true,is_current:true},{id:'2',active:true,is_current:false},{id:'3',active:false,is_current:false}];
  rpc.mockResolvedValue({data:{entries},error:null});
@@ -45,4 +45,14 @@ describe('Selected-device logout',()=>{
  it.each([['42501',401],['P0002',404],['22023',400],['PGRST202',503]])('handles database failure %s without reporting success',async(code,status)=>{
   rpc.mockResolvedValue({error:{code}});const response=await POST(endRequest());expect(response.status).toBe(status);expect(await response.text()).not.toContain('ended');
  });
+});
+
+it('does not claim caller preservation if the post-logout session check fails',async()=>{
+ rpc.mockResolvedValue({data:true,error:null});checkSession.mockRejectedValue(new AccountError('Your session was ended. Please sign in again.',401));
+ const response=await POST(endRequest());expect(response.status).toBe(401);expect(await response.text()).not.toContain('currentSessionActive');
+});
+it('explicitly confirms caller preservation only after the security check',async()=>{
+ rpc.mockResolvedValue({data:true,error:null});const response=await POST(endRequest());
+ expect(await response.json()).toEqual({ended:true,currentSessionActive:true});
+ expect(checkSession).toHaveBeenCalledWith(expect.any(String),'owner');
 });
