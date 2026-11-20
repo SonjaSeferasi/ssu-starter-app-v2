@@ -2646,6 +2646,18 @@ The system shall allow the sender to retry sending a failed text, emoji, or GIF-
 
 Traces to: UR-201.
 
+##### SRS-201.19, LP — Open the camera to take a photo.
+
+The system shall allow a conversation participant to open their device camera while preparing a message and take a photo with it.
+
+Traces to: UR-201.
+
+##### SRS-201.20, LP — Use a photo taken with the camera.
+
+The system shall treat a photo taken with the camera as a selected photo for sending, subject to the same supported-format and file-size requirements as a photo chosen from the device.
+
+Traces to: UR-201.
+
 <a id="area-202"></a>
 
 ### Group Chats and Membership
@@ -8645,6 +8657,7 @@ The original uploaded PDFs remain unchanged. This revision updates the editable 
 | Open findings | Kept reward/catalog values and unresolved test conditions explicit; proposed a measurable replacement for vague event readability. |
 | LP Chat, 26 October 2026 | UR-210 and SRS-210.1 to SRS-210.5 now cover private and group conversations. SRS-210.2 now names the reaction set (👍 ❤️ 😂 😮 😢 🙏), which settles the Chat part of B-15. Added SRS-212.9 (message notifications) under UR-212. |
 | LP Chat, 26 October 2026 (group names) | Added SRS-202.5 (name a group chat) and SRS-202.6 (display the group name) under UR-202. The UR-202 user requirement now includes naming the group. |
+| LP Chat, 20 November 2026 (camera) | Added SRS-201.19 (open the camera to take a photo) and SRS-201.20 (use a photo taken with the camera) under UR-201. The UR-201 user requirement already covers sending photos; these name the camera as a second source alongside SRS-201.3, which covers choosing a file from the device. Format and size stay with SRS-201.4 and SRS-201.5, and sending with SRS-201.6. |
 
 <a id="appendix-d"></a>
 
@@ -8698,7 +8711,7 @@ Unconfirmed operation outcomes do not prove failure. Retry and exit behavior pre
 | Parent UR | SRS coverage / disposition | Section |
 | --- | --- | --- |
 | UR-200 | SRS-200.1 through SRS-200.19; SRS-NFR-36, SRS-NFR-37 | [See section](#ur-200) |
-| UR-201 | SRS-201.1 through SRS-201.18; SRS-NFR-26, SRS-NFR-27, SRS-NFR-28, SRS-NFR-29, SRS-NFR-30 | [See section](#ur-201) |
+| UR-201 | SRS-201.1 through SRS-201.20; SRS-NFR-26, SRS-NFR-27, SRS-NFR-28, SRS-NFR-29, SRS-NFR-30 | [See section](#ur-201) |
 | UR-202 | SRS-202.1 through SRS-202.6 | [See section](#ur-202) |
 | UR-203 | SRS-203.1 through SRS-203.4; SRS-NFR-34 | [See section](#ur-203) |
 | UR-204 | SRS-204.1 through SRS-204.9; SRS-NFR-33, SRS-NFR-35 | [See section](#ur-204) |
