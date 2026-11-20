@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitest/config';
 
-// The security tests talk to the real Supabase project and create real auth users, so they are
-// kept out of `npm test`. Run them on purpose with `npm run test:security`.
+// RLS attack tests (course pattern: brockenbrough/security-starter-rls-v1). Use `npm run test:security`.
+// They also run in the default `npm test`, since they use an in-memory Postgres, not a real project.
 export default defineConfig({
   test: {
     environment: 'node',

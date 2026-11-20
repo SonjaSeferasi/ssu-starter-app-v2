@@ -10,8 +10,5 @@ export default defineConfig({
     environment: 'node',
     globals: true,
     include: ['__tests__/**/*.test.ts'],
-    // __tests__/security talks to the real Supabase project and creates real auth users,
-    // so it stays out of `npm test`. Run it on purpose: npm run test:security.
-    exclude: ['**/node_modules/**', '**/dist/**', '__tests__/security/**'],
   },
 });
