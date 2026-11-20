@@ -8657,7 +8657,7 @@ The original uploaded PDFs remain unchanged. This revision updates the editable 
 | Open findings | Kept reward/catalog values and unresolved test conditions explicit; proposed a measurable replacement for vague event readability. |
 | LP Chat, 26 October 2026 | UR-210 and SRS-210.1 to SRS-210.5 now cover private and group conversations. SRS-210.2 now names the reaction set (👍 ❤️ 😂 😮 😢 🙏), which settles the Chat part of B-15. Added SRS-212.9 (message notifications) under UR-212. |
 | LP Chat, 26 October 2026 (group names) | Added SRS-202.5 (name a group chat) and SRS-202.6 (display the group name) under UR-202. The UR-202 user requirement now includes naming the group. |
-| LP Chat, 20 November 2026 (camera) | Added SRS-201.19 (open the camera to take a photo) and SRS-201.20 (use a photo taken with the camera) under UR-201. The UR-201 user requirement already covers sending photos; these name the camera as a second source alongside SRS-201.3, which covers choosing a file from the device. Format and size stay with SRS-201.4 and SRS-201.5, and sending with SRS-201.6. |
+| LP Chat, 20 November 2026 (camera) | Added SRS-201.19 (open the camera to take a photo) and SRS-201.20 (use a photo taken with the camera) under UR-201. These record behaviour the app already has: the conversation composer has carried a "Take a photo" input using capture="environment" since SRS-201.6 (#1025), feeding the same handler as the device picker. The camera had no requirement of its own, so the only photo source the SRS named was SRS-201.3, choosing a file from the device. Format and size stay with SRS-201.4 and SRS-201.5, and sending with SRS-201.6. The UR-201 user requirement is unchanged. |
 
 <a id="appendix-d"></a>
 
