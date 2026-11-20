@@ -20,16 +20,35 @@ export function subscribeLoginActivityIdentity(changed:()=>void){
   window.addEventListener('focus',changed);
   return()=>{window.removeEventListener('storage',storage);window.removeEventListener('socialu-session-changed',changed);window.removeEventListener('focus',changed);};
 }
+// One deadline covers token refresh, transport and body decoding. A timed-out write may
+// already have committed, so recovery must describe an unconfirmed result.
+export const LOGIN_ACTIVITY_REQUEST_TIMEOUT_MS=10_000;
 export async function loginActivityRequest(identity:string|null,path:string,init:RequestInit={}){
-  const token=await accessToken();
-  const assertCurrent=()=>{
-    if(init.signal?.aborted||!identity||loginActivityIdentity(token)!==identity||currentLoginActivityIdentity()!==identity)
-      throw new Error('Your account changed. Please sign in again.');
-  };
-  assertCurrent();
-  const headers=new Headers(init.headers);headers.set('Authorization',`Bearer ${token}`);
-  const response=await fetch(path,{...init,headers,cache:'no-store'});
-  const data=await response.json();
-  assertCurrent();
-  return {response,data};
+  const controller=new AbortController();
+  let rejectStopped!:(reason:Error)=>void;
+  const stopped=new Promise<never>((_,reject)=>{rejectStopped=reject;});
+  const stop=(reason:Error)=>{rejectStopped(reason);controller.abort();};
+  const cancelled=()=>stop(new Error('Login Activity request cancelled.'));
+  if(init.signal?.aborted)throw new Error('Login Activity request cancelled.');
+  init.signal?.addEventListener('abort',cancelled,{once:true});
+  const timer=setTimeout(()=>stop(new Error(init.method?.toUpperCase()==='POST'
+    ?'Logout is not confirmed. Refresh Login Activity before trying again.'
+    :'Loading Login Activity took too long. Please try again.')),LOGIN_ACTIVITY_REQUEST_TIMEOUT_MS);
+  try{
+    return await Promise.race([(async()=>{
+      const token=await accessToken();
+      const assertCurrent=()=>{
+        if(controller.signal.aborted||!identity||loginActivityIdentity(token)!==identity||currentLoginActivityIdentity()!==identity)
+          throw new Error('Your account changed. Please sign in again.');
+      };
+      assertCurrent();
+      const headers=new Headers(init.headers);headers.set('Authorization',`Bearer ${token}`);
+      const response=await fetch(path,{...init,signal:controller.signal,headers,cache:'no-store'});
+      const data=await response.json();
+      assertCurrent();
+      return {response,data};
+    })(),stopped]);
+  }finally{
+    clearTimeout(timer);init.signal?.removeEventListener('abort',cancelled);
+  }
 }
