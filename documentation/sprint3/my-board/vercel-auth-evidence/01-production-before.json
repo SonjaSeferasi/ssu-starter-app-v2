@@ -1,0 +1,21 @@
+{
+  "observedAt": "2026-11-17T05:36:48.601Z",
+  "origin": "https://ssu-starter-app-v2.vercel.app",
+  "test": "Explicitly invalid token; expect rejection after configured auth is reached",
+  "checks": [
+    {
+      "path": "/api/profiles/space",
+      "status": 503,
+      "error": "Authentication is unavailable. Check the server Supabase configuration.",
+      "passed": false
+    },
+    {
+      "path": "/api/account/login-activity",
+      "status": 503,
+      "error": "Authentication is unavailable. Check the server Supabase configuration.",
+      "passed": false
+    }
+  ],
+  "result": "failed",
+  "limitation": "A 401 proves invalid-token rejection only. Verified login and My Board save/reload require separate authenticated acceptance."
+}
