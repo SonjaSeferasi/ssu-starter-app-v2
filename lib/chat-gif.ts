@@ -46,6 +46,31 @@ export function gifFormatError(gif: { type: string } | null | undefined): string
   return isSupportedGifType(gif.type) ? null : GIF_FORMAT_REJECTED;
 }
 
+// SRS-201.13 (#1401): the largest a conversation GIF may be. This is the max_bytes of the seeded
+// ('chat_gif','image/gif',15000000) row, and validate_media refuses on `byte_count > lim`, so a file of
+// exactly this many bytes is allowed. Refusing at 15,000,000 here would turn away a GIF the database
+// would have accepted.
+export const GIF_MAX_BYTES = 15_000_000;
+
+export const GIF_TOO_LARGE = 'GIFs must be 15 MB or smaller.';
+// media_assets has CHECK (byte_count > 0), so an empty file could never be stored. Saying so here is
+// kinder than letting the upload fail later with a database message.
+export const GIF_EMPTY = 'That file is empty. Choose a GIF.';
+
+export function gifSizeError(gif: { size: number } | null | undefined): string | null {
+  if (!gif) return null;
+  if (!Number.isFinite(gif.size) || gif.size <= 0) return GIF_EMPTY;
+  return gif.size > GIF_MAX_BYTES ? GIF_TOO_LARGE : null;
+}
+
+// Why a chosen GIF cannot be sent, or null when it may be. Format is judged before size so a file that
+// fails both is named by what it is rather than by how big it is, which is the more useful thing to fix.
+// The upload route applies this same function to what actually arrived, so the page and the server
+// cannot give different answers.
+export function gifError(gif: { type: string; size: number } | null | undefined): string | null {
+  return gifFormatError(gif) ?? gifSizeError(gif);
+}
+
 // A readable size for the chosen GIF. Reused from the photo rules so a 1.2 MB file reads the same
 // whichever button the student used, and so both are counted in the MB the 15 MB limit counts.
 export const formatGifSize = formatPhotoSize;
