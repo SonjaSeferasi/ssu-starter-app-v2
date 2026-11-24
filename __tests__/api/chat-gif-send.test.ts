@@ -151,7 +151,10 @@ describe('SRS-201.14 the migration keeps the two rules a copy of send_photo woul
   // The header explains at length what this function deliberately does NOT do, naming
   // chat_photo_displays and the 15,000,000 limit to say they are absent. Those sentences would satisfy a
   // plain search for the very things being checked, so the assertions below read the executable SQL only.
-  const sql = migration.split('\n').map((line) => line.replace(/--.*$/, '')).join('\n');
+  // Split on \r?\n and anchor nothing: git checks this file out with CRLF on Windows, and '.' in a
+  // JavaScript regular expression does not match '\r', so /--.*$/ quietly strips nothing on such a
+  // checkout -- which would leave every assertion below passing against the comments it meant to exclude.
+  const sql = migration.split(/\r?\n/).map((line) => line.replace(/--.*/, '')).join('\n');
 
   it('broadcasts through the per-session check, not realtime.send', () => {
     // SRS-107.8 (#1228): realtime.send here would reach revoked login sessions. The send_photo migration

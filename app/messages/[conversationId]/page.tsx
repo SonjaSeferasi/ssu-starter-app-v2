@@ -18,7 +18,7 @@ import { ReactionChips, ReactionPicker } from '../message-reactions';
 import { SnipePanel } from '../../../components/snipe/snipe-panel';
 import { canSelectForReply, findReplyTarget, keepReplyTarget, replyIndication, replyPreview, replyQuote, toggleReplyTarget, type ReplyTargets } from '../../../lib/chat-reply';
 import { PHOTO_ACCEPT, PHOTO_SEND_FAILED, choosePhoto, describeChosenPhoto, photoError, type ChosenPhoto } from '../../../lib/chat-photo';
-import { GIF_ACCEPT, chooseGif, describeChosenGif, gifError } from '../../../lib/chat-gif';
+import { GIF_ACCEPT, GIF_SEND_FAILED, chooseGif, describeChosenGif, gifError } from '../../../lib/chat-gif';
 import { PHOTO_DELETED, PHOTO_DELETE_CONFIRM, PHOTO_UNAVAILABLE, canDeletePhoto, markPhotoDeleted, photoLinkRefreshDelay, photoLinksExpired } from '../../../lib/chat-photo-links';
 import { DELETE_CONVERSATION_CONFIRM, DELETE_CONVERSATION_FAILED, DELETE_CONVERSATION_LABEL, FORMER_MEMBER_NOTICE, canDeleteConversation, isReadOnly } from '../../../lib/chat-former-member';
 import { messageDateTimeAttribute, messageTime, messageTimeFull } from '../../../lib/chat-time';
@@ -475,6 +475,10 @@ function Conversation() {
     // own, so a photo and a caption are two messages; anything typed stays in the box and is sent next,
     // rather than being thrown away or quietly attached to something that cannot carry it.
     if (photo) { await sendPhoto(photo); return; }
+    // SRS-201.14 (#1407): the same rule for a chosen GIF. The two are mutually exclusive (see reviewGif),
+    // so only one of these branches can ever be taken, and anything typed stays in the box for the next
+    // message -- the schema gives a GIF message no text of its own.
+    if (gif) { await sendGif(gif); return; }
     if (!text.trim()) return;
     // SRS-209.3 (#992): a chosen message is sent with the reply, so the two are associated (SRS-209.4).
     // SRS-201.17 (#1370): the box and the reply bar are cleared as soon as the message is in the
@@ -631,6 +635,35 @@ function Conversation() {
       clearPhoto();
     } catch (err) {
       setError(err instanceof Error && !(err instanceof TypeError) ? err.message : PHOTO_SEND_FAILED);
+    } finally {
+      sendingRef.current = false;
+      setSending(false);
+    }
+  }
+
+  // SRS-201.14 (#1405, #1407): send the chosen GIF. Form data rather than JSON, because the file goes as it
+  // is -- a GIF re-encoded in the browser would stop animating, which is the whole point of SRS-201.15. The
+  // server reads the sender from the token, so the form carries nothing but the GIF.
+  // The chosen GIF is only cleared once it has actually been sent, so a failed send keeps it for a retry.
+  async function sendGif(file: File) {
+    if (sendingRef.current) return;
+    sendingRef.current = true;
+    setSending(true);
+    setError('');
+    try {
+      const form = new FormData();
+      form.append('gif', file);
+      const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/gifs`, {
+        method: 'POST', headers: { Authorization: `Bearer ${storedAccessToken() ?? ''}` }, body: form,
+      });
+      const data = await response.json().catch(() => ({}));
+      if (response.status === 404) { setHistory('denied'); return; }
+      if (!response.ok) throw new Error(data.error || GIF_SEND_FAILED);
+      addMessage(data.message);
+      setMyStudentId((current) => current ?? data.message.sender_id);
+      clearGif();
+    } catch (err) {
+      setError(err instanceof Error && !(err instanceof TypeError) ? err.message : GIF_SEND_FAILED);
     } finally {
       sendingRef.current = false;
       setSending(false);
