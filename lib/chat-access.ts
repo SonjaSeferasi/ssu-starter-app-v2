@@ -67,6 +67,10 @@ export async function chatOperation(fn: string, args: Record<string, string>) {
     // in the page, because a request can reach the database without going through it.
     if (error.code === 'SCF01') throw new AccountError('That photo cannot be sent in a conversation.', 400);
     if (error.code === 'SCF02') throw new AccountError('Your photo could not be stored. Please try again.', 503);
+    // SRS-201.14 (#1405): sending a GIF. Its own codes rather than SCF01/SCF02, so a student who picked a
+    // GIF is never told about photos -- the two buttons refuse for the same reasons but name different files.
+    if (error.code === 'SCF03') throw new AccountError('That GIF cannot be sent in a conversation.', 400);
+    if (error.code === 'SCF04') throw new AccountError('Your GIF could not be stored. Please try again.', 503);
     // #1106: deleting a photo you sent. SCD01 names the rule rather than hiding behind "not available",
     // because the student can see the message perfectly well -- it just is not theirs.
     if (error.code === 'SCD01') throw new AccountError('You can only delete photos you sent.', 403);

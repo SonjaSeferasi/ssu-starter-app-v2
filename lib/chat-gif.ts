@@ -83,3 +83,31 @@ export function describeChosenGif(gif: ChosenGif | null | undefined): string {
   const name = gif.name.trim() || 'GIF';
   return size ? `${name}, ${size}` : name;
 }
+
+// SRS-201.14 (#1405): what the server needs to store a sent GIF. Rules rather than work, so they live
+// beside the ones the page already uses and are covered by the same kind of test.
+
+// Where a conversation GIF is stored. The sender and the conversation are in the path so an object can be
+// traced back to the message that references it, and the random part makes one upload unable to overwrite
+// another -- media_assets.storage_key is UNIQUE, so a collision would otherwise refuse a legitimate send.
+// There is no '-display' sibling: unlike a photo, a GIF has no second copy (re-encoding would stop it
+// animating), so the key names the one object there is.
+export function gifStorageKey(ownerId: string, conversationId: string, unique: string): string {
+  return `chat_gif/${ownerId}/${conversationId}/${unique}.gif`;
+}
+
+// A GIF file begins with 'GIF87a' or 'GIF89a'. The reported type is a claim about the file name as much as
+// about the file, so the route checks the bytes that actually arrived. This is the GIF equivalent of the
+// photo route decoding its image, and it deliberately only reads the header: decoding or re-encoding the
+// frames is what would flatten the animation.
+export function isGifBytes(bytes: ArrayLike<number> | null | undefined): boolean {
+  if (!bytes || bytes.length < 6) return false;
+  const header = Array.from({ length: 6 }, (_, i) => String.fromCharCode(bytes[i]));
+  return header.join('') === 'GIF87a' || header.join('') === 'GIF89a';
+}
+
+export const GIF_BYTES_REJECTED = 'That file is not a GIF. Choose it again.';
+
+// What the student is told when the GIF was chosen correctly but could not be sent. The format and size
+// refusals name what to fix; this one does not pretend to, because nothing about the file is wrong.
+export const GIF_SEND_FAILED = 'Your GIF could not be sent. Please try again.';
