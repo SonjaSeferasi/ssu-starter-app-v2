@@ -18,6 +18,7 @@ import { ReactionChips, ReactionPicker } from '../message-reactions';
 import { SnipePanel } from '../../../components/snipe/snipe-panel';
 import { canSelectForReply, findReplyTarget, keepReplyTarget, replyIndication, replyPreview, replyQuote, toggleReplyTarget, type ReplyTargets } from '../../../lib/chat-reply';
 import { PHOTO_ACCEPT, PHOTO_SEND_FAILED, choosePhoto, describeChosenPhoto, photoError, type ChosenPhoto } from '../../../lib/chat-photo';
+import { GIF_ACCEPT, chooseGif, describeChosenGif, gifFormatError } from '../../../lib/chat-gif';
 import { PHOTO_DELETED, PHOTO_DELETE_CONFIRM, PHOTO_UNAVAILABLE, canDeletePhoto, markPhotoDeleted, photoLinkRefreshDelay, photoLinksExpired } from '../../../lib/chat-photo-links';
 import { DELETE_CONVERSATION_CONFIRM, DELETE_CONVERSATION_FAILED, DELETE_CONVERSATION_LABEL, FORMER_MEMBER_NOTICE, canDeleteConversation, isReadOnly } from '../../../lib/chat-former-member';
 import { messageDateTimeAttribute, messageTime, messageTimeFull } from '../../../lib/chat-time';
@@ -540,6 +541,48 @@ function Conversation() {
     photoInput.current?.focus();
   }
 
+  // SRS-201.12 (#1397, #1399): the GIF the student has chosen to send. A third input beside the photo and
+  // camera ones, with its own state because Send has to know which of the two it is sending.
+  const [gif, setGif] = useState<File | null>(null);
+  const gifInput = useRef<HTMLInputElement>(null);
+  function clearGif() {
+    setGif(null);
+    // Same reason as clearPhoto: without resetting the value, picking the same GIF again fires no change.
+    if (gifInput.current) gifInput.current.value = '';
+    gifInput.current?.focus();
+  }
+
+  // SRS-201.12 (#1399): a chosen GIF is kept only when its format is one the conversation accepts. The
+  // accept hint below filters what the picker offers, but a student can still pick "All files", so the
+  // refusal has to happen here too. The size limit is SRS-201.13.
+  function reviewGif(files: FileList | null) {
+    const chosen = chooseGif(files);
+    if (!chosen) { setGif(null); return; }
+    const refusal = gifFormatError(chosen);
+    if (refusal) {
+      setError(refusal);
+      setGif(null);
+      if (gifInput.current) gifInput.current.value = '';
+      return;
+    }
+    setError('');
+    // One message carries one thing: choosing a GIF puts back a photo that was waiting, rather than
+    // leaving two chosen and Send quietly picking one.
+    clearPhotoSelection();
+    setGif(chosen);
+  }
+
+  // Clearing without moving the focus, for when one choice replaces the other.
+  function clearPhotoSelection() {
+    setPhoto(null);
+    if (photoInput.current) photoInput.current.value = '';
+    if (cameraInput.current) cameraInput.current.value = '';
+  }
+  function clearGifSelection() {
+    setGif(null);
+    if (gifInput.current) gifInput.current.value = '';
+  }
+
   // SRS-201.4 (#1015, #1016) and SRS-201.5 (#1018): a chosen file is kept only when its format is one the
   // conversation accepts and it is within the size limit.
   // The accept hint below filters what the picker offers, but a student can still pick "All files", so the
@@ -556,6 +599,9 @@ function Conversation() {
       return;
     }
     setError('');
+    // SRS-201.12 (#1399): the mirror of reviewGif -- one message carries one thing, so choosing a photo
+    // puts back a GIF that was waiting.
+    clearGifSelection();
     setPhoto(chosen);
   }
 
@@ -948,6 +994,20 @@ function Conversation() {
               </button>
             </div>
           )}
+          {/* SRS-201.12 (#1399): the chosen GIF, shown the same way as a chosen photo so the composer reads
+              the same whichever was picked. Only one of the two can be on screen: see reviewGif. */}
+          {gif && (
+            <div className={styles.chosenPhoto}>
+              <span className={styles.chosenPhotoMark} aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M13 9.5a2.5 2.5 0 1 0 0 5h1.5v-2" /><path d="M8 9.5v5" /></svg>
+              </span>
+              <span className={styles.chosenPhotoText}>{describeChosenGif(gif)}</span>
+              <button type="button" className={styles.chosenPhotoRemove} onClick={clearGif}
+                aria-label="Remove the chosen GIF" title="Remove GIF">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+              </button>
+            </div>
+          )}
           {/* #1222 (SRS-205.13, 207.5, 208.7, 213.5): the student kept the conversation, not their place in
               it. Every write still refuses them in the database, so the composer is replaced rather than
               disabled -- a greyed-out box invites them to try and then explains nothing. */}
@@ -1001,6 +1061,15 @@ function Conversation() {
             <label htmlFor="message-camera" className={styles.photoToggle} title="Take a photo">
               <span className={styles.srOnly}>Take a photo</span>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3Z" /><circle cx="12" cy="13" r="3.5" /></svg>
+            </label>
+            {/* SRS-201.12 (#1399): a third hidden input for a GIF. accept is image/gif only -- the photo
+                button takes the other formats, and a GIF sent through that one would be stored under the
+                wrong upload context. Sending what is chosen here is SRS-201.14. */}
+            <input ref={gifInput} id="message-gif" type="file" accept={GIF_ACCEPT} className={styles.srOnly}
+              onChange={(event) => reviewGif(event.target.files)} disabled={sending} />
+            <label htmlFor="message-gif" className={styles.photoToggle} title="Choose a GIF">
+              <span className={styles.srOnly}>Choose a GIF</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M13 10.5a2.5 2.5 0 1 0 0 3h1.8v-1.6" /><path d="M8.2 10v4" /><path d="M17.4 10v4" /><path d="M17.4 10h2.2" /><path d="M17.4 12h1.8" /></svg>
             </label>
             <label htmlFor="message-text" className={styles.srOnly}>Message</label>
             <input ref={messageInput} id="message-text" className={styles.input} value={text} onChange={(event) => setText(event.target.value)}
