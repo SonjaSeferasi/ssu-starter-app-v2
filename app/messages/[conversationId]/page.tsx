@@ -18,7 +18,7 @@ import { ReactionChips, ReactionPicker } from '../message-reactions';
 import { SnipePanel } from '../../../components/snipe/snipe-panel';
 import { canSelectForReply, findReplyTarget, keepReplyTarget, replyIndication, replyPreview, replyQuote, toggleReplyTarget, type ReplyTargets } from '../../../lib/chat-reply';
 import { PHOTO_ACCEPT, PHOTO_SEND_FAILED, choosePhoto, describeChosenPhoto, photoError, type ChosenPhoto } from '../../../lib/chat-photo';
-import { GIF_ACCEPT, chooseGif, describeChosenGif, gifFormatError } from '../../../lib/chat-gif';
+import { GIF_ACCEPT, chooseGif, describeChosenGif, gifError } from '../../../lib/chat-gif';
 import { PHOTO_DELETED, PHOTO_DELETE_CONFIRM, PHOTO_UNAVAILABLE, canDeletePhoto, markPhotoDeleted, photoLinkRefreshDelay, photoLinksExpired } from '../../../lib/chat-photo-links';
 import { DELETE_CONVERSATION_CONFIRM, DELETE_CONVERSATION_FAILED, DELETE_CONVERSATION_LABEL, FORMER_MEMBER_NOTICE, canDeleteConversation, isReadOnly } from '../../../lib/chat-former-member';
 import { messageDateTimeAttribute, messageTime, messageTimeFull } from '../../../lib/chat-time';
@@ -552,13 +552,15 @@ function Conversation() {
     gifInput.current?.focus();
   }
 
-  // SRS-201.12 (#1399): a chosen GIF is kept only when its format is one the conversation accepts. The
-  // accept hint below filters what the picker offers, but a student can still pick "All files", so the
-  // refusal has to happen here too. The size limit is SRS-201.13.
+  // SRS-201.12 (#1399) and SRS-201.13 (#1403): a chosen GIF is kept only when its format is one the
+  // conversation accepts and it is within the size limit. The accept hint below filters what the picker
+  // offers, but a student can still pick "All files", so the refusal has to happen here too. Saying why is
+  // better than silently ignoring the file, and gifError names the format before the size when both are
+  // wrong -- the file is the thing to fix, not its size.
   function reviewGif(files: FileList | null) {
     const chosen = chooseGif(files);
     if (!chosen) { setGif(null); return; }
-    const refusal = gifFormatError(chosen);
+    const refusal = gifError(chosen);
     if (refusal) {
       setError(refusal);
       setGif(null);
