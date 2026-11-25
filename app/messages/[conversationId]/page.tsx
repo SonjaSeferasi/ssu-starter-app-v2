@@ -178,7 +178,9 @@ function Conversation() {
   // leaves open all afternoon. The page asks for fresh links shortly before the ones it holds expire, so the
   // photos never quietly turn into broken images. A conversation with no photos never sets a timer.
   const [photoLinksExpireAt, setPhotoLinksExpireAt] = useState<number | null>(null);
-  const hasPhotos = messages.some((message) => message.kind === 'photo');
+  // SRS-201.15 (#1411): a GIF is signed and refreshed exactly like a photo, so it counts here too --
+  // otherwise a conversation holding only GIFs would never refresh its links and they would all expire.
+  const hasPhotos = messages.some((message) => message.kind === 'photo' || message.kind === 'gif_upload');
   useEffect(() => {
     const delay = photoLinkRefreshDelay(photoLinksExpireAt, Date.now(), hasPhotos);
     if (delay === null) return;
@@ -304,7 +306,7 @@ function Conversation() {
     // SRS-201.7 (#1029): a photo arriving live carries no link -- realtime reaches the browser with no server
     // in between to sign one -- so the history is loaded again to fetch it. The sender's own send already
     // returned a link, so this only runs for photos from other people.
-    if (message.kind === 'photo' && !message.photo_url) setReload((count) => count + 1);
+    if ((message.kind === 'photo' || message.kind === 'gif_upload') && !message.photo_url) setReload((count) => count + 1);
     // SRS-211.1: a member whose name is not loaded yet (for example, someone who just joined) loads the names again.
     if (sendersRef.current && message.sender_id !== meRef.current && !sendersRef.current[message.sender_id]) setReload((count) => count + 1);
   }
@@ -803,7 +805,7 @@ function Conversation() {
               const mine = isLocalMessage(message) || message.sender_id === myStudentId;
               // SRS-201.9 (#800): an emoji message is shown larger, without a bubble, on the sender's side.
               // SRS-201.6 (#1024): a photo bubble holds the photo itself, so it drops the text padding.
-              const bubble = `${styles.bubble}${mine ? ` ${styles.bubbleOwn}` : ''}${message.kind === 'emoji' ? ` ${styles.emojiBubble}` : ''}${message.kind === 'photo' ? ` ${styles.photoBubble}` : ''}`;
+              const bubble = `${styles.bubble}${mine ? ` ${styles.bubbleOwn}` : ''}${message.kind === 'emoji' ? ` ${styles.emojiBubble}` : ''}${message.kind === 'photo' || message.kind === 'gif_upload' ? ` ${styles.photoBubble}` : ''}`;
               // SRS-211.1 (#831): every message is read out with its sender's name; in groups the name is also
               // shown above each run of messages from another member.
               const sender = mine ? 'You' : senders[message.sender_id]?.name ?? (info?.kind === 'group' ? 'A member' : peer?.name ?? 'Them');
@@ -839,7 +841,7 @@ function Conversation() {
                       {/* SRS-201.7: a reply to a photo has no text to quote, so the quote names what was
                           answered. The photo itself is already in the conversation just above. */}
                       <span className={styles.quotedText}>
-                        {quoted.kind === 'photo' ? 'Photo' : quoted.kind === 'emoji' ? quoted.text : replyPreview(quoted.text, 60)}
+                        {quoted.kind === 'photo' ? 'Photo' : quoted.kind === 'gif_upload' ? 'GIF' : quoted.kind === 'emoji' ? quoted.text : replyPreview(quoted.text, 60)}
                       </span>
                     </span>
                   )}
@@ -877,7 +879,20 @@ function Conversation() {
                       {/* SRS-201.6 (#1024): the sender sees the photo they just sent, from the signed link the
                           send returned. Everyone else sees that a photo is there until the history gives them
                           a link of their own, which is SRS-201.7 along with refreshing a link that has expired. */}
-                      {message.kind === 'photo'
+                      {/* SRS-201.15 (#1411): a sent GIF, shown from the same signed link a photo uses. Its
+                          own branch rather than joining the photo one: a GIF has no display copy to choose
+                          between, and no delete control -- #1106 added that for photos only, and the route
+                          behind it refuses anything that is not one. It is an <img>, so it animates; a
+                          canvas or a poster frame here would show a still and lose the point of the card. */}
+                      {message.kind === 'gif_upload'
+                        ? message.photo_url && !brokenPhotos[message.id]
+                          ? <img className={styles.photoMessage} src={message.photo_url}
+                              alt={mine ? 'GIF you sent' : `GIF from ${sender}`} loading="lazy"
+                              onError={() => photoFailed(message.id)} />
+                          /* The same waiting state a photo uses: the history has not given this student a
+                             link yet, or the one it gave has stopped working. */
+                          : <span className={styles.photoPending}>{brokenPhotos[message.id] ? PHOTO_UNAVAILABLE : 'GIF'}</span>
+                        : message.kind === 'photo'
                         ? message.deleted
                           /* #1106: the message keeps its place so the conversation still reads in order and a
                              reply that answered it still points somewhere, but the photograph is gone. */
