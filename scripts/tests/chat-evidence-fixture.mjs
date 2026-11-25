@@ -31,6 +31,11 @@ const root = process.cwd();
 const chat = ['20261012120000_chat_send_text_message.sql', '20261019120000_chat_conversation_messages.sql', '20261019120100_chat_group_structure_check_as_owner.sql', '20261019150000_chat_conversation_list.sql', '20261019170000_chat_create_group.sql', '20261019170100_chat_conversation_role.sql', '20261019190000_chat_unread_status.sql', '20261019190100_chat_mark_read.sql'];
 const sprint3 = ['20261026120000_chat_group_invite_friends.sql', '20261026120100_chat_send_group_invitation.sql', '20261026130000_chat_pending_group_invitations.sql', '20261026130100_chat_accept_group_invitation.sql', '20261026130200_chat_decline_group_invitation.sql', '20261026140000_chat_send_emoji.sql', '20261026140100_chat_emoji_in_history.sql', '20261026150000_chat_sender_names.sql', '20261026160000_chat_name_group.sql', '20261026160100_chat_group_name_display.sql', '20261026170000_chat_group_name_live.sql', '20261026180000_chat_message_notifications.sql', '20261026180100_chat_group_invitation_live.sql', '20261027120000_chat_reaction_set.sql', '20261027120100_chat_react_to_message.sql', '20261027120200_chat_reactions_in_history.sql', '20261028120000_chat_assign_group_admin.sql', '20261028120100_chat_revoke_group_admin.sql', '20261028120200_chat_remove_group_member.sql', '20261028120300_chat_leave_group.sql', '20261028120400_chat_transfer_group_ownership.sql'];
 const photo = ['20261102120000_chat_send_reply.sql', '20261102130000_chat_reply_in_history.sql', '20261103120000_chat_send_photo.sql', '20261103130000_chat_photo_in_history.sql', '20261104120000_chat_delete_photo.sql', '20261112120000_chat_photo_in_list_and_notifications.sql', '20261116120000_chat_delete_photo_error_order.sql', '20261116130000_chat_former_member_history.sql', '20261117020000_chat_delete_former_group_conversation.sql', '20261117040000_chat_react_to_photo.sql', '20261117050000_chat_sender_photo_in_history.sql', '20261117160000_chat_private_read_status.sql'];
+// SRS-201.12 to SRS-201.15 (#1397, #1401, #1405, #1409): sending and showing a GIF. Listed after the
+// photo migrations because 20261124130000 rewrites socialu_conversation_messages as the photo
+// migrations left it. --without=20261124130000 gives the before shot for SRS-201.15: the GIF is sent
+// and visible to its sender, then gone on reload, because the history still returns only photos.
+const gif = ['20261124120000_chat_send_gif.sql', '20261124130000_chat_gif_in_history.sql'];
 const base = ['20261008000100_link_supabase_accounts.sql', '20261008000200_feed_functions.sql', '20261008000300_fix_deferred_post_trigger.sql', '20261012230000_srs_100_105_auth.sql', '20261013200000_srs_109_113_profile.sql', '20261015180000_profile_social.sql', '20261015190000_profile_full_name.sql', '20261016000100_like_post.sql', '20261016001000_optional_profile_bio.sql', '20261016010000_friendships.sql', '20261016020000_feed_profile_links.sql', '20261016030000_edit_profile_username.sql', '20261016040000_friend_accept_mutual_follow.sql', '20261017000100_unlike_post.sql', '20261018000100_post_comments.sql', '20261018010000_integrate_profile_feed.sql'];
 
 const withoutFixes = new Set(['20261112120000_chat_photo_in_list_and_notifications.sql', '20261116130000_chat_former_member_history.sql']);
@@ -38,7 +43,7 @@ const withoutFixes = new Set(['20261112120000_chat_photo_in_list_and_notificatio
 // for a fix that is not one of the two above.
 const withoutArg = (process.argv.find((a) => a.startsWith('--without=')) || '').slice('--without='.length);
 const alsoWithout = withoutArg.split(',').map((piece) => piece.trim()).filter(Boolean);
-const everyMigration = [...base, ...chat, ...sprint3, ...photo];
+const everyMigration = [...base, ...chat, ...sprint3, ...photo, ...gif];
 const dropped = (f) => (BEFORE && withoutFixes.has(f)) || alsoWithout.some((piece) => f.includes(piece));
 const migrations = everyMigration.filter((f) => !dropped(f));
 if (alsoWithout.length) console.log(`leaving out: ${everyMigration.filter(dropped).join(', ') || '(nothing matched)'}`);
