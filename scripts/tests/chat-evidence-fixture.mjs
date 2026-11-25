@@ -36,6 +36,13 @@ const photo = ['20261102120000_chat_send_reply.sql', '20261102130000_chat_reply_
 // migrations left it. --without=20261124130000 gives the before shot for SRS-201.15: the GIF is sent
 // and visible to its sender, then gone on reload, because the history still returns only photos.
 const gif = ['20261124120000_chat_send_gif.sql', '20261124130000_chat_gif_in_history.sql'];
+// The shell wraps every page in AppearanceProvider and asks for the navigation preference, so without
+// these two the endpoints 503 and the session gate never resolves -- the app sits on "Checking your
+// session..." and no chat page can be reached at all.
+// 20261117050000_top_navigation_preference.sql is deliberately NOT here: it patches socialu_game_room,
+// which this fixture never loads, so it fails on apply. The navigation preference degrades to its
+// default without it; the appearance one does not, which is why only that is needed.
+const shell = ['20261117070000_appearance_preferences.sql'];
 const base = ['20261008000100_link_supabase_accounts.sql', '20261008000200_feed_functions.sql', '20261008000300_fix_deferred_post_trigger.sql', '20261012230000_srs_100_105_auth.sql', '20261013200000_srs_109_113_profile.sql', '20261015180000_profile_social.sql', '20261015190000_profile_full_name.sql', '20261016000100_like_post.sql', '20261016001000_optional_profile_bio.sql', '20261016010000_friendships.sql', '20261016020000_feed_profile_links.sql', '20261016030000_edit_profile_username.sql', '20261016040000_friend_accept_mutual_follow.sql', '20261017000100_unlike_post.sql', '20261018000100_post_comments.sql', '20261018010000_integrate_profile_feed.sql'];
 
 const withoutFixes = new Set(['20261112120000_chat_photo_in_list_and_notifications.sql', '20261116130000_chat_former_member_history.sql']);
@@ -43,7 +50,7 @@ const withoutFixes = new Set(['20261112120000_chat_photo_in_list_and_notificatio
 // for a fix that is not one of the two above.
 const withoutArg = (process.argv.find((a) => a.startsWith('--without=')) || '').slice('--without='.length);
 const alsoWithout = withoutArg.split(',').map((piece) => piece.trim()).filter(Boolean);
-const everyMigration = [...base, ...chat, ...sprint3, ...photo, ...gif];
+const everyMigration = [...base, ...chat, ...sprint3, ...photo, ...gif, ...shell];
 const dropped = (f) => (BEFORE && withoutFixes.has(f)) || alsoWithout.some((piece) => f.includes(piece));
 const migrations = everyMigration.filter((f) => !dropped(f));
 if (alsoWithout.length) console.log(`leaving out: ${everyMigration.filter(dropped).join(', ') || '(nothing matched)'}`);
@@ -69,6 +76,16 @@ CREATE FUNCTION realtime.topic() RETURNS text LANGUAGE sql AS $$SELECT nullif(cu
 CREATE FUNCTION realtime.send(payload jsonb,event text,topic text,private boolean) RETURNS void LANGUAGE sql AS 'INSERT INTO realtime.sent VALUES($3,$2,$1)';`);
   await db.exec(readFileSync(root + '/supabase/schema.sql', 'utf8'));
   for (const file of migrations) await db.exec(readFileSync(root + '/supabase/migrations/' + file, 'utf8'));
+
+  // SRS-107.8 (#1228) rewrote every deployed broadcaster to call socialu.send_to_active_sessions instead
+  // of realtime.send, so that a revoked login session stops receiving messages. The migration that adds
+  // that function also rewrites realtime.messages policies against auth.sessions, which this fixture has
+  // no use for, so the function is stubbed here to land in the same realtime.sent table the realtime.send
+  // stub above uses. Without it every chat function written after #1228 -- socialu_send_gif among them --
+  // fails at run time with "function socialu.send_to_active_sessions does not exist", and the page says
+  // "Chat is unavailable", which looks like a missing migration rather than a missing stub.
+  await db.exec(`CREATE FUNCTION socialu.send_to_active_sessions(payload jsonb,event text,topic text,private boolean)
+    RETURNS void LANGUAGE sql AS 'INSERT INTO realtime.sent VALUES($3,$2,$1)';`);
 
   for (const n of everyone) {
     await db.query('INSERT INTO auth.users VALUES($1,$2,now())', [uid(n), `${usernames[n]}@salemstate.edu`]);
@@ -150,6 +167,9 @@ async function listen(server) {
   return server.address().port;
 }
 
+// Uploaded objects, keyed 'bucket/key'. See the storage branch in the service router below.
+const objects = new Map();
+
 const ids = await seed();
 
 // Stands in for Supabase Auth and PostgREST. Only socialu_* RPCs with p_* arguments are reachable, which is
@@ -168,6 +188,44 @@ const service = createServer(async (request, response) => {
         ? { id: uid(n), email: `${usernames[n]}@salemstate.edu`, email_confirmed_at: new Date().toISOString(), aud: 'authenticated', role: 'authenticated' }
         : { message: 'Invalid local session' });
     }
+    // ---- Supabase Storage, in memory -----------------------------------------------------------------
+    // The fixture replaced Auth and PostgREST but not Storage, so every upload failed with 503 and nothing
+    // that sends a photo (SRS-201.6) or a GIF (SRS-201.14) could be shown in the app at all. Objects live
+    // in this Map and vanish with the process; a signed link is a plain path with a fixed token, because
+    // nothing here needs to be unguessable.
+    const store = path.match(/^\/storage\/v1\/object\/(sign\/)?([^/]+)(?:\/(.*))?$/);
+    if (store) {
+      const [, signing, bucket, key] = store;
+      const bytes = async () => {
+        const chunks = [];
+        for await (const chunk of request) chunks.push(chunk);
+        return Buffer.concat(chunks);
+      };
+      const link = (k) => `/object/sign/${bucket}/${k}?token=fixture`;
+      if (request.method === 'GET' && signing && key) {
+        const object = objects.get(`${bucket}/${key}`);
+        if (!object) return reply(404, { message: 'Object not found' });
+        response.writeHead(200, { 'Content-Type': object.type, 'Cache-Control': 'no-store' });
+        return response.end(object.body);
+      }
+      if (request.method === 'POST' && signing) {
+        const asked = JSON.parse((await bytes()).toString() || '{}');
+        // createSignedUrls sends { paths }, createSignedUrl sends only the key in the path.
+        if (Array.isArray(asked.paths)) return reply(200, asked.paths.map((k) => ({ path: k, signedURL: link(k) })));
+        return reply(200, { signedURL: link(key) });
+      }
+      if (request.method === 'POST' || request.method === 'PUT') {
+        objects.set(`${bucket}/${key}`, { body: await bytes(), type: request.headers['content-type'] || 'application/octet-stream' });
+        return reply(200, { Key: `${bucket}/${key}` });
+      }
+      if (request.method === 'DELETE') {
+        const asked = JSON.parse((await bytes()).toString() || '{}');
+        for (const k of asked.prefixes || []) objects.delete(`${bucket}/${k}`);
+        return reply(200, []);
+      }
+      return reply(405, { message: 'Unsupported fixture storage call' });
+    }
+
     let raw = '';
     for await (const chunk of request) raw += chunk;
     const body = raw ? JSON.parse(raw) : {};
