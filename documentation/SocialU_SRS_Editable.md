@@ -2658,6 +2658,12 @@ The system shall treat a photo taken with the camera as a selected photo for sen
 
 Traces to: UR-201.
 
+##### SRS-201.21, LP — Send a GIF from a link.
+
+The system shall allow a conversation participant to send a GIF by giving a link to it, subject to the same supported-format and file-size requirements as a GIF uploaded from the participant's device.
+
+Traces to: UR-201.
+
 <a id="area-202"></a>
 
 ### Group Chats and Membership

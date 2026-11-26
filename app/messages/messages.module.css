@@ -415,3 +415,12 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 :global(html[data-appearance='dark']) .gifOption:hover:not(:disabled) { border-color: #8fb5a0; }
 :global(html[data-appearance='dark']) .pickerUpload { border-color: #53657b; color: #bcc9d8; }
 :global(html[data-appearance='dark']) .pickerUpload:hover:not(:disabled) { background: #2d3b50; }
+/* SRS-201.21: paste the address of a GIF, under the library and the device upload. */
+.pickerLink { display: flex; flex: none; gap: 8px; }
+.pickerLink .pickerSearch { flex: 1; min-height: 38px; font-size: 14px; }
+.pickerLinkSend { flex: none; min-height: 38px; padding: 8px 14px; border: 0; border-radius: 10px; background: #39775e; color: #ffffff; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+.pickerLinkSend:hover:not(:disabled) { background: #2f6650; }
+.pickerLinkSend:disabled { opacity: .5; cursor: not-allowed; }
+.pickerLinkSend:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+.pickerError { margin: 0 2px; color: #a32d2d; font-size: 13px; }
+:global(html[data-appearance='dark']) .pickerError { color: #ffb4a8; }
