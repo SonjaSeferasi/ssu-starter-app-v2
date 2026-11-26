@@ -11,6 +11,7 @@ import { subscribeToChat, type ChatConversationEvent, type ChatDeletedEvent, typ
 import { sortReactions, type ChatReaction } from '../../../lib/chat-reactions';
 import { CHAT_ACTIVITY_EVENT, ConversationListPanel } from '../conversation-list';
 import { MessagePicker } from '../message-picker';
+import { GIF_LIBRARY_SEND_FAILED, libraryGifReference, type LibraryGif } from '../../../lib/chat-gif-library';
 import { GroupNameForm } from '../group-name';
 import { GroupMemberList } from '../group-members';
 import { InvitePicker } from '../invite-picker';
@@ -647,6 +648,34 @@ function Conversation() {
   // is -- a GIF re-encoded in the browser would stop animating, which is the whole point of SRS-201.15. The
   // server reads the sender from the token, so the form carries nothing but the GIF.
   // The chosen GIF is only cleared once it has actually been sent, so a failed send keeps it for a retry.
+  // SRS-201.11: send a GIF chosen from the library. It needs no upload and no staging in the composer --
+  // a tap in the panel is the whole decision -- so this goes straight out and closes the panel, the way
+  // sendEmoji does. The reference is the only thing that travels; the file is already in the app.
+  async function sendLibraryGif(gif: LibraryGif) {
+    if (sendingRef.current) return;
+    closePicker();
+    sendingRef.current = true;
+    setSending(true);
+    setError('');
+    try {
+      const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/gif-library`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${storedAccessToken() ?? ''}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reference: libraryGifReference(gif.id) }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (response.status === 404) { setHistory('denied'); return; }
+      if (!response.ok) throw new Error(data.error || GIF_LIBRARY_SEND_FAILED);
+      addMessage(data.message);
+      setMyStudentId((current) => current ?? data.message.sender_id);
+    } catch (err) {
+      setError(err instanceof Error && !(err instanceof TypeError) ? err.message : GIF_LIBRARY_SEND_FAILED);
+    } finally {
+      sendingRef.current = false;
+      setSending(false);
+    }
+  }
+
   async function sendGif(file: File) {
     if (sendingRef.current) return;
     sendingRef.current = true;
@@ -805,7 +834,7 @@ function Conversation() {
               const mine = isLocalMessage(message) || message.sender_id === myStudentId;
               // SRS-201.9 (#800): an emoji message is shown larger, without a bubble, on the sender's side.
               // SRS-201.6 (#1024): a photo bubble holds the photo itself, so it drops the text padding.
-              const bubble = `${styles.bubble}${mine ? ` ${styles.bubbleOwn}` : ''}${message.kind === 'emoji' ? ` ${styles.emojiBubble}` : ''}${message.kind === 'photo' || message.kind === 'gif_upload' ? ` ${styles.photoBubble}` : ''}`;
+              const bubble = `${styles.bubble}${mine ? ` ${styles.bubbleOwn}` : ''}${message.kind === 'emoji' ? ` ${styles.emojiBubble}` : ''}${message.kind === 'photo' || message.kind === 'gif_upload' || message.kind === 'gif_library' ? ` ${styles.photoBubble}` : ''}`;
               // SRS-211.1 (#831): every message is read out with its sender's name; in groups the name is also
               // shown above each run of messages from another member.
               const sender = mine ? 'You' : senders[message.sender_id]?.name ?? (info?.kind === 'group' ? 'A member' : peer?.name ?? 'Them');
@@ -841,7 +870,7 @@ function Conversation() {
                       {/* SRS-201.7: a reply to a photo has no text to quote, so the quote names what was
                           answered. The photo itself is already in the conversation just above. */}
                       <span className={styles.quotedText}>
-                        {quoted.kind === 'photo' ? 'Photo' : quoted.kind === 'gif_upload' ? 'GIF' : quoted.kind === 'emoji' ? quoted.text : replyPreview(quoted.text, 60)}
+                        {quoted.kind === 'photo' ? 'Photo' : quoted.kind === 'gif_upload' || quoted.kind === 'gif_library' ? 'GIF' : quoted.kind === 'emoji' ? quoted.text : replyPreview(quoted.text, 60)}
                       </span>
                     </span>
                   )}
@@ -884,7 +913,15 @@ function Conversation() {
                           between, and no delete control -- #1106 added that for photos only, and the route
                           behind it refuses anything that is not one. It is an <img>, so it animates; a
                           canvas or a poster frame here would show a still and lose the point of the card. */}
-                      {message.kind === 'gif_upload'
+                      {/* SRS-201.11: a GIF from the library. Its own branch again, and the shortest one:
+                          the reference is a path this app serves, so there is no signed link to wait for,
+                          nothing to refresh and no unavailable state -- if this ever fails to load, the
+                          build has lost a file, which is a deployment problem and not something to tell
+                          the student about in the middle of a conversation. */}
+                      {message.kind === 'gif_library'
+                        ? <img className={styles.gifBubble} src={message.gif_reference}
+                            alt={mine ? 'GIF you sent' : `GIF from ${sender}`} />
+                        : message.kind === 'gif_upload'
                         ? message.photo_url && !brokenPhotos[message.id]
                           ? <img className={styles.photoMessage} src={message.photo_url}
                               alt={mine ? 'GIF you sent' : `GIF from ${sender}`} loading="lazy"
@@ -1017,6 +1054,7 @@ function Conversation() {
               composer below, which is still how a GIF is chosen from the device (SRS-201.12). */}
           {picking && (
             <MessagePicker disabled={sending} onPickEmoji={sendEmoji} onClose={closePicker}
+              onPickGif={(gif) => void sendLibraryGif(gif)}
               onUploadGif={() => { closePicker(); gifInput.current?.click(); }} />
           )}
           {/* SRS-209.2 (#988): while a message is chosen, the composer says which message the reply answers.

@@ -71,6 +71,9 @@ export async function chatOperation(fn: string, args: Record<string, string>) {
     // GIF is never told about photos -- the two buttons refuse for the same reasons but name different files.
     if (error.code === 'SCF03') throw new AccountError('That GIF cannot be sent in a conversation.', 400);
     if (error.code === 'SCF04') throw new AccountError('Your GIF could not be stored. Please try again.', 503);
+    // SRS-201.11: a library GIF that the database does not recognise. The page can only offer what it
+    // ships, so this means a stale tab or a request made by hand -- either way, choose again.
+    if (error.code === 'SCF05') throw new AccountError('Choose a GIF from the library.', 400);
     // #1106: deleting a photo you sent. SCD01 names the rule rather than hiding behind "not available",
     // because the student can see the message perfectly well -- it just is not theirs.
     if (error.code === 'SCD01') throw new AccountError('You can only delete photos you sent.', 403);
