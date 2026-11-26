@@ -10,7 +10,7 @@ import { useNavigationSession } from '../../../components/navigation/social-shel
 import { subscribeToChat, type ChatConversationEvent, type ChatDeletedEvent, type ChatLiveStatus, type ChatMessageEvent, type ChatReactionEvent } from '../../../lib/realtime-client';
 import { sortReactions, type ChatReaction } from '../../../lib/chat-reactions';
 import { CHAT_ACTIVITY_EVENT, ConversationListPanel } from '../conversation-list';
-import { EmojiPicker } from '../emoji-picker';
+import { MessagePicker } from '../message-picker';
 import { GroupNameForm } from '../group-name';
 import { GroupMemberList } from '../group-members';
 import { InvitePicker } from '../invite-picker';
@@ -1013,7 +1013,12 @@ function Conversation() {
               {historyError} <button type="button" className={styles.retry} onClick={() => setReload((count) => count + 1)}>Try again</button>
             </p>
           )}
-          {picking && <EmojiPicker disabled={sending} onPick={sendEmoji} onClose={closePicker} />}
+          {/* SRS-201.10: one panel for both. onUploadGif reaches the hidden #message-gif input in the
+              composer below, which is still how a GIF is chosen from the device (SRS-201.12). */}
+          {picking && (
+            <MessagePicker disabled={sending} onPickEmoji={sendEmoji} onClose={closePicker}
+              onUploadGif={() => { closePicker(); gifInput.current?.click(); }} />
+          )}
           {/* SRS-209.2 (#988): while a message is chosen, the composer says which message the reply answers.
               The choice can be abandoned here as well as with Escape. */}
           {replyTarget && (
@@ -1091,8 +1096,11 @@ function Conversation() {
             </div>
           ) : (
           <form className={styles.composer} onSubmit={send}>
+            {/* SRS-201.10: one button for emoji and GIFs. It used to be the emoji button and the GIF
+                button stood beside it; two icons for "say this without typing" is one too many, and the
+                library needed somewhere to live that was not a fourth icon. */}
             <button ref={emojiButton} type="button" className={styles.emojiToggle} onClick={() => setPicking((open) => !open)}
-              aria-expanded={picking} aria-label="Choose an emoji">
+              aria-expanded={picking} aria-label="Choose an emoji or a GIF" title="Emoji and GIFs">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><path d="M9 9h.01" /><path d="M15 9h.01" /></svg>
             </button>
             {/* SRS-201.3 (#1013): a hidden file input, opened by the Photo button beside it. The
@@ -1114,13 +1122,12 @@ function Conversation() {
             </label>
             {/* SRS-201.12 (#1399): a third hidden input for a GIF. accept is image/gif only -- the photo
                 button takes the other formats, and a GIF sent through that one would be stored under the
-                wrong upload context. Sending what is chosen here is SRS-201.14. */}
+                wrong upload context. Sending what is chosen here is SRS-201.14.
+                SRS-201.10: it has no icon of its own any more. "Upload a GIF from this device" inside the
+                GIF tab clicks it, so the input stays here, inside the form, and the panel reaches it
+                through the ref rather than through a label it would have to render twice. */}
             <input ref={gifInput} id="message-gif" type="file" accept={GIF_ACCEPT} className={styles.srOnly}
               onChange={(event) => reviewGif(event.target.files)} disabled={sending} />
-            <label htmlFor="message-gif" className={styles.photoToggle} title="Choose a GIF">
-              <span className={styles.srOnly}>Choose a GIF</span>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M13 10.5a2.5 2.5 0 1 0 0 3h1.8v-1.6" /><path d="M8.2 10v4" /><path d="M17.4 10v4" /><path d="M17.4 10h2.2" /><path d="M17.4 12h1.8" /></svg>
-            </label>
             <label htmlFor="message-text" className={styles.srOnly}>Message</label>
             <input ref={messageInput} id="message-text" className={styles.input} value={text} onChange={(event) => setText(event.target.value)}
               placeholder={replyTarget ? `Reply to ${replyTargetSender}…` : photo ? 'Photo ready to send…' : gif ? 'GIF ready to send…' : 'Message…'} maxLength={500} autoComplete="off" disabled={sending} />
