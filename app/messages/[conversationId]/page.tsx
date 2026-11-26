@@ -1123,10 +1123,13 @@ function Conversation() {
             </label>
             <label htmlFor="message-text" className={styles.srOnly}>Message</label>
             <input ref={messageInput} id="message-text" className={styles.input} value={text} onChange={(event) => setText(event.target.value)}
-              placeholder={replyTarget ? `Reply to ${replyTargetSender}…` : photo ? 'Photo ready to send…' : 'Message…'} maxLength={500} autoComplete="off" disabled={sending} />
-            {/* SRS-201.6 (#1024): Send is available for a chosen photo as well as for typed text. */}
-            <button type="submit" className={styles.send} disabled={sending || (!text.trim() && !photo)}
-              aria-label={photo ? 'Send photo' : 'Send message'}>
+              placeholder={replyTarget ? `Reply to ${replyTargetSender}…` : photo ? 'Photo ready to send…' : gif ? 'GIF ready to send…' : 'Message…'} maxLength={500} autoComplete="off" disabled={sending} />
+            {/* SRS-201.6 (#1024): Send is available for a chosen photo as well as for typed text.
+                SRS-201.14 (#1405): and for a chosen GIF. A GIF message carries no text -- the schema
+                forbids it -- so without gif here the button stays disabled with a GIF waiting in the
+                composer, and the only way to send one would be to submit the form some other way. */}
+            <button type="submit" className={styles.send} disabled={sending || (!text.trim() && !photo && !gif)}
+              aria-label={photo ? 'Send photo' : gif ? 'Send GIF' : 'Send message'}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 2 11 13" /><path d="M22 2 15 22l-4-9-9-4 20-7Z" /></svg>
             </button>
           </form>

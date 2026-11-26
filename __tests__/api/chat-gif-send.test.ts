@@ -178,3 +178,20 @@ describe('SRS-201.14 the migration keeps the two rules a copy of send_photo woul
     expect(sql).toContain('socialu.upload_policies');
   });
 });
+
+describe('SRS-201.14 the composer can actually send a chosen GIF', () => {
+  // Found against the running app on 2026-11-26: the route below worked, but Send stayed greyed out with a
+  // GIF waiting in the composer, because its disabled rule only ever looked at text and photo. Every test
+  // above still passed, because they call the route directly. A GIF message carries no text -- the schema
+  // forbids it -- so with the button disabled there was no way to send one by hand at all.
+  const page = readFileSync(process.cwd() + '/app/messages/[conversationId]/page.tsx', 'utf8');
+
+  it('enables Send when a GIF is chosen and nothing is typed', () => {
+    expect(page).toContain("disabled={sending || (!text.trim() && !photo && !gif)}");
+  });
+
+  it('names the GIF on the button and in the placeholder', () => {
+    expect(page).toContain("gif ? 'Send GIF' : 'Send message'");
+    expect(page).toContain("gif ? 'GIF ready to send…' : 'Message…'");
+  });
+});
