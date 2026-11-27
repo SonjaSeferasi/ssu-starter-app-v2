@@ -1,4 +1,4 @@
-# Proposed RLS card — publication pending
+# RLS rules — card #1432
 
 ## Sprint 6 ownership and scope
 Owner: Linh Nguyen (LN), GitHub Dieulinhh23. Claimed 27 November 2026 before implementation. No existing RLS claim for student_profiles was found in the shared repository issues.
@@ -17,8 +17,8 @@ The assignment names public; Linh confirmed the instructor permits socialu table
 Traces to SRS-109 (profile setup/photo), SRS-110 (edit profile), SRS-113 (view profiles), SRS-121 (blocking), and SRS-NFR-23/24 (private data / unauthorized access). Identity must be resolved from the authenticated JWT, never a caller-supplied owner ID. Privileged API routes must retain their existing authorization checks.
 
 ## Workflow / evidence rule
-Branch to create before coding: rls-student-profiles-table.
-Implementation and attack harness are pending. SQL has NOT been applied. No test has been run for this card.
+Branch created before implementation: rls-student-profiles-table.
+Policy SQL and the opt-in attack harness are prepared. SQL has NOT been applied. No test has been run for this card.
 **Linh must personally run all assignment tests and capture evidence. An AI agent must not run the before/after tests or represent agent results as Linh's results.**
 Required evidence, all pending:
 - [ ] Linh's before screenshot: actual anon-key attacks fail because the attacks succeed.
@@ -35,6 +35,6 @@ Tell teammates before personally starting tests because setup creates real dispo
 Linh has run and explained the attacks, attached the three real screenshots, verified the integrated app, and the table-named branch is merged through a PR containing Closes #this-issue. Keep this card open until every item is met.
 
 
-## Publication status
-The connected GitHub app returned HTTP 403 when creating this issue. Browser access is unavailable. This file is a prepared card body, NOT proof that the table is claimed on the shared board. Do not begin SQL implementation until Linh publishes the card and its rules. The table-named local branch already exists; no SQL or test code has been written and no tests have been run.
+## Publication status — 27 November 2026
+Linh created [#1432](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1432). Its published rules were read and verified before the policy SQL was written. Assignment to Dieulinhh23 was subsequently verified. Earlier publication-pending wording is preserved in Git history; it is no longer the current state. Board placement and personal execution/evidence are still pending verification. The connected app still lacks write permission, so Linh must attach results and update the card directly.
 

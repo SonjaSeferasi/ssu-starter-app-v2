@@ -8,10 +8,10 @@ Linh must personally execute all assignment test commands, inspect the results, 
 
 ## Security first
 
-Proposed table: `socialu.student_profiles`; owner: `student_id`, linked to `socialu.students.auth_user_id`. Linh confirmed the instructor permits the `socialu` schema. Teammate claims found on 27 November: avatar_photo_faces (#1379, SS), post_likes (#1380, MS), events (#1382, KB), messages (#1384, LP). None is taken for this work.
+Claimed table: `socialu.student_profiles`; owner: `student_id`, linked to `socialu.students.auth_user_id`. Linh confirmed the instructor permits the `socialu` schema. Teammate claims found on 27 November: avatar_photo_faces (#1379, SS), post_likes (#1380, MS), events (#1382, KB), messages (#1384, LP). None is taken for this work.
 
-1. Publish the prepared [rules card](rls-rules.md), title `RLS, LN, Secure the student_profiles table`, assigned to `Dieulinhh23`. Add it to the shared Project. Publication is currently blocked by connected-app write permissions and unavailable browser tools.
-2. Local branch `rls-student-profiles-table` was created before implementation. After the card exists, write the policy SQL and real Supabase anon-key attack harness on that branch. Do not substitute PGlite role simulation for the required anon-key attack execution.
+1. [Rules card #1432](https://github.com/SonjaSeferasi/ssu-starter-app-v2/issues/1432) is published and assigned to Dieulinhh23. Rules were verified before writing policy SQL. Add it to the shared Project if not already there; board placement has not been verified.
+2. Branch `rls-student-profiles-table` was created before implementation. The manual SQL and real Supabase anon-key attack harness are now prepared on it, not executed. Follow [Linh's personal run instructions](manual-run.md). PGlite role simulation is not used as a substitute for the required anon-key execution.
 3. Choose a dedicated, nonproduction Supabase test instance with the real app schema/migrations. Keep production grants and schema exposure unchanged. Missing Data API exposure/grants are setup errors, not evidence that RLS blocked an attack. Record any controlled exposure used to test RLS independently of grants.
 4. Linh tells teammates before personally running tests that create disposable real accounts/rows. Run the before tests, capture actual failures, and keep the exact commands/test revision.
 5. Linh applies the SQL in the SQL Editor and personally runs catalog checks. Capture RLS enabled and the actual policies.
@@ -35,4 +35,4 @@ Before selecting either, review the current issue and existing implementation. A
 - RLS branch/PR and saved policy script in `supabase/`.
 - A personal five-minute demo from the integrated codebase: Linh runs the attack tests and explains each rule.
 
-Current status: planning only. No SQL applied, no security result claimed, no screenshot fabricated, no PR or Done status claimed.
+Current status: implementation prepared, personal verification pending. No SQL applied, no security result claimed, no screenshot fabricated, no PR or Done status claimed.
