@@ -12,6 +12,7 @@ import { sortReactions, type ChatReaction } from '../../../lib/chat-reactions';
 import { CHAT_ACTIVITY_EVENT, ConversationListPanel } from '../conversation-list';
 import { MessagePicker } from '../message-picker';
 import { GIF_LIBRARY_SEND_FAILED, libraryGifReference, type LibraryGif } from '../../../lib/chat-gif-library';
+import { GIF_LINK_SEND_FAILED } from '../../../lib/chat-gif-link';
 import { GroupNameForm } from '../group-name';
 import { GroupMemberList } from '../group-members';
 import { InvitePicker } from '../invite-picker';
@@ -676,6 +677,33 @@ function Conversation() {
     }
   }
 
+  // SRS-201.21: send the GIF behind a link the student pasted. The route opens the address, copies the
+  // GIF and saves it exactly as an uploaded one, so what comes back is an ordinary gif_upload message.
+  async function sendGifLink(url: string) {
+    if (sendingRef.current) return;
+    closePicker();
+    sendingRef.current = true;
+    setSending(true);
+    setError('');
+    try {
+      const response = await fetch(`/api/conversations/${encodeURIComponent(conversationId)}/gif-links`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${storedAccessToken() ?? ''}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (response.status === 404) { setHistory('denied'); return; }
+      if (!response.ok) throw new Error(data.error || GIF_LINK_SEND_FAILED);
+      addMessage(data.message);
+      setMyStudentId((current) => current ?? data.message.sender_id);
+    } catch (err) {
+      setError(err instanceof Error && !(err instanceof TypeError) ? err.message : GIF_LINK_SEND_FAILED);
+    } finally {
+      sendingRef.current = false;
+      setSending(false);
+    }
+  }
+
   async function sendGif(file: File) {
     if (sendingRef.current) return;
     sendingRef.current = true;
@@ -1055,6 +1083,7 @@ function Conversation() {
           {picking && (
             <MessagePicker disabled={sending} onPickEmoji={sendEmoji} onClose={closePicker}
               onPickGif={(gif) => void sendLibraryGif(gif)}
+              onSendLink={(url) => void sendGifLink(url)}
               onUploadGif={() => { closePicker(); gifInput.current?.click(); }} />
           )}
           {/* SRS-209.2 (#988): while a message is chosen, the composer says which message the reply answers.

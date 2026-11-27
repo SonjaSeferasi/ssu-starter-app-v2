@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import { searchEmojis } from '../../lib/chat-emoji';
 import { GIF_LIBRARY_EMPTY, libraryGifSrc, searchLibraryGifs, type LibraryGif } from '../../lib/chat-gif-library';
+import { GIF_LINK_MAX_LENGTH, gifLinkError } from '../../lib/chat-gif-link';
 import styles from './messages.module.css';
 
 // SRS-201.8 (#797): search the built-in emoji list by name ("laugh" finds 😂) and choose one to send it.
@@ -15,15 +16,29 @@ import styles from './messages.module.css';
 // onPickGif is optional on purpose: without it the library is a gallery, which is all SRS-201.10 asks
 // for ("access the available GIF library while preparing a message"). Selecting one to send is
 // SRS-201.11 and arrives with the handler.
-export function MessagePicker({ disabled, onPickEmoji, onPickGif, onUploadGif, onClose }: {
+export function MessagePicker({ disabled, onPickEmoji, onPickGif, onUploadGif, onSendLink, onClose }: {
   disabled: boolean;
   onPickEmoji: (emoji: string) => void;
   onPickGif?: (gif: LibraryGif) => void;
   onUploadGif: () => void;
+  onSendLink?: (url: string) => void;
   onClose: () => void;
 }) {
   const [tab, setTab] = useState<'emoji' | 'gif'>('emoji');
   const [query, setQuery] = useState('');
+  const [link, setLink] = useState('');
+  const [linkError, setLinkError] = useState('');
+
+  // The shape of the link is judged here so an obvious mistake -- a missing https://, a word that is not
+  // a link at all -- is answered without a round trip. Everything else is the server's to decide.
+  function submitLink() {
+    if (disabled || !onSendLink) return;
+    const refusal = gifLinkError(link);
+    if (refusal) { setLinkError(refusal); return; }
+    setLinkError('');
+    setLink('');
+    onSendLink(link.trim());
+  }
   const emojis = useMemo(() => (tab === 'emoji' ? searchEmojis(query) : []), [tab, query]);
   const gifs = useMemo(() => (tab === 'gif' ? searchLibraryGifs(query) : []), [tab, query]);
 
@@ -109,6 +124,23 @@ export function MessagePicker({ disabled, onPickEmoji, onPickGif, onUploadGif, o
           <button type="button" className={styles.pickerUpload} onClick={onUploadGif} disabled={disabled}>
             Upload a GIF from this device
           </button>
+
+          {/* SRS-201.21: or paste the address of any GIF on the web. This is what makes the library
+              bigger than the eight above without an account anywhere: the GIF a student found on Giphy
+              or Tenor arrives by its link. Checked here only for shape -- whether it answers, and with
+              what, is the server's business. */}
+          {onSendLink && (
+            <div className={styles.pickerLink}>
+              <label htmlFor="picker-gif-link" className={styles.srOnly}>Link to a GIF</label>
+              <input id="picker-gif-link" className={styles.pickerSearch} value={link} disabled={disabled}
+                placeholder="…or paste a GIF link" autoComplete="off" maxLength={GIF_LINK_MAX_LENGTH}
+                onChange={(event) => { setLink(event.target.value); setLinkError(''); }}
+                onKeyDown={(event) => { if (event.key === 'Enter') { event.preventDefault(); submitLink(); } }} />
+              <button type="button" className={styles.pickerLinkSend} onClick={submitLink}
+                disabled={disabled || !link.trim()}>Send</button>
+            </div>
+          )}
+          {linkError && <p className={styles.pickerError} role="alert">{linkError}</p>}
         </div>
       )}
     </div>
