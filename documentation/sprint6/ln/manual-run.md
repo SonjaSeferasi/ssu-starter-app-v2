@@ -22,8 +22,19 @@ Use an approved nonproduction Supabase project or a local Supabase stack with th
 
 For an empty approved hosted test project, you can use the Supabase CLI to link this clean checkout to that project's ref and apply the existing migrations. Inspect the destination yourself before any database command:
 
+If the table-list query returns no public/socialu app tables, the project has not been initialized yet. This helper reads only the selected test URL/ref for display and **prints** the commands; it never connects to a database, runs SQL or runs tests:
+
 ```bash
+node scripts/ln-sprint6-schema-commands.mjs
+```
+
+Follow its commands one at a time. It prints login, the exact test-project link command and a migration dry run before the actual push. See the [official CLI documentation](https://supabase.com/docs/reference/cli/supabase-db-push). Do not paste a partial schema or run the destructive development reset instead. The repository's first migration uses CREATE SCHEMA and refuses to overwrite an existing socialu schema.
+
+```bash
+npx supabase login
 npx supabase link --project-ref YOUR_DISPOSABLE_PROJECT_REF
+npx supabase db push --dry-run
+# Inspect the target and plan before continuing:
 npx supabase db push
 ```
 
