@@ -28,15 +28,23 @@ If the table-list query returns no public/socialu app tables, the project has no
 node scripts/ln-sprint6-schema-commands.mjs
 ```
 
-Follow its commands one at a time. It prints login, the exact test-project link command and a migration dry run before the actual push. See the [official CLI documentation](https://supabase.com/docs/reference/cli/supabase-db-push). Do not paste a partial schema or run the destructive development reset instead. The repository's first migration uses CREATE SCHEMA and refuses to overwrite an existing socialu schema.
+Follow its commands one at a time. The original repository contains eight duplicate migration-version pairs, which Supabase's history table cannot record. The preparation helper below copies the migration SQL byte-for-byte into a separate ignored local installation directory, making duplicate version labels unique without changing their order or rewriting the shared repository/history. It records the filename mapping and SHA-256 hashes. Use this installation copy consistently for this disposable project. See the [official CLI documentation](https://supabase.com/docs/reference/cli/supabase-db-push). Do not paste a partial schema or run a destructive reset instead.
 
 ```bash
 npx supabase login
+node scripts/ln-sprint6-prepare-migrations.mjs
+cd tmp/tools/ln-rls-migration-install
 npx supabase link --project-ref YOUR_DISPOSABLE_PROJECT_REF
-npx supabase db push --dry-run
+npx supabase db push --remote --dry-run
 # Inspect the target and plan before continuing:
-npx supabase db push
+npx supabase db push --remote
+# Return to the application checkout after installation:
+cd ../../..
 ```
+
+The preparation helper is run once from the application checkout and refuses to overwrite an existing installation directory. If the directory is already prepared, enter it directly and continue with the link/preview commands. If installation already stopped at the duplicate `20261013000100` version, the first occurrence keeps its recorded version, and the other occurrence becomes `20261013000101`; no migration-history repair or database reset is required. Keep all preexisting history entries intact. Supabase CLI v3 defaults to a local stack: `--remote` is needed to target the linked hosted test project.
+
+This installation directory is **not the application checkout**. Return with `cd ../../..` before opening the setup SQL, editing `.env.rls.local`, running the app or personally invoking `npm run test:security:ln`.
 
 This is for an empty disposable project only. Do not run `supabase/schema.sql` as a reset against a shared database. If a migration fails, stop and retain that setup error; it is not an attack result. The fix is intentionally a manual script outside `supabase/migrations`, so installing the existing migrations does not silently apply it before your BEFORE run.
 

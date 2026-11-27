@@ -19,12 +19,12 @@ if (url.hostname !== `${ref}.supabase.co` || url.protocol !== 'https:') {
 }
 console.log(`Target test project ref: ${ref}`);
 console.log('Confirm this is socialu-rls-sprint6-test in your dashboard.');
-console.log('For the EMPTY test project only, personally run these commands ONE AT A TIME:');
+console.log('For the test project only, personally run these commands ONE AT A TIME:');
 console.log('npx supabase login');
-console.log(`npx supabase link --project-ref ${ref}`);
-console.log('npx supabase db push --dry-run');
-console.log('STOP and inspect the project and migration plan. After confirming them, run:');
-console.log('npx supabase db push');
+console.log('node scripts/ln-sprint6-prepare-migrations.mjs');
+console.log('That helper only prepares local files and prints the next commands.');
+console.log('Use its separate installation directory: the original migrations contain duplicate version labels.');
+console.log('CLI v3 defaults to local: use --remote --dry-run to preview the linked TEST project.');
 console.log('Enter database passwords only at the CLI prompt; do not paste passwords or keys into chat.');
 console.log('After installation succeeds, rerun student-profiles-test-project-setup.sql in the TEST SQL Editor.');
 console.log('Do NOT apply rls-student-profiles.sql until your genuine BEFORE evidence is captured.');
