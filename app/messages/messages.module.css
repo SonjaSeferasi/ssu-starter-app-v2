@@ -388,3 +388,30 @@ button.conversationItem:disabled { cursor: progress; opacity: .7; }
 :global(html[data-appearance='dark']) :is(.findPeople,.quotedWho,.chosenPhotoMark,.chosenPhotoText,.chosenPhotoRemove:hover,.replyBarMark,.replyBarWho,.replyCancel:hover,.retry) { color:#a7f3d0; }
 :global(html[data-appearance='dark']) :is(.header) { border-bottom:1px solid #53657b; background:#202b3b; }
 :global(html[data-appearance='dark']) :is(.readOnlyNotice) { border:1px solid #53657b; }
+
+/* SRS-201.10 (UR-201): the emoji list and the GIF library share one panel, as two tabs. */
+.pickerTabs { display: flex; flex: none; gap: 4px; padding: 3px; border-radius: 999px; background: #e6efe9; }
+.pickerTab { flex: 1; min-height: 32px; padding: 4px 12px; border: 0; border-radius: 999px; background: transparent; color: #536963; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+.pickerTab:hover { color: #28634e; }
+.pickerTab:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+.pickerTabOn { background: #ffffff; color: #28634e; box-shadow: 0 1px 3px rgba(16, 44, 48, .18); }
+.pickerTabPanel { display: flex; flex: 1; flex-direction: column; gap: 8px; min-height: 0; }
+.gifGrid { display: grid; grid-template-columns: repeat(2, 1fr); flex: 1; min-height: 0; gap: 8px; margin: 0; padding: 0; overflow-y: auto; overscroll-behavior: contain; list-style: none; }
+.gifOption { display: block; width: 100%; padding: 0; border: 1px solid #d3e2da; border-radius: 10px; background: #f3f8f5; overflow: hidden; cursor: pointer; }
+.gifOption:hover:not(:disabled) { border-color: #39775e; }
+.gifOption:disabled { opacity: .5; cursor: progress; }
+.gifOption:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+.gifThumb { display: block; width: 100%; height: 84px; object-fit: contain; background: #101822; }
+.pickerUpload { flex: none; margin-top: 8px; min-height: 38px; padding: 8px 12px; border: 1px dashed #b9d2c3; border-radius: 10px; background: transparent; color: #28634e; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+.pickerUpload:hover:not(:disabled) { background: #e6efe9; }
+.pickerUpload:disabled { opacity: .5; cursor: progress; }
+.pickerUpload:focus-visible { outline: 3px solid #28634e; outline-offset: 2px; }
+/* SRS-201.11: a GIF sent from the library, shown in the conversation. */
+.gifBubble { display: block; max-width: min(260px, 70vw); border-radius: 14px; }
+:global(html[data-appearance='dark']) .pickerTabs { background: #2d3b50; }
+:global(html[data-appearance='dark']) .pickerTab { color: #bcc9d8; }
+:global(html[data-appearance='dark']) .pickerTabOn { background: #294739; color: #edf2f7; }
+:global(html[data-appearance='dark']) .gifOption { border-color: #53657b; background: #2d3b50; }
+:global(html[data-appearance='dark']) .gifOption:hover:not(:disabled) { border-color: #8fb5a0; }
+:global(html[data-appearance='dark']) .pickerUpload { border-color: #53657b; color: #bcc9d8; }
+:global(html[data-appearance='dark']) .pickerUpload:hover:not(:disabled) { background: #2d3b50; }
