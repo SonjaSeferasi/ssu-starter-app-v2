@@ -68,16 +68,19 @@ describe('SRS-201.15 the conversation shows the GIF', () => {
 
   it('names a GIF in a reply preview rather than falling through to empty text', () => {
     // A GIF message carries no text, so without its own case the quote would be blank.
-    expect(page).toContain("quoted.kind === 'gif_upload' ? 'GIF'");
+    // SRS-201.11 added the library kind beside it; both quote as "GIF", because to the student reading
+    // the reply they are the same thing.
+    expect(page).toContain("quoted.kind === 'gif_upload' || quoted.kind === 'gif_library' ? 'GIF'");
   });
 
   it('offers no delete control on a GIF', () => {
     // #1106 added deletion for photos only, and the route behind it refuses anything else. Showing the
     // button on a GIF would promise something the server would refuse.
-    // Anchored on the render branch itself -- `{message.kind === 'gif_upload'` with its opening brace --
-    // because the same comparison appears earlier in hasPhotos and in the live-arrival check, and a looser
-    // match would swallow the whole file and pass for the wrong reason.
-    const start = page.indexOf("{message.kind === 'gif_upload'");
+    // The same comparison appears earlier in hasPhotos and in the live-arrival check, so this anchors on
+    // the LAST one, which is the render branch. It used to anchor on `{message.kind === 'gif_upload'`
+    // with its opening brace; SRS-201.11 put the library branch in front of it, so the brace now belongs
+    // to that one and the upload branch reads `: message.kind === 'gif_upload'`.
+    const start = page.lastIndexOf("message.kind === 'gif_upload'");
     const end = page.indexOf(": message.kind === 'photo'", start);
     const gifBranch = start >= 0 && end > start ? page.slice(start, end) : '';
     expect(gifBranch, 'the gif branch was not found in the page').not.toBe('');

@@ -16,7 +16,10 @@ import type { ChatReaction } from './chat-reactions';
 // asset id and no text -- and is shown from a signed link the server makes, so it travels through the same
 // fields. It is kept a separate kind rather than folded into 'photo' because the two are stored under
 // different upload contexts and a GIF is never re-encoded (SRS-201.14).
-export type ChatMessageEvent = { id: string; conversation_id: string; sender_id: string; text: string; sent_at: string; kind?: 'emoji' | 'photo' | 'gif_upload'; reply_to_id?: string | null; asset_id?: string; photo_url?: string | null; deleted?: boolean; read?: boolean | null };
+// SRS-201.11: 'gif_library' is the other half -- a GIF this app ships, sent by reference. It carries
+// 'gif_reference' and no asset id, and unlike every other image in a conversation its reference IS the
+// src: there is no signed link, so it can be broadcast in full and shown the moment it arrives.
+export type ChatMessageEvent = { id: string; conversation_id: string; sender_id: string; text: string; sent_at: string; kind?: 'emoji' | 'photo' | 'gif_upload' | 'gif_library'; gif_reference?: string; reply_to_id?: string | null; asset_id?: string; photo_url?: string | null; deleted?: boolean; read?: boolean | null };
 // SRS-202.6 (#844): sent to each current member when a group is named or renamed.
 // #1106: sent to each current participant when the sender deletes their photo, so it leaves their screen
 // instead of lingering on a signed link that keeps working for up to an hour.
