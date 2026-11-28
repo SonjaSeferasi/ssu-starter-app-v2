@@ -118,6 +118,16 @@ export function describeStudentProfilesRls() {
       }
       console.info(`Observed database state: RLS=${manifest.data.rls_enabled}; target=socialu.student_profiles; issue=#1432. Linh must capture the actual result.`);
 
+      // Validate actual Data API exposure BEFORE creating any real accounts.
+      // Catalog grants alone do not mean PostgREST exposes the socialu schema.
+      // limit(0) checks access without reading anyone's profile data.
+      for (const table of ['students', 'student_blocks', 'student_profiles']) {
+        const probe = await adminTable(table).select('*').limit(0);
+        setupError(probe.error, `Data API access to socialu.${table}; add socialu to the TEST project's exposed schemas`);
+      }
+      const visitorProbe = await visitor.schema('socialu').from('student_profiles').select('student_id').limit(0);
+      setupError(visitorProbe.error, 'anonymous Data API access to the target table');
+
       for (const name of ['alice', 'bob', 'carol', 'dana', 'erin', 'frank'] as Name[]) {
         const domain = name === 'erin' ? 'example.edu' : 'salemstate.edu';
         const email = `rls-ln-${name}-${runId}@${domain}`;
