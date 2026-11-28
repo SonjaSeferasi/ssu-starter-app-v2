@@ -3,6 +3,7 @@ node_modules
 .next-review
 .next-asia-phase-a
 .env.local
+.env.rls.local
 .env
 coverage
 *.tsbuildinfo

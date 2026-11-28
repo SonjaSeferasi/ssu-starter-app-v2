@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "test": "vitest run",
-    "test:security": "vitest run --config vitest.security.config.ts"
+    "test:security": "vitest run --config vitest.security.config.ts",
+    "test:security:ln": "vitest run --config vitest.rls-ln.config.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.109.0",
