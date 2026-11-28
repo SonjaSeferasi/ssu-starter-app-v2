@@ -1,0 +1,11 @@
+{
+  "environment": "Actual deployed production app; explicitly invalid fixture token in fresh browser context; non-GET requests blocked",
+  "origin": "https://ssu-starter-app-v2.vercel.app",
+  "calls": [
+    {
+      "path": "/api/auth/session",
+      "status": 503
+    }
+  ],
+  "pageText": "SocialU\n\nUnable to check your session\n\nPlease refresh the page to try again.\n\nGo to login"
+}

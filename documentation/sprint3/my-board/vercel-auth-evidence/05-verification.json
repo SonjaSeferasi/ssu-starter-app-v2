@@ -1,0 +1,19 @@
+{
+  "baseCommit": "f31affd27e2e8a50a82d5fb2ac0dc1db3e894809",
+  "productionBefore": "Two read-only invalid-token API probes return 503; actual /profile UI session check returns 503",
+  "localChecks": {
+    "tests": 90,
+    "files": 4,
+    "productionBuild": "passed using exact Vercel build wrapper with non-secret fixture env",
+    "hostedCredentialValidation": false
+  },
+  "sourceSha256": {
+    "scripts/vercel-build.cjs": "5d9dcbff38f64e4aabe4f4e0db624091387c71783f8849d83cef3e4c67b1ec61",
+    "scripts/check-deployed-auth.cjs": "2c3f9f99f057150fd2d0901da0303d566c29e1a0ae0b21cf8a61754a1bd31a9d",
+    "vercel.json": "5116badfc24df1d9a8f1c9f52766e483563c253610cd216f4c9b54c75aec392c",
+    "__tests__/vercel-build.test.ts": "4a26df32319b9420350c30620e59ad45f472c59f3f09fa65efb905ab5809c9e0",
+    ".env.example": "70546083ecd02777936b464d0b6346f8b57a7d3f7c831bef1e0c4ca0d2a7226b"
+  },
+  "deploymentAfter": "Not performed: current Vercel account cannot access sonja2/ssu-starter-app-v2",
+  "pending": "Project access; inspect scoped env; configure/redeploy; actual authenticated login/save/reload screenshots; PR review/merge. No Done/deployed claim."
+}
