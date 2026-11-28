@@ -68,6 +68,8 @@ Capture the real terminal showing the command, target suite and individual faile
 
 The suite has 12 checks: nine prohibited behaviors and three allowed behaviors. That count is from source review; no actual result or failure count has been measured by the agent. Before RLS, prohibited behaviors are expected to fail; positive owner/campus checks should already work. If everything passes before the fix, stop and investigate the actual protection—do not fabricate failures or disable production RLS.
 
+If an earlier setup reports `seed block relationship: 42501 permission denied for table friend_requests`, the existing `apply_block` trigger needs SELECT/UPDATE on that table for the service-role fixture administrator. Personally run `supabase/sprint6-ln/student-profiles-fixture-permission-patch.sql` in the test SQL Editor, then rerun the same test command yourself. The current full test-project setup script already includes this grant. No permissions are added to attacker roles; no RLS is enabled or disabled by the patch. The old setup failure is not valid before evidence.
+
 All attack clients are built with the public anon key; signed-in attacks obtain their own Auth token through signInWithPassword. The service-role client is used only for fixtures, the setup manifest and independent database verification. The tests restore only their own fixture rows between cases, then remove those rows and Auth users. Cleanup failures are reported; resolve them before another run.
 
 ## 4. Personally apply the policy and capture the catalog

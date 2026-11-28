@@ -121,7 +121,7 @@ export function describeStudentProfilesRls() {
       // Validate actual Data API exposure BEFORE creating any real accounts.
       // Catalog grants alone do not mean PostgREST exposes the socialu schema.
       // limit(0) checks access without reading anyone's profile data.
-      for (const table of ['students', 'student_blocks', 'student_profiles']) {
+      for (const table of ['students', 'student_blocks', 'student_profiles', 'friend_requests']) {
         const probe = await adminTable(table).select('*').limit(0);
         setupError(probe.error, `Data API access to socialu.${table}; add socialu to the TEST project's exposed schemas`);
       }

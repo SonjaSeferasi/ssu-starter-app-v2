@@ -18,6 +18,9 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON socialu.student_profiles TO anon, authen
 -- Fixture administration only; attackers never receive these grants.
 GRANT SELECT, INSERT, UPDATE, DELETE ON socialu.student_profiles,
   socialu.students, socialu.student_blocks TO service_role;
+-- apply_block() runs as its caller and updates friend_requests, even when
+-- these freshly created fixtures have no requests. Never grant this to attackers.
+GRANT SELECT, UPDATE ON socialu.friend_requests TO service_role;
 
 CREATE OR REPLACE FUNCTION public.ln_student_profiles_rls_test_manifest() RETURNS JSONB
 LANGUAGE sql STABLE SECURITY DEFINER SET search_path = '' AS $$
